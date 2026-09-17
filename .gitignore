@@ -1,0 +1,11 @@
+node_modules/
+.expo/
+dist/
+.env
+.dev.vars
+*.log
+.DS_Store
+.wrangler/
+worker/dist-test/
+app/ios/
+app/android/

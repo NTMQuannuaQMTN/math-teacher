@@ -1,0 +1,24 @@
+{
+  "name": "math-teacher-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:build && node --test dist-test/*.test.js",
+    "test:build": "rm -rf dist-test && tsc -p tsconfig.test.json",
+    "db:migrate:local": "wrangler d1 migrations apply math_teacher_db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply math_teacher_db --remote"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20260917.1",
+    "@types/node": "^22.20.3",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.0.0"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  }
+}

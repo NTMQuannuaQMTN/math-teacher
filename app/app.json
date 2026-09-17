@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "app",
+    "slug": "app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Math Teacher uses your camera to photograph math questions so it can read and solve them.",
+        "NSPhotoLibraryUsageDescription": "Math Teacher needs access to your photos so you can select a picture of a math question."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Math Teacher needs access to your photos so you can select a picture of a math question.",
+          "cameraPermission": "Math Teacher uses your camera to photograph math questions so it can read and solve them.",
+          "microphonePermission": false
+        }
+      ]
+    ]
+  }
+}
