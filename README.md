@@ -86,9 +86,24 @@ npm run deploy
   is a handled failure, never silently passed through.
 - Interactive geometry diagrams rendered client-side with `react-native-svg` from a declarative
   JSON scene graph (tap a point to highlight it).
-- Per-IP rate limiting, upload size/type limits, and sanitized error messages (internal AI/
-  validation diagnostics are logged server-side, never returned to the client).
+- Per-IP rate limiting, upload size/type limits, magic-byte image content verification (the
+  client-declared MIME type is never trusted on its own), and sanitized error messages (internal
+  AI/validation diagnostics are logged server-side, never returned to the client).
 - No AI credentials in the client; the Worker is the only thing that talks to the AI provider.
+
+### Post-MVP hardening pass
+
+Three improvements made after the core flow was working end-to-end:
+
+- **Retry with backoff** on transient AI provider failures (network errors, 429/5xx) — up to 3
+  attempts with short backoff, non-retryable errors (auth, bad request) fail immediately. See
+  `worker/src/ai/anthropic.ts`.
+- **Client-side image compression** (`expo-image-manipulator`) before upload — phone cameras
+  routinely produce multi-MB photos; downscaling to a 1600px max dimension and re-compressing
+  keeps uploads fast and reliable on cellular. See `app/src/prepareImage.ts`.
+- **Local question history** (`@react-native-async-storage/async-storage`) — solved questions are
+  listed on-device so a student can revisit a past explanation, reusing the existing
+  `GET /api/questions/:id` endpoint rather than adding new backend surface. See `app/src/history.ts`.
 
 ## Known MVP limitations (intentionally out of scope for now)
 
