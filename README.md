@@ -32,7 +32,7 @@ this (including where the original spec was ambiguous or cut off and how those g
 ```bash
 cd worker
 npm install
-cp .dev.vars.example .dev.vars   # then put a real ANTHROPIC_API_KEY in .dev.vars
+cp .dev.vars.example .dev.vars   # then put a real OPENAI_API_KEY in .dev.vars (default provider)
 npm run db:migrate:local         # creates the local D1 schema
 npm run dev                      # starts wrangler dev on http://localhost:8787
 ```
@@ -70,10 +70,13 @@ what Expo Go's bundled module provides.
 cd worker
 npx wrangler d1 create math_teacher_db        # then paste the id into wrangler.toml
 npx wrangler r2 bucket create math-teacher-images
-npx wrangler secret put ANTHROPIC_API_KEY
+npx wrangler secret put OPENAI_API_KEY      # or ANTHROPIC_API_KEY if you set AI_PROVIDER="anthropic"
 npm run db:migrate:remote
 npm run deploy
 ```
+
+For the full walkthrough (Cloudflare account setup, custom domains, costs, troubleshooting), see
+[docs/CLOUDFLARE_SETUP.md](docs/CLOUDFLARE_SETUP.md).
 
 ## What's implemented (MVP scope)
 

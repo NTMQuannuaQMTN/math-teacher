@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { GeometrySpecSchema, QuestionExtractionSchema, SolutionSchema, parseAndValidate } from "./schema.js";
+import { GeometrySpecSchema, QuestionExtractionSchema, SolutionSchema, parseAndValidate } from "./schema";
 
 test("parseAndValidate accepts well-formed extraction JSON", () => {
   const raw = JSON.stringify({

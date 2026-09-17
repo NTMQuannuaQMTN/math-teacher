@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isUploadedFile, sniffImageType } from "./utils.js";
+import { isUploadedFile, sniffImageType } from "./utils";
 
 test("isUploadedFile rejects a plain string form field", () => {
   assert.equal(isUploadedFile("just a string"), false);

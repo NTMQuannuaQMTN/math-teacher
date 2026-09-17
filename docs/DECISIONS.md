@@ -22,12 +22,20 @@ not a rewrite.
 
 ## AI provider abstraction
 `worker/src/ai/provider.ts` defines an `AIProvider` interface (`extractQuestion`,
-`generateGeometry`, `solve`) with a single `AnthropicProvider` implementation calling the
-Anthropic Messages API (vision-capable model) directly via `fetch` (no SDK dependency, to keep
-the Worker bundle small). Model id is env-configurable (`ANTHROPIC_MODEL`, default
-`claude-sonnet-5`). Swapping providers means implementing the interface — nothing in the route
-handlers is Anthropic-specific. API key lives only in Worker secrets (`ANTHROPIC_API_KEY`),
-never shipped to the client.
+`generateGeometry`, `solve`). Two implementations exist — `OpenAIProvider` (Chat Completions API,
+vision + JSON mode) and `AnthropicProvider` (Messages API) — both calling their provider directly
+via `fetch` (no SDK dependency, to keep the Worker bundle small) and sharing retry/backoff logic
+(`worker/src/ai/httpRetry.ts`). `worker/src/ai/factory.ts` picks the active one from the
+`AI_PROVIDER` env var (`"openai"` | `"anthropic"`, default `"openai"`); route handlers only ever
+see the `AIProvider` interface, never a concrete provider. Model ids are env-configurable
+(`OPENAI_MODEL` / `ANTHROPIC_MODEL`). API keys live only in Worker secrets (`OPENAI_API_KEY` /
+`ANTHROPIC_API_KEY`), never shipped to the client — only the key matching `AI_PROVIDER` needs a
+real value.
+
+This was originally written as an Anthropic-only implementation with the interface designed to be
+swappable "in principle." It was switched to OpenAI as the active provider shortly after, which
+is what motivated actually building the factory/config-switch rather than leaving the swap as a
+hypothetical — see git history around the `AI_PROVIDER` var for the concrete change.
 
 ## Strict output validation
 All AI JSON output is parsed with `JSON.parse` inside a try/catch and validated with Zod schemas

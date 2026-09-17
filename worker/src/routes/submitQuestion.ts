@@ -8,7 +8,7 @@ import {
   sniffImageType,
 } from "../utils";
 import { checkRateLimit } from "../ratelimit";
-import { AnthropicProvider } from "../ai/anthropic";
+import { createAIProvider } from "../ai/factory";
 import { AIProviderError } from "../ai/provider";
 import {
   GeometrySpecSchema,
@@ -91,12 +91,14 @@ export async function handleSubmitQuestion(request: Request, env: Env): Promise<
 
   await insertProcessingQuestion(env, questionId, r2Key, contentType);
 
-  if (!env.ANTHROPIC_API_KEY) {
+  let ai: ReturnType<typeof createAIProvider>;
+  try {
+    ai = createAIProvider(env);
+  } catch (err) {
+    console.error("AI provider misconfigured", err instanceof Error ? err.message : err);
     await markQuestionFailed(env, questionId, "Server is missing AI provider credentials.");
     return errorResponse(500, "AI provider is not configured on the server.", "provider_unconfigured");
   }
-
-  const ai = new AnthropicProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL);
 
   try {
     // 1. Understand + classify.

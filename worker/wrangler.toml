@@ -9,7 +9,7 @@ enabled = true
 [[d1_databases]]
 binding = "DB"
 database_name = "math_teacher_db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "6ada5450-57fe-4b5c-878b-607b2420ee61"
 migrations_dir = "migrations"
 
 [[r2_buckets]]
@@ -17,9 +17,13 @@ binding = "IMAGES"
 bucket_name = "math-teacher-images"
 
 [vars]
+AI_PROVIDER = "openai"
+OPENAI_MODEL = "gpt-4o"
 ANTHROPIC_MODEL = "claude-sonnet-5"
 MAX_UPLOAD_BYTES = "8388608"
 RATE_LIMIT_PER_HOUR = "10"
 
-# Secrets (set via `wrangler secret put`, never committed):
-#   ANTHROPIC_API_KEY
+# Secrets (set via `wrangler secret put`, never committed).
+# Only the key matching AI_PROVIDER needs to be set:
+#   OPENAI_API_KEY      (used when AI_PROVIDER = "openai")
+#   ANTHROPIC_API_KEY    (used when AI_PROVIDER = "anthropic")

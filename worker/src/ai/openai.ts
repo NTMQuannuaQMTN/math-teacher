@@ -4,10 +4,9 @@ import { EXTRACTION_PROMPT, GEOMETRY_PROMPT, SOLVE_PROMPT } from "./prompts";
 import { fetchWithRetry } from "./httpRetry";
 import { arrayBufferToBase64 } from "./encoding";
 
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
-const ANTHROPIC_VERSION = "2023-06-01";
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
 
-export class AnthropicProvider implements AIProvider {
+export class OpenAIProvider implements AIProvider {
   constructor(private readonly apiKey: string, private readonly model: string) {}
 
   private async callText(params: {
@@ -15,37 +14,40 @@ export class AnthropicProvider implements AIProvider {
     image?: { base64: string; mediaType: string };
     maxTokens?: number;
   }): Promise<string> {
-    const content: Record<string, unknown>[] = [];
+    const content: Record<string, unknown>[] = [{ type: "text", text: params.prompt }];
     if (params.image) {
       content.push({
-        type: "image",
-        source: { type: "base64", media_type: params.image.mediaType, data: params.image.base64 },
+        type: "image_url",
+        image_url: { url: `data:${params.image.mediaType};base64,${params.image.base64}` },
       });
     }
-    content.push({ type: "text", text: params.prompt });
 
-    const response = await fetchWithRetry(ANTHROPIC_API_URL, {
+    const response = await fetchWithRetry(OPENAI_API_URL, {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-api-key": this.apiKey,
-        "anthropic-version": ANTHROPIC_VERSION,
+        authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
         model: this.model,
         max_tokens: params.maxTokens ?? 2048,
+        // Our prompts already instruct "respond with only a JSON object";
+        // json_object mode makes the API enforce that the output parses as
+        // JSON. It does not validate our specific shape, so parseAndValidate
+        // (Zod) downstream still does the real work.
+        response_format: { type: "json_object" },
         messages: [{ role: "user", content }],
       }),
     });
 
     const json = (await response.json()) as {
-      content?: { type: string; text?: string }[];
+      choices?: { message?: { content?: string | null } }[];
     };
-    const textBlock = json.content?.find((block) => block.type === "text");
-    if (!textBlock?.text) {
+    const text = json.choices?.[0]?.message?.content;
+    if (!text) {
       throw new AIProviderError("AI provider response had no text content");
     }
-    return textBlock.text;
+    return text;
   }
 
   async extractQuestion(imageBytes: ArrayBuffer, contentType: string): Promise<string> {

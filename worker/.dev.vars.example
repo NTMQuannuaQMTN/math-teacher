@@ -1,1 +1,3 @@
+# Only the key matching AI_PROVIDER (set in wrangler.toml) needs a real value.
+OPENAI_API_KEY=sk-proj-xxxxx
 ANTHROPIC_API_KEY=sk-ant-xxxxx
