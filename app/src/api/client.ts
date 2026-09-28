@@ -11,6 +11,27 @@ export class ApiError extends Error {
   }
 }
 
+// Codes from worker/src/routes/submitQuestion.ts that reject the request
+// deterministically — resubmitting identical bytes fails the identical way,
+// so a one-tap "same image" retry is never worth offering for these.
+const NON_RETRYABLE_API_ERROR_CODES = new Set([
+  "bad_request",
+  "missing_image",
+  "unsupported_type",
+  "empty_file",
+  "file_too_large",
+  "invalid_image_content",
+]);
+
+/** Whether resubmitting the same image bytes could plausibly succeed.
+ * Unknown/unrecognized codes default to retryable: the cost of wrongly
+ * offering a retry is one extra tap that fails the same way again, which is
+ * cheap, whereas defaulting to non-retryable would silently lose this
+ * feature every time a new server error code is added. */
+export function isRetryableWithSameImage(err: ApiError): boolean {
+  return !err.code || !NON_RETRYABLE_API_ERROR_CODES.has(err.code);
+}
+
 export class NetworkError extends Error {
   constructor(message = "Could not reach the server. Check your connection and try again.") {
     super(message);

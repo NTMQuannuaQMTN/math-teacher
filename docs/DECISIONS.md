@@ -72,3 +72,26 @@ custom dev client) but does *not* work in the iOS Simulator (no camera hardware)
 restricted in Expo Go depending on OS permissions. The app offers both "Take Photo" and
 "Choose from Library" and degrades gracefully (clear message, no crash) if camera permission is
 denied or the camera is unavailable, per spec §5.
+
+## LaTeX rendering: WebView + KaTeX via CDN
+`solution_steps[].math_expression` and `final_answer` are now prompted to come back as raw LaTeX
+(`worker/src/ai/prompts.ts`, `SOLVE_PROMPT`) — `\frac{a}{b}` instead of `a/b`, `\sqrt{}`, etc.
+`description` and `explanation` stay plain prose with no LaTeX, so there's no need for a
+mixed-text/math inline renderer; each math field renders as its own standalone block.
+
+React Native has no native LaTeX renderer, so `app/src/components/LatexView.tsx` renders each
+expression via KaTeX inside a `react-native-webview`, loading KaTeX's CSS/JS from jsDelivr's CDN
+rather than bundling it locally — the app already requires network access for every other
+feature (the AI calls), so this doesn't add a new offline-capability regression. The WebView has
+no intrinsic content size, so the page measures its own rendered height and reports it back via
+`postMessage` to auto-size the RN view (a standard pattern for this problem). `throwOnError:
+false` is passed to KaTeX so malformed LaTeX from the model degrades to visible (if ugly) text
+instead of a blank view.
+
+## Training-data storage
+"Store all questions/answers for future fine-tuning" is already satisfied by the existing D1
+schema (`questions`, `geometry_specs`, `solutions` — see the Data model section above): every
+submission is persisted regardless of outcome, nothing is deleted, and the source image is kept
+in R2 (`image_r2_key`). No export tooling exists yet (e.g. a JSONL dump of question+solution
+pairs for fine-tuning, or a human curation/quality flag to filter noisy rows before training) —
+that's a V2-scoped follow-up, not built speculatively ahead of need.

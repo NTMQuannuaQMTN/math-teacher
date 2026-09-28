@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import type { Solution } from "../api/types";
 import { COLORS } from "../constants";
+import { LatexView } from "./LatexView";
 
 export function SolutionView({ solution }: { solution: Solution }) {
   return (
@@ -14,16 +15,14 @@ export function SolutionView({ solution }: { solution: Solution }) {
           </View>
           <View style={styles.stepContent}>
             <Text style={styles.stepDescription}>{step.description}</Text>
-            {step.math_expression ? (
-              <Text style={styles.mathExpression}>{step.math_expression}</Text>
-            ) : null}
+            {step.math_expression ? <LatexView expression={step.math_expression} /> : null}
           </View>
         </View>
       ))}
 
       <View style={styles.answerCard}>
         <Text style={styles.answerLabel}>Final answer</Text>
-        <Text style={styles.answerText}>{solution.final_answer}</Text>
+        <LatexView expression={solution.final_answer} fontSize={20} color={COLORS.text} />
       </View>
 
       <View style={styles.explanationCard}>
@@ -67,11 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 21,
   },
-  mathExpression: {
-    color: COLORS.primary,
-    fontFamily: "monospace",
-    fontSize: 14,
-  },
   answerCard: {
     backgroundColor: `${COLORS.success}1A`,
     borderColor: COLORS.success,
@@ -86,11 +80,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: 0.5,
-  },
-  answerText: {
-    color: COLORS.text,
-    fontSize: 17,
-    fontWeight: "600",
   },
   explanationCard: {
     backgroundColor: COLORS.surface,

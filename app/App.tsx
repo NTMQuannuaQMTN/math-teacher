@@ -12,10 +12,15 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-import { ApiError, fetchQuestion, NetworkError, submitQuestionImage } from "./src/api/client";
+import {
+  ApiError,
+  fetchQuestion,
+  isRetryableWithSameImage,
+  NetworkError,
+  submitQuestionImage,
+} from "./src/api/client";
 import type { QuestionResult } from "./src/api/types";
 import { pickFromCamera, pickFromLibrary, type PickedImage } from "./src/imagePicker";
-import { prepareImageForUpload } from "./src/prepareImage";
 import { addToHistory, loadHistory, type HistoryEntry } from "./src/history";
 import { COLORS } from "./src/constants";
 import { ClassificationCard } from "./src/components/ClassificationCard";
@@ -28,7 +33,7 @@ type Phase =
   | { kind: "preview"; image: PickedImage }
   | { kind: "submitting"; image: PickedImage }
   | { kind: "result"; result: QuestionResult }
-  | { kind: "error"; message: string };
+  | { kind: "error"; message: string; image?: PickedImage };
 
 export default function App() {
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
@@ -92,9 +97,8 @@ export default function App() {
     setPhase({ kind: "submitting", image });
 
     try {
-      const prepared = await prepareImageForUpload(image);
       const result = await submitQuestionImage(
-        { uri: prepared.uri, mimeType: prepared.mimeType, fileName: prepared.fileName },
+        { uri: image.uri, mimeType: image.mimeType, fileName: image.fileName },
         controller.signal
       );
       setPhase({ kind: "result", result });
@@ -107,14 +111,20 @@ export default function App() {
         return;
       }
       if (err instanceof ApiError) {
-        setPhase({ kind: "error", message: err.message });
+        setPhase({
+          kind: "error",
+          message: err.message,
+          image: isRetryableWithSameImage(err) ? image : undefined,
+        });
         return;
       }
       if (err instanceof NetworkError) {
-        setPhase({ kind: "error", message: err.message });
+        setPhase({ kind: "error", message: err.message, image });
         return;
       }
-      setPhase({ kind: "error", message: "Something unexpected went wrong. Please try again." });
+      // Unclassified error: same ambiguity as NetworkError about whether the
+      // request reached the server, so let the user decide whether to retry.
+      setPhase({ kind: "error", message: "Something unexpected went wrong. Please try again.", image });
     } finally {
       abortRef.current = null;
     }
@@ -164,7 +174,14 @@ export default function App() {
 
           {phase.kind === "result" && <ResultScreen result={phase.result} onReset={reset} />}
 
-          {phase.kind === "error" && <ErrorView message={phase.message} onRetry={reset} />}
+          {phase.kind === "error" && (
+            <ErrorView
+              message={phase.message}
+              retryImage={phase.image}
+              onRetry={handleSubmit}
+              onStartOver={reset}
+            />
+          )}
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -234,7 +251,7 @@ function SubmittingView({ image, onCancel }: { image: PickedImage; onCancel: () 
 
 function ResultScreen({ result, onReset }: { result: QuestionResult; onReset: () => void }) {
   if (result.status === "failed") {
-    return <ErrorView message={result.error ?? "Could not process this question."} onRetry={onReset} />;
+    return <ErrorView message={result.error ?? "Could not process this question."} onStartOver={onReset} />;
   }
 
   return (
@@ -247,12 +264,28 @@ function ResultScreen({ result, onReset }: { result: QuestionResult; onReset: ()
   );
 }
 
-function ErrorView({ message, onRetry }: { message: string; onRetry: () => void }) {
+function ErrorView({
+  message,
+  retryImage,
+  onRetry,
+  onStartOver,
+}: {
+  message: string;
+  retryImage?: PickedImage;
+  onRetry?: (image: PickedImage) => void;
+  onStartOver: () => void;
+}) {
   return (
     <View style={[styles.card, styles.errorCard]}>
       <Text style={styles.errorTitle}>Something went wrong</Text>
       <Text style={styles.errorMessage}>{message}</Text>
-      <PrimaryButton label="Try Again" onPress={onRetry} />
+      {retryImage && (
+        <Image source={{ uri: retryImage.uri }} style={[styles.preview, styles.previewDimmed]} resizeMode="contain" />
+      )}
+      <View style={styles.buttonRow}>
+        {retryImage && onRetry && <PrimaryButton label="Try Again" onPress={() => onRetry(retryImage)} />}
+        <SecondaryButton label={retryImage ? "Choose a Different Photo" : "Try Again"} onPress={onStartOver} />
+      </View>
     </View>
   );
 }

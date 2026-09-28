@@ -1,0 +1,10 @@
+{
+  "name": "math-teacher",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n worker,app -c blue,green \"npm run dev --prefix worker\" \"npm run start:app-only --prefix app\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

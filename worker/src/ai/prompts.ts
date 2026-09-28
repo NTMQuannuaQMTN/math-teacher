@@ -46,4 +46,8 @@ Respond with ONLY a single JSON object (no markdown fences, no prose) matching e
   "explanation": string  // a short paragraph on WHY this approach works / the intuition, for learning, not just the mechanics
 }
 
+Rules for "math_expression" and "final_answer": write them as raw LaTeX math (no surrounding $ or \\( \\) delimiters — the client adds those). Use proper LaTeX commands, not plain-text approximations: \\frac{a}{b} not a/b, x^{2} not x^2 written as x^2 in prose, \\sqrt{x}, \\times, \\leq, \\pi, etc. Every step must have a non-empty "math_expression" — if a step is purely conceptual, restate the current state of the equation/expression there rather than leaving it blank.
+
+Keep "description" and "explanation" as plain, unaccented prose with no LaTeX or math symbols in them — all actual notation belongs in "math_expression" / "final_answer", which are rendered separately as typeset math.
+
 Be rigorous and correct. Show enough steps that a student can follow the reasoning, but don't pad with trivial steps.`;

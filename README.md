@@ -27,6 +27,18 @@ this (including where the original spec was ambiguous or cut off and how those g
 
 ## Running it locally
 
+Once both projects are set up (below, first time only), start everything with one command from
+the repo root:
+
+```bash
+npm install   # installs concurrently at the repo root, once
+npm run dev   # runs the Worker (wrangler dev) and the Expo dev server together
+```
+
+Output is prefixed `[worker]` / `[app]` so both logs are visible at once. Stop both with Ctrl-C.
+This just wraps `worker`'s and `app`'s own `dev`/`start` scripts — running them separately in two
+terminals (as below) works exactly the same if you prefer that.
+
 ### 1. Backend (`worker/`)
 
 ```bash
