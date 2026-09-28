@@ -1,14 +1,19 @@
 name = "math-teacher-worker"
 main = "src/index.ts"
-compatibility_date = "2025-01-01"
+compatibility_date = "2026-09-01"
 compatibility_flags = ["nodejs_compat"]
 
 [observability]
 enabled = true
 
+# Nightly cleanup of abandoned drafts (see src/cleanup.ts).
+[triggers]
+crons = ["17 3 * * *"]
+
 [[d1_databases]]
 binding = "DB"
 database_name = "math_teacher_db"
+# Replace with the id printed by `wrangler d1 create math_teacher_db` before deploying.
 database_id = "6ada5450-57fe-4b5c-878b-607b2420ee61"
 migrations_dir = "migrations"
 
@@ -17,13 +22,22 @@ binding = "IMAGES"
 bucket_name = "math-teacher-images"
 
 [vars]
-AI_PROVIDER = "openai"
-OPENAI_MODEL = "gpt-4o"
-ANTHROPIC_MODEL = "claude-sonnet-5"
-MAX_UPLOAD_BYTES = "8388608"
-RATE_LIMIT_PER_HOUR = "10"
+# "production" disables the mock OCR provider and dev-only behaviour.
+ENVIRONMENT = "production"
+# "openai" | "anthropic" | "mock" (mock only works when ENVIRONMENT = "development")
+OCR_PROVIDER = "openai"
+OPENAI_MODEL = "gpt-4.1"
+ANTHROPIC_MODEL = "claude-opus-5"
+OCR_TIMEOUT_MS = "45000"
+# Per-device and per-IP budgets for OCR calls (uploads + retries), per hour.
+OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
+OCR_LIMIT_PER_IP_PER_HOUR = "120"
+# Drafts (scans never confirmed) older than this are deleted by the cron job.
+DRAFT_RETENTION_DAYS = "7"
+# Comma-separated browser origins allowed to call the API (only needed for Expo web).
+ALLOWED_ORIGINS = ""
 
-# Secrets (set via `wrangler secret put`, never committed).
-# Only the key matching AI_PROVIDER needs to be set:
-#   OPENAI_API_KEY      (used when AI_PROVIDER = "openai")
-#   ANTHROPIC_API_KEY    (used when AI_PROVIDER = "anthropic")
+# Secrets — set with `wrangler secret put <NAME>`; never commit them:
+#   IMAGE_URL_SECRET    (required) HMAC key for signed image URLs, 32+ random chars
+#   OPENAI_API_KEY      (when OCR_PROVIDER = "openai")
+#   ANTHROPIC_API_KEY   (when OCR_PROVIDER = "anthropic")

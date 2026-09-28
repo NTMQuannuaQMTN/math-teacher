@@ -1,0 +1,10 @@
+{
+  "name": "math-teacher-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "npx playwright install chromium && python3 make_fakecam.py",
+    "e2e": "node e2e.mjs && LOCALE=vi-VN node e2e.mjs && node e2e-failures.mjs"
+  },
+  "devDependencies": { "playwright": "^1.56.0" }
+}

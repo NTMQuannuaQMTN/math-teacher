@@ -1,127 +1,180 @@
-# Math Teacher — MVP
+# Math Teacher: Milestone 1 (maths problem scanner)
 
-An AI mathematics teacher: photograph a question, get it read, classified, (for geometry)
-diagrammed, solved, and explained.
+The long-term goal is an AI mathematics teacher for Vietnamese secondary-school students (Grade 9
+first). This repository currently implements only the **first milestone**: a reliable,
+camera-first scanner that turns a photo of a maths problem into verified, well-formatted text.
 
 ```
-Student → photo/upload → AI understands → classify
-                                              │
-                                    geometry? ─┴─ not geometry
-                                       │              │
-                          generate interactive        │
-                             diagram (SVG)             │
-                                       └──────┬────────┘
-                                         solve + explain
-                                              │
-                                       student learns
+Photo (camera or library) → crop → OCR → student checks & edits → save → history
 ```
 
-See [docs/DECISIONS.md](docs/DECISIONS.md) for the architecture decisions made while building
-this (including where the original spec was ambiguous or cut off and how those gaps were filled).
+Solving, explanations, and tutoring are deliberately **not** built yet (see [Roadmap](#roadmap)).
+
+## Status
+
+| Area | Status |
+|---|---|
+| Camera capture with framing guide + auto-crop to the guide | ✅ implemented |
+| Upload from photo library (validation, HEIC → JPEG, size/dimension checks) | ✅ implemented |
+| Review screen with draggable crop box, rotate, retake | ✅ implemented |
+| OCR pipeline behind a provider interface (OpenAI, Anthropic, dev-only mock) | ✅ implemented |
+| Typeset maths (KaTeX, bundled for offline use) in results, preview, and history | ✅ implemented |
+| Editing with maths symbol bar, live preview, and broken-markup warning | ✅ implemented |
+| Save, history (paginated, offline snapshot), problem detail, delete | ✅ implemented |
+| Vietnamese + English UI (follows device language), light/dark mode | ✅ implemented |
+| Per-device private data, rate limiting, idempotent uploads, draft cleanup | ✅ implemented |
+| OCR accuracy measured with a real provider (OpenAI `gpt-4.1`) | ✅ 16/16 on the synthetic test set, mean CER ≤ 0.2%, ~2 s per image (2 runs); real phone photos still to be added |
+| User accounts, solving, tutoring | ⏳ planned (later milestones) |
 
 ## Repository layout
 
-- `app/` — Expo (React Native + TypeScript) client. No secrets live here.
-- `worker/` — Cloudflare Worker (TypeScript) backend: API, D1, R2, and the AI provider call.
-- `docs/` — architecture notes.
-
-## Running it locally
-
-Once both projects are set up (below, first time only), start everything with one command from
-the repo root:
-
-```bash
-npm install   # installs concurrently at the repo root, once
-npm run dev   # runs the Worker (wrangler dev) and the Expo dev server together
+```
+mobile/        Expo SDK 57 app (React Native, TypeScript, expo-router)
+  src/app/       screens: index (home), camera, review, process, scan/[id], problem/[id], history
+  src/api/       typed API client + error mapping
+  src/components math renderer (KaTeX), crop box, symbol bar, shared UI
+  src/lib/       image preparation, picker, device token, config
+worker/        Cloudflare Worker API (TypeScript), D1 + R2
+  src/ocr/       OcrProvider interface, providers, prompt, output normalization
+  src/routes/    scans + signed images
+  migrations/    D1 schema
+  test/          unit tests (vitest);  scripts/smoke.mjs: API end-to-end test
+shared/        API contract (Zod schemas) + maths-text utilities, used by both sides
+tools/ocr-eval/  OCR test set (16 synthetic images across categories) + evaluation harness
+tools/e2e/       Playwright end-to-end tests of the web build (happy path + failure paths)
 ```
 
-Output is prefixed `[worker]` / `[app]` so both logs are visible at once. Stop both with Ctrl-C.
-This just wraps `worker`'s and `app`'s own `dev`/`start` scripts — running them separately in two
-terminals (as below) works exactly the same if you prefer that.
+For design details and trade-offs, see [ARCHITECTURE.md](ARCHITECTURE.md). The sprint log is in
+[PROGRESS.md](PROGRESS.md) and the task list in [TASKS.md](TASKS.md).
 
-### 1. Backend (`worker/`)
+## Running locally
 
-```bash
-cd worker
-npm install
-cp .dev.vars.example .dev.vars   # then put a real OPENAI_API_KEY in .dev.vars (default provider)
-npm run db:migrate:local         # creates the local D1 schema
-npm run dev                      # starts wrangler dev on http://localhost:8787
-```
-
-Useful checks:
+Requirements: Node 20+ (tested with 24), npm. For iOS: Xcode + the iOS Simulator, or Expo Go on a
+phone.
 
 ```bash
-npm run typecheck   # tsc --noEmit
-npm test            # unit tests for schema validation / upload guards (node:test)
-curl localhost:8787/health
+npm run setup                      # installs shared/, worker/, mobile/ and creates the local D1 schema
+cp worker/.dev.vars.example worker/.dev.vars   # dev config (mock OCR by default)
+
+npm run dev:worker                 # API on http://localhost:8787
+npm run dev:mobile                 # Expo dev server: press i (iOS), a (Android) or w (web)
 ```
 
-### 2. Client (`app/`)
+In development the app finds the API automatically at `http://<metro-host>:8787`, so the
+simulator and a phone on the same Wi-Fi both work without configuration. To use a real OCR
+provider locally, put a key in `worker/.dev.vars`:
 
 ```bash
-cd app
-npm install
-cp .env.example .env   # EXPO_PUBLIC_API_URL — point this at your worker
-npm start               # Expo dev server; scan the QR code with Expo Go, or press i/a
+OCR_PROVIDER=openai          # or anthropic
+OPENAI_API_KEY=sk-...        # or ANTHROPIC_API_KEY=...
 ```
 
-`EXPO_PUBLIC_API_URL` defaults to `http://localhost:8787`, which works for the iOS Simulator
-and web. For a physical device on the same network, set it to your machine's LAN IP
-(e.g. `http://192.168.1.23:8787`), since the phone can't resolve your laptop's `localhost`.
+Camera capture needs a real device; the iOS Simulator has no camera, and the app shows a "camera
+not available → upload instead" state there. Everything else works in the simulator.
 
-**Camera note:** taking a photo works in Expo Go on a real device. It does not work in the iOS
-Simulator (no camera hardware). "Choose from Library" always works as a fallback. A custom
-development build (`expo prebuild` + EAS/local build) is only needed if you want the custom
-permission-prompt copy configured in `app.json` to take effect, or native camera behavior beyond
-what Expo Go's bundled module provides.
-
-## Deploying the backend
+### Checks
 
 ```bash
-cd worker
-npx wrangler d1 create math_teacher_db        # then paste the id into wrangler.toml
-npx wrangler r2 bucket create math-teacher-images
-npx wrangler secret put OPENAI_API_KEY      # or ANTHROPIC_API_KEY if you set AI_PROVIDER="anthropic"
-npm run db:migrate:remote
-npm run deploy
+npm run check        # typecheck (shared, worker, mobile) + worker unit tests + mobile lint
+npm run smoke        # API end-to-end test against the running worker (54 checks)
+npm run ocr:eval     # OCR accuracy over tools/ocr-eval (meaningful only with a real provider)
+cd tools/e2e && npm install && npm run setup && npm run e2e   # web E2E (see tools/e2e/README.md)
+cd mobile && npm run export   # production bundles for iOS, Android and web
 ```
 
-For the full walkthrough (Cloudflare account setup, custom domains, costs, troubleshooting), see
-[docs/CLOUDFLARE_SETUP.md](docs/CLOUDFLARE_SETUP.md).
+## Environment variables
 
-## What's implemented (MVP scope)
+**Worker** (`worker/wrangler.toml` `[vars]`; secrets via `wrangler secret put`):
 
-- Image capture/upload with permission handling, format/size validation, cancellation, and
-  network-failure handling.
-- A single backend endpoint (`POST /api/questions`) that runs the whole pipeline — extract,
-  classify, optionally generate an interactive geometry diagram spec, solve, explain — and
-  returns one structured, schema-validated result.
-- All AI output is parsed and validated with Zod before being trusted or stored; invalid output
-  is a handled failure, never silently passed through.
-- Interactive geometry diagrams rendered client-side with `react-native-svg` from a declarative
-  JSON scene graph (tap a point to highlight it).
-- Per-IP rate limiting, upload size/type limits, magic-byte image content verification (the
-  client-declared MIME type is never trusted on its own), and sanitized error messages (internal
-  AI/validation diagnostics are logged server-side, never returned to the client).
-- No AI credentials in the client; the Worker is the only thing that talks to the AI provider.
+| Name | Purpose | Default |
+|---|---|---|
+| `ENVIRONMENT` | `production` or `development` (the mock provider only works in development) | `production` |
+| `OCR_PROVIDER` | `openai`, `anthropic`, or `mock` | `openai` |
+| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | model ids | `gpt-4.1` / `claude-opus-5` |
+| `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
+| `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
+| `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
+| `ALLOWED_ORIGINS` | CORS origins (only needed for Expo web) | empty |
+| `IMAGE_URL_SECRET` (secret) | HMAC key for signed image URLs, 32+ random chars | **required** |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | key for the selected provider | — |
 
-### Post-MVP hardening pass
+**Mobile:** `EXPO_PUBLIC_API_URL` is the Worker URL. It is required for production builds and
+optional in development. It is not a secret; no keys ever ship in the app.
 
-Three improvements made after the core flow was working end-to-end:
+## OCR pipeline
 
-- **Retry with backoff** on transient AI provider failures (network errors, 429/5xx) — up to 3
-  attempts with short backoff, non-retryable errors (auth, bad request) fail immediately. See
-  `worker/src/ai/anthropic.ts`.
-- **Client-side image compression** (`expo-image-manipulator`) before upload — phone cameras
-  routinely produce multi-MB photos; downscaling to a 1600px max dimension and re-compressing
-  keeps uploads fast and reliable on cellular. See `app/src/prepareImage.ts`.
-- **Local question history** (`@react-native-async-storage/async-storage`) — solved questions are
-  listed on-device so a student can revisit a past explanation, reusing the existing
-  `GET /api/questions/:id` endpoint rather than adding new backend surface. See `app/src/history.ts`.
+1. **Client.** Crop to the problem, then re-encode as JPEG with the long side ≤ 2000 px (typically
+   200–600 KB). This fixes EXIF orientation and HEIC.
+2. **Worker validation.** Size, real file type from magic bytes, and pixel dimensions.
+3. **Storage.** The image goes to R2 (private); a draft row goes to D1.
+4. **Provider call.**
+   - A fixed system prompt tells the model to transcribe only. Text inside the image is data,
+     never instructions.
+   - Output is constrained to a JSON schema.
+   - The hard timeout is 45 s, and malformed output gets one automatic retry.
+5. **Normalization** (`worker/src/ocr/normalize.ts`) is the single trust boundary for model
+   output. It:
+   - validates the shape strictly;
+   - NFC-normalizes Vietnamese text;
+   - falls back to plain text if the maths markup is broken;
+   - rejects looping or degenerate output;
+   - marks `low_quality` when the model reports low confidence, blur, cut-off or uncertain
+     handwriting.
+6. **Result** (`OcrResult`):
+   - `status`: `success`, `low_quality`, `no_math_found` or `unreadable`.
+   - `rawText` holds Unicode maths; `formattedText` holds prose plus `$…$` LaTeX.
+   - `language`, `issues`, `provider` and `model` are included.
+   - `confidence` is the model's self-report, explicitly labelled as uncalibrated.
+7. **The student verifies.** The confirmed text is stored separately from the raw OCR, along with
+   whether it was edited.
 
-## Known MVP limitations (intentionally out of scope for now)
+To swap providers, implement `OcrProvider` (one method) and register it in
+`worker/src/ocr/service.ts`.
 
-- No user accounts — a question is retrievable only by its opaque id.
-- No image retention/cleanup policy for R2 (uploaded images persist indefinitely).
-- No syllabus, knowledge tracking, or adaptive learning — see the product vision for what's next.
+## Database & storage
+
+- **D1 `scans`**: one row per scanned image, holding owner, status (`draft` → `confirmed`), image
+  metadata, the latest OCR result (JSON), attempts, the confirmed text, and timestamps.
+- **D1 `rate_limits`**: fixed-window counters.
+- **R2**: the original images, private, served only through expiring HMAC-signed URLs.
+
+## Security summary
+
+- AI keys exist only as Worker secrets. The production bundles were audited and contain none.
+- **Anonymous device identity.** A random 256-bit token is kept in the Keychain/Keystore; the
+  server stores only its SHA-256. Every query is scoped to the owner, and cross-device access is
+  tested.
+- **Uploads.** The server enforces size limits, identifies the file type from its bytes, and
+  checks dimensions; parameterized SQL is used everywhere.
+- **Model output** is treated as untrusted:
+  - schema-validated;
+  - rendered with KaTeX `trust: false`, with prose inserted as text;
+  - shown in a WebView that blocks all navigation.
+- **Abuse protection.** Per-device and per-IP rate limits, idempotency keys, and an atomic OCR lock
+  (duplicate and concurrent requests are tested).
+- **Errors.** Clients see a closed set of error codes with generic messages; details only go to
+  the logs.
+
+## Known limitations
+
+- **OCR accuracy has only been measured on the synthetic test set.** With OpenAI `gpt-4.1` it
+  scored 16/16 with a mean character error rate of at most 0.2% over two runs. The images are
+  rendered fonts with simulated photo effects, and the "handwritten" ones use a handwriting-style
+  font. Real phone photos of textbooks and real handwriting still need to be added before these
+  numbers can be trusted for production.
+- Native camera capture was not exercised on a physical device during the sprint. The simulator
+  has no camera, and the web E2E used Chrome's fake camera. Permission-denied and camera-unavailable
+  states were verified on the iOS Simulator.
+- Anonymous device identity means history is lost if the app is deleted, and is not shared across
+  devices.
+- Editing uses LaTeX source with a symbol bar and live preview. That is workable, but it is not a
+  visual equation editor.
+- On web, Chrome's fake camera preview appears mirrored. Web is a development target only.
+
+## Roadmap
+
+1. **Now: Milestone 1**, reliable scanning (this repo).
+2. **Milestone 2.** OCR → understand the problem → solve. This will be a new `solutions` resource
+   keyed by `scan_id` that reads the student-confirmed text.
+3. **Later.** Structured maths representation → step-by-step teaching → interactive tutoring →
+   personalized curriculum.

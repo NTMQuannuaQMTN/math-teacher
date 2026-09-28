@@ -2,10 +2,11 @@ node_modules/
 .expo/
 dist/
 .env
+.env*.local
 .dev.vars
 *.log
 .DS_Store
 .wrangler/
-worker/dist-test/
-app/ios/
-app/android/
+mobile/ios/
+mobile/android/
+tools/ocr-eval/results/

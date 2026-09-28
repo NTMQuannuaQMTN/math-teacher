@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "Math Teacher",
+    "slug": "math-teacher",
+    "scheme": "mathteacher",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mathteacher.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Math Teacher uses the camera to photograph the maths problem you want to scan.",
+        "NSPhotoLibraryUsageDescription": "Math Teacher lets you choose a photo of a maths problem from your library."
+      }
+    },
+    "android": {
+      "package": "com.mathteacher.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "softwareKeyboardLayoutMode": "resize",
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Math Teacher uses the camera to photograph the maths problem you want to scan.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Math Teacher lets you choose a photo of a maths problem from your library.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      "expo-secure-store",
+      "expo-image",
+      "expo-localization"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

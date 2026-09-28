@@ -1,3 +1,8 @@
-# Only the key matching AI_PROVIDER (set in wrangler.toml) needs a real value.
-OPENAI_API_KEY=sk-proj-xxxxx
-ANTHROPIC_API_KEY=sk-ant-xxxxx
+# Local development overrides for `wrangler dev`. Copy to .dev.vars (gitignored).
+ENVIRONMENT=development
+# Use "mock" to run the full flow without any AI key (responses are canned and clearly labelled).
+OCR_PROVIDER=mock
+ALLOWED_ORIGINS=http://localhost:8081
+IMAGE_URL_SECRET=dev-only-change-me-0123456789abcdef
+# OPENAI_API_KEY=sk-...
+# ANTHROPIC_API_KEY=sk-ant-...

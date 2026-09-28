@@ -2,9 +2,13 @@
   "name": "math-teacher",
   "private": true,
   "scripts": {
-    "dev": "concurrently -n worker,app -c blue,green \"npm run dev --prefix worker\" \"npm run start:app-only --prefix app\""
-  },
-  "devDependencies": {
-    "concurrently": "^9.0.1"
+    "setup": "npm install --prefix shared && npm install --prefix worker && npm install --prefix mobile && npm run db:migrate",
+    "db:migrate": "npm run db:migrate:local --prefix worker",
+    "dev:worker": "npm run dev --prefix worker",
+    "dev:mobile": "npm run start --prefix mobile",
+    "check": "npm run typecheck --prefix shared && npm run typecheck --prefix worker && npm test --prefix worker && npm run typecheck --prefix mobile && npm run lint --prefix mobile",
+    "smoke": "npm run smoke --prefix worker",
+    "ocr:fixtures": "python3 tools/ocr-eval/generate_fixtures.py",
+    "ocr:eval": "node tools/ocr-eval/run.mjs"
   }
 }
