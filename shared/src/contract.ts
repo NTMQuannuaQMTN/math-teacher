@@ -30,6 +30,8 @@ export const LIMITS = {
   maxProblemChars: 6_000,
   /** Page size for history listing. */
   maxPageSize: 50,
+  /** Max separate questions one photo can be split into. */
+  maxQuestions: 12,
 } as const;
 
 export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
@@ -74,6 +76,14 @@ export const OcrConfidenceSchema = z.object({
 });
 export type OcrConfidence = z.infer<typeof OcrConfidenceSchema>;
 
+/** One problem found on the page. `text` uses the same markup as formattedText and includes its own number ("Bài 2. …"). */
+export const OcrProblemSchema = z.object({
+  /** Short display label, e.g. "Bài 2", "Câu 3", "Exercise 1"; empty if the problem has no number. */
+  label: z.string().max(40),
+  text: z.string().max(LIMITS.maxProblemChars),
+});
+export type OcrProblem = z.infer<typeof OcrProblemSchema>;
+
 export const OcrResultSchema = z.object({
   status: OcrStatusSchema,
   /** Plain transcription using Unicode maths symbols (x², √, ≤). Never contains LaTeX. */
@@ -83,6 +93,11 @@ export const OcrResultSchema = z.object({
    * in `$$…$$` (LaTeX inside the delimiters). Rendered by the app's MathText.
    */
   formattedText: z.string().max(LIMITS.maxProblemChars),
+  /**
+   * The page split into separate problems (one entry when there is only one).
+   * Sub-parts a), b)… of one exercise stay together. Defaults to [] for results stored before splitting existed.
+   */
+  problems: z.array(OcrProblemSchema).max(LIMITS.maxQuestions).default([]),
   language: OcrLanguageSchema,
   confidence: OcrConfidenceSchema.nullable(),
   issues: z.array(OcrIssueSchema).max(OcrIssueSchema.options.length),
@@ -118,6 +133,13 @@ export const ErrorCodeSchema = z.enum([
   "ocr_not_configured",
   "storage_error",
   "database_error",
+  // solving
+  "problem_not_confirmed",
+  "solve_in_progress",
+  "solve_timeout",
+  "solve_provider_error",
+  "solve_malformed_output",
+  "solve_not_configured",
   "internal_error",
 ]);
 export type ErrorCode = z.infer<typeof ErrorCodeSchema>;
@@ -148,6 +170,15 @@ export const ScanImageSchema = z.object({
   height: z.number().int().positive(),
 });
 
+/** One confirmed question of a scan; each question is solved separately. */
+export const QuestionSchema = z.object({
+  /** Stable within the scan: "q1", "q2", … */
+  id: z.string().regex(/^q\d{1,2}$/),
+  label: z.string().max(40),
+  text: z.string().max(LIMITS.maxProblemChars),
+});
+export type Question = z.infer<typeof QuestionSchema>;
+
 export const ScanSchema = z.object({
   id: z.string(),
   /** `draft` until the student confirms the text; then `confirmed`. */
@@ -171,6 +202,8 @@ export const ScanSchema = z.object({
       text: z.string(),
       /** True if the student changed the OCR output before confirming. */
       edited: z.boolean(),
+      /** The problem split into separately solvable questions (at least one). */
+      questions: z.array(QuestionSchema).min(1).max(LIMITS.maxQuestions),
     })
     .nullable(),
 });
@@ -189,9 +222,22 @@ export type ScanListResponse = z.infer<typeof ScanListResponseSchema>;
 // Requests
 // ---------------------------------------------------------------------------
 
-export const ConfirmScanRequestSchema = z.object({
-  text: z.string().max(LIMITS.maxProblemChars),
-});
+/**
+ * Either one problem (`text`) or several separately solvable questions.
+ * Questions are what the student kept (and possibly edited) from the OCR split.
+ */
+export const ConfirmScanRequestSchema = z
+  .object({
+    text: z.string().max(LIMITS.maxProblemChars).optional(),
+    questions: z
+      .array(z.object({ label: z.string().max(40), text: z.string().max(LIMITS.maxProblemChars) }))
+      .min(1)
+      .max(LIMITS.maxQuestions)
+      .optional(),
+  })
+  .refine((body) => (body.text === undefined) !== (body.questions === undefined), {
+    message: "Provide either text or questions",
+  });
 export type ConfirmScanRequest = z.infer<typeof ConfirmScanRequestSchema>;
 
 export const ListScansQuerySchema = z.object({

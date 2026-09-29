@@ -1,2 +1,7 @@
 export * from "./contract";
 export * from "./mathText";
+export * from "./expr";
+export * from "./geometry";
+export * from "./solution";
+export * from "./verify";
+export * from "./figureScene";

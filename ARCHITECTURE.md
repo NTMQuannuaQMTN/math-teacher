@@ -1,10 +1,13 @@
-# Architecture — Milestone 1: Image → OCR → Edit/Verify → Save
+# Architecture
 
 ## Scope
 
-This milestone is a reliable maths-problem **scanner**. It deliberately contains no solving,
-answers, steps, tutoring, or learning data. Those belong to later milestones (see *Extending to
-solving* below).
+- **Milestone 1 (implemented):** Image → OCR → Edit/Verify → Save.
+- **Milestone 2 (implemented, "Solver V1"):**
+  - confirmed problem → understanding → Grade-9-appropriate solution
+  - → hint-first lesson → interactive geometry synchronized with the steps.
+  - The design is described in *Solver V1* below.
+- **Not built:** student attempts, knowledge tracking, adaptive curriculum, dashboards.
 
 ## Overview
 
@@ -165,10 +168,161 @@ with their images. Confirmed problems are kept.
 - **Images** are served with `nosniff`, a restrictive CSP, and `private` caching. Signed URLs
   expire.
 
-## Extending to solving (next milestone)
+## Multi-question photos
 
-- Add a `solutions` (or `analyses`) table keyed by `scan_id`, plus `POST /v1/scans/:id/solve`.
-  Solving should read `problem_text`, the confirmed text, and never the raw OCR.
-- Keep `OcrResult` and `Scan` unchanged; add a separate `Solution` schema to `shared/`.
-- The `OcrProvider` pattern generalizes: add a `SolverProvider` interface rather than widening
-  OCR.
+- **OCR.** It returns `problems: [{ label, text }]` next to the full text. Each numbered exercise is
+  one problem; sub-parts a), b) and shared context stay with their exercise, and page headers are
+  dropped. Each problem is validated like the full text. If the model returns none, the whole text
+  becomes one problem.
+- **Check screen.** When there is more than one problem, it shows a card per problem with
+  keep/skip and its own editor (`ProblemEditor`). Saving sends
+  `confirm { questions: [...] }`.
+- **Storage.** `scans.questions_json` holds `[{ id: "q1", label, text }, …]`, and
+  `problem_text` is all questions joined. Scans confirmed earlier count as a single `q1`.
+- **Lessons** are keyed by (`scan_id`, `question_id`), and `/v1/scans/:id/questions/:qid/solve`
+  solves one question. Solve prefetch on save only runs for single-question photos; with several,
+  the student chooses.
+
+## Solver V1 (milestone 2)
+
+```
+confirmed problem text ──▶ POST /v1/scans/:id/solve
+                              │  auth · rate limit · cache check (problem hash + prompt version) · lock
+                              ▼
+                    ONE structured-output model call: geometry → gpt-5.5; everything else → gpt-5.4-mini (low),
+                    retrying on gpt-5.5 only when the checks fail (worker/src/solver/routing.ts)
+                    system prompt = curriculum + teaching + hints + geometry + verification rules
+                              │  JSON (strict schema)
+                              ▼
+                    zod validation (ModelLessonSchema, strict: extra fields rejected)
+                              ▼
+                    deterministic verification (shared/, no AI)
+                     ├─ structure: ids, hint→step links, figure references (aliases repaired)
+                     ├─ figure: construct it, check given conditions, measure derived claims
+                     └─ answer: substitute / identity sampling / inequality sampling / values
+                              │ problems? ──▶ ONE corrective retry with the exact problems
+                              ▼
+                    stored in D1 `solutions` (status ready | failed) ──▶ app renders data
+```
+
+### Why one call
+
+- A single call returns the whole lesson: understanding, plan, hints, steps, figure, and
+  machine-checkable claims. It usually takes 10–25 s; hard geometry can take up to about 50 s.
+- Separate calls per stage would multiply latency and cost, and could let the stages drift out of
+  sync (hints that don't match the steps).
+- The *stages* still exist as sections of the prompt and fields of the schema, so they can be
+  split into separate calls later without changing the API.
+
+### Contracts (`shared/src/solution.ts`)
+
+| Schema | Content |
+|---|---|
+| `Analysis` | statement (cleaned), language, topic/subtopic, gradeLevel, withinCurriculum, concepts, givens, unknowns, constraints, **status** (`solvable` / `ambiguous` / `unsupported` / `not_a_problem`) + reason, OCR `interpretationNotes` |
+| `Hint` | level 1–4 (question → concept → guidance → explicit setup), `question`, optional `cue`, hidden `explanation` + `math`, `stepId` it leads to, figure `focus` ids |
+| `Step` | title, explanation, `math` (display LaTeX), `reason` (theorem, textbook naming), `geometryActions` (`highlight` / `show` + target ids) |
+| `Figure` | construction: points (`free`, `polar`, `midpoint`, `on_segment`, `foot`, `intersection`, `line_circle`, `on_circle`, `tangent`, `reflect`, `rotate`, `translate`, triangle centres), lines/rays/segments, circles, angles, equal/parallel marks, `checks` (`given` / `derived`), `scale` (`exact` / `schematic`) |
+| `AnswerCheck` | `substitute`, `identity`, `inequality`, `value` — plain ASCII maths evaluated by `shared/src/expr.ts` |
+| `Solution` (API) | lesson + `Verification` (`verified` / `partial` / `unverified` / `not_checkable`, per-check results, `figureIssue`) + status/error/model/promptVersion/attempts |
+
+### Configuration and prompts (`worker/src/solver/`)
+
+- **`curriculum.ts`** holds the teaching level as data: the allowed knowledge for Vietnamese
+  Grade 9, the forbidden methods (calculus, vectors, the laws of sines and cosines, …), and the
+  method preferences.
+- **`prompts.ts`** has separate sections for role, security, curriculum, language, teaching and
+  hints, format, geometry language, and verification. `PROMPT_VERSION` is stored with every lesson
+  and is part of the cache key.
+- **`llm.ts`** defines the `JsonModel` interface. OpenAI Chat Completions uses strict
+  `json_schema` and `reasoning_effort`. The dev-only `mock.ts` provides deterministic lessons and
+  failure scenarios.
+- **`jsonSchema.ts`** derives the strict JSON Schema from the zod schema, the single source of
+  truth.
+
+### Geometry
+
+- **Construction engine** (`shared/src/geometry.ts`). It resolves points in dependency order,
+  detects cycles and impossible constructions, and never produces NaN.
+  - The same code verifies figures on the server and renders them on the client.
+  - **GeoGebra-style dragging** (`isDraggable`, `dragTo`):
+    - free points follow the pointer;
+    - `on_segment` points slide along their segment and `on_circle` points around their circle;
+    - `polar` points change their distance and direction;
+    - every dependent point (midpoint, foot, intersection, tangent, …) is re-constructed on each
+      move, so the construction's relationships always hold.
+  - The prompt tells the model to build *explorable* figures: points that are free in the problem
+    are free, and constrained points are constructed. For example, a right angle is built as
+    rotate + on_segment, and an isosceles apex sits on the perpendicular bisector. Dragging then
+    explores valid versions of the problem.
+  - If a drag breaks one of the problem's *given* numbers or conditions, the figure shows a notice,
+    and Reset restores it. A drag that leaves points outside the frame re-fits the view.
+- **Scene builder** (`shared/src/figureScene.ts`). It is platform-neutral: it turns
+  figure + view transform + highlight state into screen primitives (lines, circles, angle arcs,
+  right-angle squares, tick and arrow marks, point labels). It also places labels greedily to
+  avoid collisions and hit-tests taps.
+- **Renderer** (`mobile/src/components/geometry/GeometryView.tsx`). It draws the primitives with
+  react-native-svg (native and web) and handles:
+  - pinch or wheel zoom around the focus point;
+  - one-finger pan;
+  - tap to select, showing the measurement when the figure is to scale;
+  - GeoGebra-style dragging of the blue points (text selection is disabled on web);
+  - reset and a labels toggle.
+- **Synchronization:**
+  - the active hint highlights its `focus` objects; the active step highlights its
+    `geometryActions` targets, and everything else is dimmed;
+  - construction lines appear once the student reaches the step that `show`s them;
+  - the model's target names are mapped through aliases ("AB", "seg_AB", "angle_B", …).
+
+### Verification (`shared/src/verify.ts`, `shared/src/expr.ts`)
+
+- **The expression evaluator** is a small Pratt parser. It has no `eval` and no property access.
+  It supports implicit multiplication, sqrt/cbrt/abs, trig in degrees, relations, and "and"/"or"
+  conditions.
+- **Algebra:**
+  - roots and systems are substituted back into the original equations;
+  - simplifications are sampled at many points inside the stated domain;
+  - inequalities are compared point by point against the claimed solution set;
+  - numeric results are evaluated.
+- **Geometry:**
+  - given conditions must hold on the constructed figure; otherwise the figure is dropped and the
+    lesson is kept;
+  - derived claims (the answer angle or length, proven ⊥ / ∥ / concyclic / equal) are measured.
+    Measured *values* count only for `exact` figures, while shape-independent relations count
+    always.
+- **Status:** a failed check triggers one retry with the precise failures. A lesson that still
+  fails is shown as **unverified** (red, "check carefully"), never as correct.
+
+### Safety
+
+- Problem text goes only in the user message, inside delimiters, framed as untrusted.
+- The output is schema-constrained and strictly validated. Extra fields are rejected, all text is
+  NFC-normalized, and the model can't produce URLs, code, or UI.
+- Rendering uses KaTeX with `trust: false`, and figure labels are SVG text.
+- Solving has per-device and per-IP limits (30 and 90 per hour), a bounded token budget (at most
+  2 attempts, 24k output tokens each), and problem text capped at 6,000 characters.
+- Every solution row carries its `owner_id`, and deleting a scan deletes its lesson.
+
+### Client flow
+
+- **Save.** When the problem is saved, solving is prefetched in the background
+  (`PREFETCH_SOLVE_ON_SAVE`).
+- **Solve screen.** `POST /solve` either:
+  - returns the cached lesson,
+  - generates one, or
+  - gets `409 solve_in_progress` and polls `GET /solution` (`202` while pending).
+- **Leaving mid-solve** is safe: the server finishes the work (`ctx.waitUntil`). If that process
+  dies, the stale lock turns into a retryable failure.
+- **Progress** (revealed hints, open solution) is kept for the app session.
+
+## Future milestones (planned, not built)
+
+- **V2 attempts:** a `attempts` table keyed by (`solution_id`, `step_id`); a checker prompt
+  compares the student's work to the stored steps and figure checks, detecting misconceptions per
+  step.
+- **V3 knowledge profile:** aggregate by `analysis.concepts` and the steps' `reason` (theorem
+  names) per `owner_id`, adopted by real accounts later.
+- **V4 diagnostics / curriculum:** `Curriculum` is already data, so levels and syllabi become
+  selectable.
+- **Web app:** reuse `shared/` (contract, verification, geometry engine, scene builder) and the
+  API unchanged. Expo web already renders the full flow; a Next.js app would only need a DOM/SVG
+  renderer for `Scene`.

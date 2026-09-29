@@ -75,6 +75,10 @@ describe("latexToPlain", () => {
     ["x \\in \\mathbb{R}", "x ∈ ℝ"],
     ["2^{n+1}", "2ⁿ⁺¹"],
     ["a^{bc}", "a^(bc)"],
+    ["AB \\leftrightarrow CB", "AB ↔ CB"],
+    ["x \\iff y", "x ⇔ y"],
+    ["\\sin 30^{\\circ}", "sin 30°"],
+    ["\\unknowncommand x", "x"],
   ])("%s → %s", (tex, plain) => {
     expect(latexToPlain(tex)).toBe(plain);
   });

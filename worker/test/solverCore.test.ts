@@ -1,0 +1,319 @@
+import { describe, expect, it } from "vitest";
+import { evalCondition, evalExpression, evalRelation, variablesOf } from "../../shared/src/expr";
+import { angleDeg, dist, evaluateFigureCheck, resolveFigure } from "../../shared/src/geometry";
+import type { Figure, ModelLesson, PointDef } from "../../shared/src/solution";
+import { ModelLessonSchema } from "../../shared/src/solution";
+import { buildTargetIndex, verifyLesson } from "../../shared/src/verify";
+
+// --- expression evaluator ---------------------------------------------------
+
+describe("evalExpression", () => {
+  it.each([
+    ["2+3*4", {}, 14],
+    ["2x^2", { x: 3 }, 18],
+    ["-x^2", { x: 3 }, -9],
+    ["3(x-1)", { x: 5 }, 12],
+    ["(x+1)(x-1)", { x: 4 }, 15],
+    ["xy", { x: 2, y: 5 }, 10],
+    ["sqrt(49) + cbrt(27)", {}, 10],
+    ["√16 + 2²", {}, 8],
+    ["x_1 + x2", { x1: 1, x2: 2 }, 3],
+    ["sin(30)", {}, 0.5],
+    ["2^-1", {}, 0.5],
+    ["36 : 4", {}, 9],
+    ["(1+sqrt(5))/2", {}, (1 + Math.sqrt(5)) / 2],
+  ])("%s", (src, env, expected) => {
+    expect(evalExpression(src, env as Record<string, number>)).toBeCloseTo(expected, 9);
+  });
+
+  it("returns NaN for undefined values instead of throwing", () => {
+    expect(evalExpression("1/(x-1)", { x: 1 })).toBeNaN();
+    expect(evalExpression("sqrt(x)", { x: -4 })).toBeNaN();
+  });
+
+  it("rejects anything that isn't arithmetic", () => {
+    for (const bad of ["constructor", "process.exit()", "x;y", "a[0]", "`x`", "1 +"]) {
+      expect(() => evalExpression(bad, { x: 1, y: 1, a: 1 })).toThrow();
+    }
+  });
+
+  it("finds variables", () => {
+    expect([...variablesOf("x^2 + 5x + 6 = 0")]).toEqual(["x"]);
+    expect([...variablesOf("2x + y = 5")].sort()).toEqual(["x", "y"]);
+  });
+});
+
+describe("relations and conditions", () => {
+  it("evaluates equations with tolerance", () => {
+    expect(evalRelation("x^2 + 5x + 6 = 0", { x: -2 })).toBe(true);
+    expect(evalRelation("x^2 + 5x + 6 = 0", { x: 2 })).toBe(false);
+    expect(evalRelation("0.1 + 0.2 = 0.3")).toBe(true);
+  });
+  it("evaluates inequalities, boundary included", () => {
+    expect(evalRelation("3(x-2) <= 5x + 4", { x: -5 })).toBe(true);
+    expect(evalRelation("3(x-2) <= 5x + 4", { x: -6 })).toBe(false);
+    expect(evalRelation("x ≥ 1", { x: 1 })).toBe(true);
+  });
+  it("returns null when undefined", () => {
+    expect(evalRelation("1/x = 2", { x: 0 })).toBeNull();
+  });
+  it("combines conditions", () => {
+    expect(evalCondition("x < 1 or x > 3", { x: 0 })).toBe(true);
+    expect(evalCondition("x < 1 or x > 3", { x: 2 })).toBe(false);
+    expect(evalCondition("x >= 0 and x != 1", { x: 1 })).toBe(false);
+    expect(evalCondition("x >= 0, x != 1", { x: 4 })).toBe(true);
+  });
+});
+
+// --- geometry engine ----------------------------------------------------------
+
+const P = (id: string, kind: PointDef["kind"], extra: Partial<PointDef> = {}): PointDef => ({
+  id,
+  label: id,
+  kind,
+  refs: [],
+  x: null,
+  y: null,
+  value: null,
+  value2: null,
+  draggable: false,
+  hidden: false,
+  ...extra,
+});
+
+function figure(points: PointDef[], extra: Partial<Figure> = {}): Figure {
+  return { scale: "exact", points, lines: [], circles: [], angles: [], marks: [], checks: [], ...extra };
+}
+
+describe("resolveFigure", () => {
+  it("builds an isosceles triangle with apex 40° from polar constructions", () => {
+    const f = figure([
+      P("A", "free", { x: 0, y: 4 }),
+      P("B", "polar", { refs: ["A"], value: 250, value2: 5 }),
+      P("C", "polar", { refs: ["A"], value: 290, value2: 5 }),
+    ]);
+    const r = resolveFigure(f);
+    expect(r.errors).toEqual([]);
+    expect(angleDeg(r.points.B!, r.points.A!, r.points.C!)).toBeCloseTo(40, 6);
+    expect(angleDeg(r.points.A!, r.points.B!, r.points.C!)).toBeCloseTo(70, 6);
+  });
+
+  it("resolves midpoint, foot, intersection, circumcenter, tangent, reflect, rotate", () => {
+    const f = figure(
+      [
+        P("A", "free", { x: 0, y: 3 }),
+        P("B", "free", { x: -2, y: 0 }),
+        P("C", "free", { x: 4, y: 0 }),
+        P("M", "midpoint", { refs: ["B", "C"] }),
+        P("H", "foot", { refs: ["A", "B", "C"] }),
+        P("O", "circumcenter", { refs: ["A", "B", "C"] }),
+        P("X", "intersection", { refs: ["A", "H", "B", "C"] }),
+        P("T", "free", { x: 10, y: 0 }),
+        P("K", "tangent", { refs: ["T", "c"], value: 0 }),
+        P("A2", "reflect", { refs: ["A", "B", "C"] }),
+        P("R", "rotate", { refs: ["C", "B"], value: 90 }),
+        P("D", "line_circle", { refs: ["A", "O", "c"], value: 1 }),
+      ],
+      { circles: [{ id: "c", center: "O", through: "A", radius: null, style: "given", label: null }] },
+    );
+    const r = resolveFigure(f);
+    expect(r.errors).toEqual([]);
+    expect(r.points.M).toEqual({ x: 1, y: 0 });
+    expect(r.points.H!.x).toBeCloseTo(0);
+    expect(r.points.X!.y).toBeCloseTo(0);
+    expect(dist(r.points.O!, r.points.B!)).toBeCloseTo(dist(r.points.O!, r.points.A!));
+    const c = r.circles.c!;
+    // tangent: OK ⊥ KT
+    const K = r.points.K!;
+    const T = r.points.T!;
+    expect((K.x - c.cx) * (T.x - K.x) + (K.y - c.cy) * (T.y - K.y)).toBeCloseTo(0, 6);
+    expect(r.points.A2!.y).toBeCloseTo(-3);
+    expect(r.points.R!.x).toBeCloseTo(-2);
+    expect(r.points.R!.y).toBeCloseTo(6);
+    // D is diametrically opposite A
+    expect(dist(r.points.A!, r.points.D!)).toBeCloseTo(2 * c.r);
+  });
+
+  it("reports impossible constructions instead of producing NaN", () => {
+    const f = figure([
+      P("A", "free", { x: 0, y: 0 }),
+      P("B", "free", { x: 1, y: 0 }),
+      P("C", "free", { x: 0, y: 1 }),
+      P("D", "free", { x: 1, y: 1 }),
+      P("X", "intersection", { refs: ["A", "B", "C", "D"] }), // parallel lines
+      P("Y", "midpoint", { refs: ["A", "Z"] }), // unknown ref
+    ]);
+    const r = resolveFigure(f);
+    expect(r.points.X).toBeUndefined();
+    expect(r.errors.join(" ")).toMatch(/X/);
+    expect(r.errors.join(" ")).toMatch(/Z/);
+  });
+
+  it("detects cycles", () => {
+    const f = figure([P("A", "midpoint", { refs: ["B", "B"] }), P("B", "midpoint", { refs: ["A", "A"] })]);
+    expect(resolveFigure(f).errors.join(" ")).toMatch(/cycle/);
+  });
+
+  it("follows dragged free points", () => {
+    const f = figure([P("A", "free", { x: 0, y: 0 }), P("B", "free", { x: 2, y: 0 }), P("M", "midpoint", { refs: ["A", "B"] })]);
+    expect(resolveFigure(f, { B: { x: 10, y: 0 } }).points.M).toEqual({ x: 5, y: 0 });
+  });
+
+  it("evaluates figure checks", () => {
+    const f = figure([P("A", "free", { x: 0, y: 0 }), P("B", "free", { x: 3, y: 0 }), P("C", "free", { x: 0, y: 4 })]);
+    const r = resolveFigure(f);
+    const check = (kind: Figure["checks"][number]["kind"], refs: string[], value: number | null = null) =>
+      evaluateFigureCheck({ kind, refs, value, role: "given" }, r).passed;
+    expect(check("length_value", ["B", "C"], 5)).toBe(true);
+    expect(check("angle_value", ["B", "A", "C"], 90)).toBe(true);
+    expect(check("perpendicular", ["A", "B", "A", "C"])).toBe(true);
+    expect(check("length_value", ["B", "C"], 6)).toBe(false);
+  });
+});
+
+// --- lesson verification ---------------------------------------------------
+
+function isoscelesLesson(overrides: Partial<ModelLesson> = {}): ModelLesson {
+  return {
+    analysis: {
+      statement: "Cho tam giác $ABC$ cân tại $A$ có $\\widehat{A} = 40^{\\circ}$. Tính $\\widehat{B}$.",
+      language: "vi",
+      topic: "geometry",
+      subtopic: "isosceles triangle angles",
+      gradeLevel: 7,
+      withinCurriculum: true,
+      concepts: ["isosceles triangle", "triangle angle sum"],
+      givens: ["$AB = AC$", "$\\widehat{A} = 40^{\\circ}$"],
+      unknowns: ["$\\widehat{B}$"],
+      constraints: [],
+      status: "solvable",
+      statusReason: null,
+      interpretationNotes: [],
+    },
+    strategy: "Use base angles and the angle sum.",
+    hints: [
+      { id: "h1", level: 1, question: "What kind of triangle is ABC?", cue: null, explanation: "Isosceles.", math: null, stepId: "s1", focus: ["AB", "AC"] },
+      { id: "h2", level: 2, question: "Base angles?", cue: null, explanation: "Equal.", math: null, stepId: "s2", focus: ["angle_B", "ACB"] },
+    ],
+    steps: [
+      { id: "s1", title: "Isosceles", explanation: "AB = AC", math: null, reason: null, geometryActions: [{ action: "highlight", targets: ["seg_AB", "AC"] }] },
+      { id: "s2", title: "Angle sum", explanation: "…", math: "2\\widehat{B} + 40^{\\circ} = 180^{\\circ}", reason: null, geometryActions: [{ action: "highlight", targets: ["ABC", "ghost"] }] },
+    ],
+    finalAnswer: { text: "$\\widehat{B} = 70^{\\circ}$", math: null },
+    figure: {
+      scale: "exact",
+      points: [
+        P("A", "free", { x: 0, y: 4 }),
+        P("B", "polar", { refs: ["A"], value: 250, value2: 5 }),
+        P("C", "polar", { refs: ["A"], value: 290, value2: 5 }),
+      ],
+      lines: [
+        { id: "seg_AB", kind: "segment", from: "A", to: "B", style: "given", label: null },
+        { id: "seg_AC", kind: "segment", from: "A", to: "C", style: "given", label: null },
+        { id: "seg_BC", kind: "segment", from: "B", to: "C", style: "given", label: null },
+      ],
+      circles: [],
+      angles: [
+        { id: "ang_A", from: "B", vertex: "A", to: "C", label: "40°", right: false, style: "given" },
+        { id: "ang_B", from: "A", vertex: "B", to: "C", label: "?", right: false, style: "given" },
+        { id: "ang_C", from: "A", vertex: "C", to: "B", label: null, right: false, style: "given" },
+      ],
+      marks: [{ kind: "equal", targets: ["seg_AB", "seg_AC"], group: 1 }],
+      checks: [
+        { kind: "equal_length", refs: ["A", "B", "A", "C"], value: null, role: "given" },
+        { kind: "angle_value", refs: ["B", "A", "C"], value: 40, role: "given" },
+        { kind: "angle_value", refs: ["A", "B", "C"], value: 70, role: "derived" },
+      ],
+    },
+    answerChecks: [{ kind: "value", statements: ["(180 - 40)/2"], assignments: [], expected: "70" }],
+    ...overrides,
+  };
+}
+
+const algebraBase = (): ModelLesson => {
+  const lesson = isoscelesLesson({ figure: null });
+  return { ...lesson, analysis: { ...lesson.analysis, topic: "equation" } };
+};
+
+describe("verifyLesson", () => {
+  it("requires a figure for geometry problems", () => {
+    expect(verifyLesson(isoscelesLesson({ figure: null })).feedback.join(" ")).toMatch(/needs a figure/);
+  });
+
+  it("the fixture matches the schema", () => {
+    expect(ModelLessonSchema.safeParse(isoscelesLesson()).success).toBe(true);
+  });
+
+  it("verifies a correct geometry lesson and maps target aliases", () => {
+    const result = verifyLesson(isoscelesLesson());
+    expect(result.verification.status).toBe("verified");
+    expect(result.feedback).toEqual([]);
+    expect(result.lesson.hints[0]!.focus).toEqual(["seg_AB", "seg_AC"]);
+    expect(result.lesson.hints[1]!.focus).toEqual(["ang_B", "ang_C"]);
+    expect(result.lesson.steps[1]!.geometryActions[0]!.targets).toEqual(["ang_B"]);
+  });
+
+  it("flags a wrong derived answer", () => {
+    const lesson = isoscelesLesson();
+    lesson.figure!.checks[2]!.value = 60;
+    const result = verifyLesson(lesson);
+    expect(result.verification.status).toBe("unverified");
+    expect(result.feedback.join(" ")).toMatch(/derived claim/);
+  });
+
+  it("drops a figure that contradicts the givens but keeps the lesson", () => {
+    const lesson = isoscelesLesson();
+    lesson.figure!.points[2]!.value2 = 7; // AB ≠ AC now
+    const result = verifyLesson(lesson);
+    expect(result.lesson.figure).toBeNull();
+    expect(result.verification.figureIssue).toBe("figure_invalid");
+    expect(result.lesson.steps.every((s) => s.geometryActions.length === 0)).toBe(true);
+  });
+
+  it("verifies algebra by substitution and catches wrong roots", () => {
+    const base = algebraBase();
+    const ok = verifyLesson({
+      ...base,
+      answerChecks: [{ kind: "substitute", statements: ["x^2 + 5x + 6 = 0"], assignments: [[{ variable: "x", value: "-2" }], [{ variable: "x", value: "-3" }]], expected: null }],
+    });
+    expect(ok.verification.status).toBe("verified");
+    const bad = verifyLesson({
+      ...base,
+      answerChecks: [{ kind: "substitute", statements: ["x^2 + 5x + 6 = 0"], assignments: [[{ variable: "x", value: "2" }]], expected: null }],
+    });
+    expect(bad.verification.status).toBe("unverified");
+  });
+
+  it("verifies systems, identities with domains, and inequalities", () => {
+    const base = algebraBase();
+    const result = verifyLesson({
+      ...base,
+      answerChecks: [
+        { kind: "substitute", statements: ["2x + y = 5", "x - 3y = -1"], assignments: [[{ variable: "x", value: "2" }, { variable: "y", value: "1" }]], expected: null },
+        { kind: "identity", statements: ["(sqrt(x)+1)/(sqrt(x)-1) - 2/(x-1) = (x+1)/(x-1) - 2/(x-1) + 2sqrt(x)/(x-1)", "x >= 0", "x != 1"], assignments: [], expected: null },
+        { kind: "inequality", statements: ["3(x-2) <= 5x + 4"], assignments: [], expected: "x >= -5" },
+      ],
+    });
+    expect(result.feedback).toEqual([]);
+    expect(result.verification.status).toBe("verified");
+
+    const wrongIneq = verifyLesson({
+      ...base,
+      answerChecks: [{ kind: "inequality", statements: ["3(x-2) <= 5x + 4"], assignments: [], expected: "x <= -5" }],
+    });
+    expect(wrongIneq.verification.status).toBe("unverified");
+  });
+
+  it("rejects hints pointing at missing steps", () => {
+    const lesson = isoscelesLesson();
+    lesson.hints[0]!.stepId = "s9";
+    expect(verifyLesson(lesson).feedback.join(" ")).toMatch(/unknown step/);
+  });
+
+  it("builds a target index from labels", () => {
+    const index = buildTargetIndex(isoscelesLesson().figure!);
+    expect(index.get("BA")).toBe("seg_AB");
+    expect(index.get("CBA")).toBe("ang_B");
+    expect(index.get("angle_A")).toBe("ang_A");
+  });
+});

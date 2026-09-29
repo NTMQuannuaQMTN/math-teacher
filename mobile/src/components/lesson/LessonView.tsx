@@ -1,0 +1,180 @@
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { useMemo, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import type { Solution } from "@shared/solution";
+import { Banner } from "@/components/Banner";
+import { Button } from "@/components/Button";
+import { GeometryView } from "@/components/geometry/GeometryView";
+import { MathText } from "@/components/math/MathText";
+import { StateView } from "@/components/StateView";
+import { useStrings } from "@/i18n";
+import type { LessonProgress } from "@/state/lessonProgress";
+import { spacing, typography, useTheme } from "@/theme";
+import { Card, FinalAnswerCard, HintCard, SectionTitle, StepCard, UnderstandCard } from "./LessonParts";
+
+type Focus = { kind: "hint" | "step"; id: string } | null;
+
+interface Props {
+  solution: Solution;
+  progress: LessonProgress;
+  setProgress: (update: (p: LessonProgress) => LessonProgress) => void;
+  onRegenerate: () => void;
+}
+
+/**
+ * The interactive lesson: figure pinned on top, then problem, understanding,
+ * hints (revealed one at a time), full solution, final answer. The current
+ * hint/step drives what the figure highlights and which construction lines
+ * are visible. Platform-independent (renders on native and Expo web).
+ */
+export function LessonView({ solution, progress, setProgress, onRegenerate }: Props) {
+  const s = useStrings();
+  const { colors } = useTheme();
+  const { height: screenHeight } = useWindowDimensions();
+  const [focus, setFocus] = useState<Focus>(null);
+  const [figureOpen, setFigureOpen] = useState(true);
+  const figureHeight = Math.round(Math.min(Math.max(screenHeight * 0.36, 220), 380));
+  const lesson = solution.lesson!;
+  const { analysis, hints, steps, figure } = lesson;
+
+  // Figure state follows the lesson: current hint/step highlights; constructions appear from the step that introduces them.
+  const stepIndex = useMemo(() => new Map(steps.map((step, i) => [step.id, i])), [steps]);
+  const reachedStep = useMemo(() => {
+    let reached = -1;
+    for (const h of hints) if (progress.revealed.includes(h.id)) reached = Math.max(reached, stepIndex.get(h.stepId) ?? -1);
+    if (progress.showSolution) reached = steps.length - 1;
+    if (focus?.kind === "step") reached = Math.max(reached, stepIndex.get(focus.id) ?? -1);
+    return reached;
+  }, [hints, progress, stepIndex, steps.length, focus]);
+  const shownConstructions = useMemo(
+    () => steps.slice(0, reachedStep + 1).flatMap((step) => step.geometryActions.filter((a) => a.action === "show").flatMap((a) => a.targets)),
+    [steps, reachedStep],
+  );
+  const highlight = useMemo(() => {
+    if (!focus) return [];
+    if (focus.kind === "hint") return hints.find((h) => h.id === focus.id)?.focus ?? [];
+    return steps.find((step) => step.id === focus.id)?.geometryActions.flatMap((a) => a.targets) ?? [];
+  }, [focus, hints, steps]);
+
+  if (analysis.status !== "solvable") {
+    const title = analysis.status === "ambiguous" ? s.solve.ambiguousTitle : analysis.status === "unsupported" ? s.solve.unsupportedTitle : s.solve.notProblemTitle;
+    return (
+      <SafeAreaView style={styles.flex} edges={["bottom"]}>
+        <ScrollView contentContainerStyle={styles.content}>
+          <Card>
+            <MathText text={analysis.statement} fontSize={17} />
+          </Card>
+          <StateView icon="help-buoy-outline" title={title} body={analysis.statusReason ?? undefined}>
+            <Button label={s.common.back} variant="secondary" onPress={() => router.back()} />
+            <Button label={s.solve.regenerate} icon="refresh" variant="ghost" onPress={onRegenerate} />
+          </StateView>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
+  const visibleHints = hints.slice(0, Math.max(1, progress.unlocked));
+  const allHintsRevealed = hints.every((h) => progress.revealed.includes(h.id));
+  const lastVisible = visibleHints[visibleHints.length - 1];
+
+  const reveal = (hintId: string) => {
+    setProgress((p) => ({ ...p, revealed: p.revealed.includes(hintId) ? p.revealed : [...p.revealed, hintId] }));
+    setFocus({ kind: "hint", id: hintId });
+  };
+  const nextHint = () => {
+    const next = hints[progress.unlocked];
+    setProgress((p) => ({ ...p, unlocked: Math.min(hints.length, p.unlocked + 1) }));
+    if (next) setFocus({ kind: "hint", id: next.id });
+  };
+
+  return (
+    <SafeAreaView style={styles.flex} edges={["bottom"]}>
+      {figure ? (
+        <View style={[styles.figurePane, { borderBottomColor: colors.border, backgroundColor: colors.background }]}>
+          <Pressable onPress={() => setFigureOpen(!figureOpen)} style={styles.figureToggle} accessibilityRole="button" accessibilityState={{ expanded: figureOpen }}>
+            <Ionicons name="shapes-outline" size={16} color={colors.textMuted} />
+            <Text style={[typography.label, styles.flex, { color: colors.textMuted }]}>{s.solve.figure.toUpperCase()}</Text>
+            <Ionicons name={figureOpen ? "chevron-up" : "chevron-down"} size={18} color={colors.textMuted} />
+          </Pressable>
+          {figureOpen ? (
+            <GeometryView
+              figure={figure}
+              highlight={highlight}
+              shownConstructions={shownConstructions}
+              height={figureHeight}
+            />
+          ) : null}
+        </View>
+      ) : null}
+
+      <ScrollView style={styles.flex} contentContainerStyle={styles.content}>
+        {solution.verification?.figureIssue ? <Banner tone="info" message={s.solve.figureUnavailable} /> : null}
+
+        <Card>
+          <Text style={[typography.label, { color: colors.textMuted }]}>{s.solve.problem.toUpperCase()}</Text>
+          <MathText testID="lesson-problem" text={analysis.statement} fontSize={17} />
+        </Card>
+
+        <SectionTitle>{s.solve.understand}</SectionTitle>
+        <UnderstandCard
+          givens={analysis.givens}
+          unknowns={analysis.unknowns}
+          concepts={analysis.concepts}
+          notes={analysis.interpretationNotes}
+          strategy={progress.revealed.length > 0 || progress.showSolution ? lesson.strategy : null}
+        />
+
+        <SectionTitle>{s.solve.hints}</SectionTitle>
+        <Text style={[typography.caption, { color: colors.textMuted }]}>{s.solve.hintIntro}</Text>
+        {visibleHints.map((hint, i) => (
+          <HintCard
+            key={hint.id}
+            hint={hint}
+            index={i}
+            revealed={progress.revealed.includes(hint.id)}
+            active={focus?.kind === "hint" && focus.id === hint.id}
+            onReveal={() => reveal(hint.id)}
+            onFocus={() => setFocus({ kind: "hint", id: hint.id })}
+          />
+        ))}
+        {lastVisible && progress.revealed.includes(lastVisible.id) && progress.unlocked < hints.length ? (
+          <Button testID="next-hint" label={s.solve.nextHint} icon="arrow-forward" onPress={nextHint} />
+        ) : null}
+
+        <Button
+          testID="toggle-solution"
+          label={progress.showSolution ? s.solve.hideSolution : s.solve.showSolution}
+          icon={progress.showSolution ? "chevron-up" : "list"}
+          variant={allHintsRevealed && !progress.showSolution ? "primary" : "secondary"}
+          onPress={() => {
+            setProgress((p) => ({ ...p, showSolution: !p.showSolution }));
+            if (!progress.showSolution) setFocus(steps[0] ? { kind: "step", id: steps[0].id } : null);
+          }}
+        />
+
+        {progress.showSolution ? (
+          <>
+            <SectionTitle>{s.solve.solution}</SectionTitle>
+            <View style={styles.steps}>
+              {steps.map((step, i) => (
+                <StepCard key={step.id} step={step} index={i} active={focus?.kind === "step" && focus.id === step.id} onPress={() => setFocus({ kind: "step", id: step.id })} />
+              ))}
+            </View>
+            <FinalAnswerCard text={lesson.finalAnswer.text} math={lesson.finalAnswer.math} verification={solution.verification} hasFigure={!!figure} />
+            <Button label={s.solve.regenerate} icon="refresh" variant="ghost" size="md" onPress={onRegenerate} />
+          </>
+        ) : null}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  flex: { flex: 1 },
+  content: { padding: spacing.lg, gap: spacing.md, maxWidth: 720, width: "100%", alignSelf: "center", paddingBottom: spacing.xxl },
+  figurePane: { paddingHorizontal: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: StyleSheet.hairlineWidth },
+  figureToggle: { flexDirection: "row", alignItems: "center", gap: spacing.xs, minHeight: 36 },
+  steps: { gap: spacing.sm },
+});

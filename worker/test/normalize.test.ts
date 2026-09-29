@@ -10,6 +10,7 @@ function output(overrides: Record<string, unknown> = {}): string {
     status: "success",
     raw_text: "Giải phương trình x² + 5x + 6 = 0",
     formatted_text: "Giải phương trình $x^{2} + 5x + 6 = 0$",
+    problems: [],
     language: "vi",
     confidence: "high",
     issues: [],
@@ -108,7 +109,7 @@ describe("normalizeOcrOutput", () => {
     // It is just text: no extra fields, status unchanged, nothing executed.
     expect(result.rawText).toBe(injected);
     expect(Object.keys(result).sort()).toEqual(
-      ["confidence", "durationMs", "formattedText", "issues", "language", "model", "provider", "rawText", "status"],
+      ["confidence", "durationMs", "formattedText", "issues", "language", "model", "problems", "provider", "rawText", "status"],
     );
   });
 });
@@ -130,6 +131,7 @@ describe("rawText derivation", () => {
         status: "success",
         raw_text: "          √x + 1\nP =  ————————\n          √x − 1",
         formatted_text: "$$P = \\frac{\\sqrt{x} + 1}{\\sqrt{x} - 1}$$ với $x \\ge 0$",
+        problems: [],
         language: "vi",
         confidence: "high",
         issues: [],
@@ -144,6 +146,7 @@ describe("rawText derivation", () => {
         status: "success",
         raw_text: "x² = 4",
         formatted_text: "$x^{2 = 4",
+        problems: [],
         language: "unknown",
         confidence: "high",
         issues: [],
@@ -151,5 +154,43 @@ describe("rawText derivation", () => {
       META2,
     );
     expect(result.rawText).toBe("x² = 4");
+  });
+});
+
+describe("splitting into problems", () => {
+  const worksheet = (problems: { label: string; formatted_text: string }[], extra: Record<string, unknown> = {}) =>
+    normalizeOcrOutput(output({ formatted_text: problems.map((p) => p.formatted_text).join("\n"), problems, ...extra }), META);
+
+  it("keeps each problem separately and flags multiple problems", () => {
+    const r = worksheet([
+      { label: "Bài 1", formatted_text: "Bài 1. Giải $x + 1 = 2$." },
+      { label: " Bài 2 ", formatted_text: "Bài 2. Tính $\\frac{1}{2} + \\frac{1}{3}$." },
+    ]);
+    expect(r.problems).toEqual([
+      { label: "Bài 1", text: "Bài 1. Giải $x + 1 = 2$." },
+      { label: "Bài 2", text: "Bài 2. Tính $\\frac{1}{2} + \\frac{1}{3}$." },
+    ]);
+    expect(r.issues).toContain("multiple_problems");
+  });
+
+  it("uses the whole text as one problem when the model returns none", () => {
+    const r = normalizeOcrOutput(output(), META);
+    expect(r.problems).toEqual([{ label: "", text: r.formattedText }]);
+    expect(r.issues).not.toContain("multiple_problems");
+  });
+
+  it("drops empty problems, repairs broken markup, and caps the count", () => {
+    const many = Array.from({ length: 20 }, (_, i) => ({ label: `Câu ${i + 1}`, formatted_text: `Câu ${i + 1}. $x = ${i}$` }));
+    expect(worksheet(many).problems).toHaveLength(12);
+    const r = worksheet([
+      { label: "Bài 1", formatted_text: "   " },
+      { label: "Bài 2", formatted_text: "Bài 2. Tìm $x^{2" },
+    ]);
+    expect(r.problems).toHaveLength(1);
+    expect(r.problems[0]!.text).not.toMatch(/(^|[^\\])\$/);
+  });
+
+  it("has no problems when nothing was read", () => {
+    expect(normalizeOcrOutput(output({ status: "unreadable", raw_text: "", formatted_text: "" }), META).problems).toEqual([]);
   });
 });

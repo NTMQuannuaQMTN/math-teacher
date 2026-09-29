@@ -11,7 +11,8 @@
     "test": "vitest run",
     "db:migrate:local": "wrangler d1 migrations apply math_teacher_db --local",
     "db:migrate:remote": "wrangler d1 migrations apply math_teacher_db --remote",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "smoke:solve": "node scripts/smoke-solve.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",

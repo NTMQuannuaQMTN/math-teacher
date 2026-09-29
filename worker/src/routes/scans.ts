@@ -216,15 +216,25 @@ export async function confirmScan(rc: RouteContext, id: string): Promise<Respons
       : new ApiError(400, "bad_request", "Invalid request body.");
   }
 
-  const text = normalizeProblemText(parsed.data.text);
-  if (!text) throw new ApiError(400, "empty_text", "The problem text is empty.");
+  // One problem, or the questions the student kept from the OCR split (empty ones dropped).
+  const kept = (parsed.data.questions ?? [{ label: "", text: parsed.data.text ?? "" }])
+    .map((q) => ({ label: normalizeProblemText(q.label).slice(0, 40), text: normalizeProblemText(q.text) }))
+    .filter((q) => q.text.length > 0);
+  if (kept.length === 0) throw new ApiError(400, "empty_text", "The problem text is empty.");
+  const questions = kept.map((q, i) => ({ id: `q${i + 1}`, ...q }));
+  const text = questions.map((q) => q.text).join("\n\n");
+  if (text.length > LIMITS.maxProblemChars * 2) {
+    throw new ApiError(400, "text_too_long", `The problem is too long (max ${LIMITS.maxProblemChars} characters).`);
+  }
 
   const row = await repo.findOwned(ownerId, id);
   if (!row) throw new ApiError(404, "not_found", "Scan not found.");
 
-  const ocrText = row.ocr_json ? (JSON.parse(row.ocr_json) as OcrResult).formattedText : "";
-  const edited = text !== normalizeProblemText(ocrText);
-  await repo.confirm(ownerId, id, text, edited);
+  const ocr = row.ocr_json ? (JSON.parse(row.ocr_json) as OcrResult) : null;
+  const ocrTexts = ocr?.problems?.length ? ocr.problems.map((p) => p.text) : [ocr?.formattedText ?? ""];
+  const edited =
+    questions.length !== ocrTexts.length || questions.some((q, i) => q.text !== normalizeProblemText(ocrTexts[i] ?? ""));
+  await repo.confirm(ownerId, id, text, questions, edited);
   return respondWithScan(rc, repo, id);
 }
 

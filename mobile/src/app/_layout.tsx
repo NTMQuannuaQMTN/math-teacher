@@ -41,6 +41,7 @@ export default function RootLayout() {
           <Stack.Screen name="scan/[id]" options={{ title: s.result.title }} />
           <Stack.Screen name="problem/[id]" options={{ title: s.problem.title }} />
           <Stack.Screen name="history" options={{ title: s.history.title }} />
+          <Stack.Screen name="solve/[id]" options={{ title: s.solve.title }} />
         </Stack>
       </ThemeProvider>
     </SafeAreaProvider>

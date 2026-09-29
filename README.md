@@ -1,14 +1,18 @@
-# Math Teacher: Milestone 1 (maths problem scanner)
+# Math Teacher
 
-The long-term goal is an AI mathematics teacher for Vietnamese secondary-school students (Grade 9
-first). This repository currently implements only the **first milestone**: a reliable,
-camera-first scanner that turns a photo of a maths problem into verified, well-formatted text.
+An AI mathematics teacher for Vietnamese secondary-school students, Grade 9 first. Two milestones
+are implemented:
 
 ```
-Photo (camera or library) → crop → OCR → student checks & edits → save → history
+M1  Photo (camera or library) → crop → OCR → student checks & edits → save → history
+M2  Saved problem → understand → Grade-9 solution → hint-first lesson → interactive geometry
 ```
 
-Solving, explanations, and tutoring are deliberately **not** built yet (see [Roadmap](#roadmap)).
+The product teaches rather than dumping answers:
+
+- the student works through graded hints and reveals each explanation only when they want it;
+- the full solution is a structured lesson with a highlighted figure;
+- every answer is machine-checked before it is shown as correct.
 
 ## Status
 
@@ -24,24 +28,40 @@ Solving, explanations, and tutoring are deliberately **not** built yet (see [Roa
 | Vietnamese + English UI (follows device language), light/dark mode | ✅ implemented |
 | Per-device private data, rate limiting, idempotent uploads, draft cleanup | ✅ implemented |
 | OCR accuracy measured with a real provider (OpenAI `gpt-4.1`) | ✅ 16/16 on the synthetic test set, mean CER ≤ 0.2%, ~2 s per image (2 runs); real phone photos still to be added |
-| User accounts, solving, tutoring | ⏳ planned (later milestones) |
+| **Multi-question photos:** OCR splits a page into separate problems (sub-parts stay together); the student keeps/edits/skips each; every question is saved and solved separately (per-question lessons, "+N" badge in history) | ✅ implemented (real OCR: worksheet split 3/3) |
+| **Solver V1:** problem understanding, classification, curriculum check (Vietnamese Grade 9), ambiguous/unsupported detection | ✅ implemented |
+| Hint-first lesson: 2–6 graded hints (question → concept → guidance → setup), revealed one at a time | ✅ implemented |
+| Step-by-step solution (theorem named per step), final answer, per-lesson cache | ✅ implemented |
+| Deterministic verification: substitution, identity and inequality sampling, numeric checks, figure measurements; one corrective retry; "unverified" shown honestly | ✅ implemented |
+| Interactive geometry like GeoGebra: drag the blue points and the construction follows (feet, midpoints, tangents, intersections stay valid; points on segments or circles slide along them); pinch/wheel zoom, pan, tap-select with live measurements, "figure changed" notice, reset | ✅ implemented |
+| Step/hint ↔ figure synchronization (highlight, reveal construction lines) | ✅ implemented |
+| Solver quality measured (`gpt-5.5`, 20-problem VI/EN test set) | ✅ 20/20 correct, all verified; median 15 s, max 50 s |
+| Student attempts, misconception detection, knowledge profile, adaptive curriculum, accounts | ⏳ planned |
 
 ## Repository layout
 
 ```
 mobile/        Expo SDK 57 app (React Native, TypeScript, expo-router)
-  src/app/       screens: index (home), camera, review, process, scan/[id], problem/[id], history
+  src/app/       screens: index (home), camera, review, process, scan/[id], problem/[id], history, solve/[id]
+  src/components/lesson/    LessonView, hint/step/answer cards, RichText
+  src/components/geometry/  GeometryView (SVG renderer + gestures)
   src/api/       typed API client + error mapping
   src/components math renderer (KaTeX), crop box, symbol bar, shared UI
   src/lib/       image preparation, picker, device token, config
 worker/        Cloudflare Worker API (TypeScript), D1 + R2
   src/ocr/       OcrProvider interface, providers, prompt, output normalization
+  src/solver/    curriculum config, prompts, JSON model client, solve pipeline, dev mock
   src/routes/    scans + signed images
   migrations/    D1 schema
   test/          unit tests (vitest);  scripts/smoke.mjs: API end-to-end test
-shared/        API contract (Zod schemas) + maths-text utilities, used by both sides
+shared/        used by both sides:
+  contract.ts, solution.ts   API + lesson schemas (zod)
+  expr.ts                    safe expression evaluator (verification)
+  geometry.ts                construction engine;  figureScene.ts: renderer-neutral scene + hit-testing
+  verify.ts                  lesson verification;  mathText.ts: $…$ parsing, LaTeX→Unicode
 tools/ocr-eval/  OCR test set (16 synthetic images across categories) + evaluation harness
-tools/e2e/       Playwright end-to-end tests of the web build (happy path + failure paths)
+tools/e2e/       Playwright end-to-end tests of the web build (scan, solve, failure paths)
+tools/solver-eval/  20-problem solver test set (algebra, geometry, word, bad input; VI/EN)
 ```
 
 For design details and trade-offs, see [ARCHITECTURE.md](ARCHITECTURE.md). The sprint log is in
@@ -77,6 +97,9 @@ not available → upload instead" state there. Everything else works in the simu
 ```bash
 npm run check        # typecheck (shared, worker, mobile) + worker unit tests + mobile lint
 npm run smoke        # API end-to-end test against the running worker (54 checks)
+cd worker && npm run smoke:solve          # solve API: auth, cache, failures, retry, concurrency (23 checks; mock worker)
+cd worker && npx tsx scripts/solver-eval.ts gpt-5.5 medium   # solver quality over tools/solver-eval (real model)
+cd worker && npx tsx scripts/solve-once.ts "problem text"      # solve one problem and print the lesson
 npm run ocr:eval     # OCR accuracy over tools/ocr-eval (meaningful only with a real provider)
 cd tools/e2e && npm install && npm run setup && npm run e2e   # web E2E (see tools/e2e/README.md)
 cd mobile && npm run export   # production bundles for iOS, Android and web
@@ -93,6 +116,11 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 | `OPENAI_MODEL` / `ANTHROPIC_MODEL` | model ids | `gpt-4.1` / `claude-opus-5` |
 | `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
+| `SOLVER_PROVIDER` | `openai` or `mock` (development only) | `openai` |
+| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary solver model | `gpt-5.4-mini` / `low` |
+| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model: geometry, and retries when checks fail | `gpt-5.5` / `medium` |
+| `SOLVE_TIMEOUT_MS` | total budget per solve, including one retry | `170000` |
+| `SOLVE_LIMIT_PER_DEVICE_PER_HOUR` / `SOLVE_LIMIT_PER_IP_PER_HOUR` | solve abuse limits | `30` / `90` |
 | `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
 | `ALLOWED_ORIGINS` | CORS origins (only needed for Expo web) | empty |
 | `IMAGE_URL_SECRET` (secret) | HMAC key for signed image URLs, 32+ random chars | **required** |
@@ -131,11 +159,60 @@ optional in development. It is not a secret; no keys ever ship in the app.
 To swap providers, implement `OcrProvider` (one method) and register it in
 `worker/src/ocr/service.ts`.
 
+## Solver
+
+The design is in [ARCHITECTURE.md → Solver V1](ARCHITECTURE.md#solver-v1-milestone-2). In short:
+
+**Pipeline.** One strict-JSON model call returns the whole lesson. zod then validates it, and
+deterministic checks (no AI) verify its structure, figure, and answer. If a check fails, there is
+one corrective retry with the exact failures. The result is stored per problem and reused, so
+revealing hints never re-solves.
+
+**Endpoints.**
+- `POST /v1/scans/:id/questions/:qid/solve` with `{ regenerate?: boolean }` (`qid` = `q1`, `q2`, …;
+  `POST /v1/scans/:id/solve` is an alias for `q1`). It returns the stored lesson or
+  generates one, and answers `409 solve_in_progress` if one is already running.
+- `GET /v1/scans/:id/questions/:qid/solution` returns `202` while pending.
+- `POST /v1/scans/:id/confirm` takes either `{ text }` or `{ questions: [{ label, text }] }`.
+
+**Teaching level.** `worker/src/solver/curriculum.ts` defines Vietnamese Grade 9: allowed topics,
+forbidden methods, and method preferences. The prompts (`worker/src/solver/prompts.ts`) are split
+into curriculum, teaching/hints, geometry language, verification, and security sections, and are
+versioned.
+
+**Geometry.** The model describes *constructions* (midpoint, foot of the perpendicular,
+intersection, tangent, …), never pixels.
+- `shared/src/geometry.ts` computes the coordinates and `shared/src/figureScene.ts` produces
+  drawable primitives, so a future web app reuses both.
+- The figure must satisfy the problem's givens or it is dropped.
+- Derived claims, such as the answer angle, are measured on it.
+
+## Cost
+
+Measured per lesson (see PROGRESS.md, 2026-09-29):
+
+| Problem type | Route | Cost per lesson |
+|---|---|---|
+| Algebra, equations, word problems | `gpt-5.4-mini` (low effort); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
+| Geometry (detected from the wording) | `gpt-5.5` directly, because the cheap model's figures failed the checks about 90% of the time | about $0.07–0.12 |
+| Reading a photo (OCR, `gpt-4.1`) | | under $0.01 |
+
+- Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
+  Prices are in `worker/src/solver/pricing.ts`.
+- Lessons are cached per question and are never regenerated when hints are revealed.
+- Solving on save is off by default (`PREFETCH_SOLVE_ON_SAVE`).
+- Local development uses the free mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
+  `worker/.dev.vars`). Switch both to `openai` to test real quality.
+
 ## Database & storage
 
 - **D1 `scans`**: one row per scanned image, holding owner, status (`draft` → `confirmed`), image
   metadata, the latest OCR result (JSON), attempts, the confirmed text, and timestamps.
 - **D1 `rate_limits`**: fixed-window counters.
+- **D1 `scans.questions_json`**: the confirmed questions `[{ id, label, text }]`.
+- **D1 `solutions`**: one lesson per question (`scan_id`, `question_id`), holding the owner, status (`pending` / `ready` /
+  `failed`), problem hash, lesson JSON, verification JSON, model, prompt version, attempts,
+  duration, and the lock timestamp.
 - **R2**: the original images, private, served only through expiring HMAC-signed URLs.
 
 ## Security summary
@@ -157,6 +234,22 @@ To swap providers, implement `OcrProvider` (one method) and register it in
 
 ## Known limitations
 
+**Solver**
+- Solve latency is 10–50 s; the delay is hidden by starting the solve when the problem is saved.
+  There is no streaming yet.
+- Verification catches wrong *answers* and false geometric claims. It does not check each prose
+  step, and proofs are checked only through their figure claims.
+- Solver quality was measured on 20 problems. That is a baseline, not proof of reliability across
+  the whole curriculum.
+- Hints and steps render inline maths as Unicode, with KaTeX for display equations. Each revealed
+  display equation is a WebView on native, which could be heavy on older phones.
+- Dragging keeps a condition only if the model *constructed* it (e.g. a right angle built with
+  rotate). Conditions written only as checks can break while dragging; a notice then says so.
+  There is no general constraint solver.
+- Lesson progress (revealed hints) is kept only for the app session.
+
+**Scanner**
+
 - **OCR accuracy has only been measured on the synthetic test set.** With OpenAI `gpt-4.1` it
   scored 16/16 with a mean character error rate of at most 0.2% over two runs. The images are
   rendered fonts with simulated photo effects, and the "handwritten" ones use a handwriting-style
@@ -174,7 +267,7 @@ To swap providers, implement `OcrProvider` (one method) and register it in
 ## Roadmap
 
 1. **Now: Milestone 1**, reliable scanning (this repo).
-2. **Milestone 2.** OCR → understand the problem → solve. This will be a new `solutions` resource
-   keyed by `scan_id` that reads the student-confirmed text.
-3. **Later.** Structured maths representation → step-by-step teaching → interactive tutoring →
-   personalized curriculum.
+2. **Milestone 2 (done): Solver V1.** Understand → solve → hints → interactive geometry.
+3. **V2.** The student submits attempts per step; the AI checks them and detects misconceptions.
+4. **V3.** A student knowledge profile (by concept and theorem) drives adaptive difficulty.
+5. **V4/V5.** Diagnostic assessment, a personalized curriculum, and a long-term AI teacher.

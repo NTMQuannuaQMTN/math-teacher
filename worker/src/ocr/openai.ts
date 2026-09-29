@@ -3,11 +3,13 @@ import { MODEL_OCR_JSON_SCHEMA } from "./normalize";
 import { OCR_SYSTEM_PROMPT, OCR_USER_INSTRUCTION } from "./prompt";
 import { OcrFailure, type OcrInput, type OcrProvider, type ProviderOutput } from "./provider";
 import { classifyHttpStatus, isAbort } from "./httpErrors";
+import { formatUsage, usageFromOpenAi } from "../solver/pricing";
 
 const ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
 interface ChatCompletionResponse {
   model?: string;
+  usage?: unknown;
   choices?: { finish_reason?: string; message?: { content?: string | null; refusal?: string | null } }[];
 }
 
@@ -60,6 +62,7 @@ export class OpenAiOcrProvider implements OcrProvider {
     }
 
     const body = (await response.json().catch(() => null)) as ChatCompletionResponse | null;
+    if (body?.usage) console.log(`[ocr] usage: ${formatUsage(this.model, usageFromOpenAi(body.usage))}`);
     const choice = body?.choices?.[0];
     if (choice?.message?.refusal) {
       throw new OcrFailure("refused", "OpenAI refused the request", false);

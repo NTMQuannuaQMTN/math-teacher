@@ -22,6 +22,7 @@ export const ModelOcrOutputSchema = z.strictObject({
   status: z.enum(["success", "no_math_found", "unreadable"]),
   raw_text: z.string(),
   formatted_text: z.string(),
+  problems: z.array(z.strictObject({ label: z.string(), formatted_text: z.string() })),
   language: OcrLanguageSchema,
   confidence: z.enum(["high", "medium", "low"]),
   issues: z.array(OcrIssueSchema),
@@ -32,11 +33,20 @@ export type ModelOcrOutput = z.infer<typeof ModelOcrOutputSchema>;
 export const MODEL_OCR_JSON_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["status", "raw_text", "formatted_text", "language", "confidence", "issues"],
+  required: ["status", "raw_text", "formatted_text", "problems", "language", "confidence", "issues"],
   properties: {
     status: { type: "string", enum: ["success", "no_math_found", "unreadable"] },
     raw_text: { type: "string" },
     formatted_text: { type: "string" },
+    problems: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["label", "formatted_text"],
+        properties: { label: { type: "string" }, formatted_text: { type: "string" } },
+      },
+    },
     language: { type: "string", enum: OcrLanguageSchema.options },
     confidence: { type: "string", enum: ["high", "medium", "low"] },
     issues: { type: "array", items: { type: "string", enum: OcrIssueSchema.options } },
@@ -86,6 +96,11 @@ export function looksDegenerate(text: string): boolean {
     if (max / lines.length > 0.6) return true;
   }
   return false;
+}
+
+/** Strips maths markup to plain text (used when a problem's markup is broken). */
+function mathTextToPlainSafe(text: string): string {
+  return text.replace(/\$/g, "");
 }
 
 /** Escapes stray dollar signs so text without valid maths still renders verbatim. */
@@ -141,6 +156,21 @@ export function normalizeOcrOutput(
     formattedText = "";
   }
 
+  // Separate questions. Each is validated like the full text; with none, the whole text is one question.
+  let problems: OcrResult["problems"] = [];
+  if (status !== "unreadable" && status !== "no_math_found") {
+    problems = output.problems
+      .map((p) => {
+        let text = normalizeProblemText(p.formatted_text).slice(0, LIMITS.maxProblemChars);
+        if (text && !isWellFormedMathText(text)) text = escapeDollars(normalizeProblemText(mathTextToPlainSafe(text)));
+        return { label: normalizeProblemText(p.label).slice(0, 40), text };
+      })
+      .filter((p) => p.text.length > 0)
+      .slice(0, LIMITS.maxQuestions);
+    if (problems.length === 0 && formattedText) problems = [{ label: "", text: formattedText }];
+    if (problems.length > 1) issues.add("multiple_problems");
+  }
+
   // The model's language label is a hint; Vietnamese-only letters are a fact.
   let language = output.language;
   if (containsVietnamese(rawText) && (language === "en" || language === "unknown")) {
@@ -151,6 +181,7 @@ export function normalizeOcrOutput(
     status,
     rawText,
     formattedText,
+    problems,
     language,
     confidence: { level: output.confidence, source: "model_self_report" },
     issues: [...issues],

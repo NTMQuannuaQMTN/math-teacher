@@ -1,4 +1,4 @@
-# Tasks — Milestone 1 (Image → OCR → Edit/Verify → Save)
+# Tasks
 
 Legend: [x] done · [ ] todo · [-] deferred (with reason)
 
@@ -48,5 +48,27 @@ Legend: [x] done · [ ] todo · [-] deferred (with reason)
 - [ ] Visual (WYSIWYG) equation editing for students who don't know LaTeX
 - [ ] Accounts that adopt a device's owner_id
 
+## Milestone 2: Solver V1
+- [x] Shared lesson contract (analysis, hints, steps, figure, answer checks, verification) with zod → strict JSON Schema
+- [x] Curriculum config (Vietnamese Grade 9) and modular, versioned prompts
+- [x] One-call solve pipeline with validation, deterministic verification, and one corrective retry
+- [x] Safe expression evaluator; algebra checks (substitute, identity, inequality, value)
+- [x] Geometry construction engine (16 point constructions), figure checks, target aliases
+- [x] Solve API (cache by problem hash and prompt version, lock/409/202 polling, rate limits, cascade delete)
+- [x] Dev mock solver with failure scenarios
+- [x] Renderer-neutral scene builder: labels with collision avoidance, marks, right angles, hit-testing
+- [x] GeometryView: SVG, pinch/wheel zoom, pan, tap-select with measurements, drag free points, reset, labels
+- [x] Lesson UI: figure pinned on top, understand card, sequential hints with reveal, steps, final answer, verification badge
+- [x] Hint and step ↔ figure synchronization; construction lines revealed per step
+- [x] Error states: ambiguous/unsupported/not a problem, provider failure + retry, unverified, leave and resume
+- [x] Solve prefetch on save
+- [x] Tests: 110 unit tests, 23-check solve smoke test, web solve E2E (real model), UI failure E2E, 20-problem eval (20/20)
+- [x] Native iOS visual check of the lesson (dev route `/dev/lesson`)
+- [ ] Persist lesson progress across app restarts
+- [ ] Streaming / partial lesson display to cut perceived latency further
+- [ ] Anthropic solver adapter (the OCR adapter exists; the solver uses the `JsonModel` interface)
+- [ ] Larger solver test set from real student photos; per-topic accuracy tracking
+- [ ] Device E2E (Maestro/Detox) for native gestures
+
 ## Deferred (explicitly out of scope)
-- [-] Solving, steps, tutoring, geometry diagrams, mastery, curriculum — later milestones
+- [-] Student attempts, misconception detection, knowledge graph, mastery, adaptive curriculum, dashboards: later milestones

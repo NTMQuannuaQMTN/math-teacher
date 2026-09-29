@@ -10,6 +10,14 @@ export interface Env {
   OCR_LIMIT_PER_DEVICE_PER_HOUR: string;
   OCR_LIMIT_PER_IP_PER_HOUR: string;
   DRAFT_RETENTION_DAYS: string;
+  SOLVER_PROVIDER: string;
+  SOLVER_MODEL: string;
+  SOLVER_REASONING_EFFORT: string;
+  SOLVER_FALLBACK_MODEL?: string;
+  SOLVER_FALLBACK_REASONING_EFFORT?: string;
+  SOLVE_TIMEOUT_MS: string;
+  SOLVE_LIMIT_PER_DEVICE_PER_HOUR: string;
+  SOLVE_LIMIT_PER_IP_PER_HOUR: string;
   ALLOWED_ORIGINS: string;
 
   // Secrets

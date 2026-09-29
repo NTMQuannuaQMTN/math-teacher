@@ -22,16 +22,25 @@ import { AppError, errorMessage } from "@/api/errors";
 import { Banner } from "@/components/Banner";
 import { Button } from "@/components/Button";
 import { MathText } from "@/components/math/MathText";
+import { QuestionCard, type QuestionDraft } from "@/components/QuestionCard";
 import { StateView } from "@/components/StateView";
 import { SymbolBar, insertSnippet, type Snippet } from "@/components/SymbolBar";
 import { useDebounced } from "@/hooks/useDebounced";
 import { useStrings } from "@/i18n";
 import { confirmAsync } from "@/lib/confirm";
+import { PREFETCH_SOLVE_ON_SAVE } from "@/lib/config";
+import { lessonKey, lessonStore } from "@/state/lessonProgress";
 import { scanStore, updateRecentSnapshot } from "@/state/scanStore";
 import { radius, spacing, typography, useTheme } from "@/theme";
 
 const POLL_MS = 2500;
 const MAX_POLLS = 40;
+
+/** Questions to review when the photo held several problems; null for a single problem. */
+function initialQuestions(scan: Scan | null): QuestionDraft[] | null {
+  const problems = scan?.ocr?.problems ?? [];
+  return problems.length > 1 ? problems.map((p) => ({ label: p.label, text: p.text, included: true })) : null;
+}
 
 function isOcrPending(scan: Scan): boolean {
   return scan.status === "draft" && scan.ocr === null && scan.ocrError === null;
@@ -54,16 +63,25 @@ export default function ScanResultScreen() {
   const [rereading, setRereading] = useState(false);
   const [rereadError, setRereadError] = useState<unknown>(null);
   const [photoExpanded, setPhotoExpanded] = useState(false);
+  const [questions, setQuestions] = useState<QuestionDraft[] | null>(() => initialQuestions(scan));
+  const [editingQuestion, setEditingQuestion] = useState<number | null>(null);
   const allowLeave = useRef(false);
 
   const originalText = scan?.ocr?.formattedText ?? "";
-  const dirty = normalizeProblemText(text) !== normalizeProblemText(originalText);
+  const originalQuestions = initialQuestions(scan);
+  const dirty = questions
+    ? JSON.stringify(questions) !== JSON.stringify(originalQuestions)
+    : normalizeProblemText(text) !== normalizeProblemText(originalText);
   const previewText = useDebounced(text, 250);
 
   const applyScan = useCallback((next: Scan, resetText: boolean) => {
     scanStore.put(next);
     setScan(next);
-    if (resetText) setText(next.ocr?.formattedText ?? "");
+    if (resetText) {
+      setText(next.ocr?.formattedText ?? "");
+      setQuestions(initialQuestions(next));
+      setEditingQuestion(null);
+    }
   }, []);
 
   // Load (or refresh) the scan; poll while OCR is still running server-side.
@@ -120,9 +138,20 @@ export default function ScanResultScreen() {
     setSaving(true);
     setSaveError(null);
     try {
-      const saved = await api.confirmScan(scan.id, text);
+      const kept = questions?.filter((q) => q.included && q.text.trim());
+      const saved = await api.confirmScan(scan.id, kept ? { questions: kept.map(({ label, text: t }) => ({ label, text: t })) } : { text });
       scanStore.put(saved);
       void updateRecentSnapshot({ upsert: saved });
+      // Prefetch only single-question photos; with several, the student picks which ones to solve.
+      if (PREFETCH_SOLVE_ON_SAVE && saved.problem?.questions.length === 1) {
+        // Fire and forget: if the student opens the lesson before this finishes,
+        // their request gets "in progress" and waits for this same solve.
+        lessonStore.reset(saved.id);
+        void api
+          .solve(saved.id)
+          .then((solution) => solution.status === "ready" && lessonStore.putSolution(lessonKey(saved.id), solution))
+          .catch(() => undefined);
+      }
       allowLeave.current = true;
       router.replace({ pathname: "/problem/[id]", params: { id: saved.id, saved: "1" } });
     } catch (err) {
@@ -203,7 +232,8 @@ export default function ScanResultScreen() {
 
   const ocr = scan.ocr;
   const pending = isOcrPending(scan);
-  const hasText = text.trim().length > 0;
+  const keptCount = questions ? questions.filter((q) => q.included && q.text.trim()).length : 0;
+  const hasText = questions ? keptCount > 0 : text.trim().length > 0;
   const noText = !!ocr && (ocr.status === "no_math_found" || ocr.status === "unreadable") && !editing && !hasText;
   const ocrFailed = !ocr && !!scan.ocrError && !editing;
   const isDemo = ocr?.provider === "mock";
@@ -259,9 +289,30 @@ export default function ScanResultScreen() {
           <>
             {isDemo ? <Banner tone="info" title={s.common.demoOcr} message={s.common.demoOcrHint} /> : null}
             {ocr?.status === "low_quality" && !editing ? <Banner tone="warning" message={s.result.lowQuality} /> : null}
-            {ocr?.issues.includes("multiple_problems") && !editing ? <Banner tone="info" message={s.result.multipleProblems} /> : null}
+            {ocr?.issues.includes("multiple_problems") && !editing && !questions ? <Banner tone="info" message={s.result.multipleProblems} /> : null}
             {rereadError ? <Banner tone="danger" message={errorMessage(rereadError)} /> : null}
 
+            {questions ? (
+              <>
+                <Banner tone="info" title={s.result.questionsFoundTitle.replace("{n}", String(questions.length))} message={s.result.questionsFoundBody} />
+                {questions.map((q, i) => (
+                  <QuestionCard
+                    key={i}
+                    index={i}
+                    item={q}
+                    editing={editingQuestion === i}
+                    onEdit={() => setEditingQuestion(i)}
+                    onDoneEditing={() => {
+                      Keyboard.dismiss();
+                      setEditingQuestion(null);
+                    }}
+                    onChange={(value) => setQuestions((all) => all && all.map((item, k) => (k === i ? { ...item, text: value } : item)))}
+                    onToggle={() => setQuestions((all) => all && all.map((item, k) => (k === i ? { ...item, included: !item.included } : item)))}
+                  />
+                ))}
+                <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} />
+              </>
+            ) : (
             <View style={[styles.card, { backgroundColor: colors.surface, borderColor: editing ? colors.primary : colors.border }]}>
               <View style={styles.cardHeader}>
                 <Text style={[typography.label, { color: colors.textMuted }]}>
@@ -321,6 +372,7 @@ export default function ScanResultScreen() {
                 </>
               )}
             </View>
+            )}
           </>
         )}
       </ScrollView>
@@ -332,7 +384,7 @@ export default function ScanResultScreen() {
             <Button label={s.result.retake} icon="camera-outline" variant="secondary" onPress={retake} style={styles.retake} disabled={saving} />
             <Button
               testID="save-button"
-              label={saving ? s.result.saving : s.result.save}
+              label={saving ? s.result.saving : questions ? s.result.saveQuestions.replace("{n}", String(keptCount)) : s.result.save}
               icon="checkmark-circle"
               onPress={save}
               loading={saving}

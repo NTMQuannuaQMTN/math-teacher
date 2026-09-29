@@ -3,6 +3,7 @@ import { cleanupExpiredDrafts } from "./cleanup";
 import type { Env } from "./env";
 import { ApiError, corsHeaders, errorResponse, json, withHeaders } from "./http";
 import { serveImage } from "./routes/images";
+import { getSolution, solveScan } from "./routes/solve";
 import {
   confirmScan,
   createScan,
@@ -15,7 +16,9 @@ import {
 
 const SCAN_ID = "([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})";
 const SCAN_PATH = new RegExp(`^/v1/scans/${SCAN_ID}$`);
-const SCAN_ACTION_PATH = new RegExp(`^/v1/scans/${SCAN_ID}/(ocr|confirm)$`);
+const SCAN_ACTION_PATH = new RegExp(`^/v1/scans/${SCAN_ID}/(ocr|confirm|solve)$`);
+const SOLUTION_PATH = new RegExp(`^/v1/scans/${SCAN_ID}/solution$`);
+const QUESTION_PATH = new RegExp(`^/v1/scans/${SCAN_ID}/questions/(q\\d{1,2})/(solve|solution)$`);
 const IMAGE_PATH = new RegExp(`^/v1/images/${SCAN_ID}$`);
 
 async function route(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -46,7 +49,19 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
   }
   const actionMatch = SCAN_ACTION_PATH.exec(pathname);
   if (actionMatch && method === "POST") {
-    return actionMatch[2] === "ocr" ? retryOcr(rc, actionMatch[1]!) : confirmScan(rc, actionMatch[1]!);
+    const [, scanId, action] = actionMatch;
+    if (action === "ocr") return retryOcr(rc, scanId!);
+    if (action === "solve") return solveScan(rc, scanId!);
+    return confirmScan(rc, scanId!);
+  }
+  const solutionMatch = SOLUTION_PATH.exec(pathname);
+  if (solutionMatch && method === "GET") return getSolution(rc, solutionMatch[1]!);
+  // Per-question lessons (a photo can hold several questions). The routes above are aliases for q1.
+  const questionMatch = QUESTION_PATH.exec(pathname);
+  if (questionMatch) {
+    const [, scanId, questionId, action] = questionMatch;
+    if (action === "solve" && method === "POST") return solveScan(rc, scanId!, questionId!);
+    if (action === "solution" && method === "GET") return getSolution(rc, scanId!, questionId!);
   }
   throw new ApiError(404, "not_found", "Not found.");
 }

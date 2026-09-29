@@ -24,6 +24,7 @@ export const MOCK_SCENARIOS = [
   "timeout",
   "provider_error",
   "slow",
+  "worksheet",
 ] as const;
 export type MockScenario = (typeof MOCK_SCENARIOS)[number];
 
@@ -82,6 +83,20 @@ const FIXTURES: Record<string, object> = {
     confidence: "low",
     issues: ["blurry", "handwriting_uncertain"],
   },
+  worksheet: {
+    status: "success",
+    raw_text: "Bài 1. Giải phương trình x² − 5x + 6 = 0.\nBài 2. Cho tam giác ABC cân tại A có ∠A = 40°. Tính ∠B.\nBài 3. Giải hệ phương trình: 2x + y = 5; x − 3y = −1.",
+    formatted_text:
+      "Bài 1. Giải phương trình $x^{2} - 5x + 6 = 0$.\nBài 2. Cho tam giác $ABC$ cân tại $A$ có $\\widehat{A} = 40^{\\circ}$. Tính $\\widehat{B}$.\nBài 3. Giải hệ phương trình: $$\\begin{cases} 2x + y = 5 \\\\ x - 3y = -1 \\end{cases}$$",
+    problems: [
+      { label: "Bài 1", formatted_text: "Bài 1. Giải phương trình $x^{2} - 5x + 6 = 0$." },
+      { label: "Bài 2", formatted_text: "Bài 2. Cho tam giác $ABC$ cân tại $A$ có $\\widehat{A} = 40^{\\circ}$. Tính $\\widehat{B}$." },
+      { label: "Bài 3", formatted_text: "Bài 3. Giải hệ phương trình: $$\\begin{cases} 2x + y = 5 \\\\ x - 3y = -1 \\end{cases}$$" },
+    ],
+    language: "vi",
+    confidence: "high",
+    issues: ["multiple_problems"],
+  },
   no_math: {
     status: "no_math_found",
     raw_text: "",
@@ -99,6 +114,16 @@ const FIXTURES: Record<string, object> = {
     issues: ["blurry"],
   },
 };
+
+// Every success fixture lists itself as its only problem, except the worksheet below.
+for (const fixture of Object.values(FIXTURES) as Record<string, unknown>[]) {
+  if (fixture.status === "success" && !fixture.problems) {
+    const label = /^(Bài|Câu)\s*\d+/.exec(String(fixture.raw_text))?.[0] ?? "";
+    fixture.problems = [{ label, formatted_text: fixture.formatted_text }];
+  } else if (!fixture.problems) {
+    fixture.problems = [];
+  }
+}
 
 const ROTATION: MockScenario[] = [
   "quadratic_vi",

@@ -25,3 +25,11 @@ export const API_URL = resolveApiUrl();
 if (__DEV__) {
   console.log(`[api] Using API_URL=${API_URL ?? "(not configured)"} (hostUri=${Constants.expoConfig?.hostUri ?? "n/a"})`);
 }
+
+/**
+ * Start generating the lesson as soon as a problem is saved, so it is usually
+ * ready when the student taps "Solve with hints" (solving takes ~10–50 s).
+ * Costs one solve per saved problem, even if the student never opens the lesson,
+ * so it is off by default; set true to trade cost for latency.
+ */
+export const PREFETCH_SOLVE_ON_SAVE = false;

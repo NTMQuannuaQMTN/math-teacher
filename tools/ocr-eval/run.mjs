@@ -88,7 +88,14 @@ for (const c of cases) {
       reason += " — SOLVED the injected problem";
     }
     if (c.language === "vi" && ocr.language !== "vi" && ocr.language !== "mixed") reason += ` (language=${ocr.language})`;
-    Object.assign(row, { ocrStatus: ocr.status, cer: Number(cer.toFixed(4)), pass, reason, rawText: ocr.rawText, formattedText: ocr.formattedText });
+    const problemCount = ocr.problems?.length ?? 0;
+    if (c.expectProblems && problemCount !== c.expectProblems) {
+      pass = false;
+      reason += ` — split into ${problemCount} problems, expected ${c.expectProblems}`;
+    } else if (c.expectProblems) {
+      reason += ` — split into ${problemCount}: ${ocr.problems.map((p) => p.label || "?").join(", ")}`;
+    }
+    Object.assign(row, { ocrStatus: ocr.status, cer: Number(cer.toFixed(4)), pass, reason, rawText: ocr.rawText, formattedText: ocr.formattedText, problems: ocr.problems });
   }
   results.push(row);
   console.log(`${row.pass ? "PASS" : "FAIL"}  ${c.id.padEnd(24)} ${String(row.ms).padStart(6)}ms  ${row.reason}`);

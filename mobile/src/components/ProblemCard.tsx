@@ -16,7 +16,9 @@ interface Props {
 export const ProblemCard = memo(function ProblemCard({ scan, onPress }: Props) {
   const { colors } = useTheme();
   const s = useStrings();
-  const text = scan.problem?.text ?? scan.ocr?.formattedText ?? "";
+  const questions = scan.problem?.questions ?? [];
+  const text = questions[0]?.text ?? scan.problem?.text ?? scan.ocr?.formattedText ?? "";
+  const more = questions.length > 1 ? s.problem.moreQuestions.replace("{n}", String(questions.length - 1)) : null;
   // Lists show plain Unicode (x², √, ≤) instead of a WebView per row: fast and still readable.
   const preview = mathTextToPlain(text).replace(/\s*\n\s*/g, " ");
   const date = formatDateTime(scan.confirmedAt ?? scan.createdAt);
@@ -44,7 +46,14 @@ export const ProblemCard = memo(function ProblemCard({ scan, onPress }: Props) {
         <Text style={[styles.preview, { color: colors.text }]} numberOfLines={3}>
           {preview || "—"}
         </Text>
-        <Text style={[styles.date, { color: colors.textMuted }]}>{date}</Text>
+        <View style={styles.metaRow}>
+          <Text style={[styles.date, { color: colors.textMuted }]}>{date}</Text>
+          {more ? (
+            <View style={[styles.more, { backgroundColor: colors.primarySoft }]}>
+              <Text style={[typography.label, { color: colors.primary }]}>{more}</Text>
+            </View>
+          ) : null}
+        </View>
       </View>
       <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
     </Pressable>
@@ -65,4 +74,6 @@ const styles = StyleSheet.create({
   body: { flex: 1, gap: spacing.xs },
   preview: { ...typography.body, fontSize: 15, lineHeight: 21 },
   date: { ...typography.caption },
+  metaRow: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+  more: { borderRadius: radius.pill, paddingHorizontal: spacing.sm, paddingVertical: 1 },
 });

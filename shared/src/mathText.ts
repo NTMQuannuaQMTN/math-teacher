@@ -140,7 +140,21 @@ const SYMBOLS: Record<string, string> = {
   ldots: "…", cdots: "⋯", dots: "…", backslash: "\\", "%": "%", "{": "{", "}": "}",
   "$": "$", "#": "#", "&": "&", "_": "_",
   displaystyle: "", limits: "", text: "", mathrm: "", mathbf: "", textbf: "", operatorname: "",
+  leftrightarrow: "↔", longleftrightarrow: "⟷", iff: "⇔", Longleftrightarrow: "⟺", implies: "⇒",
+  Longrightarrow: "⟹", longrightarrow: "⟶", leftarrow: "←", gets: "←", uparrow: "↑", downarrow: "↓",
+  mapsto: "↦", neg: "¬", lnot: "¬", land: "∧", lor: "∨", wedge: "∧", vee: "∨",
+  leqslant: "≤", geqslant: "≥", ll: "≪", gg: "≫", simeq: "≃", propto: "∝", nparallel: "∦",
+  bot: "⊥", top: "⊤", square: "□", Box: "□", odot: "⊙", oplus: "⊕", bigtriangleup: "△",
+  prime: "′", star: "⋆", ast: "∗", bullet: "•", vdots: "⋮", ddots: "⋱",
+  supset: "⊃", subseteq: "⊆", supseteq: "⊇", setminus: "∖", nexists: "∄", partial: "∂",
+  Gamma: "Γ", Theta: "Θ", Lambda: "Λ", Pi: "Π", Sigma: "Σ", Phi: "Φ", Omega: "Ω",
+  epsilon: "ε", varepsilon: "ε", eta: "η", rho: "ρ", tau: "τ", psi: "ψ", chi: "χ", xi: "ξ", zeta: "ζ", kappa: "κ", nu: "ν",
+  frown: "⌢", overparen: "", wideparen: "", enspace: " ", thinspace: " ", nobreakspace: " ", ":": " ", ">": " ",
+  big: "", Big: "", bigg: "", Bigg: "", bigl: "", bigr: "", Bigl: "", Bigr: "", middle: "",
 };
+
+/** Function names that read naturally as words (\sin x → "sin x"). Other unknown commands are dropped. */
+const FUNCTION_WORDS = new Set(["sin", "cos", "tan", "cot", "log", "ln", "lg", "exp", "max", "min", "gcd", "lcm", "deg", "arcsin", "arccos", "arctan"]);
 
 const BLACKBOARD: Record<string, string> = { R: "ℝ", N: "ℕ", Z: "ℤ", Q: "ℚ", C: "ℂ" };
 
@@ -298,7 +312,7 @@ export function latexToPlain(tex: string): string {
       default:
         if (SYMBOLS[name] !== undefined) {
           out += SYMBOLS[name];
-        } else if (/^[a-z]+$/.test(name)) {
+        } else if (FUNCTION_WORDS.has(name)) {
           out += name; // \sin, \cos, \log, … read fine as words
         }
     }

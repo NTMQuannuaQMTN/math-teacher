@@ -11,6 +11,7 @@ import {
   type ScanSource,
   type z,
 } from "@shared/contract";
+import { SolutionResponseSchema, type Solution } from "@shared/solution";
 import { API_URL } from "@/lib/config";
 import { getDeviceToken } from "@/lib/deviceToken";
 import { AppError } from "./errors";
@@ -18,6 +19,8 @@ import { AppError } from "./errors";
 const DEFAULT_TIMEOUT_MS = 20_000;
 /** Server OCR timeout is 45 s; allow for upload time on slow mobile networks. */
 const OCR_TIMEOUT_MS = 90_000;
+/** Server solve budget is ~170 s including one corrective retry. */
+const SOLVE_TIMEOUT_MS = 200_000;
 
 interface RequestOptions<S extends z.ZodType | null> {
   method?: "GET" | "POST" | "DELETE";
@@ -140,8 +143,9 @@ export const api = {
     return scan;
   },
 
-  async confirmScan(id: string, text: string): Promise<Scan> {
-    const body = JSON.stringify(ConfirmScanRequestSchema.parse({ text }));
+  /** Saves one problem (`text`) or the questions kept from a multi-question photo. */
+  async confirmScan(id: string, input: { text: string } | { questions: { label: string; text: string }[] }): Promise<Scan> {
+    const body = JSON.stringify(ConfirmScanRequestSchema.parse(input));
     const { scan } = await request(`/v1/scans/${id}/confirm`, {
       method: "POST",
       body,
@@ -160,6 +164,24 @@ export const api = {
     const query = new URLSearchParams({ status: params.status, limit: String(params.limit ?? 20) });
     if (params.cursor) query.set("cursor", params.cursor);
     return request(`/v1/scans?${query.toString()}`, { schema: ScanListResponseSchema });
+  },
+
+  async solve(id: string, options: { questionId?: string; regenerate?: boolean; signal?: AbortSignal } = {}): Promise<Solution> {
+    const { solution } = await request(`/v1/scans/${id}/questions/${options.questionId ?? "q1"}/solve`, {
+      method: "POST",
+      body: JSON.stringify({ regenerate: options.regenerate ?? false }),
+      headers: { "content-type": "application/json" },
+      schema: SolutionResponseSchema,
+      timeoutMs: SOLVE_TIMEOUT_MS,
+      signal: options.signal,
+    });
+    return solution;
+  },
+
+  /** Latest stored solution (status "pending" while another request is generating it). */
+  async getSolution(id: string, questionId = "q1", signal?: AbortSignal): Promise<Solution> {
+    const { solution } = await request(`/v1/scans/${id}/questions/${questionId}/solution`, { schema: SolutionResponseSchema, signal });
+    return solution;
   },
 
   deleteScan(id: string): Promise<void> {

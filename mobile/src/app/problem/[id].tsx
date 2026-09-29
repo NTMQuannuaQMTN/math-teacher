@@ -92,15 +92,42 @@ export default function ProblemScreen() {
   }
 
   const text = scan.problem?.text ?? scan.ocr?.formattedText ?? "";
+  const questions = scan.problem?.questions ?? [];
+  const multi = questions.length > 1;
+  const solve = (questionId: string) => router.push({ pathname: "/solve/[id]", params: { id: scan.id, q: questionId } });
 
   return (
     <SafeAreaView style={styles.flex} edges={["bottom"]}>
       <ScrollView contentContainerStyle={styles.content}>
         {saved === "1" ? <Banner tone="success" message={s.problem.saved} /> : null}
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <MathText testID="saved-problem" text={text} fontSize={19} />
-        </View>
+        {multi ? (
+          <>
+            <Text style={[typography.title, { color: colors.text }]} accessibilityRole="header">
+              {s.problem.questionsTitle.replace("{n}", String(questions.length))}
+            </Text>
+            {questions.map((q, i) => (
+              <View key={q.id} testID={`saved-question-${q.id}`} style={[styles.card, styles.questionCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <View style={[styles.badge, { backgroundColor: colors.primarySoft }]}>
+                  <Text style={[typography.label, { color: colors.primary }]}>{q.label || `${s.result.question} ${i + 1}`}</Text>
+                </View>
+                <MathText testID={i === 0 ? "saved-problem" : undefined} text={q.text} fontSize={18} />
+                <Button
+                  testID={`solve-${q.id}`}
+                  label={s.solve.cta}
+                  icon="school-outline"
+                  size="md"
+                  accessibilityHint={s.solve.ctaHint}
+                  onPress={() => solve(q.id)}
+                />
+              </View>
+            ))}
+          </>
+        ) : (
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <MathText testID="saved-problem" text={text} fontSize={19} />
+          </View>
+        )}
 
         <View style={styles.meta}>
           <Ionicons name="time-outline" size={16} color={colors.textMuted} />
@@ -125,8 +152,12 @@ export default function ProblemScreen() {
         {deleteError ? <Banner tone="danger" message={`${s.problem.deleteFailed} ${errorMessage(deleteError)}`} /> : null}
 
         <View style={styles.actions}>
+          {multi ? null : (
+            <Button testID="solve-button" label={s.solve.cta} icon="school-outline" accessibilityHint={s.solve.ctaHint} onPress={() => solve(questions[0]?.id ?? "q1")} />
+          )}
           <Button
             testID="scan-another"
+            variant="secondary"
             label={s.problem.scanAnother}
             icon="camera"
             onPress={() => {
@@ -154,6 +185,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   center: { alignItems: "center", justifyContent: "center" },
   content: { padding: spacing.lg, gap: spacing.md, maxWidth: 720, width: "100%", alignSelf: "center" },
+  questionCard: { gap: spacing.sm },
+  badge: { alignSelf: "flex-start", borderRadius: radius.pill, paddingHorizontal: spacing.md, paddingVertical: 4 },
   card: { borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth, padding: spacing.lg },
   meta: { flexDirection: "row", alignItems: "center", gap: spacing.xs, paddingHorizontal: spacing.xs },
   photo: { height: 180, borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: "hidden", padding: spacing.xs },

@@ -1,5 +1,7 @@
 import {
   OcrResultSchema,
+  QuestionSchema,
+  type Question,
   type ErrorCode,
   type OcrResult,
   type Scan,
@@ -26,6 +28,7 @@ export interface ScanRow {
   ocr_started_at: string | null;
   problem_text: string | null;
   problem_edited: number | null;
+  questions_json: string | null;
   created_at: string;
   updated_at: string;
   confirmed_at: string | null;
@@ -141,25 +144,25 @@ export class ScanRepository {
       .run();
   }
 
-  async confirm(ownerId: string, id: string, text: string, edited: boolean, now = Date.now()): Promise<boolean> {
+  async confirm(ownerId: string, id: string, text: string, questions: Question[], edited: boolean, now = Date.now()): Promise<boolean> {
     const ts = nowIso(now);
     const result = await this.db
       .prepare(
-        `UPDATE scans SET status = 'confirmed', problem_text = ?, problem_edited = ?,
+        `UPDATE scans SET status = 'confirmed', problem_text = ?, questions_json = ?, problem_edited = ?,
            confirmed_at = COALESCE(confirmed_at, ?), updated_at = ?
          WHERE id = ? AND owner_id = ?`,
       )
-      .bind(text, edited ? 1 : 0, ts, ts, id, ownerId)
+      .bind(text, JSON.stringify(questions), edited ? 1 : 0, ts, ts, id, ownerId)
       .run();
     return (result.meta.changes ?? 0) > 0;
   }
 
   async delete(ownerId: string, id: string): Promise<boolean> {
-    const result = await this.db
-      .prepare("DELETE FROM scans WHERE id = ? AND owner_id = ?")
-      .bind(id, ownerId)
-      .run();
-    return (result.meta.changes ?? 0) > 0;
+    const [, result] = await this.db.batch([
+      this.db.prepare("DELETE FROM solutions WHERE scan_id = ? AND owner_id = ?").bind(id, ownerId),
+      this.db.prepare("DELETE FROM scans WHERE id = ? AND owner_id = ?").bind(id, ownerId),
+    ]);
+    return (result?.meta.changes ?? 0) > 0;
   }
 
   /**
@@ -206,8 +209,24 @@ export class ScanRepository {
   async deleteByIds(ids: string[]): Promise<void> {
     if (ids.length === 0) return;
     const placeholders = ids.map(() => "?").join(",");
-    await this.db.prepare(`DELETE FROM scans WHERE id IN (${placeholders})`).bind(...ids).run();
+    await this.db.batch([
+      this.db.prepare(`DELETE FROM solutions WHERE scan_id IN (${placeholders})`).bind(...ids),
+      this.db.prepare(`DELETE FROM scans WHERE id IN (${placeholders})`).bind(...ids),
+    ]);
   }
+}
+
+/** Confirmed questions; scans confirmed before splitting existed are one question. */
+export function questionsOf(row: Pick<ScanRow, "questions_json" | "problem_text">): Question[] {
+  if (row.questions_json) {
+    try {
+      const parsed = QuestionSchema.array().min(1).safeParse(JSON.parse(row.questions_json));
+      if (parsed.success) return parsed.data;
+    } catch {
+      // fall through
+    }
+  }
+  return row.problem_text ? [{ id: "q1", label: "", text: row.problem_text }] : [];
 }
 
 function parseStoredOcr(json: string | null, scanId: string): OcrResult | null {
@@ -239,7 +258,7 @@ export async function toApiScan(env: Env, origin: string, row: ScanRow): Promise
     ocrAttempts: row.ocr_attempts,
     problem:
       row.status === "confirmed" && row.problem_text !== null
-        ? { text: row.problem_text, edited: row.problem_edited === 1 }
+        ? { text: row.problem_text, edited: row.problem_edited === 1, questions: questionsOf(row) }
         : null,
   };
 }
