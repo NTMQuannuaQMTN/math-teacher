@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -22,6 +22,19 @@ export default function HomeScreen() {
   const s = useStrings();
   const insets = useSafeAreaInsets();
   const upload = useStartUpload();
+  const { notice, count } = useLocalSearchParams<{ notice?: string; count?: string }>();
+  const [shownNotice, setShownNotice] = useState<string | null>(null);
+
+  // One-shot notice after saving/deleting a scan (arrives as a route param), cleared after a few seconds.
+  useEffect(() => {
+    if (notice !== "saved" && notice !== "deleted") return;
+    const text = notice === "saved" ? s.home.savedNotice.replace("{n}", count ?? "1") : s.home.deletedNotice;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- driven by the navigation param
+    setShownNotice(text);
+    router.setParams({ notice: undefined, count: undefined });
+    const timer = setTimeout(() => setShownNotice(null), 5000);
+    return () => clearTimeout(timer);
+  }, [notice, count, s]);
 
   const [recent, setRecent] = useState<Scan[] | null>(null);
   const [draft, setDraft] = useState<Scan | null>(null);
@@ -113,6 +126,7 @@ export default function HomeScreen() {
         loading={upload.busy}
       />
 
+      {shownNotice ? <Banner tone="success" message={shownNotice} /> : null}
       {offline ? <Banner tone="warning" message={s.home.offline} /> : null}
 
       {draft ? (

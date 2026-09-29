@@ -112,11 +112,13 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 | Name | Purpose | Default |
 |---|---|---|
 | `ENVIRONMENT` | `production` or `development` (the mock provider only works in development) | `production` |
-| `OCR_PROVIDER` | `openai`, `anthropic`, or `mock` | `openai` |
-| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | model ids | `gpt-4.1` / `claude-opus-5` |
+| `OCR_PROVIDER` | `gemini`, `openai`, `anthropic`, or `mock` | `gemini` |
+| `OCR_FALLBACK_PROVIDER` | used for a photo only when the primary fails transiently | `openai` |
+| `GEMINI_OCR_MODEL` | Gemini OCR model | `gemini-3.1-flash-lite` |
+| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | OCR model ids | `gpt-4.1-mini` / `claude-opus-5` |
 | `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
-| `SOLVER_PROVIDER` | `openai` or `mock` (development only) | `openai` |
+| `SOLVER_PROVIDER` | `openai`, `mock` (development only), or anything else (e.g. `off`) to pause solving; stored shared lessons are still served | `openai` |
 | `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary solver model | `gpt-5.4-mini` / `low` |
 | `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model: geometry, and retries when checks fail | `gpt-5.5` / `medium` |
 | `SOLVE_TIMEOUT_MS` | total budget per solve, including one retry | `170000` |
@@ -124,7 +126,7 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 | `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
 | `ALLOWED_ORIGINS` | CORS origins (only needed for Expo web) | empty |
 | `IMAGE_URL_SECRET` (secret) | HMAC key for signed image URLs, 32+ random chars | **required** |
-| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | key for the selected provider | — |
+| `GEMINI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | keys for the selected providers | — |
 
 **Mobile:** `EXPO_PUBLIC_API_URL` is the Worker URL. It is required for production builds and
 optional in development. It is not a secret; no keys ever ship in the app.
@@ -195,11 +197,18 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
 |---|---|---|
 | Algebra, equations, word problems | `gpt-5.4-mini` (low effort); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
 | Geometry (detected from the wording) | `gpt-5.5` directly, because the cheap model's figures failed the checks about 90% of the time | about $0.07–0.12 |
-| Reading a photo (OCR, `gpt-4.1`) | | under $0.01 |
+| Reading a photo (OCR) | Gemini `gemini-3.1-flash-lite`; OpenAI `gpt-4.1-mini` only when Gemini is overloaded or out of quota | about $0.0008 on Gemini's paid tier, $0 on its free tier (fallback about $0.001) |
 
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
   Prices are in `worker/src/solver/pricing.ts`.
-- Lessons are cached per question and are never regenerated when hints are revealed.
+- **Shared lesson library.** When a student asks to solve a problem, a verified lesson that any
+  student already has for the same problem text (ignoring the problem number and spacing) is copied
+  instead of solving again: no AI call, no cost. Unverified lessons are never shared, and
+  "Create a new lesson" bypasses the library.
+- Lessons are stored per question and are never regenerated when hints are revealed.
+- **Input tokens.** Non-geometry problems get a prompt and schema without the figure rules
+  (2.6K instead of 4.4K tokens). An escalated retry sends only the list of failures, not the
+  rejected lesson. Repeated instructions are served from OpenAI's prompt cache.
 - Solving on save is off by default (`PREFETCH_SOLVE_ON_SAVE`).
 - Local development uses the free mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
   `worker/.dev.vars`). Switch both to `openai` to test real quality.

@@ -221,3 +221,108 @@ Output (the lesson JSON) is most of the cost; about 90% of the prompt input is c
 
 **Expected cost:** about $0.005 per algebra/word lesson, $0.07–0.12 per geometry lesson, and under
 $0.01 per photo.
+
+## 2026-09-29: AI paused; shared lesson library; input tokens
+
+- **AI paused.** `.dev.vars` uses the mock providers. The worker log since the switch shows 114
+  requests and 0 OpenAI calls.
+- **Shared lesson library** (migration 0004, `solutions.problem_key`). On a solve request, a
+  verified or partially verified lesson for the same normalized problem text (from any student) is
+  copied with no AI call. The first student's solve is stored for everyone. Unverified lessons are
+  not shared, and regenerate bypasses the library. 6 new API checks (solve smoke is 39/39) and 3
+  unit tests.
+- **Input tokens.**
+  - The dashboard showed 482K input and 221K output. Output was most of the cost, because
+    `gpt-5.5` output costs $30 per million tokens and input was mostly cached at 90% off.
+  - Measured locally with the o200k tokenizer: instructions plus schema were 4,417 tokens per
+    solve.
+  - Non-geometry problems now get a prompt without the geometry rules and a figure-less schema:
+    2,628 tokens (−41%). Geometry is unchanged.
+  - Escalated retries no longer resend the rejected lesson (2–5K tokens each).
+  - What each problem type is told is unchanged, so the prompt version stays v1.1 and stored
+    lessons remain valid.
+
+## 2026-09-29: OCR cost, and switching OCR to gpt-4.1-mini
+
+**Measured on the 17-photo set with the real API:**
+
+| | `gpt-4.1` | `gpt-4.1-mini` |
+|---|---|---|
+| Photos read correctly | 17/17 | 17/17 |
+| Character error rate | 0.5% | 0.7% |
+| Cost per photo | $0.0049 | $0.0011 |
+| Test run total | $0.083 | $0.019 |
+
+- A later single call with `gpt-4.1-mini` hit the prompt cache (1,664 of 2,049 tokens) and cost
+  $0.0006.
+- **Default OCR model is now `gpt-4.1-mini`.** Real OCR is on in dev (no demo output).
+- **Solving is paused** (`SOLVER_PROVIDER=off`). Solve returns `solve_not_configured` ("Solving is
+  temporarily unavailable"), and stored shared lessons are still served.
+
+## 2026-09-29: Check-screen delete, back to Home, solving re-enabled
+
+**Check screen.**
+- Each question has Edit and Delete side by side. Delete replaces the keep/skip checkbox.
+- A single problem has Delete next to Edit.
+- A "Delete this scan" button sits under the question list and in the failure and no-text states.
+- If every question is deleted, the screen says so.
+
+**After saving or deleting,** the app returns to Home with a notice ("Đã lưu 2 bài…" or
+"Đã xóa ảnh"). The saved photo is at the top of Recent problems, and students solve from there.
+
+**Solving re-enabled** in dev (`SOLVER_PROVIDER=openai`), with every cost control on:
+- the cheap model for non-geometry problems and `gpt-5.5` for geometry;
+- the shared lesson library;
+- no prefetch;
+- lean prompts;
+- lessons stored per question.
+
+**Measured with real OCR and solving** (`e2e-check-screen`, `e2e-solve-cheap`):
+
+| Action | Cost | Time |
+|---|---|---|
+| OCR per photo | $0.0009–0.0020 | |
+| Algebra question solve (`gpt-5.4-mini`, 1 attempt, 2,538 input tokens) | $0.0070 | 8.4 s |
+| Same problem solved by a second student (shared library) | $0 | 0.1 s |
+| Whole test | about $0.014 | |
+
+## 2026-09-29: Gemini
+
+**Integration.**
+- Gemini Developer API adapters: `src/gemini.ts` (shared client: JSON-schema output, thinking
+  level, usage and cost logging, retry on 429/500/503), `GeminiOcrProvider`, and
+  `GeminiJsonModel` for the solver.
+- The key is an AI Studio key on the **free tier**.
+
+**OCR.** `gemini-3.1-flash-lite` read 17/17 photos correctly (character error rate 1.2%; one
+photo first hit a 503 and passed after the retry was added). It costs $0.0008 per photo at paid
+prices and $0 on the free tier. It is now the default, with OpenAI `gpt-4.1-mini` as an automatic
+fallback when Gemini is overloaded or out of quota (`OCR_FALLBACK_PROVIDER`, 3 unit tests).
+
+**Solving on Gemini is not measured yet.**
+- The 20-problem eval got 0 usable calls: `gemini-3.8-flash` was overloaded (503), and then the
+  free-tier limits (5 requests per minute plus a daily cap) refused every request with 429.
+- `gemini-3.1-pro-preview`, the planned geometry model at about 40% of `gpt-5.5`'s price, isn't
+  available on the free tier at all.
+- Solving stays on the measured OpenAI setup until billing is enabled on the Gemini project and
+  the eval can run.
+
+## 2026-09-29: All AI on Gemini, production deploy, drags keep the givens
+
+- **Gemini only.** OCR uses `gemini-3.1-flash-lite` (about $0.0008 per photo). Solving uses
+  `gemini-3.5-flash-lite` with low thinking, and retries on the same model with high thinking.
+  - The OpenAI OCR fallback is off, and `wrangler.toml` defaults match.
+  - Solver eval: 18/20 cases correct, and all 9 geometry cases verified.
+  - Verification fix: a trivial answer check (one that just restates the answer) no longer counts
+    as verification. This had let a wrong Vieta answer pass.
+  - Gemini sometimes double-escapes LaTeX (`\\ge`), which KaTeX would show as a line break.
+    `fixDoubledEscapes` collapses it. `PROMPT_VERSION` is now `solver-v1.3`.
+- **Production.** D1 (migrations 0001–0004), R2 and secrets are set up, and the Worker is
+  deployed. The remote database had tables left from an old prototype, which blocked migration
+  0002. It was exported to a backup first, then the old tables were dropped. The steps are in
+  `docs/CLOUDFLARE_SETUP.md`.
+  - Tested against production: photo, then Gemini OCR, then save, then a verified solve.
+- **Drags keep the problem's givens** (`shared/src/constraints.ts`). When one point is dragged, the
+  other movable points adjust as little as possible to keep the `given` checks true. It has 7 unit
+  tests, and a browser test (`e2e-drag-constraints.mjs`) shows a right isosceles triangle staying
+  right and isosceles whichever vertex is dragged.

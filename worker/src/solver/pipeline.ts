@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { ModelLessonSchema, type ModelLesson, type Verification } from "../../../shared/src/solution";
 import { normalizeProblemText } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
@@ -5,10 +6,13 @@ import { OcrFailure } from "../ocr/provider";
 import type { Curriculum } from "./curriculum";
 import { toStrictJsonSchema } from "./jsonSchema";
 import type { ChatMessage, JsonModel } from "./llm";
-import { buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
+import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
+import { looksLikeGeometry } from "./routing";
 import { addUsage, emptyUsage, estimateCost, formatUsage, type Usage } from "./pricing";
 
 const LESSON_JSON_SCHEMA = toStrictJsonSchema(ModelLessonSchema);
+/** Same schema with figure fixed to null: ~40% smaller, for non-geometry problems. */
+const LESSON_JSON_SCHEMA_NO_FIGURE = toStrictJsonSchema(ModelLessonSchema.extend({ figure: z.null() }));
 
 export interface SolveResult {
   lesson: ModelLesson;
@@ -67,10 +71,25 @@ export function stackMathLines(math: string | null): string | null {
   return `\\begin{gathered}${lines.join(" \\\\ ")}\\end{gathered}`;
 }
 
+const COMMANDS =
+  "ge|geq|le|leq|ne|neq|pm|mp|cdot|times|div|frac|dfrac|tfrac|sqrt|left|right|in|notin|infty|approx|equiv|sim|cong|" +
+  "circ|angle|widehat|hat|overline|triangle|perp|parallel|Rightarrow|Leftrightarrow|Leftarrow|rightarrow|to|" +
+  "text|mathrm|mathbb|begin|end|cases|alpha|beta|gamma|delta|pi|varnothing|emptyset|cup|cap|subset|forall|exists";
+const DOUBLED_COMMAND = new RegExp(`(?<!\\\\)\\\\\\\\(?=(?:${COMMANDS})(?![a-zA-Z]))`, "g");
+
+/**
+ * Some models (notably Gemini) double-escape LaTeX in JSON, so "\\ge" arrives as two
+ * backslashes + "ge" — KaTeX would render a line break followed by "ge". Collapse it.
+ */
+export function fixDoubledEscapes(s: string): string {
+  return s.replace(DOUBLED_COMMAND, "\\");
+}
+
 /** Normalizes all student-facing strings (NFC for Vietnamese, no control characters). */
 function tidy(lesson: ModelLesson): ModelLesson {
-  const t = (s: string) => normalizeProblemText(s);
+  const t = (s: string) => fixDoubledEscapes(normalizeProblemText(s));
   const tn = (s: string | null) => (s === null ? null : t(s));
+  const stackMathLines = (m: string | null) => stackLines(m === null ? null : fixDoubledEscapes(m));
   return {
     ...lesson,
     analysis: {
@@ -84,6 +103,7 @@ function tidy(lesson: ModelLesson): ModelLesson {
     finalAnswer: { text: t(lesson.finalAnswer.text), math: stackMathLines(lesson.finalAnswer.math) },
   };
 }
+const stackLines = (m: string | null) => stackMathLines(m);
 
 /**
  * Problem text → verified lesson.
@@ -103,8 +123,10 @@ export async function solveProblem(
   { signal, maxAttempts = 2, fallback, log = () => undefined }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
-  const messages: ChatMessage[] = [
-    { role: "system", content: buildSystemPrompt(curriculum) },
+  // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
+  let withFigure = looksLikeGeometry(problemText);
+  let messages: ChatMessage[] = [
+    { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
     { role: "user", content: buildUserMessage(problemText) },
   ];
   let best: { lesson: ModelLesson; verification: Verification; score: number; model: string } | null = null;
@@ -124,7 +146,7 @@ export async function solveProblem(
     if (current !== model) log(`escalating to ${current.model}`);
     const text = await current.complete({
       messages,
-      schema: LESSON_JSON_SCHEMA,
+      schema: withFigure ? LESSON_JSON_SCHEMA : LESSON_JSON_SCHEMA_NO_FIGURE,
       schemaName: "lesson",
       signal,
       onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
@@ -150,7 +172,19 @@ export async function solveProblem(
     }
 
     if (attempt < maxAttempts) {
-      messages.push({ role: "assistant", content: text }, { role: "user", content: buildRetryMessage(problems) });
+      const needsFigure = !withFigure && problems.some((p) => p.includes("needs a figure"));
+      if (needsFigure) withFigure = true;
+      const next = attempt + 1 > 1 && fallback ? fallback : model;
+      if (next !== current || needsFigure) {
+        // Fresh start for a different model (or the full geometry prompt): send what was wrong,
+        // not the rejected lesson, which would cost thousands of input tokens.
+        messages = [
+          { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
+          { role: "user", content: buildEscalationMessage(problemText, problems) },
+        ];
+      } else {
+        messages.push({ role: "assistant", content: text }, { role: "user", content: buildRetryMessage(problems) });
+      }
     }
   }
 

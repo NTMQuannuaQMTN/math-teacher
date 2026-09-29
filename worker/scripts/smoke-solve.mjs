@@ -49,6 +49,8 @@ const solve = (id, { scenario, device = A, regenerate = false } = {}) =>
     headers: { "content-type": "application/json", ...(scenario ? { "x-mock-scenario": scenario } : {}) },
   });
 
+// Unique text per scenario so the shared lesson library doesn't answer from an earlier test.
+const uniq = (text) => `${text} (${token().slice(0, 8)})`;
 const GEO = "Cho tam giác $ABC$ cân tại $A$ có $\\widehat{A} = 40^{\\circ}$. Tính $\\widehat{B}$.";
 const ALG = "Giải phương trình $x^{2} - 5x + 6 = 0$.";
 
@@ -77,27 +79,27 @@ check((await solve(geo, { device: B })).status === 404, "another device can't tr
 check((await call("GET", `/v1/scans/${geo}/solution`, { device: "nope" })).status === 401, "requests without a valid device token are rejected");
 
 // --- failures & recovery ----------------------------------------------------
-const alg = await newScan(ALG);
+const alg = await newScan(uniq(ALG));
 const failed = await solve(alg, { scenario: "solve_provider_error" });
 check(failed.json.solution.status === "failed" && failed.json.solution.error.code === "solve_provider_error" && failed.json.solution.error.retryable, "provider failure is reported as retryable", failed.json);
 const recovered = await solve(alg);
 check(recovered.json.solution.status === "ready" && recovered.json.solution.verification.status === "verified", "retrying after a provider failure works");
 
-const mal = await newScan(ALG);
+const mal = await newScan(uniq(ALG));
 const malformed = await solve(mal, { scenario: "solve_malformed" });
 check(malformed.json.solution.status === "failed" && malformed.json.solution.error.code === "solve_malformed_output", "malformed AI output fails cleanly (after a retry)");
 
-const fix = await newScan(GEO);
+const fix = await newScan(uniq(GEO));
 const fixed = await solve(fix, { scenario: "solve_fix_on_retry" });
 check(fixed.json.solution.status === "ready" && fixed.json.solution.attempts === 2 && fixed.json.solution.verification.status === "verified", "a wrong first answer is corrected by the verification retry", fixed.json.solution);
 
-const bad = await newScan(ALG);
+const bad = await newScan(uniq(ALG));
 const unverified = await solve(bad, { scenario: "solve_unverified" });
 check(unverified.json.solution.status === "ready" && unverified.json.solution.verification.status === "unverified", "a still-wrong answer is marked unverified, not correct");
 check(unverified.json.solution.verification.checks.some((c) => !c.passed), "the failing check is reported");
 
 // --- concurrency -----------------------------------------------------------
-const slow = await newScan(ALG);
+const slow = await newScan(uniq(ALG));
 const slowReq = solve(slow, { scenario: "solve_slow" });
 await new Promise((r) => setTimeout(r, 800));
 const dup = await solve(slow);
@@ -139,5 +141,27 @@ check((await call("POST", `/v1/scans/${wsScan.id}/questions/q9/solve`)).status =
 check((await call("GET", `/v1/scans/${wsScan.id}/questions/q2/solution`, { device: B })).status === 404, "another device can't read a question's lesson");
 const both = await call("POST", `/v1/scans/${wsScan.id}/confirm`, { body: JSON.stringify({ text: "x", questions: kept }), headers: { "content-type": "application/json" } });
 check(both.status === 400, "confirm rejects text and questions together");
+
+// --- shared lesson library (reuse across students, no AI call) ---------------------
+const sharedText = `Bài 7. Giải phương trình $x^{2} - 5x + 6 = 0$ (thư viện ${token().slice(0, 6)}).`;
+const ownerA = await newScan(sharedText);
+const firstSolve = await solve(ownerA);
+check(firstSolve.json.solution.status === "ready" && firstSolve.json.solution.attempts >= 1, "the first student's solve generates a lesson");
+const sameForB = await newScan(sharedText.replace("Bài 7.", "Câu 2:"), B);
+const t1 = Date.now();
+const reused = await solve(sameForB, { device: B });
+const reusedMs = Date.now() - t1;
+check(reused.json.solution.status === "ready" && reused.json.solution.attempts === 0 && reusedMs < 800, `another student's identical problem reuses the stored lesson without an AI call (${reusedMs}ms)`);
+check(JSON.stringify(reused.json.solution.lesson) === JSON.stringify(firstSolve.json.solution.lesson), "the reused lesson is the same verified lesson");
+check((await call("GET", `/v1/scans/${ownerA}/solution`, { device: B })).status === 404, "sharing a lesson doesn't expose the other student's scan");
+
+const unverifiedText = `Giải phương trình $x^{2} - 5x + 6 = 0$ (chưa kiểm chứng ${token().slice(0, 6)}).`;
+await solve(await newScan(unverifiedText), { scenario: "solve_unverified" });
+const t2 = Date.now();
+const notShared = await solve(await newScan(unverifiedText, B), { device: B });
+check(notShared.json.solution.attempts >= 1 && Date.now() - t2 >= 1000, "an unverified lesson is never shared (the next student gets a fresh solve)");
+
+const regenShared = await solve(sameForB, { device: B, regenerate: true });
+check(regenShared.json.solution.attempts >= 1, "regenerate bypasses the shared library");
 
 console.log(`\nAll ${passed} solve checks passed against ${API}`);

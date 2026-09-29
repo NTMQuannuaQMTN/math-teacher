@@ -1,5 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Button } from "@/components/Button";
 import { MathText } from "@/components/math/MathText";
 import { ProblemEditor } from "@/components/ProblemEditor";
@@ -9,7 +8,6 @@ import { radius, spacing, typography, useTheme } from "@/theme";
 export interface QuestionDraft {
   label: string;
   text: string;
-  included: boolean;
 }
 
 interface Props {
@@ -19,42 +17,18 @@ interface Props {
   onEdit: () => void;
   onDoneEditing: () => void;
   onChange: (text: string) => void;
-  onToggle: () => void;
+  onDelete: () => void;
 }
 
-/** One question found on the photo, on the check screen: keep/skip it, read it, fix it. */
-export function QuestionCard({ index, item, editing, onEdit, onDoneEditing, onChange, onToggle }: Props) {
+/** One question found on the photo, on the check screen: read it, fix it, or delete it. */
+export function QuestionCard({ index, item, editing, onEdit, onDoneEditing, onChange, onDelete }: Props) {
   const s = useStrings();
   const { colors } = useTheme();
   const title = item.label || `${s.result.question} ${index + 1}`;
   return (
-    <View
-      testID={`question-${index + 1}`}
-      style={[
-        styles.card,
-        {
-          backgroundColor: colors.surface,
-          borderColor: editing ? colors.primary : colors.border,
-          opacity: item.included ? 1 : 0.6,
-        },
-      ]}
-    >
-      <View style={styles.header}>
-        <View style={[styles.badge, { backgroundColor: item.included ? colors.primarySoft : colors.surfaceMuted }]}>
-          <Text style={[typography.label, { color: item.included ? colors.primary : colors.textMuted }]}>{title}</Text>
-        </View>
-        <Pressable
-          testID={`question-toggle-${index + 1}`}
-          onPress={onToggle}
-          accessibilityRole="checkbox"
-          accessibilityState={{ checked: item.included }}
-          accessibilityLabel={`${s.result.keepQuestion}: ${title}`}
-          hitSlop={8}
-          style={styles.toggle}
-        >
-          <Ionicons name={item.included ? "checkbox" : "square-outline"} size={24} color={item.included ? colors.primary : colors.textMuted} />
-          <Text style={[typography.label, { color: colors.textMuted }]}>{item.included ? s.result.keepQuestion : s.result.skipped}</Text>
-        </Pressable>
+    <View testID={`question-${index + 1}`} style={[styles.card, { backgroundColor: colors.surface, borderColor: editing ? colors.primary : colors.border }]}>
+      <View style={[styles.badge, { backgroundColor: colors.primarySoft }]}>
+        <Text style={[typography.label, { color: colors.primary }]}>{title}</Text>
       </View>
 
       {editing ? (
@@ -65,9 +39,19 @@ export function QuestionCard({ index, item, editing, onEdit, onDoneEditing, onCh
       ) : (
         <>
           <MathText text={item.text} fontSize={17} placeholder={s.result.emptyPreview} />
-          {item.included ? (
-            <Button testID={`question-edit-${index + 1}`} label={s.result.edit} icon="create-outline" variant="ghost" size="md" onPress={onEdit} />
-          ) : null}
+          <View style={styles.actions}>
+            <Button testID={`question-edit-${index + 1}`} label={s.result.edit} icon="create-outline" variant="secondary" size="md" onPress={onEdit} style={styles.flex} />
+            <Button
+              testID={`question-delete-${index + 1}`}
+              label={s.common.delete}
+              icon="trash-outline"
+              variant="danger"
+              size="md"
+              onPress={onDelete}
+              accessibilityHint={`${s.common.delete}: ${title}`}
+              style={styles.flex}
+            />
+          </View>
         </>
       )}
     </View>
@@ -75,8 +59,8 @@ export function QuestionCard({ index, item, editing, onEdit, onDoneEditing, onCh
 }
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   card: { borderRadius: radius.lg, borderWidth: 1, padding: spacing.lg, gap: spacing.sm },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  badge: { borderRadius: radius.pill, paddingHorizontal: spacing.md, paddingVertical: 4 },
-  toggle: { flexDirection: "row", alignItems: "center", gap: 6, minHeight: 44 },
+  badge: { alignSelf: "flex-start", borderRadius: radius.pill, paddingHorizontal: spacing.md, paddingVertical: 4 },
+  actions: { flexDirection: "row", gap: spacing.sm },
 });

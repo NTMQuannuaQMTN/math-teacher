@@ -233,6 +233,37 @@ export interface CheckOutcome {
   detail: string;
 }
 
+/**
+ * A check that computes nothing — a bare number ("3" expecting "3") or a
+ * relation between plain numbers ("3 = 3") — restates the answer instead of
+ * testing it. Such checks must never make a lesson "verified".
+ */
+export function isTrivialCheck(check: AnswerCheck): boolean {
+  const hasWork = (src: string) => {
+    const s = src.replace(/\s+/g, "");
+    if (!s) return false;
+    try {
+      if (variablesOf(s).size > 0) return true;
+    } catch {
+      return false;
+    }
+    // Arithmetic between numbers (not just a sign on a single number).
+    const sides = splitRelation(s)?.sides ?? [s];
+    return sides.some((side) => /[\d)a-z]\s*[-+*/^:]|sqrt|cbrt|abs|sin|cos|tan|cot|\(/i.test(side.replace(/^[-+]/, "")));
+  };
+  if (check.kind === "substitute") {
+    // Substituting into statements that contain no variables tests nothing.
+    return check.statements.every((st) => {
+      try {
+        return variablesOf(st).size === 0;
+      } catch {
+        return true;
+      }
+    });
+  }
+  return !check.statements.some(hasWork);
+}
+
 const SAMPLE_POOL = [0.37, 1.73, 2.9, 4.41, 6.2, 9.7, -0.61, -2.3, -3.7, 13.1, 0.83, 5.55];
 
 function evalValue(src: string): number {
@@ -405,6 +436,12 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   }
 
   for (const check of lesson.answerChecks) {
+    if (isTrivialCheck(check)) {
+      feedback.push(
+        `answer check "${check.statements.join("; ")}" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition`,
+      );
+      continue;
+    }
     const outcome = runAnswerCheck(check);
     checks.push({ label: outcome.label, passed: outcome.passed });
     if (outcome.passed) answerLevelPassed++;

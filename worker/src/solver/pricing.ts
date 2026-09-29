@@ -11,6 +11,19 @@ const PRICES: Record<string, { input: number; cached: number; output: number }> 
   "gpt-4.1": { input: 2, cached: 0.5, output: 8 },
   "gpt-4.1-mini": { input: 0.4, cached: 0.1, output: 1.6 },
   "gpt-4.1-nano": { input: 0.1, cached: 0.025, output: 0.4 },
+  // Gemini Developer API, paid tier, Standard (ai.google.dev/gemini-api/docs/pricing, checked 2026-09-29).
+  // 3.6–3.8 Flash prices double on 2027-01-01.
+  "gemini-3.8-flash": { input: 0.75, cached: 0.075, output: 3.75 },
+  "gemini-3.7-flash": { input: 0.75, cached: 0.075, output: 3.75 },
+  "gemini-3.6-flash": { input: 0.75, cached: 0.075, output: 3.75 },
+  "gemini-3.5-flash": { input: 1.5, cached: 0.15, output: 9 },
+  "gemini-3.5-flash-lite": { input: 0.3, cached: 0.03, output: 2.5 },
+  "gemini-3.1-flash-lite": { input: 0.25, cached: 0.025, output: 1.5 },
+  "gemini-3.1-pro-preview": { input: 2, cached: 0.2, output: 12 },
+  "gemini-3-flash-preview": { input: 0.5, cached: 0.05, output: 3 },
+  "gemini-2.5-flash": { input: 0.3, cached: 0.03, output: 2.5 },
+  "gemini-2.5-flash-lite": { input: 0.1, cached: 0.01, output: 0.4 },
+  "gemini-2.5-pro": { input: 1.25, cached: 0.125, output: 10 },
 };
 
 export interface Usage {
@@ -28,7 +41,7 @@ export function addUsage(a: Usage, b: Usage): Usage {
 
 /** Estimated USD cost; null for unknown models. `output` already includes reasoning tokens. */
 export function estimateCost(model: string, usage: Usage): number | null {
-  const key = Object.keys(PRICES).sort((x, y) => y.length - x.length).find((k) => model === k || model.startsWith(`${k}-2`));
+  const key = Object.keys(PRICES).sort((x, y) => y.length - x.length).find((k) => model === k || model.startsWith(`${k}-2`) || model.startsWith(`${k}-0`));
   const price = key ? PRICES[key] : undefined;
   if (!price) return null;
   const uncached = usage.input - usage.cachedInput;

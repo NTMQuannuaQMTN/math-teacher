@@ -12,12 +12,14 @@ import { buildSystemPrompt, buildUserMessage } from "../src/solver/prompts";
 class ScriptedModel implements JsonModel {
   readonly name = "scripted";
   readonly calls: ChatMessage[][] = [];
+  readonly schemas: Record<string, unknown>[] = [];
   constructor(
     private readonly outputs: string[],
     readonly model = "scripted",
   ) {}
-  async complete({ messages }: { messages: ChatMessage[] }): Promise<string> {
+  async complete({ messages, schema }: { messages: ChatMessage[]; schema: Record<string, unknown> }): Promise<string> {
     this.calls.push([...messages]);
+    this.schemas.push(schema);
     const next = this.outputs[this.calls.length - 1];
     if (next === undefined) throw new Error("no more scripted outputs");
     return next;
@@ -96,6 +98,37 @@ describe("cheap model first, stronger model only when checks fail", () => {
     const cheap = new ScriptedModel(["oops"], "cheap");
     const strong = new ScriptedModel([good], "strong");
     expect((await solveProblem(cheap, VN_GRADE_9, "x", { signal: signal(), fallback: strong })).model).toBe("strong");
+  });
+});
+
+describe("input-token savings", () => {
+  const size = (x: unknown) => JSON.stringify(x).length;
+
+  it("non-geometry problems get no geometry rules and a figure-less schema", async () => {
+    const model = new ScriptedModel([JSON.stringify(mockAlgebraLesson())]);
+    await solveProblem(model, VN_GRADE_9, "Giải phương trình $x^{2} - 5x + 6 = 0$", { signal: signal() });
+    expect(model.calls[0]![0]!.content).not.toMatch(/points\[\] — each point has a kind/);
+    expect(model.calls[0]![0]!.content).toMatch(/no geometric figure/);
+    const geo = new ScriptedModel([good]);
+    await solveProblem(geo, VN_GRADE_9, "Cho tam giác ABC", { signal: signal() });
+    expect(size(model.schemas[0])).toBeLessThan(size(geo.schemas[0]) * 0.75);
+  });
+
+  it("an escalation does not resend the rejected lesson", async () => {
+    const cheap = new ScriptedModel([wrong], "cheap");
+    const strong = new ScriptedModel([good], "strong");
+    await solveProblem(cheap, VN_GRADE_9, "tam giác", { signal: signal(), fallback: strong });
+    const sent = strong.calls[0]!;
+    expect(sent.some((m) => m.role === "assistant")).toBe(false);
+    expect(sent.map((m) => m.content).join("").length).toBeLessThan(cheap.calls[0]!.map((m) => m.content).join("").length + 2000);
+  });
+
+  it("switches to the full figure prompt if a lesson turns out to need a figure", async () => {
+    const geometryWithoutFigure = { ...mockGeometryLesson(), figure: null };
+    const model = new ScriptedModel([JSON.stringify(geometryWithoutFigure), good]);
+    await solveProblem(model, VN_GRADE_9, "Tính số đo x", { signal: signal() });
+    expect(model.calls[0]![0]!.content).toMatch(/no geometric figure/);
+    expect(model.calls[1]![0]!.content).toMatch(/points\[\] — each point has a kind/);
   });
 });
 

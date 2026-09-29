@@ -304,6 +304,29 @@ describe("verifyLesson", () => {
     expect(wrongIneq.verification.status).toBe("unverified");
   });
 
+  it("does not count checks that merely restate the answer", () => {
+    const base = algebraBase();
+    const trivial = verifyLesson({
+      ...base,
+      answerChecks: [
+        { kind: "value", statements: ["3"], assignments: [], expected: "3" },
+        { kind: "substitute", statements: ["3 = 3"], assignments: [[{ variable: "m", value: "3" }]], expected: null },
+      ],
+    });
+    expect(trivial.verification.status).not.toBe("verified");
+    expect(trivial.feedback.join(" ")).toMatch(/only restates the answer/);
+    const real = verifyLesson({
+      ...base,
+      answerChecks: [{ kind: "value", statements: ["(2*(2+1))^2 - 2*(2^2+3)"], assignments: [], expected: "22" }],
+    });
+    expect(real.verification.status).toBe("verified");
+    const wrongVieta = verifyLesson({
+      ...base,
+      answerChecks: [{ kind: "value", statements: ["(2*(3+1))^2 - 2*(3^2+3)"], assignments: [], expected: "22" }],
+    });
+    expect(wrongVieta.verification.status).toBe("unverified");
+  });
+
   it("rejects hints pointing at missing steps", () => {
     const lesson = isoscelesLesson();
     lesson.hints[0]!.stepId = "s9";
@@ -315,5 +338,16 @@ describe("verifyLesson", () => {
     expect(index.get("BA")).toBe("seg_AB");
     expect(index.get("CBA")).toBe("ang_B");
     expect(index.get("angle_A")).toBe("ang_A");
+  });
+});
+
+describe("fixDoubledEscapes", () => {
+  it("collapses double-escaped commands but keeps real line breaks", async () => {
+    const { fixDoubledEscapes } = await import("../src/solver/pipeline");
+    expect(fixDoubledEscapes("x \\\\ge -10")).toBe("x \\ge -10");
+    expect(fixDoubledEscapes("\\\\frac{1}{2}")).toBe("\\frac{1}{2}");
+    expect(fixDoubledEscapes("a = 1 \\\\ b = 2")).toBe("a = 1 \\\\ b = 2");
+    expect(fixDoubledEscapes("x \\ge 1")).toBe("x \\ge 1");
+    expect(fixDoubledEscapes("\\\\gets")).toBe("\\\\gets");
   });
 });

@@ -10,7 +10,7 @@
  */
 import type { Curriculum } from "./curriculum";
 
-export const PROMPT_VERSION = "solver-v1.1";
+export const PROMPT_VERSION = "solver-v1.3";
 
 const ROLE = `You are an experienced, patient mathematics teacher preparing a short guided lesson for ONE student. You do not just solve problems: you plan how the student will discover the solution with hints.`;
 
@@ -87,12 +87,29 @@ const VERIFICATION = `answerChecks[]: machine-checkable claims about the answer,
 - identity: statements[0] = "original expression = simplified result" (true for all allowed values); statements[1..] = the domain conditions, e.g. "x >= 0", "x != 1".
 - inequality: statements[0] = the original inequality; expected = the solution set, e.g. "x >= -5" or "x < 1 or x > 3".
 - value: statements[0] = an arithmetic expression that computes the answer from the givens; expected = the answer's value (e.g. "sqrt(6^2+8^2)" and "10").
+A check must re-derive or test the answer, never restate it: "3" expecting "3" or "m = 3" alone proves nothing and is rejected. For a parameter found through Vi-ét or a condition, use a "value" check that plugs the parameter into the original condition (e.g. statements ["(2*(3+1))^2 - 2*(3^2+3)"], expected "22").
 Always include at least one answer check when the answer is a number, an equation's solution, an inequality's solution set, or a simplified expression. Proofs need none (use figure checks instead). Before answering, silently substitute your answer back and fix any mistake.`;
 
-export function buildSystemPrompt(curriculum: Curriculum): string {
-  return [ROLE, SECURITY, curriculumRules(curriculum), LANGUAGE, TEACHING, FORMAT, GEOMETRY, VERIFICATION, "Return only the JSON object required by the schema."].join(
-    "\n\n",
-  );
+/** Sent instead of the geometry section for non-geometry problems (saves ~1.1K input tokens per solve). */
+const NO_FIGURE = `Figure: this problem has no geometric figure. Set figure to null, and leave every step's geometryActions and every hint's focus empty.`;
+
+/**
+ * The system prompt. `withFigure` = include the (long) geometry construction
+ * rules; only geometry problems need them. Both variants are stable strings,
+ * so each is served from the provider's prompt cache after the first call.
+ */
+export function buildSystemPrompt(curriculum: Curriculum, { withFigure = true }: { withFigure?: boolean } = {}): string {
+  return [
+    ROLE,
+    SECURITY,
+    curriculumRules(curriculum),
+    LANGUAGE,
+    TEACHING,
+    FORMAT,
+    withFigure ? GEOMETRY : NO_FIGURE,
+    VERIFICATION,
+    "Return only the JSON object required by the schema.",
+  ].join("\n\n");
 }
 
 export function buildUserMessage(problemText: string): string {
@@ -100,6 +117,17 @@ export function buildUserMessage(problemText: string): string {
 <<<PROBLEM
 ${problemText}
 PROBLEM>>>`;
+}
+
+/**
+ * Used when escalating to a different model: the rejected lesson is NOT
+ * resent (it would cost thousands of input tokens); only what was wrong.
+ */
+export function buildEscalationMessage(problemText: string, problems: string[]): string {
+  return `${buildUserMessage(problemText)}
+
+A previous attempt at this lesson was rejected by the checking program for these reasons — avoid them:
+${problems.slice(0, 12).map((p) => `- ${p}`).join("\n")}`;
 }
 
 export function buildRetryMessage(problems: string[]): string {
