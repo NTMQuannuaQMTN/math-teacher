@@ -205,7 +205,9 @@ export function buildScene(figure: Figure, resolved: ResolvedFigure, t: ViewTran
     const interior = (angleDeg(p1, v, p2) * Math.PI) / 180;
     const sweep = cross >= 0 ? interior : -interior;
     let path: string;
-    if (a.right) {
+    // A square only when the angle really is 90° — a skewed "square" on a dragged, non-right angle looks broken.
+    const isRight = a.right && Math.abs((interior * 180) / Math.PI - 90) < 0.5;
+    if (isRight) {
       const s = Math.min(12, r);
       const q1 = { x: v.x + u1.x * s, y: v.y + u1.y * s };
       const q2 = { x: v.x + u2.x * s, y: v.y + u2.y * s };
@@ -218,7 +220,7 @@ export function buildScene(figure: Figure, resolved: ResolvedFigure, t: ViewTran
     }
     const bis = norm({ x: u1.x + u2.x, y: u1.y + u2.y });
     // The square mark already says "90°".
-    const text = state.showLabels && a.label && !(a.right && /^\s*90\s*°?\s*$/.test(a.label)) ? a.label : null;
+    const text = state.showLabels && a.label && !(isRight && /^\s*90\s*°?\s*$/.test(a.label)) ? a.label : null;
     const at = (d: number, turn = 0) => {
       const c = Math.cos(turn);
       const s2 = Math.sin(turn);

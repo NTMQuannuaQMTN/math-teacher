@@ -361,3 +361,23 @@ fallback when Gemini is overloaded or out of quota (`OCR_FALLBACK_PROVIDER`, 3 u
 - Known limit: `gemini-3.5-flash-lite` still struggles with competition-level geometry. The
   incircle problem got a wrong step ("J trùng K") and incomplete constructions for G and (S).
   A stronger model for the fallback (for example `gemini-3.5-flash`) needs Gemini billing.
+
+## 2026-09-29: Accuracy — no more false "verified"; solution before figure; angles hold
+
+- **Found in production:** 3 of 4 test lessons had wrong maths, and 2 of them showed "verified"
+  (f(n) parts b and c, where only part a's factoring was checked). The problems are now regression
+  cases `r1`–`r3` in `tools/solver-eval/cases.json`.
+- **New answer check `integers`** (plus `%` / `mod` in the evaluator): "find all n" answers are
+  compared with the problem's condition for every integer from −200 to 200.
+- **Every part is covered.** When lettered parts ask for a result (Tìm/Tính/Giải…), "verified"
+  needs a passing check for each one; otherwise the lesson is "partial" and the model gets
+  feedback. The prompt adds accuracy rules: test on small cases, no hand-waved steps, and say so
+  when a part isn't solved. `PROMPT_VERSION` is now `solver-v1.6`.
+- **Solution first, figure last.** `figure` is now the last field of the lesson schema, and Gemini
+  writes fields in schema order. Ids that steps and hints reference (`seg_XY`, `ang_XYZ`) are
+  created if the figure forgot them.
+- **Angles stay true while dragging.** Right-angle marks and "40°" labels are enforced like
+  given checks, and the square mark is drawn only when the angle really measures 90°.
+- **Fewer wasted retries.** Messy ids ("step 1") are cleaned consistently before validation.
+- **Decision:** the solver stays Gemini-only (flash-lite). It still gets some competition-level
+  answers wrong. Those now show as unverified or partial instead of verified.
