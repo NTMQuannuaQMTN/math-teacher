@@ -87,3 +87,35 @@ describe("constraint-preserving drag", () => {
     expect(constrainedDrag(fig, {}, "D", { x: 1.2, y: 0 })).toBeNull();
   });
 });
+
+describe("angles marked in the drawing stay true while dragging", () => {
+  it("keeps a right-angle mark at 90° and a 40° label at 40°, even without checks", () => {
+    const e = { x: 6 + 3 * Math.cos((40 * Math.PI) / 180), y: 3 * Math.sin((40 * Math.PI) / 180) };
+    const fig: Figure = {
+      ...base(
+        [
+          P("A", "free", { x: 0, y: 0 }), P("B", "free", { x: 4, y: 0 }), P("C", "free", { x: 0, y: 3 }),
+          P("D", "free", { x: 6, y: 0 }), P("E", "free", e), P("F", "free", { x: 9, y: 0 }),
+        ],
+        [],
+      ),
+      angles: [
+        { id: "ang_BAC", from: "B", vertex: "A", to: "C", label: null, right: true, style: "given" },
+        { id: "ang_FDE", from: "F", vertex: "D", to: "E", label: "40°", right: false, style: "given" },
+      ],
+    };
+    let o = constrainedDrag(fig, {}, "C", { x: 1, y: 4 });
+    expect(o).not.toBeNull();
+    o = constrainedDrag(fig, o!, "E", { x: 8, y: 3 });
+    expect(o).not.toBeNull();
+    const r = resolveFigure(fig, o!);
+    const ang = (a: string, v: string, b: string) => {
+      const [p, q, w] = [r.points[a]!, r.points[v]!, r.points[b]!];
+      const u = { x: p.x - q.x, y: p.y - q.y };
+      const z = { x: w.x - q.x, y: w.y - q.y };
+      return (Math.acos((u.x * z.x + u.y * z.y) / (Math.hypot(u.x, u.y) * Math.hypot(z.x, z.y))) * 180) / Math.PI;
+    };
+    expect(ang("B", "A", "C")).toBeCloseTo(90, 1);
+    expect(ang("F", "D", "E")).toBeCloseTo(40, 1);
+  });
+});
