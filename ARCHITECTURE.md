@@ -23,7 +23,7 @@
              └──────────────────────────────────────────────────────────────────┘
                                                                     │
                                                                     ▼
-                                                   OcrProvider: openai | anthropic | mock
+                                                   OcrProvider: gemini | openai | anthropic | mock
 ```
 
 `shared/` holds the API contract (Zod schemas + types) and the maths-text utilities. Both the
@@ -84,6 +84,8 @@ Errors are always `{ error: { code, message, retryable } }`. `code` is a closed 
 - **Interface.** `OcrProvider.extract(image) → { text, model }` (`worker/src/ocr/provider.ts`).
   Providers only fetch; they never interpret the output.
 - **Providers.**
+  - `gemini` (default): Generative Language `generateContent` with image `inlineData` and
+    `responseJsonSchema` (`gemini-2.5-flash`).
   - `openai`: Chat Completions with a strict `json_schema`.
   - `anthropic`: official SDK with `output_config.format` JSON schema, `effort: low`, and
     server-side refusal fallback.

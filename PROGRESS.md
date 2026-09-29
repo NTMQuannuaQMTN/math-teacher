@@ -251,3 +251,12 @@ geometry lessons escalate to Pro.
 **Implementation.** `worker/src/solver/gemini.ts` calls the Generative Language REST API
 (Worker-compatible, no SDK). `SOLVER_PROVIDER=gemini` is the wrangler default; set
 `GEMINI_API_KEY` as a secret. `SOLVER_PROVIDER=openai` keeps the previous GPT path.
+
+## 2026-09-29: Gemini OCR
+
+**Change.** Default `OCR_PROVIDER=gemini` using `gemini-2.5-flash` vision (`inlineData` +
+`responseJsonSchema`), same `MODEL_OCR_JSON_SCHEMA` as OpenAI/Anthropic. Reuses `GEMINI_API_KEY`.
+OpenAI/Anthropic OCR remain selectable. Thinking budget is 0 for OCR to keep cost/latency down.
+
+**Cost.** Flash vision tokens are typically cheaper than `gpt-4.1-mini` for the same ≤1280 px
+crop; expect OCR often in the ~$0.0005–0.002 range. Re-run `npm run ocr:eval` with a real key.

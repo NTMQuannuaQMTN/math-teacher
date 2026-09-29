@@ -2,6 +2,7 @@ import type { AllowedImageType, OcrResult } from "../../../shared/src/contract";
 import { intVar, isDevelopment, type Env } from "../env";
 import { ApiError } from "../http";
 import { AnthropicOcrProvider } from "./anthropic";
+import { GeminiOcrProvider } from "./gemini";
 import { isAbort } from "./httpErrors";
 import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
@@ -10,8 +11,11 @@ import { OcrFailure, type OcrProvider } from "./provider";
 
 /** Picks the provider from configuration. Misconfiguration is a server error, never a crash. */
 export function createOcrProvider(env: Env, request?: Request): OcrProvider {
-  const name = (env.OCR_PROVIDER || "openai").toLowerCase();
+  const name = (env.OCR_PROVIDER || "gemini").toLowerCase();
   switch (name) {
+    case "gemini":
+      if (!env.GEMINI_API_KEY) break;
+      return new GeminiOcrProvider(env.GEMINI_API_KEY, env.GEMINI_OCR_MODEL || "gemini-2.5-flash");
     case "openai":
       if (!env.OPENAI_API_KEY) break;
       return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");

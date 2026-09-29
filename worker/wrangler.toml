@@ -24,9 +24,10 @@ bucket_name = "math-teacher-images"
 [vars]
 # "production" disables the mock OCR provider and dev-only behaviour.
 ENVIRONMENT = "production"
-# "openai" | "anthropic" | "mock" (mock only works when ENVIRONMENT = "development")
-OCR_PROVIDER = "openai"
-# gpt-4.1-mini: ~5× cheaper input/output than gpt-4.1; re-run `npm run ocr:eval` after changing.
+# "gemini" | "openai" | "anthropic" | "mock" (mock only in development)
+OCR_PROVIDER = "gemini"
+# Cheap vision model for OCR. Re-run `npm run ocr:eval` after changing.
+GEMINI_OCR_MODEL = "gemini-2.5-flash"
 OPENAI_MODEL = "gpt-4.1-mini"
 ANTHROPIC_MODEL = "claude-opus-5"
 OCR_TIMEOUT_MS = "45000"
@@ -34,7 +35,7 @@ OCR_TIMEOUT_MS = "45000"
 OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
 OCR_LIMIT_PER_IP_PER_HOUR = "120"
 # Solver (lesson generation). Default: Gemini flash first, pro only on verify failure.
-# OCR stays on OpenAI/Anthropic. Set SOLVER_PROVIDER=openai to use GPT models instead.
+# OCR + solve both default to Gemini (one GEMINI_API_KEY). Set OCR_PROVIDER/SOLVER_PROVIDER=openai for GPT.
 SOLVER_PROVIDER = "gemini"
 SOLVER_MODEL = "gemini-2.5-flash"
 SOLVER_REASONING_EFFORT = "low"
@@ -52,6 +53,6 @@ ALLOWED_ORIGINS = ""
 
 # Secrets — set with `wrangler secret put <NAME>`; never commit them:
 #   IMAGE_URL_SECRET    (required) HMAC key for signed image URLs, 32+ random chars
-#   OPENAI_API_KEY      (when OCR_PROVIDER = "openai", or SOLVER_PROVIDER = "openai")
+#   GEMINI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "gemini")
+#   OPENAI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "openai")
 #   ANTHROPIC_API_KEY   (when OCR_PROVIDER = "anthropic")
-#   GEMINI_API_KEY      (when SOLVER_PROVIDER = "gemini")

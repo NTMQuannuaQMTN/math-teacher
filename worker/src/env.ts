@@ -6,6 +6,7 @@ export interface Env {
   OCR_PROVIDER: string;
   OPENAI_MODEL: string;
   ANTHROPIC_MODEL: string;
+  GEMINI_OCR_MODEL?: string;
   OCR_TIMEOUT_MS: string;
   OCR_LIMIT_PER_DEVICE_PER_HOUR: string;
   OCR_LIMIT_PER_IP_PER_HOUR: string;
