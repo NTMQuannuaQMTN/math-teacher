@@ -75,6 +75,7 @@ export const PointKindSchema = z.enum([
   "foot", // refs [P, A, B]; foot of perpendicular from P to line AB
   "intersection", // refs [A, B, C, D]; lines AB and CD
   "line_circle", // refs [A, B, circleId]; value 0 = hit nearer to A, 1 = farther from A
+  "circle_circle", // refs [c1, c2] (value 0|1 picks the side) or [c1, c2, P]: the intersection other than P
   "on_circle", // refs [circleId]; value = angle (deg) around the centre
   "tangent", // refs [P, circleId]; value 0|1 chooses which tangent point
   "reflect", // refs [P, O] (through a point) or [P, A, B] (over line AB)
@@ -234,8 +235,11 @@ export const AnswerCheckSchema = z.strictObject({
    * identity   — statements[0] is "LHS = RHS" true for all allowed values; statements[1..] are domain conditions
    * inequality — statements[0] is the original inequality; expected is the solution set ("x >= -5", "x < 1 or x > 3")
    * value      — statements[0] is an expression whose value is `expected`
+   * integers   — statements[0] is the problem's condition on one integer variable (e.g. "((n+4)^4 - n^4) % 3 = 0"),
+   *              statements[1..] its domain ("n >= 1"); expected is the claimed answer set ("n % 3 = 1", or "none").
+   *              Checked by trying every integer in -200..200.
    */
-  kind: z.enum(["substitute", "identity", "inequality", "value"]),
+  kind: z.enum(["substitute", "identity", "inequality", "value", "integers"]),
   statements: z.array(z.string().max(300)).min(1).max(6),
   assignments: z
     .array(z.array(z.strictObject({ variable: z.string().max(10), value: z.string().max(120) })).max(6))
@@ -251,8 +255,12 @@ export const ModelLessonSchema = z.strictObject({
   hints: z.array(HintSchema).max(8),
   steps: z.array(StepSchema).max(14),
   finalAnswer: z.strictObject({ text: Text, math: Latex.nullable() }),
-  figure: FigureSchema.nullable(),
   answerChecks: z.array(AnswerCheckSchema).max(6),
+  /**
+   * Last on purpose: models write fields in schema order, so the figure is drawn
+   * after the solution is worked out and checked, and can include everything it uses.
+   */
+  figure: FigureSchema.nullable(),
 });
 export type ModelLesson = z.infer<typeof ModelLessonSchema>;
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ModelLessonSchema, type ModelLesson, type Verification } from "../../../shared/src/solution";
-import { normalizeProblemText } from "../../../shared/src/mathText";
+import { normalizeProblemText, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
 import { OcrFailure } from "../ocr/provider";
 import type { Curriculum } from "./curriculum";
@@ -38,6 +38,8 @@ export interface SolveOptions {
    */
   fallback?: JsonModel;
   log?: (message: string) => void;
+  /** Debugging: receives each attempt's raw model output. */
+  onRaw?: (attempt: number, text: string) => void;
 }
 
 function parseLesson(text: string): { lesson: ModelLesson } | { problems: string[] } {
@@ -47,13 +49,73 @@ function parseLesson(text: string): { lesson: ModelLesson } | { problems: string
   } catch {
     return { problems: ["the response was not valid JSON"] };
   }
-  const parsed = ModelLessonSchema.safeParse(json);
+  let parsed = ModelLessonSchema.safeParse(sanitizeIds(json));
+  if (!parsed.success) {
+    // A malformed figure check shouldn't cost a whole new lesson: repair or drop it and parse again.
+    const salvaged = salvageFigureChecks(json, parsed.error.issues);
+    if (salvaged) parsed = ModelLessonSchema.safeParse(salvaged);
+  }
   if (!parsed.success) {
     return {
       problems: parsed.error.issues.slice(0, 10).map((issue) => `${issue.path.join(".")}: ${issue.message}`),
     };
   }
   return { lesson: parsed.data };
+}
+
+type Json = Record<string, unknown>;
+
+const ID_KEYS = new Set(["id", "stepId", "refs", "targets", "focus", "from", "to", "vertex", "center", "through"]);
+const cleanId = (v: unknown) =>
+  typeof v === "string" ? v.trim().replace(/[′’]/g, "'").replace(/[^A-Za-z0-9_']+/g, "_").replace(/^_+|_+$/g, "") || v : v;
+
+/**
+ * Ids like "step 1" or "seg_A-B" fail the schema and would cost a whole new lesson. Clean every
+ * id-valued field the same way, so references (stepId, targets, refs…) still match their objects.
+ */
+function sanitizeIds(value: unknown, key = ""): unknown {
+  if (Array.isArray(value)) return value.map((v) => (ID_KEYS.has(key) && typeof v === "string" ? cleanId(v) : sanitizeIds(v)));
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value as Json).map(([k, v]) => [k, ID_KEYS.has(k) && typeof v === "string" ? cleanId(v) : sanitizeIds(v, k)]));
+  }
+  return value;
+}
+
+/** Splits "ABC" into ["A", "B", "C"] when it is made only of known point ids (longest ids first). */
+function splitIntoPoints(ref: string, pointIds: string[]): string[] | null {
+  if (pointIds.includes(ref)) return [ref];
+  const ids = [...pointIds].sort((a, b) => b.length - a.length);
+  const out: string[] = [];
+  let rest = ref;
+  while (rest) {
+    const id = ids.find((p) => rest.startsWith(p));
+    if (!id) return null;
+    out.push(id);
+    rest = rest.slice(id.length);
+  }
+  return out;
+}
+
+/**
+ * Only when every schema problem is inside figure.checks: expand refs written as
+ * segment/triangle names, drop checks that are still malformed, and return the repaired JSON.
+ */
+function salvageFigureChecks(json: unknown, issues: { path: PropertyKey[] }[]): unknown | null {
+  if (!issues.every((i) => i.path[0] === "figure" && i.path[1] === "checks")) return null;
+  const figure = (json as Json).figure as Json;
+  const points = Array.isArray(figure.points) ? (figure.points as Json[]).map((p) => String(p.id)) : [];
+  const bad = new Set(issues.map((i) => i.path[2]));
+  const checks = (figure.checks as Json[]).flatMap((c, index) => {
+    if (!bad.has(index)) return [c];
+    const refs = Array.isArray(c.refs) ? (c.refs as unknown[]).flatMap((r) => splitIntoPoints(String(r), points) ?? [String(r)]) : [];
+    return [{ ...c, refs }];
+  });
+  const repaired = { ...(json as Json), figure: { ...figure, checks } };
+  const again = ModelLessonSchema.safeParse(repaired);
+  if (again.success) return repaired;
+  // Still malformed: drop just those checks.
+  const stillBad = new Set(again.error.issues.filter((i) => i.path[0] === "figure" && i.path[1] === "checks").map((i) => i.path[2]));
+  return { ...repaired, figure: { ...figure, checks: checks.filter((_, i) => !stillBad.has(i)) } };
 }
 
 /**
@@ -85,9 +147,54 @@ export function fixDoubledEscapes(s: string): string {
   return s.replace(DOUBLED_COMMAND, "\\");
 }
 
+/**
+ * Models sometimes name segments in figure checks ("AB ⊥ AC" as refs ["AB", "AC"]) instead of
+ * listing points. Split any ref that isn't a known id but is two point ids glued together, so
+ * the check can be verified instead of costing a retry.
+ */
+export function expandSegmentRefs(figure: NonNullable<ModelLesson["figure"]>): NonNullable<ModelLesson["figure"]> {
+  const pointIds = new Set(figure.points.map((p) => p.id));
+  const known = new Set([...pointIds, ...figure.circles.map((c) => c.id)]);
+  const split = (ref: string): string[] => {
+    if (known.has(ref)) return [ref];
+    for (let i = 1; i < ref.length; i++) {
+      const [a, b] = [ref.slice(0, i), ref.slice(i)];
+      if (pointIds.has(a) && pointIds.has(b)) return [a, b];
+    }
+    return [ref];
+  };
+  return { ...figure, checks: figure.checks.map((c) => ({ ...c, refs: c.refs.flatMap(split) })) };
+}
+
+const CIRCLE_ARGS: Partial<Record<string, number[]>> = { line_circle: [2], on_circle: [0], tangent: [1], circle_circle: [0, 1] };
+
+/** Models sometimes write a circle's center ("I") where a circle id ("c_I") is expected. */
+export function repairCircleRefs(figure: NonNullable<ModelLesson["figure"]>): NonNullable<ModelLesson["figure"]> {
+  const circleIds = new Set(figure.circles.map((c) => c.id));
+  const byCenter = new Map<string, string[]>();
+  for (const c of figure.circles) byCenter.set(c.center, [...(byCenter.get(c.center) ?? []), c.id]);
+  const points = figure.points.map((p) => {
+    const args = CIRCLE_ARGS[p.kind];
+    if (!args) return p;
+    const refs = p.refs.map((ref, i) => {
+      if (!args.includes(i) || circleIds.has(ref)) return ref;
+      const candidates = byCenter.get(ref);
+      return candidates?.length === 1 ? candidates[0]! : ref;
+    });
+    return { ...p, refs };
+  });
+  const checks = figure.checks.map((c) => {
+    const ref = c.refs[1];
+    if (c.kind !== "on_circle" || !ref || circleIds.has(ref)) return c;
+    const candidates = byCenter.get(ref);
+    return candidates?.length === 1 ? { ...c, refs: [c.refs[0]!, candidates[0]!, ...c.refs.slice(2)] } : c;
+  });
+  return { ...figure, points, checks };
+}
+
 /** Normalizes all student-facing strings (NFC for Vietnamese, no control characters). */
 function tidy(lesson: ModelLesson): ModelLesson {
-  const t = (s: string) => fixDoubledEscapes(normalizeProblemText(s));
+  const t = (s: string) => wrapBareLatex(fixDoubledEscapes(normalizeProblemText(s)));
   const tn = (s: string | null) => (s === null ? null : t(s));
   const stackMathLines = (m: string | null) => stackLines(m === null ? null : fixDoubledEscapes(m));
   return {
@@ -101,6 +208,7 @@ function tidy(lesson: ModelLesson): ModelLesson {
     hints: lesson.hints.map((h) => ({ ...h, question: t(h.question), cue: tn(h.cue), explanation: t(h.explanation), math: stackMathLines(h.math) })),
     steps: lesson.steps.map((s) => ({ ...s, title: t(s.title), explanation: t(s.explanation), reason: tn(s.reason), math: stackMathLines(s.math) })),
     finalAnswer: { text: t(lesson.finalAnswer.text), math: stackMathLines(lesson.finalAnswer.math) },
+    figure: lesson.figure ? repairCircleRefs(expandSegmentRefs(lesson.figure)) : lesson.figure,
   };
 }
 const stackLines = (m: string | null) => stackMathLines(m);
@@ -120,7 +228,7 @@ export async function solveProblem(
   model: JsonModel,
   curriculum: Curriculum,
   problemText: string,
-  { signal, maxAttempts = 2, fallback, log = () => undefined }: SolveOptions,
+  { signal, maxAttempts = 2, fallback, log = () => undefined, onRaw }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
@@ -129,7 +237,7 @@ export async function solveProblem(
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
     { role: "user", content: buildUserMessage(problemText) },
   ];
-  let best: { lesson: ModelLesson; verification: Verification; score: number; model: string } | null = null;
+  let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number } | null = null;
   const usage: Record<string, Usage> = {};
   const finish = (attempts: number, producedBy: string) => {
     let costUsd = 0;
@@ -151,6 +259,7 @@ export async function solveProblem(
       signal,
       onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
     });
+    onRaw?.(attempt, text);
     const parsed = parseLesson(text);
     let problems: string[];
 
@@ -158,8 +267,15 @@ export async function solveProblem(
       const result = verifyLesson(tidy(parsed.lesson));
       const score =
         result.verification.status === "verified" ? 3 : result.verification.status === "partial" ? 2 : result.verification.status === "not_checkable" ? 2 : 1;
-      if (!best || score > best.score || (score === best.score && !result.verification.figureIssue)) {
-        best = { lesson: result.lesson, verification: result.verification, score, model: current.model };
+      // Same score: prefer the more complete figure, then the attempt with fewer remaining problems.
+      const f = result.lesson.figure;
+      const drawn = f ? f.points.length + f.circles.length + f.lines.length : 0;
+      const better =
+        !best ||
+        score > best.score ||
+        (score === best.score && (drawn > best.drawn || (drawn === best.drawn && result.feedback.length < best.problems)));
+      if (better) {
+        best = { lesson: result.lesson, verification: result.verification, score, model: current.model, problems: result.feedback.length, drawn };
       }
       problems = result.feedback;
       log(`attempt ${attempt}: ${result.verification.status}, ${problems.length} problem(s)${problems.length ? `: ${problems.slice(0, 3).join(" | ")}` : ""}`);

@@ -171,3 +171,44 @@ describe("stackMathLines", () => {
     expect(stackMathLines(null)).toBeNull();
   });
 });
+
+describe("malformed figure checks", () => {
+  it("repairs segment-name refs and drops hopeless checks instead of retrying", async () => {
+    const { solveProblem } = await import("../src/solver/pipeline");
+    const { mockGeometryLesson } = await import("../src/solver/mock");
+    const { VN_GRADE_9 } = await import("../src/solver/curriculum");
+    const lesson = mockGeometryLesson() as unknown as { figure: { checks: unknown[] } };
+    lesson.figure.checks.push({ kind: "collinear", refs: ["ABC"], value: null, role: "derived" });
+    lesson.figure.checks.push({ kind: "parallel", refs: [], value: null, role: "derived" });
+    let calls = 0;
+    const model = {
+      model: "fake",
+      complete: async () => {
+        calls++;
+        return JSON.stringify(lesson);
+      },
+    };
+    const result = await solveProblem(model as never, VN_GRADE_9, "Cho tam giác ABC cân tại A có góc A bằng 40 độ. Tính góc B.", {
+      signal: AbortSignal.timeout(5000),
+    });
+    expect(result.lesson.figure!.checks.some((c) => c.kind === "collinear" && c.refs.join("") === "ABC")).toBe(true);
+    expect(result.lesson.figure!.checks.some((c) => c.kind === "parallel")).toBe(false);
+    expect(calls).toBeLessThanOrEqual(2);
+  });
+});
+
+describe("messy ids", () => {
+  it("cleans ids consistently instead of rejecting the lesson", async () => {
+    const { solveProblem } = await import("../src/solver/pipeline");
+    const { mockAlgebraLesson } = await import("../src/solver/mock");
+    const { VN_GRADE_9 } = await import("../src/solver/curriculum");
+    const lesson = mockAlgebraLesson() as unknown as { steps: { id: string }[]; hints: { stepId: string }[] };
+    lesson.steps[0]!.id = "step 1";
+    for (const h of lesson.hints) if (h.stepId === "s1") h.stepId = "step 1";
+    let calls = 0;
+    const model = { model: "fake", complete: async () => (calls++, JSON.stringify(lesson)) };
+    const result = await solveProblem(model as never, VN_GRADE_9, "Giải phương trình $x^2 - 5x + 6 = 0$.", { signal: AbortSignal.timeout(5000) });
+    expect(calls).toBe(1);
+    expect(result.lesson.steps[0]!.id).toBe("step_1");
+  });
+});

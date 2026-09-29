@@ -9,6 +9,7 @@
  *   multiplication (2x, 3(x+1), (x+1)(x-1), xy = x*y), functions
  *   sqrt cbrt abs sin cos tan cot (degrees), constant pi.
  * - Relations: = == != < <= > >= (and Unicode ≤ ≥ ≠).
+ * - Remainder: a % b or a mod b (always 0..b-1 for integers; NaN otherwise).
  */
 
 export type Env = Record<string, number>;
@@ -17,7 +18,7 @@ type Node =
   | { t: "num"; v: number }
   | { t: "var"; name: string }
   | { t: "neg"; a: Node }
-  | { t: "bin"; op: "+" | "-" | "*" | "/" | "^"; a: Node; b: Node }
+  | { t: "bin"; op: "+" | "-" | "*" | "/" | "^" | "%"; a: Node; b: Node }
   | { t: "call"; fn: string; a: Node };
 
 const FUNCTIONS: Record<string, (x: number) => number> = {
@@ -76,6 +77,11 @@ function tokenize(src: string): Token[] {
     if (/[a-zA-Z]/.test(c)) {
       const word = /^[a-zA-Z]+/.exec(src.slice(i))![0];
       const lower = word.toLowerCase();
+      if (lower === "mod") {
+        tokens.push({ k: "op", v: "%" });
+        i += word.length;
+        continue;
+      }
       if (FUNCTIONS[lower] || lower === "pi") {
         tokens.push({ k: "id", v: lower });
         i += word.length;
@@ -93,7 +99,7 @@ function tokenize(src: string): Token[] {
       i += 2;
       continue;
     }
-    if ("+-*/^()=<>".includes(c)) {
+    if ("+-*/^()=<>%".includes(c)) {
       tokens.push({ k: "op", v: c });
       i++;
       continue;
@@ -140,8 +146,8 @@ class Parser {
   private multiplicative(): Node {
     let left = this.unary();
     for (;;) {
-      if (this.isOp("*") || this.isOp("/")) {
-        const op = (this.tokens[this.pos++] as { v: "*" | "/" }).v;
+      if (this.isOp("*") || this.isOp("/") || this.isOp("%")) {
+        const op = (this.tokens[this.pos++] as { v: "*" | "/" | "%" }).v;
         left = { t: "bin", op, a: left, b: this.unary() };
       } else if (this.startsOperand()) {
         left = { t: "bin", op: "*", a: left, b: this.power() };
@@ -230,6 +236,10 @@ function evaluate(node: Node, env: Env): number {
           return a / b;
         case "^":
           return a ** b;
+        case "%": {
+          if (!Number.isInteger(a) || !Number.isInteger(b) || b === 0 || Math.abs(a) > 2 ** 52) return NaN;
+          return ((a % b) + Math.abs(b)) % Math.abs(b);
+        }
       }
     }
   }

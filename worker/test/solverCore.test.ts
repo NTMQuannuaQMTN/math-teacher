@@ -351,3 +351,24 @@ describe("fixDoubledEscapes", () => {
     expect(fixDoubledEscapes("\\\\gets")).toBe("\\\\gets");
   });
 });
+
+describe("expandSegmentRefs", () => {
+  it("splits segment names in figure checks into their points", async () => {
+    const { expandSegmentRefs } = await import("../src/solver/pipeline");
+    const pt = (id: string) => ({ id, label: id, kind: "free" as const, refs: [], x: 0, y: 0, value: null, value2: null, draggable: true, hidden: false });
+    const figure = {
+      scale: "schematic" as const,
+      points: ["A", "B", "C", "H1"].map(pt),
+      lines: [], angles: [], marks: [],
+      circles: [{ id: "c", center: "A", through: "B", radius: null, style: "given" as const, label: null }],
+      checks: [
+        { kind: "perpendicular" as const, refs: ["AB", "AC"], value: null, role: "given" as const },
+        { kind: "perpendicular" as const, refs: ["AH1", "B", "C"], value: null, role: "given" as const },
+        { kind: "on_circle" as const, refs: ["C", "c"], value: null, role: "given" as const },
+        { kind: "collinear" as const, refs: ["XY", "A"], value: null, role: "given" as const },
+      ],
+    };
+    const out = expandSegmentRefs(figure as never);
+    expect(out.checks.map((c) => c.refs)).toEqual([["A", "B", "A", "C"], ["A", "H1", "B", "C"], ["C", "c"], ["XY", "A"]]);
+  });
+});

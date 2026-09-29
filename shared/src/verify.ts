@@ -11,6 +11,7 @@
  * Used by the Worker before a lesson is stored/shown, and to build precise
  * feedback when asking the model to correct itself.
  */
+import { completeFigure, defineReferencedObjects } from "./figureComplete";
 import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, type Env } from "./expr";
 import { evaluateFigureCheck, resolveFigure, type ResolvedFigure } from "./geometry";
 import type { AnswerCheck, Figure, FigureCheck, ModelLesson, Verification } from "./solution";
@@ -72,6 +73,7 @@ const REF_COUNTS: Record<string, [number, number]> = {
   foot: [3, 3],
   intersection: [4, 4],
   line_circle: [3, 3],
+  circle_circle: [2, 3],
   on_circle: [1, 1],
   tangent: [2, 2],
   reflect: [2, 3],
@@ -113,10 +115,12 @@ function validateFigureStructure(figure: Figure, report: StructureReport): void 
       report.figureErrors.push(`point ${p.id}: kind ${p.kind} needs ${min === max ? min : `${min}-${max}`} refs, got ${p.refs.length}`);
     }
     if (p.kind === "free" && (p.x === null || p.y === null)) report.figureErrors.push(`free point ${p.id} needs x and y`);
-    const circleArg = p.kind === "line_circle" ? 2 : p.kind === "on_circle" ? 0 : p.kind === "tangent" ? 1 : -1;
+    const circleArgs =
+      p.kind === "line_circle" ? [2] : p.kind === "on_circle" ? [0] : p.kind === "tangent" ? [1] : p.kind === "circle_circle" ? [0, 1] : [];
     p.refs.forEach((ref, i) => {
-      const ok = i === circleArg ? circleIds.has(ref) : pointIds.has(ref);
-      if (!ok) report.figureErrors.push(`point ${p.id}: ref "${ref}" is not a ${i === circleArg ? "circle" : "point"}`);
+      const isCircle = circleArgs.includes(i);
+      const ok = isCircle ? circleIds.has(ref) : pointIds.has(ref);
+      if (!ok) report.figureErrors.push(`point ${p.id}: ref "${ref}" is not a ${isCircle ? "circle" : "point"}`);
     });
   }
   for (const c of figure.circles) {
@@ -270,7 +274,7 @@ function evalValue(src: string): number {
   return evalExpression(src.replace(/,(\d)/g, ".$1"), {});
 }
 
-function runAnswerCheck(check: AnswerCheck): CheckOutcome {
+export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
   const label = check.statements[0] ?? check.kind;
   try {
     switch (check.kind) {
@@ -324,6 +328,28 @@ function runAnswerCheck(check: AnswerCheck): CheckOutcome {
           compared++;
         }
         return { label, passed: compared > 50, detail: `agrees at ${compared} points` };
+      }
+      case "integers": {
+        const condition = check.statements[0]!;
+        const domain = check.statements.slice(1);
+        if (!check.expected) return { label, passed: false, detail: "missing expected answer set" };
+        const vars = [...new Set([condition, ...domain].flatMap((st) => [...variablesOf(st.replace(/\b(or|and|hoặc|và)\b/gi, " "))]))];
+        if (vars.length !== 1) return { label, passed: false, detail: "integers checks support one variable" };
+        const v = vars[0]!;
+        const none = /^\s*(none|không có|∅|\\varnothing|\\emptyset)\s*$/i.test(check.expected);
+        let compared = 0;
+        for (let n = -200; n <= 200; n++) {
+          const env = { [v]: n };
+          if (!domain.every((d) => evalCondition(d, env) === true)) continue;
+          const actual = evalCondition(condition, env);
+          const claimed = none ? false : evalCondition(check.expected, env);
+          if (actual === null || claimed === null) continue;
+          if (actual !== claimed) {
+            return { label, passed: false, detail: `at ${v}=${n}: the condition is ${actual} but the claimed answer says ${claimed}` };
+          }
+          compared++;
+        }
+        return { label, passed: compared >= 20, detail: `agrees for ${compared} integers` };
       }
       case "value": {
         if (!check.expected) return { label, passed: false, detail: "missing expected value" };
@@ -386,8 +412,103 @@ export interface LessonVerification {
   resolvedFigure: ResolvedFigure | null;
 }
 
+/**
+ * Keeps only the given points/circles (plus circles whose defining points survive),
+ * and drops every line, angle, mark, check and highlight that refers to something removed.
+ */
+function pruneFigure(lesson: ModelLesson, keepPoints: Set<string>, keepCircles: Set<string>): ModelLesson {
+  const f = lesson.figure!;
+  const points = f.points.filter((p) => keepPoints.has(p.id));
+  const pts = new Set(points.map((p) => p.id));
+  const circles = f.circles.filter((c) => keepCircles.has(c.id) && pts.has(c.center) && (c.through === null || pts.has(c.through)));
+  const cs = new Set(circles.map((c) => c.id));
+  const lines = f.lines.filter((l) => pts.has(l.from) && pts.has(l.to));
+  const lineIds = new Set(lines.map((l) => l.id));
+  const figure: Figure = {
+    ...f,
+    points,
+    circles,
+    lines,
+    angles: f.angles.filter((a) => [a.from, a.vertex, a.to].every((id) => pts.has(id))),
+    marks: f.marks.filter((m) => m.targets.every((t) => lineIds.has(t))),
+    checks: f.checks.filter((c) => c.refs.every((r) => pts.has(r) || cs.has(r))),
+  };
+  const keep = new Set([...figure.points, ...figure.circles, ...figure.lines, ...figure.angles].map((x) => x.id));
+  return {
+    ...lesson,
+    figure,
+    steps: lesson.steps.map((s) => ({
+      ...s,
+      geometryActions: s.geometryActions.map((a) => ({ ...a, targets: a.targets.filter((t) => keep.has(t)) })).filter((a) => a.targets.length > 0),
+    })),
+    hints: lesson.hints.map((h) => ({ ...h, focus: h.focus.filter((t) => keep.has(t)) })),
+  };
+}
+
+/**
+ * A few malformed points shouldn't cost the whole figure: drop the objects the
+ * structure errors blame (and whatever depends on them) until the rest is valid.
+ * Gives up (returns null) on errors that can't be pinned on one object, like duplicate ids.
+ */
+function salvageStructure(lesson: ModelLesson, errors: string[]): { lesson: ModelLesson; dropped: string[] } | null {
+  let current = lesson;
+  let remaining = errors;
+  const dropped: string[] = [];
+  for (let round = 0; round < 6 && remaining.length > 0; round++) {
+    const badPoints = new Set<string>();
+    const badCircles = new Set<string>();
+    for (const e of remaining) {
+      const point = /^(?:free )?point (\S+?):? /.exec(e);
+      const circle = /^circle (\S+?): /.exec(e);
+      if (point) badPoints.add(point[1]!);
+      else if (circle) badCircles.add(circle[1]!);
+      else if (!/^(line|angle|check) /.test(e)) return null;
+    }
+    dropped.push(...remaining);
+    const f = current.figure!;
+    current = pruneFigure(
+      current,
+      new Set(f.points.map((p) => p.id).filter((id) => !badPoints.has(id))),
+      new Set(f.circles.map((c) => c.id).filter((id) => !badCircles.has(id))),
+    );
+    const report: StructureReport = { errors: [], warnings: [], figureErrors: [] };
+    validateFigureStructure(current.figure!, report);
+    remaining = report.figureErrors;
+  }
+  return remaining.length === 0 && current.figure!.points.length > 0 ? { lesson: current, dropped } : null;
+}
+
+/** Two circles that coincide are almost always a mis-constructed circle (e.g. "(S) through I, D, J" drawn as (I)). */
+function duplicateCircles(figure: Figure, resolved: ResolvedFigure): string[] {
+  const out: string[] = [];
+  const ids = Object.keys(resolved.circles);
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      const [a, b] = [resolved.circles[ids[i]!]!, resolved.circles[ids[j]!]!];
+      const tol = 1e-6 * Math.max(1, a.r, b.r);
+      if (Math.hypot(a.cx - b.cx, a.cy - b.cy) < tol && Math.abs(a.r - b.r) < tol) {
+        out.push(
+          `figure: circles ${ids[i]} and ${ids[j]} are the same circle. A circle through three points P, Q, R needs a hidden center O = circumcenter(P, Q, R) and through P; a circle with diameter PQ needs center midpoint(P, Q).`,
+        );
+      }
+    }
+  }
+  return out.slice(0, 2);
+}
+
+/** Lettered parts of a problem that ask for a result ("b) Tìm n…", "c) Tính…"), e.g. ["b", "c"]. */
+export function resultParts(statement: string): string[] {
+  const out: string[] = [];
+  const re = /(?:^|[\s(])([a-f])\)\s*(?:\$[^$]*\$\s*)?(Tìm|Tính|Giải|Rút gọn|Xác định|Find|Compute|Calculate|Solve|Simplify|Determine|Evaluate)/giu;
+  for (const m of statement.matchAll(re)) {
+    const letter = m[1]!.toLowerCase();
+    if (!out.includes(letter)) out.push(letter);
+  }
+  return out;
+}
+
 export function verifyLesson(input: ModelLesson): LessonVerification {
-  const { lesson: repaired, report } = checkLessonStructure(input);
+  const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(input));
   let lesson = repaired;
   const feedback = [...report.errors];
   const checks: Verification["checks"] = [];
@@ -398,13 +519,29 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
 
   if (lesson.figure) {
     const figureProblems = [...report.figureErrors];
+    if (figureProblems.length > 0) {
+      const salvaged = salvageStructure(lesson, figureProblems);
+      if (salvaged) {
+        feedback.push(...salvaged.dropped.map((e) => `figure: ${e} (left out of the figure)`));
+        lesson = salvaged.lesson;
+        figureProblems.length = 0;
+      }
+    }
     if (figureProblems.length === 0) {
-      resolved = resolveFigure(lesson.figure);
-      figureProblems.push(...resolved.errors);
+      resolved = resolveFigure(lesson.figure!);
+      if (resolved.errors.length > 0) {
+        // Keep what can be drawn: leave out the objects that couldn't be constructed (and what depends on them).
+        feedback.push(...resolved.errors.map((e) => `figure: ${e} (left out of the figure)`));
+        lesson = pruneFigure(lesson, new Set(Object.keys(resolved.points)), new Set(Object.keys(resolved.circles)));
+        resolved = resolveFigure(lesson.figure!);
+        figureProblems.push(...resolved.errors);
+      }
+      feedback.push(...duplicateCircles(lesson.figure!, resolved));
     }
     if (figureProblems.length === 0 && resolved) {
-      for (const check of lesson.figure.checks) {
-        const measurable = check.role === "given" || lesson.figure.scale === "exact" || SHAPE_INDEPENDENT.has(check.kind);
+      const figure = lesson.figure!;
+      for (const check of figure.checks) {
+        const measurable = check.role === "given" || figure.scale === "exact" || SHAPE_INDEPENDENT.has(check.kind);
         if (!measurable) continue;
         const result = evaluateFigureCheck(check, resolved);
         const label = describeFigureCheck(check);
@@ -419,8 +556,18 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
           }
         }
       }
-      const givenCount = lesson.figure.checks.filter((c) => c.role === "given").length;
+      const givenCount = figure.checks.filter((c) => c.role === "given").length;
       if (givenCount > 0 && figureProblems.length === 0) checks.push({ label: "figure matches the givens", passed: true });
+    }
+    if (figureProblems.length === 0 && resolved) {
+      // Draw everything the lesson talks about; missing points/circles go back to the model.
+      const completion = completeFigure(lesson, resolved);
+      lesson = completion.lesson;
+      if (completion.missing.length > 0) {
+        feedback.push(
+          `figure is missing ${completion.missing.join(", ")}, which the problem or solution names. The figure must show every point, line and circle from ALL parts of the problem and everything the solution uses (use circle_circle for an intersection of two circles, line_circle with value 1 for "the second intersection").`,
+        );
+      }
     }
     if (figureProblems.length > 0) {
       feedback.push(...figureProblems.map((p) => `figure: ${p}`));
@@ -435,6 +582,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     }
   }
 
+  let answerChecksPassed = 0;
   for (const check of lesson.answerChecks) {
     if (isTrivialCheck(check)) {
       feedback.push(
@@ -444,6 +592,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     }
     const outcome = runAnswerCheck(check);
     checks.push({ label: outcome.label, passed: outcome.passed });
+    if (outcome.passed) answerChecksPassed++;
     if (outcome.passed) answerLevelPassed++;
     else {
       answerLevelFailed++;
@@ -451,9 +600,19 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     }
   }
 
+  // "Verified" must cover every part that asks for a result, not just one of them.
+  const parts = resultParts(lesson.analysis.statement);
+  const uncovered = lesson.analysis.status === "solvable" && parts.length >= 2 && answerChecksPassed < parts.length;
+  if (uncovered) {
+    feedback.push(
+      `the problem has ${parts.length} parts that ask for a result (${parts.join(", ")}) but only ${answerChecksPassed} answer check(s) pass: add one answerCheck per part that independently re-derives that part's result (kind "integers" for "find all integers n such that…", "substitute" for equations, "value" for computed quantities)`,
+    );
+  }
+
   let status: Verification["status"];
   if (lesson.analysis.status !== "solvable") status = "not_checkable";
   else if (answerLevelFailed > 0 || report.errors.length > 0) status = "unverified";
+  else if (answerLevelPassed > 0 && uncovered) status = "partial";
   else if (answerLevelPassed > 0) status = "verified";
   else if (checks.length > 0) status = "partial";
   else status = "not_checkable";

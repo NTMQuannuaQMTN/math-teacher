@@ -32,7 +32,15 @@ async function run(c: Case) {
   try {
     // Same routing as the Worker: geometry goes straight to the fallback model.
     const route = fallback && looksLikeGeometry(c.text) ? { primary: fallback, fb: undefined } : { primary: llm, fb: fallback };
-    const r = await solveProblem(route.primary, VN_GRADE_9, c.text, { signal: AbortSignal.timeout(240_000), fallback: route.fb });
+    const logs: string[] = [];
+    const r = await solveProblem(route.primary, VN_GRADE_9, c.text, {
+      signal: AbortSignal.timeout(240_000),
+      fallback: route.fb,
+      log: (m) => {
+        if (m.startsWith("attempt")) logs.push(m.slice(0, 400));
+      },
+    });
+    if (r.attempts > 1) console.log(`  ${c.id}: ${logs.join("\n  ")}`);
     const l = r.lesson;
     const answer = norm(`${mathTextToPlain(l.finalAnswer.text)} ${l.finalAnswer.math ? mathTextToPlain(`$${l.finalAnswer.math}$`) : ""}`);
     const everything = JSON.stringify(l);

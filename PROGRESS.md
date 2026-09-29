@@ -326,3 +326,38 @@ fallback when Gemini is overloaded or out of quota (`OCR_FALLBACK_PROVIDER`, 3 u
   other movable points adjust as little as possible to keep the `given` checks true. It has 7 unit
   tests, and a browser test (`e2e-drag-constraints.mjs`) shows a right isosceles triangle staying
   right and isosceles whichever vertex is dragged.
+- **Friend-to-friend voice.** Lessons and app text now use "bạn" (and "mình") instead of "em": a
+  classmate helping a classmate, not a teacher. The prompt role and voice rule changed and
+  `PROMPT_VERSION` is now `solver-v1.4`, so lessons stored with "em" are regenerated the next time
+  someone asks for them.
+- **Segment names in figure checks.** Gemini sometimes writes `["AB", "AC"]` instead of four
+  points. `expandSegmentRefs` splits them, which saves a retry (measured $0.0121 → $0.0048).
+
+## 2026-09-29: Geometry figures show the whole solution; bare LaTeX renders
+
+- **Complete figures** (`shared/src/figureComplete.ts`, run inside `verifyLesson`). The server reads
+  the statement, hints and steps:
+  - Mentioned segments are added automatically, at no cost: pairs like "ID", angle arms from ∠IHD,
+    and the sides of "tam giác IJD". Segments from the problem are drawn from the start; ones the
+    solution introduces are construction lines, shown at the step that first uses them.
+  - Steps and hints that highlight nothing now highlight what they mention.
+  - Points and circles that are named but missing (H, L, G, (S)) go back to the model as feedback.
+- **New construction `circle_circle`** (the intersection of two circles other than P). The prompt
+  now has recipes for "circle with diameter AB", "circle through three points", "second
+  intersection" and "intersection other than P".
+- **Partial figures instead of none.**
+  - Points that are malformed or can't be constructed are left out, along with what depends on
+    them; before, the whole figure was dropped.
+  - When two circles coincide, the model is told how to build a circle through three points.
+  - When two attempts score the same, the more complete figure wins.
+- **Fewer paid retries.** Malformed figure checks, like refs ["ABC"] or [], used to reject the whole
+  lesson. Now they're repaired or dropped before validation (g1 went from 2 tries and $0.030 to
+  1 try and $0.018). Circle refs written as the center point ("I" instead of "c_I") are repaired.
+- **Bare LaTeX.** Gemini often writes `ID^2 = IJ \cdot IA` without `$…$`. `wrapBareLatex` wraps
+  such formulas in the pipeline and in the app's renderers (RichText, KaTeX), so lessons stored
+  earlier render correctly too.
+- Geometry eval: 9/9 pass across runs (one rerun was needed only because of a Gemini 503).
+  `PROMPT_VERSION` is now `solver-v1.5`.
+- Known limit: `gemini-3.5-flash-lite` still struggles with competition-level geometry. The
+  incircle problem got a wrong step ("J trùng K") and incomplete constructions for G and (S).
+  A stronger model for the fallback (for example `gemini-3.5-flash`) needs Gemini billing.

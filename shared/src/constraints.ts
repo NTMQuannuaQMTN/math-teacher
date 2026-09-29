@@ -263,9 +263,23 @@ function collapses(before: ResolvedFigure, after: ResolvedFigure, size: number):
   return false;
 }
 
-/** The given checks the figure satisfies right now — the ones a drag must keep. */
+/**
+ * Facts the drawing itself states, even when the model didn't list them as checks:
+ * a right-angle mark means perpendicular arms, a "40°" label means a 40° angle.
+ */
+function impliedByAngles(figure: Figure): FigureCheck[] {
+  const out: FigureCheck[] = [];
+  for (const a of figure.angles) {
+    if (a.right) out.push({ kind: "perpendicular", refs: [a.vertex, a.from, a.vertex, a.to], value: null, role: "given" });
+    const deg = a.label ? /^\s*(\d+(?:[.,]\d+)?)\s*(?:°|\^\{?\\circ\}?|độ)\s*$/.exec(a.label) : null;
+    if (deg) out.push({ kind: "angle_value", refs: [a.from, a.vertex, a.to], value: Number(deg[1]!.replace(",", ".")), role: "given" });
+  }
+  return out;
+}
+
+/** The given facts the figure satisfies right now — the ones a drag must keep. */
 export function heldGivens(figure: Figure, resolved: ResolvedFigure): FigureCheck[] {
-  return figure.checks.filter((c) => c.role === "given" && evaluateFigureCheck(c, resolved).passed);
+  return [...figure.checks.filter((c) => c.role === "given"), ...impliedByAngles(figure)].filter((c) => evaluateFigureCheck(c, resolved).passed);
 }
 
 /**
