@@ -204,7 +204,14 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
   One `GEMINI_API_KEY` covers both. Set either provider to `openai` to use GPT instead.
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
   Prices are in `worker/src/solver/pricing.ts`.
-- Lessons are cached per question and are never regenerated when hints are revealed.
+- **Shared lesson library.** When a student asks to solve a problem, a verified lesson that any
+  student already has for the same problem text (ignoring the problem number and spacing) is copied
+  instead of solving again: no AI call, no cost. Unverified lessons are never shared, and
+  "Create a new lesson" bypasses the library.
+- Lessons are stored per question and are never regenerated when hints are revealed.
+- **Input tokens.** Non-geometry problems get a prompt and schema without the figure rules
+  (2.6K instead of 4.4K tokens). An escalated retry sends only the list of failures, not the
+  rejected lesson. Repeated instructions are served from OpenAI's prompt cache.
 - Solving on save is off by default (`PREFETCH_SOLVE_ON_SAVE`).
 - Local development uses the free mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
   `worker/.dev.vars`). For real Gemini OCR/solves, set both providers to `gemini` and `GEMINI_API_KEY`.

@@ -5,6 +5,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
+import { GeminiJsonModel } from "../src/solver/geminiModel";
 import { OpenAiJsonModel } from "../src/solver/llm";
 import { solveProblem } from "../src/solver/pipeline";
 
@@ -14,9 +15,16 @@ const vars = Object.fromEntries(
     .filter((l) => /^[A-Z_]+=/.test(l))
     .map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]),
 );
-const [problem, model = "gpt-5.5", effort = "medium"] = process.argv.slice(2);
-const llm = new OpenAiJsonModel(vars.OPENAI_API_KEY!, model, effort);
-const result = await solveProblem(llm, VN_GRADE_9, problem!, { signal: AbortSignal.timeout(240_000), log: console.log });
+const [problem, model = "gemini-3.5-flash-lite", effort = "low"] = process.argv.slice(2);
+const llm = model.startsWith("gemini")
+  ? new GeminiJsonModel(vars.GEMINI_API_KEY!, model, effort)
+  : new OpenAiJsonModel(vars.OPENAI_API_KEY!, model, effort);
+const result = await solveProblem(llm, VN_GRADE_9, problem!, {
+  signal: AbortSignal.timeout(240_000),
+  log: console.log,
+  // DUMP=dir writes each attempt's raw output there (for debugging figures).
+  onRaw: process.env.DUMP ? (n, text) => writeFileSync(`${process.env.DUMP}/attempt-${n}.json`, text) : undefined,
+});
 console.log(`status=${result.verification.status} attempts=${result.attempts} ${(result.durationMs / 1000).toFixed(1)}s`);
 console.log(`USAGE ${JSON.stringify(result.usage)}`);
 writeFileSync("/tmp/lesson.json", JSON.stringify(result, null, 2));

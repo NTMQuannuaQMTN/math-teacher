@@ -76,6 +76,22 @@ function lineCircle(a: Vec, b: Vec, c: CircleGeom): Vec[] {
   return [(-B - sq) / (2 * A), (-B + sq) / (2 * A)].map((t) => add(a, mul(d, t)));
 }
 
+/** Intersections of two circles, ordered: the first lies to the left of the line c1 → c2. */
+function circleCircle(c1: CircleGeom, c2: CircleGeom): Vec[] {
+  const d = Math.hypot(c2.cx - c1.cx, c2.cy - c1.cy);
+  if (d < EPS || d > c1.r + c2.r + EPS || d < Math.abs(c1.r - c2.r) - EPS) return [];
+  const a = (c1.r * c1.r - c2.r * c2.r + d * d) / (2 * d);
+  const h = Math.sqrt(Math.max(0, c1.r * c1.r - a * a));
+  const ux = (c2.cx - c1.cx) / d;
+  const uy = (c2.cy - c1.cy) / d;
+  const mx = c1.cx + a * ux;
+  const my = c1.cy + a * uy;
+  return [
+    { x: mx - h * uy, y: my + h * ux },
+    { x: mx + h * uy, y: my - h * ux },
+  ];
+}
+
 function tangentPoints(p: Vec, c: CircleGeom): Vec[] {
   const o = { x: c.cx, y: c.cy };
   const d = dist(p, o);
@@ -279,6 +295,18 @@ export function resolveFigure(figure: Figure, overrides: Record<string, Override
         const hits = lineCircle(a, b, circle).sort((p, q) => dist(p, a) - dist(q, a));
         if (hits.length === 0) return null;
         return v >= 1 ? hits[hits.length - 1]! : hits[0]!;
+      }
+      case "circle_circle": {
+        const c1 = def.refs[0] ? resolveCircle(def.refs[0]) : null;
+        const c2 = def.refs[1] ? resolveCircle(def.refs[1]) : null;
+        if (!c1 || !c2) return null;
+        const hits = circleCircle(c1, c2);
+        if (hits.length === 0) return null;
+        // "The intersection other than P": the one farther from P (P is usually the other hit).
+        const other = def.refs[2] ? resolvePoint(def.refs[2]) : null;
+        if (def.refs[2] && !other) return null;
+        if (other) return dist(hits[0]!, other) >= dist(hits[1]!, other) ? hits[0]! : hits[1]!;
+        return hits[v >= 1 ? 1 : 0]!;
       }
       case "on_circle": {
         const circle = def.refs[0] ? resolveCircle(def.refs[0]) : null;

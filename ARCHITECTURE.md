@@ -257,8 +257,20 @@ confirmed problem text ──▶ POST /v1/scans/:id/solve
     are free, and constrained points are constructed. For example, a right angle is built as
     rotate + on_segment, and an isosceles apex sits on the perpendicular bisector. Dragging then
     explores valid versions of the problem.
-  - If a drag breaks one of the problem's *given* numbers or conditions, the figure shows a notice,
-    and Reset restores it. A drag that leaves points outside the frame re-fits the view.
+  - **Keeping the givens** (`shared/src/constraints.ts`, `constrainedDrag`). Models often place
+    a problem's vertices as free points and state its hypotheses as `given` checks (AB ⊥ AC,
+    AB = AC, D on (O), …). After each move, every *other* movable parameter becomes an unknown:
+    free points' x/y, positions along segments/circles, and polar angle/length. A Gauss–Newton
+    solve then finds the smallest change that makes those givens true again. It uses a numeric
+    Jacobian and minimum-norm damped steps, and each move starts from the last position, so the
+    figure moves smoothly.
+    - It only enforces the givens the figure satisfied before the move, so a schematic figure's
+      lengths aren't forced.
+    - It rejects solutions that collapse distinct points together or break a construction.
+    - If the pointer's position is impossible, it tries half and a quarter of the way there;
+      failing that, the point stays put.
+  - If a drag still breaks one of the problem's *given* numbers or conditions, the figure shows a
+    notice, and Reset restores it. A drag that leaves points outside the frame re-fits the view.
 - **Scene builder** (`shared/src/figureScene.ts`). It is platform-neutral: it turns
   figure + view transform + highlight state into screen primitives (lines, circles, angle arcs,
   right-angle squares, tick and arrow marks, point labels). It also places labels greedily to

@@ -355,3 +355,63 @@ const VIETNAMESE_CHARS =
 export function containsVietnamese(input: string): boolean {
   return VIETNAMESE_CHARS.test(input.normalize("NFC"));
 }
+
+// ---------------------------------------------------------------------------
+// Bare LaTeX in prose
+// ---------------------------------------------------------------------------
+
+/** Clearly maths: a LaTeX command, a power/subscript, or a relation inside a token ("x=3"). */
+const STRONG_TOKEN = /\\[a-zA-Z]+|[\^_]|.[=<>≤≥]|[=<>≤≥]./;
+/** Could be part of a formula next to a strong token: point names, numbers, variables, operators. */
+const WEAK_TOKEN = /^(?:[A-Z]{1,4}'*|\d+(?:[.,]\d+)?|\d*[a-z]\d*|[+\-*/=<>≤≥·×:]|[()[\]{}A-Z0-9+\-*/^_.,\\'=]+)$/;
+
+function wrapProse(text: string): string {
+  if (!/[\\^_]/.test(text)) return text;
+  const parts = text.split(/(\s+)/);
+  const kinds = parts.map((p, i) => {
+    if (i % 2 === 1) return "space";
+    const core = p.replace(/[.,;:!?]+$/, "");
+    if (!core) return "none";
+    if (STRONG_TOKEN.test(core) && !/[À-ỹ]/.test(core)) return "strong";
+    return WEAK_TOKEN.test(core) ? "weak" : "none";
+  });
+  let out = "";
+  let i = 0;
+  while (i < parts.length) {
+    if (kinds[i] !== "strong" && kinds[i] !== "weak") {
+      out += parts[i];
+      i++;
+      continue;
+    }
+    // A run of maths-like tokens separated by single spaces, stopping at a token with trailing punctuation.
+    let j = i;
+    let strong = false;
+    let trailing = "";
+    for (;;) {
+      if (kinds[j] === "strong") strong = true;
+      const punct = /[.,;:!?]+$/.exec(parts[j]!);
+      if (punct) {
+        trailing = punct[0];
+        break;
+      }
+      if (j + 2 < parts.length && kinds[j + 1] === "space" && (kinds[j + 2] === "strong" || kinds[j + 2] === "weak")) j += 2;
+      else break;
+    }
+    const run = parts.slice(i, j + 1).join("");
+    const body = trailing ? run.slice(0, -trailing.length) : run;
+    out += strong ? `$${body}$${trailing}` : run;
+    i = j + 1;
+  }
+  return out;
+}
+
+/**
+ * Wraps LaTeX that a model wrote without `$…$` ("Chứng minh ID^2 = IJ \cdot IA")
+ * so it renders as maths. Existing `$…$` / `$$…$$` maths is left untouched.
+ */
+export function wrapBareLatex(input: string): string {
+  if (!/[\\^_]/.test(input)) return input;
+  return parseMathText(input)
+    .map((s) => (s.kind === "text" ? wrapProse(s.value.replace(/\$/g, "\\$")) : s.display ? `$$${s.value}$$` : `$${s.value}$`))
+    .join("");
+}

@@ -11,6 +11,7 @@ import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
 import { GeminiJsonModel } from "../solver/gemini";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
+import { GeminiJsonModel } from "../solver/geminiModel";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
 import { selectSolverModelIds } from "../solver/routing";
@@ -24,6 +25,7 @@ interface SolutionRow {
   owner_id: string;
   status: "pending" | "ready" | "failed";
   problem_hash: string;
+  problem_key: string | null;
   lesson_json: string | null;
   verification_json: string | null;
   error_code: string | null;
@@ -181,6 +183,36 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
     return json({ solution: toApiSolution(existing) } satisfies SolutionResponse);
   }
 
+  // Shared library: if anyone already has a verified lesson for this exact problem, reuse it —
+  // no AI call, no cost, no rate-limit use. Unverified lessons are never shared.
+  const key = await problemKey(problemText);
+  const shared = regenerate ? null : await env.DB.prepare(
+    `SELECT lesson_json, verification_json, model FROM solutions
+     WHERE problem_key = ? AND prompt_version = ? AND status = 'ready' AND lesson_json IS NOT NULL
+       AND json_extract(verification_json, '$.status') IN ('verified', 'partial')
+     ORDER BY updated_at DESC LIMIT 1`,
+  )
+    .bind(key, PROMPT_VERSION)
+    .first<{ lesson_json: string; verification_json: string; model: string }>();
+  if (shared) {
+    const ts = nowIso();
+    await env.DB.prepare(
+      `INSERT INTO solutions (id, scan_id, question_id, owner_id, status, problem_hash, problem_key, lesson_json, verification_json,
+         model, prompt_version, attempts, duration_ms, started_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, 'ready', ?, ?, ?, ?, ?, ?, 0, 0, NULL, ?, ?)
+       ON CONFLICT (scan_id, question_id) DO UPDATE SET status = 'ready', problem_hash = excluded.problem_hash,
+         problem_key = excluded.problem_key, lesson_json = excluded.lesson_json, verification_json = excluded.verification_json,
+         model = excluded.model, prompt_version = excluded.prompt_version, attempts = 0, duration_ms = 0, error_code = NULL,
+         started_at = NULL, created_at = excluded.created_at, updated_at = excluded.updated_at
+       WHERE solutions.owner_id = excluded.owner_id`,
+    )
+      .bind(existing?.id ?? crypto.randomUUID(), scanId, questionId, ownerId, problemHash, key, shared.lesson_json, shared.verification_json, shared.model, PROMPT_VERSION, ts, ts)
+      .run();
+    console.log(`[solve ${scanId}/${questionId}] reused a shared lesson (no AI call)`);
+    const row = await findSolution(env.DB, ownerId, scanId, questionId);
+    if (row) return json({ solution: toApiSolution(row) } satisfies SolutionResponse);
+  }
+
   const { model, fallback } = createModels(env, request, problemText);
   await consumeRateLimit(env.DB, `solve:device:${ownerId}`, intVar(env.SOLVE_LIMIT_PER_DEVICE_PER_HOUR, 30), HOUR);
   await consumeRateLimit(env.DB, `solve:ip:${getClientIp(request)}`, intVar(env.SOLVE_LIMIT_PER_IP_PER_HOUR, 90), HOUR);
@@ -212,10 +244,10 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
         log: (m) => console.log(`[solve ${scanId}/${questionId}] ${m}`),
       });
       await env.DB.prepare(
-        `UPDATE solutions SET status = 'ready', lesson_json = ?, verification_json = ?, error_code = NULL, model = ?,
+        `UPDATE solutions SET status = 'ready', lesson_json = ?, verification_json = ?, error_code = NULL, model = ?, problem_key = ?,
            attempts = ?, duration_ms = ?, started_at = NULL, created_at = ?, updated_at = ? WHERE scan_id = ? AND question_id = ?`,
       )
-        .bind(JSON.stringify(result.lesson), JSON.stringify(result.verification), result.model, result.attempts, result.durationMs, nowIso(), nowIso(), scanId, questionId)
+        .bind(JSON.stringify(result.lesson), JSON.stringify(result.verification), result.model, key, result.attempts, result.durationMs, nowIso(), nowIso(), scanId, questionId)
         .run();
     } catch (err) {
       console.error(`[solve ${scanId}] failed`, err instanceof Error ? err.message : err);

@@ -6,7 +6,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { mathTextToPlain } from "../../shared/src/mathText";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
-import { OpenAiJsonModel } from "../src/solver/llm";
+import { OpenAiJsonModel, type JsonModel } from "../src/solver/llm";
+import { GeminiJsonModel } from "../src/solver/geminiModel";
 import { solveProblem } from "../src/solver/pipeline";
 import { looksLikeGeometry } from "../src/solver/routing";
 
@@ -19,8 +20,11 @@ const vars = Object.fromEntries(
 // Usage: solver-eval.ts <model> <effort> [concurrency] [caseFilter] [fallbackModel] [fallbackEffort]
 const [model = "gpt-5.4-mini", effort = "low", conc = "5", filter = "", fallbackModel = "", fallbackEffort = "medium"] = process.argv.slice(2);
 const cases: Case[] = JSON.parse(readFileSync(new URL("cases.json", root), "utf8")).filter((c: Case) => c.id.includes(filter));
-const llm = new OpenAiJsonModel(vars.OPENAI_API_KEY!, model, effort);
-const fallback = fallbackModel ? new OpenAiJsonModel(vars.OPENAI_API_KEY!, fallbackModel, fallbackEffort) : undefined;
+// "gemini-*" models use the Gemini API (effort = thinking level); others use OpenAI.
+const make = (name: string, level: string): JsonModel =>
+  name.startsWith("gemini") ? new GeminiJsonModel(vars.GEMINI_API_KEY!, name, level) : new OpenAiJsonModel(vars.OPENAI_API_KEY!, name, level);
+const llm = make(model, effort);
+const fallback = fallbackModel ? make(fallbackModel, fallbackEffort) : undefined;
 
 const norm = (s: string) => s.normalize("NFC").replace(/[−–]/g, "-").replace(/\s+/g, "");
 async function run(c: Case) {
@@ -28,7 +32,15 @@ async function run(c: Case) {
   try {
     // Same routing as the Worker: geometry goes straight to the fallback model.
     const route = fallback && looksLikeGeometry(c.text) ? { primary: fallback, fb: undefined } : { primary: llm, fb: fallback };
-    const r = await solveProblem(route.primary, VN_GRADE_9, c.text, { signal: AbortSignal.timeout(240_000), fallback: route.fb });
+    const logs: string[] = [];
+    const r = await solveProblem(route.primary, VN_GRADE_9, c.text, {
+      signal: AbortSignal.timeout(240_000),
+      fallback: route.fb,
+      log: (m) => {
+        if (m.startsWith("attempt")) logs.push(m.slice(0, 400));
+      },
+    });
+    if (r.attempts > 1) console.log(`  ${c.id}: ${logs.join("\n  ")}`);
     const l = r.lesson;
     const answer = norm(`${mathTextToPlain(l.finalAnswer.text)} ${l.finalAnswer.math ? mathTextToPlain(`$${l.finalAnswer.math}$`) : ""}`);
     const everything = JSON.stringify(l);
@@ -53,6 +65,8 @@ const results: Awaited<ReturnType<typeof run>>[] = [];
 const queue = [...cases];
 await Promise.all(Array.from({ length: Number(conc) }, async () => {
   for (let c = queue.shift(); c; c = queue.shift()) {
+    // PACE_MS spaces out problems to stay under free-tier per-minute limits.
+    if (process.env.PACE_MS) await new Promise((r) => setTimeout(r, Number(process.env.PACE_MS)));
     const r = await run(c);
     results.push(r);
     console.log(`${r.ok ? "PASS" : "FAIL"} ${r.id.padEnd(22)} ${String(r.seconds.toFixed(0)).padStart(4)}s ${"verification" in r ? `${r.verification}/${r.attempts}try $${r.cost.toFixed(3)} by:${r.producedBy} h${r.hints} s${r.steps} fig:${r.figure}` : ""} ${r.problems.join("; ")}`);

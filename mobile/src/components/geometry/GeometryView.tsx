@@ -5,7 +5,6 @@ import Svg, { Circle, G, Line, Path, Text as SvgText } from "react-native-svg";
 import {
   angleDeg,
   dist,
-  dragTo,
   evaluateFigureCheck,
   figureBounds,
   fitTransform,
@@ -16,6 +15,7 @@ import {
   type Vec,
   type ViewTransform,
 } from "@shared/geometry";
+import { constrainedDrag } from "@shared/constraints";
 import { buildScene, hitTest, type Emphasis, type Scene } from "@shared/figureScene";
 import type { Figure } from "@shared/solution";
 import { useStrings } from "@/i18n";
@@ -170,11 +170,10 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
     fit,
     setTransform: (t) => setTransform(t),
     // GeoGebra-style: free points follow the finger, points on a segment/circle slide along it,
-    // and every dependent object is re-constructed on each move.
+    // dependent objects are re-constructed, and the other points adjust so the problem's givens
+    // (a right angle, equal sides, a point on the circle…) stay true. Impossible moves are ignored.
     setDrag: (id, world) => {
-      const def = live.current.figure.points.find((p) => p.id === id);
-      const override = def ? dragTo(def, live.current.resolved, world) : null;
-      if (override) setOverrides((o) => ({ ...o, [id]: override }));
+      setOverrides((o) => constrainedDrag(live.current.figure, o, id, world) ?? o);
     },
     select,
     refitIfOutside: () => undefined,

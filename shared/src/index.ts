@@ -5,3 +5,5 @@ export * from "./geometry";
 export * from "./solution";
 export * from "./verify";
 export * from "./figureScene";
+export * from "./constraints";
+export * from "./figureComplete";

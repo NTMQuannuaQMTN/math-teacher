@@ -4,6 +4,8 @@ export interface Env {
 
   ENVIRONMENT: string;
   OCR_PROVIDER: string;
+  /** Used for a photo only when the primary OCR provider fails transiently (overload, quota, timeout). */
+  OCR_FALLBACK_PROVIDER?: string;
   OPENAI_MODEL: string;
   ANTHROPIC_MODEL: string;
   GEMINI_OCR_MODEL?: string;

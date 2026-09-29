@@ -39,7 +39,7 @@ const MAX_POLLS = 40;
 /** Questions to review when the photo held several problems; null for a single problem. */
 function initialQuestions(scan: Scan | null): QuestionDraft[] | null {
   const problems = scan?.ocr?.problems ?? [];
-  return problems.length > 1 ? problems.map((p) => ({ label: p.label, text: p.text, included: true })) : null;
+  return problems.length > 1 ? problems.map((p) => ({ label: p.label, text: p.text })) : null;
 }
 
 function isOcrPending(scan: Scan): boolean {
@@ -65,6 +65,7 @@ export default function ScanResultScreen() {
   const [photoExpanded, setPhotoExpanded] = useState(false);
   const [questions, setQuestions] = useState<QuestionDraft[] | null>(() => initialQuestions(scan));
   const [editingQuestion, setEditingQuestion] = useState<number | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const allowLeave = useRef(false);
 
   const originalText = scan?.ocr?.formattedText ?? "";
@@ -138,7 +139,7 @@ export default function ScanResultScreen() {
     setSaving(true);
     setSaveError(null);
     try {
-      const kept = questions?.filter((q) => q.included && q.text.trim());
+      const kept = questions?.filter((q) => q.text.trim());
       const saved = await api.confirmScan(scan.id, kept ? { questions: kept.map(({ label, text: t }) => ({ label, text: t })) } : { text });
       scanStore.put(saved);
       void updateRecentSnapshot({ upsert: saved });
@@ -153,7 +154,8 @@ export default function ScanResultScreen() {
           .catch(() => undefined);
       }
       allowLeave.current = true;
-      router.replace({ pathname: "/problem/[id]", params: { id: saved.id, saved: "1" } });
+      // Back to Home, which shows a "saved" notice and the new item at the top of Recent problems.
+      router.dismissTo({ pathname: "/", params: { notice: "saved", count: String(saved.problem?.questions.length ?? 1) } });
     } catch (err) {
       setSaveError(err);
       setSaving(false);
@@ -180,6 +182,30 @@ export default function ScanResultScreen() {
       setRereadError(err);
     } finally {
       setRereading(false);
+    }
+  }
+
+  /** Discard this scan entirely (photo + text) and go back to Home. */
+  async function deleteThisScan() {
+    if (!scan || deleting) return;
+    const ok = await confirmAsync({
+      title: s.result.deleteScanTitle,
+      message: s.result.deleteScanBody,
+      confirmLabel: s.common.delete,
+      cancelLabel: s.common.cancel,
+      destructive: true,
+    });
+    if (!ok) return;
+    setDeleting(true);
+    try {
+      await api.deleteScan(scan.id);
+      scanStore.remove(scan.id);
+      void updateRecentSnapshot({ removeId: scan.id });
+      allowLeave.current = true;
+      router.dismissTo({ pathname: "/", params: { notice: "deleted" } });
+    } catch (err) {
+      setSaveError(err);
+      setDeleting(false);
     }
   }
 
@@ -232,7 +258,7 @@ export default function ScanResultScreen() {
 
   const ocr = scan.ocr;
   const pending = isOcrPending(scan);
-  const keptCount = questions ? questions.filter((q) => q.included && q.text.trim()).length : 0;
+  const keptCount = questions ? questions.filter((q) => q.text.trim()).length : 0;
   const hasText = questions ? keptCount > 0 : text.trim().length > 0;
   const noText = !!ocr && (ocr.status === "no_math_found" || ocr.status === "unreadable") && !editing && !hasText;
   const ocrFailed = !ocr && !!scan.ocrError && !editing;
@@ -272,6 +298,7 @@ export default function ScanResultScreen() {
               {scan.ocrError!.retryable ? <Button label={s.result.readAgain} icon="refresh" onPress={readAgain} /> : null}
               <Button label={s.result.typeItYourself} icon="create-outline" variant="secondary" onPress={startTyping} />
               <Button label={s.result.retake} icon="camera-outline" variant="secondary" onPress={retake} />
+              <Button label={s.result.deleteScan} icon="trash-outline" variant="ghost" onPress={deleteThisScan} loading={deleting} />
             </StateView>
           </View>
         ) : noText ? (
@@ -283,6 +310,7 @@ export default function ScanResultScreen() {
             >
               <Button label={s.result.retake} icon="camera" onPress={retake} />
               <Button label={s.result.typeItYourself} icon="create-outline" variant="secondary" onPress={startTyping} />
+              <Button label={s.result.deleteScan} icon="trash-outline" variant="ghost" onPress={deleteThisScan} loading={deleting} />
             </StateView>
           </View>
         ) : (
@@ -307,10 +335,21 @@ export default function ScanResultScreen() {
                       setEditingQuestion(null);
                     }}
                     onChange={(value) => setQuestions((all) => all && all.map((item, k) => (k === i ? { ...item, text: value } : item)))}
-                    onToggle={() => setQuestions((all) => all && all.map((item, k) => (k === i ? { ...item, included: !item.included } : item)))}
+                    onDelete={() => {
+                      setEditingQuestion(null);
+                      setQuestions((all) => all && all.filter((_, k) => k !== i));
+                    }}
                   />
                 ))}
-                <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} />
+                {questions.length === 0 ? (
+                  <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                    <StateView icon="document-outline" title={s.result.noQuestionsLeft} body={s.result.noQuestionsLeftBody} />
+                  </View>
+                ) : null}
+                <View style={styles.inlineActions}>
+                  <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} style={styles.flex} />
+                  <Button testID="delete-scan" label={s.result.deleteScan} icon="trash-outline" variant="ghost" size="md" onPress={deleteThisScan} loading={deleting} style={styles.flex} />
+                </View>
               </>
             ) : (
             <View style={[styles.card, { backgroundColor: colors.surface, borderColor: editing ? colors.primary : colors.border }]}>
@@ -365,10 +404,9 @@ export default function ScanResultScreen() {
                   <MathText testID="problem-rendered" text={text} placeholder={s.result.emptyPreview} fontSize={19} />
                   <View style={styles.inlineActions}>
                     <Button testID="edit-button" label={s.result.edit} icon="create-outline" variant="secondary" size="md" onPress={() => setEditing(true)} style={styles.flex} />
-                    {ocr ? (
-                      <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} style={styles.flex} />
-                    ) : null}
+                    <Button testID="delete-scan" label={s.common.delete} icon="trash-outline" variant="danger" size="md" onPress={deleteThisScan} loading={deleting} style={styles.flex} />
                   </View>
+                  {ocr ? <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} /> : null}
                 </>
               )}
             </View>
@@ -388,7 +426,7 @@ export default function ScanResultScreen() {
               icon="checkmark-circle"
               onPress={save}
               loading={saving}
-              disabled={!hasText || rereading}
+              disabled={!hasText || rereading || deleting}
               style={styles.flex}
             />
           </View>

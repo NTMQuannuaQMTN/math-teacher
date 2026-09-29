@@ -7,9 +7,36 @@ import { isAbort } from "./httpErrors";
 import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
 import { OpenAiOcrProvider } from "./openai";
+import { GeminiOcrProvider } from "./gemini";
 import { OcrFailure, type OcrProvider } from "./provider";
 
-/** Picks the provider from configuration. Misconfiguration is a server error, never a crash. */
+/**
+ * Tries the primary provider; if it fails for a transient reason (overloaded,
+ * quota, timeout), the photo is read by the fallback provider instead. Lets a
+ * cheap/free provider be primary without students seeing its outages.
+ */
+export class FallbackOcrProvider implements OcrProvider {
+  readonly name: string;
+  constructor(
+    private readonly primary: OcrProvider,
+    private readonly fallback: OcrProvider,
+  ) {
+    this.name = primary.name;
+  }
+
+  async extract(input: Parameters<OcrProvider["extract"]>[0]): ReturnType<OcrProvider["extract"]> {
+    try {
+      return await this.primary.extract(input);
+    } catch (err) {
+      const transient = err instanceof OcrFailure && err.retryable && (err.kind === "provider_error" || err.kind === "timeout");
+      if (!transient || input.signal.aborted) throw err;
+      console.warn(`OCR primary (${this.primary.name}) failed (${err.message.slice(0, 80)}); using ${this.fallback.name}`);
+      return this.fallback.extract(input);
+    }
+  }
+}
+
+/** Picks the provider from configuration (plus optional OCR_FALLBACK_PROVIDER). Misconfiguration is a server error, never a crash. */
 export function createOcrProvider(env: Env, request?: Request): OcrProvider {
   const name = (env.OCR_PROVIDER || "gemini").toLowerCase();
   switch (name) {
