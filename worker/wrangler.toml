@@ -26,7 +26,8 @@ bucket_name = "math-teacher-images"
 ENVIRONMENT = "production"
 # "openai" | "anthropic" | "mock" (mock only works when ENVIRONMENT = "development")
 OCR_PROVIDER = "openai"
-OPENAI_MODEL = "gpt-4.1"
+# gpt-4.1-mini: ~5× cheaper input/output than gpt-4.1; re-run `npm run ocr:eval` after changing.
+OPENAI_MODEL = "gpt-4.1-mini"
 ANTHROPIC_MODEL = "claude-opus-5"
 OCR_TIMEOUT_MS = "45000"
 # Per-device and per-IP budgets for OCR calls (uploads + retries), per hour.

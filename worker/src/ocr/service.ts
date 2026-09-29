@@ -14,7 +14,7 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
   switch (name) {
     case "openai":
       if (!env.OPENAI_API_KEY) break;
-      return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1");
+      return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");
     case "anthropic":
       if (!env.ANTHROPIC_API_KEY) break;
       return new AnthropicOcrProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL || "claude-opus-5");

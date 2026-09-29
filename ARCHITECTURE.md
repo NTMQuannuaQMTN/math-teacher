@@ -47,7 +47,7 @@ stack fits the brief. What changed:
 
 1. **Capture.** In-app camera (`expo-camera`) with a framing guide. The photo is auto-cropped to
    the guide, or the student picks an image from the library (`expo-image-picker`).
-2. **Review / crop.** A draggable crop box; the image is re-encoded to JPEG, long side ≤ 2000 px.
+2. **Review / crop.** A draggable crop box; the image is re-encoded to JPEG, long side ≤ 1280 px.
 3. **Upload.** `POST /v1/scans` (multipart) with an `Idempotency-Key` that stays stable across
    retries of the same image.
 4. **Worker.**

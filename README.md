@@ -113,7 +113,7 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 |---|---|---|
 | `ENVIRONMENT` | `production` or `development` (the mock provider only works in development) | `production` |
 | `OCR_PROVIDER` | `openai`, `anthropic`, or `mock` | `openai` |
-| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | model ids | `gpt-4.1` / `claude-opus-5` |
+| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | model ids | `gpt-4.1-mini` / `claude-opus-5` |
 | `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
 | `SOLVER_PROVIDER` | `openai` or `mock` (development only) | `openai` |
@@ -131,8 +131,8 @@ optional in development. It is not a secret; no keys ever ship in the app.
 
 ## OCR pipeline
 
-1. **Client.** Crop to the problem, then re-encode as JPEG with the long side ≤ 2000 px (typically
-   200–600 KB). This fixes EXIF orientation and HEIC.
+1. **Client.** Crop to the problem, then re-encode as JPEG with the long side ≤ 1280 px (typically
+   100–350 KB). This fixes EXIF orientation and HEIC, and keeps vision token use down.
 2. **Worker validation.** Size, real file type from magic bytes, and pixel dimensions.
 3. **Storage.** The image goes to R2 (private); a draft row goes to D1.
 4. **Provider call.**
@@ -195,7 +195,7 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
 |---|---|---|
 | Algebra, equations, word problems | `gpt-5.4-mini` (low effort); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
 | Geometry (detected from the wording) | `gpt-5.5` directly, because the cheap model's figures failed the checks about 90% of the time | about $0.07–0.12 |
-| Reading a photo (OCR, `gpt-4.1`) | | under $0.01 |
+| Reading a photo (OCR, `gpt-4.1-mini`, ≤1280 px) | | well under $0.01 (often ~$0.001–0.003) |
 
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
   Prices are in `worker/src/solver/pricing.ts`.

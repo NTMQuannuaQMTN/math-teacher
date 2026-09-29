@@ -42,6 +42,7 @@ describe("OpenAiOcrProvider", () => {
     expect(body.response_format.json_schema.strict).toBe(true);
     expect(body.messages[0].role).toBe("system");
     expect(body.messages[1].content[1].image_url.url).toMatch(/^data:image\/jpeg;base64,/);
+    expect(body.messages[1].content[1].image_url.detail).toBe("high");
     expect((init.headers as Record<string, string>).authorization).toBe("Bearer sk-test");
   });
 
