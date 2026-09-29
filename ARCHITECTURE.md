@@ -189,8 +189,9 @@ with their images. Confirmed problems are kept.
 confirmed problem text ──▶ POST /v1/scans/:id/solve
                               │  auth · rate limit · cache check (problem hash + prompt version) · lock
                               ▼
-                    ONE structured-output model call: geometry → gpt-5.4 (medium); everything else → gpt-5.4-mini (low),
-                    retrying on gpt-5.5 only when the checks fail (worker/src/solver/routing.ts)
+                    ONE structured-output model call (default Gemini): flash first for algebra + geometry,
+                    retrying on gemini-2.5-pro only when the checks fail (worker/src/solver/routing.ts;
+                    OpenAI remains available via SOLVER_PROVIDER=openai)
                     system prompt = curriculum + teaching + hints + geometry + verification rules
                               │  JSON (strict schema)
                               ▼
@@ -233,9 +234,9 @@ confirmed problem text ──▶ POST /v1/scans/:id/solve
 - **`prompts.ts`** has separate sections for role, security, curriculum, language, teaching and
   hints, format, geometry language, and verification. `PROMPT_VERSION` is stored with every lesson
   and is part of the cache key.
-- **`llm.ts`** defines the `JsonModel` interface. OpenAI Chat Completions uses strict
-  `json_schema` and `reasoning_effort`. The dev-only `mock.ts` provides deterministic lessons and
-  failure scenarios.
+- **`llm.ts` / `gemini.ts`** define the `JsonModel` interface. Default solve provider is Gemini
+  (`generateContent` + `responseJsonSchema`). OpenAI Chat Completions remains available. The
+  dev-only `mock.ts` provides deterministic lessons and failure scenarios.
 - **`jsonSchema.ts`** derives the strict JSON Schema from the zod schema, the single source of
   truth.
 

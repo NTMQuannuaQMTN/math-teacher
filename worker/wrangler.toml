@@ -33,14 +33,14 @@ OCR_TIMEOUT_MS = "45000"
 # Per-device and per-IP budgets for OCR calls (uploads + retries), per hour.
 OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
 OCR_LIMIT_PER_IP_PER_HOUR = "120"
-# Solver (lesson generation). Cheap/mid model writes first; gpt-5.5 only on verify failure.
-# Geometry uses SOLVER_GEOMETRY_MODEL (not mini — mini figures fail checks ~90%).
-SOLVER_PROVIDER = "openai"
-SOLVER_MODEL = "gpt-5.4-mini"
+# Solver (lesson generation). Default: Gemini flash first, pro only on verify failure.
+# OCR stays on OpenAI/Anthropic. Set SOLVER_PROVIDER=openai to use GPT models instead.
+SOLVER_PROVIDER = "gemini"
+SOLVER_MODEL = "gemini-2.5-flash"
 SOLVER_REASONING_EFFORT = "low"
-SOLVER_GEOMETRY_MODEL = "gpt-5.4"
+SOLVER_GEOMETRY_MODEL = "gemini-2.5-flash"
 SOLVER_GEOMETRY_REASONING_EFFORT = "medium"
-SOLVER_FALLBACK_MODEL = "gpt-5.5"
+SOLVER_FALLBACK_MODEL = "gemini-2.5-pro"
 SOLVER_FALLBACK_REASONING_EFFORT = "medium"
 SOLVE_TIMEOUT_MS = "170000"
 SOLVE_LIMIT_PER_DEVICE_PER_HOUR = "30"
@@ -52,5 +52,6 @@ ALLOWED_ORIGINS = ""
 
 # Secrets — set with `wrangler secret put <NAME>`; never commit them:
 #   IMAGE_URL_SECRET    (required) HMAC key for signed image URLs, 32+ random chars
-#   OPENAI_API_KEY      (when OCR_PROVIDER = "openai")
+#   OPENAI_API_KEY      (when OCR_PROVIDER = "openai", or SOLVER_PROVIDER = "openai")
 #   ANTHROPIC_API_KEY   (when OCR_PROVIDER = "anthropic")
+#   GEMINI_API_KEY      (when SOLVER_PROVIDER = "gemini")

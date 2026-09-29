@@ -68,3 +68,25 @@ describe("selectSolverModelIds", () => {
     });
   });
 });
+
+describe("selectSolverModelIds (Gemini defaults)", () => {
+  const gemini = {
+    cheap: "gemini-2.5-flash",
+    cheapEffort: "low",
+    strong: "gemini-2.5-pro",
+    strongEffort: "medium",
+    geometry: "gemini-2.5-flash",
+    geometryEffort: "medium",
+  };
+
+  it("uses flash first for algebra and geometry, escalating to pro", () => {
+    expect(selectSolverModelIds("Giải phương trình $x=1$", gemini).primary).toBe("gemini-2.5-flash");
+    expect(selectSolverModelIds("Giải phương trình $x=1$", gemini).fallback).toBe("gemini-2.5-pro");
+    expect(selectSolverModelIds("Cho tam giác ABC", gemini)).toEqual({
+      primary: "gemini-2.5-flash",
+      primaryEffort: "medium",
+      fallback: "gemini-2.5-pro",
+      fallbackEffort: "medium",
+    });
+  });
+});

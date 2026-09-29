@@ -9,6 +9,7 @@ import { isAbort } from "../ocr/httpErrors";
 import { OcrFailure } from "../ocr/provider";
 import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
+import { GeminiJsonModel } from "../solver/gemini";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
@@ -43,10 +44,30 @@ function solveTimeoutMs(env: Env): number {
 
 /**
  * Cheap/mid primary plus an optional stronger fallback used only when checks fail.
- * Geometry starts on SOLVER_GEOMETRY_MODEL (default gpt-5.4), not the strong model.
+ * Default provider is Gemini (flash → pro). OpenAI remains available via SOLVER_PROVIDER=openai.
  */
 function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel } {
-  const provider = (env.SOLVER_PROVIDER || "openai").toLowerCase();
+  const provider = (env.SOLVER_PROVIDER || "gemini").toLowerCase();
+
+  if (provider === "gemini" && env.GEMINI_API_KEY) {
+    const key = env.GEMINI_API_KEY;
+    const choice = selectSolverModelIds(problemText, {
+      cheap: env.SOLVER_MODEL || "gemini-2.5-flash",
+      cheapEffort: env.SOLVER_REASONING_EFFORT || "low",
+      strong: env.SOLVER_FALLBACK_MODEL || "gemini-2.5-pro",
+      strongEffort: env.SOLVER_FALLBACK_REASONING_EFFORT || "medium",
+      // Geometry also starts on flash; escalate to pro only when checks fail.
+      geometry: env.SOLVER_GEOMETRY_MODEL || env.SOLVER_MODEL || "gemini-2.5-flash",
+      geometryEffort: env.SOLVER_GEOMETRY_REASONING_EFFORT || "medium",
+    });
+    const model = new GeminiJsonModel(key, choice.primary, choice.primaryEffort);
+    const fallback =
+      choice.fallback && choice.fallback !== choice.primary
+        ? new GeminiJsonModel(key, choice.fallback, choice.fallbackEffort || "medium")
+        : undefined;
+    return { model, fallback };
+  }
+
   if (provider === "openai" && env.OPENAI_API_KEY) {
     const key = env.OPENAI_API_KEY;
     const choice = selectSolverModelIds(problemText, {
@@ -64,6 +85,7 @@ function createModels(env: Env, request: Request, problemText: string): { model:
         : undefined;
     return { model, fallback };
   }
+
   if (provider === "mock" && isDevelopment(env)) {
     const requested = request.headers.get("x-mock-scenario");
     const scenario = MOCK_SOLVE_SCENARIOS.includes(requested as MockSolveScenario) ? (requested as MockSolveScenario) : null;

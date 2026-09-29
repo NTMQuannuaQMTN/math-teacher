@@ -116,16 +116,17 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 | `OPENAI_MODEL` / `ANTHROPIC_MODEL` | model ids | `gpt-4.1-mini` / `claude-opus-5` |
 | `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
-| `SOLVER_PROVIDER` | `openai` or `mock` (development only) | `openai` |
-| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary for algebra / word problems | `gpt-5.4-mini` / `low` |
-| `SOLVER_GEOMETRY_MODEL` / `SOLVER_GEOMETRY_REASONING_EFFORT` | mid-tier primary for geometry (escalates on verify failure) | `gpt-5.4` / `medium` |
-| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model used only when checks fail | `gpt-5.5` / `medium` |
+| `SOLVER_PROVIDER` | `gemini`, `openai`, or `mock` (mock only in development) | `gemini` |
+| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary for algebra / word problems | `gemini-2.5-flash` / `low` |
+| `SOLVER_GEOMETRY_MODEL` / `SOLVER_GEOMETRY_REASONING_EFFORT` | geometry primary (escalates on verify failure) | `gemini-2.5-flash` / `medium` |
+| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model used only when checks fail | `gemini-2.5-pro` / `medium` |
 | `SOLVE_TIMEOUT_MS` | total budget per solve, including one retry | `170000` |
 | `SOLVE_LIMIT_PER_DEVICE_PER_HOUR` / `SOLVE_LIMIT_PER_IP_PER_HOUR` | solve abuse limits | `30` / `90` |
 | `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
 | `ALLOWED_ORIGINS` | CORS origins (only needed for Expo web) | empty |
 | `IMAGE_URL_SECRET` (secret) | HMAC key for signed image URLs, 32+ random chars | **required** |
-| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | key for the selected provider | — |
+| `GEMINI_API_KEY` (secret) | Gemini key when `SOLVER_PROVIDER=gemini` | — |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | OCR and/or OpenAI solver | — |
 
 **Mobile:** `EXPO_PUBLIC_API_URL` is the Worker URL. It is required for production builds and
 optional in development. It is not a secret; no keys ever ship in the app.
@@ -194,16 +195,18 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
 
 | Problem type | Route | Cost per lesson |
 |---|---|---|
-| Algebra, equations, word problems | `gpt-5.4-mini` (low); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
-| Geometry (detected from the wording) | `gpt-5.4` (medium) first; escalates to `gpt-5.5` only if the checks fail (mini figures fail ~90%, so geometry skips mini) | about $0.03–0.06 when mid-tier verifies; ~$0.08–0.15 if escalated |
-| Reading a photo (OCR, `gpt-4.1-mini`, ≤1280 px) | | well under $0.01 (often ~$0.001–0.003) |
+| Algebra, equations, word problems | `gemini-2.5-flash` (low thinking); escalates to `gemini-2.5-pro` if checks fail | typically well under $0.01 (often ~$0.001–0.003) |
+| Geometry (detected from the wording) | `gemini-2.5-flash` (medium) first; escalates to `gemini-2.5-pro` only if checks fail | typically ~$0.002–0.01 when flash verifies; higher if escalated to pro |
+| Reading a photo (OCR, still OpenAI `gpt-4.1-mini`, ≤1280 px) | | well under $0.01 (often ~$0.001–0.003) |
 
+- Solving defaults to **Gemini** (`SOLVER_PROVIDER=gemini`). OCR stays on OpenAI/Anthropic.
+  Set `SOLVER_PROVIDER=openai` to restore the previous GPT route.
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
   Prices are in `worker/src/solver/pricing.ts`.
 - Lessons are cached per question and are never regenerated when hints are revealed.
 - Solving on save is off by default (`PREFETCH_SOLVE_ON_SAVE`).
 - Local development uses the free mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
-  `worker/.dev.vars`). Switch both to `openai` to test real quality.
+  `worker/.dev.vars`). For real Gemini solves, set `SOLVER_PROVIDER=gemini` and `GEMINI_API_KEY`.
 
 ## Database & storage
 

@@ -26,6 +26,7 @@ export interface Env {
   IMAGE_URL_SECRET?: string;
   OPENAI_API_KEY?: string;
   ANTHROPIC_API_KEY?: string;
+  GEMINI_API_KEY?: string;
 }
 
 export function isDevelopment(env: Env): boolean {

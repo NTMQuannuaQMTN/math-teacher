@@ -237,3 +237,17 @@ escalations pay mid + strong (similar to or slightly above a single strong call)
 **Also.** Solver `max_completion_tokens` capped at 16k (was 24k) to bound runaway
 reasoning bills. Re-run `solver-eval` on geometry after deploy to confirm the
 mid-tier verify rate.
+
+## 2026-09-29: Gemini solver (cost)
+
+**Decision.** Use Gemini for solving only (OCR stays on OpenAI). Default route:
+`gemini-2.5-flash` → escalate to `gemini-2.5-pro` when deterministic checks fail, for both
+algebra and geometry.
+
+**Why.** Flash paid-tier tokens are roughly an order of magnitude cheaper than `gpt-5.4` /
+`gpt-5.5` for comparable lesson sizes, so solve spend should drop sharply even when some
+geometry lessons escalate to Pro.
+
+**Implementation.** `worker/src/solver/gemini.ts` calls the Generative Language REST API
+(Worker-compatible, no SDK). `SOLVER_PROVIDER=gemini` is the wrangler default; set
+`GEMINI_API_KEY` as a secret. `SOLVER_PROVIDER=openai` keeps the previous GPT path.

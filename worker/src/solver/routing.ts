@@ -1,15 +1,14 @@
 /**
  * Picks which model writes a lesson, before any AI call.
  *
- * Algebra / word problems: gpt-5.4-mini (low) first; escalate to gpt-5.5 only
- * when the deterministic checks fail (~$0.005 when the cheap model succeeds).
+ * Provider-agnostic: callers pass the cheap / geometry / strong model ids from
+ * env. Defaults (wrangler): Gemini gemini-2.5-flash → gemini-2.5-pro on verify
+ * failure for both algebra and geometry. OpenAI remains available by setting
+ * SOLVER_PROVIDER=openai (mini/gpt-5.4 → gpt-5.5).
  *
- * Geometry: gpt-5.4-mini figures fail construction checks ~90% of the time
- * (measured 2026-09-29), so a mini-first geometry route would usually pay for
- * *both* models. Instead geometry starts on a mid-tier model (default gpt-5.4,
- * ~half the price of gpt-5.5) and escalates to the strong fallback only on
- * verify failure. That also avoids the old "strong-only" path, which retried
- * the same expensive model twice with no cheaper first attempt.
+ * Geometry historically skipped the weakest OpenAI mini (~90% figure failures);
+ * with Gemini, flash is cheap enough that flash-first + pro escalate is the
+ * default for geometry too.
  */
 const GEOMETRY_WORDS = [
   // Vietnamese
