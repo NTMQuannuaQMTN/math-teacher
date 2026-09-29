@@ -33,11 +33,13 @@ OCR_TIMEOUT_MS = "45000"
 # Per-device and per-IP budgets for OCR calls (uploads + retries), per hour.
 OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
 OCR_LIMIT_PER_IP_PER_HOUR = "120"
-# Solver (lesson generation). A cheap model writes the lesson; if the deterministic checks fail,
-# the corrective retry goes to the stronger fallback model. See PROGRESS.md for cost/quality numbers.
+# Solver (lesson generation). Cheap/mid model writes first; gpt-5.5 only on verify failure.
+# Geometry uses SOLVER_GEOMETRY_MODEL (not mini — mini figures fail checks ~90%).
 SOLVER_PROVIDER = "openai"
 SOLVER_MODEL = "gpt-5.4-mini"
 SOLVER_REASONING_EFFORT = "low"
+SOLVER_GEOMETRY_MODEL = "gpt-5.4"
+SOLVER_GEOMETRY_REASONING_EFFORT = "medium"
 SOLVER_FALLBACK_MODEL = "gpt-5.5"
 SOLVER_FALLBACK_REASONING_EFFORT = "medium"
 SOLVE_TIMEOUT_MS = "170000"

@@ -189,7 +189,7 @@ with their images. Confirmed problems are kept.
 confirmed problem text ──▶ POST /v1/scans/:id/solve
                               │  auth · rate limit · cache check (problem hash + prompt version) · lock
                               ▼
-                    ONE structured-output model call: geometry → gpt-5.5; everything else → gpt-5.4-mini (low),
+                    ONE structured-output model call: geometry → gpt-5.4 (medium); everything else → gpt-5.4-mini (low),
                     retrying on gpt-5.5 only when the checks fail (worker/src/solver/routing.ts)
                     system prompt = curriculum + teaching + hints + geometry + verification rules
                               │  JSON (strict schema)

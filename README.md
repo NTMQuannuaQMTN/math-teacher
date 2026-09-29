@@ -117,8 +117,9 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 | `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
 | `SOLVER_PROVIDER` | `openai` or `mock` (development only) | `openai` |
-| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary solver model | `gpt-5.4-mini` / `low` |
-| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model: geometry, and retries when checks fail | `gpt-5.5` / `medium` |
+| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary for algebra / word problems | `gpt-5.4-mini` / `low` |
+| `SOLVER_GEOMETRY_MODEL` / `SOLVER_GEOMETRY_REASONING_EFFORT` | mid-tier primary for geometry (escalates on verify failure) | `gpt-5.4` / `medium` |
+| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model used only when checks fail | `gpt-5.5` / `medium` |
 | `SOLVE_TIMEOUT_MS` | total budget per solve, including one retry | `170000` |
 | `SOLVE_LIMIT_PER_DEVICE_PER_HOUR` / `SOLVE_LIMIT_PER_IP_PER_HOUR` | solve abuse limits | `30` / `90` |
 | `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
@@ -193,8 +194,8 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
 
 | Problem type | Route | Cost per lesson |
 |---|---|---|
-| Algebra, equations, word problems | `gpt-5.4-mini` (low effort); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
-| Geometry (detected from the wording) | `gpt-5.5` directly, because the cheap model's figures failed the checks about 90% of the time | about $0.07–0.12 |
+| Algebra, equations, word problems | `gpt-5.4-mini` (low); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
+| Geometry (detected from the wording) | `gpt-5.4` (medium) first; escalates to `gpt-5.5` only if the checks fail (mini figures fail ~90%, so geometry skips mini) | about $0.03–0.06 when mid-tier verifies; ~$0.08–0.15 if escalated |
 | Reading a photo (OCR, `gpt-4.1-mini`, ≤1280 px) | | well under $0.01 (often ~$0.001–0.003) |
 
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).

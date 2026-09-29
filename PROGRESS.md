@@ -221,3 +221,19 @@ Output (the lesson JSON) is most of the cost; about 90% of the prompt input is c
 
 **Expected cost:** about $0.005 per algebra/word lesson, $0.07–0.12 per geometry lesson, and under
 $0.01 per photo.
+
+## 2026-09-29: Geometry cost — mid-tier first
+
+**Change.** Geometry no longer jumps straight to `gpt-5.5`. It starts on `gpt-5.4`
+(medium effort) and escalates to `gpt-5.5` only when deterministic checks fail
+(`selectSolverModelIds` in `worker/src/solver/routing.ts`). Algebra stays on
+`gpt-5.4-mini` → `gpt-5.5`.
+
+**Why not mini for geometry.** Mini figures failed construction checks ~90% of
+the time, so mini-first would usually pay for both models. `gpt-5.4` is about
+half the $/token of `gpt-5.5`, so verified mid-tier lessons should cost less;
+escalations pay mid + strong (similar to or slightly above a single strong call).
+
+**Also.** Solver `max_completion_tokens` capped at 16k (was 24k) to bound runaway
+reasoning bills. Re-run `solver-eval` on geometry after deploy to confirm the
+mid-tier verify rate.

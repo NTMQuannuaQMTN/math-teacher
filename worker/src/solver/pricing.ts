@@ -1,6 +1,10 @@
 /**
  * OpenAI standard prices (USD per 1M tokens), from developers.openai.com/api/docs/pricing
  * (checked 2026-09-29). Used only to log an estimated cost per call; update when prices change.
+ *
+ * Geometry lessons default to gpt-5.4 first (then gpt-5.5 on verify failure): gpt-5.4 is
+ * about half the $/token of gpt-5.5, so a verified mid-tier lesson costs roughly half a
+ * strong-only one; escalations pay mid + strong.
  */
 const PRICES: Record<string, { input: number; cached: number; output: number }> = {
   "gpt-5.5": { input: 5, cached: 0.5, output: 30 },

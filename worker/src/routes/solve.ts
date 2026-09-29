@@ -12,7 +12,7 @@ import { VN_GRADE_9 } from "../solver/curriculum";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
-import { looksLikeGeometry } from "../solver/routing";
+import { selectSolverModelIds } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import type { RouteContext } from "./scans";
 
@@ -41,18 +41,27 @@ function solveTimeoutMs(env: Env): number {
   return intVar(env.SOLVE_TIMEOUT_MS, 170_000);
 }
 
-/** Cheap primary model plus an optional stronger fallback used only when the checks fail. */
+/**
+ * Cheap/mid primary plus an optional stronger fallback used only when checks fail.
+ * Geometry starts on SOLVER_GEOMETRY_MODEL (default gpt-5.4), not the strong model.
+ */
 function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel } {
   const provider = (env.SOLVER_PROVIDER || "openai").toLowerCase();
   if (provider === "openai" && env.OPENAI_API_KEY) {
-    const model = new OpenAiJsonModel(env.OPENAI_API_KEY, env.SOLVER_MODEL || "gpt-5.4-mini", env.SOLVER_REASONING_EFFORT || "low");
-    const fallbackName = env.SOLVER_FALLBACK_MODEL?.trim();
+    const key = env.OPENAI_API_KEY;
+    const choice = selectSolverModelIds(problemText, {
+      cheap: env.SOLVER_MODEL || "gpt-5.4-mini",
+      cheapEffort: env.SOLVER_REASONING_EFFORT || "low",
+      strong: env.SOLVER_FALLBACK_MODEL,
+      strongEffort: env.SOLVER_FALLBACK_REASONING_EFFORT || "medium",
+      geometry: env.SOLVER_GEOMETRY_MODEL || "gpt-5.4",
+      geometryEffort: env.SOLVER_GEOMETRY_REASONING_EFFORT || "medium",
+    });
+    const model = new OpenAiJsonModel(key, choice.primary, choice.primaryEffort);
     const fallback =
-      fallbackName && fallbackName !== model.model
-        ? new OpenAiJsonModel(env.OPENAI_API_KEY, fallbackName, env.SOLVER_FALLBACK_REASONING_EFFORT || "medium")
+      choice.fallback && choice.fallback !== choice.primary
+        ? new OpenAiJsonModel(key, choice.fallback, choice.fallbackEffort || "medium")
         : undefined;
-    // Geometry needs a correct construction, which the cheap model rarely gets right: go straight to the strong one.
-    if (fallback && looksLikeGeometry(problemText)) return { model: fallback };
     return { model, fallback };
   }
   if (provider === "mock" && isDevelopment(env)) {
