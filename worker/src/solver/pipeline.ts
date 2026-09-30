@@ -4,7 +4,7 @@ import { normalizeProblemText, wrapBareLatex } from "../../../shared/src/mathTex
 import { verifyLesson } from "../../../shared/src/verify";
 import { OcrFailure } from "../ocr/provider";
 import type { Curriculum } from "./curriculum";
-import { toStrictJsonSchema } from "./jsonSchema";
+import { toGrammarJsonSchema, toStrictJsonSchema } from "./jsonSchema";
 import type { ChatMessage, JsonModel } from "./llm";
 import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
 import { looksLikeGeometry } from "./routing";
@@ -13,6 +13,8 @@ import { addUsage, emptyUsage, estimateCost, formatUsage, type Usage } from "./p
 const LESSON_JSON_SCHEMA = toStrictJsonSchema(ModelLessonSchema);
 /** Same schema with figure fixed to null: ~40% smaller, for non-geometry problems. */
 const LESSON_JSON_SCHEMA_NO_FIGURE = toStrictJsonSchema(ModelLessonSchema.extend({ figure: z.null() }));
+const LESSON_GRAMMAR_SCHEMA = toGrammarJsonSchema(ModelLessonSchema);
+const LESSON_GRAMMAR_SCHEMA_NO_FIGURE = toGrammarJsonSchema(ModelLessonSchema.extend({ figure: z.null() }));
 
 export interface SolveResult {
   lesson: ModelLesson;
@@ -42,18 +44,22 @@ export interface SolveOptions {
   onRaw?: (attempt: number, text: string) => void;
 }
 
-function parseLesson(text: string): { lesson: ModelLesson } | { problems: string[] } {
+export function parseLesson(text: string): { lesson: ModelLesson } | { problems: string[] } {
   let json: unknown;
   try {
     json = JSON.parse(text);
   } catch {
     return { problems: ["the response was not valid JSON"] };
   }
-  let parsed = ModelLessonSchema.safeParse(sanitizeIds(json));
-  if (!parsed.success) {
-    // A malformed figure check shouldn't cost a whole new lesson: repair or drop it and parse again.
-    const salvaged = salvageFigureChecks(json, parsed.error.issues);
-    if (salvaged) parsed = ModelLessonSchema.safeParse(salvaged);
+  let data = sanitizeIds(json);
+  let parsed = ModelLessonSchema.safeParse(data);
+  // Mechanical slips (a malformed figure check, one list item too many, an over-long label, an empty id)
+  // shouldn't cost a whole new lesson: repair them and parse again.
+  for (let round = 0; !parsed.success && round < 3; round++) {
+    const next = salvageFigureChecks(data, parsed.error.issues) ?? salvageLimits(data, parsed.error.issues);
+    if (!next) break;
+    data = next;
+    parsed = ModelLessonSchema.safeParse(data);
   }
   if (!parsed.success) {
     return {
@@ -79,6 +85,38 @@ function sanitizeIds(value: unknown, key = ""): unknown {
     return Object.fromEntries(Object.entries(value as Json).map(([k, v]) => [k, ID_KEYS.has(k) && typeof v === "string" ? cleanId(v) : sanitizeIds(v, k)]));
   }
   return value;
+}
+
+type Issue = { code: string; path: PropertyKey[]; maximum?: number | bigint; origin?: string };
+
+/**
+ * Repairs size/format slips anywhere in the lesson: arrays and strings over their maximum are cut,
+ * empty or malformed ids are replaced (a hint's empty stepId points at the step with the same index).
+ * Returns null when any issue is of another kind (a wrong type or a missing field needs the model).
+ */
+function salvageLimits(json: unknown, issues: Issue[]): unknown | null {
+  const fixable = (i: Issue) => i.code === "too_big" || i.code === "invalid_format" || (i.code === "too_small" && i.origin === "string");
+  if (issues.length === 0 || !issues.every(fixable)) return null;
+  const copy = structuredClone(json) as Json;
+  const steps = Array.isArray(copy.steps) ? (copy.steps as Json[]) : [];
+  for (const issue of issues) {
+    const path = issue.path;
+    const key = path[path.length - 1] as string | number;
+    let parent: unknown = copy;
+    for (const p of path.slice(0, -1)) parent = (parent as Record<PropertyKey, unknown> | undefined)?.[p as string];
+    if (!parent || typeof parent !== "object") continue;
+    const holder = parent as Record<string | number, unknown>;
+    const value = holder[key];
+    if (issue.code === "too_big" && (Array.isArray(value) || typeof value === "string") && issue.maximum !== undefined) {
+      holder[key] = value.slice(0, Number(issue.maximum));
+    } else if (typeof value === "string" || value === null) {
+      const index = typeof path[path.length - 2] === "number" ? (path[path.length - 2] as number) : 0;
+      const section = String(path[0]);
+      if (key === "stepId") holder[key] = String(steps[Math.min(index, steps.length - 1)]?.id ?? "s1");
+      else holder[key] = cleanId(value ?? "") && /^[A-Za-z0-9_']+$/.test(String(cleanId(value ?? ""))) ? cleanId(value ?? "") : `${section}_${index + 1}`;
+    }
+  }
+  return copy;
 }
 
 /** Splits "ABC" into ["A", "B", "C"] when it is made only of known point ids (longest ids first). */
@@ -256,7 +294,13 @@ export async function solveProblem(
     try {
       text = await current.complete({
         messages,
-        schema: withFigure ? LESSON_JSON_SCHEMA : LESSON_JSON_SCHEMA_NO_FIGURE,
+        schema: current.grammarConstrained
+          ? withFigure
+            ? LESSON_GRAMMAR_SCHEMA
+            : LESSON_GRAMMAR_SCHEMA_NO_FIGURE
+          : withFigure
+            ? LESSON_JSON_SCHEMA
+            : LESSON_JSON_SCHEMA_NO_FIGURE,
         schemaName: "lesson",
         signal,
         onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),

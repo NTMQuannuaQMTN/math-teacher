@@ -1,0 +1,82 @@
+{
+ "summary": {
+  "exp": "EXP-002",
+  "system": "qwen3-4b",
+  "split": "validation",
+  "promptVersion": "solver-v1.7",
+  "dataset": "v1",
+  "n": 3,
+  "pass": 0,
+  "partial": 0,
+  "fail": 3,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 3,
+  "verifiedRate": 0,
+  "errors": 2,
+  "meanModelSeconds": 885.2999999999998,
+  "meanInputTokens": 2249.6666666666665,
+  "meanOutputTokens": 965.3333333333334,
+  "cache": {
+   "hits": 0,
+   "misses": 6,
+   "modelMs": 2655935
+  },
+  "createdAt": "2026-09-30T08:08:02.965Z"
+ },
+ "rows": [
+  {
+   "id": "ch-3",
+   "topic": "number_theory",
+   "difficulty": 3,
+   "format": "multi_part",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 6749,
+   "outputTokens": 2896,
+   "modelSeconds": 211,
+   "wallSeconds": 211.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "a) f(n) chia hết cho 16 với mọi n.\nb) n phải là số nguyên dương sao cho f(n) chia hết cho 3.\nc) n phải là số nguyên dương sao cho f(n) chia hết cho 24².  a) $f("
+  },
+  {
+   "id": "a3",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 1392.1,
+   "wallSeconds": 1392.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "error": "no structurally valid lesson after retries"
+  },
+  {
+   "id": "g5",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 1052.8,
+   "wallSeconds": 1052.8,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "error": "no structurally valid lesson after retries"
+  }
+ ]
+}

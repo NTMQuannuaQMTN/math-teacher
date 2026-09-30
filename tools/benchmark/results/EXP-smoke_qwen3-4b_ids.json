@@ -1,0 +1,46 @@
+{
+ "summary": {
+  "exp": "EXP-smoke",
+  "system": "qwen3-4b",
+  "split": "validation",
+  "promptVersion": "solver-v1.7",
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 1,
+  "fail": 0,
+  "critical": 0,
+  "answerAccuracy": 1,
+  "gradableN": 1,
+  "verifiedRate": 0,
+  "errors": 0,
+  "meanModelSeconds": 145.3,
+  "meanInputTokens": 6165,
+  "meanOutputTokens": 2060,
+  "cache": {
+   "hits": 0,
+   "misses": 2,
+   "modelMs": 145349
+  },
+  "createdAt": "2026-09-30T07:21:39.595Z"
+ },
+ "rows": [
+  {
+   "id": "a1",
+   "topic": "algebra",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 6165,
+   "outputTokens": 2060,
+   "modelSeconds": 145.3,
+   "wallSeconds": 145.4,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Giá trị của x là 8. x = 8 Giá trị của x là 8. x = 8"
+  }
+ ]
+}

@@ -16,6 +16,8 @@ export interface ChatMessage {
 export interface JsonModel {
   readonly name: string;
   readonly model: string;
+  /** True for grammar-constrained decoders (llama.cpp…), which get the fuller schema (toGrammarJsonSchema). */
+  readonly grammarConstrained?: boolean;
   /** Returns the JSON text; reports token usage through `onUsage` when the provider gives it. */
   complete(input: {
     messages: ChatMessage[];
