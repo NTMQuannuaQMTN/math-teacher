@@ -44,6 +44,8 @@ export class OpenAiOcrProvider implements OcrProvider {
                 { type: "text", text: OCR_USER_INSTRUCTION },
                 {
                   type: "image_url",
+                  // "high" keeps small maths glyphs readable. Cost is controlled by
+                  // uploading ≤1280 px (mobile imagePrep) and using gpt-4.1-mini.
                   image_url: { url: `data:${contentType};base64,${bytesToBase64(bytes)}`, detail: "high" },
                 },
               ],

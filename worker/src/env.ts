@@ -8,6 +8,7 @@ export interface Env {
   OCR_FALLBACK_PROVIDER?: string;
   OPENAI_MODEL: string;
   ANTHROPIC_MODEL: string;
+  GEMINI_OCR_MODEL?: string;
   OCR_TIMEOUT_MS: string;
   OCR_LIMIT_PER_DEVICE_PER_HOUR: string;
   OCR_LIMIT_PER_IP_PER_HOUR: string;
@@ -17,6 +18,8 @@ export interface Env {
   SOLVER_REASONING_EFFORT: string;
   SOLVER_FALLBACK_MODEL?: string;
   SOLVER_FALLBACK_REASONING_EFFORT?: string;
+  SOLVER_GEOMETRY_MODEL?: string;
+  SOLVER_GEOMETRY_REASONING_EFFORT?: string;
   SOLVE_TIMEOUT_MS: string;
   SOLVE_LIMIT_PER_DEVICE_PER_HOUR: string;
   SOLVE_LIMIT_PER_IP_PER_HOUR: string;
@@ -27,11 +30,6 @@ export interface Env {
   OPENAI_API_KEY?: string;
   ANTHROPIC_API_KEY?: string;
   GEMINI_API_KEY?: string;
-  GEMINI_OCR_MODEL?: string;
-  GEMINI_SOLVER_MODEL?: string;
-  GEMINI_SOLVER_THINKING?: string;
-  GEMINI_SOLVER_FALLBACK_MODEL?: string;
-  GEMINI_SOLVER_FALLBACK_THINKING?: string;
 }
 
 export function isDevelopment(env: Env): boolean {

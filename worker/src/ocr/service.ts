@@ -2,6 +2,7 @@ import type { AllowedImageType, OcrResult } from "../../../shared/src/contract";
 import { intVar, isDevelopment, type Env } from "../env";
 import { ApiError } from "../http";
 import { AnthropicOcrProvider } from "./anthropic";
+import { GeminiOcrProvider } from "./gemini";
 import { isAbort } from "./httpErrors";
 import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
@@ -37,28 +38,14 @@ export class FallbackOcrProvider implements OcrProvider {
 
 /** Picks the provider from configuration (plus optional OCR_FALLBACK_PROVIDER). Misconfiguration is a server error, never a crash. */
 export function createOcrProvider(env: Env, request?: Request): OcrProvider {
-  const primary = buildOcrProvider(env, (env.OCR_PROVIDER || "openai").toLowerCase(), request);
-  const fallbackName = env.OCR_FALLBACK_PROVIDER?.trim().toLowerCase();
-  const fallback = fallbackName && fallbackName !== primary.name ? tryBuild(env, fallbackName, request) : null;
-  return fallback ? new FallbackOcrProvider(primary, fallback) : primary;
-}
-
-function tryBuild(env: Env, name: string, request?: Request): OcrProvider | null {
-  try {
-    return buildOcrProvider(env, name, request);
-  } catch {
-    return null;
-  }
-}
-
-function buildOcrProvider(env: Env, name: string, request?: Request): OcrProvider {
+  const name = (env.OCR_PROVIDER || "gemini").toLowerCase();
   switch (name) {
+    case "gemini":
+      if (!env.GEMINI_API_KEY) break;
+      return new GeminiOcrProvider(env.GEMINI_API_KEY, env.GEMINI_OCR_MODEL || "gemini-2.5-flash");
     case "openai":
       if (!env.OPENAI_API_KEY) break;
       return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");
-    case "gemini":
-      if (!env.GEMINI_API_KEY) break;
-      return new GeminiOcrProvider(env.GEMINI_API_KEY, env.GEMINI_OCR_MODEL || "gemini-3.1-flash-lite");
     case "anthropic":
       if (!env.ANTHROPIC_API_KEY) break;
       return new AnthropicOcrProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL || "claude-opus-5");

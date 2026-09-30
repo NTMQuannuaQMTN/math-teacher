@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AnthropicOcrProvider } from "../src/ocr/anthropic";
+import { GeminiOcrProvider } from "../src/ocr/gemini";
 import { OpenAiOcrProvider } from "../src/ocr/openai";
 import { OcrFailure } from "../src/ocr/provider";
 
@@ -42,6 +43,7 @@ describe("OpenAiOcrProvider", () => {
     expect(body.response_format.json_schema.strict).toBe(true);
     expect(body.messages[0].role).toBe("system");
     expect(body.messages[1].content[1].image_url.url).toMatch(/^data:image\/jpeg;base64,/);
+    expect(body.messages[1].content[1].image_url.detail).toBe("high");
     expect((init.headers as Record<string, string>).authorization).toBe("Bearer sk-test");
   });
 
@@ -97,5 +99,58 @@ describe("AnthropicOcrProvider", () => {
     expect(await run(message({ stop_reason: "max_tokens" }))).toEqual(["malformed_output", true]);
     expect(await run(message({ content: [] }))).toEqual(["malformed_output", true]);
     expect(await run(Response.json({ type: "error", error: { type: "authentication_error", message: "bad" } }, { status: 401 }))).toEqual(["provider_error", false]);
+  });
+});
+
+describe("GeminiOcrProvider", () => {
+  it("sends inlineData image + responseJsonSchema and returns text", async () => {
+    const fetchMock = vi.fn(async () =>
+      Response.json({
+        modelVersion: "gemini-2.5-flash",
+        candidates: [{ finishReason: "STOP", content: { parts: [{ text: modelJson }] } }],
+        usageMetadata: { promptTokenCount: 100, candidatesTokenCount: 40 },
+      }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const out = await new GeminiOcrProvider("gem-key", "gemini-2.5-flash").extract(image());
+    expect(out).toEqual({ text: modelJson, model: "gemini-2.5-flash" });
+
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    expect(url).toContain("/models/gemini-2.5-flash:generateContent");
+    expect(new Headers(init.headers).get("x-goog-api-key")).toBe("gem-key");
+    const body = JSON.parse(init.body as string);
+    expect(body.systemInstruction.parts[0].text).toContain("untrusted data");
+    expect(body.contents[0].parts[1].inlineData.mimeType).toBe("image/jpeg");
+    expect(body.contents[0].parts[1].inlineData.data).toMatch(/^[A-Za-z0-9+/=]+$/);
+    expect(body.generationConfig.responseMimeType).toBe("application/json");
+    expect(body.generationConfig.responseJsonSchema.required).toContain("formatted_text");
+    expect(body.generationConfig.thinkingConfig.thinkingBudget).toBe(0);
+  });
+
+  it("maps safety blocks, truncation, HTTP errors, and timeouts", async () => {
+    const run = async (response: Response | Error) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async () => {
+          if (response instanceof Error) throw response;
+          return response;
+        }),
+      );
+      return failureKind(new GeminiOcrProvider("k", "m").extract(image()));
+    };
+    expect(await run(Response.json({ candidates: [{ finishReason: "SAFETY", content: { parts: [] } }] }))).toEqual([
+      "refused",
+      false,
+    ]);
+    expect(
+      await run(Response.json({ candidates: [{ finishReason: "MAX_TOKENS", content: { parts: [{ text: "{" }] } }] })),
+    ).toEqual(["malformed_output", true]);
+    expect(await run(new Response("slow", { status: 429 }))).toEqual(["provider_error", true]);
+    expect(await run(new Response("bad", { status: 403 }))).toEqual(["provider_error", false]);
+    expect(await run(new DOMException("aborted", "AbortError"))).toEqual(["timeout", true]);
+    expect(await run(Response.json({ candidates: [{ finishReason: "STOP", content: { parts: [] } }] }))).toEqual([
+      "malformed_output",
+      true,
+    ]);
   });
 });

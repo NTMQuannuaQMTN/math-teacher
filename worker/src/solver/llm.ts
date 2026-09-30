@@ -28,6 +28,13 @@ export interface JsonModel {
 
 const ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
+/**
+ * Cap on completion (+ reasoning) tokens per solve attempt. Grade-9 lesson JSON
+ * is typically a few thousand tokens; 24k left room for runaway reasoning bills.
+ * 16k still fits hard geometry with medium effort; truncation triggers a retry.
+ */
+export const MAX_LESSON_COMPLETION_TOKENS = 16_000;
+
 function isReasoningModel(model: string): boolean {
   return /^(o\d|gpt-5)/.test(model);
 }
@@ -45,7 +52,7 @@ export class OpenAiJsonModel implements JsonModel {
     const body: Record<string, unknown> = {
       model: this.model,
       messages,
-      max_completion_tokens: 24_000,
+      max_completion_tokens: MAX_LESSON_COMPLETION_TOKENS,
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
     };
     if (isReasoningModel(this.model)) body.reasoning_effort = this.reasoningEffort;

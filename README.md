@@ -21,7 +21,7 @@ The product teaches rather than dumping answers:
 | Camera capture with framing guide + auto-crop to the guide | ✅ implemented |
 | Upload from photo library (validation, HEIC → JPEG, size/dimension checks) | ✅ implemented |
 | Review screen with draggable crop box, rotate, retake | ✅ implemented |
-| OCR pipeline behind a provider interface (OpenAI, Anthropic, dev-only mock) | ✅ implemented |
+| OCR pipeline behind a provider interface (Gemini, OpenAI, Anthropic, dev-only mock) | ✅ implemented |
 | Typeset maths (KaTeX, bundled for offline use) in results, preview, and history | ✅ implemented |
 | Editing with maths symbol bar, live preview, and broken-markup warning | ✅ implemented |
 | Save, history (paginated, offline snapshot), problem detail, delete | ✅ implemented |
@@ -113,28 +113,29 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 |---|---|---|
 | `ENVIRONMENT` | `production` or `development` (the mock provider only works in development) | `production` |
 | `OCR_PROVIDER` | `gemini`, `openai`, `anthropic`, or `mock` | `gemini` |
-| `OCR_FALLBACK_PROVIDER` | used for a photo only when the primary fails transiently | `openai` |
-| `GEMINI_OCR_MODEL` | Gemini OCR model | `gemini-3.1-flash-lite` |
-| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | OCR model ids | `gpt-4.1-mini` / `claude-opus-5` |
+| `GEMINI_OCR_MODEL` | Gemini vision model for OCR | `gemini-2.5-flash` |
+| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | OpenAI / Anthropic OCR model ids | `gpt-4.1-mini` / `claude-opus-5` |
 | `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
-| `SOLVER_PROVIDER` | `openai`, `mock` (development only), or anything else (e.g. `off`) to pause solving; stored shared lessons are still served | `openai` |
-| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary solver model | `gpt-5.4-mini` / `low` |
-| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model: geometry, and retries when checks fail | `gpt-5.5` / `medium` |
+| `SOLVER_PROVIDER` | `gemini`, `openai`, or `mock` (mock only in development) | `gemini` |
+| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary for algebra / word problems | `gemini-2.5-flash` / `low` |
+| `SOLVER_GEOMETRY_MODEL` / `SOLVER_GEOMETRY_REASONING_EFFORT` | geometry primary (escalates on verify failure) | `gemini-2.5-flash` / `medium` |
+| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model used only when checks fail | `gemini-2.5-pro` / `medium` |
 | `SOLVE_TIMEOUT_MS` | total budget per solve, including one retry | `170000` |
 | `SOLVE_LIMIT_PER_DEVICE_PER_HOUR` / `SOLVE_LIMIT_PER_IP_PER_HOUR` | solve abuse limits | `30` / `90` |
 | `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
 | `ALLOWED_ORIGINS` | CORS origins (only needed for Expo web) | empty |
 | `IMAGE_URL_SECRET` (secret) | HMAC key for signed image URLs, 32+ random chars | **required** |
-| `GEMINI_API_KEY` / `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | keys for the selected providers | — |
+| `GEMINI_API_KEY` (secret) | Gemini key when `SOLVER_PROVIDER=gemini` | — |
+| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | OCR and/or OpenAI solver | — |
 
 **Mobile:** `EXPO_PUBLIC_API_URL` is the Worker URL. It is required for production builds and
 optional in development. It is not a secret; no keys ever ship in the app.
 
 ## OCR pipeline
 
-1. **Client.** Crop to the problem, then re-encode as JPEG with the long side ≤ 2000 px (typically
-   200–600 KB). This fixes EXIF orientation and HEIC.
+1. **Client.** Crop to the problem, then re-encode as JPEG with the long side ≤ 1280 px (typically
+   100–350 KB). This fixes EXIF orientation and HEIC, and keeps vision token use down.
 2. **Worker validation.** Size, real file type from magic bytes, and pixel dimensions.
 3. **Storage.** The image goes to R2 (private); a draft row goes to D1.
 4. **Provider call.**
@@ -195,10 +196,12 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
 
 | Problem type | Route | Cost per lesson |
 |---|---|---|
-| Algebra, equations, word problems | `gpt-5.4-mini` (low effort); escalates to `gpt-5.5` only if the checks fail | about $0.005 |
-| Geometry (detected from the wording) | `gpt-5.5` directly, because the cheap model's figures failed the checks about 90% of the time | about $0.07–0.12 |
-| Reading a photo (OCR) | Gemini `gemini-3.1-flash-lite`; OpenAI `gpt-4.1-mini` only when Gemini is overloaded or out of quota | about $0.0008 on Gemini's paid tier, $0 on its free tier (fallback about $0.001) |
+| Algebra, equations, word problems | `gemini-2.5-flash` (low thinking); escalates to `gemini-2.5-pro` if checks fail | typically well under $0.01 (often ~$0.001–0.003) |
+| Geometry (detected from the wording) | `gemini-2.5-flash` (medium) first; escalates to `gemini-2.5-pro` only if checks fail | typically ~$0.002–0.01 when flash verifies; higher if escalated to pro |
+| Reading a photo (OCR, `gemini-2.5-flash`, ≤1280 px) | | typically ~$0.0005–0.002 (cheaper than `gpt-4.1-mini`) |
 
+- OCR and solving both default to **Gemini** (`OCR_PROVIDER=gemini`, `SOLVER_PROVIDER=gemini`).
+  One `GEMINI_API_KEY` covers both. Set either provider to `openai` to use GPT instead.
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
   Prices are in `worker/src/solver/pricing.ts`.
 - **Shared lesson library.** When a student asks to solve a problem, a verified lesson that any
@@ -211,7 +214,7 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
   rejected lesson. Repeated instructions are served from OpenAI's prompt cache.
 - Solving on save is off by default (`PREFETCH_SOLVE_ON_SAVE`).
 - Local development uses the free mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
-  `worker/.dev.vars`). Switch both to `openai` to test real quality.
+  `worker/.dev.vars`). For real Gemini OCR/solves, set both providers to `gemini` and `GEMINI_API_KEY`.
 
 ## Database & storage
 

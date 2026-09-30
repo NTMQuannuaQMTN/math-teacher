@@ -24,28 +24,24 @@ bucket_name = "math-teacher-images"
 [vars]
 # "production" disables the mock OCR provider and dev-only behaviour.
 ENVIRONMENT = "production"
-# "gemini" | "openai" | "anthropic" | "mock" (mock only works when ENVIRONMENT = "development")
+# "gemini" | "openai" | "anthropic" | "mock" (mock only in development)
 OCR_PROVIDER = "gemini"
-GEMINI_OCR_MODEL = "gemini-3.1-flash-lite"
-# Optional: a second provider used only when the primary OCR provider is overloaded / out of quota.
-# OCR_FALLBACK_PROVIDER = "openai"
+# Cheap vision model for OCR. Re-run `npm run ocr:eval` after changing.
+GEMINI_OCR_MODEL = "gemini-2.5-flash"
 OPENAI_MODEL = "gpt-4.1-mini"
 ANTHROPIC_MODEL = "claude-opus-5"
 OCR_TIMEOUT_MS = "45000"
 # Per-device and per-IP budgets for OCR calls (uploads + retries), per hour.
 OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
 OCR_LIMIT_PER_IP_PER_HOUR = "120"
-# Solver (lesson generation). A cheap model writes the lesson; if the deterministic checks fail,
-# the corrective retry goes to the stronger fallback model. See PROGRESS.md for cost/quality numbers.
+# Solver (lesson generation). Default: Gemini flash first, pro only on verify failure.
+# OCR + solve both default to Gemini (one GEMINI_API_KEY). Set OCR_PROVIDER/SOLVER_PROVIDER=openai for GPT.
 SOLVER_PROVIDER = "gemini"
-GEMINI_SOLVER_MODEL = "gemini-3.5-flash-lite"
-GEMINI_SOLVER_THINKING = "low"
-GEMINI_SOLVER_FALLBACK_MODEL = "gemini-3.5-flash-lite"
-GEMINI_SOLVER_FALLBACK_THINKING = "high"
-# OpenAI settings (used only if SOLVER_PROVIDER = "openai")
-SOLVER_MODEL = "gpt-5.4-mini"
+SOLVER_MODEL = "gemini-2.5-flash"
 SOLVER_REASONING_EFFORT = "low"
-SOLVER_FALLBACK_MODEL = "gpt-5.5"
+SOLVER_GEOMETRY_MODEL = "gemini-2.5-flash"
+SOLVER_GEOMETRY_REASONING_EFFORT = "medium"
+SOLVER_FALLBACK_MODEL = "gemini-2.5-pro"
 SOLVER_FALLBACK_REASONING_EFFORT = "medium"
 SOLVE_TIMEOUT_MS = "170000"
 SOLVE_LIMIT_PER_DEVICE_PER_HOUR = "30"
@@ -57,6 +53,6 @@ ALLOWED_ORIGINS = ""
 
 # Secrets — set with `wrangler secret put <NAME>`; never commit them:
 #   IMAGE_URL_SECRET    (required) HMAC key for signed image URLs, 32+ random chars
-#   GEMINI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "gemini"; enable billing for production limits)
-#   OPENAI_API_KEY      (only when OCR_PROVIDER / OCR_FALLBACK_PROVIDER / SOLVER_PROVIDER = "openai")
+#   GEMINI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "gemini")
+#   OPENAI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "openai")
 #   ANTHROPIC_API_KEY   (when OCR_PROVIDER = "anthropic")

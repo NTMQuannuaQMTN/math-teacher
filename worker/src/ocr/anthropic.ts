@@ -25,7 +25,7 @@ export class AnthropicOcrProvider implements OcrProvider {
       message = await this.client.beta.messages.create(
         {
           model: this.model,
-          max_tokens: 16000,
+          max_tokens: 4096,
           system: OCR_SYSTEM_PROMPT,
           // Transcription needs little reasoning; low effort keeps latency down.
           output_config: {

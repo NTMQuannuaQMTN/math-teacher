@@ -16,12 +16,13 @@ export interface CropRect {
 }
 
 /**
- * Upload resolution: long side ≤ 2000 px. Maths text stays sharp (a textbook
- * line is ~40–60 px tall at this size) while a typical upload is 200–600 KB
- * instead of 3–12 MB, which matters most on slow mobile networks.
+ * Upload resolution: long side ≤ 1280 px. Vision APIs bill by image patches/tiles,
+ * so pixel count drives OCR cost more than JPEG bytes. At 1280 px a textbook line
+ * is still ~25–40 px tall (readable for OCR) while patch count drops vs 2000 px.
+ * Typical upload is ~100–350 KB instead of 3–12 MB.
  */
-export const MAX_UPLOAD_SIDE = 2000;
-const JPEG_QUALITY = 0.85;
+export const MAX_UPLOAD_SIDE = 1280;
+const JPEG_QUALITY = 0.82;
 
 export class ImagePrepError extends Error {
   constructor(readonly reason: "too_small" | "failed") {

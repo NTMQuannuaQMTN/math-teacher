@@ -2,7 +2,10 @@
 ENVIRONMENT=development
 # Use "mock" to run the full flow without any AI key (responses are canned and clearly labelled).
 OCR_PROVIDER=mock
+SOLVER_PROVIDER=mock
 ALLOWED_ORIGINS=http://localhost:8081
 IMAGE_URL_SECRET=dev-only-change-me-0123456789abcdef
+# GEMINI_API_KEY=...
 # OPENAI_API_KEY=sk-...
 # ANTHROPIC_API_KEY=sk-ant-...
+# Real Gemini OCR+solve: OCR_PROVIDER=gemini SOLVER_PROVIDER=gemini and set GEMINI_API_KEY.

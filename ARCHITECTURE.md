@@ -23,7 +23,7 @@
              └──────────────────────────────────────────────────────────────────┘
                                                                     │
                                                                     ▼
-                                                   OcrProvider: openai | anthropic | mock
+                                                   OcrProvider: gemini | openai | anthropic | mock
 ```
 
 `shared/` holds the API contract (Zod schemas + types) and the maths-text utilities. Both the
@@ -47,7 +47,7 @@ stack fits the brief. What changed:
 
 1. **Capture.** In-app camera (`expo-camera`) with a framing guide. The photo is auto-cropped to
    the guide, or the student picks an image from the library (`expo-image-picker`).
-2. **Review / crop.** A draggable crop box; the image is re-encoded to JPEG, long side ≤ 2000 px.
+2. **Review / crop.** A draggable crop box; the image is re-encoded to JPEG, long side ≤ 1280 px.
 3. **Upload.** `POST /v1/scans` (multipart) with an `Idempotency-Key` that stays stable across
    retries of the same image.
 4. **Worker.**
@@ -84,6 +84,8 @@ Errors are always `{ error: { code, message, retryable } }`. `code` is a closed 
 - **Interface.** `OcrProvider.extract(image) → { text, model }` (`worker/src/ocr/provider.ts`).
   Providers only fetch; they never interpret the output.
 - **Providers.**
+  - `gemini` (default): Generative Language `generateContent` with image `inlineData` and
+    `responseJsonSchema` (`gemini-2.5-flash`).
   - `openai`: Chat Completions with a strict `json_schema`.
   - `anthropic`: official SDK with `output_config.format` JSON schema, `effort: low`, and
     server-side refusal fallback.
@@ -189,8 +191,9 @@ with their images. Confirmed problems are kept.
 confirmed problem text ──▶ POST /v1/scans/:id/solve
                               │  auth · rate limit · cache check (problem hash + prompt version) · lock
                               ▼
-                    ONE structured-output model call: geometry → gpt-5.5; everything else → gpt-5.4-mini (low),
-                    retrying on gpt-5.5 only when the checks fail (worker/src/solver/routing.ts)
+                    ONE structured-output model call (default Gemini): flash first for algebra + geometry,
+                    retrying on gemini-2.5-pro only when the checks fail (worker/src/solver/routing.ts;
+                    OpenAI remains available via SOLVER_PROVIDER=openai)
                     system prompt = curriculum + teaching + hints + geometry + verification rules
                               │  JSON (strict schema)
                               ▼
@@ -233,9 +236,9 @@ confirmed problem text ──▶ POST /v1/scans/:id/solve
 - **`prompts.ts`** has separate sections for role, security, curriculum, language, teaching and
   hints, format, geometry language, and verification. `PROMPT_VERSION` is stored with every lesson
   and is part of the cache key.
-- **`llm.ts`** defines the `JsonModel` interface. OpenAI Chat Completions uses strict
-  `json_schema` and `reasoning_effort`. The dev-only `mock.ts` provides deterministic lessons and
-  failure scenarios.
+- **`llm.ts` / `gemini.ts`** define the `JsonModel` interface. Default solve provider is Gemini
+  (`generateContent` + `responseJsonSchema`). OpenAI Chat Completions remains available. The
+  dev-only `mock.ts` provides deterministic lessons and failure scenarios.
 - **`jsonSchema.ts`** derives the strict JSON Schema from the zod schema, the single source of
   truth.
 
