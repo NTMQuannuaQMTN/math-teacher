@@ -18,11 +18,20 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const API = process.env.API_URL ?? "http://localhost:8787";
 const PASS_CER = 0.1;
-const cases = JSON.parse(readFileSync(join(here, "cases.json"), "utf8"));
+const ONLY = process.env.ONLY?.split(",");
+const cases = JSON.parse(readFileSync(join(here, "cases.json"), "utf8")).filter((c) => !ONLY || ONLY.includes(c.id));
+// A local vision model can take > 300 s on a dense exam page; Node's fetch would give up waiting for headers.
+try {
+  const { Agent, setGlobalDispatcher } = createRequire(join(here, "../../worker/package.json"))("undici");
+  setGlobalDispatcher(new Agent({ headersTimeout: 0, bodyTimeout: 0 }));
+} catch {
+  /* undici not installed: default timeouts */
+}
 const token = randomBytes(32).toString("base64url");
 
 function normalize(text) {

@@ -17,10 +17,18 @@ import { getDeviceToken } from "@/lib/deviceToken";
 import { AppError } from "./errors";
 
 const DEFAULT_TIMEOUT_MS = 20_000;
-/** Server OCR timeout is 45 s; allow for upload time on slow mobile networks. */
-const OCR_TIMEOUT_MS = 90_000;
+/** A positive number from an EXPO_PUBLIC_* variable (inlined at build time), or the fallback. */
+const envMs = (value: string | undefined, fallback: number) => {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+};
+/**
+ * Server OCR timeout is 45 s; allow for upload time on slow mobile networks. A local model
+ * (development, SOLVER_PROVIDER/OCR_PROVIDER = local) is much slower: raise both via .env.
+ */
+const OCR_TIMEOUT_MS = envMs(process.env.EXPO_PUBLIC_OCR_TIMEOUT_MS, 90_000);
 /** Server solve budget is ~170 s including one corrective retry. */
-const SOLVE_TIMEOUT_MS = 200_000;
+const SOLVE_TIMEOUT_MS = envMs(process.env.EXPO_PUBLIC_SOLVE_TIMEOUT_MS, 200_000);
 
 interface RequestOptions<S extends z.ZodType | null> {
   method?: "GET" | "POST" | "DELETE";
