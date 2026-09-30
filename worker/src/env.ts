@@ -13,6 +13,10 @@ export interface Env {
   LOCAL_LLM_URL?: string;
   LOCAL_LLM_API_KEY?: string;
   LOCAL_OCR_MODEL?: string;
+  /** Local OCR output: "compact" (default; text written once) or "full" (raw + formatted + problems). */
+  OCR_OUTPUT_FORMAT?: string;
+  /** Task tag for OCR_OUTPUT_FORMAT=text models, e.g. "OCR:" (PaddleOCR-VL) or "Text Recognition:" (GLM-OCR). */
+  LOCAL_OCR_PROMPT?: string;
   LOCAL_SOLVER_MODEL?: string;
   OCR_TIMEOUT_MS: string;
   OCR_LIMIT_PER_DEVICE_PER_HOUR: string;

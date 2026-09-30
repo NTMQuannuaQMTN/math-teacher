@@ -47,7 +47,13 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
       if (!env.OPENAI_API_KEY) break;
       return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");
     case "local":
-      return new LocalOcrProvider(env.LOCAL_LLM_URL || "http://127.0.0.1:8080", env.LOCAL_OCR_MODEL || "local", env.LOCAL_LLM_API_KEY);
+      return new LocalOcrProvider(
+        env.LOCAL_LLM_URL || "http://127.0.0.1:8080",
+        env.LOCAL_OCR_MODEL || "local",
+        env.LOCAL_LLM_API_KEY,
+        env.OCR_OUTPUT_FORMAT === "full" || env.OCR_OUTPUT_FORMAT === "text" ? env.OCR_OUTPUT_FORMAT : "compact",
+        env.LOCAL_OCR_PROMPT || "OCR:",
+      );
     case "anthropic":
       if (!env.ANTHROPIC_API_KEY) break;
       return new AnthropicOcrProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL || "claude-opus-5");

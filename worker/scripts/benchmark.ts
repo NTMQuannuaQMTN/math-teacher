@@ -38,13 +38,15 @@ const ids = flag("ids")?.split(",");
 const offline = args.includes("--offline");
 const exp = flag("exp") ?? "EXP-adhoc";
 
-const LOCAL: Record<string, { file: string; thinking: boolean }> = {
+const LOCAL: Record<string, { file: string; thinking: boolean; presencePenalty?: number }> = {
   "qwen3-4b": { file: "qwen3-4b-q4_k_m", thinking: false },
   "qwen3-4b-think": { file: "qwen3-4b-q4_k_m", thinking: true },
   "qwen3-8b": { file: "qwen3-8b-q4_k_m", thinking: false },
   "qwen3-8b-think": { file: "qwen3-8b-q4_k_m", thinking: true },
   "qwen3.5-9b": { file: "qwen3.5-9b-q4_k_m", thinking: false },
   "qwen3.5-9b-think": { file: "qwen3.5-9b-q4_k_m", thinking: true },
+  // Post-hoc variant (EXP-005 truncations): presence penalty 1.5 as recommended for quantized Qwen.
+  "qwen3.5-9b-pp": { file: "qwen3.5-9b-q4_k_m", thinking: false, presencePenalty: 1.5 },
   "gemma-4-12b": { file: "gemma-4-12b-it-q4_k_m", thinking: false },
   "gemma-4-12b-think": { file: "gemma-4-12b-it-q4_k_m", thinking: true },
 };
@@ -101,8 +103,8 @@ const stored = system === "stored-gemini" ? storedGemini() : null;
 const local = LOCAL[system];
 const cached = local
   ? new CachedModel(
-      new LocalJsonModel(process.env.LOCAL_LLM_URL ?? "http://127.0.0.1:8080", local.file, { thinking: local.thinking, maxTokens: local.thinking ? 16_000 : 12_000 }),
-      `thinking=${local.thinking};prompt=${PROMPT_VERSION}`,
+      new LocalJsonModel(process.env.LOCAL_LLM_URL ?? "http://127.0.0.1:8080", local.file, { thinking: local.thinking, maxTokens: local.thinking ? 16_000 : 12_000, presencePenalty: local.presencePenalty }),
+      `thinking=${local.thinking};prompt=${PROMPT_VERSION}${local.presencePenalty ? `;pp=${local.presencePenalty}` : ""}`,
       offline,
     )
   : null;

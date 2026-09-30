@@ -20,8 +20,9 @@ import { OcrFailure } from "./provider";
  */
 export const ModelOcrOutputSchema = z.strictObject({
   status: z.enum(["success", "no_math_found", "unreadable"]),
-  raw_text: z.string(),
-  formatted_text: z.string(),
+  /** Absent in the compact format: derived from problems (see OCR_SYSTEM_PROMPT_COMPACT). */
+  raw_text: z.string().optional(),
+  formatted_text: z.string().optional(),
   problems: z.array(z.strictObject({ label: z.string(), formatted_text: z.string() })),
   language: OcrLanguageSchema,
   confidence: z.enum(["high", "medium", "low"]),
@@ -50,6 +51,28 @@ export const MODEL_OCR_JSON_SCHEMA: Record<string, unknown> = {
     language: { type: "string", enum: OcrLanguageSchema.options },
     confidence: { type: "string", enum: ["high", "medium", "low"] },
     issues: { type: "array", items: { type: "string", enum: OcrIssueSchema.options } },
+  },
+};
+
+/** Compact schema: the text appears once, inside problems (the full text and plain text are derived). */
+export const MODEL_OCR_COMPACT_JSON_SCHEMA: Record<string, unknown> = {
+  type: "object",
+  additionalProperties: false,
+  required: ["status", "language", "confidence", "issues", "problems"],
+  properties: {
+    status: { type: "string", enum: ["success", "no_math_found", "unreadable"] },
+    language: { type: "string", enum: OcrLanguageSchema.options },
+    confidence: { type: "string", enum: ["high", "medium", "low"] },
+    issues: { type: "array", items: { type: "string", enum: OcrIssueSchema.options } },
+    problems: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["label", "formatted_text"],
+        properties: { label: { type: "string" }, formatted_text: { type: "string" } },
+      },
+    },
   },
 };
 
@@ -122,8 +145,10 @@ export function normalizeOcrOutput(
   }
   const output = parsed.data;
 
-  let rawText = normalizeProblemText(output.raw_text).slice(0, LIMITS.maxProblemChars);
-  let formattedText = normalizeProblemText(output.formatted_text).slice(0, LIMITS.maxProblemChars);
+  // Compact format: the text is only inside problems; join it (the plain text is derived below).
+  const formattedSource = output.formatted_text ?? output.problems.map((p) => p.formatted_text).join("\n\n");
+  let rawText = normalizeProblemText(output.raw_text ?? "").slice(0, LIMITS.maxProblemChars);
+  let formattedText = normalizeProblemText(formattedSource).slice(0, LIMITS.maxProblemChars);
   const issues = new Set<OcrIssue>(output.issues);
   let status: OcrResult["status"] = output.status;
 
