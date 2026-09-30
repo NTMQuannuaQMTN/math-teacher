@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { Scan } from "@shared/contract";
 import { api } from "@/api/client";
@@ -11,7 +11,9 @@ import { Button } from "@/components/Button";
 import { ProblemCard } from "@/components/ProblemCard";
 import { StateView } from "@/components/StateView";
 import { useStartUpload } from "@/hooks/useStartUpload";
+import { useWebSources } from "@/hooks/useWebSources";
 import { useStrings } from "@/i18n";
+import { canCaptureScreen } from "@/lib/webSources";
 import { loadRecentSnapshot, saveRecentSnapshot, scanStore } from "@/state/scanStore";
 import { radius, spacing, typography, useTheme } from "@/theme";
 
@@ -22,6 +24,10 @@ export default function HomeScreen() {
   const s = useStrings();
   const insets = useSafeAreaInsets();
   const upload = useStartUpload();
+  // Web: screenshot a screen instead of the camera, and upload images or PDFs.
+  const web = useWebSources();
+  const isWeb = Platform.OS === "web";
+  const screenCapture = isWeb && canCaptureScreen();
   const { notice, count } = useLocalSearchParams<{ notice?: string; count?: string }>();
   const [shownNotice, setShownNotice] = useState<string | null>(null);
 
@@ -100,30 +106,31 @@ export default function HomeScreen() {
       </View>
 
       <Pressable
-        testID="scan-button"
-        onPress={() => router.push("/camera")}
+        testID={screenCapture ? "screenshot-button" : "scan-button"}
+        onPress={screenCapture ? web.screenshot : () => router.push("/camera")}
+        disabled={web.busy === "screen"}
         accessibilityRole="button"
-        accessibilityLabel={s.home.scan}
-        accessibilityHint={s.home.scanHint}
+        accessibilityLabel={screenCapture ? s.home.screenshot : s.home.scan}
+        accessibilityHint={screenCapture ? s.home.screenshotHint : s.home.scanHint}
         style={({ pressed }) => [styles.scanCard, { backgroundColor: pressed ? colors.primaryPressed : colors.primary }]}
       >
         <View style={styles.scanIcon}>
-          <Ionicons name="camera" size={34} color={colors.primary} />
+          <Ionicons name={screenCapture ? "desktop-outline" : "camera"} size={34} color={colors.primary} />
         </View>
         <View style={styles.scanTexts}>
-          <Text style={styles.scanTitle}>{s.home.scan}</Text>
-          <Text style={styles.scanHint}>{s.home.scanHint}</Text>
+          <Text style={styles.scanTitle}>{screenCapture ? s.home.screenshot : s.home.scan}</Text>
+          <Text style={styles.scanHint}>{screenCapture ? s.home.screenshotHint : s.home.scanHint}</Text>
         </View>
         <Ionicons name="arrow-forward" size={24} color="#FFFFFF" />
       </Pressable>
 
       <Button
         testID="upload-button"
-        label={s.home.upload}
-        icon="images-outline"
+        label={isWeb ? s.home.uploadDocument : s.home.upload}
+        icon={isWeb ? "document-attach-outline" : "images-outline"}
         variant="secondary"
-        onPress={upload.start}
-        loading={upload.busy}
+        onPress={isWeb ? web.uploadDocument : upload.start}
+        loading={isWeb ? web.busy === "document" : upload.busy}
       />
 
       {shownNotice ? <Banner tone="success" message={shownNotice} /> : null}

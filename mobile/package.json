@@ -20,6 +20,7 @@
     "expo-secure-store": "~57.0.4",
     "expo-status-bar": "~57.0.1",
     "katex": "^0.16.47",
+    "pdfjs-dist": "^6.3.289",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
@@ -41,7 +42,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "postinstall": "node scripts/build-katex-assets.mjs",
+    "postinstall": "node scripts/build-katex-assets.mjs && node scripts/copy-pdfjs.mjs",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
     "export": "expo export --platform ios --platform android --platform web"
