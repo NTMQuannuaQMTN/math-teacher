@@ -252,13 +252,21 @@ export async function solveProblem(
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const current = attempt > 1 && fallback ? fallback : model;
     if (current !== model) log(`escalating to ${current.model}`);
-    const text = await current.complete({
-      messages,
-      schema: withFigure ? LESSON_JSON_SCHEMA : LESSON_JSON_SCHEMA_NO_FIGURE,
-      schemaName: "lesson",
-      signal,
-      onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
-    });
+    let text: string;
+    try {
+      text = await current.complete({
+        messages,
+        schema: withFigure ? LESSON_JSON_SCHEMA : LESSON_JSON_SCHEMA_NO_FIGURE,
+        schemaName: "lesson",
+        signal,
+        onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
+      });
+    } catch (err) {
+      // A failed retry (truncated, overloaded, timed out) must not throw away the lesson we already have.
+      if (!best) throw err;
+      log(`attempt ${attempt} failed (${(err as Error).message.slice(0, 120)}); keeping attempt ${attempt - 1}`);
+      return { lesson: best.lesson, verification: best.verification, ...finish(attempt, best.model) };
+    }
     onRaw?.(attempt, text);
     const parsed = parseLesson(text);
     let problems: string[];

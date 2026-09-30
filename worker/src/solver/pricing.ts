@@ -15,7 +15,15 @@ const PRICES: Record<string, { input: number; cached: number; output: number }> 
   "gpt-4.1": { input: 2, cached: 0.5, output: 8 },
   "gpt-4.1-mini": { input: 0.4, cached: 0.1, output: 1.6 },
   "gpt-4.1-nano": { input: 0.1, cached: 0.025, output: 0.4 },
-  // Gemini (paid tier, prompts ≤ 200k for Pro)
+  // Gemini (paid tier, prompts ≤ 200k for Pro). Billed output includes thinking tokens.
+  "gemini-3.8-flash": { input: 0.75, cached: 0.075, output: 3.75 },
+  "gemini-3.7-flash": { input: 0.75, cached: 0.075, output: 3.75 },
+  "gemini-3.6-flash": { input: 0.75, cached: 0.075, output: 3.75 },
+  "gemini-3.5-flash": { input: 1.5, cached: 0.15, output: 9 },
+  "gemini-3.5-flash-lite": { input: 0.3, cached: 0.03, output: 2.5 },
+  "gemini-3.1-flash-lite": { input: 0.25, cached: 0.025, output: 1.5 },
+  "gemini-3.1-pro-preview": { input: 2, cached: 0.2, output: 12 },
+  "gemini-3-flash-preview": { input: 0.5, cached: 0.05, output: 3 },
   "gemini-2.5-pro": { input: 1.25, cached: 0.125, output: 10 },
   "gemini-2.5-flash": { input: 0.3, cached: 0.03, output: 2.5 },
   "gemini-2.5-flash-lite": { input: 0.1, cached: 0.01, output: 0.4 },

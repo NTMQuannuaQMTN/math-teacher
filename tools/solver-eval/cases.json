@@ -209,5 +209,11 @@
    "18"
   ],
   "figure": true
+ },
+ {
+  "id": "r4-incircle-vi",
+  "category": "geometry/proof (regression: wrong steps, missing points)",
+  "text": "Cho tam giác $ABC$ nhọn ($AB < AC$) có đường tròn nội tiếp $(I)$ tiếp xúc với các cạnh $BC, CA, AB$ lần lượt tại $D, E, F$. Gọi $J$ là trung điểm của $EF$ và $K$ là giao điểm của $AD$ với $EF$.\na) Chứng minh $ID^{2} = IJ \\cdot IA$ và tam giác $IJD$ đồng dạng với tam giác $IDA$.\nb) Gọi $H$ là giao điểm khác $I$ của $IK$ với đường tròn đường kính $AI$. Chứng minh $\\widehat{IHD} = \\widehat{IDK}$ và các điểm $I, D, J, H$ cùng thuộc một đường tròn $(S)$.\nc) Gọi $L$ và $G$ lần lượt là các giao điểm khác $D$ của $DJ$ và $(S)$ với $(I)$. Chứng minh $A, G, D$ thẳng hàng và các đường thẳng $AL, GJ$ cắt nhau trên $(I)$.",
+  "figure": true
  }
 ]

@@ -241,7 +241,7 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
         accessibilityHint={s.solve.figureHint}
       >
         {width > 0 ? (
-          <Svg width={width} height={height} pointerEvents="none">
+          <Svg width={width} height={height} pointerEvents="none" style={styles.clip}>
             {scene.circles.map((c) => (
               <Circle
                 key={c.id}
@@ -405,6 +405,8 @@ const styles = StyleSheet.create({
   // Web: dragging with the mouse must not select the SVG label text.
   noSelect: Platform.OS === "web" ? ({ userSelect: "none", cursor: "grab" } as object) : {},
   wrap: { borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth, overflow: "hidden" },
+  // Big circles and extended lines must not draw outside the figure card (web SVG overflows by default).
+  clip: { overflow: "hidden" },
   topRow: { position: "absolute", top: spacing.sm, left: spacing.sm, right: spacing.sm, flexDirection: "row", gap: spacing.xs, flexWrap: "wrap" },
   chip: { borderRadius: radius.pill, paddingHorizontal: spacing.sm, paddingVertical: 3 },
   tools: { position: "absolute", right: spacing.sm, bottom: spacing.sm, flexDirection: "row", alignItems: "center", gap: spacing.xs },

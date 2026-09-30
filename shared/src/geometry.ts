@@ -478,7 +478,11 @@ export function figureBounds(resolved: ResolvedFigure, visiblePointIds?: Set<str
     xs.push(p.x);
     ys.push(p.y);
   }
+  // Circles count too, unless one is far bigger than the rest of the figure (e.g. a circle through
+  // nearly collinear points): then it runs off the edge instead of shrinking everything else.
+  const span = xs.length ? Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) : 0;
   for (const c of Object.values(resolved.circles)) {
+    if (span > 0 && c.r > 1.5 * span) continue;
     xs.push(c.cx - c.r, c.cx + c.r);
     ys.push(c.cy - c.r, c.cy + c.r);
   }

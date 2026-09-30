@@ -260,3 +260,38 @@ OpenAI/Anthropic OCR remain selectable. Thinking budget is 0 for OCR to keep cos
 
 **Cost.** Flash vision tokens are typically cheaper than `gpt-4.1-mini` for the same ≤1280 px
 crop; expect OCR often in the ~$0.0005–0.002 range. Re-run `npm run ocr:eval` with a real key.
+
+## 2026-09-30: Merge repair; accuracy checks for proofs; every mentioned point drawn
+
+- **Merge repair.** `main` didn't compile after merging `cost-optimize`: duplicate
+  `GeminiJsonModel` / `GeminiOcrProvider` imports, a missing `problemKey` import, and a test typing
+  error. Its defaults also pointed at `gemini-2.5-flash` / `gemini-2.5-pro`, which return 404 for
+  this key (tested). Kept the branch's cheap → strong routing (`SOLVER_*` vars), using
+  `solver/geminiModel.ts`, which retries Gemini 503s. Defaults: `gemini-3.5-flash-lite` first and
+  `gemini-3.5-flash` (medium thinking) only when checks fail; OCR uses `gemini-3.1-flash-lite`.
+- **Claims measured on the figure** (`shared/src/claims.ts`). ⊥, ∥, equal segments, products and
+  ratios of segments (ID² = IJ·IA, ID/IA = IJ/ID), equal angles, angle values (exact figures
+  only), "thẳng hàng", "cùng thuộc một đường tròn" / "tứ giác … nội tiếp" and similar triangles
+  are parsed from the statement, steps and hints and measured on the constructed figure. A false
+  claim marks the lesson unverified and goes back to the model. Every "Chứng minh" part needs a
+  measured, passing claim for "verified". On the stored incircle lessons it caught "IH ⊥ IK" and
+  "∠IDK = ∠IAD" (both false), with no false alarms on the known-good geometry lessons.
+- **Points built from their definitions** (`shared/src/pointDefinitions.ts`). Supported:
+  "trung điểm", "hình chiếu / chân đường cao", "giao điểm (khác P) của … với …", "lần lượt là",
+  "tâm đường tròn ngoại/nội tiếp", "trọng tâm / trực tâm", "đối xứng", "tiếp xúc … lần lượt tại",
+  "đường tròn đường kính AI", "cùng thuộc một đường tròn (S)", and English equivalents.
+  - Missing points are added, and points the model only placed arbitrarily are replaced.
+  - On the incircle problem it builds K, H, L, G, (S) and the circle with diameter AI, and the
+    problem's own claims all hold on the result.
+- **Retries learn more.** A failed "find all n" check reports the values where the condition
+  really holds, and a final answer that states a value must have a check.
+  `PROMPT_VERSION` is now `solver-v1.7`.
+- **Eval with billing (2026-09-30):** 23/24. All 7 algebra and all 9 geometry cases verified;
+  x3 fails only the harness's 2-hint minimum.
+  - Regression problems: r1 f(n) is now correct (the integers check's true-set hint led
+    `gemini-3.5-flash` to the right answer), r2 r + s = −3/2 is correct, and r3 is correct.
+  - r4 (incircle) first crashed with "output was truncated". After the fixes it is correct and
+    verified, with every point drawn and 19 checks passing, at $0.32 and 128 s on `gemini-3.5-flash`.
+  - Fixes: solver `maxOutputTokens` raised from 24k to 40k (thinking counts against it), a failed
+    retry now keeps the previous attempt's lesson, and Gemini 3 prices were restored to
+    `pricing.ts` (the merge had dropped them, so costs logged as $0).

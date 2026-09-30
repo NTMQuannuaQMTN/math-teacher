@@ -11,9 +11,11 @@
  * Used by the Worker before a lesson is stored/shown, and to build precise
  * feedback when asking the model to correct itself.
  */
+import { checkClaims, statementParts } from "./claims";
+import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
 import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, type Env } from "./expr";
-import { evaluateFigureCheck, resolveFigure, type ResolvedFigure } from "./geometry";
+import { dist, evaluateFigureCheck, resolveFigure, type ResolvedFigure } from "./geometry";
 import type { AnswerCheck, Figure, FigureCheck, ModelLesson, Verification } from "./solution";
 
 // ---------------------------------------------------------------------------
@@ -345,7 +347,17 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
           const claimed = none ? false : evalCondition(check.expected, env);
           if (actual === null || claimed === null) continue;
           if (actual !== claimed) {
-            return { label, passed: false, detail: `at ${v}=${n}: the condition is ${actual} but the claimed answer says ${claimed}` };
+            // Show the true pattern so the retry can find the right answer set.
+            const holds: number[] = [];
+            for (let k = -30; k <= 200 && holds.length < 12; k++) {
+              const e = { [v]: k };
+              if (domain.every((d) => evalCondition(d, e) === true) && evalCondition(condition, e) === true) holds.push(k);
+            }
+            return {
+              label,
+              passed: false,
+              detail: `at ${v}=${n}: the condition is ${actual} but the claimed answer says ${claimed}. The condition actually holds for ${v} = ${holds.length ? `${holds.join(", ")}, …` : "no value in the tested range"}`,
+            };
           }
           compared++;
         }
@@ -508,13 +520,16 @@ export function resultParts(statement: string): string[] {
 }
 
 export function verifyLesson(input: ModelLesson): LessonVerification {
-  const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(input));
+  // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
+  const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
   let lesson = repaired;
   const feedback = [...report.errors];
   const checks: Verification["checks"] = [];
   let answerLevelPassed = 0;
   let answerLevelFailed = 0;
   let figureIssue: string | null = null;
+  /** Proof parts whose claim couldn't be measured on the figure (e.g. it uses a point the figure lacks). */
+  const proofUncovered: string[] = [];
   let resolved: ResolvedFigure | null = null;
 
   if (lesson.figure) {
@@ -558,6 +573,48 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
       }
       const givenCount = figure.checks.filter((c) => c.role === "given").length;
       if (givenCount > 0 && figureProblems.length === 0) checks.push({ label: "figure matches the givens", passed: true });
+    }
+    if (figureProblems.length === 0 && resolved) {
+      // Measure the solution's geometric claims on the exact figure: a false "IH ⊥ IK" means wrong reasoning.
+      const l = lesson;
+      const claimTexts = [
+        l.analysis.statement,
+        ...l.steps.flatMap((s) => [s.title, s.explanation, s.math]),
+        ...l.hints.flatMap((h) => [h.explanation, h.math]),
+        l.finalAnswer.text,
+        l.finalAnswer.math,
+      ];
+      // Inequalities in the statement ("AB < AC") must hold in the figure with a visible margin,
+      // or constructions degenerate (a nearly-isosceles triangle makes I, J, D almost collinear).
+      const ineq = /(?<![A-Z])([A-Z]'*)([A-Z]'*)\s*(<|>)\s*([A-Z]'*)([A-Z]'*)(?![A-Z])/g;
+      for (const m of l.analysis.statement.replace(/\$/g, "").matchAll(ineq)) {
+        const [a, b, op, c, d] = [m[1]!, m[2]!, m[3]!, m[4]!, m[5]!];
+        const pa = resolved.points[a], pb = resolved.points[b], pc = resolved.points[c], pd = resolved.points[d];
+        if (!pa || !pb || !pc || !pd) continue;
+        const [x, y] = [dist(pa, pb), dist(pc, pd)];
+        const [small, big] = op === "<" ? [x, y] : [y, x];
+        if (!(big > small * 1.2)) {
+          feedback.push(
+            `the problem says ${a}${b} ${op} ${c}${d}, but in the figure ${a}${b} = ${x.toFixed(2)} and ${c}${d} = ${y.toFixed(2)}: make the difference clear (20–40%), or constructions degenerate.`,
+          );
+        }
+      }
+      // Each "Chứng minh …" part must have at least one of its claims measured (and passing) to count as verified.
+      for (const part of statementParts(l.analysis.statement)) {
+        if (!/chứng minh|prove|show that/i.test(part.text)) continue;
+        const measured = checkClaims([part.text.replace(/^.*?(chứng minh|prove|show that)/is, "")], resolved, { exact: l.figure!.scale === "exact" });
+        if (measured.length === 0) proofUncovered.push(part.letter || "the proof");
+      }
+      for (const claim of checkClaims(claimTexts, resolved, { exact: l.figure!.scale === "exact" }).slice(0, 12)) {
+        checks.push({ label: claim.label, passed: claim.passed });
+        if (claim.passed) answerLevelPassed++;
+        else {
+          answerLevelFailed++;
+          feedback.push(
+            `the lesson states "${claim.label}", but it is false in the constructed figure (${claim.detail}). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong.`,
+          );
+        }
+      }
     }
     if (figureProblems.length === 0 && resolved) {
       // Draw everything the lesson talks about; missing points/circles go back to the model.
@@ -609,10 +666,25 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     );
   }
 
+  // A final answer that states a value needs a check that re-derives it.
+  const answerText = `${lesson.finalAnswer.text} ${lesson.finalAnswer.math ?? ""}`;
+  const statesValue = /=\s*-?\s*(?:\d|\\d?frac|\\sqrt)/.test(answerText.replace(/\$/g, ""));
+  if (lesson.analysis.status === "solvable" && statesValue && lesson.answerChecks.length === 0) {
+    feedback.push(
+      `the final answer states a value ("${answerText.slice(0, 80).trim()}") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a "value" check on one concrete choice of the parameters that satisfies all conditions)`,
+    );
+  }
+
+  if (proofUncovered.length > 0 && lesson.figure) {
+    feedback.push(
+      `the claim of ${proofUncovered.map((p) => (p.length === 1 ? `part ${p}` : p)).join(", ")} can't be checked on the figure: draw every point that claim names, constructed exactly from its definition.`,
+    );
+  }
+
   let status: Verification["status"];
   if (lesson.analysis.status !== "solvable") status = "not_checkable";
   else if (answerLevelFailed > 0 || report.errors.length > 0) status = "unverified";
-  else if (answerLevelPassed > 0 && uncovered) status = "partial";
+  else if (answerLevelPassed > 0 && (uncovered || proofUncovered.length > 0)) status = "partial";
   else if (answerLevelPassed > 0) status = "verified";
   else if (checks.length > 0) status = "partial";
   else status = "not_checkable";

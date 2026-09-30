@@ -7,7 +7,6 @@ import { isAbort } from "./httpErrors";
 import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
 import { OpenAiOcrProvider } from "./openai";
-import { GeminiOcrProvider } from "./gemini";
 import { OcrFailure, type OcrProvider } from "./provider";
 
 /**
@@ -42,7 +41,7 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
   switch (name) {
     case "gemini":
       if (!env.GEMINI_API_KEY) break;
-      return new GeminiOcrProvider(env.GEMINI_API_KEY, env.GEMINI_OCR_MODEL || "gemini-2.5-flash");
+      return new GeminiOcrProvider(env.GEMINI_API_KEY, env.GEMINI_OCR_MODEL || "gemini-3.1-flash-lite");
     case "openai":
       if (!env.OPENAI_API_KEY) break;
       return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");

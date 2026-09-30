@@ -9,9 +9,9 @@ import { isAbort } from "../ocr/httpErrors";
 import { OcrFailure } from "../ocr/provider";
 import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
-import { GeminiJsonModel } from "../solver/gemini";
-import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
 import { GeminiJsonModel } from "../solver/geminiModel";
+import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
+import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
 import { selectSolverModelIds } from "../solver/routing";
@@ -53,18 +53,20 @@ function createModels(env: Env, request: Request, problemText: string): { model:
 
   if (provider === "gemini" && env.GEMINI_API_KEY) {
     const key = env.GEMINI_API_KEY;
+    // Efforts are Gemini 3 thinking levels: minimal | low | medium | high.
+    // (gemini-2.5-* is closed to new API keys and returns 404.)
     const choice = selectSolverModelIds(problemText, {
-      cheap: env.SOLVER_MODEL || "gemini-2.5-flash",
+      cheap: env.SOLVER_MODEL || "gemini-3.5-flash-lite",
       cheapEffort: env.SOLVER_REASONING_EFFORT || "low",
-      strong: env.SOLVER_FALLBACK_MODEL || "gemini-2.5-pro",
+      strong: env.SOLVER_FALLBACK_MODEL || "gemini-3.5-flash",
       strongEffort: env.SOLVER_FALLBACK_REASONING_EFFORT || "medium",
-      // Geometry also starts on flash; escalate to pro only when checks fail.
-      geometry: env.SOLVER_GEOMETRY_MODEL || env.SOLVER_MODEL || "gemini-2.5-flash",
+      // Geometry also starts on the cheap model; escalate only when checks fail.
+      geometry: env.SOLVER_GEOMETRY_MODEL || env.SOLVER_MODEL || "gemini-3.5-flash-lite",
       geometryEffort: env.SOLVER_GEOMETRY_REASONING_EFFORT || "medium",
     });
     const model = new GeminiJsonModel(key, choice.primary, choice.primaryEffort);
     const fallback =
-      choice.fallback && choice.fallback !== choice.primary
+      choice.fallback && (choice.fallback !== choice.primary || choice.fallbackEffort !== choice.primaryEffort)
         ? new GeminiJsonModel(key, choice.fallback, choice.fallbackEffort || "medium")
         : undefined;
     return { model, fallback };

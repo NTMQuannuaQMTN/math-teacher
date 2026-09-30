@@ -23,7 +23,8 @@ export class GeminiJsonModel implements JsonModel {
       contents,
       schema,
       thinkingLevel: this.thinkingLevel,
-      maxOutputTokens: 24_000,
+      // Thinking tokens count against this cap; a long multi-part proof with medium thinking needs room.
+      maxOutputTokens: 40_000,
       signal,
     });
     onUsage?.(usage);

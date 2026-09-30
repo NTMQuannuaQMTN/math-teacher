@@ -7,3 +7,5 @@ export * from "./verify";
 export * from "./figureScene";
 export * from "./constraints";
 export * from "./figureComplete";
+export * from "./claims";
+export * from "./pointDefinitions";

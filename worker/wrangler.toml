@@ -27,21 +27,22 @@ ENVIRONMENT = "production"
 # "gemini" | "openai" | "anthropic" | "mock" (mock only in development)
 OCR_PROVIDER = "gemini"
 # Cheap vision model for OCR. Re-run `npm run ocr:eval` after changing.
-GEMINI_OCR_MODEL = "gemini-2.5-flash"
+GEMINI_OCR_MODEL = "gemini-3.1-flash-lite"
 OPENAI_MODEL = "gpt-4.1-mini"
 ANTHROPIC_MODEL = "claude-opus-5"
 OCR_TIMEOUT_MS = "45000"
 # Per-device and per-IP budgets for OCR calls (uploads + retries), per hour.
 OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
 OCR_LIMIT_PER_IP_PER_HOUR = "120"
-# Solver (lesson generation). Default: Gemini flash first, pro only on verify failure.
+# Solver (lesson generation): cheap Gemini first, the stronger one only when a check fails.
+# gemini-2.5-* is closed to new API keys (404). Efforts are Gemini 3 thinking levels.
 # OCR + solve both default to Gemini (one GEMINI_API_KEY). Set OCR_PROVIDER/SOLVER_PROVIDER=openai for GPT.
 SOLVER_PROVIDER = "gemini"
-SOLVER_MODEL = "gemini-2.5-flash"
+SOLVER_MODEL = "gemini-3.5-flash-lite"
 SOLVER_REASONING_EFFORT = "low"
-SOLVER_GEOMETRY_MODEL = "gemini-2.5-flash"
+SOLVER_GEOMETRY_MODEL = "gemini-3.5-flash-lite"
 SOLVER_GEOMETRY_REASONING_EFFORT = "medium"
-SOLVER_FALLBACK_MODEL = "gemini-2.5-pro"
+SOLVER_FALLBACK_MODEL = "gemini-3.5-flash"
 SOLVER_FALLBACK_REASONING_EFFORT = "medium"
 SOLVE_TIMEOUT_MS = "170000"
 SOLVE_LIMIT_PER_DEVICE_PER_HOUR = "30"

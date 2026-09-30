@@ -74,7 +74,7 @@ describe("GeminiJsonModel", () => {
   });
 
   it("uses a non-zero thinking budget for medium effort", async () => {
-    const fetchMock = vi.fn(async () =>
+    const fetchMock = vi.fn(async (_url: string, _init?: RequestInit) =>
       Response.json({ candidates: [{ finishReason: "STOP", content: { parts: [{ text: "{}" }] } }] }),
     );
     vi.stubGlobal("fetch", fetchMock);
