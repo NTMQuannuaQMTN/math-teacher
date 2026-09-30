@@ -67,6 +67,55 @@ Budget rule for this sprint: **$0 of paid API** (Gemini disabled by the user; no
 - Speed (plugged in): ~38 tok/s generation, 100–390 s per problem (2 attempts).
 - **Conclusion: Qwen3-4B is not viable as the solver**, even for difficulty 1–2 items.
 
+## EXP-004: Qwen3.5-9B (Q4_K_M, Unsloth GGUF), non-thinking, validation split (11)
+
+- Date: 2026-09-30 · llama.cpp b11272 + Metal · grammar schema + repair · solver-v1.7 · max 2 attempts
+  · plugged in, `caffeinate` (the first item stalled ~20 min while the Mac was idle-sleeping)
+- Tokens: mean 9.5K in / 6.6K out per problem (2 attempts). Latency: mean 824 s per problem
+  (13–20 tok/s); the incircle proof took 1,495 s and 17K output tokens. API cost **$0**; the hosted
+  list price for the same tokens would be ≈ $0.002 (`cost_model.py`).
+- **Final answers: 7/8 correct (87.5%)**, including the two problems Gemini flash-lite got wrong
+  before escalation: ch-3 f(n) (n ≡ 1 mod 3 and n ≡ 16 mod 18) and ch-1 r + s = −3/2. The one
+  wrong answer (w1, garden dimensions) was flagged unverified. **0 CRITICAL.**
+- Grades with the verifier at run time (v1): 2 PASS, 6 PARTIAL, 3 FAIL, 0 CRITICAL.
+
+### EXP-004b: same lessons, re-graded with verifier v2 (no model call, `scripts/regrade.ts`)
+
+Verifier changes, all motivated by EXP-004 and applying to every model:
+(1) checks that cannot be evaluated (unknown letters) are reported as malformed, not as wrong
+answers; (2) `value` checks may be relations with expected true/false, and several values are
+compared pairwise; (3) a missing figure is a retry hint, not a mathematical failure; (4) shape words
+in the statement ("vuông tại A", "cân", "đều", "hình vuông…") become checked givens, so a wrongly
+drawn figure is set aside instead of failing every claim; (5) "tam giác ABC có đường tròn nội tiếp
+(I)" builds I and (I) from the text.
+
+- Result on identical lessons: **6 PASS, 3 PARTIAL, 2 FAIL, 0 CRITICAL** (was 2/6/3/0).
+- The 2 remaining FAILs are real: w1 has a wrong answer; ch-4 has three false claims measured on a
+  figure built only from the statement: "∠IDJ = ∠IDA" (4.6° vs 27.6°), "∠IDJ = 90°" and
+  "∠EIF = 180°".
+- Regression check: the stored Gemini lessons (EXP-001) grade identically, and all 12 known-good
+  Gemini geometry lessons stay verified (no false alarms).
+
+## EXP-006: OCR, local Qwen3.5-9B vision (mmproj F16) vs stored API baselines
+
+- Date: 2026-09-30 · harness `tools/ocr-eval/run.mjs` through the real API (local worker,
+  `OCR_PROVIDER=local`) · metric: character error rate (CER) after normalisation; pass at CER ≤ 0.10
+  and the right status/problem split.
+- Fixtures 01–17 (single problems: print, handwriting, blur, non-maths, injection, a 3-problem worksheet):
+  **16/17 PASS.** Every text case scored CER 0.000, except the worksheet at 0.080 (split correctly
+  into 3 problems). Blurry and non-maths images were correctly rejected. The one failure (14-injection):
+  transcribed verbatim, not obeyed and not solved, but labelled `no_math_found` (safe, wrong status).
+  Median latency ≈ 28 s per photo (11–76 s), API cost $0.
+- Real exam pages (18–20, dense two-column A4 pages at 1600 px): **0/3.** KC page 1: CER 0.49,
+  9 questions merged into 1 (401 s). KC page 2: timeout at 600 s. Chuyên page: split correctly
+  into 5, CER 0.22 (323 s).
+- Stored baselines on fixtures 01–17 (not re-run; no paid calls): OpenAI gpt-4.1(-mini) **17/17**,
+  CER 0.005–0.007, median ≈ 2.2 s, ≈ $0.0011/photo. Gemini 3.1 flash-lite **16/17**, CER 0.012,
+  median 3.7 s, ≈ $0.0008/photo. Neither was run on the exam pages (added today).
+- **Conclusion:** for one or two problems per photo (the app's main use, since the student crops),
+  local Qwen3.5-9B OCR matches the paid APIs on accuracy but is ~10× slower on this Mac. For whole
+  dense pages it is not usable; keep a hosted vision model (or crop per question) for those.
+
 ---
 
 ## Environment notes

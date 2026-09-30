@@ -1,0 +1,3100 @@
+{
+ "summary": {
+  "exp": "EXP-001b",
+  "system": "stored-gemini",
+  "split": "validation",
+  "promptVersion": "solver-v1.7",
+  "dataset": "v1",
+  "n": 11,
+  "pass": 10,
+  "partial": 0,
+  "fail": 1,
+  "critical": 0,
+  "answerAccuracy": 0.8888888888888888,
+  "gradableN": 9,
+  "verifiedRate": 0.9090909090909091,
+  "errors": 1,
+  "meanModelSeconds": 0,
+  "meanInputTokens": 0,
+  "meanOutputTokens": 0,
+  "cache": null,
+  "createdAt": "2026-09-30T10:13:46.377Z",
+  "regradedWith": "current verifier",
+  "tally": {
+   "PASS": 10,
+   "FAIL": 1
+  }
+ },
+ "rows": [
+  {
+   "id": "ch-1",
+   "topic": "algebra",
+   "difficulty": 3,
+   "format": "multi_part",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "a) Đã chứng minh được bất đẳng thức (a-3/2)²+(b-3/2)² > 9/2.\nb) Tổng r+s = -3/2, không phụ thuộc vào các tham số a và b. r + s = -3/2 a) Đã chứng minh được bất ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho các phương trình $x^{2}+2ax+3b=0$ và $x^{2}+2bx+3a=0$, trong đó $a$ và $b$ là hai tham số. Biết các phương trình này đều có hai nghiệm phân biệt.\na) Chứng minh $\\left(a-\\frac{3}{2}\\right)^{2}+\\left(b-\\frac{3}{2}\\right)^{2} > \\frac{9}{2}$.\nb) Giả sử hai phương trình trên có đúng một nghiệm chung. Gọi $r$ là nghiệm còn lại của phương trình thứ nhất và $s$ là nghiệm còn lại của phương trình thứ hai. Chứng minh $r+s$ không phụ thuộc vào $a$ và $b$.",
+     "language": "vi",
+     "topic": "equation",
+     "subtopic": "Phương trình bậc hai chứa tham số, hệ thức Vi-ét",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Phương trình bậc hai một ẩn",
+      "Điều kiện có hai nghiệm phân biệt ($\\Delta > 0$)",
+      "Hệ thức Vi-ét",
+      "Nghiệm chung của hệ phương trình"
+     ],
+     "givens": [
+      "Phương trình 1: $x^2 + 2ax + 3b = 0$ có hai nghiệm phân biệt",
+      "Phương trình 2: $x^2 + 2bx + 3a = 0$ có hai nghiệm phân biệt",
+      "Hai phương trình có đúng một nghiệm chung, $r$ là nghiệm còn lại của phương trình 1, $s$ là nghiệm còn lại của phương trình 2"
+     ],
+     "unknowns": [
+      "Chứng minh bất đẳng thức ở câu a",
+      "Chứng minh tổng $r+s$ không phụ thuộc vào $a, b$ ở câu b"
+     ],
+     "constraints": [
+      "a, b là tham số thực",
+      "Các phương trình đều có hai nghiệm phân biệt"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ sử dụng điều kiện có hai nghiệm phân biệt ($\\Delta' > 0$) cho từng phương trình để tìm mối liên hệ giữa $a$ và $b$ nhằm chứng minh câu a. Ở câu b, gọi nghiệm chung là $x_0$, từ giả thiết thay vào phương trình kết hợp hệ thức Vi-ét để tính tổng $r+s$.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để phương trình bậc hai có hai nghiệm phân biệt thì điều kiện của biệt thức $\\Delta$ (hoặc $\\Delta'$) là gì bạn nhỉ?",
+      "cue": "$\\Delta > 0$ hoặc $\\Delta' > 0$",
+      "explanation": "Phương trình bậc hai $ax^2 + bx + c = 0$ có hai nghiệm phân biệt khi và chỉ khi $\\Delta > 0$.",
+      "math": "\\Delta' = a^2 - 3b > 0",
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Từ điều kiện $\\Delta'_1 > 0$ và $\\Delta'_2 > 0$ cho hai phương trình, bạn thử suy ra bất đẳng thức giữa $a^2$ và $b$, cũng như $b^2$ và $a$ xem sao?",
+      "cue": "Ta có $a^2 > 3b$ và $b^2 > 3a$.",
+      "explanation": "Cộng hai bất đẳng thức này lại và chuyển vế để xuất hiện hằng đẳng thức.",
+      "math": "a^2 + b^2 > 3(a + b)",
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 1,
+      "question": "Ở câu b, nếu gọi nghiệm chung của hai phương trình là $x_0$, khi thay $x_0$ vào cả hai phương trình, bạn thử trừ hai vế của phương trình cho nhau xem thu được kết quả gì?",
+      "cue": "Lấy phương trình (1) trừ phương trình (2)",
+      "explanation": "Ta có $x_0^2 + 2ax_0 + 3b - (x_0^2 + 2bx_0 + 3a) = 0 \\Rightarrow 2x_0(a - b) - 3(a - b) = 0$.",
+      "math": "(a - b)(2x_0 - 3) = 0",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 2,
+      "question": "Vì hai phương trình có đúng một nghiệm chung, trường hợp $a = b$ có thỏa mãn không? Vậy ta phải có điều gì đối với $x_0$?",
+      "cue": "Xét trường hợp $a = b$ và trường hợp $2x_0 = 3$",
+      "explanation": "Nếu $a = b$ thì hai phương trình trùng nhau (có 2 nghiệm chung), trái giả thiết có đúng 1 nghiệm chung. Do đó $a \\neq b$, suy ra $2x_0 = 3$ hay $x_0 = \\frac{3}{2}$.",
+      "math": "x_0 = \\frac{3}{2}",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 3,
+      "question": "Biết nghiệm chung $x_0 = \\frac{3}{2}$, áp dụng định lý Vi-ét cho từng phương trình để tìm mối quan hệ giữa các nghiệm $x_0, r$ và $x_0, s$ nhé.",
+      "cue": "Tổng hai nghiệm $\\$x_1 + x_2 =$ -2a",
+      "explanation": "Với phương trình 1, tổng hai nghiệm là $x_0 + r = -2a$. Với phương trình 2, tổng hai nghiệm là $x_0 + s = -2b$. Từ đó tính $r + s$.",
+      "math": "r + s = -2(a + b) - 3",
+      "stepId": "s3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Chứng minh bất đẳng thức ở câu a",
+      "explanation": "Để hai phương trình đều có hai nghiệm phân biệt, điều kiện cần là các biệt thức $\\Delta'_1 > 0$ và $\\Delta'_2 > 0$. Từ đó ta suy ra $a^2 > 3b$ và $b^2 > 3a$. Cộng hai bất đẳng thức này lại: $a^2 + b^2 > 3(a+b)$. Biến đổi tương đương đưa về tổng các bình phương.",
+      "math": "\\left(a - \\frac{3}{2}\\right)^2 + \\left(b - \\frac{3}{2}\\right)^2 = a^2 - 3a + \\frac{9}{4} + b^2 - 3b + \\frac{9}{4} = a^2 + b^2 - 3(a+b) + \\frac{9}{2} > \\frac{9}{2}",
+      "reason": "Điều kiện có nghiệm phân biệt của phương trình bậc hai và biến đổi đại số",
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Tìm nghiệm chung của hai phương trình",
+      "explanation": "Gọi $x_0$ là nghiệm chung của hai phương trình. Thay $x_0$ vào cả hai phương trình rồi trừ vế theo vế, ta được: $(x_0^2 + 2ax_0 + 3b) - (x_0^2 + 2bx_0 + 3a) = 0 \\Leftrightarrow 2x_0(a - b) - 3(a - b) = 0 \\Leftrightarrow (a - b)(2x_0 - 3) = 0$. Vì hai phương trình phân biệt nên $a \\neq b$, suy ra $2x_0 - 3 = 0$, tức là $x_0 = \\frac{3}{2}$.",
+      "math": "x_0 = \\frac{3}{2}",
+      "reason": "Tính chất nghiệm chung và phân tích đa thức thành nhân tử",
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Tính tổng $r + s$ theo hệ thức Vi-ét",
+      "explanation": "Theo hệ thức Vi-ét cho phương trình thứ nhất, ta có tổng hai nghiệm là $x_0 + r = -2a \\Rightarrow r = -2a - \\frac{3}{2}$. Tương tự cho phương trình thứ hai, $x_0 + s = -2b \\Rightarrow s = -2b - \\frac{3}{2}$. Cộng lại ta được $r + s = -2(a + b) - 3$. Tuy nhiên, để tìm giá trị cụ thể không phụ thuộc vào $a, b$, ta thay $x_0 = \\frac{3}{2}$ trực tiếp vào phương trình: $\\frac{9}{4} + 3a + 3b = 0 \\Rightarrow a + b = -\\frac{3}{4}$. Thay vào ta có $r + s = -2\\left(-\\frac{3}{4}\\right) - 3 = -\\frac{3}{2}$.",
+      "math": "r + s = -\\frac{3}{2}",
+      "reason": "Hệ thức Vi-ét và tính chất nghiệm phương trình",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) Đã chứng minh được bất đẳng thức $\\left(a-\\frac{3}{2}\\right)^{2}+\\left(b-\\frac{3}{2}\\right)^{2} > \\frac{9}{2}$.\nb) Tổng $r+s = -\\frac{3}{2}$, không phụ thuộc vào các tham số $a$ và $b$.",
+     "math": "r + s = -\\frac{3}{2}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "-3/2"
+      ],
+      "assignments": [],
+      "expected": "-1.5"
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "ch-2",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": 5,
+   "failedChecks": [],
+   "answer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18. 18 Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$. 18",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Tứ giác có hai đường chéo vuông góc và bất đẳng thức hình học",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Định lý Pythagore",
+      "Tính chất tứ giác có hai đường chéo vuông góc",
+      "Bất đẳng thức đại số cơ bản (bất đẳng thức liên hệ giữa tổng và tổng bình phương)"
+     ],
+     "givens": [
+      "Tứ giác lồi $ABCD$",
+      "Cạnh $BC = 7$",
+      "Cạnh $DA = 1$",
+      "Hai đường chéo $AC \\perp BD$"
+     ],
+     "unknowns": [
+      "Giá trị lớn nhất của chu vi tứ giác $ABCD$"
+     ],
+     "constraints": [
+      "Tứ giác $ABCD$ là tứ giác lồi"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Gọi $O$ là giao điểm của hai đường chéo $AC$ và $BD$. Sử dụng định lý Pythagore trong các tam giác vuông tại $O$ để thiết lập mối quan hệ giữa các cạnh của tứ giác, từ đó chứng minh hệ thức $AB^2 + CD^2 = BC^2 + DA^2$. Sau đó áp dụng bất đẳng thức cơ bản $(AB + CD)^2 \\le 2(AB^2 + CD^2)$ để tìm giá trị lớn nhất của tổng $AB + CD$, từ đó suy ra chu vi lớn nhất của tứ giác.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Gọi $O$ là giao điểm của $AC$ và $BD$. Bạn có thể dùng định lý nào để tính bình phương các cạnh của tứ giác $ABCD$ theo $OA, OB, OC, OD$?",
+      "cue": "Hãy chú ý đến các tam giác vuông tại $O$ như $\\triangle OAB, \\triangle OBC, \\triangle OCD, \\triangle ODA$.",
+      "explanation": "Vì $AC \\perp BD$ tại $O$ nên các tam giác $OAB, OBC, OCD, ODA$ đều là tam giác vuông tại $O$. Do đó, ta có thể áp dụng định lý Pythagore cho từng tam giác này.",
+      "math": "AB^2 = OA^2 + OB^2",
+      "stepId": "step_1",
+      "focus": [
+       "O",
+       "seg_AC",
+       "seg_BD"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Từ các biểu thức định lý Pythagore ở trên, bạn hãy thử tính xem tổng $AB^2 + CD^2$ bằng tổng của những bình phương nào?",
+      "cue": "Hãy nhóm các số hạng $OA^2, OB^2, OC^2, OD^2$ lại theo cách khác để xuất hiện các cạnh $BC$ và $DA$.",
+      "explanation": "Ta có $AB^2 + CD^2 = (OA^2 + OB^2) + (OC^2 + OD^2) = (OB^2 + OC^2) + (OD^2 + OA^2) = BC^2 + DA^2$. Đây là một tính chất rất đẹp của tứ giác có hai đường chéo vuông góc đấy!",
+      "math": "AB^2 + CD^2 = BC^2 + DA^2",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AB",
+       "seg_CD",
+       "seg_BC",
+       "seg_DA"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 2,
+      "question": "Thay số các giá trị đã biết $BC = 7$ và $DA = 1$ vào hệ thức trên, bạn nhận được giá trị của $AB^2 + CD^2$ bằng bao nhiêu?",
+      "cue": "Tính toán trực tiếp từ $7^2 + 1^2$.",
+      "explanation": "Ta có $AB^2 + CD^2 = 7^2 + 1^2 = 49 + 1 = 50$.",
+      "math": "AB^2 + CD^2 = 50",
+      "stepId": "step_2",
+      "focus": [
+       "seg_BC",
+       "seg_DA",
+       "seg_AB",
+       "seg_CD"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "Chu vi của tứ giác là $P = AB + BC + CD + DA = AB + CD + 8$. Để chu vi lớn nhất thì tổng $AB + CD$ phải lớn nhất. Làm sao để tìm giá trị lớn nhất của $AB + CD$ khi biết $AB^2 + CD^2 = 50$?",
+      "cue": "Nhớ lại bất đẳng thức quen thuộc khai triển từ $(x-y)^2 \\ge 0$, liên hệ giữa $(x+y)^2$ và $x^2+y^2$.",
+      "explanation": "Ta luôn có $(AB - CD)^2 \\ge 0 \\Rightarrow AB^2 + CD^2 \\ge 2 \\cdot AB \\cdot CD$. Cộng hai vế với $AB^2 + CD^2$, ta được $2(AB^2 + CD^2) \\ge (AB + CD)^2$. Từ đó dễ dàng tìm được giá trị lớn nhất của $AB + CD$.",
+      "math": "(AB + CD)^2 \\le 2(AB^2 + CD^2)",
+      "stepId": "step_3",
+      "focus": [
+       "seg_AB",
+       "seg_BC",
+       "seg_CD",
+       "seg_DA"
+      ]
+     },
+     {
+      "id": "hint_5",
+      "level": 4,
+      "question": "Khi đã tìm được giá trị lớn nhất của $AB + CD$, bạn hãy cộng thêm độ dài hai cạnh $BC$ và $DA$ để tìm chu vi lớn nhất nhé. Dấu bằng xảy ra khi nào?",
+      "cue": "Thay thế $AB^2 + CD^2 = 50$ vào bất đẳng thức để tìm cực đại của chu vi.",
+      "explanation": "Ta có $(AB + CD)^2 \\le 2 \\times 50 = 100 \\Rightarrow AB + CD \\le 10$. Chu vi tứ giác đạt giá trị lớn nhất bằng $10 + 7 + 1 = 18$ khi $AB = CD = 5$.",
+      "math": "P \\le 18",
+      "stepId": "step_4",
+      "focus": [
+       "seg_AB",
+       "seg_CD",
+       "seg_BC",
+       "seg_DA"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Biểu diễn bình phương các cạnh qua giao điểm hai đường chéo",
+      "explanation": "Gọi $O$ là giao điểm của hai đường chéo $AC$ và $BD$. Vì $AC \\perp BD$ tại $O$, áp dụng định lý Pythagore vào các tam giác vuông $\\triangle OAB, \\triangle OBC, \\triangle OCD, \\triangle ODA$ ta có:",
+      "math": "\\begin{cases} AB^2 = OA^2 + OB^2 \\\\ BC^2 = OB^2 + OC^2 \\\\ CD^2 = OC^2 + OD^2 \\\\ DA^2 = OD^2 + OA^2 \\end{cases}",
+      "reason": "Định lý Pythagore trong các tam giác vuông",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "O",
+         "ang_AOB"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AC",
+         "seg_BD",
+         "seg_AB",
+         "seg_BC",
+         "seg_CD",
+         "seg_DA"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Thiết lập mối quan hệ giữa các cạnh tứ giác",
+      "explanation": "Cộng hai vế của biểu thức $AB^2$ và $CD^2$, ta có:\n$AB^2 + CD^2 = (OA^2 + OB^2) + (OC^2 + OD^2) = (OB^2 + OC^2) + (OD^2 + OA^2) = BC^2 + DA^2$\nThay số $BC = 7$ và $DA = 1$ vào, ta được:\n$AB^2 + CD^2 = 7^2 + 1^2 = 50$",
+      "math": "AB^2 + CD^2 = 50",
+      "reason": "Tính chất cộng đại số và giả thiết bài toán",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_CD",
+         "seg_AC",
+         "seg_BD",
+         "seg_BC",
+         "seg_DA"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Tìm giá trị lớn nhất của tổng hai cạnh $AB + CD$",
+      "explanation": "Áp dụng bất đẳng thức cơ bản cho hai số thực dương $AB$ và $CD$:\n$(AB + CD)^2 \\le 2(AB^2 + CD^2)$\nThay $AB^2 + CD^2 = 50$ vào bất đẳng thức:\n$(AB + CD)^2 \\le 2 \\cdot 50 = 100$\nDo $AB > 0, CD > 0$, lấy căn bậc hai hai vế ta được:\n$AB + CD \\le 10$",
+      "math": "AB + CD \\le 10",
+      "reason": "Bất đẳng thức đại số dựa trên hằng đẳng thức $(AB - CD)^2 \\ge 0$",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_CD",
+         "seg_BC",
+         "seg_DA"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Tính giá trị lớn nhất của chu vi tứ giác $ABCD$",
+      "explanation": "Chu vi của tứ giác $ABCD$ được tính bằng:\n$P = AB + BC + CD + DA = (AB + CD) + BC + DA$\nThay $BC = 7, DA = 1$ và kết quả $AB + CD \\le 10$ vào:\n$P \\le 10 + 7 + 1 = 18$\nĐẳng thức xảy ra khi và chỉ khi $AB = CD = 5$. Khi đó, ta có thể dựng được tứ giác thỏa mãn, ví dụ như chọn $OA = OD = \\frac{\\sqrt{2}}{2}$ và $OB = OC = \\frac{7\\sqrt{2}}{2}$. Khi đó $O$ nằm trên cả hai đường chéo và tứ giác $ABCD$ là tứ giác lồi.\nVậy giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$.",
+      "math": "P_{\\text{max}} = 18",
+      "reason": "Phép toán cộng và điều kiện xảy ra dấu bằng của bất đẳng thức",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_BC",
+         "seg_CD",
+         "seg_DA",
+         "seg_AC",
+         "seg_BD"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$.",
+     "math": "18"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "7 + 1 + sqrt(2 * (7^2 + 1^2))"
+      ],
+      "assignments": [],
+      "expected": "18"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "O",
+       "label": "O",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "C",
+        "B",
+        "D"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0.7071,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 4.9497,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": -4.9497,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "free",
+       "refs": [],
+       "x": -0.7071,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": "7"
+      },
+      {
+       "id": "seg_CD",
+       "kind": "segment",
+       "from": "C",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_DA",
+       "kind": "segment",
+       "from": "D",
+       "to": "A",
+       "style": "given",
+       "label": "1"
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_BD",
+       "kind": "segment",
+       "from": "B",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_AOB",
+       "from": "A",
+       "vertex": "O",
+       "to": "B",
+       "label": null,
+       "right": true,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "length_value",
+       "refs": [
+        "D",
+        "A"
+       ],
+       "value": 1,
+       "role": "given"
+      },
+      {
+       "kind": "length_value",
+       "refs": [
+        "B",
+        "C"
+       ],
+       "value": 7,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "C",
+        "B",
+        "D"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "length_value",
+       "refs": [
+        "A",
+        "B"
+       ],
+       "value": 5,
+       "role": "derived"
+      },
+      {
+       "kind": "length_value",
+       "refs": [
+        "C",
+        "D"
+       ],
+       "value": 5,
+       "role": "derived"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "ch-3",
+   "topic": "number_theory",
+   "difficulty": 3,
+   "format": "multi_part",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "a) Đã chứng minh f(n) = 16(n+2)(n²+4n+8) luôn chia hết cho 16 với mọi n nguyên dương.\nb) n chia cho 3 dư 1 (tức là n = 3k + 1 với k ∈ ℕ).\nc) n chia cho 18 dư 16",
+   "lesson": {
+    "analysis": {
+     "statement": "Với mỗi số nguyên dương $n$, đặt $f(n)=(n+4)^{4}-n^{4}$.\na) Chứng minh $f(n)$ chia hết cho $16$ với mọi $n$.\nb) Tìm $n$ để $f(n)$ chia hết cho $3$.\nc) Tìm $n$ để $f(n)$ chia hết cho $24^{2}$.",
+     "language": "vi",
+     "topic": "algebra",
+     "subtopic": "divisibility",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Hằng đẳng thức hiệu hai bình phương",
+      "Tính chất chia hết của một tích",
+      "Xét số dư trong phép chia (đồng dư thức)"
+     ],
+     "givens": [
+      "$f(n) = (n+4)^4 - n^4$",
+      "$n$ là số nguyên dương"
+     ],
+     "unknowns": [
+      "Chứng minh $f(n) \\vdots 16$",
+      "Các giá trị của $n$ để $f(n) \\vdots 3$",
+      "Các giá trị của $n$ để $f(n) \\vdots 24^2$"
+     ],
+     "constraints": [
+      "$n \\in \\mathbb{Z}^+$"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Chúng mình sẽ biến đổi biểu thức $f(n)$ thành dạng nhân tử bằng cách dùng hằng đẳng thức hiệu hai bình phương, từ đó dễ dàng chứng minh câu a và xét các điều kiện chia hết ở câu b, c bằng phương pháp xét số dư.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Để bắt đầu, chúng mình làm thế nào để biến đổi biểu thức $f(n) = (n+4)^4 - n^4$ thành dạng tích (nhân tử) nhỉ?",
+      "cue": "Hãy nhớ đến hằng đẳng thức hiệu hai bình phương $A^2 - B^2 = (A-B)(A+B)$.",
+      "explanation": "Chúng mình có thể áp dụng hằng đẳng thức hiệu hai bình phương hai lần liên tiếp để phân tích hiệu hai lũy thừa bậc 4 này.",
+      "math": "f(n) = 16(n+2)(n^2+4n+8)",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Từ dạng nhân tử của $f(n)$, bạn làm sao để chứng minh câu a?",
+      "cue": "Nhìn vào hệ số đứng trước tích các nhân tử.",
+      "explanation": "Vì $f(n) = 16(n+2)(n^2+4n+8)$ có chứa thừa số 16 và các thừa số còn lại đều là số nguyên với mọi số nguyên dương $n$, nên biểu thức luôn chia hết cho 16.",
+      "math": "f(n) = 16(n+2)(n^2+4n+8) \\ \\vdots \\ 16",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Với câu b, khi nào thì $f(n)$ chia hết cho 3? Bạn thử xét các trường hợp số dư của $n$ khi chia cho 3 xem sao.",
+      "cue": "Vì 16 không chia hết cho 3, nên tích $(n+2)(n^2+4n+8)$ phải chia hết cho 3.",
+      "explanation": "Khi xét $n$ theo mô-đun 3, ta thấy chỉ có trường hợp $n$ chia cho 3 dư 1 thì nhân tử $(n+2)$ mới chia hết cho 3. Các trường hợp còn lại đều làm tích không chia hết cho 3.",
+      "math": "n \\equiv 1 \\pmod 3",
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "hint4",
+      "level": 3,
+      "question": "Ở câu c, điều kiện $f(n)$ chia hết cho $24^2$ có thể được rút gọn thành điều kiện gì cho tích các nhân tử?",
+      "cue": "Ta có $24^2 = 576$. Hãy chia cả hai vế cho 16 nhé.",
+      "explanation": "Điều kiện $16(n+2)(n^2+4n+8)$ chia hết cho 576 tương đương với việc tích $(n+2)(n^2+4n+8)$ phải chia hết cho 36.",
+      "math": "(n+2)(n^2+4n+8) \\ \\vdots \\ 36",
+      "stepId": "step4",
+      "focus": []
+     },
+     {
+      "id": "hint5",
+      "level": 4,
+      "question": "Làm thế nào để tích $(n+2)(n^2+4n+8)$ chia hết cho 36? Hãy tách 36 thành tích của hai số nguyên tố cùng nhau.",
+      "cue": "Ta cần tích chia hết cho cả 4 và 9.",
+      "explanation": "Vì $\\gcd(4,9)=1$, ta cần tích chia hết cho 4 (điều này kéo theo $n$ phải là số chẵn) và tích chia hết cho 9 (điều này kéo theo $n+2$ phải chia hết cho 9, tức là $n$ chia 9 dư 7). Từ đó kết hợp hai điều kiện lại.",
+      "math": "n \\equiv 16 \\pmod{18}",
+      "stepId": "step7",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Phân tích $f(n)$ thành nhân tử",
+      "explanation": "Áp dụng hằng đẳng thức hiệu hai bình phương $A^2 - B^2 = (A-B)(A+B)$ liên tiếp hai lần, ta có:\n$f(n) = [(n+4)^2 - n^2] [(n+4)^2 + n^2]$\n$= (n+4-n)(n+4+n) (n^2 + 8n + 16 + n^2)$\n$= 4(2n+4)(2n^2 + 8n + 16)$\n$= 4 \\cdot 2(n+2) \\cdot 2(n^2 + 4n + 8)$\n$= 16(n+2)(n^2 + 4n + 8)$.",
+      "math": "f(n) = 16(n+2)(n^2+4n+8)",
+      "reason": "Hằng đẳng thức hiệu hai bình phương",
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Chứng minh $f(n)$ chia hết cho 16",
+      "explanation": "Vì $n$ là số nguyên dương nên $n+2$ và $n^2 + 4n + 8$ cũng là các số nguyên. Do đó, tích $16(n+2)(n^2+4n+8)$ luôn luôn chia hết cho 16 với mọi số nguyên dương $n$.",
+      "math": "f(n) = 16(n+2)(n^2+4n+8) \\ \\vdots \\ 16",
+      "reason": "Tính chất chia hết của một tích",
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Tìm $n$ để $f(n)$ chia hết cho 3",
+      "explanation": "Vì $\\gcd(16, 3) = 1$, để $f(n) \\ \\vdots \\ 3$ thì tích $(n+2)(n^2+4n+8)$ phải chia hết cho 3. Ta xét các trường hợp số dư của $n$ khi chia cho 3:\n- Nếu $n \\equiv 0 \\pmod 3$: $n+2 \\equiv 2 \\pmod 3$ và $n^2+4n+8 \\equiv 2 \\pmod 3$ (không chia hết).\n- Nếu $n \\equiv 1 \\pmod 3$: $n+2 \\equiv 3 \\equiv 0 \\pmod 3$ (chia hết).\n- Nếu $n \\equiv 2 \\pmod 3$: $n+2 \\equiv 4 \\equiv 1 \\pmod 3$ và $n^2+4n+8 \\equiv 4+8+8 = 20 \\equiv 2 \\pmod 3$ (không chia hết).\nVậy $f(n) \\ \\vdots \\ 3$ khi và chỉ khi $n$ chia cho 3 dư 1 (hay $n = 3k+1$ với $k \\in \\mathbb{N}$).",
+      "math": "n \\equiv 1 \\pmod 3",
+      "reason": "Xét số dư theo mô-đun 3",
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Rút gọn điều kiện chia hết cho $24^2$",
+      "explanation": "Ta có $24^2 = 576$. Để $f(n) \\ \\vdots \\ 576$, ta cần:\n$16(n+2)(n^2+4n+8) \\ \\vdots \\ 576 \\iff (n+2)(n^2+4n+8) \\ \\vdots \\ 36$.\nVì $36 = 4 \\cdot 9$ và $\\gcd(4, 9) = 1$, điều này tương đương với việc tích phải đồng thời chia hết cho 4 và 9.",
+      "math": "\\begin{cases} (n+2)(n^2+4n+8) \\ \\vdots \\ 4 \\\\ (n+2)(n^2+4n+8) \\ \\vdots \\ 9 \\end{cases}",
+      "reason": "Tính chất chia hết cho các số nguyên tố cùng nhau",
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Xét điều kiện chia hết cho 4",
+      "explanation": "Nếu $n$ lẻ, thì $n+2$ lẻ và $n^2+4n+8$ lẻ, dẫn đến tích của chúng lẻ (không chia hết cho 4).\nNếu $n$ chẵn, đặt $n = 2m$. Khi đó:\n$n+2 = 2(m+1)$ và $n^2+4n+8 = 4m^2+8m+8 = 4(m^2+2m+2)$.\nTích của chúng bằng $8(m+1)(m^2+2m+2)$, hiển nhiên chia hết cho 4.\nVậy điều kiện cần là $n$ phải là số chẵn.",
+      "math": "n = 2m \\ (m \\in \\mathbb{Z}^+)",
+      "reason": "Xét tính chẵn lẻ",
+      "geometryActions": []
+     },
+     {
+      "id": "step6",
+      "title": "Xét điều kiện chia hết cho 9",
+      "explanation": "Đặt $x = n+2$. Ta cần $x(x^2+4) \\ \\vdots \\ 9$.\nTrước hết, để tích chia hết cho 3 thì $x$ bắt buộc phải chia hết cho 3 (vì nếu $x$ không chia hết cho 3 thì $x^2+4 \\equiv 1+4=5 \\equiv 2 \\pmod 3$, tích không chia hết cho 3).\nKhi $x = 3k$, ta có $3k(9k^2+4) \\ \\vdots \\ 9 \\iff k(9k^2+4) \\ \\vdots \\ 3$.\nVì $9k^2+4 \\equiv 4 \\equiv 1 \\pmod 3$ nên để tích chia hết cho 3 thì $k$ phải chia hết cho 3.\nDo đó $x$ chia hết cho 9, tức là $n+2 \\ \\vdots \\ 9$. Vậy $n$ chia cho 9 dư 7.",
+      "math": "n \\equiv 7 \\pmod 9",
+      "reason": "Xét tính chia hết của tích số",
+      "geometryActions": []
+     },
+     {
+      "id": "step7",
+      "title": "Kết hợp các điều kiện tìm $n$",
+      "explanation": "Ta cần tìm số nguyên dương $n$ thỏa mãn đồng thời:\n1) $n$ là số chẵn.\n2) $n$ chia cho 9 dư 7, tức là $n = 9j - 2$ (với $j \\ge 1$).\nĐể $n$ chẵn thì $9j - 2$ chẵn, suy ra $9j$ chẵn, hay $j$ chẵn. Đặt $j = 2m$ ($m \\ge 1$).\nKhi đó, $n = 9(2m) - 2 = 18m - 2 = 18(m-1) + 16$.\nVậy $n$ chia cho 18 dư 16.",
+      "math": "n \\equiv 16 \\pmod{18}",
+      "reason": "Kết hợp hai điều kiện đồng dư",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) Đã chứng minh $f(n) = 16(n+2)(n^2+4n+8)$ luôn chia hết cho 16 với mọi $n$ nguyên dương.\nb) $n$ chia cho 3 dư 1 (tức là $n = 3k + 1$ với $k \\in \\mathbb{N}$).\nc) $n$ chia cho 18 dư 16 (tức là $n = 18k + 16$ với $k \\in \\mathbb{N}$).",
+     "math": "n \\equiv 16 \\pmod{18}"
+    },
+    "answerChecks": [
+     {
+      "kind": "integers",
+      "statements": [
+       "((n+4)^4 - n^4) % 3 = 0",
+       "n >= 1"
+      ],
+      "assignments": [],
+      "expected": "n % 3 = 1"
+     },
+     {
+      "kind": "integers",
+      "statements": [
+       "((n+4)^4 - n^4) % 576 = 0",
+       "n >= 1"
+      ],
+      "assignments": [],
+      "expected": "n % 18 = 16"
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "ch-4",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "PASS",
+   "answerCorrect": null,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": 14,
+   "failedChecks": [],
+   "answer": "a) Đã chứng minh ID² = IJ · IA và △ IJD ∼ △ IDA nhờ vào hệ thức lượng trong tam giác vuông IEA.\nb) Đã chứng minh ∠IHD = ∠IDK và bốn điểm I, D, J, H cùng nằm trê",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ nhọn ($AB < AC$) có đường tròn nội tiếp $(I)$ tiếp xúc với các cạnh $BC, CA, AB$ lần lượt tại $D, E, F$. Gọi $J$ là trung điểm của $EF$ và $K$ là giao điểm của $AD$ với $EF$.\na) Chứng minh $ID^{2} = IJ \\cdot IA$ và tam giác $IJD$ đồng dạng với tam giác $IDA$.\nb) Gọi $H$ là giao điểm khác $I$ của $IK$ với đường tròn đường kính $AI$. Chứng minh $\\widehat{IHD} = \\widehat{IDK}$ và các điểm $I, D, J, H$ cùng thuộc một đường tròn $(S)$.\nc) Gọi $L$ và $G$ lần lượt là các giao điểm khác $D$ của $DJ$ và $(S)$ với $(I)$. Chứng minh $A, G, D$ thẳng hàng và các đường thẳng $AL, GJ$ cắt nhau trên $(I)$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Đường tròn nội tiếp, tam giác đồng dạng và tứ giác nội tiếp",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Đường tròn nội tiếp",
+      "Tiếp tuyến của đường tròn",
+      "Hệ thức lượng trong tam giác vuông",
+      "Tam giác đồng dạng",
+      "Tứ giác nội tiếp",
+      "Góc nội tiếp và cung tròn"
+     ],
+     "givens": [
+      "Tam giác ABC nhọn, AB < AC",
+      "Đường tròn nội tiếp (I) tiếp xúc BC, CA, AB tại D, E, F",
+      "J là trung điểm EF",
+      "K là giao điểm của AD và EF",
+      "H là giao điểm thứ hai của IK với đường tròn đường kính AI",
+      "L là giao điểm khác D của DJ với (I)",
+      "G là giao điểm khác D của (S) với (I)"
+     ],
+     "unknowns": [
+      "Chứng minh ID^2 = IJ * IA và \\triangle IJD \\sim \\triangle IDA",
+      "Chứng minh \\widehat{IHD} = \\widehat{IDK} và I, D, J, H cùng thuộc một đường tròn (S)",
+      "Chứng minh A, G, D thẳng hàng và AL, GJ cắt nhau trên (I)"
+     ],
+     "constraints": [
+      "Tam giác ABC nhọn",
+      "AB < AC"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Sử dụng tính chất của tiếp tuyến cắt nhau để chỉ ra đường thẳng vuông góc, áp dụng hệ thức lượng trong tam giác vuông và phương tích của một điểm đối với đường tròn để tìm các tỉ số cạnh, từ đó chứng minh các cặp tam giác đồng dạng và các điểm thẳng hàng hoặc cùng thuộc một đường tròn.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn hãy bắt đầu bằng cách chứng minh đường thẳng $AI$ vuông góc với $EF$ tại $J$. Làm sao để chỉ ra điều này?",
+      "cue": "Sử dụng tính chất của hai tiếp tuyến cắt nhau từ $A$ đến đường tròn $(I)$.",
+      "explanation": "Vì $AE$ và $AF$ là hai tiếp tuyến của $(I)$ xuất phát từ $A$ nên ta có $AE = AF$. Lại có $IE = IF = r$ nên $AI$ chính là đường trung trực của đoạn thẳng $EF$. Do đó $AI \\perp EF$ tại trung điểm $J$ của $EF$.",
+      "math": "AI \\perp EF \\text{ tại } J",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AI",
+       "seg_EF"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Làm sao để áp dụng hệ thức lượng để có $ID^2 = IJ \\cdot IA$?",
+      "cue": "Xét tam giác vuông $IEA$ với đường cao $EJ$.",
+      "explanation": "Trong tam giác vuông $IEA$ (vuông tại $E$ do $AE$ là tiếp tuyến) có đường cao $EJ$ hạ từ $E$ xuống cạnh huyền $AI$, ta có ngay hệ thức $IE^2 = IJ \\cdot IA$. Vì $ID = IE = r$ nên ta thay thế $IE$ bằng $ID$ để thu được hệ thức cần tìm.",
+      "math": "ID^2 = IE^2 = IJ \\cdot IA",
+      "stepId": "step_1",
+      "focus": [
+       "seg_IE",
+       "seg_AI",
+       "seg_EF"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Để chứng minh bốn điểm $I, D, J, H$ cùng thuộc một đường tròn, ta cần tìm hai góc nào bằng nhau?",
+      "cue": "Bạn hãy để ý góc $\\widehat{IHD}$ và $\\widehat{IJD}$.",
+      "explanation": "Nếu chứng minh được $\\widehat{IHD} = \\widehat{IJD}$, tứ giác $IDJH$ sẽ nội tiếp. Hãy cố gắng chứng minh hai góc này cùng bằng góc $\\widehat{IDK}$ bằng cách sử dụng các tam giác đồng dạng $\\triangle IHD \\sim \\triangle IDK$ và $\\triangle IJD \\sim \\triangle IDA$.",
+      "math": "\\widehat{IHD} = \\widehat{IJD} = \\widehat{IDK}",
+      "stepId": "step_3",
+      "focus": [
+       "c_S",
+       "seg_IK",
+       "seg_AD"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "Làm thế nào để chỉ ra ba điểm $A, G, D$ thẳng hàng từ tính chất của đường tròn $(S)$?",
+      "cue": "Hãy chú ý đến hai dây cung bằng nhau $IG = ID$ của đường tròn $(S)$.",
+      "explanation": "Vì $G, D \\in (I)$ nên $IG = ID = r$. Trong đường tròn $(S)$, hai dây bằng nhau này sẽ căng các góc nội tiếp bằng nhau: $\\widehat{IJG} = \\widehat{IJD}$ và $\\widehat{IGD} = \\widehat{IDG}$. Kết hợp với các tam giác đồng dạng đã chứng minh ở trước để suy ra $\\widehat{IGA} = \\widehat{IGD}$, dẫn đến hai tia $GA$ và $GD$ trùng nhau.",
+      "math": "\\widehat{IGA} = \\widehat{IGD}",
+      "stepId": "step_5",
+      "focus": [
+       "c_S",
+       "c_I"
+      ]
+     },
+     {
+      "id": "hint_5",
+      "level": 4,
+      "question": "Để chứng minh $AL$ và $GJ$ cắt nhau trên $(I)$, nếu gọi $P'$ là giao điểm của $GJ$ với $(I)$, ta cần chứng minh điều gì?",
+      "cue": "Chứng minh ba điểm $A, L, P'$ thẳng hàng.",
+      "explanation": "Chúng ta cần chứng minh tam giác $\\triangle AGL$ đồng dạng với tam giác $\\triangle ADP'$ để có $\\widehat{GAL} = \\widehat{DAP'}$. Hãy sử dụng tỉ số đồng dạng từ hai cặp tam giác $\\triangle AGJ \\sim \\triangle AID$ và $\\triangle JLG \\sim \\triangle JP'D$ kết hợp với cộng góc.",
+      "math": "\\triangle AGL \\sim \\triangle ADP'",
+      "stepId": "step_7",
+      "focus": [
+       "seg_AL",
+       "seg_GJ"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Chứng minh $ID^2 = IJ \\cdot IA$ và tam giác đồng dạng",
+      "explanation": "Vì các tiếp tuyến $AE, AF$ cắt nhau tại $A$ nên $AI$ là tia phân giác của góc $A$ và $AE = AF$. Do đó $AI$ chính là đường trung trực của đoạn thẳng $EF$, suy ra $AI \\perp EF$ tại trung điểm $J$ của $EF$.\nXét tam giác vuông $IEA$ (vuông tại $E$ do $IE \\perp AC$), có đường cao $EJ$. Áp dụng hệ thức lượng trong tam giác vuông, ta có:\n$IE^2 = IJ \\cdot IA$\nMà $ID = IE = r$ (bán kính đường tròn nội tiếp $(I)$), suy ra:\n$ID^2 = IJ \\cdot IA \\Rightarrow \\frac{ID}{IA} = \\frac{IJ}{ID}$\nXét hai tam giác $\\triangle IJD$ và $\\triangle IDA$, chúng có góc $\\widehat{JID}$ chung và tỉ số $\\frac{IJ}{ID} = \\frac{ID}{IA}$. Do đó, $\\triangle IJD \\sim \\triangle IDA$ (c.g.c).",
+      "math": "ID^2 = IJ \\cdot IA \\Rightarrow \\triangle IJD \\sim \\triangle IDA",
+      "reason": "Hệ thức lượng trong tam giác vuông và trường hợp đồng dạng cạnh-góc-cạnh",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_AI",
+         "seg_IE",
+         "seg_ID",
+         "seg_IF"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_ID",
+         "seg_AI",
+         "seg_CA",
+         "seg_AB",
+         "seg_EF",
+         "seg_IE"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Chứng minh hệ thức cho điểm $H$ bằng tứ giác nội tiếp",
+      "explanation": "Vì điểm $H$ nằm trên đường tròn đường kính $AI$ nên góc $\\widehat{AHI} = 90^\\circ$, suy ra $AH \\perp IK$ tại $H$.\nMặt khác, ta cũng có $\\widehat{AJI} = 90^\\circ$ nên bốn điểm $A, H, J, K$ cùng nằm trên đường tròn đường kính $AK$.\nÁp dụng tính chất cát tuyến của điểm $I$ nằm ngoài đường tròn này, ta có:\n$IH \\cdot IK = IJ \\cdot IA$",
+      "math": "IH \\cdot IK = IJ \\cdot IA",
+      "reason": "Tính chất phương tích / cát tuyến của một điểm đối với đường tròn",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "c_AI",
+         "seg_AH"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AI",
+         "seg_AH",
+         "seg_HI",
+         "seg_IK",
+         "seg_AD",
+         "ang_AHI"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Chứng minh $\\widehat{IHD} = \\widehat{IDK}$ và bốn điểm thuộc đường tròn $(S)$",
+      "explanation": "Từ kết quả ở bước 1 và bước 2, ta có:\n$ID^2 = IH \\cdot IK \\Rightarrow \\frac{ID}{IK} = \\frac{IH}{ID}$\nXét $\\triangle IHD$ và $\\triangle IDK$ có góc $\\widehat{HID}$ chung và tỉ số $\\frac{IH}{ID} = \\frac{ID}{IK}$, suy ra $\\triangle IHD \\sim \\triangle IDK$ (c.g.c). Từ đó ta có:\n$\\widehat{IHD} = \\widehat{IDK}$\nMặt khác, từ bước 1 ta có $\\triangle IJD \\sim \\triangle IDA \\Rightarrow \\widehat{IJD} = \\widehat{IDA}$ (hay chính là $\\widehat{IDK}$ vì $A, K, D$ thẳng hàng).\nDo đó ta có $\\widehat{IJD} = \\widehat{IHD}$.\nXét tứ giác $IDJH$, vì hai đỉnh liên tiếp $H$ và $J$ cùng nhìn cạnh $ID$ dưới góc bằng nhau nên tứ giác $IDJH$ nội tiếp. Vậy bốn điểm $I, D, J, H$ cùng thuộc một đường tròn $(S)$.",
+      "math": "\\widehat{IHD} = \\widehat{IDK} \\Rightarrow I, D, J, H \\in (S)",
+      "reason": "Trường hợp đồng dạng cạnh-góc-cạnh và dấu hiệu nhận biết tứ giác nội tiếp",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "c_S"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_HI",
+         "seg_HD",
+         "seg_ID",
+         "seg_AD",
+         "seg_IK",
+         "seg_AI"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Chứng minh góc $\\widehat{IJG} = \\widehat{IJD}$",
+      "explanation": "Vì $G$ là giao điểm khác $D$ của đường tròn nội tiếp $(I)$ và đường tròn $(S)$ nên $G$ nằm trên cả hai đường tròn.\nDo $G, D \\in (I)$ nên ta có $IG = ID = r$.\nTrong đường tròn $(S)$, hai dây cung $IG$ và $ID$ bằng nhau nên chúng căng các cung bằng nhau. Từ đó, hai góc nội tiếp chắn hai cung này từ đỉnh $J$ phải bằng nhau, tức là:\n$\\widehat{IJG} = \\widehat{IJD}$",
+      "math": "IG = ID \\Rightarrow \\widehat{IJG} = \\widehat{IJD}",
+      "reason": "Liên hệ giữa cung và dây trong đường tròn",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_IG"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AI",
+         "seg_GJ",
+         "seg_DJ",
+         "seg_IG",
+         "seg_ID"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_5",
+      "title": "Chứng minh ba điểm $A, G, D$ thẳng hàng",
+      "explanation": "Vì $IG = ID$, từ bước 1 ta có:\n$IG^2 = IJ \\cdot IA \\Rightarrow \\frac{IG}{IA} = \\frac{IJ}{IG}$\nXét $\\triangle IJG$ và $\\triangle IGA$ có góc $\\widehat{JIG}$ chung và tỉ số $\\frac{IJ}{IG} = \\frac{IG}{IA}$, suy ra $\\triangle IJG \\sim \\triangle IGA$ (c.g.c). Từ đó ta có $\\widehat{IGA} = \\widehat{IJG}$.\nMặt khác, do tứ giác $IGJD$ nội tiếp trên đường tròn $(S)$ và có hai dây $IG = ID$ nên ta cũng có $\\widehat{IGD} = \\widehat{IJD}$ và $\\widehat{IDG} = \\widehat{IJG}$. Do tam giác $IGD$ cân tại $I$ nên $\\widehat{IGD} = \\widehat{IDG}$, suy ra $\\widehat{IJD} = \\widehat{IJG}$.\nTừ đó ta có $\\widehat{IGA} = \\widehat{IGD}$.\nVì hai tia $GA$ và $GD$ nằm cùng phía đối với đường thẳng $GI$ và tạo với $GI$ hai góc bằng nhau nên hai tia này trùng nhau. Vậy ba điểm $A, G, D$ thẳng hàng.",
+      "math": "\\widehat{IGA} = \\widehat{IGD} \\Rightarrow A, G, D \\text{ thẳng hàng}",
+      "reason": "Tính chất hai tia trùng nhau tạo với một tia cho trước các góc bằng nhau",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_IG",
+         "seg_ID",
+         "seg_AI",
+         "seg_GJ",
+         "seg_AD",
+         "seg_DJ"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_6",
+      "title": "Chứng minh các cặp tam giác đồng dạng phụ trợ",
+      "explanation": "Vì ba điểm $A, G, D$ thẳng hàng và bốn điểm $I, G, J, D$ cùng thuộc đường tròn $(S)$, áp dụng tính chất phương tích của điểm $A$ với đường tròn $(S)$ ta có $AG \\cdot AD = AJ \\cdot AI \\Rightarrow \\frac{AG}{AI} = \\frac{AJ}{AD}$. Kết hợp góc $\\widehat{GAJ}$ chung, suy ra $\\triangle AGJ \\sim \\triangle AID$ (c.g.c) $\\Rightarrow \\widehat{AGJ} = \\widehat{ADI}$ (hay $\\widehat{ADJ}$).\nGọi $P'$ là giao điểm thứ hai của đường thẳng $GJ$ với đường tròn $(I)$. Vì hai dây $GP'$ và $DL$ của $(I)$ cắt nhau tại $J$ nên ta có $JG \\cdot JP' = JD \\cdot JL \\Rightarrow \\frac{JG}{JD} = \\frac{JL}{JP'}$.\nXét $\\triangle JLG$ và $\\triangle JP'D$ có $\\widehat{LJG} = \\widehat{P'JD}$ (đối đỉnh) và tỉ số cạnh tương ứng nên $\\triangle JLG \\sim \\triangle JP'D$ (c.g.c), suy ra $\\widehat{JGL} = \\widehat{JDP'}$ và $\\frac{LG}{P'D} = \\frac{JG}{JD}$.",
+      "math": "\\triangle AGJ \\sim \\triangle AID \\text{ và } \\triangle JLG \\sim \\triangle JP'D",
+      "reason": "Trường hợp đồng dạng cạnh-góc-cạnh và phương tích của một điểm",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_DJ",
+         "seg_AL",
+         "seg_GJ",
+         "seg_GP'",
+         "seg_DL",
+         "seg_LG",
+         "seg_P'D"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AD",
+         "seg_AI",
+         "seg_GJ",
+         "seg_ID",
+         "seg_DJ",
+         "seg_GP'"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_7",
+      "title": "Chứng minh các đường thẳng cắt nhau trên $(I)$",
+      "explanation": "Từ $\\triangle IJD \\sim \\triangle IDA$ ta có $\\frac{JD}{AD} = \\frac{IJ}{ID}$ và từ $\\triangle IJG \\sim \\triangle IGA$ ta có $\\frac{JG}{AG} = \\frac{IJ}{IG} = \\frac{IJ}{ID}$ (do $IG=ID$).\nSuy ra $\\frac{JD}{AD} = \\frac{JG}{AG} \\Rightarrow \\frac{JG}{JD} = \\frac{AG}{AD}$. Kết hợp với $\\frac{LG}{P'D} = \\frac{JG}{JD}$, ta có $\\frac{LG}{P'D} = \\frac{AG}{AD} \\Rightarrow \\frac{LG}{AG} = \\frac{P'D}{AD}$.\nTa lại có $\\widehat{AGL} = \\widehat{AGJ} + \\widehat{JGL}$ và $\\widehat{ADP'} = \\widehat{ADJ} + \\widehat{JDP'}$.\nVì $\\widehat{AGJ} = \\widehat{ADJ}$ và $\\widehat{JGL} = \\widehat{JDP'}$, suy ra $\\widehat{AGL} = \\widehat{ADP'}$.\nXét $\\triangle AGL$ và $\\triangle ADP'$ có $\\frac{LG}{AG} = \\frac{P'D}{AD}$ và $\\widehat{AGL} = \\widehat{ADP'}$, suy ra $\\triangle AGL \\sim \\triangle ADP'$ (c.g.c).\nTừ đó ta có $\\widehat{GAL} = \\widehat{DAP'}$. Vì $A, G, D$ thẳng hàng nên hai tia $AL$ và $AP'$ trùng nhau, tức là ba điểm $A, L, P'$ thẳng hàng.\nVậy đường thẳng $AL$ cắt đường thẳng $GJ$ tại $P'$ nằm trên đường tròn $(I)$.",
+      "math": "\\widehat{GAL} = \\widehat{DAP'} \\Rightarrow A, L, P \\text{ thẳng hàng}",
+      "reason": "Hai tia trùng nhau khi tạo với một tia các góc bằng nhau",
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_P'A"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AI",
+         "seg_DJ",
+         "seg_ID",
+         "seg_AD",
+         "seg_GJ",
+         "seg_IG"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) Đã chứng minh $ID^2 = IJ \\cdot IA$ và $\\triangle IJD \\sim \\triangle IDA$ nhờ vào hệ thức lượng trong tam giác vuông $IEA$.\nb) Đã chứng minh $\\widehat{IHD} = \\widehat{IDK}$ và bốn điểm $I, D, J, H$ cùng nằm trên đường tròn $(S)$ nhờ vào việc chứng minh $\\widehat{IHD} = \\widehat{IJD} = \\widehat{IDK}$.\nc) Đã chứng minh ba điểm $A, G, D$ thẳng hàng và các đường thẳng $AL, GJ$ cắt nhau tại một điểm nằm trên đường tròn $(I)$ bằng phương pháp chứng minh hai tia trùng nhau thông qua tam giác đồng dạng.",
+     "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": -1,
+       "y": 4,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": -4,
+       "y": -2,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 5,
+       "y": -2,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "I",
+       "label": "I",
+       "kind": "incenter",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "A",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "F",
+       "label": "F",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "J",
+       "label": "J",
+       "kind": "midpoint",
+       "refs": [
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "K",
+       "label": "K",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "D",
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "M",
+       "label": "M",
+       "kind": "midpoint",
+       "refs": [
+        "A",
+        "I"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "line_circle",
+       "refs": [
+        "I",
+        "K",
+        "c_AI"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "S",
+       "label": "S",
+       "kind": "circumcenter",
+       "refs": [
+        "I",
+        "D",
+        "J"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "G",
+       "label": "G",
+       "kind": "circle_circle",
+       "refs": [
+        "c_I",
+        "c_S",
+        "D"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "L",
+       "label": "L",
+       "kind": "line_circle",
+       "refs": [
+        "D",
+        "J",
+        "c_I"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "P",
+       "label": "P",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "L",
+        "G",
+        "J"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "P'",
+       "label": "P'",
+       "kind": "line_circle",
+       "refs": [
+        "G",
+        "J",
+        "c_I"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CA",
+       "kind": "segment",
+       "from": "C",
+       "to": "A",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_EF",
+       "kind": "segment",
+       "from": "E",
+       "to": "F",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AD",
+       "kind": "segment",
+       "from": "A",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AI",
+       "kind": "segment",
+       "from": "A",
+       "to": "I",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IK",
+       "kind": "segment",
+       "from": "I",
+       "to": "K",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_ID",
+       "kind": "segment",
+       "from": "I",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IE",
+       "kind": "segment",
+       "from": "I",
+       "to": "E",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AH",
+       "kind": "segment",
+       "from": "A",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_DJ",
+       "kind": "segment",
+       "from": "D",
+       "to": "J",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AL",
+       "kind": "segment",
+       "from": "A",
+       "to": "L",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_GJ",
+       "kind": "segment",
+       "from": "G",
+       "to": "J",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_HI",
+       "kind": "segment",
+       "from": "H",
+       "to": "I",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_HD",
+       "kind": "segment",
+       "from": "H",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_IF",
+       "kind": "segment",
+       "from": "I",
+       "to": "F",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IG",
+       "kind": "segment",
+       "from": "I",
+       "to": "G",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_GP'",
+       "kind": "segment",
+       "from": "G",
+       "to": "P'",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_DL",
+       "kind": "segment",
+       "from": "D",
+       "to": "L",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_LG",
+       "kind": "segment",
+       "from": "L",
+       "to": "G",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_P'D",
+       "kind": "segment",
+       "from": "P'",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_P'A",
+       "kind": "segment",
+       "from": "P'",
+       "to": "A",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [
+      {
+       "id": "c_I",
+       "center": "I",
+       "through": "D",
+       "radius": null,
+       "style": "given",
+       "label": "(I)"
+      },
+      {
+       "id": "c_AI",
+       "center": "M",
+       "through": "I",
+       "radius": null,
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "c_S",
+       "center": "S",
+       "through": "I",
+       "radius": null,
+       "style": "construction",
+       "label": "(S)"
+      }
+     ],
+     "angles": [
+      {
+       "id": "ang_AHI",
+       "from": "A",
+       "vertex": "H",
+       "to": "I",
+       "label": null,
+       "right": true,
+       "style": "construction"
+      },
+      {
+       "id": "ang_AJI",
+       "from": "A",
+       "vertex": "J",
+       "to": "I",
+       "label": null,
+       "right": true,
+       "style": "construction"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "equal_length",
+       "refs": [
+        "I",
+        "D",
+        "I",
+        "E"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "I",
+        "E",
+        "F"
+       ],
+       "value": null,
+       "role": "derived"
+      },
+      {
+       "kind": "concyclic",
+       "refs": [
+        "I",
+        "D",
+        "J",
+        "H"
+       ],
+       "value": null,
+       "role": "derived"
+      },
+      {
+       "kind": "collinear",
+       "refs": [
+        "A",
+        "G",
+        "D"
+       ],
+       "value": null,
+       "role": "derived"
+      },
+      {
+       "kind": "collinear",
+       "refs": [
+        "A",
+        "L",
+        "P"
+       ],
+       "value": null,
+       "role": "derived"
+      },
+      {
+       "kind": "collinear",
+       "refs": [
+        "G",
+        "J",
+        "P"
+       ],
+       "value": null,
+       "role": "derived"
+      },
+      {
+       "kind": "on_circle",
+       "refs": [
+        "P",
+        "c_I"
+       ],
+       "value": null,
+       "role": "derived"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "ch-5",
+   "topic": "combinatorics",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "error": "no stored Gemini lesson"
+  },
+  {
+   "id": "a3",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Vậy với x > 0 và x ≠ 1, biểu thức A được rút gọn thành (x - 1)/(√x). A = (x - 1)/(√x) Vậy với $x > 0$ và $x \\ne 1$, biểu thức $A$ được rút gọn thành $\\frac{x - ",
+   "lesson": {
+    "analysis": {
+     "statement": "Rút gọn biểu thức $A = \\left(\\frac{\\sqrt{x}}{\\sqrt{x} - 1} - rac{1}{x - \\sqrt{x}}\\right) : \\left(\\frac{1}{\\sqrt{x} + 1} + rac{2}{x - 1}\\right)$ với $x > 0, x \\ne 1$.",
+     "language": "vi",
+     "topic": "algebra",
+     "subtopic": "Rút gọn biểu thức chứa căn",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Điều kiện xác định",
+      "Quy đồng mẫu thức",
+      "Hằng đẳng thức đáng nhớ",
+      "Phân tích đa thức thành nhân tử"
+     ],
+     "givens": [
+      "Biểu thức $A$",
+      "Điều kiện $x > 0, x \\ne 1$"
+     ],
+     "unknowns": [
+      "Biểu thức rút gọn của $A$"
+     ],
+     "constraints": [
+      "x > 0",
+      "x \\ne 1"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ rút gọn từng ngoặc bằng cách quy đồng mẫu thức, sau đó biến đổi phép chia thành phép nhân với nghịch đảo để rút gọn biểu thức $A$.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Bạn hãy phân tích các mẫu thức trong ngoặc thứ nhất thành nhân tử để tìm mẫu thức chung nhé.",
+      "cue": "Chú ý rằng $x - \\sqrt{x} = \\sqrt{x}(\\sqrt{x} - 1)$.",
+      "explanation": "Biểu diễn mẫu của phân thức thứ hai thành nhân tử để dễ quy đồng với mẫu thức thứ nhất.",
+      "math": "x - \\sqrt{x} = \\sqrt{x}(\\sqrt{x} - 1)",
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 1,
+      "question": "Sau khi quy đồng ngoặc thứ nhất, tử thức của bạn thu gọn lại thành gì?",
+      "cue": "Nhớ nhân $\\sqrt{x}$ với $\\sqrt{x}$.",
+      "explanation": "Thực hiện phép trừ hai phân thức trong ngoặc đầu tiên.",
+      "math": "\\frac{x - 1}{\\sqrt{x}(\\sqrt{x} - 1)}",
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 1,
+      "question": "Bây giờ chuyển sang ngoặc thứ hai, bạn thấy mẫu thức $x - 1$ có thể phân tích thành những nhân tử nào?",
+      "cue": "Áp dụng hằng đẳng thức hiệu hai bình phương.",
+      "explanation": "Viết $x - 1$ thành $(\\sqrt{x} - 1)(\\sqrt{x} + 1)$.",
+      "math": "x - 1 = (\\sqrt{x} - 1)(\\sqrt{x} + 1)",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 2,
+      "question": "Quy đồng ngoặc thứ hai với mẫu thức chung là $(\\sqrt{x} - 1)(\\sqrt{x} + 1)$, tử thức sẽ thu gọn thành gì?",
+      "cue": "Cộng các số hạng ở tử thức.",
+      "explanation": "Thu gọn tử thức của ngoặc thứ hai.",
+      "math": "\\frac{\\sqrt{x} + 1}{(\\sqrt{x} - 1)(\\sqrt{x} + 1)}",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 3,
+      "question": "Cuối cùng, hãy chia biểu thức ở ngoặc thứ nhất cho biểu thức ở ngoặc thứ hai (tức là nhân với phân thức nghịch đảo).",
+      "cue": "Rút gọn các nhân tử chung ở cả tử và mẫu.",
+      "explanation": "Thực hiện phép chia phân thức để ra kết quả cuối cùng.",
+      "math": "A = \\frac{\\sqrt{x} + 1}{\\sqrt{x}}",
+      "stepId": "s3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Rút gọn biểu thức trong ngoặc thứ nhất",
+      "explanation": "Biến đổi mẫu của phân thức thứ hai thành nhân tử chung, sau đó quy đồng mẫu thức cho cả hai phân thức trong ngoặc đầu tiên.",
+      "math": "\\frac{\\sqrt{x}}{\\sqrt{x} - 1} - \\frac{1}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{x - 1}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{(\\sqrt{x} - 1)(\\sqrt{x} + 1)}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{\\sqrt{x} + 1}{\\sqrt{x}}",
+      "reason": "Quy đồng mẫu thức và phân tích đa thức thành nhân tử",
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Rút gọn biểu thức trong ngoặc thứ hai",
+      "explanation": "Phân tích mẫu thức $x - 1$ thành $(\\sqrt{x} - 1)(\\sqrt{x} + 1)$ để làm mẫu thức chung cho ngoặc thứ hai rồi cộng lại.",
+      "math": "\\frac{1}{\\sqrt{x} + 1} + \\frac{2}{(\\sqrt{x} - 1)(\\sqrt{x} + 1)} = \\frac{\\sqrt{x} - 1 + 2}{(\\sqrt{x} - 1)(\\sqrt{x} + 1)} = \\frac{\\sqrt{x} + 1}{(\\sqrt{x} - 1)(\\sqrt{x} + 1)} = \\frac{1}{\\sqrt{x} - 1}",
+      "reason": "Quy đồng mẫu thức và rút gọn phân thức",
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Thực hiện phép chia hai ngoặc",
+      "explanation": "Chia kết quả của ngoặc thứ nhất cho kết quả của ngoặc thứ hai bằng cách nhân với phân thức nghịch đảo.",
+      "math": "A = \\frac{\\sqrt{x} + 1}{\\sqrt{x}} : \\frac{1}{\\sqrt{x} - 1} = \\frac{\\sqrt{x} + 1}{\\sqrt{x}} \\cdot (\\sqrt{x} - 1) = \\frac{x - 1}{\\sqrt{x}}",
+      "reason": "Phép chia phân thức đại số",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Vậy với $x > 0$ và $x \\ne 1$, biểu thức $A$ được rút gọn thành $\\frac{x - 1}{\\sqrt{x}}$.",
+     "math": "A = \\frac{x - 1}{\\sqrt{x}}"
+    },
+    "answerChecks": [
+     {
+      "kind": "identity",
+      "statements": [
+       "( (sqrt(x) / (sqrt(x) - 1)) - (1 / (x - sqrt(x))) ) / ( (1 / (sqrt(x) + 1)) + (2 / (x - 1)) ) = (x - 1) / sqrt(x)",
+       "x > 0",
+       "x != 1"
+      ],
+      "assignments": [],
+      "expected": null
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "a7",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Vậy giá trị của m thỏa mãn yêu cầu bài toán là m = 2. m = 2 Vậy giá trị của $m$ thỏa mãn yêu cầu bài toán là $m = 2$. m = 2",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho phương trình $x^{2} - 2(m + 1)x + m^{2} + 3 = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_{1}, x_{2}$ thỏa mãn $x_{1}^{2} + x_{2}^{2} = 22$.",
+     "language": "vi",
+     "topic": "equation",
+     "subtopic": "Phương trình bậc hai chứa tham số và hệ thức Vi-ét",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Phương trình bậc hai một ẩn",
+      "Điều kiện có nghiệm của phương trình bậc hai",
+      "Hệ thức Vi-ét",
+      "Biến đổi biểu thức nghiệm"
+     ],
+     "givens": [
+      "Phương trình $x^{2} - 2(m + 1)x + m^{2} + 3 = 0$",
+      "Phương trình có hai nghiệm $x_{1}, x_{2}$",
+      "Hệ thức $x_{1}^{2} + x_{2}^{2} = 22$"
+     ],
+     "unknowns": [
+      "Giá trị của tham số $m$"
+     ],
+     "constraints": [
+      "$\\Delta \\ge 0$ (hoặc $\\Delta' \\ge 0$) để phương trình có hai nghiệm"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ tìm điều kiện của $m$ để phương trình có hai nghiệm ($\\Delta' \\ge 0$). Sau đó, áp dụng hệ thức Vi-ét để biểu diễn tổng và tích các nghiệm theo $m$, rồi thay vào hệ thức bài cho để tìm $m$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn hãy tính biệt thức $\\Delta'$ của phương trình này trước nhé. Để phương trình có hai nghiệm thì $\\Delta'$ phải thỏa mãn điều kiện gì?",
+      "cue": "Tính $\\Delta'$ theo công thức $\\Delta' = b'^2 - ac$.",
+      "explanation": "Ta có hệ số $b' = -(m + 1)$, nên $\\Delta' = [-(m + 1)]^2 - 1 \\cdot (m^2 + 3)$. Bạn hãy thu gọn biểu thức này.",
+      "math": "\\Delta' = (m + 1)^2 - (m^2 + 3)",
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 1,
+      "question": "Sau khi thu gọn, ta được $\\Delta' = 2m - 2$. Để phương trình có hai nghiệm $x_1, x_2$, điều kiện của $m$ là gì?",
+      "cue": "Phương trình có nghiệm khi $\\Delta' \\ge 0$.",
+      "explanation": "Cho $\\Delta' \\ge 0$ tức là $2m - 2 \\ge 0$, từ đó bạn sẽ tìm được điều kiện cho $m$.",
+      "math": "2m - 2 \\ge 0 \\Rightarrow m \\ge 1",
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 1,
+      "question": "Khi phương trình có nghiệm, theo hệ thức Vi-ét, tổng $x_1 + x_2$ và tích $x_1 x_2$ bằng bao nhiêu theo $m$?",
+      "cue": "Hệ thức Vi-ét: $x_1 + x_2 = -\\frac{b}{a}$ và $x_1 x_2 = \\frac{c}{a}$.",
+      "explanation": "Áp dụng vào phương trình, ta có $x_1 + x_2 = 2(m + 1)$ và $x_1 x_2 = m^2 + 3$.",
+      "math": "\\begin{cases} x_1 + x_2 = 2(m + 1) \\\\ x_1 x_2 = m^2 + 3 \\end{cases}",
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_4",
+      "level": 1,
+      "question": "Bài toán cho $x_1^2 + x_2^2 = 22$. Bạn có nhớ hằng đẳng thức nào để biến đổi tổng bình phương này về tổng và tích các nghiệm không?",
+      "cue": "Sử dụng hằng đẳng thức $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2$.",
+      "explanation": "Bây giờ bạn hãy thay các biểu thức của hệ thức Vi-ét vào đẳng thức này để lập phương trình theo ẩn $m$.",
+      "math": "(x_1 + x_2)^2 - 2x_1 x_2 = 22",
+      "stepId": "step_3",
+      "focus": []
+     },
+     {
+      "id": "hint_5",
+      "level": 2,
+      "question": "Bạn hãy thay $x_1 + x_2$ và $x_1 x_2$ vào và giải phương trình bậc hai theo $m$ nhé.",
+      "cue": "Phương trình thu được là $[2(m + 1)]^2 - 2(m^2 + 3) = 22$.",
+      "explanation": "Khai triển và thu gọn ta được phương trình bậc hai ẩn $m$, từ đó tìm ra các giá trị của $m$ và đối chiếu với điều kiện $m \\ge 1$.",
+      "math": "2m^2 + 4m - 24 = 0",
+      "stepId": "step_4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Tìm điều kiện của $m$ để phương trình có hai nghiệm",
+      "explanation": "Ta tính biệt thức $\\Delta'$ của phương trình bậc hai. Để phương trình có hai nghiệm $x_1, x_2$, điều kiện cần và đủ là $\\Delta' \\ge 0$.",
+      "math": "\\Delta' = [-(m + 1)]^2 - 1 \\cdot (m^2 + 3) = m^2 + 2m + 1 - m^2 - 3 = 2m - 2. \\text{ Để phương trình có hai nghiệm thì } \\Delta' \\ge 0 \\Leftrightarrow 2m - 2 \\ge 0 \\Leftrightarrow m \\ge 1.",
+      "reason": "Công thức tính $\\Delta'$ và điều kiện có nghiệm của phương trình bậc hai",
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Áp dụng hệ thức Vi-ét",
+      "explanation": "Khi phương trình có hai nghiệm $x_1, x_2$, theo hệ thức Vi-ét ta có tổng và tích các nghiệm.",
+      "math": "\\begin{cases} x_1 + x_2 = 2(m + 1) \\\\ x_1 x_2 = m^2 + 3 \\end{cases}",
+      "reason": "Hệ thức Vi-ét",
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "Biến đổi hệ thức bài cho theo hệ thức Vi-ét",
+      "explanation": "Ta biến đổi biểu thức $x_1^2 + x_2^2 = 22$ xuất hiện tổng và tích các nghiệm.",
+      "math": "x_1^2 + x_2^2 = 22 \\Leftrightarrow (x_1 + x_2)^2 - 2x_1 x_2 = 22",
+      "reason": "Hằng đẳng thức đáng nhớ",
+      "geometryActions": []
+     },
+     {
+      "id": "step_4",
+      "title": "Lập phương trình theo $m$ và giải",
+      "explanation": "Thay các biểu thức từ hệ thức Vi-ét vào phương trình ở bước 3, sau đó khai triển và giải tìm $m$.",
+      "math": "[2(m + 1)]^2 - 2(m^2 + 3) = 22 \\Leftrightarrow 4(m^2 + 2m + 1) - 2m^2 - 6 = 22 \\Leftrightarrow 4m^2 + 8m + 4 - 2m^2 - 6 = 22 \\Leftrightarrow 2m^2 + 8m - 24 = 0 \\Leftrightarrow m^2 + 4m - 12 = 0.",
+      "reason": "Biến đổi đại số",
+      "geometryActions": []
+     },
+     {
+      "id": "step_5",
+      "title": "Giải phương trình theo $m$ và đối chiếu điều kiện",
+      "explanation": "Giải phương trình bậc hai ẩn $m$ và kiểm tra với điều kiện $m \\ge 1$.",
+      "math": "m^2 + 4m - 12 = 0 \\Leftrightarrow (m - 2)(m + 6) = 0 \\Leftrightarrow \\begin{cases} m = 2 \\text{ (nhận)} \\\\ m = -6 \\text{ (loại vì không thỏa mãn } m \\ge 1) \\end{cases}.",
+      "reason": "Giải phương trình bậc hai và đối chiếu điều kiện",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Vậy giá trị của $m$ thỏa mãn yêu cầu bài toán là $m = 2$.",
+     "math": "m = 2"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "2^2 + 4*2 - 12"
+      ],
+      "assignments": [],
+      "expected": "0"
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "g5",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": 4,
+   "failedChecks": [],
+   "answer": "Độ dài cạnh huyền BC là 10 cm và độ dài đường cao AH là 4,8 cm. BC = 10 cm, AH = 4,8 cm Độ dài cạnh huyền $BC$ là $10$ cm và độ dài đường cao $AH$ là $4{,}8$ cm",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ vuông tại $A$ có $AB = 6$ cm, $AC = 8$ cm. Tính $BC$ và đường cao $AH$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hệ thức lượng trong tam giác vuông",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Định lý Pythagore",
+      "Hệ thức lượng trong tam giác vuông"
+     ],
+     "givens": [
+      "Tam giác $ABC$ vuông tại $A$",
+      "$AB = 6$ cm",
+      "$AC = 8$ cm",
+      "Đường cao $AH$"
+     ],
+     "unknowns": [
+      "$BC$",
+      "$AH$"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Sử dụng định lý Pythagore trong tam giác vuông $ABC$ để tính độ dài cạnh huyền $BC$, sau đó dùng hệ thức lượng liên hệ giữa đường cao và hai cạnh góc vuông ($AH \\cdot BC = AB \\cdot AC$) để tìm độ dài $AH$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Để tìm độ dài cạnh huyền $BC$ khi đã biết hai cạnh góc vuông $AB$ và $AC$, tụi mình nên áp dụng định lý quen thuộc nào nhỉ?",
+      "cue": "Hãy nghĩ tới định lý liên hệ giữa ba cạnh của một tam giác vuông.",
+      "explanation": "Chúng mình sẽ dùng định lý Pythagore cho tam giác $ABC$ vuông tại $A$: $BC^2 = AB^2 + AC^2$.",
+      "math": "BC^2 = AB^2 + AC^2",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AB",
+       "seg_AC",
+       "seg_BC"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 3,
+      "question": "Thay các giá trị $AB = 6$ cm và $AC = 8$ cm vào định lý Pythagore, bạn tính ra $BC$ bằng bao nhiêu?",
+      "cue": "Tính tổng bình phương hai cạnh góc vuông rồi lấy căn bậc hai của kết quả đó nha.",
+      "explanation": "Ta có $BC^2 = 6^2 + 8^2 = 36 + 64 = 100$, từ đó suy ra $BC = \\sqrt{100} = 10$ cm.",
+      "math": "BC = \\sqrt{6^2 + 8^2} = 10 \\text{ (cm)}",
+      "stepId": "step_1",
+      "focus": [
+       "seg_BC"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 1,
+      "question": "Để tính đường cao $AH$ khi đã có đủ ba cạnh $AB, AC, BC$, bạn còn nhớ hệ thức lượng nào liên kết bốn đoạn thẳng này không?",
+      "cue": "Hệ thức lượng này phát biểu: Trong một tam giác vuông, tích của đường cao và cạnh huyền tương ứng bằng tích hai cạnh góc vuông.",
+      "explanation": "Hệ thức lượng đó là $AH \\cdot BC = AB \\cdot AC$.",
+      "math": "AH \\cdot BC = AB \\cdot AC",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AH",
+       "seg_BC",
+       "seg_AB",
+       "seg_AC"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "Bây giờ bạn hãy rút $AH$ từ hệ thức lượng trên và thế số vào để tìm kết quả cuối cùng nhé!",
+      "cue": "Ta có $AH = \\frac{AB \\cdot AC}{BC}$, thay các số liệu đã biết vào để tính.",
+      "explanation": "Thay số ta được $AH = \\frac{6 \\cdot 8}{10} = 4,8$ cm.",
+      "math": "AH = \\frac{6 \\cdot 8}{10} = 4,8 \\text{ (cm)}",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AH"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Tính độ dài cạnh huyền $BC$",
+      "explanation": "Vì tam giác $ABC$ vuông tại $A$, ta áp dụng định lý Pythagore để tính cạnh huyền $BC$ từ hai cạnh góc vuông đã biết $AB = 6$ cm và $AC = 8$ cm.",
+      "math": "\\begin{gathered}BC^2 = AB^2 + AC^2 \\\\ BC^2 = 6^2 + 8^2 = 36 + 64 = 100 \\\\ BC = \\sqrt{100} = 10 \\text{ (cm)}\\end{gathered}",
+      "reason": "Định lý Pythagore",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC",
+         "seg_BC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Tính độ dài đường cao $AH$",
+      "explanation": "Trong tam giác $ABC$ vuông tại $A$ có đường cao $AH$, ta áp dụng hệ thức lượng liên hệ giữa đường cao, cạnh huyền và hai cạnh góc vuông để tính $AH$.",
+      "math": "\\begin{gathered}AH \\cdot BC = AB \\cdot AC \\\\ AH = \\frac{AB \\cdot AC}{BC} = \\frac{6 \\cdot 8}{10} = 4,8 \\text{ (cm)}\\end{gathered}",
+      "reason": "Hệ thức lượng trong tam giác vuông",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AH"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Độ dài cạnh huyền $BC$ là $10$ cm và độ dài đường cao $AH$ là $4{,}8$ cm.",
+     "math": "BC = 10 \\text{ cm}, AH = 4{,}8 \\text{ cm}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "sqrt(6^2 + 8^2)"
+      ],
+      "assignments": [],
+      "expected": "10"
+     },
+     {
+      "kind": "value",
+      "statements": [
+       "(6 * 8) / 10"
+      ],
+      "assignments": [],
+      "expected": "4.8"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 2,
+       "y": 2,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0,
+       "value2": 6,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": 8,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "foot",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": "6 cm"
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": "8 cm"
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": "10 cm"
+      },
+      {
+       "id": "seg_AH",
+       "kind": "segment",
+       "from": "A",
+       "to": "H",
+       "style": "given",
+       "label": "4,8 cm"
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_BAC",
+       "from": "B",
+       "vertex": "A",
+       "to": "C",
+       "label": null,
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_AHC",
+       "from": "A",
+       "vertex": "H",
+       "to": "C",
+       "label": null,
+       "right": true,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "length_value",
+       "refs": [
+        "A",
+        "B"
+       ],
+       "value": 6,
+       "role": "given"
+      },
+      {
+       "kind": "length_value",
+       "refs": [
+        "A",
+        "C"
+       ],
+       "value": 8,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "B",
+        "A",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "H",
+        "B",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "length_value",
+       "refs": [
+        "B",
+        "C"
+       ],
+       "value": 10,
+       "role": "derived"
+      },
+      {
+       "kind": "length_value",
+       "refs": [
+        "A",
+        "H"
+       ],
+       "value": 4.8,
+       "role": "derived"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "g8",
+   "topic": "geometry",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "PASS",
+   "answerCorrect": null,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": 6,
+   "failedChecks": [],
+   "answer": "Ta đã chứng minh được đẳng thức bằng cách sử dụng bình phương đường cao AH² làm đại lượng trung gian qua các hệ thức lượng trong các tam giác vuông △ AHB và △ A",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ vuông tại $A$, đường cao $AH$. Gọi $D$, $E$ lần lượt là hình chiếu của $H$ trên $AB$ và $AC$. Chứng minh $AD \\cdot AB = AE \\cdot AC$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hệ thức lượng trong tam giác vuông",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Hệ thức lượng trong tam giác vuông",
+      "Hình chiếu của một điểm trên đường thẳng"
+     ],
+     "givens": [
+      "Tam giác $ABC$ vuông tại $A$",
+      "Đường cao $AH$ vuông góc với $BC$ tại $H$",
+      "$D$ là hình chiếu của $H$ trên $AB$ ($HD \\perp AB$)",
+      "$E$ là hình chiếu của $H$ trên $AC$ ($HE \\perp AC$)"
+     ],
+     "unknowns": [
+      "Chứng minh đẳng thức $AD \\cdot AB = AE \\cdot AC$"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Chúng mình sẽ áp dụng hệ thức lượng trong hai tam giác vuông $\\triangle AHB$ và $\\triangle AHC$ để biểu diễn các tích $AD \\cdot AB$ và $AE \\cdot AC$ qua bình phương đường cao chung là $AH^2$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Để chứng minh $AD \\cdot AB = AE \\cdot AC$, chúng mình có thể tìm một đại lượng trung gian bằng cả hai tích này. Bạn có nhận xét gì về tam giác $AHB$ và đường thẳng $HD$ không?",
+      "cue": "Hãy chú ý đến tam giác vuông và đường cao trong hình nhé.",
+      "explanation": "Tam giác $AHB$ là tam giác vuông tại $H$, và $HD$ chính là đường cao ứng với cạnh huyền $AB$ vì $D$ là hình chiếu của $H$ trên $AB$.",
+      "math": null,
+      "stepId": "step_1",
+      "focus": [
+       "seg_AB",
+       "seg_AH",
+       "seg_HD"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Trong tam giác vuông $AHB$ có đường cao $HD$, hệ thức lượng nào liên kết cạnh góc vuông $AH$, cạnh huyền $AB$ và hình chiếu $AD$?",
+      "cue": "Hãy nhớ lại hệ thức liên hệ giữa cạnh góc vuông, cạnh huyền và hình chiếu.",
+      "explanation": "Theo hệ thức lượng trong tam giác vuông $AHB$, bình phương cạnh góc vuông $AH$ bằng tích của cạnh huyền $AB$ và hình chiếu của nó là $AD$. Do đó ta có $AH^2 = AD \\cdot AB$.",
+      "math": "AH^2 = AD \\cdot AB",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AB",
+       "seg_AH",
+       "seg_HD"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 2,
+      "question": "Hoàn toàn tương tự, bạn hãy nhìn sang tam giác vuông $AHC$ có đường cao $HE$. Chúng mình có hệ thức lượng tương tự nào ở đây nhỉ?",
+      "cue": "Áp dụng hệ thức lượng tương tự cho tam giác vuông $AHC$.",
+      "explanation": "Trong tam giác vuông $AHC$ có đường cao $HE$, ta cũng có bình phương cạnh góc vuông $AH^2$ bằng tích của cạnh huyền $AC$ và hình chiếu $AE$. Tức là $AH^2 = AE \\cdot AC$.",
+      "math": "AH^2 = AE \\cdot AC",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AC",
+       "seg_AH",
+       "seg_HE"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "Bây giờ bạn đã có cả hai tích $AD \\cdot AB$ và $AE \\cdot AC$ cùng bằng một lượng trung gian rồi. Chúng mình rút ra kết luận thế nào đây?",
+      "cue": "Sử dụng tính chất bắc cầu.",
+      "explanation": "Vì $AD \\cdot AB = AH^2$ và $AE \\cdot AC = AH^2$, theo tính chất bắc cầu ta suy ra ngay $AD \\cdot AB = AE \\cdot AC$. Đây chính là điều cần chứng minh!",
+      "math": "AD \\cdot AB = AE \\cdot AC",
+      "stepId": "step_3",
+      "focus": [
+       "seg_AB",
+       "seg_AC",
+       "seg_AH"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Áp dụng hệ thức lượng trong tam giác vuông AHB",
+      "explanation": "Xét tam giác $AHB$ vuông tại $H$ (do $AH \\perp BC$). Vì $D$ là hình chiếu của $H$ trên $AB$ nên $HD \\perp AB$, hay $HD$ là đường cao của tam giác $AHB$. Áp dụng hệ thức lượng vào tam giác vuông này, ta có phương trình liên hệ giữa cạnh góc vuông $AH$, cạnh huyền $AB$ và hình chiếu $AD$.",
+      "math": "AH^2 = AD \\cdot AB",
+      "reason": "Hệ thức lượng trong tam giác vuông: bình phương một cạnh góc vuông bằng tích cạnh huyền và hình chiếu của nó trên cạnh huyền.",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AH",
+         "seg_HD"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Áp dụng hệ thức lượng trong tam giác vuông AHC",
+      "explanation": "Tương tự, xét tam giác $AHC$ vuông tại $H$. Vì $E$ là hình chiếu của $H$ trên $AC$ nên $HE \\perp AC$, hay $HE$ là đường cao của tam giác $AHC$. Áp dụng hệ thức lượng vào tam giác vuông $AHC$, ta có hệ thức tương tự.",
+      "math": "AH^2 = AE \\cdot AC",
+      "reason": "Hệ thức lượng trong tam giác vuông: bình phương một cạnh góc vuông bằng tích cạnh huyền và hình chiếu của nó trên cạnh huyền.",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AC",
+         "seg_AH",
+         "seg_HE"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Bắc cầu để rút ra đẳng thức cần chứng minh",
+      "explanation": "Từ hai hệ thức thu được ở trên, ta thấy cả hai tích $AD \\cdot AB$ và $AE \\cdot AC$ đều cùng bằng $AH^2$. Theo tính chất bắc cầu, ta suy ra đẳng thức cần chứng minh.",
+      "math": "AD \\cdot AB = AE \\cdot AC",
+      "reason": "Tính chất bắc cầu của đẳng thức.",
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Ta đã chứng minh được đẳng thức bằng cách sử dụng bình phương đường cao $AH^2$ làm đại lượng trung gian qua các hệ thức lượng trong các tam giác vuông $\\triangle AHB$ và $\\triangle AHC$:\n\n$$AD \\cdot AB = AE \\cdot AC \\quad (\\text{cùng bằng } AH^2)$$",
+     "math": "AD \\cdot AB = AE \\cdot AC"
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": -3.6,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 6.4,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "M",
+       "label": "M",
+       "kind": "midpoint",
+       "refs": [
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "on_circle",
+       "refs": [
+        "c_M"
+       ],
+       "x": null,
+       "y": null,
+       "value": 110,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "foot",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "foot",
+       "refs": [
+        "H",
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "foot",
+       "refs": [
+        "H",
+        "A",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AH",
+       "kind": "segment",
+       "from": "A",
+       "to": "H",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_HD",
+       "kind": "segment",
+       "from": "H",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_HE",
+       "kind": "segment",
+       "from": "H",
+       "to": "E",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [
+      {
+       "id": "c_M",
+       "center": "M",
+       "through": "B",
+       "radius": null,
+       "style": "given",
+       "label": null
+      }
+     ],
+     "angles": [
+      {
+       "id": "ang_BAC",
+       "from": "C",
+       "vertex": "A",
+       "to": "B",
+       "label": null,
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_AHB",
+       "from": "B",
+       "vertex": "H",
+       "to": "A",
+       "label": null,
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_ADH",
+       "from": "H",
+       "vertex": "D",
+       "to": "A",
+       "label": null,
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_AEH",
+       "from": "A",
+       "vertex": "E",
+       "to": "H",
+       "label": null,
+       "right": true,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "B",
+        "A",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "H",
+        "B",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "H",
+        "D",
+        "A",
+        "B"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "H",
+        "E",
+        "A",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "concyclic",
+       "refs": [
+        "B",
+        "C",
+        "E",
+        "D"
+       ],
+       "value": null,
+       "role": "derived"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "w1",
+   "topic": "word_problem",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": 4,
+   "failedChecks": [],
+   "answer": "Chiều rộng của mảnh vườn là 7 m và chiều dài của mảnh vườn là 12 m. { Chiều rộng = 7 m ; Chiều dài = 12 m Chiều rộng của mảnh vườn là 7 m và chiều dài của mảnh ",
+   "lesson": {
+    "analysis": {
+     "statement": "Một mảnh vườn hình chữ nhật có chiều dài hơn chiều rộng $5$ m và diện tích bằng $84\\ \\text{m}^{2}$. Tính chiều dài và chiều rộng của mảnh vườn.",
+     "language": "vi",
+     "topic": "word_problem",
+     "subtopic": "Giải bài toán bằng cách lập phương trình bậc hai",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Công thức diện tích hình chữ nhật",
+      "Giải bài toán bằng cách lập phương trình",
+      "Phương trình bậc hai một ẩn"
+     ],
+     "givens": [
+      "Mảnh vườn hình chữ nhật",
+      "Chiều dài hơn chiều rộng $5\\text{ m}$",
+      "Diện tích bằng $84\\text{ m}^2$"
+     ],
+     "unknowns": [
+      "Chiều rộng của mảnh vườn (m)",
+      "Chiều dài của mảnh vườn (m)"
+     ],
+     "constraints": [
+      "Chiều rộng và chiều dài phải là các số dương"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Gọi chiều rộng của mảnh vườn là $x$ ($x > 0$), biểu diễn chiều dài theo $x$ là $x + 5$. Dựa vào công thức diện tích hình chữ nhật, ta lập phương trình bậc hai $x(x + 5) = 84$, sau đó giải phương trình để tìm $x$ và suy ra chiều dài.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Để bắt đầu bài toán, tụi mình nên gọi đại lượng nào chưa biết làm ẩn số $x$ và đặt điều kiện gì cho nó nhỉ?",
+      "cue": "Nên chọn chiều rộng làm ẩn để dễ biểu diễn chiều dài hơn nhé.",
+      "explanation": "Gọi chiều rộng của mảnh vườn là $x$ (mét). Vì chiều rộng là một kích thước hình học nên điều kiện bắt buộc là $x > 0$.",
+      "math": "x > 0",
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Biết chiều dài hơn chiều rộng $5\\text{ m}$, bạn có thể biểu diễn chiều dài theo $x$ được không?",
+      "cue": "Hãy dùng phép tính cộng với $x$.",
+      "explanation": "Vì chiều dài hơn chiều rộng $5\\text{ m}$ nên chiều dài của mảnh vườn sẽ là $x + 5$ (mét).",
+      "math": "x + 5",
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 2,
+      "question": "Diện tích hình chữ nhật là $84\\text{ m}^2$. Ta lập được phương trình nào dựa vào công thức tính diện tích?",
+      "cue": "Diện tích bằng tích của chiều dài và chiều rộng.",
+      "explanation": "Tích của chiều rộng và chiều dài chính là diện tích mảnh vườn: $x(x + 5) = 84$. Nhân phân phối vào ta được phương trình bậc hai: $x^2 + 5x - 84 = 0$.",
+      "math": "x^2 + 5x - 84 = 0",
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "Bây giờ bạn hãy giải phương trình $x^2 + 5x - 84 = 0$ xem ra những nghiệm nào nhé?",
+      "cue": "Tính biệt thức $\\Delta = b^2 - 4ac$ để tìm nghiệm.",
+      "explanation": "Ta có $\\Delta = 5^2 - 4 \\cdot 1 \\cdot (-84) = 25 + 336 = 361 = 19^2 > 0$. Phương trình có hai nghiệm: $x_1 = \\frac{-5 + 19}{2} = 7$ (thỏa mãn) và $x_2 = \\frac{-5 - 19}{2} = -12$ (loại vì không thỏa mãn $x > 0$).",
+      "math": "x = 7",
+      "stepId": "step_3",
+      "focus": []
+     },
+     {
+      "id": "hint_5",
+      "level": 3,
+      "question": "Có chiều rộng là $7\\text{ m}$ rồi, chiều dài của mảnh vườn sẽ là bao nhiêu nhỉ?",
+      "cue": "Cộng thêm $5\\text{ m}$ vào chiều rộng để ra chiều dài.",
+      "explanation": "Chiều dài mảnh vườn là $7 + 5 = 12\\text{ m}$. Như vậy tụi mình đã tìm được cả hai kích thước rồi!",
+      "math": "7 + 5 = 12",
+      "stepId": "step_4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Chọn ẩn và đặt điều kiện",
+      "explanation": "Gọi chiều rộng của mảnh vườn hình chữ nhật là $x$ (đơn vị: mét). Do chiều rộng phải là một số dương nên điều kiện là $x > 0$.",
+      "math": "x > 0",
+      "reason": "Định nghĩa ẩn số trong bài toán thực tế",
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Biểu diễn chiều dài và lập phương trình",
+      "explanation": "Vì chiều dài hơn chiều rộng $5\\text{ m}$ nên chiều dài của mảnh vườn là $x + 5$ (mét).\nDiện tích mảnh vườn bằng $84\\text{ m}^2$, nên ta có phương trình:\n$x(x + 5) = 84 \\Leftrightarrow x^2 + 5x - 84 = 0$.",
+      "math": "x^2 + 5x - 84 = 0",
+      "reason": "Công thức diện tích hình chữ nhật $S = \\text{chiều dài} \\times \\text{chiều rộng}$",
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "Giải phương trình tìm chiều rộng",
+      "explanation": "Giải phương trình bậc hai $x^2 + 5x - 84 = 0$ bằng biệt thức $\\Delta$:\n$\\Delta = 5^2 - 4 \\cdot 1 \\cdot (-84) = 25 + 336 = 361 = 19^2 > 0$.\nVì $\\Delta > 0$ nên phương trình có hai nghiệm phân biệt:\n$x_1 = \\frac{-5 + 19}{2 \\cdot 1} = 7$ (thỏa mãn điều kiện $x > 0$).\n$x_2 = \\frac{-5 - 19}{2 \\cdot 1} = -12$ (loại vì không thỏa mãn điều kiện $x > 0$).\nVậy chiều rộng của mảnh vườn là $7\\text{ m}$.",
+      "math": "x = 7",
+      "reason": "Công thức nghiệm của phương trình bậc hai",
+      "geometryActions": []
+     },
+     {
+      "id": "step_4",
+      "title": "Tính chiều dài và kết luận",
+      "explanation": "Từ chiều rộng là $7\\text{ m}$, ta tìm được chiều dài của mảnh vườn:\n$\\text{Chiều dài} = 7 + 5 = 12\\text{ m}$.",
+      "math": "12",
+      "reason": "Quan hệ giữa chiều dài và chiều rộng",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Chiều rộng của mảnh vườn là 7 m và chiều dài của mảnh vườn là 12 m.",
+     "math": "\\begin{cases} \\text{Chiều rộng} = 7\\text{ m} \\\\ \\text{Chiều dài} = 12\\text{ m} \\end{cases}"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "y - x = 5",
+       "x * y = 84"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x",
+         "value": "7"
+        },
+        {
+         "variable": "y",
+         "value": "12"
+        }
+       ]
+      ],
+      "expected": null
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "free",
+       "refs": [],
+       "x": 1,
+       "y": 1,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "polar",
+       "refs": [
+        "D"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0,
+       "value2": 6,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "polar",
+       "refs": [
+        "D"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": 3.5,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "polar",
+       "refs": [
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": 3.5,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_DA",
+       "kind": "segment",
+       "from": "D",
+       "to": "A",
+       "style": "given",
+       "label": "x"
+      },
+      {
+       "id": "seg_CD",
+       "kind": "segment",
+       "from": "C",
+       "to": "D",
+       "style": "given",
+       "label": "x+5"
+      },
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_ADC",
+       "from": "A",
+       "vertex": "D",
+       "to": "C",
+       "label": null,
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_BCD",
+       "from": "B",
+       "vertex": "C",
+       "to": "D",
+       "label": null,
+       "right": true,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "D",
+        "A",
+        "D",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "C",
+        "B",
+        "C",
+        "D"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "length_ratio",
+       "refs": [
+        "D",
+        "C",
+        "D",
+        "A"
+       ],
+       "value": 1.71428,
+       "role": "given"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "x3",
+   "topic": "adversarial",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Phương trình có nghiệm duy nhất là x = 3. x = 3 Phương trình có nghiệm duy nhất là x = 3. x = 3",
+   "lesson": {
+    "analysis": {
+     "statement": "Giải phương trình $2x = 6$.",
+     "language": "vi",
+     "topic": "equation",
+     "subtopic": "Phương trình bậc nhất một ẩn",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Phương trình bậc nhất một ẩn",
+      "Quy chuyển đổi và giải phương trình"
+     ],
+     "givens": [
+      "Phương trình $2x = 6$"
+     ],
+     "unknowns": [
+      "Nghiệm $x$"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ chia cả hai vế của phương trình cho hệ số của $x$ để tìm giá trị của $x$.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để tìm $x$ trong phương trình $2x = 6$, bạn cần làm gì với hệ số $2$ ở vế trái?",
+      "cue": "Chia cả hai vế cho $2$",
+      "explanation": "Mình chia cả hai vế cho $2$ để cô lập ẩn $x$.",
+      "math": "x = \\frac{6}{2}",
+      "stepId": "step1",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Giải phương trình",
+      "explanation": "Chia cả hai vế của phương trình cho $2$, ta được giá trị của $x$.",
+      "math": "x = \\frac{6}{2} \\Rightarrow x = 3",
+      "reason": "Quy tắc chuyển vế và nhân chia số",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Phương trình có nghiệm duy nhất là x = 3.",
+     "math": "x = 3"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "2*x = 6"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x",
+         "value": "3"
+        }
+       ]
+      ],
+      "expected": null
+     }
+    ],
+    "figure": null
+   }
+  }
+ ]
+}
