@@ -97,6 +97,23 @@ class Builder {
     this.changed.push(`(${name})`);
   }
 
+  /** Hidden foot of the perpendicular from p to line xy (a point on the incircle for its radius). */
+  hiddenFoot(p: string, x: string, y: string): string {
+    return this.helper(`T_${p}${x}${y}`, "foot", [p, x, y]);
+  }
+
+  /** Makes sure a circle centered at `center` exists (labelled), passing through `through`. */
+  circleWithCenter(center: string, through: string, label: string): void {
+    const existing = this.circles.find((c) => c.center === center);
+    if (existing) {
+      if (!existing.label) existing.label = label;
+      return;
+    }
+    const id = this.uniqueId(`c_${center}`);
+    this.circles.push({ id, center, through, radius: null, style: "given", label });
+    this.changed.push(label);
+  }
+
   /** "(O)", "đường tròn (O)", "đường tròn đường kính AI", "đường tròn ngoại tiếp tam giác ABC". */
   circleRef(phrase: string): string | null {
     const p = phrase.trim();
@@ -222,6 +239,21 @@ function defineTangency(b: Builder, text: string): void {
   }
 }
 
+/**
+ * "tam giác ABC … có đường tròn nội tiếp (I)" → I = incenter(A, B, C), circle (I) tangent to BC;
+ * "… đường tròn ngoại tiếp (O)" → O = circumcenter(A, B, C), circle (O) through A.
+ */
+function defineTriangleCircles(b: Builder, text: string): void {
+  const re = new RegExp(`tam giác\\s+(${PT})(${PT})(${PT})[^.;]{0,80}?đường tròn\\s+(nội|ngoại)\\s+tiếp(?:\\s+tam giác\\s+${PT}${PT}${PT})?\\s*\\(\\s*(${PT})\\s*\\)`, "giu");
+  for (const m of text.matchAll(re)) {
+    const [a, bb, c, kind, center] = [m[1]!, m[2]!, m[3]!, m[4]!.toLowerCase(), m[5]!];
+    if (![a, bb, c].every((x) => b.has(x))) continue;
+    b.define(center, kind === "nội" ? "incenter" : "circumcenter", [a, bb, c]);
+    if (!b.has(center)) continue;
+    b.circleWithCenter(center, kind === "nội" ? b.hiddenFoot(center, bb, c) : a, `(${center})`);
+  }
+}
+
 /** "I, D, J, H cùng thuộc một đường tròn (S)" → (S) is the circle through the first three (its definition wins). */
 function defineNamedCircles(b: Builder, text: string): void {
   const re = new RegExp(
@@ -241,6 +273,7 @@ export function constructNamedPoints(lesson: ModelLesson): { lesson: ModelLesson
   // Two passes: a definition may use a point defined later in the text.
   for (let pass = 0; pass < 2; pass++) {
     for (const text of texts) {
+      defineTriangleCircles(b, text);
       defineTangency(b, text);
       defineNamedCircles(b, text);
       for (const sentence of text.split(/[.;]\s|\n/)) {

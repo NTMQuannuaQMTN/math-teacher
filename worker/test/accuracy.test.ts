@@ -45,3 +45,27 @@ describe("result parts", () => {
     expect(resultParts("Giải phương trình $x^2 = 4$.")).toEqual([]);
   });
 });
+
+describe("value checks: relations and malformed checks", () => {
+  it("evaluates a relation against true/false", () => {
+    const rel = (s: string, e: string) => runAnswerCheck({ kind: "value", statements: [s], assignments: [], expected: e });
+    expect(rel("((16+4)**4 - 16**4) % 576 == 0", "true").passed).toBe(true);
+    expect(rel("((2+4)**4 - 2**4) % 3 == 0", "true").passed).toBe(false);
+    expect(rel("((2+4)**4 - 2**4) % 3 == 0", "false").passed).toBe(true);
+  });
+
+  it("marks a check with unknown letters as malformed, not as a wrong answer", () => {
+    const r = runAnswerCheck({ kind: "value", statements: ["(-2a - 3/2) + (-2b - 3/2)"], assignments: [], expected: "-7" });
+    expect(r.passed).toBe(false);
+    expect(r.malformed).toBe(true);
+  });
+});
+
+describe("multi-value checks", () => {
+  it("compares several quantities pairwise, accepting a decimal comma", () => {
+    const c = (expected: string) => runAnswerCheck({ kind: "value", statements: ["sqrt(6^2 + 8^2)", "6*8/10"], assignments: [], expected });
+    expect(c("10 4,8").passed).toBe(true);
+    expect(c("10; 4.8").passed).toBe(true);
+    expect(c("10 5").passed).toBe(false);
+  });
+});

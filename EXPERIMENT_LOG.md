@@ -52,9 +52,20 @@ Budget rule for this sprint: **$0 of paid API** (Gemini disabled by the user; no
 - Latency: 72–211 s per attempt normally. Three attempts ran at ~2 tok/s (11–15 min each) while
   the machine was on battery at 23–25% in Low Power Mode; that is a machine artefact, not the model.
 
-## EXP-003: Qwen3-4B, non-thinking, grammar schema + repair, full validation split
+## EXP-003: Qwen3-4B, non-thinking, grammar schema + repair, validation split (partial: 7/11)
 
-- Status: running (results appended below when done).
+- Date: 2026-09-30 · Qwen3-4B Q4_K_M · llama.cpp · grammar schema with limits + repair · solver-v1.7 · max 2 attempts
+- Stopped after 7 items: the harness's background time limit stopped the model server. The 7
+  completed items are cached. ch-4 failed on a Node `fetch` 300 s header timeout (a harness bug,
+  fixed with an undici dispatcher without that timeout).
+- Results (7): **0 PASS**, 2 PARTIAL (ch-1: r + s = −3/2 correct but no check; ch-5: a proof with
+  nothing to measure), 5 FAIL (ch-2, ch-3, a3, a7 wrong answers; ch-4 error). **0 CRITICAL.**
+- Pattern: almost every lesson was `not_checkable`, because the 4B model rarely writes answerChecks.
+  Its wrong answers were therefore never presented as verified. The verifier behaves safely, but the
+  model is not useful: 4 of 5 checkable answers were wrong, including the easy radical
+  simplification (a3) and the Vieta problem (a7).
+- Speed (plugged in): ~38 tok/s generation, 100–390 s per problem (2 attempts).
+- **Conclusion: Qwen3-4B is not viable as the solver**, even for difficulty 1–2 items.
 
 ---
 

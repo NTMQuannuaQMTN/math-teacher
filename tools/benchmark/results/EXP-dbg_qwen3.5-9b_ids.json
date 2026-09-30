@@ -1,0 +1,406 @@
+{
+ "summary": {
+  "exp": "EXP-dbg",
+  "system": "qwen3.5-9b",
+  "split": "validation",
+  "promptVersion": "solver-v1.7",
+  "dataset": "v1",
+  "n": 2,
+  "pass": 0,
+  "partial": 2,
+  "fail": 0,
+  "critical": 0,
+  "answerAccuracy": 1,
+  "gradableN": 2,
+  "verifiedRate": 0,
+  "errors": 0,
+  "meanModelSeconds": 1950.25,
+  "meanInputTokens": 6325,
+  "meanOutputTokens": 5936,
+  "cache": {
+   "hits": 3,
+   "misses": 0,
+   "modelMs": 3900517
+  },
+  "createdAt": "2026-09-30T10:12:52.915Z"
+ },
+ "rows": [
+  {
+   "id": "ch-1",
+   "topic": "algebra",
+   "difficulty": 3,
+   "format": "multi_part",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 2690,
+   "outputTokens": 3635,
+   "modelSeconds": 3313.9,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [
+    "(-2a - 3/2) + (-2b - 3/2)"
+   ],
+   "answer": "a) Bất đẳng thức (a-3/2)²+(b-3/2)² > 9/2 được chứng minh. b) Tổng r+s = -2(a+b) - 3. Tuy nhiên, cần kiểm tra lại đề bài hoặc giả thiết. Nếu đề bài đúng, có thể ",
+   "lesson": {
+    "analysis": {
+     "statement": "Bài toán cho hai phương trình bậc hai tham số $x^{2}+2ax+3b=0$ và $x^{2}+2bx+3a=0$. Biết mỗi phương trình đều có hai nghiệm phân biệt. Phần a) yêu cầu chứng minh bất đẳng thức $riangleleft(a-rac{3}{2})^{2}+(b-rac{3}{2})^{2}>rac{9}{2} riangleq$. Phần b) giả sử hai phương trình có đúng một nghiệm chung, gọi $r, s$ là các nghiệm còn lại, chứng minh tổng $r+s$ là hằng số (không phụ thuộc vào $a, b$).",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "phuong_trinh_bac_hai",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Điều kiện có hai nghiệm phân biệt của phương trình bậc hai ($\\Delta > 0$)",
+      "HỆ thức Vi-ét giữa nghiệm và hệ số",
+      "Tính chất của nghiệm chung",
+      "Chứng minh bất đẳng thức"
+     ],
+     "givens": [
+      "PT1: $x^2 + 2ax + 3b = 0$",
+      "PT2: $x^2 + 2bx + 3a = 0$",
+      "PT1 có 2 nghiệm phân biệt",
+      "PT2 có 2 nghiệm phân biệt"
+     ],
+     "unknowns": [
+      "Chứng minh bất đẳng thức ở a)",
+      "Tính giá trị của $r+s$ ở b)"
+     ],
+     "constraints": [
+      "$a, b$ là tham số thực"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Phần a) sẽ sử dụng điều kiện $riangle > 0$ của từng phương trình để tìm mối liên hệ giữa $a$ và $b$, sau đó chuyển đổi bất đẳng thức cần chứng minh về dạng $(a-b)^2$ hoặc $|a-b|$ để so sánh. Phần b) sử dụng hệ thức Vi-ét để biểu diễn tổng các nghiệm, từ đó tìm ra giá trị của nghiệm chung và mối quan hệ giữa $a, b$ để chứng minh $r+s$ là hằng số.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 2,
+      "question": "Để chứng minh bất đẳng thức ở câu a), trước hết bạn cần nhớ lại điều kiện để phương trình bậc hai $Ax^2+Bx+C=0$ có hai nghiệm phân biệt là gì?",
+      "cue": "Công thức $\\Delta = B^2 - 4AC > 0$",
+      "explanation": "Áp dụng điều kiện này cho cả hai phương trình đã cho, ta sẽ có hai bất phương trình chứa $a$ và $b$. Khi đó, ta có thể biến đổi chúng thành các bất đẳng thức liên quan đến $|a-b|$.",
+      "math": "\\Delta_1 = 4a^2 - 12b > 0 \\Rightarrow a^2 > 3b",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 3,
+      "question": "Từ hai bất đẳng thức $a^2 > 3b$ và $b^2 > 3a$ vừa tìm được, bạn thử trừ vế theo vế hoặc cộng chúng lại xem sao? Mục tiêu là tìm ra một bất đẳng thức chỉ chứa $|a-b|$.",
+      "cue": "Lời khuyên: Thử trừ hai bất đẳng thức này cho nhau có thể giúp loại bỏ một số số hạng.",
+      "explanation": "Ta có thể chứng minh được rằng từ $a^2 > 3b$ và $b^2 > 3a$, suy ra $|a-b| > \\frac{3}{2}$.",
+      "math": "|a-b| > \\frac{3}{2}",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Bây giờ hãy quay lại bất đẳng thức cần chứng minh: $(a-\\frac{3}{2})^{2}+(b-\\frac{3}{2})^{2}$. Hãy khai triển nó và thay thế $|a-b|$ bằng giá trị nhỏ hơn $\\frac{3}{2}$ mà bạn vừa tìm được ở bước trước.",
+      "cue": "Mở rộng bình phương của tổng hai số: $(x-y)^2 = x^2 - 2xy + y^2$.",
+      "explanation": "Sau khi khai triển và thay thế, bạn sẽ thấy vế trái lớn hơn vế phải, từ đó hoàn thành phần a).",
+      "math": "(a-\\frac{3}{2})^{2}+(b-\\frac{3}{2})^{2} = \\frac{1}{2}(a-b)^2 + \\frac{1}{2}(a+b)^2 - \\frac{9}{2}",
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Chuyển sang câu b). Gọi $x_1, x_2$ là nghiệm của PT1 và $x_3, x_4$ là nghiệm của PT2. Biết có một nghiệm chung, gọi là $k$. Làm sao để tìm được giá trị của $k$?",
+      "cue": "Vì $k$ là nghiệm chung, nên nó phải thỏa mãn cả hai phương trình. Trừ hai phương trình cho nhau sẽ giúp bạn tìm $k$.",
+      "explanation": "Khi trừ hai phương trình, các số hạng bậc 2 sẽ triệt tiêu, để lại một phương trình bậc nhất theo $k$ (với điều kiện $a \\neq b$). Từ đó tìm được $k$ theo $a, b$.",
+      "math": "2(a-b)x + 3(b-a) = 0 \\Rightarrow x = \\frac{3}{2}",
+      "stepId": "step4",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 2,
+      "question": "Gọi $r$ là nghiệm còn lại của PT1. Bạn hãy dùng hệ thức Vi-ét cho PT1 để biểu diễn tổng các nghiệm $x_1 + x_2$ theo $a$. Sau đó thay $x_1 = k = \\frac{3}{2}$ vào để tìm $r$.",
+      "cue": "Hệ thức Vi-ét: $x_1 + x_2 = -\\frac{B}{A}$.",
+      "explanation": "Từ đó biểu diễn $r$ theo $a$. Tương tự, biểu diễn $s$ theo $b$. Cuối cùng cộng $r+s$ lại và chứng minh kết quả là hằng số.",
+      "math": "r + \\frac{3}{2} = -2a \\Rightarrow r = -2a - \\frac{3}{2}",
+      "stepId": "step5",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Lập điều kiện có hai nghiệm phân biệt",
+      "explanation": "Để phương trình bậc hai $Ax^2+Bx+C=0$ có hai nghiệm phân biệt, ta cần $riangle = B^2 - 4AC > 0$. Áp dụng cho PT1: $x^2+2ax+3b=0$, ta có $A=1, B=2a, C=3b$.",
+      "math": "\\triangle_1 = (2a)^2 - 4(1)(3b) = 4a^2 - 12b > 0 \\Rightarrow a^2 > 3b",
+      "reason": "Điều kiện có hai nghiệm phân biệt",
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Lập điều kiện cho phương trình thứ hai",
+      "explanation": "Tương tự, áp dụng cho PT2: $x^2+2bx+3a=0$, ta có $A=1, B=2b, C=3a$.",
+      "math": "\\triangle_2 = (2b)^2 - 4(1)(3a) = 4b^2 - 12a > 0 \\Rightarrow b^2 > 3a",
+      "reason": "Điều kiện có hai nghiệm phân biệt",
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Chứng minh $|a-b| > \\frac{3}{2}$",
+      "explanation": "Ta có hệ: $a^2 - 3b > 0$ và $b^2 - 3a > 0$. Cộng hai bất đẳng thức này lại: $(a^2 - 3b) + (b^2 - 3a) > 0 \\Rightarrow a^2 + b^2 - 3a - 3b > 0$. Biến đổi vế trái: $(a^2 - 3a) + (b^2 - 3b) > 0$. Tuy nhiên, cách hay hơn là xét hiệu: $(a^2 - 3b) - (b^2 - 3a) = (a-b)(a+b) + 3(a-b) = (a-b)(a+b+3)$. Cách tiếp cận chuẩn hơn: Từ $a^2 > 3b$ và $b^2 > 3a$, nếu $a=b$ thì $a^2 > 3a \\Rightarrow a > 3$ (mâu thuẫn nếu xét tổng). Ta chứng minh trực tiếp: $(a-b)^2 = a^2 + b^2 - 2ab$. Ta có $a^2 > 3b$ và $b^2 > 3a$. Nhân vế trái $a^2 > 3b$ với $a$ (giả sử $a>0$) không chắc chắn. Hãy dùng cách: $a^2 - 3b > 0$ và $b^2 - 3a > 0$. Cộng lại: $a^2+b^2-3(a+b)>0$. Thêm và bớt $\\frac{9}{2}$: $(a^2-3a+\\frac{9}{4}) + (b^2-3b+\\frac{9}{4}) > \\frac{9}{2} \\Rightarrow (a-\\frac{3}{2})^2 + (b-\\frac{3}{2})^2 > \\frac{9}{2}$. Đây chính là điều cần chứng minh ở câu a! Vậy ta đã chứng minh xong câu a bằng cách cộng hai bất đẳng thức $riangle > 0$ lại.",
+      "math": "(a^2-3b) + (b^2-3a) > 0 \\Rightarrow (a^2-3a+\\frac{9}{4}) + (b^2-3b+\\frac{9}{4}) > \\frac{9}{2}",
+      "reason": "Biến đổi đại số và bổ sung hằng số",
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Tìm nghiệm chung của hai phương trình",
+      "explanation": "Gọi $x$ là nghiệm chung của hai phương trình. Khi đó $x$ thỏa mãn cả hai phương trình. Trừ phương trình (1) cho phương trình (2): $(x^2+2ax+3b) - (x^2+2bx+3a) = 0$. Các số hạng $x^2$ triệt tiêu.",
+      "math": "2ax - 2bx + 3b - 3a = 0 \\Rightarrow 2(a-b)x - 3(a-b) = 0",
+      "reason": "Tính chất nghiệm chung",
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Biểu diễn nghiệm chung và các nghiệm còn lại",
+      "explanation": "Vì hai phương trình có hai nghiệm phân biệt nên $a \\neq b$ (nếu $a=b$ thì hai phương trình giống nhau, có 2 nghiệm chung hoặc vô nghiệm chung tùy $a$, nhưng đề bài nói có đúng một nghiệm chung nên $a \\neq b$). Chia cả hai vế cho $2(a-b)$: $x - \\frac{3}{2} = 0 \\Rightarrow x = \\frac{3}{2}$. Vậy nghiệm chung là $k = \\frac{3}{2}$. Gọi $r$ là nghiệm còn lại của PT1. Theo hệ thức Vi-ét của PT1: Tổng hai nghiệm = $-2a$. Do đó $k + r = -2a \\Rightarrow \\frac{3}{2} + r = -2a \\Rightarrow r = -2a - \\frac{3}{2}$. Tương tự, gọi $s$ là nghiệm còn lại của PT2. Theo Vi-ét của PT2: Tổng hai nghiệm = $-2b$. Do đó $k + s = -2b \\Rightarrow \\frac{3}{2} + s = -2b \\Rightarrow s = -2b - \\frac{3}{2}$.",
+      "math": "r = -2a - \\frac{3}{2}, \\quad s = -2b - \\frac{3}{2}",
+      "reason": "Hệ thức Vi-ét",
+      "geometryActions": []
+     },
+     {
+      "id": "step6",
+      "title": "Tính tổng $r+s$ và kết luận",
+      "explanation": "Tính tổng $r+s$: $r+s = (-2a - \\frac{3}{2}) + (-2b - \\frac{3}{2}) = -2(a+b) - 3$. Wait, cần kiểm tra lại điều kiện $a, b$. Đề bài yêu cầu chứng minh $r+s$ không phụ thuộc vào $a, b$. Có vẻ như ở bước 5 mình tính tổng $r+s$ phụ thuộc vào $a+b$. Hãy xem lại đề. Đề bài:",
+      "math": "r+s = -2(a+b) - 3",
+      "reason": "Tổng các biểu thức",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) Bất đẳng thức $(a-\\frac{3}{2})^{2}+(b-\\frac{3}{2})^{2} > \\frac{9}{2}$ được chứng minh. b) Tổng $r+s = -2(a+b) - 3$. Tuy nhiên, cần kiểm tra lại đề bài hoặc giả thiết. Nếu đề bài đúng, có thể có thêm điều kiện $a+b = -\\frac{3}{2}$ hoặc tương tự để $r+s$ là hằng số. Dựa trên các bước tính toán thông thường, $r+s$ phụ thuộc vào $a+b$. Nếu đề bài yêu cầu chứng minh $r+s$ là hằng số, có thể có sự nhầm lẫn trong đề hoặc thiếu điều kiện $a+b = \\text{const}$. Nhưng nếu chỉ tính toán thuần túy, $r+s = -2(a+b)-3$.",
+     "math": "r+s = -2(a+b) - 3"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(-2a - 3/2) + (-2b - 3/2)"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "a",
+         "value": "1"
+        },
+        {
+         "variable": "b",
+         "value": "2"
+        }
+       ]
+      ],
+      "expected": "-7"
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "ch-3",
+   "topic": "number_theory",
+   "difficulty": 3,
+   "format": "multi_part",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 9960,
+   "outputTokens": 8237,
+   "modelSeconds": 586.6,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [
+    "((16+4)**4 - 16**4) % 16 == 0"
+   ],
+   "answer": "a) f(n) chia hết cho 16 với mọi n ∈ ℕ^*. b) n có dạng 3k+1 (k ∈ ℕ₀). c) n có dạng 18k+16 (k ∈ ℕ₀). a) ∀ n ∈ ℕ^*, 16 | f(n); b) n ≡ 1 3; c) n ≡ 16 18 a) $f(n)$ c",
+   "lesson": {
+    "analysis": {
+     "statement": "Bài toán yêu cầu làm việc với hàm số $f(n)=(n+4)^{4}-n^{4}$ với $n$ là số nguyên dương. Phần a) chứng minh $f(n)$ chia hết cho $16$ với mọi $n$. Phần b) tìm $n$ để $f(n)$ chia hết cho $3$. Phần c) tìm $n$ để $f(n)$ chia hết cho $576$ ($24^2$).",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "chứng minh chia hết và tìm số nguyên thỏa mãn điều kiện chia hết",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hằng đẳng thức $(a+b)^4$",
+      "tính chất chia hết",
+      "đồng dư modulo 3, 4, 9, 16"
+     ],
+     "givens": [
+      "$n \\in \\mathbb{N}^*$",
+      "$f(n) = (n+4)^4 - n^4$"
+     ],
+     "unknowns": [
+      "chứng minh $16 \\mid f(n)$",
+      "tập hợp các $n$ để $3 \\mid f(n)$",
+      "tập hợp các $n$ để $576 \\mid f(n)$"
+     ],
+     "constraints": [
+      "$n$ là số nguyên dương"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Ta sẽ khai triển biểu thức $f(n)$ bằng hằng đẳng thức $(a+b)^4$ để thu gọn nó thành dạng tổng các số hạng. Sau đó, ta sẽ phân tích tính chia hết của từng số hạng dựa trên tính chất chia hết của $n$ và các hằng số liên quan. Phần c) sẽ kết hợp kết quả từ a) và b) cùng với việc phân tích điều kiện chia hết cho 9.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để chứng minh $f(n)$ chia hết cho $16$ hoặc tìm điều kiện chia hết, bước đầu tiên mình cần làm là khai triển biểu thức $(n+4)^4$ ra sao?",
+      "cue": "hằng đẳng thức $(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4$",
+      "explanation": "Khi khai triển, ta sẽ có các số hạng chứa $n$. Hãy viết ra biểu thức khai triển đầy đủ của $(n+4)^4$.",
+      "math": null,
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Sau khi khai triển và cộng với $-n^4$, biểu thức $f(n)$ sẽ còn lại những số hạng nào?",
+      "cue": "Các số hạng chứa $n^3, n^2, n$ và số hạng tự do.",
+      "explanation": "Hãy viết lại $f(n)$ dưới dạng tổng của các hệ số nhân với lũy thừa của $n$. Ví dụ: $An^3 + Bn^2 + Cn + D$.",
+      "math": null,
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Mình hãy xét từng số hạng trong biểu thức vừa tìm được. Số hạng nào chắc chắn chia hết cho $16$?",
+      "cue": "Chú ý đến hệ số của $n^2$ và $n$, cũng như lũy thừa của $4$.",
+      "explanation": "Hãy kiểm tra xem hệ số của $n^2$ và $n$ có phải là bội của $16$ không? Hệ số của $n^3$ thì sao? Số hạng tự do thì sao?",
+      "math": null,
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 2,
+      "question": "Tiếp theo, để tìm $n$ sao cho $f(n)$ chia hết cho $3$, mình có cần khai triển lại không hay có cách nào nhanh hơn?",
+      "cue": "Tính chất chia hết: $a \\equiv b \\pmod m \\Rightarrow a^k \\equiv b^k \\pmod m$.",
+      "explanation": "Thay vì khai triển dài dòng, ta có thể xét $n$ theo modulo $3$. Nếu $n$ chia hết cho $3$ thì sao? Nếu $n$ dư $1$ hoặc $2$ thì sao?",
+      "math": null,
+      "stepId": "step4",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 3,
+      "question": "Cuối cùng, để $f(n)$ chia hết cho $576$, mình cần kết hợp điều kiện từ phần a) và phần b). $576 = 16 \\times 36$. Vậy $n$ cần thỏa mãn gì?",
+      "cue": "$f(n)$ phải chia hết cho $16$ (đã chứng minh) và phải chia hết cho $36$ (mà $36 = 4 \\times 9$).",
+      "explanation": "Ta đã biết $f(n)$ luôn chia hết cho $16$. Vậy điều kiện còn lại là $f(n)$ phải chia hết cho $36$. Vì $16$ và $36$ có ước chung là $4$, ta cần xét kỹ hơn. Hãy thử tính $f(n)/4$ hoặc xét trực tiếp $f(n) \\pmod{576}$ với các giá trị $n$ thỏa mãn điều kiện ở phần b).",
+      "math": null,
+      "stepId": "step5",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Khai triển biểu thức $f(n)$",
+      "explanation": "Mình dùng hằng đẳng thức $(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4$ với $a=n$ và $b=4$.",
+      "math": "(n+4)^4 = n^4 + 4n^3\\cdot 4 + 6n^2\\cdot 4^2 + 4n\\cdot 4^3 + 4^4",
+      "reason": "Hằng đẳng thức $(a+b)^4$",
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Thu gọn $f(n)$",
+      "explanation": "Thay biểu thức khai triển vào $f(n)$ và rút gọn các lũy thừa của $4$ ($4^2=16, 4^3=64, 4^4=256$).",
+      "math": "f(n) = (n^4 + 16n^3 + 96n^2 + 256n + 256) - n^4 = 16n^3 + 96n^2 + 256n + 256",
+      "reason": "Tính chất cộng trừ số hạng",
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Chứng minh $f(n)$ chia hết cho $16$",
+      "explanation": "Ta thấy mọi hệ số trong biểu thức $16n^3 + 96n^2 + 256n + 256$ đều là bội của $16$. Cụ thể: $16n^3$ chia hết cho $16$, $96n^2 = 16\\cdot 6n^2$ chia hết cho $16$, $256n = 16\\cdot 16n$ chia hết cho $16$, $256 = 16\\cdot 16$ chia hết cho $16$. Do tổng các số hạng chia hết cho $16$ nên tổng cũng chia hết cho $16$.",
+      "math": "f(n) = 16(n^3 + 6n^2 + 16n + 16)",
+      "reason": "Tính chất chia hết: nếu $a|b$ và $a|c$ thì $a|(b+c)$",
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Tìm $n$ để $f(n)$ chia hết cho $3$",
+      "explanation": "Ta xét $f(n) = 16n^3 + 96n^2 + 256n + 256 \\pmod 3$. Ta có $16 \\equiv 1 \\pmod 3$, $96 \\equiv 0 \\pmod 3$, $256 = 3\\cdot 85 + 1 \\equiv 1 \\pmod 3$. Vậy $f(n) \\equiv 1\\cdot n^3 + 0 + 1\\cdot n + 1 \\equiv n^3 + n + 1 \\pmod 3$. Ta xét các trường hợp của $n \\pmod 3$: nếu $n \\equiv 0$ thì $0+0+1=1$ (không chia hết); nếu $n \\equiv 1$ thì $1+1+1=3 \\equiv 0$ (chia hết); nếu $n \\equiv 2$ thì $8+2+1=11 \\equiv 2$ (không chia hết). Vậy $n$ phải có dạng $3k+1$.",
+      "math": "n \\equiv 1 \\pmod 3",
+      "reason": "Đồng dư modulo 3",
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Tìm $n$ để $f(n)$ chia hết cho $576$",
+      "explanation": "Ta cần $f(n)$ chia hết cho $576 = 16 \\times 36$. Vì $f(n)$ luôn chia hết cho $16$ (đã chứng minh ở bước 3), điều kiện này tương đương với việc $f(n)/16$ chia hết cho $36$. Ta viết lại $f(n) = 16(n^3 + 6n^2 + 16n + 16)$. Gọi $g(n) = n^3 + 6n^2 + 16n + 16$. Ta cần $g(n)$ chia hết cho $36$. Điều này tương đương $g(n) \\equiv 0 \\pmod 4$ và $g(n) \\equiv 0 \\pmod 9$.\n\n1. Xét $g(n) \\pmod 4$: $g(n) = n^3 + 6n^2 + 16n + 16 \\equiv n^3 + 2n^2 \\pmod 4$. Nếu $n$ lẻ, $n^3$ lẻ, $2n^2$ chẵn, tổng lẻ (không chia hết). Nếu $n$ chẵn, $n^3$ chẵn, $2n^2$ chẵn, tổng chẵn. Vậy $n$ phải chẵn.\n2. Xét $g(n) \\pmod 9$: $g(n) = n^3 + 6n^2 + 16n + 16 \\equiv n^3 + 6n^2 + 7n + 7 \\pmod 9$. Ta thử các giá trị $n \\in \\{0, 1, ..., 8\\}$:\n   - $n=0: 7$\n   - $n=1: 1+6+7+7=21\\equiv 3$\n   - $n=2: 8+24+14+7=53\\equiv 8$\n   - $n=3: 27+54+21+7=109\\equiv 1$\n   - $n=4: 64+96+28+7=195\\equiv 6$\n   - $n=5: 125+150+35+7=317\\equiv 1$\n   - $n=6: 216+216+42+7=481\\equiv 4$\n   - $n=7: 343+294+49+7=693\\equiv 0$ (Thỏa mãn)\n   - $n=8: 512+384+56+7=959\\equiv 7$\n   Vậy $n \\equiv 7 \\pmod 9$.\n\nKết hợp hai điều kiện: $n$ chẵn và $n \\equiv 7 \\pmod 9$. Vì $n$ chẵn nên $n$ là bội của 2. Vì $n \\equiv 7 \\pmod 9$, ta có $n = 9k + 7$. Để $9k+7$ chẵn, $9k$ phải lẻ, suy ra $k$ lẻ. Đặt $k = 2m+1$, ta có $n = 9(2m+1) + 7 = 18m + 9 + 7 = 18m + 16$. Vậy $n$ có dạng $18k + 16$ với $k \\in \\mathbb{N}_0$.",
+      "math": "n = 18k + 16, k \\in \\mathbb{N}_0",
+      "reason": "Hệ phương trình đồng dư",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) $f(n)$ chia hết cho $16$ với mọi $n \\in \\mathbb{N}^*$. b) $n$ có dạng $3k+1$ ($k \\in \\mathbb{N}_0$). c) $n$ có dạng $18k+16$ ($k \\in \\mathbb{N}_0$).",
+     "math": "a) \\forall n \\in \\mathbb{N}^*, 16 \\mid f(n); \\quad b) n \\equiv 1 \\pmod 3; \\quad c) n \\equiv 16 \\pmod{18}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "((16+4)**4 - 16**4) % 16 == 0",
+       "((16+4)**4 - 16**4) % 576 == 0",
+       "((34+4)**4 - 34**4) % 576 == 0",
+       "((1+4)**4 - 1**4) % 3 == 0",
+       "((4+4)**4 - 4**4) % 3 != 0"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "n",
+         "value": "16"
+        }
+       ],
+       [
+        {
+         "variable": "n",
+         "value": "34"
+        }
+       ],
+       [
+        {
+         "variable": "n",
+         "value": "1"
+        }
+       ],
+       [
+        {
+         "variable": "n",
+         "value": "4"
+        }
+       ]
+      ],
+      "expected": "true"
+     },
+     {
+      "kind": "integers",
+      "statements": [
+       "((n+4)**4 - n**4) % 3 == 0",
+       "n >= 1"
+      ],
+      "assignments": [],
+      "expected": "n % 3 == 1"
+     }
+    ],
+    "figure": null
+   }
+  }
+ ]
+}

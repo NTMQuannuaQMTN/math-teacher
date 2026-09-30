@@ -208,5 +208,35 @@
     ],
     "expected": "Bài 1. Giải phương trình: x² − 7x + 10 = 0 Bài 2. Cho tam giác ABC vuông tại A, AB = 6 cm, AC = 8 cm. a) Tính BC. b) Kẻ đường cao AH. Tính AH. Bài 3. Một người đi xe đạp từ A đến B với vận tốc 12 km/h. Lúc về đi với vận tốc 15 km/h nên hết ít hơn 30 phút. Tính quãng đường AB.",
     "expectProblems": 3
+  },
+  {
+    "id": "18-exam-kc-p1",
+    "file": "18-exam-kc-p1.jpg",
+    "category": "exam",
+    "language": "vi",
+    "style": "print",
+    "note": "Real exam page (PTNK 2026, rendered from the official PDF at 1600 px). Expected text = the benchmark dataset's hand transcription (tools/benchmark/dataset), converted with mathTextToPlain; header and instructions are not problems and are excluded.",
+    "expected": "Câu 1. Biểu thức 3x/(√(x-3)+2)+(2x²)/(x-5) xác định khi và chỉ khi: A. x ≥ 3 và x ≠ 5 B. x > 3 và x ≠ 5 C. x ≥ 3 D. x > 5 Câu 2. Trong mặt phẳng tọa độ Oxy, đường thẳng d: y=2x+1 và đường parabol P: y=x²-2 cắt nhau tại hai điểm phân biệt có tọa độ là (x₁; y₁) và (x₂; y₂). Giá trị của x₁+x₂-x₁x₂ là: A. 3 B. 4 C. 5 D. 6 Câu 3. Các đoạn thẳng BF và CE cắt nhau tại A. Biết AB = BC, AE = AF và ∠AEF = 50°. Gọi H là trực tâm của tam giác ABC. Góc ∠AHC bằng: A. 100° B. 120° C. 140° D. 160° Câu 4. Biết phương trình x + 2/x = 4 có hai nghiệm phân biệt x₁, x₂. Giá trị của (x₁)/(x₂) + (x₂)/(x₁) là: A. 2 B. 4 C. 6 D. 8 Câu 5. Cho AB, AC là các tiếp tuyến của đường tròn (O) với B, C là các tiếp điểm. Biết OA = 2 và bán kính đường tròn (O) bằng 1. Độ dài BC là: A. 3/2 B. 3/(√2) C. √3 D. 2 Câu 6. Trong mặt phẳng tọa độ Oxy, hai đường thẳng phân biệt d₁: y=(9-m²)x+5 và d₂: y=5x+m+7 song song với nhau khi và chỉ khi giá trị của m là: A. m=2 hoặc m=-2 B. m=2 C. m=-2 D. Không có giá trị thỏa mãn Câu 7. Cho các số thực a, b, c, d, e thỏa mãn: a+b+2=b+c-1=c+d+3=d+e-2=e+a+1. Số lớn nhất trong các số đã cho là: A. b B. c C. d D. e Câu 8. Cho phương trình x²-2mx-3m²+4m-1=0. Số giá trị của tham số m để phương trình có đúng một nghiệm là: A. 1 giá trị B. 2 giá trị C. 3 giá trị D. Không có giá trị thỏa mãn Câu 9. Cho tứ giác ABCD có ∠DAB=∠ABC=90°, ∠BCD=45° và AB = AD = 1. Gọi M, N tương ứng là trung điểm AB, CD. Độ dài của MN là: A. √2 B. 3/2 C. 1 D. √3",
+    "expectProblems": 9
+  },
+  {
+    "id": "19-exam-kc-p2",
+    "file": "19-exam-kc-p2.jpg",
+    "category": "exam",
+    "language": "vi",
+    "style": "print",
+    "note": "Real exam page (PTNK 2026, rendered from the official PDF at 1600 px). Expected text = the benchmark dataset's hand transcription (tools/benchmark/dataset), converted with mathTextToPlain; header and instructions are not problems and are excluded.",
+    "expected": "Câu 10. Trong một năm nọ, người ta nhận thấy tháng 8 có đúng 4 ngày thứ tư và 4 ngày chủ nhật. Hỏi ngày 31 tháng 8 là thứ mấy? A. Thứ tư B. Thứ năm C. Thứ sáu D. Thứ bảy Câu 1. a) Chứng minh rằng √(4-2√3)=2/(√3+1). b) Chứng minh rằng √(3+√(7+4√3)+√(4-2√3))=2/(√3-1). Câu 2. Cho các phương trình: x²-mx+1=0 (1) và x²-x+m=0 (2), trong đó m là tham số. a) Tìm m để phương trình (1) vô nghiệm và phương trình (2) có hai nghiệm phân biệt. b) Tìm m để cả hai phương trình đều có hai nghiệm phân biệt và tổng bình phương của hai nghiệm bằng nhau. Câu 3. Cho hình bình hành ABCD có I là giao điểm của các đường chéo AC và BD. Gọi K là một điểm trên cạnh AB. Lấy các điểm M trên cạnh AD và N trên cạnh BC sao cho KM song song với BD và KN song song với AC. a) Chứng minh rằng I là trung điểm của MN. b) Tìm tỉ số AK/AB sao cho diện tích tam giác KMN bằng 2/9 diện tích hình bình hành ABCD. Câu 4. Trường X tổ chức một trại hè quốc tế, trong đó bao gồm một số học sinh Việt Nam và một số học sinh nước ngoài tham gia. Ban tổ chức muốn ghép cặp một số học sinh để giao lưu văn hóa, mỗi cặp gồm đúng 1 học sinh Việt Nam và 1 học sinh nước ngoài, và mỗi học sinh chỉ được tham gia tối đa một cặp. Ngày đầu tiên có đúng 1/2 số học sinh Việt Nam và 2/3 số học sinh nước ngoài được ghép cặp thành công. a) Tính tỉ lệ tổng số học sinh được ghép cặp trên tổng số học sinh tham gia trại hè sau ngày đầu. b) Ngày thứ hai có thêm 6 học sinh nữa được ghép thành 3 cặp mới. Khi đó, tỉ lệ tổng số học sinh được ghép cặp trên tổng số học sinh tham gia trại hè bằng 5/7. Tìm số học sinh Việt Nam và số học sinh nước ngoài tham gia trại hè ban đầu. Câu 5. Cho tam giác ABC nhọn (AB < AC) có H là trực tâm, E, F lần lượt là chân các đường cao kẻ từ B, C. Gọi I, J tương ứng là trung điểm của BC, AH; gọi R, S tương ứng là giao điểm của EF với AH, BC. a) Chứng minh rằng IE = IF = BC/2 và JE = JF = AH/2. b) Chứng minh rằng tứ giác IEJF nội tiếp và R là trực tâm của tam giác SIJ. c) Gọi (J) là đường tròn đường kính AH. Đường thẳng IR cắt (J) tại M và N. Chứng minh rằng IM · IN = (BC²)/4 và SM, SN tiếp xúc với (J).",
+    "expectProblems": 6
+  },
+  {
+    "id": "20-exam-chuyen",
+    "file": "20-exam-chuyen.jpg",
+    "category": "exam",
+    "language": "vi",
+    "style": "print",
+    "note": "Real exam page (PTNK 2026, rendered from the official PDF at 1600 px). Expected text = the benchmark dataset's hand transcription (tools/benchmark/dataset), converted with mathTextToPlain; header and instructions are not problems and are excluded.",
+    "expected": "Câu 1. Cho các phương trình x²+2ax+3b=0 và x²+2bx+3a=0, trong đó a và b là hai tham số. Biết các phương trình này đều có hai nghiệm phân biệt. a) Chứng minh (a-3/2)²+(b-3/2)²>9/2. b) Giả sử hai phương trình trên có đúng một nghiệm chung. Gọi r là nghiệm còn lại của phương trình thứ nhất và s là nghiệm còn lại của phương trình thứ hai. Chứng minh r+s không phụ thuộc vào a và b. Câu 2. Cho tứ giác lồi ABCD có các cạnh BC = 7, DA = 1, và hai đường chéo AC và BD vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác ABCD. Câu 3. Với mỗi số nguyên dương n, đặt f(n)=(n+4)⁴-n⁴. a) Chứng minh f(n) chia hết cho 16 với mọi n. b) Tìm n để f(n) chia hết cho 3. c) Tìm n để f(n) chia hết cho 24². Câu 4. Cho tam giác ABC nhọn (AB < AC) có đường tròn nội tiếp (I) tiếp xúc với các cạnh BC, CA, AB lần lượt tại D, E, F. Gọi J là trung điểm của EF và K là giao điểm của AD với EF. a) Chứng minh ID² = IJ · IA và tam giác IJD đồng dạng với tam giác IDA. b) Gọi H là giao điểm khác I của IK với đường tròn đường kính AI. Chứng minh ∠IHD = ∠IDK và các điểm I, D, J, H cùng thuộc một đường tròn (S). c) Gọi L và G lần lượt là các giao điểm khác D của DJ và (S) với (I). Chứng minh A, G, D thẳng hàng và các đường thẳng AL, GJ cắt nhau trên (I). Câu 5. Cho bảng ô vuông kích thước 3 × 3 gồm 3 hàng, 3 cột và 2 đường chéo. Một số nguyên dương n được gọi là số tốt nếu ta tìm được 9 số nguyên dương phân biệt và điền vào các ô của bảng, mỗi ô một số, sao cho tổng các số trên mỗi hàng, mỗi cột và mỗi đường chéo đều bằng n. a) Hãy chỉ ra một cách điền các số nguyên dương từ 1 đến 9 vào các ô của bảng sao cho tổng các số trên mỗi hàng, mỗi cột và mỗi đường chéo đều bằng nhau. b) Chứng minh nếu n ≥ 15 và n chia hết cho 3 thì n là số tốt. c) Chứng minh nếu n là số tốt thì n ≥ 15 và n chia hết cho 3.",
+    "expectProblems": 5
   }
 ]

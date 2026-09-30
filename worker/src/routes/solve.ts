@@ -11,6 +11,7 @@ import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
 import { GeminiJsonModel } from "../solver/geminiModel";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
+import { LocalJsonModel } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
@@ -88,6 +89,15 @@ function createModels(env: Env, request: Request, problemText: string): { model:
         ? new OpenAiJsonModel(key, choice.fallback, choice.fallbackEffort || "medium")
         : undefined;
     return { model, fallback };
+  }
+
+  if (provider === "local") {
+    // Open model behind an OpenAI-compatible server; no API cost when self-hosted.
+    const model = new LocalJsonModel(env.LOCAL_LLM_URL || "http://127.0.0.1:8080", env.LOCAL_SOLVER_MODEL || "local", {
+      apiKey: env.LOCAL_LLM_API_KEY,
+      thinking: false,
+    });
+    return { model };
   }
 
   if (provider === "mock" && isDevelopment(env)) {

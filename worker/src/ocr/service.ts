@@ -3,6 +3,7 @@ import { intVar, isDevelopment, type Env } from "../env";
 import { ApiError } from "../http";
 import { AnthropicOcrProvider } from "./anthropic";
 import { GeminiOcrProvider } from "./gemini";
+import { LocalOcrProvider } from "./local";
 import { isAbort } from "./httpErrors";
 import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
@@ -45,6 +46,8 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
     case "openai":
       if (!env.OPENAI_API_KEY) break;
       return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");
+    case "local":
+      return new LocalOcrProvider(env.LOCAL_LLM_URL || "http://127.0.0.1:8080", env.LOCAL_OCR_MODEL || "local", env.LOCAL_LLM_API_KEY);
     case "anthropic":
       if (!env.ANTHROPIC_API_KEY) break;
       return new AnthropicOcrProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL || "claude-opus-5");

@@ -11,7 +11,7 @@
  * Used by the Worker before a lesson is stored/shown, and to build precise
  * feedback when asking the model to correct itself.
  */
-import { checkClaims, statementParts } from "./claims";
+import { checkClaims, statementGivens, statementParts } from "./claims";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
 import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, type Env } from "./expr";
@@ -94,6 +94,8 @@ export interface StructureReport {
   warnings: string[];
   /** Problems that make only the figure unusable. */
   figureErrors: string[];
+  /** Worth a retry, but say nothing about the maths (e.g. a geometry lesson without a figure). */
+  retryHints?: string[];
 }
 
 function validateFigureStructure(figure: Figure, report: StructureReport): void {
@@ -151,12 +153,13 @@ function validateFigureStructure(figure: Figure, report: StructureReport): void 
  * mapped through aliases, unknown ones dropped, marks pruned.
  */
 export function checkLessonStructure(lesson: ModelLesson): { lesson: ModelLesson; report: StructureReport } {
-  const report: StructureReport = { errors: [], warnings: [], figureErrors: [] };
+  const report: StructureReport = { errors: [], warnings: [], figureErrors: [], retryHints: [] };
   const solvable = lesson.analysis.status === "solvable";
 
   if (solvable) {
     if (lesson.analysis.topic === "geometry" && !lesson.figure) {
-      report.errors.push("a geometry problem needs a figure (figure is null)");
+      // A presentation gap, not a mathematical error: retry for it, but it doesn't un-verify correct answers.
+      report.retryHints!.push("a geometry problem needs a figure (figure is null)");
     }
     if (lesson.steps.length === 0) report.errors.push("a solvable problem needs at least one step");
     if (lesson.hints.length === 0) report.errors.push("a solvable problem needs at least one hint");
@@ -237,6 +240,8 @@ export interface CheckOutcome {
   label: string;
   passed: boolean;
   detail: string;
+  /** The check itself couldn't be evaluated (unknown variable, bad syntax): it says nothing about the answer. */
+  malformed?: boolean;
 }
 
 /**
@@ -365,13 +370,27 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
       }
       case "value": {
         if (!check.expected) return { label, passed: false, detail: "missing expected value" };
+        // "((16+4)^4 - 16^4) % 576 == 0" expecting "true": a relation, evaluated as one.
+        if (/^\s*(true|false|đúng|sai)\s*$/i.test(check.expected)) {
+          const holds = evalCondition(check.statements[0]!, {});
+          if (holds === null) return { label, passed: false, detail: "could not evaluate the relation", malformed: true };
+          const want = /^\s*(true|đúng)\s*$/i.test(check.expected);
+          return { label, passed: holds === want, detail: `relation is ${holds}, expected ${want}` };
+        }
+        // Several quantities in one check ("sqrt(6^2+8^2)", "6*8/10" expecting "10 4,8"): compare pairwise.
+        const expectedValues = check.expected.trim().split(/\s*;\s*|\s+/).filter(Boolean);
+        if (check.statements.length > 1 && expectedValues.length === check.statements.length) {
+          const pairs = check.statements.map((st, i) => [evalValue(st), evalValue(expectedValues[i]!)] as const);
+          const bad = pairs.findIndex(([x, y]) => !approxEqual(x, y, 1e-6));
+          return { label, passed: bad < 0, detail: bad < 0 ? `${pairs.length} values match` : `${check.statements[bad]} = ${pairs[bad]![0]}, expected ${pairs[bad]![1]}` };
+        }
         const a = evalValue(check.statements[0]!);
         const b = evalValue(check.expected);
         return { label, passed: approxEqual(a, b, 1e-6), detail: `${a} vs ${b}` };
       }
     }
   } catch (err) {
-    return { label, passed: false, detail: `could not evaluate: ${(err as Error).message}` };
+    return { label, passed: false, detail: `could not evaluate: ${(err as Error).message}`, malformed: true };
   }
 }
 
@@ -523,11 +542,11 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
   let lesson = repaired;
-  const feedback = [...report.errors];
+  const feedback = [...report.errors, ...(report.retryHints ?? [])];
   const checks: Verification["checks"] = [];
   let answerLevelPassed = 0;
   let answerLevelFailed = 0;
-  let figureIssue: string | null = null;
+  let figureIssue: string | null = report.retryHints?.length ? "figure_missing" : null;
   /** Proof parts whose claim couldn't be measured on the figure (e.g. it uses a point the figure lacks). */
   const proofUncovered: string[] = [];
   let resolved: ResolvedFigure | null = null;
@@ -555,7 +574,11 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     }
     if (figureProblems.length === 0 && resolved) {
       const figure = lesson.figure!;
-      for (const check of figure.checks) {
+      // The model's own checks plus the facts the statement's shape words imply ("vuông tại A", "cân", "đều"…).
+      const implied = statementGivens(lesson.analysis.statement, new Set(figure.points.map((p) => p.id))).filter(
+        (g) => !figure.checks.some((c) => c.kind === g.kind && c.refs.join() === g.refs.join()),
+      );
+      for (const check of [...figure.checks, ...implied]) {
         const measurable = check.role === "given" || figure.scale === "exact" || SHAPE_INDEPENDENT.has(check.kind);
         if (!measurable) continue;
         const result = evaluateFigureCheck(check, resolved);
@@ -648,6 +671,13 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
       continue;
     }
     const outcome = runAnswerCheck(check);
+    if (outcome.malformed) {
+      // A check we can't evaluate proves nothing either way: ask for a proper one, don't count it as a failure.
+      feedback.push(
+        `answer check "${outcome.label}" can't be evaluated (${outcome.detail}). Checks must be self-contained arithmetic (no unknown letters in "value" checks; substitute concrete values), or use the "integers"/"substitute" kinds.`,
+      );
+      continue;
+    }
     checks.push({ label: outcome.label, passed: outcome.passed });
     if (outcome.passed) answerChecksPassed++;
     if (outcome.passed) answerLevelPassed++;

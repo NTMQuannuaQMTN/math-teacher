@@ -9,6 +9,11 @@ export interface Env {
   OPENAI_MODEL: string;
   ANTHROPIC_MODEL: string;
   GEMINI_OCR_MODEL?: string;
+  /** OpenAI-compatible server for OCR_PROVIDER / SOLVER_PROVIDER = "local" (llama.cpp, vLLM, a hosted open model…). */
+  LOCAL_LLM_URL?: string;
+  LOCAL_LLM_API_KEY?: string;
+  LOCAL_OCR_MODEL?: string;
+  LOCAL_SOLVER_MODEL?: string;
   OCR_TIMEOUT_MS: string;
   OCR_LIMIT_PER_DEVICE_PER_HOUR: string;
   OCR_LIMIT_PER_IP_PER_HOUR: string;

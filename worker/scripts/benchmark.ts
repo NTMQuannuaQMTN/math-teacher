@@ -13,6 +13,7 @@
  * The test split must be asked for explicitly and is logged as a TEST RUN.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { Agent, setGlobalDispatcher } from "undici";
 import type { ModelLesson, Verification } from "../../shared/src/solution";
 import { verifyLesson } from "../../shared/src/verify";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
@@ -23,6 +24,9 @@ import { grade, answerText, type BenchItem, type Grade } from "./lib/grade";
 import { CachedModel, OfflineMiss } from "./lib/modelCache";
 
 const ROOT = new URL("../../tools/benchmark/", import.meta.url).pathname;
+// Node's fetch aborts if response headers take > 300 s; a local model writing a long proof can take
+// longer (production Workers have no such limit). The per-problem AbortSignal still bounds each solve.
+setGlobalDispatcher(new Agent({ headersTimeout: 0, bodyTimeout: 0 }));
 const args = process.argv.slice(2);
 const system = args[0] ?? "";
 const flag = (name: string) => {
@@ -39,8 +43,10 @@ const LOCAL: Record<string, { file: string; thinking: boolean }> = {
   "qwen3-4b-think": { file: "qwen3-4b-q4_k_m", thinking: true },
   "qwen3-8b": { file: "qwen3-8b-q4_k_m", thinking: false },
   "qwen3-8b-think": { file: "qwen3-8b-q4_k_m", thinking: true },
-  "qwen3-14b": { file: "qwen3-14b-q4_k_m", thinking: false },
-  "qwen3-14b-think": { file: "qwen3-14b-q4_k_m", thinking: true },
+  "qwen3.5-9b": { file: "qwen3.5-9b-q4_k_m", thinking: false },
+  "qwen3.5-9b-think": { file: "qwen3.5-9b-q4_k_m", thinking: true },
+  "gemma-4-12b": { file: "gemma-4-12b-it-q4_k_m", thinking: false },
+  "gemma-4-12b-think": { file: "gemma-4-12b-it-q4_k_m", thinking: true },
 };
 if (!LOCAL[system] && system !== "stored-gemini") {
   console.error(`unknown system "${system}". Known: ${[...Object.keys(LOCAL), "stored-gemini"].join(", ")}`);

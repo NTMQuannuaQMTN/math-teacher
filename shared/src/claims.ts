@@ -224,3 +224,43 @@ export function checkClaims(
 
 /** Exposed for tests. */
 export const _internal = { normalize, claimsIn, angleDeg };
+
+/**
+ * Given facts implied by shape words in the statement: "tam giác ABC vuông tại A" → AB ⊥ AC,
+ * "cân tại A" → AB = AC, "đều" → all sides equal, and the special quadrilaterals. A figure that
+ * violates one of these is drawn wrong, so claims measured on it would be meaningless.
+ */
+export function statementGivens(statement: string, pointIds: Set<string>): FigureCheck[] {
+  const text = statement.replace(/\$/g, " ").replace(/\\triangle\s*|\\Delta\s*|Δ\s*|△\s*/g, "tam giác ").replace(/\s+/g, " ");
+  const out: FigureCheck[] = [];
+  const given = (kind: FigureCheck["kind"], refs: string[]) => {
+    if (refs.every((r) => pointIds.has(r))) out.push({ kind, refs, value: null, role: "given" });
+  };
+  // "tam giác ABC vuông tại A", "tam giác ABC nhọn (AB < AC) cân tại A": at most 40 non-sentence characters
+  // between the name and the shape word (bounded, so no catastrophic backtracking).
+  const tri = new RegExp(`tam giác (${P})(${P})(${P})[^.;:]{0,40}?(?<!\\p{L})(vuông cân|vuông|cân|đều)(?!\\p{L})(?:\\s+tại\\s+(${P}))?`, "giu");
+  for (const m of text.matchAll(tri)) {
+    const [a, b, c] = [m[1]!, m[2]!, m[3]!];
+    const kind = m[4]!.toLowerCase();
+    const at = m[5] ?? (kind === "đều" ? null : a);
+    if (kind === "đều") {
+      given("equal_length", [a, b, b, c]);
+      given("equal_length", [b, c, c, a]);
+      continue;
+    }
+    if (!at || ![a, b, c].includes(at)) continue;
+    const [o1, o2] = [a, b, c].filter((v) => v !== at) as [string, string];
+    if (kind === "vuông" || kind === "vuông cân") given("perpendicular", [at, o1, at, o2]);
+    if (kind === "cân" || kind === "vuông cân") given("equal_length", [at, o1, at, o2]);
+  }
+  const quad = new RegExp(`(hình vuông|hình chữ nhật|hình bình hành|hình thoi) (${P})(${P})(${P})(${P})`, "giu");
+  for (const m of text.matchAll(quad)) {
+    const [a, b, c, d] = [m[2]!, m[3]!, m[4]!, m[5]!];
+    given("parallel", [a, b, d, c]);
+    given("parallel", [a, d, b, c]);
+    const shape = m[1]!.toLowerCase();
+    if (shape === "hình vuông" || shape === "hình chữ nhật") given("perpendicular", [a, b, a, d]);
+    if (shape === "hình vuông" || shape === "hình thoi") given("equal_length", [a, b, a, d]);
+  }
+  return out;
+}
