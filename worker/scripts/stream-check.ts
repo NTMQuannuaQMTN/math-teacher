@@ -1,8 +1,9 @@
 /**
  * End-to-end check of streaming + live progress against a real OpenAI-compatible server (default: the
  * local llama.cpp server). Prints each progress event and the final verification.
- *   npx tsx scripts/stream-check.ts ["problem text"] [--url http://127.0.0.1:8080] [--model name]
+ *   npx tsx scripts/stream-check.ts ["problem text"] [--url http://127.0.0.1:8080] [--model name] [--effort minimal]
  */
+import { readFileSync } from "node:fs";
 import { Agent, setGlobalDispatcher } from "undici";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { LocalJsonModel } from "../src/solver/localModel";
@@ -12,7 +13,13 @@ setGlobalDispatcher(new Agent({ headersTimeout: 0, bodyTimeout: 0 }));
 const args = process.argv.slice(2);
 const flag = (n: string) => (args.includes(`--${n}`) ? args[args.indexOf(`--${n}`) + 1] : undefined);
 const problem = args[0] && !args[0].startsWith("--") ? args[0] : "Giải phương trình $x^2 - 5x + 6 = 0$.";
-const model = new LocalJsonModel(flag("url") ?? "http://127.0.0.1:8080", flag("model") ?? "local", { thinking: false });
+const url = flag("url") ?? "http://127.0.0.1:8080";
+// A hosted URL needs the key from worker/.dev.vars (LOCAL_LLM_API_KEY); it is never printed.
+const apiKey = /127\.0\.0\.1|localhost/.test(url)
+  ? undefined
+  : readFileSync(new URL("../.dev.vars", import.meta.url), "utf8").split("\n").find((l) => l.startsWith("LOCAL_LLM_API_KEY="))?.slice(18).trim();
+const effort = flag("effort") as "none" | "minimal" | "low" | undefined;
+const model = new LocalJsonModel(url, flag("model") ?? "local", { thinking: false, apiKey, reasoningEffort: effort });
 const started = performance.now();
 let last = "";
 const r = await solveProblem(model, VN_GRADE_9, problem, {

@@ -1,4 +1,12 @@
-# AI solver: current state (2026-09-30)
+# AI solver: current state (2026-09-30, updated 2026-10-01)
+
+> **Update 2026-10-01 (solver speed and grade-level sprint):** the local/web configuration now uses
+> PaddleOCR-VL (local) for OCR and Nemotron-3-Super (OpenRouter free tier) for solving. Added:
+> adaptive reasoning per problem tier, effort step-down on truncated/empty output, a 150 s retry budget,
+> deterministic repairs (hint ids, malformed figure checks, pre-substituted checks), a Grade 9 checker,
+> Vietnamese language hygiene, live progress (streaming), quota handling and an optional failover model.
+> See docs/SOLVER_PERFORMANCE_AUDIT.md and docs/FINAL_OPTIMIZATION_REPORT.md. The sections below describe
+> the architecture as of 2026-09-30 and remain accurate for the Gemini/OpenAI configuration.
 
 This describes the system as it is on branch `sprint/model-research` at the start of the cost/accuracy
 sprint. Measured numbers come from this repo's logs and benchmark files. When a number is only an
