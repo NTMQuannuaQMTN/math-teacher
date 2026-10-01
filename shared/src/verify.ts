@@ -538,7 +538,22 @@ export function resultParts(statement: string): string[] {
   return out;
 }
 
+/**
+ * A complete lesson (steps, hints, final answer) labelled "ambiguous"/"unsupported"/"not_a_problem"
+ * contradicts itself: hosted models fill the status enum carelessly (e.g. "ambiguous" with the reason
+ * "the problem is clear"). Treat it as solvable so it is shown and fully verified; a stated reason is
+ * kept as an interpretation note so a genuine concern stays visible.
+ */
+export function reconcileStatus(lesson: ModelLesson): ModelLesson {
+  const a = lesson.analysis;
+  if (a.status === "solvable" || lesson.steps.length === 0 || lesson.hints.length === 0 || !lesson.finalAnswer.text.trim()) return lesson;
+  const reason = a.statusReason?.trim();
+  const notes = reason && a.interpretationNotes.length < 5 ? [...a.interpretationNotes, reason] : a.interpretationNotes;
+  return { ...lesson, analysis: { ...a, status: "solvable", statusReason: null, interpretationNotes: notes } };
+}
+
 export function verifyLesson(input: ModelLesson): LessonVerification {
+  input = reconcileStatus(input);
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
   let lesson = repaired;

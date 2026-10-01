@@ -240,6 +240,22 @@ describe("verifyLesson", () => {
     expect(verifyLesson(isoscelesLesson({ figure: null })).feedback.join(" ")).toMatch(/needs a figure/);
   });
 
+  it("treats a complete lesson labelled ambiguous as solvable and verifies it", () => {
+    const lesson = isoscelesLesson();
+    lesson.analysis = { ...lesson.analysis, status: "ambiguous", statusReason: "The problem statement is clear; no ambiguity detected." };
+    const result = verifyLesson(lesson);
+    expect(result.lesson.analysis.status).toBe("solvable");
+    expect(result.lesson.analysis.statusReason).toBeNull();
+    expect(result.lesson.analysis.interpretationNotes).toContain("The problem statement is clear; no ambiguity detected.");
+    expect(result.verification.status).toBe("verified");
+  });
+
+  it("keeps an ambiguous status when there is no lesson", () => {
+    const lesson = isoscelesLesson({ steps: [], hints: [] });
+    lesson.analysis = { ...lesson.analysis, status: "ambiguous", statusReason: "The value of AB is unreadable." };
+    expect(verifyLesson(lesson).lesson.analysis.status).toBe("ambiguous");
+  });
+
   it("the fixture matches the schema", () => {
     expect(ModelLessonSchema.safeParse(isoscelesLesson()).success).toBe(true);
   });
