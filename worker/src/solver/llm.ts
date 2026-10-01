@@ -25,6 +25,11 @@ export interface JsonModel {
     schemaName: string;
     signal: AbortSignal;
     onUsage?: (usage: Usage) => void;
+    /**
+     * Streaming providers call this as output arrives: the answer text so far and how many characters
+     * of hidden reasoning have been produced. Used only for progress display.
+     */
+    onDelta?: (contentSoFar: string, reasoningChars: number) => void;
   }): Promise<string>;
 }
 

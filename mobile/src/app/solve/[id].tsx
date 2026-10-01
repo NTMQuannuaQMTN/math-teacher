@@ -2,11 +2,12 @@ import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { Solution } from "@shared/solution";
+import type { Solution, SolveProgress } from "@shared/solution";
 import { api } from "@/api/client";
 import { AppError, errorMessage, isAbort } from "@/api/errors";
 import { Button } from "@/components/Button";
 import { LessonView } from "@/components/lesson/LessonView";
+import { RichText } from "@/components/lesson/RichText";
 import { StateView } from "@/components/StateView";
 import { useStrings } from "@/i18n";
 import { confirmAsync } from "@/lib/confirm";
@@ -19,6 +20,8 @@ type Phase = { kind: "loading" } | { kind: "ready"; solution: Solution } | { kin
 const POLL_MS = 2000;
 const MAX_POLLS = 80;
 const STAGE_MS = 7000;
+/** While the solve request is open, read the server's live progress this often. */
+const PROGRESS_MS = 2500;
 
 export default function SolveScreen() {
   const params = useLocalSearchParams<{ id: string; q?: string }>();
@@ -35,6 +38,7 @@ export default function SolveScreen() {
   const header = <Stack.Screen options={{ title: questionLabel ? `${s.solve.title} · ${questionLabel}` : s.solve.title }} />;
   const [phase, setPhase] = useState<Phase>(cached?.status === "ready" ? { kind: "ready", solution: cached } : { kind: "loading" });
   const [stage, setStage] = useState(0);
+  const [live, setLive] = useState<SolveProgress | null>(null);
   const [progress, setProgressState] = useState<LessonProgress>(() => (id ? lessonStore.getProgress(key) : { revealed: [], unlocked: 1, showSolution: false }));
   const controller = useRef<AbortController | null>(null);
 
@@ -56,6 +60,21 @@ export default function SolveScreen() {
       const abort = new AbortController();
       controller.current = abort;
       setStage(0);
+      setLive(null);
+      // Live progress: poll the pending solution while the solve request is open (older servers send none).
+      let open = true;
+      void (async () => {
+        while (open && !abort.signal.aborted) {
+          await new Promise((r) => setTimeout(r, PROGRESS_MS));
+          if (!open || abort.signal.aborted) return;
+          try {
+            const pending = await api.getSolution(id, questionId, abort.signal);
+            if (open && pending.status === "pending" && pending.progress) setLive(pending.progress);
+          } catch {
+            // Not created yet, or offline for a moment: keep the generic progress text.
+          }
+        }
+      })();
       try {
         let solution: Solution;
         try {
@@ -76,6 +95,8 @@ export default function SolveScreen() {
       } catch (err) {
         if (isAbort(err) || abort.signal.aborted) return;
         setPhase({ kind: "error", error: err });
+      } finally {
+        open = false;
       }
     },
     [id, key, questionId],
@@ -107,13 +128,27 @@ export default function SolveScreen() {
   // --- loading / error ---------------------------------------------------------
   if (phase.kind === "loading") {
     const stages = s.solve.stages;
-    const label = stage < stages.length ? stages[stage]! : s.solve.slow;
+    const fallbackLabel = stage < stages.length ? stages[stage]! : s.solve.slow;
+    const label = !live
+      ? fallbackLabel
+      : live.stage === "writing"
+        ? s.solve.live.writing(live.stepsWritten)
+        : s.solve.live[live.stage];
+    const elapsed = live ? `${Math.floor(live.elapsedMs / 60_000)}:${String(Math.floor(live.elapsedMs / 1000) % 60).padStart(2, "0")}` : null;
     return (
       <SafeAreaView style={[styles.flex, styles.center]} edges={["bottom"]}>
         {header}
         <View style={styles.loading} accessibilityLiveRegion="polite">
           <ActivityIndicator size="large" color={colors.primary} />
           <Text style={[typography.subtitle, styles.centerText, { color: colors.text }]}>{label}</Text>
+          {elapsed ? <Text style={[typography.caption, styles.centerText, { color: colors.textMuted }]}>{elapsed}</Text> : null}
+          {live && (live.problemKind || live.strategy) ? (
+            <View style={[styles.draft, { borderColor: colors.border }]} testID="solve-draft">
+              <Text style={[typography.label, { color: colors.textMuted }]}>{s.solve.live.draft.toUpperCase()}</Text>
+              {live.problemKind ? <RichText text={`${s.solve.problemKind}: ${live.problemKind}`} style={[typography.body, { color: colors.text }]} /> : null}
+              {live.strategy ? <RichText text={`${s.solve.strategy}: ${live.strategy}`} style={[typography.body, { color: colors.text }]} /> : null}
+            </View>
+          ) : null}
           <Text style={[typography.caption, styles.centerText, { color: colors.textMuted }]}>{s.solve.leaveNote}</Text>
         </View>
       </SafeAreaView>
@@ -155,4 +190,5 @@ const styles = StyleSheet.create({
   center: { alignItems: "center", justifyContent: "center" },
   centerText: { textAlign: "center" },
   loading: { alignItems: "center", gap: spacing.md, paddingHorizontal: spacing.xl, maxWidth: 420 },
+  draft: { alignSelf: "stretch", gap: spacing.xs, borderWidth: 1, borderStyle: "dashed", borderRadius: 12, padding: spacing.md },
 });

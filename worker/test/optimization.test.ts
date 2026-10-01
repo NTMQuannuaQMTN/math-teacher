@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { gradeLevelFeedback, gradeLevelReport, isSimpleProblem } from "../../shared/src/gradeLevel";
+import { previewPartialLesson } from "../../shared/src/progressPreview";
+import type { SolveProgress } from "../../shared/src/solution";
 import type { ModelLesson } from "../../shared/src/solution";
 import { normalizeFigureChecks, verifyLesson } from "../../shared/src/verify";
 import { OcrFailure } from "../src/ocr/provider";
@@ -125,6 +127,30 @@ describe("method-selection policy in the prompt", () => {
     expect(prompt).toMatch(/Method selection/);
     expect(prompt).toMatch(/complete the square/);
     expect(prompt).toMatch(/Never mention an advanced alternative/);
+  });
+});
+
+describe("answer checks the model already substituted", () => {
+  const quadratic = (statements: string[], assignments: { variable: string; value: string }[][] = []) => {
+    const l = inequalityLesson();
+    l.analysis = { ...l.analysis, statement: "Giải phương trình $x^2 - 5x + 6 = 0$." };
+    l.finalAnswer = { text: "$x_1 = 2$, $x_2 = 3$", math: "x_1 = 2, x_2 = 3" };
+    l.answerChecks = [{ kind: "substitute", statements, assignments, expected: null }];
+    return verifyLesson(l);
+  };
+
+  it("accepts numeric relations that do the arithmetic (2^2 - 5*2 + 6 = 0)", () => {
+    const r = quadratic(["2^2 - 5*2 + 6 = 0", "3^2 - 5*3 + 6 = 0"]);
+    expect(r.feedback.join(" ")).not.toMatch(/only restates/);
+    expect(r.verification.status).toBe("verified");
+  });
+
+  it("still catches a wrong root written that way", () => {
+    expect(quadratic(["2^2 - 5*2 + 6 = 0", "4^2 - 5*4 + 6 = 0"]).verification.status).toBe("unverified");
+  });
+
+  it("still rejects a bare restatement", () => {
+    expect(quadratic(["2 = 2"]).feedback.join(" ")).toMatch(/only restates/);
   });
 });
 
@@ -280,5 +306,91 @@ describe("pipeline retries", () => {
     const model = scripted(["{not json", JSON.stringify(inequalityLesson())]);
     const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal });
     expect(r.verification.status).toBe("verified");
+  });
+});
+
+// --- streaming and live progress ------------------------------------------------
+
+function sse(events: string[]): Response {
+  const body = events.map((e) => `${e}\n\n`).join("");
+  return new Response(new ReadableStream({ start(c) { for (let i = 0; i < body.length; i += 37) c.enqueue(new TextEncoder().encode(body.slice(i, i + 37))); c.close(); } }));
+}
+const chunk = (delta: Record<string, string>, finish: string | null = null) => `data: ${JSON.stringify({ choices: [{ delta, finish_reason: finish }] })}`;
+
+describe("streaming hosted responses", () => {
+  it("assembles the same result as a non-streamed call and reports progress", async () => {
+    const sent: Record<string, unknown>[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (_u: string, init: { body: string }) => {
+      sent.push(JSON.parse(init.body));
+      return sse([
+        ": OPENROUTER PROCESSING",
+        chunk({ reasoning: "Let me think." }),
+        chunk({ content: '{"analysis":{"subtopic":"bất phương trình",' }),
+        chunk({ content: '"x":1}}' }, "stop"),
+        `data: ${JSON.stringify({ choices: [], usage: { prompt_tokens: 5, completion_tokens: 9, completion_tokens_details: { reasoning_tokens: 4 } } })}`,
+        "data: [DONE]",
+      ]);
+    }));
+    const deltas: [string, number][] = [];
+    let usage: { output: number; reasoning: number } | null = null;
+    const text = await hosted("low").complete({
+      messages: [{ role: "user", content: "x" }],
+      schema: {},
+      schemaName: "lesson",
+      signal: new AbortController().signal,
+      onDelta: (c, r) => deltas.push([c, r]),
+      onUsage: (u) => (usage = u),
+    });
+    expect(text).toBe('{"analysis":{"subtopic":"bất phương trình","x":1}}');
+    expect(sent[0]!.stream).toBe(true);
+    expect(deltas.at(-1)![0]).toBe(text);
+    expect(deltas[0]![1]).toBeGreaterThan(0);
+    expect(usage).toMatchObject({ output: 9, reasoning: 4 });
+  });
+
+  it("detects truncation in a stream and steps the reasoning down", async () => {
+    const efforts: string[] = [];
+    const replies = [sse([chunk({ content: '{"a":' }, "length"), "data: [DONE]"]), sse([chunk({ content: '{"a":1}' }, "stop"), "data: [DONE]"])];
+    vi.stubGlobal("fetch", vi.fn(async (_u: string, init: { body: string }) => {
+      efforts.push(JSON.parse(init.body).reasoning.effort);
+      return replies.shift()!;
+    }));
+    const text = await hosted("low").complete({ messages: [], schema: {}, schemaName: "lesson", signal: new AbortController().signal, onDelta: () => undefined });
+    expect(text).toBe('{"a":1}');
+    expect(efforts).toEqual(["low", "minimal"]);
+  });
+});
+
+describe("partial lesson preview", () => {
+  it("hides an English or undiacritized problem type for a Vietnamese problem", () => {
+    expect(previewPartialLesson('{"analysis":{"subtopic":"quadratic_equations",', { vietnamese: true }).problemKind).toBeNull();
+    expect(previewPartialLesson('{"analysis":{"subtopic":"phương trình bậc hai",', { vietnamese: true }).problemKind).toBe("phương trình bậc hai");
+  });
+
+  it("shows only complete fields", () => {
+    expect(previewPartialLesson('{"analysis":{"subtopic":"bất phương trình bậc nh')).toEqual({ problemKind: null, strategy: null, stepsWritten: 0 });
+    const partial = '{"analysis":{"subtopic":"bất phương trình"},"strategy":"Rút gọn \\"hai\\" vế.","hints":[],"steps":[{"id":"s1","geometryActions":[]},{"id":"s2","geometryActions":[{"action":"highlight","targets":["A"]}]},{"id":"s3","title":"Chia';
+    expect(previewPartialLesson(partial)).toEqual({ problemKind: "bất phương trình", strategy: 'Rút gọn "hai" vế.', stepsWritten: 2 });
+  });
+});
+
+describe("pipeline progress", () => {
+  it("reports thinking → writing → checking, with the draft plan", async () => {
+    const lesson = JSON.stringify(inequalityLesson());
+    const model: JsonModel = {
+      name: "local",
+      model: "streaming",
+      async complete({ onDelta }) {
+        onDelta?.("", 100);
+        onDelta?.(lesson.slice(0, lesson.indexOf('"hints"')), 100);
+        onDelta?.(lesson, 100);
+        return lesson;
+      },
+    };
+    const seen: SolveProgress[] = [];
+    await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal, onProgress: (p) => seen.push(p) });
+    expect(seen.map((p) => p.stage)).toEqual(["thinking", "thinking", "writing", "writing", "checking"]);
+    expect(seen[2]).toMatchObject({ problemKind: "bất phương trình bậc nhất một ẩn", strategy: expect.stringMatching(/^Rút gọn/) });
+    expect(seen.at(-1)!.stepsWritten).toBe(3);
   });
 });

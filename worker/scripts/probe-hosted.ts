@@ -16,7 +16,7 @@ globalThis.fetch = async (u: any, init: any) => {
   console.log(JSON.stringify({ status: r.status, secs: (Date.now() - t) / 1000, finish: c?.finish_reason, native: c?.native_finish_reason, provider: j?.provider, usage: j?.usage, contentLen: c?.message?.content?.length ?? null, reasoningLen: (c?.message?.reasoning ?? c?.message?.reasoning_content ?? "").length, contentHead: (c?.message?.content ?? "").slice(0, 120), err: j?.error?.message?.slice(0, 200) }));
   return r;
 };
-const m = new LocalJsonModel("https://openrouter.ai/api", "nvidia/nemotron-3-super-120b-a12b:free", { apiKey: key, reasoningEffort: (process.env.REASONING as "minimal" | "low" | undefined) ?? "low" });
+const m = new LocalJsonModel("https://openrouter.ai/api", "nvidia/nemotron-3-super-120b-a12b:free", { apiKey: key, reasoningEffort: (process.env.REASONING as "none" | "minimal" | "low" | undefined) ?? "low" });
 try {
   const r = await solveProblem(m, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(15 * 60_000), maxAttempts: 2 });
   console.log("RESULT", r.verification.status, r.attempts);

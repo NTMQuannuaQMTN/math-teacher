@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { ModelLessonSchema, type ModelLesson, type Verification } from "../../../shared/src/solution";
-import { normalizeProblemText, wrapBareLatex } from "../../../shared/src/mathText";
+import { previewPartialLesson } from "../../../shared/src/progressPreview";
+import { ModelLessonSchema, type ModelLesson, type SolveProgress, type Verification } from "../../../shared/src/solution";
+import { containsVietnamese, normalizeProblemText, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
 import { OcrFailure } from "../ocr/provider";
 import type { Curriculum } from "./curriculum";
@@ -52,6 +53,8 @@ export interface SolveOptions {
    * invalid structure), not to improve presentation (default 150 s; the student is waiting).
    */
   retryBudgetMs?: number;
+  /** Live progress for the app (stage, steps written, an unverified draft of the plan). */
+  onProgress?: (progress: SolveProgress) => void;
   /** Debugging: receives each attempt's raw model output. */
   onRaw?: (attempt: number, text: string) => void;
 }
@@ -333,11 +336,13 @@ export async function solveProblem(
     onRaw,
     retryPolicy = model.name === "local" ? "serious" : "any",
     retryBudgetMs = 150_000,
+    onProgress,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
   let withFigure = looksLikeGeometry(problemText);
+  const vietnamese = containsVietnamese(problemText);
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
     { role: "user", content: buildUserMessage(problemText) },
@@ -357,6 +362,9 @@ export async function solveProblem(
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const current = attempt > 1 && fallback ? fallback : model;
     if (current !== model) log(`escalating to ${current.model}`);
+    const report = (stage: SolveProgress["stage"], partial = "") =>
+      onProgress?.({ stage, attempt, elapsedMs: Date.now() - started, ...previewPartialLesson(partial, { vietnamese }) });
+    report(attempt === 1 ? "thinking" : "retrying");
     let text: string;
     try {
       text = await current.complete({
@@ -371,6 +379,7 @@ export async function solveProblem(
         schemaName: "lesson",
         signal,
         onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
+        onDelta: onProgress ? (partial) => report(partial ? "writing" : attempt === 1 ? "thinking" : "retrying", partial) : undefined,
       });
     } catch (err) {
       // A temporary failure on the first attempt (truncated output, rate limit, timeout) gets the next
@@ -384,6 +393,7 @@ export async function solveProblem(
       return { lesson: best.lesson, verification: best.verification, ...finish(attempt, best.model) };
     }
     onRaw?.(attempt, text);
+    report("checking", text);
     const parsed = parseLesson(text);
     let problems: string[];
 

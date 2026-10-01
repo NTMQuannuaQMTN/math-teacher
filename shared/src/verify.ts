@@ -270,10 +270,11 @@ export function isTrivialCheck(check: AnswerCheck): boolean {
     return sides.some((side) => /[\d)a-z]\s*[-+*/^:]|sqrt|cbrt|abs|sin|cos|tan|cot|\(/i.test(side.replace(/^[-+]/, "")));
   };
   if (check.kind === "substitute") {
-    // Substituting into statements that contain no variables tests nothing.
+    // Substituting into statements that contain no variables tests nothing — unless the model already
+    // substituted the values itself ("2^2 - 5*2 + 6 = 0"): that relation is real arithmetic and is evaluated.
     return check.statements.every((st) => {
       try {
-        return variablesOf(st).size === 0;
+        return variablesOf(st).size === 0 && !(splitRelation(st.replace(/\s+/g, "")) && hasWork(st));
       } catch {
         return true;
       }
@@ -293,7 +294,13 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
   try {
     switch (check.kind) {
       case "substitute": {
-        if (check.assignments.length === 0) return { label, passed: false, detail: "no values to substitute" };
+        if (check.assignments.length === 0) {
+          // Already-substituted numeric relations ("3^2 - 5*3 + 6 = 0"): each must hold as written.
+          const numeric = check.statements.length > 0 && check.statements.every((st) => variablesOf(st).size === 0 && splitRelation(st.replace(/\s+/g, "")));
+          if (!numeric) return { label, passed: false, detail: "no values to substitute" };
+          const failed = check.statements.find((st) => evalRelation(st, {}) !== true);
+          return failed ? { label, passed: false, detail: `${failed} is false` } : { label, passed: true, detail: "the substituted equations hold" };
+        }
         for (const set of check.assignments) {
           const env: Env = {};
           for (const { variable, value } of set) env[variable.replace("_", "")] = evalValue(value);

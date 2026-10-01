@@ -70,7 +70,7 @@ export class LocalJsonModel implements JsonModel {
   }
 
   private async request(
-    { messages, schema, schemaName, signal, onUsage }: Parameters<JsonModel["complete"]>[0],
+    { messages, schema, schemaName, signal, onUsage, onDelta }: Parameters<JsonModel["complete"]>[0],
     effort: NonNullable<LocalModelOptions["reasoningEffort"]>,
   ): Promise<string> {
     const thinking = this.options.thinking ?? false;
@@ -85,6 +85,8 @@ export class LocalJsonModel implements JsonModel {
       top_p: this.options.topP ?? (thinking ? 0.95 : 0.8),
       ...(this.options.presencePenalty ? { presence_penalty: this.options.presencePenalty } : {}),
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
+      // Streaming only feeds the progress display; the result is assembled exactly as without it.
+      ...(onDelta ? { stream: true, stream_options: { include_usage: true } } : {}),
       ...(this.hosted
         ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
           { provider: { require_parameters: true }, reasoning: { effort } }
@@ -120,17 +122,19 @@ export class LocalJsonModel implements JsonModel {
       if (response.status === 429 && DAILY_QUOTA.test(detail)) throw new OcrFailure("quota_exhausted", "hosted model daily quota exhausted", false);
       throw classifyHttpStatus("local model", response.status, detail);
     }
-    const json = (await response.json().catch(() => null)) as {
-      choices?: { finish_reason?: string; message?: { content?: string | null; reasoning_content?: string | null } }[];
-      usage?: { prompt_tokens?: number; completion_tokens?: number };
-    } | null;
+    const json = onDelta
+      ? await readStream(response, onDelta).catch((err) => {
+          if (isAbort(err)) throw new OcrFailure("timeout", "local model request timed out", true);
+          throw new OcrFailure("provider_error", `local model stream error: ${String(err)}`, true);
+        })
+      : ((await response.json().catch(() => null)) as CompletionJson | null);
     const choice = json?.choices?.[0];
-    const reasoning = choice?.message?.reasoning_content ?? "";
+    const reasoning = choice?.message?.reasoning_content ?? choice?.message?.reasoning ?? "";
     onUsage?.({
       input: json?.usage?.prompt_tokens ?? 0,
       cachedInput: 0,
       output: json?.usage?.completion_tokens ?? 0,
-      reasoning: Math.round(reasoning.length / 3.5),
+      reasoning: json?.usage?.completion_tokens_details?.reasoning_tokens ?? Math.round(reasoning.length / 3.5),
     });
     if (choice?.finish_reason === "length") throw new OcrFailure("malformed_output", TRUNCATED, true);
     // Some templates leave the reasoning inline; keep only the JSON object.
@@ -140,4 +144,56 @@ export class LocalJsonModel implements JsonModel {
     if (!text) throw new OcrFailure("malformed_output", EMPTY, true);
     return text;
   }
+}
+
+interface CompletionJson {
+  choices?: { finish_reason?: string | null; message?: { content?: string | null; reasoning_content?: string | null; reasoning?: string | null } }[];
+  usage?: { prompt_tokens?: number; completion_tokens?: number; completion_tokens_details?: { reasoning_tokens?: number } };
+}
+
+/**
+ * Reads an OpenAI-style server-sent event stream into the same shape as a non-streamed completion,
+ * reporting the answer text so far (and the amount of hidden reasoning) as it arrives.
+ */
+async function readStream(response: Response, onDelta: (content: string, reasoningChars: number) => void): Promise<CompletionJson> {
+  const reader = response.body!.pipeThrough(new TextDecoderStream()).getReader();
+  let buffer = "";
+  let content = "";
+  let reasoning = "";
+  let finish: string | null = null;
+  let usage: CompletionJson["usage"];
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += value;
+    let newline: number;
+    let changed = false;
+    while ((newline = buffer.indexOf("\n")) >= 0) {
+      const line = buffer.slice(0, newline).trim();
+      buffer = buffer.slice(newline + 1);
+      if (!line.startsWith("data:")) continue; // comments (": OPENROUTER PROCESSING"), event names
+      const data = line.slice(5).trim();
+      if (data === "[DONE]") continue;
+      let event: {
+        choices?: { delta?: { content?: string | null; reasoning?: string | null; reasoning_content?: string | null }; finish_reason?: string | null }[];
+        usage?: CompletionJson["usage"];
+        error?: { message?: string };
+      };
+      try {
+        event = JSON.parse(data);
+      } catch {
+        continue;
+      }
+      if (event.error) throw new Error(event.error.message ?? "stream error");
+      const choice = event.choices?.[0];
+      if (choice?.delta?.content) content += choice.delta.content;
+      const thought = choice?.delta?.reasoning ?? choice?.delta?.reasoning_content;
+      if (thought) reasoning += thought;
+      if (choice?.finish_reason) finish = choice.finish_reason;
+      if (event.usage) usage = event.usage;
+      changed = true;
+    }
+    if (changed) onDelta(content, reasoning.length);
+  }
+  return { choices: [{ finish_reason: finish, message: { content, reasoning } }], usage };
 }

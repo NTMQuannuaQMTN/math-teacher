@@ -282,6 +282,22 @@ export const VerificationSchema = z.strictObject({
 });
 export type Verification = z.infer<typeof VerificationSchema>;
 
+/**
+ * Live progress of a pending solve. The preview fields come from the model's partial output and are
+ * NOT verified: the app shows them as a draft, never as a checked result.
+ */
+export const SolveProgressSchema = z.object({
+  /** thinking = the model is reasoning (nothing visible yet); writing = the lesson is arriving;
+   *  checking = the verifier runs; retrying = a corrected attempt was requested. */
+  stage: z.enum(["thinking", "writing", "checking", "retrying"]),
+  attempt: z.number().int(),
+  elapsedMs: z.number().int(),
+  stepsWritten: z.number().int(),
+  problemKind: z.string().nullable(),
+  strategy: z.string().nullable(),
+});
+export type SolveProgress = z.infer<typeof SolveProgressSchema>;
+
 export const SolutionSchema = z.object({
   id: z.string(),
   scanId: z.string(),
@@ -297,6 +313,8 @@ export const SolutionSchema = z.object({
   model: z.string(),
   promptVersion: z.string(),
   attempts: z.number().int(),
+  /** Present while status is "pending" and the server reports progress (older servers omit it). */
+  progress: SolveProgressSchema.nullable().optional(),
 });
 export type Solution = z.infer<typeof SolutionSchema>;
 

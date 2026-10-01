@@ -1,0 +1,1054 @@
+{
+ "generatedAt": "2026-10-01T10:46:11.168Z",
+ "dataset": "tools/benchmark/dataset v1",
+ "note": "Measured runs only; null = not measured. See docs/SOLVER_EVALUATION.md.",
+ "systems": [
+  {
+   "label": "hosted-nemotron-low",
+   "runs": [
+    {
+     "exp": "EXP-010",
+     "system": "or-nemotron-3-super",
+     "split": "validation",
+     "promptVersion": "solver-v1.8",
+     "createdAt": "2026-10-01T04:33:18.594Z"
+    }
+   ],
+   "summary": {
+    "n": 11,
+    "pass": 5,
+    "partial": 3,
+    "fail": 3,
+    "critical": 0,
+    "finalAnswerAccuracy": "7/9",
+    "completeSolutionRate": "5/11",
+    "gradeLevelSuitable": "7/9",
+    "rubric": {
+     "curriculumFit": "8/9",
+     "familiarMethods": "8/9",
+     "concise": "9/9",
+     "noHandWaving": "9/9",
+     "hintsProgressive": "9/9"
+    },
+    "latencySeconds": {
+     "timedN": 9,
+     "median": 45.6,
+     "p90": 113,
+     "mean": 71
+    },
+    "timeToFirstTokenSeconds": null,
+    "meanAttempts": 1.1,
+    "modelRequests": 16,
+    "meanOutputTokens": 8682.3,
+    "failures": {
+     "not_checkable": 3,
+     "none": 5,
+     "truncated_output": 2,
+     "unverified": 1
+    }
+   },
+   "problems": [
+    {
+     "id": "ch-1",
+     "run": "EXP-010",
+     "topic": "algebra",
+     "difficulty": 3,
+     "tier": "complex",
+     "expectedApproach": "a) a² > 3b, b² > 3a, cộng lại. b) Trừ hai phương trình: (a − b)(2x₀ − 3) = 0 ⇒ x₀ = 3/2 ⇒ a + b = −3/4; r = 2b, s = 2a ⇒ r + s = −3/2.",
+     "referenceAnswer": "a) (chứng minh) b) r + s = −3/2.",
+     "solverAnswer": "a) Bất đẳng thức (a-3/2)²+(b-3/2)² > 9/2 được chứng minh. b) Khi hai phương trình có đúng một nghiệm chung, tổng hai nghiệm còn lại r+s = -3/2, không phụ thuộc ",
+     "answerCorrect": true,
+     "grade": "PARTIAL",
+     "verification": "not_checkable",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 45.6,
+     "attempts": 1,
+     "outputTokens": 4507,
+     "failureCategory": "not_checkable"
+    },
+    {
+     "id": "ch-2",
+     "run": "EXP-010",
+     "topic": "geometry",
+     "difficulty": 3,
+     "tier": "standard",
+     "expectedApproach": "AB² + CD² = BC² + DA² = 50 ⇒ AB + CD ≤ √(2·50) = 10 ⇒ P ≤ 18, đạt khi AB = CD = 5.",
+     "referenceAnswer": "18",
+     "solverAnswer": "Chu vi lớn nhất của tứ giác ABCD là 18. 18 Chu vi lớn nhất của tứ giác ABCD là $18$. 18",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": false,
+      "curriculumFit": false,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [
+       "calculus (derivatives, integrals, limits)"
+      ],
+      "advisory": []
+     },
+     "latencySeconds": 249.3,
+     "attempts": 2,
+     "outputTokens": 19109,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-3",
+     "run": "EXP-010",
+     "topic": "number_theory",
+     "difficulty": 3,
+     "tier": "complex",
+     "expectedApproach": "f(n) = 16(n + 2)((n + 2)² + 4); b) 3 ∤ (m² + 4) nên cần 3 | n + 2; c) cần 36 | (n + 2)((n + 2)² + 4) ⇒ 18 | n + 2.",
+     "referenceAnswer": "a) (chứng minh) b) n chia 3 dư 1 (n = 3k + 1). c) n chia 18 dư 16 (n = 18k + 16).",
+     "solverAnswer": "a) Với mọi số nguyên dương n, f(n) chia hết cho 16. b) f(n) chia hết cho 3 genau khi n có dạng 3k+1 (k là số nguyên không âm). c) f(n) chia hết cho 24² = 576 ge",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": false,
+      "curriculumFit": true,
+      "familiarMethods": false,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "uses congruence notation"
+      ]
+     },
+     "latencySeconds": 75.8,
+     "attempts": 1,
+     "outputTokens": 11176,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-4",
+     "run": "EXP-010",
+     "topic": "geometry",
+     "difficulty": 4,
+     "tier": "complex",
+     "expectedApproach": "a) hệ thức lượng trong tam giác vuông AEI; b) ID² = IH·IK ⇒ △IHD ∽ △IDK; c) IG = ID, △IJG ∽ △IGA, phương tích.",
+     "referenceAnswer": "(chứng minh ba phần)",
+     "solverAnswer": null,
+     "answerCorrect": false,
+     "grade": "FAIL",
+     "verification": null,
+     "gradeLevel": null,
+     "latencySeconds": null,
+     "attempts": 0,
+     "outputTokens": null,
+     "failureCategory": "truncated_output"
+    },
+    {
+     "id": "ch-5",
+     "run": "EXP-010",
+     "topic": "combinatorics",
+     "difficulty": 4,
+     "tier": "complex",
+     "expectedApproach": "b) Cộng k vào mỗi ô của hình vuông 1..9 (n = 15 + 3k). c) Ô giữa bằng n/3; 9 số phân biệt ≥ 1 có tổng 3n ≥ 45.",
+     "referenceAnswer": "a) ví dụ 2 7 6 / 9 5 1 / 4 3 8. b), c) (chứng minh)",
+     "solverAnswer": "a) Một cách điền là vuông Lo Shu:\n4 9 2\n3 5 7\n8 1 6 (mỗi hàng, cột, đường chéo tổng = 15).\nb) Với mọi n ≥ 15 và n chia hết cho 3, viết n = 15 + 3k (k ≥ 0 nguyên",
+     "answerCorrect": null,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 58.2,
+     "attempts": 1,
+     "outputTokens": 5974,
+     "failureCategory": "none"
+    },
+    {
+     "id": "a3",
+     "run": "EXP-010",
+     "topic": "algebra",
+     "difficulty": 2,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "x - 1 ; √x",
+     "solverAnswer": "A = (x-1)/(√x), \\; x>0, \\; x≠1 (x-1)/(√x) $A = \\frac{x-1}{\\sqrt{x}}$, \\; $x>0$, \\; $x\\neq1$ $\\frac{x-1}{\\sqrt{x}}$",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 44.5,
+     "attempts": 1,
+     "outputTokens": 4185,
+     "failureCategory": "none"
+    },
+    {
+     "id": "a7",
+     "run": "EXP-010",
+     "topic": "algebra",
+     "difficulty": 2,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "m = 2",
+     "solverAnswer": "Giá trị của tham số m là 2. m=2 Giá trị của tham số $m$ là $2$. m=2",
+     "answerCorrect": true,
+     "grade": "PARTIAL",
+     "verification": "not_checkable",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 15.2,
+     "attempts": 1,
+     "outputTokens": 2808,
+     "failureCategory": "not_checkable"
+    },
+    {
+     "id": "g5",
+     "run": "EXP-010",
+     "topic": "geometry",
+     "difficulty": 1,
+     "tier": "standard",
+     "expectedApproach": null,
+     "referenceAnswer": "10 ; 4,8|4.8|24/5",
+     "solverAnswer": null,
+     "answerCorrect": false,
+     "grade": "FAIL",
+     "verification": null,
+     "gradeLevel": null,
+     "latencySeconds": null,
+     "attempts": 0,
+     "outputTokens": null,
+     "failureCategory": "truncated_output"
+    },
+    {
+     "id": "g8",
+     "run": "EXP-010",
+     "topic": "geometry",
+     "difficulty": 2,
+     "tier": "complex",
+     "expectedApproach": null,
+     "referenceAnswer": "(proof)",
+     "solverAnswer": "AD·AB = AE·AC AD · AB = AE · AC AD·AB = AE·AC AD \\cdot AB = AE \\cdot AC",
+     "answerCorrect": null,
+     "grade": "FAIL",
+     "verification": "unverified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 78.9,
+     "attempts": 2,
+     "outputTokens": 10598,
+     "failureCategory": "unverified"
+    },
+    {
+     "id": "w1",
+     "run": "EXP-010",
+     "topic": "word_problem",
+     "difficulty": 1,
+     "tier": "standard",
+     "expectedApproach": null,
+     "referenceAnswer": "12 ; 7",
+     "solverAnswer": "Chieu rong cua mien vuon la 7 m, chieu dai la 12 m. chieu rong=7 m;\nchieu dai=12 m Chieu rong cua mien vuon la 7 m, chieu dai la 12 m. \\begin{aligned}\n\\text{chi",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 33.5,
+     "attempts": 1,
+     "outputTokens": 4146,
+     "failureCategory": "none"
+    },
+    {
+     "id": "x3",
+     "run": "EXP-010",
+     "topic": "adversarial",
+     "difficulty": 1,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "3",
+     "solverAnswer": "x = 3 x = 3 x = 3 x = 3",
+     "answerCorrect": true,
+     "grade": "PARTIAL",
+     "verification": "not_checkable",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 37.7,
+     "attempts": 2,
+     "outputTokens": 15638,
+     "failureCategory": "not_checkable"
+    }
+   ]
+  },
+  {
+   "label": "local-qwen3.5-9b",
+   "runs": [
+    {
+     "exp": "EXP-004",
+     "system": "qwen3.5-9b",
+     "split": "validation",
+     "promptVersion": "solver-v1.7",
+     "createdAt": "2026-09-30T11:18:55.463Z"
+    }
+   ],
+   "summary": {
+    "n": 11,
+    "pass": 6,
+    "partial": 3,
+    "fail": 2,
+    "critical": 0,
+    "finalAnswerAccuracy": "7/8",
+    "completeSolutionRate": "6/11",
+    "gradeLevelSuitable": "9/11",
+    "rubric": {
+     "curriculumFit": "11/11",
+     "familiarMethods": "9/11",
+     "concise": "4/11",
+     "noHandWaving": "10/11",
+     "hintsProgressive": "8/11"
+    },
+    "latencySeconds": {
+     "timedN": 11,
+     "median": 483.8,
+     "p90": 1495.4,
+     "mean": 824.2
+    },
+    "timeToFirstTokenSeconds": null,
+    "meanAttempts": 1.9,
+    "modelRequests": 21,
+    "meanOutputTokens": 6608.7,
+    "failures": {
+     "not_checkable": 3,
+     "none": 6,
+     "unverified": 1,
+     "wrong_answer": 1
+    }
+   },
+   "problems": [
+    {
+     "id": "ch-1",
+     "run": "EXP-004",
+     "topic": "algebra",
+     "difficulty": 3,
+     "tier": "complex",
+     "expectedApproach": "a) a² > 3b, b² > 3a, cộng lại. b) Trừ hai phương trình: (a − b)(2x₀ − 3) = 0 ⇒ x₀ = 3/2 ⇒ a + b = −3/4; r = 2b, s = 2a ⇒ r + s = −3/2.",
+     "referenceAnswer": "a) (chứng minh) b) r + s = −3/2.",
+     "solverAnswer": "a) Bất đẳng thức (a-3/2)²+(b-3/2)² > 9/2 được chứng minh. b) Tổng r+s = -2(a+b) - 3. Tuy nhiên, cần kiểm tra lại đề bài hoặc giả thiết. Nếu đề bài đúng, có thể ",
+     "answerCorrect": true,
+     "grade": "PARTIAL",
+     "verification": "not_checkable",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "2 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": 3313.9,
+     "attempts": 2,
+     "outputTokens": 3635,
+     "failureCategory": "not_checkable"
+    },
+    {
+     "id": "ch-2",
+     "run": "EXP-004",
+     "topic": "geometry",
+     "difficulty": 3,
+     "tier": "standard",
+     "expectedApproach": "AB² + CD² = BC² + DA² = 50 ⇒ AB + CD ≤ √(2·50) = 10 ⇒ P ≤ 18, đạt khi AB = CD = 5.",
+     "referenceAnswer": "18",
+     "solverAnswer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18. 18 Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$. 18",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "3 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": 415.4,
+     "attempts": 2,
+     "outputTokens": 7079,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-3",
+     "run": "EXP-004",
+     "topic": "number_theory",
+     "difficulty": 3,
+     "tier": "complex",
+     "expectedApproach": "f(n) = 16(n + 2)((n + 2)² + 4); b) 3 ∤ (m² + 4) nên cần 3 | n + 2; c) cần 36 | (n + 2)((n + 2)² + 4) ⇒ 18 | n + 2.",
+     "referenceAnswer": "a) (chứng minh) b) n chia 3 dư 1 (n = 3k + 1). c) n chia 18 dư 16 (n = 18k + 16).",
+     "solverAnswer": "a) f(n) chia hết cho 16 với mọi n ∈ ℕ^*. b) n có dạng 3k+1 (k ∈ ℕ₀). c) n có dạng 18k+16 (k ∈ ℕ₀). a) ∀ n ∈ ℕ^*, 16 | f(n); b) n ≡ 1 3; c) n ≡ 16 18 a) $f(n)$ c",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": false,
+      "curriculumFit": true,
+      "familiarMethods": false,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "uses congruence notation",
+       "2 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": 586.6,
+     "attempts": 2,
+     "outputTokens": 8237,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-4",
+     "run": "EXP-004",
+     "topic": "geometry",
+     "difficulty": 4,
+     "tier": "complex",
+     "expectedApproach": "a) hệ thức lượng trong tam giác vuông AEI; b) ID² = IH·IK ⇒ △IHD ∽ △IDK; c) IG = ID, △IJG ∽ △IGA, phương tích.",
+     "referenceAnswer": "(chứng minh ba phần)",
+     "solverAnswer": "a) Chứng minh được ID² = IJ · IA và △ IJD ∼ △ IDA. b) Chứng minh được ∠IHD = ∠IDK và I, D, J, H cùng thuộc một đường tròn (S). c) Cần làm rõ điều kiện của G để ",
+     "answerCorrect": null,
+     "grade": "FAIL",
+     "verification": "unverified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": false,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "5 step explanation(s) longer than ~3 sentences",
+       "a step asserts a result without showing it (\"dễ thấy\", \"ta chứng minh được\")",
+       "8 hints (expected ≤ 6)"
+      ]
+     },
+     "latencySeconds": 1495.4,
+     "attempts": 2,
+     "outputTokens": 17261,
+     "failureCategory": "unverified"
+    },
+    {
+     "id": "ch-5",
+     "run": "EXP-004",
+     "topic": "combinatorics",
+     "difficulty": 4,
+     "tier": "complex",
+     "expectedApproach": "b) Cộng k vào mỗi ô của hình vuông 1..9 (n = 15 + 3k). c) Ô giữa bằng n/3; 9 số phân biệt ≥ 1 có tổng 3n ≥ 45.",
+     "referenceAnswer": "a) ví dụ 2 7 6 / 9 5 1 / 4 3 8. b), c) (chứng minh)",
+     "solverAnswer": "a) Bảng điền số: 8 & 1 & 6 \\\\ 3 & 5 & 7 \\\\ 4 & 9 & 2 (Tổng n=15). b) Nếu n ≥ 15 và n chia hết cho 3 thì n là số tốt. c) Nếu n là số tốt thì n ≥ 15 và n chia hết",
+     "answerCorrect": null,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": false,
+      "curriculumFit": true,
+      "familiarMethods": false,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "uses congruence notation",
+       "2 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": 487.8,
+     "attempts": 1,
+     "outputTokens": 5787,
+     "failureCategory": "none"
+    },
+    {
+     "id": "a3",
+     "run": "EXP-004",
+     "topic": "algebra",
+     "difficulty": 2,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "x - 1 ; √x",
+     "solverAnswer": "Giá trị rút gọn của biểu thức là (x - 1)/(√x) với điều kiện x > 0, x ≠ 1. (x - 1)/(√x) Giá trị rút gọn của biểu thức là $\\frac{x - 1}{\\sqrt{x}}$ với điều kiện $",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "5 hints (expected ≤ 4)"
+      ]
+     },
+     "latencySeconds": 382.2,
+     "attempts": 2,
+     "outputTokens": 4435,
+     "failureCategory": "none"
+    },
+    {
+     "id": "a7",
+     "run": "EXP-004",
+     "topic": "algebra",
+     "difficulty": 2,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "m = 2",
+     "solverAnswer": "Giá trị của m là 2. m = 2 Giá trị của $m$ là $2$. m = 2",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 433.4,
+     "attempts": 2,
+     "outputTokens": 4877,
+     "failureCategory": "none"
+    },
+    {
+     "id": "g5",
+     "run": "EXP-004",
+     "topic": "geometry",
+     "difficulty": 1,
+     "tier": "standard",
+     "expectedApproach": null,
+     "referenceAnswer": "10 ; 4,8|4.8|24/5",
+     "solverAnswer": "Độ dài cạnh huyền BC bằng 10 cm và độ dài đường cao AH bằng 4,8 cm. BC = 10 cm, AH = 4,8 cm Độ dài cạnh huyền $BC$ bằng $10$ cm và độ dài đường cao $AH$ bằng $4",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 351.9,
+     "attempts": 2,
+     "outputTokens": 3951,
+     "failureCategory": "none"
+    },
+    {
+     "id": "g8",
+     "run": "EXP-004",
+     "topic": "geometry",
+     "difficulty": 2,
+     "tier": "complex",
+     "expectedApproach": null,
+     "referenceAnswer": "(proof)",
+     "solverAnswer": "Vậy AD · AB = AE · AC. AD · AB = AE · AC Vậy $AD \\cdot AB = AE \\cdot AC$. AD \\cdot AB = AE \\cdot AC",
+     "answerCorrect": null,
+     "grade": "PARTIAL",
+     "verification": "not_checkable",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "2 step explanation(s) longer than ~3 sentences",
+       "the first hint gives the final answer away"
+      ]
+     },
+     "latencySeconds": 946.4,
+     "attempts": 2,
+     "outputTokens": 10293,
+     "failureCategory": "not_checkable"
+    },
+    {
+     "id": "w1",
+     "run": "EXP-004",
+     "topic": "word_problem",
+     "difficulty": 1,
+     "tier": "standard",
+     "expectedApproach": null,
+     "referenceAnswer": "12 ; 7",
+     "solverAnswer": "Chiều rộng của mảnh vườn là 14 m, chiều dài là 19 m. x = 14, y = 19 Chiều rộng của mảnh vườn là $14$ m, chiều dài là $19$ m. x = 14, y = 19",
+     "answerCorrect": false,
+     "grade": "FAIL",
+     "verification": "unverified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "1 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": 483.8,
+     "attempts": 2,
+     "outputTokens": 5233,
+     "failureCategory": "wrong_answer"
+    },
+    {
+     "id": "x3",
+     "run": "EXP-004",
+     "topic": "adversarial",
+     "difficulty": 1,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "3",
+     "solverAnswer": "Vậy phương trình có nghiệm duy nhất là x = 3. x = 3 Vậy phương trình có nghiệm duy nhất là $x = 3$. x = 3",
+     "answerCorrect": true,
+     "grade": "PARTIAL",
+     "verification": "not_checkable",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": 169.7,
+     "attempts": 2,
+     "outputTokens": 1908,
+     "failureCategory": "not_checkable"
+    }
+   ]
+  },
+  {
+   "label": "stored-gemini-reference",
+   "runs": [
+    {
+     "exp": "EXP-001b",
+     "system": "stored-gemini",
+     "split": "validation",
+     "promptVersion": "solver-v1.7",
+     "createdAt": "2026-09-30T10:13:46.377Z"
+    }
+   ],
+   "summary": {
+    "n": 11,
+    "pass": 10,
+    "partial": 0,
+    "fail": 1,
+    "critical": 0,
+    "finalAnswerAccuracy": "8/9",
+    "completeSolutionRate": "10/11",
+    "gradeLevelSuitable": "9/10",
+    "rubric": {
+     "curriculumFit": "10/10",
+     "familiarMethods": "9/10",
+     "concise": "5/10",
+     "noHandWaving": "9/10",
+     "hintsProgressive": "6/10"
+    },
+    "latencySeconds": {
+     "timedN": 0,
+     "median": null,
+     "p90": null,
+     "mean": null
+    },
+    "timeToFirstTokenSeconds": null,
+    "meanAttempts": 0.9,
+    "modelRequests": null,
+    "meanOutputTokens": null,
+    "failures": {
+     "none": 10,
+     "error": 1
+    }
+   },
+   "problems": [
+    {
+     "id": "ch-1",
+     "run": "EXP-001b",
+     "topic": "algebra",
+     "difficulty": 3,
+     "tier": "complex",
+     "expectedApproach": "a) a² > 3b, b² > 3a, cộng lại. b) Trừ hai phương trình: (a − b)(2x₀ − 3) = 0 ⇒ x₀ = 3/2 ⇒ a + b = −3/4; r = 2b, s = 2a ⇒ r + s = −3/2.",
+     "referenceAnswer": "a) (chứng minh) b) r + s = −3/2.",
+     "solverAnswer": "a) Đã chứng minh được bất đẳng thức (a-3/2)²+(b-3/2)² > 9/2.\nb) Tổng r+s = -3/2, không phụ thuộc vào các tham số a và b. r + s = -3/2 a) Đã chứng minh được bất ",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "2 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-2",
+     "run": "EXP-001b",
+     "topic": "geometry",
+     "difficulty": 3,
+     "tier": "standard",
+     "expectedApproach": "AB² + CD² = BC² + DA² = 50 ⇒ AB + CD ≤ √(2·50) = 10 ⇒ P ≤ 18, đạt khi AB = CD = 5.",
+     "referenceAnswer": "18",
+     "solverAnswer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18. 18 Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$. 18",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "1 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-3",
+     "run": "EXP-001b",
+     "topic": "number_theory",
+     "difficulty": 3,
+     "tier": "complex",
+     "expectedApproach": "f(n) = 16(n + 2)((n + 2)² + 4); b) 3 ∤ (m² + 4) nên cần 3 | n + 2; c) cần 36 | (n + 2)((n + 2)² + 4) ⇒ 18 | n + 2.",
+     "referenceAnswer": "a) (chứng minh) b) n chia 3 dư 1 (n = 3k + 1). c) n chia 18 dư 16 (n = 18k + 16).",
+     "solverAnswer": "a) Đã chứng minh f(n) = 16(n+2)(n²+4n+8) luôn chia hết cho 16 với mọi n nguyên dương.\nb) n chia cho 3 dư 1 (tức là n = 3k + 1 với k ∈ ℕ).\nc) n chia cho 18 dư 16",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": false,
+      "curriculumFit": true,
+      "familiarMethods": false,
+      "concise": false,
+      "noHandWaving": false,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "uses congruence notation",
+       "2 step explanation(s) longer than ~3 sentences",
+       "a step asserts a result without showing it (\"dễ thấy\", \"ta chứng minh được\")"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-4",
+     "run": "EXP-001b",
+     "topic": "geometry",
+     "difficulty": 4,
+     "tier": "complex",
+     "expectedApproach": "a) hệ thức lượng trong tam giác vuông AEI; b) ID² = IH·IK ⇒ △IHD ∽ △IDK; c) IG = ID, △IJG ∽ △IGA, phương tích.",
+     "referenceAnswer": "(chứng minh ba phần)",
+     "solverAnswer": "a) Đã chứng minh ID² = IJ · IA và △ IJD ∼ △ IDA nhờ vào hệ thức lượng trong tam giác vuông IEA.\nb) Đã chứng minh ∠IHD = ∠IDK và bốn điểm I, D, J, H cùng nằm trê",
+     "answerCorrect": null,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": [
+       "7 step explanation(s) longer than ~3 sentences"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "ch-5",
+     "run": "EXP-001b",
+     "topic": "combinatorics",
+     "difficulty": 4,
+     "tier": "complex",
+     "expectedApproach": "b) Cộng k vào mỗi ô của hình vuông 1..9 (n = 15 + 3k). c) Ô giữa bằng n/3; 9 số phân biệt ≥ 1 có tổng 3n ≥ 45.",
+     "referenceAnswer": "a) ví dụ 2 7 6 / 9 5 1 / 4 3 8. b), c) (chứng minh)",
+     "solverAnswer": null,
+     "answerCorrect": false,
+     "grade": "FAIL",
+     "verification": null,
+     "gradeLevel": null,
+     "latencySeconds": null,
+     "attempts": 0,
+     "outputTokens": null,
+     "failureCategory": "error"
+    },
+    {
+     "id": "a3",
+     "run": "EXP-001b",
+     "topic": "algebra",
+     "difficulty": 2,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "x - 1 ; √x",
+     "solverAnswer": "Vậy với x > 0 và x ≠ 1, biểu thức A được rút gọn thành (x - 1)/(√x). A = (x - 1)/(√x) Vậy với $x > 0$ và $x \\ne 1$, biểu thức $A$ được rút gọn thành $\\frac{x - ",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "5 hints (expected ≤ 4)"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "a7",
+     "run": "EXP-001b",
+     "topic": "algebra",
+     "difficulty": 2,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "m = 2",
+     "solverAnswer": "Vậy giá trị của m thỏa mãn yêu cầu bài toán là m = 2. m = 2 Vậy giá trị của $m$ thỏa mãn yêu cầu bài toán là $m = 2$. m = 2",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "5 hints (expected ≤ 4)"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "g5",
+     "run": "EXP-001b",
+     "topic": "geometry",
+     "difficulty": 1,
+     "tier": "standard",
+     "expectedApproach": null,
+     "referenceAnswer": "10 ; 4,8|4.8|24/5",
+     "solverAnswer": "Độ dài cạnh huyền BC là 10 cm và độ dài đường cao AH là 4,8 cm. BC = 10 cm, AH = 4,8 cm Độ dài cạnh huyền $BC$ là $10$ cm và độ dài đường cao $AH$ là $4{,}8$ cm",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "g8",
+     "run": "EXP-001b",
+     "topic": "geometry",
+     "difficulty": 2,
+     "tier": "complex",
+     "expectedApproach": null,
+     "referenceAnswer": "(proof)",
+     "solverAnswer": "Ta đã chứng minh được đẳng thức bằng cách sử dụng bình phương đường cao AH² làm đại lượng trung gian qua các hệ thức lượng trong các tam giác vuông △ AHB và △ A",
+     "answerCorrect": null,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "the first hint gives the final answer away"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "w1",
+     "run": "EXP-001b",
+     "topic": "word_problem",
+     "difficulty": 1,
+     "tier": "standard",
+     "expectedApproach": null,
+     "referenceAnswer": "12 ; 7",
+     "solverAnswer": "Chiều rộng của mảnh vườn là 7 m và chiều dài của mảnh vườn là 12 m. { Chiều rộng = 7 m ; Chiều dài = 12 m Chiều rộng của mảnh vườn là 7 m và chiều dài của mảnh ",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": false,
+      "noHandWaving": true,
+      "hintsProgressive": false,
+      "forbidden": [],
+      "advisory": [
+       "1 step explanation(s) longer than ~3 sentences",
+       "5 hints (expected ≤ 4)"
+      ]
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    },
+    {
+     "id": "x3",
+     "run": "EXP-001b",
+     "topic": "adversarial",
+     "difficulty": 1,
+     "tier": "simple",
+     "expectedApproach": null,
+     "referenceAnswer": "3",
+     "solverAnswer": "Phương trình có nghiệm duy nhất là x = 3. x = 3 Phương trình có nghiệm duy nhất là x = 3. x = 3",
+     "answerCorrect": true,
+     "grade": "PASS",
+     "verification": "verified",
+     "gradeLevel": {
+      "suitable": true,
+      "curriculumFit": true,
+      "familiarMethods": true,
+      "concise": true,
+      "noHandWaving": true,
+      "hintsProgressive": true,
+      "forbidden": [],
+      "advisory": []
+     },
+     "latencySeconds": null,
+     "attempts": 1,
+     "outputTokens": null,
+     "failureCategory": "none"
+    }
+   ]
+  }
+ ]
+}

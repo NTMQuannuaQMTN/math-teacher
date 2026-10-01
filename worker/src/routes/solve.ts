@@ -1,4 +1,4 @@
-import { SolveRequestSchema, VerificationSchema, ModelLessonSchema, type Solution, type SolutionResponse } from "../../../shared/src/solution";
+import { SolveProgressSchema, SolveRequestSchema, VerificationSchema, ModelLessonSchema, type Solution, type SolutionResponse, type SolveProgress } from "../../../shared/src/solution";
 import { normalizeProblemText } from "../../../shared/src/mathText";
 import type { ErrorCode } from "../../../shared/src/contract";
 import { sha256Hex } from "../crypto";
@@ -37,6 +37,8 @@ interface SolutionRow {
   started_at: string | null;
   created_at: string;
   updated_at: string;
+  /** Live progress while pending (migration 0005); absent on databases without the column. */
+  progress_json?: string | null;
 }
 
 const HOUR = 3600;
@@ -136,11 +138,12 @@ function toApiSolution(row: SolutionRow): Solution {
     verification: verification?.success ? verification.data : null,
     error:
       status === "failed"
-        ? { code: row.error_code ?? "internal_error", retryable: row.error_code !== "problem_not_confirmed" }
+        ? { code: row.error_code ?? "internal_error", retryable: row.error_code !== "problem_not_confirmed" && row.error_code !== "solve_quota_exhausted" }
         : null,
     model: row.model,
     promptVersion: row.prompt_version,
     attempts: row.attempts,
+    progress: status === "pending" && row.progress_json ? (SolveProgressSchema.safeParse(JSON.parse(row.progress_json)).data ?? null) : null,
   };
 }
 
@@ -254,13 +257,45 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
     throw new ApiError(409, "solve_in_progress", "This problem is already being solved.", true);
   }
 
+  // Progress is only read while the row is pending, so it is never written into the statements that save
+  // the lesson (they must work on a database without migration 0005); a previous run's progress is
+  // cleared best-effort here.
+  await env.DB.prepare(`UPDATE solutions SET progress_json = NULL WHERE scan_id = ? AND question_id = ?`)
+    .bind(scanId, questionId)
+    .run()
+    .catch(() => undefined);
+
+  // Progress for the app's loading screen: at most one write every 2 s (or on a stage change), in order,
+  // never blocking generation. A failed write (e.g. a database without migration 0005) is ignored.
+  let lastWrite = 0;
+  let lastStage = "";
+  let writes = Promise.resolve();
+  const onProgress = (p: SolveProgress) => {
+    const now = Date.now();
+    if (p.stage === lastStage && now - lastWrite < 2_000) return;
+    lastWrite = now;
+    lastStage = p.stage;
+    writes = writes
+      .then(() =>
+        env.DB.prepare(`UPDATE solutions SET progress_json = ? WHERE scan_id = ? AND question_id = ? AND status = 'pending'`)
+          .bind(JSON.stringify(p), scanId, questionId)
+          .run(),
+      )
+      .then(
+        () => undefined,
+        () => undefined,
+      );
+  };
+
   const work = (async () => {
     try {
       const result = await solveProblem(model, VN_GRADE_9, problemText, {
         fallback,
         signal: AbortSignal.timeout(solveTimeoutMs(env)),
         log: (m) => console.log(`[solve ${scanId}/${questionId}] ${m}`),
+        onProgress,
       });
+      await writes;
       await env.DB.prepare(
         `UPDATE solutions SET status = 'ready', lesson_json = ?, verification_json = ?, error_code = NULL, model = ?, problem_key = ?,
            attempts = ?, duration_ms = ?, started_at = NULL, created_at = ?, updated_at = ? WHERE scan_id = ? AND question_id = ?`,
@@ -269,6 +304,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
         .run();
     } catch (err) {
       console.error(`[solve ${scanId}] failed`, err instanceof Error ? err.message : err);
+      await writes;
       await env.DB.prepare(
         `UPDATE solutions SET status = 'failed', error_code = ?, started_at = NULL, updated_at = ? WHERE scan_id = ? AND question_id = ?`,
       )
