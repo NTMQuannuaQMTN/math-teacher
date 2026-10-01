@@ -10,3 +10,8 @@ dist/
 mobile/ios/
 mobile/android/
 tools/ocr-eval/results/
+
+# Downloaded exam papers (third-party copyright; manifest in data/exam_sources.json)
+data/exams/raw/
+data/exams/pages/
+data/exams/text/

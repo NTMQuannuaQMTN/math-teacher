@@ -1,0 +1,260 @@
+[
+ {
+  "verify": "ptnk2023_1",
+  "claim": "system has exactly the 4 official solutions",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "ptnk2023_2",
+  "claim": "2a: sum 1/sqrt <= sqrt3 on 200k samples of ab+bc+ca=abc",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "ptnk2023_2",
+  "claim": "2b: (sum sqrt)^2 <= abc <= (a+b+c)^2/3 on 200k samples",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "ptnk2023_3",
+  "claim": "3a: every valid colouring has 2 black cells per row",
+  "ok": true,
+  "method": "exhaustive (2^16 colourings)"
+ },
+ {
+  "verify": "ptnk2023_3",
+  "claim": "3b: max good pairs = 4 by columns, 11 by rows",
+  "ok": true,
+  "method": "exhaustive (2^16 colourings)"
+ },
+ {
+  "verify": "ptnk2023_4",
+  "claim": "4a: a odd for all m < 200000",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "ptnk2023_4",
+  "claim": "4b: a = 3*2^k+1 only for k = 1 (m < 200000)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "ptnk2023_4",
+  "claim": "4c: a never a perfect square (m < 200000)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "ptnk2024_1",
+  "claim": "1.1: real solutions are x=y=z in {0, ±1/√2}",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "ptnk2024_1",
+  "claim": "1.2: exactly 3 roots for all distinct a, b <= 40",
+  "ok": true,
+  "method": "bounded search (exact roots)"
+ },
+ {
+  "verify": "ptnk2024_2",
+  "claim": "3 <= a+b+c <= (2(ab+bc+ca)+3)/3 on 100k constraint samples",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "ptnk2024_3",
+  "claim": "3a: closed form satisfies a_{n+2} = 4a_{n+1} - a_n (n < 30)",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "ptnk2024_3",
+  "claim": "3b: 4 | a_n iff n odd (n < 400)",
+  "ok": true,
+  "method": "bounded search (exact integers)"
+ },
+ {
+  "verify": "ptnk2024_3",
+  "claim": "3c: 14 | a_n iff n ≡ 2 (mod 4) (n < 400)",
+  "ok": true,
+  "method": "bounded search (exact integers)"
+ },
+ {
+  "verify": "ptnk2024_5",
+  "claim": "5a: a_i = 225 + i attains a_1 = 226",
+  "ok": true,
+  "method": "exact"
+ },
+ {
+  "verify": "ptnk2024_5",
+  "claim": "5b: all 1034817 square-sum-free boxes leave two disjoint square pairs in the other",
+  "ok": true,
+  "method": "exhaustive"
+ },
+ {
+  "verify": "ptnk2025_1",
+  "claim": "1a: Δ' = m^2 + 1 > 0",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "ptnk2025_1",
+  "claim": "1b: x1^4 + x2^4 > 9/2 (min ≈ 6.051 over m ∈ [-5, 5])",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "ptnk2025_1",
+  "claim": "1c: product = 1 exactly at m = -1 (grid of m + m = -1)",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "ptnk2025_2",
+  "claim": "2: minimum sum of squares 19/4 at (1/4, -1/4, 5/4, 7/4) (up to symmetry)",
+  "ok": true,
+  "method": "exact (SymPy, all edge assignments)"
+ },
+ {
+  "verify": "ptnk2025_3",
+  "claim": "3a: no solution with n = 3 (m < 5000)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "ptnk2025_3",
+  "claim": "3b: n | m gives exactly (1,1), (4,2) (m < 5000, n < 400)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "ptnk2025_3",
+  "claim": "3c: m = gcd(m,n)^2 for every solution found",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "hcm2025_1",
+  "claim": "1a: P = 8 for all a > 1 with b = sqrt(a^2-1)",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "hcm2025_1",
+  "claim": "1b: a=-1, b=5, c=-5 and the value is -1",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "hcm2025_2",
+  "claim": "2b: area maximal at x = 1/3",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "hcm2025_2",
+  "claim": "2a: truck 3a/4 km away at 14:00 → arrives 14:45 (a normalised to 1)",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "hcm2025_4",
+  "claim": "4a: two-digit beautiful multiples of 11 are 11, 44, 77, 88, 99",
+  "ok": true,
+  "method": "exhaustive"
+ },
+ {
+  "verify": "hcm2025_4",
+  "claim": "4b: n beautiful and 11 | n ⇒ n/11 beautiful (n < 20000)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "hcm2025_5",
+  "claim": "5a: a ∈ {-11,-5,13,19}, probability 4/201",
+  "ok": true,
+  "method": "exhaustive"
+ },
+ {
+  "verify": "hanoi2025_1",
+  "claim": "I.1: 4 girls keep the ratio 20/50",
+  "ok": true,
+  "method": "exhaustive"
+ },
+ {
+  "verify": "hanoi2025_1",
+  "claim": "I.2: P = 0 when ab+bc+ca = 0",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "hanoi2025_2",
+  "claim": "II.2: integer solutions (|x|,|y| <= 400) are (-7,-14), (-2,-3), (4,7)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "hanoi2025_3",
+  "claim": "III.1a: ab²+bc²+ca²-a²b-b²c-c²a = (a-b)(b-c)(c-a)",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "hanoi2025_3",
+  "claim": "III.1b: min a²+b²+c² = 8 (sampled min 8.000000; attained at (-2,0,2))",
+  "ok": true,
+  "method": "sampled + exact witness"
+ },
+ {
+  "verify": "hanoi2025_4",
+  "claim": "III.2: exactly 5 pairs among fractions with numerators < 120, denominators < 30",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "hanoi2025_5",
+  "claim": "V.1: |A| = 25 impossible (needs 3 | |A|)",
+  "ok": true,
+  "method": "exact"
+ },
+ {
+  "verify": "hanoi2025_5",
+  "claim": "V.2: largest total satisfying the counting conditions is 70 (30 + 40)",
+  "ok": true,
+  "method": "exhaustive (necessary conditions; construction by hand)"
+ },
+ {
+  "verify": "khtn2025_1",
+  "claim": "I.1: zeros on [-1, 60] are x = 0 and x = 1 (f <= 0 elsewhere; peaks at [0.0, 1.0])",
+  "ok": true,
+  "method": "sampled + exact substitution"
+ },
+ {
+  "verify": "khtn2025_1",
+  "claim": "I.2: the only real solution is (1, 1)",
+  "ok": true,
+  "method": "exact (SymPy)"
+ },
+ {
+  "verify": "khtn2025_2",
+  "claim": "II.1: positive solutions (x < 40, y < 90) are (1,1), (2,2)",
+  "ok": true,
+  "method": "bounded search"
+ },
+ {
+  "verify": "khtn2025_3",
+  "claim": "II.2: inequality holds on 200k samples of (1,2)^3",
+  "ok": true,
+  "method": "sampled"
+ },
+ {
+  "verify": "khtn2025_4",
+  "claim": "IV: the 4-element example is a special set (upper bound 4: argument, manual review)",
+  "ok": true,
+  "method": "exact (SymPy) for the example"
+ }
+]

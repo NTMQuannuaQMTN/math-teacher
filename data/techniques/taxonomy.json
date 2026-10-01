@@ -1,0 +1,566 @@
+{
+ "concepts": {
+  "alg.identities": {
+   "name": "Hằng đẳng thức, biến đổi đồng nhất",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "alg.factorization": {
+   "name": "Phân tích đa thức thành nhân tử",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ]
+  },
+  "alg.rational_expressions": {
+   "name": "Biểu thức phân thức, điều kiện xác định",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.factorization"
+   ]
+  },
+  "alg.radicals": {
+   "name": "Căn bậc hai, căn bậc ba, biến đổi biểu thức chứa căn",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ]
+  },
+  "alg.radicals_domain": {
+   "name": "Điều kiện xác định của căn, phương trình chứa căn",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.radicals"
+   ]
+  },
+  "alg.linear_equation": {
+   "name": "Phương trình bậc nhất",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "alg.system_linear": {
+   "name": "Hệ phương trình bậc nhất",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.linear_equation"
+   ]
+  },
+  "alg.system_nonlinear": {
+   "name": "Hệ phương trình không mẫu mực (đặt ẩn phụ, thế)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.system_linear",
+    "alg.factorization"
+   ]
+  },
+  "alg.system_symmetric": {
+   "name": "Hệ đối xứng / hoán vị vòng quanh",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.system_nonlinear"
+   ]
+  },
+  "alg.discriminant": {
+   "name": "Biệt thức Δ, Δ'",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "alg.vieta": {
+   "name": "Hệ thức Vi-ét",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.discriminant"
+   ]
+  },
+  "alg.quadratic_extremum": {
+   "name": "Cực trị hàm bậc hai (hoàn thành bình phương)",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ]
+  },
+  "alg.inequality_basic": {
+   "name": "Tính chất bất đẳng thức, so sánh",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "alg.square_sum_nonneg": {
+   "name": "Tổng bình phương không âm, (a−b)² ≥ 0",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ]
+  },
+  "alg.am_gm": {
+   "name": "Bất đẳng thức Cô-si (AM–GM)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.square_sum_nonneg"
+   ]
+  },
+  "alg.recurrence": {
+   "name": "Dãy truy hồi tuyến tính",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.vieta"
+   ]
+  },
+  "alg.function_monotonic": {
+   "name": "Tính đơn điệu của biểu thức/hàm số",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.inequality_basic"
+   ]
+  },
+  "nt.parity": {
+   "name": "Tính chẵn lẻ",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "nt.divisibility": {
+   "name": "Quan hệ chia hết",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "nt.modular_arithmetic": {
+   "name": "Đồng dư, xét số dư",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.divisibility"
+   ]
+  },
+  "nt.gcd": {
+   "name": "Ước chung lớn nhất, nguyên tố cùng nhau",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "nt.divisibility"
+   ]
+  },
+  "nt.perfect_squares": {
+   "name": "Số chính phương",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "nt.quadratic_forms": {
+   "name": "Số biểu diễn dạng a² + kb²",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.perfect_squares",
+    "nt.modular_arithmetic"
+   ]
+  },
+  "nt.diophantine": {
+   "name": "Phương trình nghiệm nguyên",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.divisibility",
+    "alg.factorization"
+   ]
+  },
+  "nt.exponential": {
+   "name": "Lũy thừa, phương trình mũ nghiệm nguyên",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.diophantine"
+   ]
+  },
+  "nt.rationals_fractions": {
+   "name": "Số hữu tỉ, phân số tối giản",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "nt.gcd"
+   ]
+  },
+  "nt.rational_irrational": {
+   "name": "Số hữu tỉ, số vô tỉ",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "comb.counting": {
+   "name": "Đếm",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "comb.double_counting": {
+   "name": "Đếm bằng hai cách",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "comb.counting"
+   ]
+  },
+  "comb.extremal": {
+   "name": "Nguyên lý cực hạn, xét phần tử lớn/nhỏ nhất",
+   "level": "specialized_grade9",
+   "prerequisites": []
+  },
+  "comb.pigeonhole": {
+   "name": "Nguyên lý Dirichlet",
+   "level": "specialized_grade9",
+   "prerequisites": []
+  },
+  "comb.graph_coloring": {
+   "name": "Tô màu, đồ thị (ngôn ngữ cặp/kề)",
+   "level": "olympiad_style",
+   "prerequisites": [
+    "comb.pigeonhole"
+   ]
+  },
+  "comb.game_strategy": {
+   "name": "Trò chơi, chiến thuật",
+   "level": "olympiad_style",
+   "prerequisites": []
+  },
+  "comb.invariant": {
+   "name": "Bất biến (tô màu, chẵn lẻ)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.parity"
+   ]
+  },
+  "comb.construction": {
+   "name": "Xây dựng ví dụ",
+   "level": "specialized_grade9",
+   "prerequisites": []
+  },
+  "prob.classical": {
+   "name": "Xác suất cổ điển",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "comb.counting"
+   ]
+  },
+  "stat.read_chart": {
+   "name": "Đọc biểu đồ, tỉ lệ",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "word.motion": {
+   "name": "Bài toán chuyển động",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.linear_equation"
+   ]
+  },
+  "geo.triangle_inequality": {
+   "name": "Bất đẳng thức tam giác",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.trig_ratios": {
+   "name": "Tỉ số lượng giác góc nhọn",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.trapezoid_area": {
+   "name": "Diện tích hình thang",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.similar_triangles": {
+   "name": "Tam giác đồng dạng",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.angle_bisector_theorem": {
+   "name": "Tính chất đường phân giác (tỉ số)",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "geo.similar_triangles"
+   ]
+  },
+  "geo.angle_bisector_external": {
+   "name": "Phân giác ngoài",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "geo.angle_bisector_theorem"
+   ]
+  },
+  "geo.cyclic_quad": {
+   "name": "Tứ giác nội tiếp, góc nội tiếp",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.tangent_properties": {
+   "name": "Tiếp tuyến, góc tạo bởi tiếp tuyến và dây",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "geo.cyclic_quad"
+   ]
+  },
+  "geo.incircle_tangents": {
+   "name": "Đường tròn nội tiếp, tiếp điểm",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "geo.tangent_properties"
+   ]
+  },
+  "geo.power_of_point": {
+   "name": "Phương tích (hệ thức MA·MB = MC·MD)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "geo.similar_triangles",
+    "geo.cyclic_quad"
+   ]
+  },
+  "geo.orthocenter": {
+   "name": "Trực tâm, đường cao",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.midpoint_parallel": {
+   "name": "Trung điểm, đường trung bình, song song",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.perpendicular_bisector": {
+   "name": "Đường trung trực",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.reflection": {
+   "name": "Phép đối xứng trục",
+   "level": "specialized_grade9",
+   "prerequisites": []
+  },
+  "geo.isosceles_trapezoid": {
+   "name": "Hình thang cân",
+   "level": "standard_grade9",
+   "prerequisites": []
+  },
+  "geo.centroid": {
+   "name": "Trọng tâm",
+   "level": "standard_grade9",
+   "prerequisites": []
+  }
+ },
+ "techniques": {
+  "tech.change_of_variables": {
+   "name": "Đặt ẩn phụ",
+   "description": "Replace a repeated sub-expression by a new unknown."
+  },
+  "tech.sum_product_system": {
+   "name": "Đưa về tổng – tích (Vi-ét đảo)",
+   "description": "Two unknowns with known sum and product are the roots of a quadratic."
+  },
+  "tech.qm_am_bound": {
+   "name": "Bất đẳng thức (p+q+r)² ≤ 3(p²+q²+r²)",
+   "description": "Bound a sum by the sum of squares (and its relatives)."
+  },
+  "tech.am_gm_two": {
+   "name": "Cô-si cho hai số",
+   "description": "2√(xy) ≤ x + y for non-negative x, y."
+  },
+  "tech.use_constraint_reciprocal": {
+   "name": "Biến đổi giả thiết về dạng nghịch đảo",
+   "description": "ab+bc+ca=abc ⇔ 1/a+1/b+1/c=1."
+  },
+  "tech.use_constraint_substitution": {
+   "name": "Dùng giả thiết để thế",
+   "description": "Substitute the condition into the expression to simplify it."
+  },
+  "tech.double_counting": {
+   "name": "Đếm bằng hai cách",
+   "description": "Count the same quantity by rows and by columns (or from both sides)."
+  },
+  "tech.parity_mod": {
+   "name": "Xét chẵn lẻ / số dư",
+   "description": "Reduce modulo 2, 3, 4, … to restrict the cases."
+  },
+  "tech.bounding": {
+   "name": "Chặn (đánh giá)",
+   "description": "Bound the quantity to leave finitely many cases."
+  },
+  "tech.contradiction": {
+   "name": "Phản chứng",
+   "description": "Assume the opposite and reach a contradiction."
+  },
+  "tech.construction": {
+   "name": "Chỉ ra ví dụ",
+   "description": "Exhibit an object that attains the bound or satisfies the conditions."
+  },
+  "tech.subtract_equations": {
+   "name": "Trừ vế theo vế",
+   "description": "Subtract equations of a symmetric system to factor out x − y."
+  },
+  "tech.factor_and_case": {
+   "name": "Phân tích nhân tử rồi xét trường hợp",
+   "description": "A product equal to 0 (or to a known number) splits into cases."
+  },
+  "tech.case_analysis": {
+   "name": "Xét trường hợp",
+   "description": "Split by sign, parity, remainder or configuration."
+  },
+  "tech.squeeze_between_squares": {
+   "name": "Kẹp giữa hai số chính phương liên tiếp",
+   "description": "k² < N < (k+1)² ⇒ N is not a square."
+  },
+  "tech.right_angle_concyclic": {
+   "name": "Hai góc vuông cùng nhìn một đoạn ⇒ nội tiếp",
+   "description": "Points seeing a segment at 90° lie on the circle with that diameter."
+  },
+  "tech.angle_chasing": {
+   "name": "Biến đổi góc",
+   "description": "Chain equal angles (inscribed, tangent–chord, parallel lines)."
+  },
+  "tech.midline_symmetry": {
+   "name": "Đường trung bình, tính đối xứng của hình thang cân",
+   "description": "Use midpoints and the symmetry axis."
+  },
+  "tech.known_lemma": {
+   "name": "Dùng bổ đề quen thuộc",
+   "description": "Prove or quote a standard configuration lemma first."
+  },
+  "tech.auxiliary_parallel": {
+   "name": "Kẻ đường phụ song song",
+   "description": "Draw a parallel line to transfer a ratio or a midpoint."
+  },
+  "tech.rewrite_with_symmetric_sums": {
+   "name": "Biểu diễn qua tổng và tích (s, p)",
+   "description": "Rewrite symmetric expressions in a+b+c, ab+bc+ca (or S, P)."
+  },
+  "tech.square_completion": {
+   "name": "Hoàn thành bình phương",
+   "description": "Write as a square plus a constant to bound or solve."
+  },
+  "tech.characteristic_roots": {
+   "name": "Nghiệm của phương trình đặc trưng",
+   "description": "The two bases are roots of t² − 4t + 1 = 0."
+  },
+  "tech.periodicity_mod": {
+   "name": "Tính tuần hoàn theo modulo",
+   "description": "List residues until they repeat."
+  },
+  "tech.induction": {
+   "name": "Quy nạp",
+   "description": "Prove for all n from a base case and a step."
+  },
+  "tech.parallelogram_from_orthocenter": {
+   "name": "Hình bình hành từ trực tâm và đường kính",
+   "description": "BHCK is a parallelogram when AK is a diameter."
+  },
+  "tech.power_of_point": {
+   "name": "Phương tích / hệ thức tích đoạn thẳng",
+   "description": "Products of segments through a point on a circle are equal."
+  },
+  "tech.reflection": {
+   "name": "Đối xứng trục",
+   "description": "Reflect a point or a circle across a line."
+  },
+  "tech.similar_triangles": {
+   "name": "Tam giác đồng dạng",
+   "description": "Find two similar triangles to transfer angles or ratios."
+  },
+  "tech.angle_bisector_ratio": {
+   "name": "Tính chất tỉ số của phân giác",
+   "description": "A point divides the opposite side in the ratio of the adjacent sides."
+  },
+  "tech.isosceles_trapezoid_cyclic": {
+   "name": "Hình thang cân thì nội tiếp",
+   "description": "Symmetry gives an isosceles trapezoid, which is cyclic."
+  },
+  "tech.extremal_choice": {
+   "name": "Chọn trường hợp xấu nhất",
+   "description": "Apply the hypothesis to the most extreme choice."
+  },
+  "tech.pairing_differences": {
+   "name": "Ghép cặp hiệu",
+   "description": "Pair terms so each difference is bounded below."
+  },
+  "tech.pigeonhole": {
+   "name": "Nguyên lý Dirichlet",
+   "description": "More objects than boxes forces a box with two."
+  },
+  "tech.forced_chain": {
+   "name": "Chuỗi ép buộc",
+   "description": "Follow placements forced by the condition until a contradiction."
+  },
+  "tech.conjugate_multiplication": {
+   "name": "Nhân liên hợp",
+   "description": "(x+√(x²+1))(−x+√(x²+1)) = 1."
+  },
+  "tech.monotonicity": {
+   "name": "Đơn điệu ⇒ duy nhất",
+   "description": "An increasing expression takes each value once."
+  },
+  "tech.one_parameter_family": {
+   "name": "Họ nghiệm một tham số",
+   "description": "Express all solutions with one parameter, then optimise it."
+  },
+  "tech.substitution_m_kn": {
+   "name": "Đặt m = kn",
+   "description": "Use the divisibility to write one unknown as a multiple of the other."
+  },
+  "tech.gcd_decomposition": {
+   "name": "Đặt m = dx, n = dy với (x, y) = 1",
+   "description": "Split off the gcd and use coprimality."
+  },
+  "tech.sweep_strategy": {
+   "name": "Chiến thuật quét",
+   "description": "Check cells column by column so the target cannot escape."
+  },
+  "tech.parity_coloring": {
+   "name": "Tô màu bàn cờ",
+   "description": "A step to an adjacent cell always changes colour."
+  },
+  "tech.perfect_square_under_root": {
+   "name": "Nhận ra bình phương dưới căn",
+   "description": "After substitution the radicand becomes (…)²."
+  },
+  "tech.eliminate_parameter": {
+   "name": "Khử tham số",
+   "description": "Combine the equations to eliminate the extra unknown."
+  },
+  "tech.set_unknown": {
+   "name": "Đặt ẩn và lập phương trình",
+   "description": "Choose an unknown with its condition and translate the story."
+  },
+  "tech.small_case_search": {
+   "name": "Thử các trường hợp nhỏ",
+   "description": "Search small values systematically."
+  },
+  "tech.brahmagupta_identity": {
+   "name": "Hằng đẳng thức Brahmagupta",
+   "description": "(a²+kb²)(c²+kd²) = (ac∓kbd)² + k(ad±bc)²."
+  },
+  "tech.cross_ratio_harmonic": {
+   "name": "Tỉ số đoạn thẳng (hàng điểm điều hòa)",
+   "description": "Compare two ratios on a line through similar triangles."
+  },
+  "tech.vieta_integer_roots": {
+   "name": "Vi-ét cho nghiệm nguyên",
+   "description": "Eliminate the parameter between S and P, factor, list divisors."
+  },
+  "tech.fibonacci_growth": {
+   "name": "Tăng ít nhất như Fibonacci",
+   "description": "Without a triangle the sorted values grow like Fibonacci numbers."
+  },
+  "tech.shift_invariance": {
+   "name": "Tịnh tiến không đổi hiệu",
+   "description": "Differences are unchanged by a + t, b + t, c + t; choose t to minimise."
+  },
+  "tech.divisor_cases": {
+   "name": "Xét ước",
+   "description": "A divisibility A | B with |A| > |B| forces B = 0."
+  },
+  "tech.orthocenter_of_auxiliary_triangle": {
+   "name": "Trực tâm của tam giác phụ",
+   "description": "Spot that a point is the orthocenter of a helper triangle."
+  },
+  "tech.radical_axis_like_concurrency": {
+   "name": "Đồng quy qua các dây chung",
+   "description": "Common chords of three circles are concurrent (radical centre)."
+  },
+  "tech.equal_differences": {
+   "name": "Hai hiệu bằng nhau",
+   "description": "Notice the two sides differ by the same quantity."
+  },
+  "tech.cube_identity": {
+   "name": "Hằng đẳng thức lập phương",
+   "description": "Rewrite as (…)³ = (…)³."
+  },
+  "tech.cauchy_schwarz_engel": {
+   "name": "Bunhiacopxki dạng Engel",
+   "description": "Σ a²/b ≥ (Σ a)²/Σ b."
+  }
+ }
+}

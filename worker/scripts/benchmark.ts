@@ -37,6 +37,8 @@ const split = flag("split") ?? "validation";
 const ids = flag("ids")?.split(",");
 const offline = args.includes("--offline");
 const exp = flag("exp") ?? "EXP-adhoc";
+// --techniques: add retrieved method cards to the request (worker/src/solver/techniques.ts)
+const withTechniques = args.includes("--techniques");
 
 // Hosted open models (OpenAI-compatible); the key comes from worker/.dev.vars (LOCAL_LLM_API_KEY), never printed.
 type Effort = "none" | "minimal" | "low";
@@ -68,7 +70,9 @@ if (!LOCAL[system] && !HOSTED[system] && system !== "stored-gemini") {
   process.exit(2);
 }
 
-const items: BenchItem[] = readFileSync(`${ROOT}dataset/problems.jsonl`, "utf8")
+// --dataset chuyen → tools/benchmark/dataset/chuyen.jsonl (Toán chuyên exams, built by tools/exams/build_dataset.py)
+const datasetName = flag("dataset") ?? "problems";
+const items: BenchItem[] = readFileSync(`${ROOT}dataset/${datasetName}.jsonl`, "utf8")
   .trim()
   .split("\n")
   .map((l) => JSON.parse(l))
@@ -152,7 +156,7 @@ for (const item of items) {
       verification = v.verification;
       attempts = 1;
     } else {
-      const r = await solveProblem(cached!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(40 * 60_000), maxAttempts: 2, log: (m) => log.push(m) });
+      const r = await solveProblem(cached!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(40 * 60_000), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques });
       lesson = r.lesson;
       verification = r.verification;
       attempts = r.attempts;
@@ -196,7 +200,8 @@ const summary = {
   system,
   split,
   promptVersion: PROMPT_VERSION,
-  dataset: "v1",
+  techniqueHints: withTechniques,
+  dataset: datasetName === "problems" ? "v1" : datasetName,
   n: rows.length,
   pass: count("PASS"),
   partial: count("PARTIAL"),
@@ -214,4 +219,4 @@ const summary = {
 };
 console.log(JSON.stringify(summary));
 if (!existsSync(`${ROOT}results`)) mkdirSync(`${ROOT}results`, { recursive: true });
-writeFileSync(`${ROOT}results/${exp}_${system}_${ids ? "ids" : split}.json`, JSON.stringify({ summary, rows }, null, 1));
+writeFileSync(`${ROOT}results/${exp}_${system}_${datasetName === "problems" ? "" : `${datasetName}_`}${ids ? "ids" : split}.json`, JSON.stringify({ summary, rows }, null, 1));

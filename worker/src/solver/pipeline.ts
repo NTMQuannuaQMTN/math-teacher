@@ -9,6 +9,7 @@ import { toGrammarJsonSchema, toStrictJsonSchema } from "./jsonSchema";
 import type { ChatMessage, JsonModel } from "./llm";
 import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
 import { looksLikeGeometry, problemTier } from "./routing";
+import { techniqueHints } from "./techniques";
 import { addUsage, emptyUsage, estimateCost, formatUsage, type Usage } from "./pricing";
 
 const LESSON_JSON_SCHEMA = toStrictJsonSchema(ModelLessonSchema);
@@ -55,6 +56,8 @@ export interface SolveOptions {
   retryBudgetMs?: number;
   /** Live progress for the app (stage, steps written, an unverified draft of the plan). */
   onProgress?: (progress: SolveProgress) => void;
+  /** Add retrieved method cards for the problem type (techniques.ts) to the request. */
+  techniqueHints?: boolean;
   /** Debugging: receives each attempt's raw model output. */
   onRaw?: (attempt: number, text: string) => void;
 }
@@ -337,6 +340,7 @@ export async function solveProblem(
     retryPolicy = model.name === "local" ? "serious" : "any",
     retryBudgetMs = 150_000,
     onProgress,
+    techniqueHints: withTechniques = false,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
@@ -344,9 +348,10 @@ export async function solveProblem(
   let withFigure = looksLikeGeometry(problemText);
   const vietnamese = containsVietnamese(problemText);
   const tier = problemTier(problemText);
+  const methodHints = withTechniques ? techniqueHints(problemText) : "";
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
-    { role: "user", content: buildUserMessage(problemText, tier) },
+    { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
   ];
   let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number } | null = null;
   const usage: Record<string, Usage> = {};
@@ -443,7 +448,7 @@ export async function solveProblem(
         // not the rejected lesson, which would cost thousands of input tokens.
         messages = [
           { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
-          { role: "user", content: buildEscalationMessage(problemText, problems, tier) },
+          { role: "user", content: buildEscalationMessage(problemText, problems, tier, methodHints) },
         ];
       } else {
         messages.push({ role: "assistant", content: text }, { role: "user", content: buildRetryMessage(problems) });

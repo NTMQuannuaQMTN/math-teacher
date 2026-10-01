@@ -1,0 +1,1469 @@
+{
+ "concepts": {
+  "alg.identities": {
+   "name": "Hằng đẳng thức, biến đổi đồng nhất",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2024-chuyen/2",
+    "ptnk-2025-chuyen/1b",
+    "hcm-2025-chuyen/1a",
+    "hcm-2025-chuyen/4b",
+    "hanoi-2025-chuyen/I.2",
+    "hanoi-2025-chuyen/III.1a",
+    "khtn-2025-vong2/I.2"
+   ]
+  },
+  "alg.factorization": {
+   "name": "Phân tích đa thức thành nhân tử",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/4b",
+    "ptnk-2024-chuyen/1.1",
+    "hanoi-2025-chuyen/II.2",
+    "hanoi-2025-chuyen/III.1a",
+    "khtn-2025-vong2/II.1",
+    "ptnk-2026-chuyen/3"
+   ]
+  },
+  "alg.rational_expressions": {
+   "name": "Biểu thức phân thức, điều kiện xác định",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.factorization"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/1",
+    "hanoi-2025-chuyen/I.2"
+   ]
+  },
+  "alg.radicals": {
+   "name": "Căn bậc hai, căn bậc ba, biến đổi biểu thức chứa căn",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/3a",
+    "ptnk-2025-chuyen/1c",
+    "hcm-2025-chuyen/1a"
+   ]
+  },
+  "alg.radicals_domain": {
+   "name": "Điều kiện xác định của căn, phương trình chứa căn",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.radicals"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/1.2",
+    "khtn-2025-vong2/I.1"
+   ]
+  },
+  "alg.linear_equation": {
+   "name": "Phương trình bậc nhất",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "hcm-2025-chuyen/2a",
+    "hanoi-2025-chuyen/I.1"
+   ]
+  },
+  "alg.system_linear": {
+   "name": "Hệ phương trình bậc nhất",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.linear_equation"
+   ],
+   "problems": [
+    "ptnk-2025-chuyen/2a",
+    "ptnk-2025-chuyen/2b",
+    "ptnk-2026-chuyen/5"
+   ]
+  },
+  "alg.system_nonlinear": {
+   "name": "Hệ phương trình không mẫu mực (đặt ẩn phụ, thế)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.system_linear",
+    "alg.factorization"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/1",
+    "khtn-2025-vong2/I.2"
+   ]
+  },
+  "alg.system_symmetric": {
+   "name": "Hệ đối xứng / hoán vị vòng quanh",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.system_nonlinear"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/1.1"
+   ]
+  },
+  "alg.discriminant": {
+   "name": "Biệt thức Δ, Δ'",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2024-chuyen/1.2",
+    "ptnk-2025-chuyen/1a",
+    "ptnk-2026-chuyen/1"
+   ]
+  },
+  "alg.vieta": {
+   "name": "Hệ thức Vi-ét",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.discriminant"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/1",
+    "ptnk-2024-chuyen/1.2",
+    "ptnk-2024-chuyen/3a",
+    "ptnk-2025-chuyen/1b",
+    "ptnk-2025-chuyen/1c",
+    "hcm-2025-chuyen/1b",
+    "hcm-2025-chuyen/5a",
+    "ptnk-2026-chuyen/1"
+   ]
+  },
+  "alg.quadratic_extremum": {
+   "name": "Cực trị hàm bậc hai (hoàn thành bình phương)",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ],
+   "problems": [
+    "ptnk-2025-chuyen/2b",
+    "hcm-2025-chuyen/2b"
+   ]
+  },
+  "alg.inequality_basic": {
+   "name": "Tính chất bất đẳng thức, so sánh",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/2a",
+    "ptnk-2023-chuyen/2b",
+    "ptnk-2023-chuyen/4c",
+    "ptnk-2024-chuyen/2",
+    "ptnk-2024-chuyen/5a",
+    "ptnk-2025-chuyen/1b",
+    "hanoi-2025-chuyen/III.1b",
+    "khtn-2025-vong2/II.2"
+   ]
+  },
+  "alg.square_sum_nonneg": {
+   "name": "Tổng bình phương không âm, (a−b)² ≥ 0",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.identities"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/2a",
+    "ptnk-2023-chuyen/2b",
+    "ptnk-2024-chuyen/1.1",
+    "ptnk-2024-chuyen/2",
+    "ptnk-2026-chuyen/1"
+   ]
+  },
+  "alg.am_gm": {
+   "name": "Bất đẳng thức Cô-si (AM–GM)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.square_sum_nonneg"
+   ],
+   "problems": [
+    "hanoi-2025-chuyen/III.1b",
+    "khtn-2025-vong2/II.2",
+    "ptnk-2026-chuyen/2"
+   ]
+  },
+  "alg.recurrence": {
+   "name": "Dãy truy hồi tuyến tính",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.vieta"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/3a",
+    "ptnk-2024-chuyen/3b",
+    "ptnk-2024-chuyen/3c"
+   ]
+  },
+  "alg.function_monotonic": {
+   "name": "Tính đơn điệu của biểu thức/hàm số",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "alg.inequality_basic"
+   ],
+   "problems": [
+    "ptnk-2025-chuyen/1c",
+    "khtn-2025-vong2/I.1"
+   ]
+  },
+  "nt.parity": {
+   "name": "Tính chẵn lẻ",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/4a",
+    "ptnk-2023-chuyen/4b",
+    "hanoi-2025-chuyen/II.1"
+   ]
+  },
+  "nt.divisibility": {
+   "name": "Quan hệ chia hết",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/3a",
+    "ptnk-2023-chuyen/4b",
+    "ptnk-2025-chuyen/3a",
+    "ptnk-2025-chuyen/3b",
+    "ptnk-2025-chuyen/3c",
+    "hcm-2025-chuyen/5a",
+    "hanoi-2025-chuyen/III.2",
+    "hanoi-2025-chuyen/V.1"
+   ]
+  },
+  "nt.modular_arithmetic": {
+   "name": "Đồng dư, xét số dư",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.divisibility"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/3b",
+    "ptnk-2024-chuyen/3c",
+    "ptnk-2025-chuyen/3a",
+    "hcm-2025-chuyen/4b",
+    "hanoi-2025-chuyen/II.1",
+    "ptnk-2026-chuyen/3"
+   ]
+  },
+  "nt.gcd": {
+   "name": "Ước chung lớn nhất, nguyên tố cùng nhau",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "nt.divisibility"
+   ],
+   "problems": [
+    "ptnk-2025-chuyen/3c",
+    "hanoi-2025-chuyen/III.2"
+   ]
+  },
+  "nt.perfect_squares": {
+   "name": "Số chính phương",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/4c",
+    "ptnk-2024-chuyen/5b"
+   ]
+  },
+  "nt.quadratic_forms": {
+   "name": "Số biểu diễn dạng a² + kb²",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.perfect_squares",
+    "nt.modular_arithmetic"
+   ],
+   "problems": [
+    "hcm-2025-chuyen/4a",
+    "hcm-2025-chuyen/4b"
+   ]
+  },
+  "nt.diophantine": {
+   "name": "Phương trình nghiệm nguyên",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.divisibility",
+    "alg.factorization"
+   ],
+   "problems": [
+    "hanoi-2025-chuyen/II.2",
+    "khtn-2025-vong2/II.1"
+   ]
+  },
+  "nt.exponential": {
+   "name": "Lũy thừa, phương trình mũ nghiệm nguyên",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.diophantine"
+   ],
+   "problems": [
+    "khtn-2025-vong2/II.1"
+   ]
+  },
+  "nt.rationals_fractions": {
+   "name": "Số hữu tỉ, phân số tối giản",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "nt.gcd"
+   ],
+   "problems": [
+    "hanoi-2025-chuyen/III.2"
+   ]
+  },
+  "nt.rational_irrational": {
+   "name": "Số hữu tỉ, số vô tỉ",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "khtn-2025-vong2/IV"
+   ]
+  },
+  "comb.counting": {
+   "name": "Đếm",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/3a",
+    "ptnk-2023-chuyen/3b"
+   ]
+  },
+  "comb.double_counting": {
+   "name": "Đếm bằng hai cách",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "comb.counting"
+   ],
+   "problems": [
+    "hanoi-2025-chuyen/V.1",
+    "hanoi-2025-chuyen/V.2"
+   ]
+  },
+  "comb.extremal": {
+   "name": "Nguyên lý cực hạn, xét phần tử lớn/nhỏ nhất",
+   "level": "specialized_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/3b",
+    "ptnk-2024-chuyen/5a",
+    "hcm-2025-chuyen/5b",
+    "khtn-2025-vong2/IV",
+    "ptnk-2026-chuyen/5"
+   ]
+  },
+  "comb.pigeonhole": {
+   "name": "Nguyên lý Dirichlet",
+   "level": "specialized_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2024-chuyen/5b"
+   ]
+  },
+  "comb.graph_coloring": {
+   "name": "Tô màu, đồ thị (ngôn ngữ cặp/kề)",
+   "level": "olympiad_style",
+   "prerequisites": [
+    "comb.pigeonhole"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/5b"
+   ]
+  },
+  "comb.game_strategy": {
+   "name": "Trò chơi, chiến thuật",
+   "level": "olympiad_style",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2025-chuyen/5a",
+    "ptnk-2025-chuyen/5b"
+   ]
+  },
+  "comb.invariant": {
+   "name": "Bất biến (tô màu, chẵn lẻ)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "nt.parity"
+   ],
+   "problems": [
+    "ptnk-2025-chuyen/5a",
+    "ptnk-2025-chuyen/5b"
+   ]
+  },
+  "comb.construction": {
+   "name": "Xây dựng ví dụ",
+   "level": "specialized_grade9",
+   "prerequisites": [],
+   "problems": [
+    "hanoi-2025-chuyen/V.2",
+    "ptnk-2026-chuyen/5"
+   ]
+  },
+  "prob.classical": {
+   "name": "Xác suất cổ điển",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "comb.counting"
+   ],
+   "problems": [
+    "hcm-2025-chuyen/5a"
+   ]
+  },
+  "stat.read_chart": {
+   "name": "Đọc biểu đồ, tỉ lệ",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "hanoi-2025-chuyen/I.1"
+   ]
+  },
+  "word.motion": {
+   "name": "Bài toán chuyển động",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "alg.linear_equation"
+   ],
+   "problems": [
+    "hcm-2025-chuyen/2a"
+   ]
+  },
+  "geo.triangle_inequality": {
+   "name": "Bất đẳng thức tam giác",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "hcm-2025-chuyen/5b"
+   ]
+  },
+  "geo.trig_ratios": {
+   "name": "Tỉ số lượng giác góc nhọn",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "hcm-2025-chuyen/2b"
+   ]
+  },
+  "geo.trapezoid_area": {
+   "name": "Diện tích hình thang",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "hcm-2025-chuyen/2b"
+   ]
+  },
+  "geo.similar_triangles": {
+   "name": "Tam giác đồng dạng",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2024-chuyen/4a",
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2024-chuyen/4c",
+    "ptnk-2024-chuyen/4d",
+    "ptnk-2025-chuyen/4a",
+    "ptnk-2025-chuyen/4b",
+    "ptnk-2025-chuyen/4c",
+    "hcm-2025-chuyen/3a",
+    "hcm-2025-chuyen/3b",
+    "khtn-2025-vong2/III.1",
+    "khtn-2025-vong2/III.2",
+    "khtn-2025-vong2/III.3",
+    "ptnk-2026-chuyen/2"
+   ]
+  },
+  "geo.angle_bisector_theorem": {
+   "name": "Tính chất đường phân giác (tỉ số)",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "geo.similar_triangles"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/4c",
+    "hcm-2025-chuyen/3b"
+   ]
+  },
+  "geo.angle_bisector_external": {
+   "name": "Phân giác ngoài",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "geo.angle_bisector_theorem"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/5a",
+    "ptnk-2023-chuyen/5b",
+    "ptnk-2023-chuyen/5c",
+    "ptnk-2023-chuyen/5d"
+   ]
+  },
+  "geo.cyclic_quad": {
+   "name": "Tứ giác nội tiếp, góc nội tiếp",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/5a",
+    "ptnk-2023-chuyen/5b",
+    "ptnk-2023-chuyen/5c",
+    "ptnk-2023-chuyen/5d",
+    "ptnk-2024-chuyen/4a",
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2024-chuyen/4c",
+    "ptnk-2024-chuyen/4d",
+    "ptnk-2025-chuyen/4a",
+    "ptnk-2025-chuyen/4b",
+    "ptnk-2025-chuyen/4c",
+    "hcm-2025-chuyen/3a",
+    "hanoi-2025-chuyen/IV.1",
+    "hanoi-2025-chuyen/IV.2",
+    "hanoi-2025-chuyen/IV.3",
+    "ptnk-2026-chuyen/4"
+   ]
+  },
+  "geo.tangent_properties": {
+   "name": "Tiếp tuyến, góc tạo bởi tiếp tuyến và dây",
+   "level": "standard_grade9",
+   "prerequisites": [
+    "geo.cyclic_quad"
+   ],
+   "problems": [
+    "ptnk-2025-chuyen/4a",
+    "ptnk-2025-chuyen/4b",
+    "ptnk-2025-chuyen/4c",
+    "hcm-2025-chuyen/3b",
+    "khtn-2025-vong2/III.1",
+    "khtn-2025-vong2/III.2",
+    "khtn-2025-vong2/III.3"
+   ]
+  },
+  "geo.incircle_tangents": {
+   "name": "Đường tròn nội tiếp, tiếp điểm",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "geo.tangent_properties"
+   ],
+   "problems": [
+    "ptnk-2023-chuyen/5a",
+    "ptnk-2023-chuyen/5b",
+    "ptnk-2023-chuyen/5c",
+    "ptnk-2023-chuyen/5d",
+    "ptnk-2026-chuyen/4"
+   ]
+  },
+  "geo.power_of_point": {
+   "name": "Phương tích (hệ thức MA·MB = MC·MD)",
+   "level": "specialized_grade9",
+   "prerequisites": [
+    "geo.similar_triangles",
+    "geo.cyclic_quad"
+   ],
+   "problems": [
+    "ptnk-2024-chuyen/4a",
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2024-chuyen/4c",
+    "ptnk-2024-chuyen/4d",
+    "ptnk-2026-chuyen/4"
+   ]
+  },
+  "geo.orthocenter": {
+   "name": "Trực tâm, đường cao",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2024-chuyen/4a",
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2024-chuyen/4c",
+    "ptnk-2024-chuyen/4d",
+    "hanoi-2025-chuyen/IV.1",
+    "hanoi-2025-chuyen/IV.2",
+    "hanoi-2025-chuyen/IV.3",
+    "khtn-2025-vong2/III.1",
+    "khtn-2025-vong2/III.2",
+    "khtn-2025-vong2/III.3"
+   ]
+  },
+  "geo.midpoint_parallel": {
+   "name": "Trung điểm, đường trung bình, song song",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/5d",
+    "hcm-2025-chuyen/3a",
+    "hanoi-2025-chuyen/IV.1",
+    "hanoi-2025-chuyen/IV.2",
+    "hanoi-2025-chuyen/IV.3"
+   ]
+  },
+  "geo.perpendicular_bisector": {
+   "name": "Đường trung trực",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2025-chuyen/4a",
+    "ptnk-2025-chuyen/4b",
+    "ptnk-2025-chuyen/4c"
+   ]
+  },
+  "geo.reflection": {
+   "name": "Phép đối xứng trục",
+   "level": "specialized_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2024-chuyen/4d"
+   ]
+  },
+  "geo.isosceles_trapezoid": {
+   "name": "Hình thang cân",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/5c"
+   ]
+  },
+  "geo.centroid": {
+   "name": "Trọng tâm",
+   "level": "standard_grade9",
+   "prerequisites": [],
+   "problems": [
+    "ptnk-2023-chuyen/5c"
+   ]
+  }
+ },
+ "techniques": {
+  "tech.change_of_variables": {
+   "name": "Đặt ẩn phụ",
+   "description": "Replace a repeated sub-expression by a new unknown.",
+   "problems": [
+    "ptnk-2023-chuyen/1",
+    "hanoi-2025-chuyen/II.2"
+   ],
+   "with_concepts": {
+    "alg.system_nonlinear": 1,
+    "alg.vieta": 1,
+    "alg.rational_expressions": 1,
+    "nt.diophantine": 1,
+    "alg.factorization": 1
+   }
+  },
+  "tech.sum_product_system": {
+   "name": "Đưa về tổng – tích (Vi-ét đảo)",
+   "description": "Two unknowns with known sum and product are the roots of a quadratic.",
+   "problems": [
+    "ptnk-2023-chuyen/1"
+   ],
+   "with_concepts": {
+    "alg.system_nonlinear": 1,
+    "alg.vieta": 1,
+    "alg.rational_expressions": 1
+   }
+  },
+  "tech.qm_am_bound": {
+   "name": "Bất đẳng thức (p+q+r)² ≤ 3(p²+q²+r²)",
+   "description": "Bound a sum by the sum of squares (and its relatives).",
+   "problems": [
+    "ptnk-2023-chuyen/2a",
+    "ptnk-2023-chuyen/2b",
+    "ptnk-2026-chuyen/2"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 2,
+    "alg.square_sum_nonneg": 2,
+    "geo.similar_triangles": 1,
+    "alg.am_gm": 1
+   }
+  },
+  "tech.am_gm_two": {
+   "name": "Cô-si cho hai số",
+   "description": "2√(xy) ≤ x + y for non-negative x, y.",
+   "problems": [
+    "ptnk-2023-chuyen/2b",
+    "hanoi-2025-chuyen/III.1b"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 2,
+    "alg.square_sum_nonneg": 1,
+    "alg.am_gm": 1
+   }
+  },
+  "tech.use_constraint_reciprocal": {
+   "name": "Biến đổi giả thiết về dạng nghịch đảo",
+   "description": "ab+bc+ca=abc ⇔ 1/a+1/b+1/c=1.",
+   "problems": [
+    "ptnk-2023-chuyen/2a",
+    "ptnk-2023-chuyen/2b"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 2,
+    "alg.square_sum_nonneg": 2
+   }
+  },
+  "tech.use_constraint_substitution": {
+   "name": "Dùng giả thiết để thế",
+   "description": "Substitute the condition into the expression to simplify it.",
+   "problems": [
+    "hcm-2025-chuyen/1a",
+    "hanoi-2025-chuyen/I.2",
+    "khtn-2025-vong2/I.2"
+   ],
+   "with_concepts": {
+    "alg.radicals": 1,
+    "alg.identities": 3,
+    "alg.rational_expressions": 1,
+    "alg.system_nonlinear": 1
+   }
+  },
+  "tech.double_counting": {
+   "name": "Đếm bằng hai cách",
+   "description": "Count the same quantity by rows and by columns (or from both sides).",
+   "problems": [
+    "ptnk-2023-chuyen/3a",
+    "hanoi-2025-chuyen/V.1",
+    "hanoi-2025-chuyen/V.2",
+    "ptnk-2026-chuyen/5"
+   ],
+   "with_concepts": {
+    "comb.counting": 1,
+    "nt.divisibility": 2,
+    "comb.double_counting": 2,
+    "comb.construction": 2,
+    "alg.system_linear": 1,
+    "comb.extremal": 1
+   }
+  },
+  "tech.parity_mod": {
+   "name": "Xét chẵn lẻ / số dư",
+   "description": "Reduce modulo 2, 3, 4, … to restrict the cases.",
+   "problems": [
+    "ptnk-2023-chuyen/3a",
+    "ptnk-2023-chuyen/4a",
+    "ptnk-2025-chuyen/3a",
+    "hcm-2025-chuyen/4b",
+    "hanoi-2025-chuyen/II.1",
+    "hanoi-2025-chuyen/V.1",
+    "ptnk-2026-chuyen/3"
+   ],
+   "with_concepts": {
+    "comb.counting": 1,
+    "nt.divisibility": 3,
+    "nt.parity": 2,
+    "nt.modular_arithmetic": 4,
+    "nt.quadratic_forms": 1,
+    "alg.identities": 1,
+    "comb.double_counting": 1,
+    "alg.factorization": 1
+   }
+  },
+  "tech.bounding": {
+   "name": "Chặn (đánh giá)",
+   "description": "Bound the quantity to leave finitely many cases.",
+   "problems": [
+    "ptnk-2023-chuyen/3b",
+    "ptnk-2025-chuyen/3b",
+    "hanoi-2025-chuyen/III.2",
+    "khtn-2025-vong2/II.1",
+    "khtn-2025-vong2/II.2"
+   ],
+   "with_concepts": {
+    "comb.counting": 1,
+    "comb.extremal": 1,
+    "nt.divisibility": 2,
+    "nt.rationals_fractions": 1,
+    "nt.gcd": 1,
+    "nt.diophantine": 1,
+    "alg.factorization": 1,
+    "nt.exponential": 1,
+    "alg.inequality_basic": 1,
+    "alg.am_gm": 1
+   }
+  },
+  "tech.contradiction": {
+   "name": "Phản chứng",
+   "description": "Assume the opposite and reach a contradiction.",
+   "problems": [
+    "ptnk-2023-chuyen/3b",
+    "ptnk-2023-chuyen/4c",
+    "hcm-2025-chuyen/5b",
+    "khtn-2025-vong2/IV"
+   ],
+   "with_concepts": {
+    "comb.counting": 1,
+    "comb.extremal": 3,
+    "nt.perfect_squares": 1,
+    "alg.inequality_basic": 1,
+    "geo.triangle_inequality": 1,
+    "nt.rational_irrational": 1
+   }
+  },
+  "tech.construction": {
+   "name": "Chỉ ra ví dụ",
+   "description": "Exhibit an object that attains the bound or satisfies the conditions.",
+   "problems": [
+    "ptnk-2023-chuyen/3b",
+    "ptnk-2025-chuyen/2a",
+    "hcm-2025-chuyen/4a",
+    "hanoi-2025-chuyen/V.2",
+    "khtn-2025-vong2/IV",
+    "ptnk-2026-chuyen/5"
+   ],
+   "with_concepts": {
+    "comb.counting": 1,
+    "comb.extremal": 3,
+    "alg.system_linear": 2,
+    "nt.quadratic_forms": 1,
+    "comb.double_counting": 1,
+    "comb.construction": 2,
+    "nt.rational_irrational": 1
+   }
+  },
+  "tech.subtract_equations": {
+   "name": "Trừ vế theo vế",
+   "description": "Subtract equations of a symmetric system to factor out x − y.",
+   "problems": [
+    "ptnk-2023-chuyen/4b",
+    "ptnk-2024-chuyen/1.1",
+    "ptnk-2026-chuyen/1"
+   ],
+   "with_concepts": {
+    "nt.divisibility": 1,
+    "alg.factorization": 2,
+    "nt.parity": 1,
+    "alg.system_symmetric": 1,
+    "alg.square_sum_nonneg": 2,
+    "alg.discriminant": 1,
+    "alg.vieta": 1
+   }
+  },
+  "tech.factor_and_case": {
+   "name": "Phân tích nhân tử rồi xét trường hợp",
+   "description": "A product equal to 0 (or to a known number) splits into cases.",
+   "problems": [
+    "ptnk-2023-chuyen/4b",
+    "ptnk-2024-chuyen/1.1",
+    "ptnk-2024-chuyen/1.2",
+    "hcm-2025-chuyen/5a",
+    "hanoi-2025-chuyen/III.1a",
+    "khtn-2025-vong2/II.1",
+    "ptnk-2026-chuyen/1",
+    "ptnk-2026-chuyen/3"
+   ],
+   "with_concepts": {
+    "nt.divisibility": 2,
+    "alg.factorization": 5,
+    "nt.parity": 1,
+    "alg.system_symmetric": 1,
+    "alg.square_sum_nonneg": 2,
+    "alg.discriminant": 2,
+    "alg.vieta": 3,
+    "alg.radicals_domain": 1,
+    "prob.classical": 1,
+    "alg.identities": 1,
+    "nt.diophantine": 1,
+    "nt.exponential": 1,
+    "nt.modular_arithmetic": 1
+   }
+  },
+  "tech.case_analysis": {
+   "name": "Xét trường hợp",
+   "description": "Split by sign, parity, remainder or configuration.",
+   "problems": [
+    "ptnk-2023-chuyen/4b",
+    "ptnk-2024-chuyen/1.2",
+    "ptnk-2025-chuyen/3a",
+    "hcm-2025-chuyen/2a",
+    "hanoi-2025-chuyen/II.1",
+    "hanoi-2025-chuyen/III.2",
+    "khtn-2025-vong2/IV",
+    "ptnk-2026-chuyen/3"
+   ],
+   "with_concepts": {
+    "nt.divisibility": 3,
+    "alg.factorization": 2,
+    "nt.parity": 2,
+    "alg.discriminant": 1,
+    "alg.vieta": 1,
+    "alg.radicals_domain": 1,
+    "nt.modular_arithmetic": 3,
+    "word.motion": 1,
+    "alg.linear_equation": 1,
+    "nt.rationals_fractions": 1,
+    "nt.gcd": 1,
+    "nt.rational_irrational": 1,
+    "comb.extremal": 1
+   }
+  },
+  "tech.squeeze_between_squares": {
+   "name": "Kẹp giữa hai số chính phương liên tiếp",
+   "description": "k² < N < (k+1)² ⇒ N is not a square.",
+   "problems": [
+    "ptnk-2023-chuyen/4c"
+   ],
+   "with_concepts": {
+    "nt.perfect_squares": 1,
+    "alg.inequality_basic": 1
+   }
+  },
+  "tech.right_angle_concyclic": {
+   "name": "Hai góc vuông cùng nhìn một đoạn ⇒ nội tiếp",
+   "description": "Points seeing a segment at 90° lie on the circle with that diameter.",
+   "problems": [
+    "ptnk-2023-chuyen/5a",
+    "ptnk-2023-chuyen/5b"
+   ],
+   "with_concepts": {
+    "geo.incircle_tangents": 2,
+    "geo.cyclic_quad": 2,
+    "geo.angle_bisector_external": 2
+   }
+  },
+  "tech.angle_chasing": {
+   "name": "Biến đổi góc",
+   "description": "Chain equal angles (inscribed, tangent–chord, parallel lines).",
+   "problems": [
+    "ptnk-2023-chuyen/5b",
+    "ptnk-2023-chuyen/5c",
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2025-chuyen/4a",
+    "ptnk-2025-chuyen/4b",
+    "ptnk-2025-chuyen/4c",
+    "hcm-2025-chuyen/3a",
+    "hanoi-2025-chuyen/IV.2",
+    "hanoi-2025-chuyen/IV.3",
+    "khtn-2025-vong2/III.1",
+    "khtn-2025-vong2/III.2",
+    "khtn-2025-vong2/III.3",
+    "ptnk-2026-chuyen/4"
+   ],
+   "with_concepts": {
+    "geo.incircle_tangents": 3,
+    "geo.cyclic_quad": 10,
+    "geo.angle_bisector_external": 2,
+    "geo.isosceles_trapezoid": 1,
+    "geo.centroid": 1,
+    "geo.orthocenter": 6,
+    "geo.power_of_point": 2,
+    "geo.similar_triangles": 8,
+    "geo.reflection": 1,
+    "geo.perpendicular_bisector": 3,
+    "geo.tangent_properties": 6,
+    "geo.midpoint_parallel": 3
+   }
+  },
+  "tech.midline_symmetry": {
+   "name": "Đường trung bình, tính đối xứng của hình thang cân",
+   "description": "Use midpoints and the symmetry axis.",
+   "problems": [
+    "ptnk-2023-chuyen/5c"
+   ],
+   "with_concepts": {
+    "geo.incircle_tangents": 1,
+    "geo.cyclic_quad": 1,
+    "geo.angle_bisector_external": 1,
+    "geo.isosceles_trapezoid": 1,
+    "geo.centroid": 1
+   }
+  },
+  "tech.known_lemma": {
+   "name": "Dùng bổ đề quen thuộc",
+   "description": "Prove or quote a standard configuration lemma first.",
+   "problems": [
+    "ptnk-2023-chuyen/5d"
+   ],
+   "with_concepts": {
+    "geo.incircle_tangents": 1,
+    "geo.cyclic_quad": 1,
+    "geo.angle_bisector_external": 1,
+    "geo.midpoint_parallel": 1
+   }
+  },
+  "tech.auxiliary_parallel": {
+   "name": "Kẻ đường phụ song song",
+   "description": "Draw a parallel line to transfer a ratio or a midpoint.",
+   "problems": [
+    "ptnk-2023-chuyen/5d"
+   ],
+   "with_concepts": {
+    "geo.incircle_tangents": 1,
+    "geo.cyclic_quad": 1,
+    "geo.angle_bisector_external": 1,
+    "geo.midpoint_parallel": 1
+   }
+  },
+  "tech.rewrite_with_symmetric_sums": {
+   "name": "Biểu diễn qua tổng và tích (s, p)",
+   "description": "Rewrite symmetric expressions in a+b+c, ab+bc+ca (or S, P).",
+   "problems": [
+    "ptnk-2024-chuyen/2",
+    "ptnk-2025-chuyen/1b"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 2,
+    "alg.square_sum_nonneg": 1,
+    "alg.identities": 2,
+    "alg.vieta": 1
+   }
+  },
+  "tech.square_completion": {
+   "name": "Hoàn thành bình phương",
+   "description": "Write as a square plus a constant to bound or solve.",
+   "problems": [
+    "ptnk-2024-chuyen/2",
+    "ptnk-2025-chuyen/1a",
+    "ptnk-2025-chuyen/1b",
+    "ptnk-2025-chuyen/2b",
+    "hcm-2025-chuyen/2b",
+    "ptnk-2026-chuyen/2"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 2,
+    "alg.square_sum_nonneg": 1,
+    "alg.identities": 2,
+    "alg.discriminant": 1,
+    "alg.vieta": 1,
+    "alg.system_linear": 1,
+    "alg.quadratic_extremum": 2,
+    "geo.trapezoid_area": 1,
+    "geo.trig_ratios": 1,
+    "geo.similar_triangles": 1,
+    "alg.am_gm": 1
+   }
+  },
+  "tech.characteristic_roots": {
+   "name": "Nghiệm của phương trình đặc trưng",
+   "description": "The two bases are roots of t² − 4t + 1 = 0.",
+   "problems": [
+    "ptnk-2024-chuyen/3a"
+   ],
+   "with_concepts": {
+    "alg.radicals": 1,
+    "alg.recurrence": 1,
+    "alg.vieta": 1
+   }
+  },
+  "tech.periodicity_mod": {
+   "name": "Tính tuần hoàn theo modulo",
+   "description": "List residues until they repeat.",
+   "problems": [
+    "ptnk-2024-chuyen/3b",
+    "ptnk-2024-chuyen/3c"
+   ],
+   "with_concepts": {
+    "nt.modular_arithmetic": 2,
+    "alg.recurrence": 2
+   }
+  },
+  "tech.induction": {
+   "name": "Quy nạp",
+   "description": "Prove for all n from a base case and a step.",
+   "problems": [
+    "ptnk-2024-chuyen/3b"
+   ],
+   "with_concepts": {
+    "nt.modular_arithmetic": 1,
+    "alg.recurrence": 1
+   }
+  },
+  "tech.parallelogram_from_orthocenter": {
+   "name": "Hình bình hành từ trực tâm và đường kính",
+   "description": "BHCK is a parallelogram when AK is a diameter.",
+   "problems": [
+    "ptnk-2024-chuyen/4a",
+    "hanoi-2025-chuyen/IV.1"
+   ],
+   "with_concepts": {
+    "geo.cyclic_quad": 2,
+    "geo.orthocenter": 2,
+    "geo.power_of_point": 1,
+    "geo.similar_triangles": 1,
+    "geo.midpoint_parallel": 1
+   }
+  },
+  "tech.power_of_point": {
+   "name": "Phương tích / hệ thức tích đoạn thẳng",
+   "description": "Products of segments through a point on a circle are equal.",
+   "problems": [
+    "ptnk-2024-chuyen/4a",
+    "ptnk-2026-chuyen/4"
+   ],
+   "with_concepts": {
+    "geo.cyclic_quad": 2,
+    "geo.orthocenter": 1,
+    "geo.power_of_point": 2,
+    "geo.similar_triangles": 1,
+    "geo.incircle_tangents": 1
+   }
+  },
+  "tech.reflection": {
+   "name": "Đối xứng trục",
+   "description": "Reflect a point or a circle across a line.",
+   "problems": [
+    "ptnk-2024-chuyen/4b",
+    "ptnk-2024-chuyen/4d"
+   ],
+   "with_concepts": {
+    "geo.cyclic_quad": 2,
+    "geo.orthocenter": 2,
+    "geo.power_of_point": 2,
+    "geo.similar_triangles": 2,
+    "geo.reflection": 2
+   }
+  },
+  "tech.similar_triangles": {
+   "name": "Tam giác đồng dạng",
+   "description": "Find two similar triangles to transfer angles or ratios.",
+   "problems": [
+    "ptnk-2024-chuyen/4c",
+    "ptnk-2025-chuyen/4a",
+    "ptnk-2025-chuyen/4b",
+    "ptnk-2025-chuyen/4c",
+    "hcm-2025-chuyen/3a",
+    "hcm-2025-chuyen/3b",
+    "khtn-2025-vong2/III.1",
+    "khtn-2025-vong2/III.2",
+    "khtn-2025-vong2/III.3",
+    "ptnk-2026-chuyen/4"
+   ],
+   "with_concepts": {
+    "geo.cyclic_quad": 6,
+    "geo.orthocenter": 4,
+    "geo.power_of_point": 2,
+    "geo.similar_triangles": 9,
+    "geo.angle_bisector_theorem": 2,
+    "geo.perpendicular_bisector": 3,
+    "geo.tangent_properties": 7,
+    "geo.midpoint_parallel": 1,
+    "geo.incircle_tangents": 1
+   }
+  },
+  "tech.angle_bisector_ratio": {
+   "name": "Tính chất tỉ số của phân giác",
+   "description": "A point divides the opposite side in the ratio of the adjacent sides.",
+   "problems": [
+    "ptnk-2024-chuyen/4c"
+   ],
+   "with_concepts": {
+    "geo.cyclic_quad": 1,
+    "geo.orthocenter": 1,
+    "geo.power_of_point": 1,
+    "geo.similar_triangles": 1,
+    "geo.angle_bisector_theorem": 1
+   }
+  },
+  "tech.isosceles_trapezoid_cyclic": {
+   "name": "Hình thang cân thì nội tiếp",
+   "description": "Symmetry gives an isosceles trapezoid, which is cyclic.",
+   "problems": [
+    "ptnk-2024-chuyen/4d"
+   ],
+   "with_concepts": {
+    "geo.cyclic_quad": 1,
+    "geo.orthocenter": 1,
+    "geo.power_of_point": 1,
+    "geo.similar_triangles": 1,
+    "geo.reflection": 1
+   }
+  },
+  "tech.extremal_choice": {
+   "name": "Chọn trường hợp xấu nhất",
+   "description": "Apply the hypothesis to the most extreme choice.",
+   "problems": [
+    "ptnk-2024-chuyen/5a"
+   ],
+   "with_concepts": {
+    "comb.extremal": 1,
+    "alg.inequality_basic": 1
+   }
+  },
+  "tech.pairing_differences": {
+   "name": "Ghép cặp hiệu",
+   "description": "Pair terms so each difference is bounded below.",
+   "problems": [
+    "ptnk-2024-chuyen/5a"
+   ],
+   "with_concepts": {
+    "comb.extremal": 1,
+    "alg.inequality_basic": 1
+   }
+  },
+  "tech.pigeonhole": {
+   "name": "Nguyên lý Dirichlet",
+   "description": "More objects than boxes forces a box with two.",
+   "problems": [
+    "ptnk-2024-chuyen/5b"
+   ],
+   "with_concepts": {
+    "comb.pigeonhole": 1,
+    "nt.perfect_squares": 1,
+    "comb.graph_coloring": 1
+   }
+  },
+  "tech.forced_chain": {
+   "name": "Chuỗi ép buộc",
+   "description": "Follow placements forced by the condition until a contradiction.",
+   "problems": [
+    "ptnk-2024-chuyen/5b"
+   ],
+   "with_concepts": {
+    "comb.pigeonhole": 1,
+    "nt.perfect_squares": 1,
+    "comb.graph_coloring": 1
+   }
+  },
+  "tech.conjugate_multiplication": {
+   "name": "Nhân liên hợp",
+   "description": "(x+√(x²+1))(−x+√(x²+1)) = 1.",
+   "problems": [
+    "ptnk-2025-chuyen/1c"
+   ],
+   "with_concepts": {
+    "alg.radicals": 1,
+    "alg.vieta": 1,
+    "alg.function_monotonic": 1
+   }
+  },
+  "tech.monotonicity": {
+   "name": "Đơn điệu ⇒ duy nhất",
+   "description": "An increasing expression takes each value once.",
+   "problems": [
+    "ptnk-2025-chuyen/1c",
+    "khtn-2025-vong2/I.1"
+   ],
+   "with_concepts": {
+    "alg.radicals": 1,
+    "alg.vieta": 1,
+    "alg.function_monotonic": 2,
+    "alg.radicals_domain": 1
+   }
+  },
+  "tech.one_parameter_family": {
+   "name": "Họ nghiệm một tham số",
+   "description": "Express all solutions with one parameter, then optimise it.",
+   "problems": [
+    "ptnk-2025-chuyen/2b"
+   ],
+   "with_concepts": {
+    "alg.system_linear": 1,
+    "alg.quadratic_extremum": 1
+   }
+  },
+  "tech.substitution_m_kn": {
+   "name": "Đặt m = kn",
+   "description": "Use the divisibility to write one unknown as a multiple of the other.",
+   "problems": [
+    "ptnk-2025-chuyen/3b"
+   ],
+   "with_concepts": {
+    "nt.divisibility": 1
+   }
+  },
+  "tech.gcd_decomposition": {
+   "name": "Đặt m = dx, n = dy với (x, y) = 1",
+   "description": "Split off the gcd and use coprimality.",
+   "problems": [
+    "ptnk-2025-chuyen/3c",
+    "hanoi-2025-chuyen/III.2"
+   ],
+   "with_concepts": {
+    "nt.gcd": 2,
+    "nt.divisibility": 2,
+    "nt.rationals_fractions": 1
+   }
+  },
+  "tech.sweep_strategy": {
+   "name": "Chiến thuật quét",
+   "description": "Check cells column by column so the target cannot escape.",
+   "problems": [
+    "ptnk-2025-chuyen/5a",
+    "ptnk-2025-chuyen/5b"
+   ],
+   "with_concepts": {
+    "comb.game_strategy": 2,
+    "comb.invariant": 2
+   }
+  },
+  "tech.parity_coloring": {
+   "name": "Tô màu bàn cờ",
+   "description": "A step to an adjacent cell always changes colour.",
+   "problems": [
+    "ptnk-2025-chuyen/5a",
+    "ptnk-2025-chuyen/5b"
+   ],
+   "with_concepts": {
+    "comb.game_strategy": 2,
+    "comb.invariant": 2
+   }
+  },
+  "tech.perfect_square_under_root": {
+   "name": "Nhận ra bình phương dưới căn",
+   "description": "After substitution the radicand becomes (…)².",
+   "problems": [
+    "hcm-2025-chuyen/1a"
+   ],
+   "with_concepts": {
+    "alg.radicals": 1,
+    "alg.identities": 1
+   }
+  },
+  "tech.eliminate_parameter": {
+   "name": "Khử tham số",
+   "description": "Combine the equations to eliminate the extra unknown.",
+   "problems": [
+    "hcm-2025-chuyen/1b"
+   ],
+   "with_concepts": {
+    "alg.vieta": 1
+   }
+  },
+  "tech.set_unknown": {
+   "name": "Đặt ẩn và lập phương trình",
+   "description": "Choose an unknown with its condition and translate the story.",
+   "problems": [
+    "hcm-2025-chuyen/2a",
+    "hcm-2025-chuyen/2b",
+    "hanoi-2025-chuyen/I.1"
+   ],
+   "with_concepts": {
+    "word.motion": 1,
+    "alg.linear_equation": 2,
+    "geo.trapezoid_area": 1,
+    "geo.trig_ratios": 1,
+    "alg.quadratic_extremum": 1,
+    "stat.read_chart": 1
+   }
+  },
+  "tech.small_case_search": {
+   "name": "Thử các trường hợp nhỏ",
+   "description": "Search small values systematically.",
+   "problems": [
+    "hcm-2025-chuyen/4a"
+   ],
+   "with_concepts": {
+    "nt.quadratic_forms": 1
+   }
+  },
+  "tech.brahmagupta_identity": {
+   "name": "Hằng đẳng thức Brahmagupta",
+   "description": "(a²+kb²)(c²+kd²) = (ac∓kbd)² + k(ad±bc)².",
+   "problems": [
+    "hcm-2025-chuyen/4b"
+   ],
+   "with_concepts": {
+    "nt.quadratic_forms": 1,
+    "nt.modular_arithmetic": 1,
+    "alg.identities": 1
+   }
+  },
+  "tech.cross_ratio_harmonic": {
+   "name": "Tỉ số đoạn thẳng (hàng điểm điều hòa)",
+   "description": "Compare two ratios on a line through similar triangles.",
+   "problems": [
+    "hcm-2025-chuyen/3b"
+   ],
+   "with_concepts": {
+    "geo.tangent_properties": 1,
+    "geo.similar_triangles": 1,
+    "geo.angle_bisector_theorem": 1
+   }
+  },
+  "tech.vieta_integer_roots": {
+   "name": "Vi-ét cho nghiệm nguyên",
+   "description": "Eliminate the parameter between S and P, factor, list divisors.",
+   "problems": [
+    "hcm-2025-chuyen/5a"
+   ],
+   "with_concepts": {
+    "prob.classical": 1,
+    "alg.vieta": 1,
+    "nt.divisibility": 1
+   }
+  },
+  "tech.fibonacci_growth": {
+   "name": "Tăng ít nhất như Fibonacci",
+   "description": "Without a triangle the sorted values grow like Fibonacci numbers.",
+   "problems": [
+    "hcm-2025-chuyen/5b"
+   ],
+   "with_concepts": {
+    "comb.extremal": 1,
+    "geo.triangle_inequality": 1
+   }
+  },
+  "tech.shift_invariance": {
+   "name": "Tịnh tiến không đổi hiệu",
+   "description": "Differences are unchanged by a + t, b + t, c + t; choose t to minimise.",
+   "problems": [
+    "hanoi-2025-chuyen/III.1b"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 1,
+    "alg.am_gm": 1
+   }
+  },
+  "tech.divisor_cases": {
+   "name": "Xét ước",
+   "description": "A divisibility A | B with |A| > |B| forces B = 0.",
+   "problems": [
+    "hanoi-2025-chuyen/II.2"
+   ],
+   "with_concepts": {
+    "nt.diophantine": 1,
+    "alg.factorization": 1
+   }
+  },
+  "tech.orthocenter_of_auxiliary_triangle": {
+   "name": "Trực tâm của tam giác phụ",
+   "description": "Spot that a point is the orthocenter of a helper triangle.",
+   "problems": [
+    "hanoi-2025-chuyen/IV.2"
+   ],
+   "with_concepts": {
+    "geo.orthocenter": 1,
+    "geo.cyclic_quad": 1,
+    "geo.midpoint_parallel": 1
+   }
+  },
+  "tech.radical_axis_like_concurrency": {
+   "name": "Đồng quy qua các dây chung",
+   "description": "Common chords of three circles are concurrent (radical centre).",
+   "problems": [
+    "hanoi-2025-chuyen/IV.3"
+   ],
+   "with_concepts": {
+    "geo.orthocenter": 1,
+    "geo.cyclic_quad": 1,
+    "geo.midpoint_parallel": 1
+   }
+  },
+  "tech.equal_differences": {
+   "name": "Hai hiệu bằng nhau",
+   "description": "Notice the two sides differ by the same quantity.",
+   "problems": [
+    "khtn-2025-vong2/I.1"
+   ],
+   "with_concepts": {
+    "alg.radicals_domain": 1,
+    "alg.function_monotonic": 1
+   }
+  },
+  "tech.cube_identity": {
+   "name": "Hằng đẳng thức lập phương",
+   "description": "Rewrite as (…)³ = (…)³.",
+   "problems": [
+    "khtn-2025-vong2/I.2"
+   ],
+   "with_concepts": {
+    "alg.system_nonlinear": 1,
+    "alg.identities": 1
+   }
+  },
+  "tech.cauchy_schwarz_engel": {
+   "name": "Bunhiacopxki dạng Engel",
+   "description": "Σ a²/b ≥ (Σ a)²/Σ b.",
+   "problems": [
+    "khtn-2025-vong2/II.2"
+   ],
+   "with_concepts": {
+    "alg.inequality_basic": 1,
+    "alg.am_gm": 1
+   }
+  }
+ }
+}
