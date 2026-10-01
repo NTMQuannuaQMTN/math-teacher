@@ -50,10 +50,24 @@ const CJK_GLOSSARY: [RegExp, string][] = [
   [/[：]/gu, ": "],
 ];
 
-/** Replaces known Chinese insertions in Vietnamese text and tidies the spacing they leave. */
+/** English / Portuguese words Nemotron drops into Vietnamese prose (EXP-010 review). Maths stays untouched. */
+const WORD_GLOSSARY: [RegExp, string][] = [
+  [/\bsemelhantes?\b/giu, "đồng dạng"],
+  [/\bquais\b/giu, "những"],
+  [/\bfactors?\b/giu, "nhân tử"],
+  [/(?<=\p{L})Known\b/gu, " đã biết"],
+  [/\bKnown\b/gu, "đã biết"],
+];
+
+/** Replaces known foreign insertions in Vietnamese text and tidies the spacing they leave. */
 export function patchVietnamese(text: string): string {
-  if (!CJK.test(text)) return text;
   let out = text;
+  // Global regexes keep lastIndex between .test() calls: reset it, or a later string can be missed.
+  if (WORD_GLOSSARY.some(([re]) => ((re.lastIndex = 0), re.test(text)))) {
+    // Only outside $…$: a variable could be called "factor" in maths.
+    out = out.replace(/(\$[^$]*\$)|([^$]+)/g, (m, math: string | undefined) => (math ? m : WORD_GLOSSARY.reduce((t, [re, vi]) => t.replace(re, vi), m)));
+  }
+  if (!CJK.test(out)) return out;
   for (const [re, vi] of CJK_GLOSSARY) out = out.replace(re, vi);
   return out.replace(/[ \t]{2,}/g, " ").replace(/ ([.,?:])/g, "$1").replace(/ +$/gm, "");
 }

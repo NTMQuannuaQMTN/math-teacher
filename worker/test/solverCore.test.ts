@@ -433,8 +433,16 @@ describe("language hygiene", () => {
     ["bất đẳng thức vừa得到.", "bất đẳng thức vừa có."],
     ["ta sẽ得到什么样的表达式？", "ta sẽ được biểu thức nào?"],
     ["thay t vào một phương trình gốc để求 a+b", "thay t vào một phương trình gốc để tìm a+b"],
+    ["Chúng ta sẽ chứng minh hai cặp tam giác semelhante", "Chúng ta sẽ chứng minh hai cặp tam giác đồng dạng"],
+    ["Thay giá trịKnown vào phương trình", "Thay giá trị đã biết vào phương trình"],
+    ["hủy factors chung, giữ $factor$", "hủy nhân tử chung, giữ $factor$"],
   ])("patchVietnamese(%s)", (input, expected) => {
     expect(patchVietnamese(input)).toBe(expected);
+  });
+
+  it("patches every string, not just the first (global regex state)", () => {
+    expect(patchVietnamese("một đoạn văn dài có chữ semelhante ở cuối câu này")).toMatch(/đồng dạng/);
+    expect(patchVietnamese("tam giác semelhante")).toBe("tam giác đồng dạng");
   });
 
   it("patches known Chinese words without asking for a retry", () => {

@@ -39,7 +39,7 @@ const ADVISORY: Marker[] = [
   { re: /bunh?iac[oô]p?xki|bunyakovsky|cauchy[\s–-]*schwarz|jensen|chebyshev|trê-?bư-?sép|schur|h[oö]lder|minkowski/iu, label: "a named olympiad inequality" },
   { re: /≡|\\equiv|\\pmod|\bmod\b|đồng dư/iu, label: "congruence notation" },
   { re: /quy nạp|induction/iu, label: "mathematical induction" },
-  { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson/iu, label: "a number-theory theorem beyond Grade 9" },
+  { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson|chinese remainder|số dư trung hoa|\bCRT\b/iu, label: "a number-theory theorem beyond Grade 9" },
 ];
 
 const COORDINATES_IN_TEXT = /tọa độ|toạ độ|hệ trục|\bOxy\b|coordinate/iu;
