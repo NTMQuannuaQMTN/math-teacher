@@ -50,9 +50,10 @@ export class LocalJsonModel implements JsonModel {
     const body = {
       model: this.model,
       messages,
-      max_tokens: this.options.maxTokens ?? (this.hosted ? 16_000 : 12_000),
+      // Hosted: a normal lesson is 2–4K tokens; a lower cap abandons a runaway (looping) attempt quickly.
+      max_tokens: this.options.maxTokens ?? (this.hosted ? 6_000 : 12_000),
       // Qwen3 recommended sampling: thinking 0.6 / 0.95, non-thinking 0.7 / 0.8.
-      temperature: this.options.temperature ?? (thinking ? 0.6 : 0.7),
+      temperature: this.options.temperature ?? (this.hosted ? 0.3 : thinking ? 0.6 : 0.7),
       top_p: this.options.topP ?? (thinking ? 0.95 : 0.8),
       ...(this.options.presencePenalty ? { presence_penalty: this.options.presencePenalty } : {}),
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
