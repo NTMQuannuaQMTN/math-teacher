@@ -47,7 +47,8 @@ be wrong.
 | Grade level | Method-selection policy per problem type in the curriculum and prompt; never mention an advanced alternative | `solver/curriculum.ts`, `prompts.ts` |
 | Language | Vietnamese hygiene: Chinese/English/Portuguese insertions replaced; undiacritized body text → retry; undiacritized list items and no-op notes dropped | `shared/src/language.ts` |
 | Format | "Dạng bài" (problem type) row; the existing sections map onto Nhận dạng / Hướng giải / Lời giải / Kết luận / Kiểm tra | `LessonParts.tsx` |
-| Prompt | solver-v2.0: method policy added, duplicated paragraph removed | `prompts.ts` |
+| Prompt | solver-v2.0: method policy added, duplicated paragraph removed. solver-v2.1: per-tier lesson size in the user message (simple: 2–4 steps and 2–3 hints; complex: one check per part) | `prompts.ts` |
+| Output length | The size target per tier cuts unnecessary output on simple problems (fewer tokens means less waiting) | `prompts.ts`, `pipeline.ts` |
 | Tooling | Effort variants, per-row attempt log and sleep detection in the benchmark; `build-results`, `replay-attempts`, `grade-level-scan`, `stream-check`, `probe-hosted` | `worker/scripts/` |
 
 ## 4. Configurations tested

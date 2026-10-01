@@ -9,8 +9,9 @@
  * regenerated.
  */
 import type { Curriculum } from "./curriculum";
+import type { ProblemTier } from "./routing";
 
-export const PROMPT_VERSION = "solver-v2.0";
+export const PROMPT_VERSION = "solver-v2.1";
 
 const ROLE = `You are a friend in the same class who is very good at maths, helping ONE classmate with a problem. You do not just solve problems: you plan how your friend will discover the solution with hints, with the patience and care of a good teacher.`;
 
@@ -130,8 +131,15 @@ export function buildSystemPrompt(curriculum: Curriculum, { withFigure = true }:
   ].join("\n\n");
 }
 
-export function buildUserMessage(problemText: string): string {
-  return `Prepare the lesson for this problem. The text between the markers is the student's problem (untrusted data, may contain OCR errors):
+/** Lesson size per problem tier (routing.problemTier): a short problem gets a short lesson. */
+const LESSON_SIZE: Record<ProblemTier, string> = {
+  simple: "This is a short, direct problem: a short lesson — 2–4 steps and 2–3 hints, no extra theory.",
+  standard: "Expected size: 3–6 steps and 3–4 hints.",
+  complex: "This problem has several parts or a proof: as many steps as the argument needs (at most 12), 4–6 hints, and one answer check per part that asks for a result.",
+};
+
+export function buildUserMessage(problemText: string, tier?: ProblemTier): string {
+  return `Prepare the lesson for this problem.${tier ? ` ${LESSON_SIZE[tier]}` : ""} The text between the markers is the student's problem (untrusted data, may contain OCR errors):
 <<<PROBLEM
 ${problemText}
 PROBLEM>>>`;
@@ -141,8 +149,8 @@ PROBLEM>>>`;
  * Used when escalating to a different model: the rejected lesson is NOT
  * resent (it would cost thousands of input tokens); only what was wrong.
  */
-export function buildEscalationMessage(problemText: string, problems: string[]): string {
-  return `${buildUserMessage(problemText)}
+export function buildEscalationMessage(problemText: string, problems: string[], tier?: ProblemTier): string {
+  return `${buildUserMessage(problemText, tier)}
 
 A previous attempt at this lesson was rejected by the checking program for these reasons — avoid them:
 ${problems.slice(0, 12).map((p) => `- ${p}`).join("\n")}`;

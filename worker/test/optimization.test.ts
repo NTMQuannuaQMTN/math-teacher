@@ -158,6 +158,17 @@ describe("answer checks the model already substituted", () => {
 
 // --- adaptive policy ----------------------------------------------------------
 
+describe("lesson size per tier", () => {
+  it("asks for a short lesson for a simple problem and per-part checks for a complex one", async () => {
+    const seen: string[] = [];
+    const model: JsonModel = { name: "local", model: "spy", async complete({ messages }) { seen.push(messages.at(-1)!.content); return JSON.stringify(inequalityLesson()); } };
+    await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal });
+    expect(seen[0]).toMatch(/2–4 steps/);
+    await solveProblem(model, VN_GRADE_9, "Cho tam giác ABC nhọn nội tiếp (O). a) Chứng minh BCEF nội tiếp. b) Chứng minh OA ⊥ EF.", { signal: new AbortController().signal }).catch(() => undefined);
+    expect(seen[1]).toMatch(/one answer check per part/);
+  });
+});
+
 describe("problemTier", () => {
   it.each([
     ["Giải phương trình $x^2 - 5x + 6 = 0$.", "simple"],

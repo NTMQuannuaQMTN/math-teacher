@@ -8,7 +8,7 @@ import type { Curriculum } from "./curriculum";
 import { toGrammarJsonSchema, toStrictJsonSchema } from "./jsonSchema";
 import type { ChatMessage, JsonModel } from "./llm";
 import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
-import { looksLikeGeometry } from "./routing";
+import { looksLikeGeometry, problemTier } from "./routing";
 import { addUsage, emptyUsage, estimateCost, formatUsage, type Usage } from "./pricing";
 
 const LESSON_JSON_SCHEMA = toStrictJsonSchema(ModelLessonSchema);
@@ -343,9 +343,10 @@ export async function solveProblem(
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
   let withFigure = looksLikeGeometry(problemText);
   const vietnamese = containsVietnamese(problemText);
+  const tier = problemTier(problemText);
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
-    { role: "user", content: buildUserMessage(problemText) },
+    { role: "user", content: buildUserMessage(problemText, tier) },
   ];
   let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number } | null = null;
   const usage: Record<string, Usage> = {};
@@ -442,7 +443,7 @@ export async function solveProblem(
         // not the rejected lesson, which would cost thousands of input tokens.
         messages = [
           { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
-          { role: "user", content: buildEscalationMessage(problemText, problems) },
+          { role: "user", content: buildEscalationMessage(problemText, problems, tier) },
         ];
       } else {
         messages.push({ role: "assistant", content: text }, { role: "user", content: buildRetryMessage(problems) });
