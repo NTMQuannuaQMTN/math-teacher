@@ -18,17 +18,27 @@ export interface LocalModelOptions {
   topP?: number;
   /** Qwen recommends 0–2 (1.5 for quantized models) against endless repetition; 0 = off. */
   presencePenalty?: number;
+  /**
+   * true for a local grammar engine (llama.cpp, vLLM): send the fuller schema and llama.cpp extras.
+   * Default: true for localhost URLs, false for hosted endpoints (OpenRouter, Groq, …), which get
+   * the plain strict schema.
+   */
+  grammar?: boolean;
 }
 
 export class LocalJsonModel implements JsonModel {
   readonly name = "local";
-  readonly grammarConstrained = true;
+  readonly grammarConstrained: boolean;
+  private readonly hosted: boolean;
 
   constructor(
     private readonly baseUrl: string,
     readonly model: string,
     private readonly options: LocalModelOptions = {},
-  ) {}
+  ) {
+    this.hosted = !/^https?:\/\/(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])(:|\/|$)/.test(baseUrl);
+    this.grammarConstrained = options.grammar ?? !this.hosted;
+  }
 
   async complete({ messages, schema, schemaName, signal, onUsage }: Parameters<JsonModel["complete"]>[0]): Promise<string> {
     const thinking = this.options.thinking ?? false;
@@ -41,7 +51,10 @@ export class LocalJsonModel implements JsonModel {
       top_p: this.options.topP ?? (thinking ? 0.95 : 0.8),
       ...(this.options.presencePenalty ? { presence_penalty: this.options.presencePenalty } : {}),
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
-      chat_template_kwargs: { enable_thinking: thinking },
+      ...(this.hosted
+        ? // OpenRouter: only route to providers that honour response_format/json_schema.
+          { provider: { require_parameters: true } }
+        : { chat_template_kwargs: { enable_thinking: thinking } }),
     };
     let response: Response;
     try {

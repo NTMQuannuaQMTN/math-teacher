@@ -28,7 +28,12 @@ a development machine, not a serving setup. A hosted endpoint or GPU serves the 
 |---|---|---|---|---|---|
 | OpenAI gpt-4.1(-mini) (stored run) | 17/17 | 0.005–0.007 | 2.2 s | — | ≈ $0.0011 |
 | Gemini 3.1 flash-lite (stored run, current prod) | 16/17 | 0.012 | 3.7 s | — | ≈ $0.0008 |
-| **Qwen3.5-9B + mmproj (local)** | **16/17** (injection transcribed correctly, wrong status) | **≈ 0.005** | 28 s | **0/3** (CER 0.49 / timeout / 0.22) | $0 local |
+| Qwen3.5-9B + mmproj (local) | 16/17 (injection transcribed correctly, wrong status) | ≈ 0.005 | 28 s | 0/3 (CER 0.49 / timeout / 0.22) | $0 local |
+| **PaddleOCR-VL-1.6, 0.9B (local, text mode + deterministic parser, logprob confidence)** | **17/17** | **≈ 0.011** | **3.1 s** | **3/3** (CER 0.014 / 0.091 / 0.096; split 9 / 6 / 5 questions), 19–23 s per page | $0 local |
+
+PaddleOCR-VL numbers are end to end through the worker on the same machine (battery, Low Power Mode).
+Caveat: its page parser and blur threshold were tuned on these 20 fixtures, so new photos are the
+real test.
 
 ## Cost per volume (from `tools/benchmark/cost_model.py`; tier mix 60% easy / 33% standard / 7% hard)
 

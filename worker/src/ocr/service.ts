@@ -50,7 +50,8 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
       return new LocalOcrProvider(
         env.LOCAL_OCR_URL || env.LOCAL_LLM_URL || "http://127.0.0.1:8080",
         env.LOCAL_OCR_MODEL || "local",
-        env.LOCAL_LLM_API_KEY,
+        // A separate OCR server (LOCAL_OCR_URL) doesn't get the solver's API key.
+        env.LOCAL_OCR_URL ? undefined : env.LOCAL_LLM_API_KEY,
         env.OCR_OUTPUT_FORMAT === "full" || env.OCR_OUTPUT_FORMAT === "text" ? env.OCR_OUTPUT_FORMAT : "compact",
         env.LOCAL_OCR_PROMPT || "OCR:",
       );

@@ -370,6 +370,11 @@ export async function solveProblem(
     let problems: string[];
 
     if ("lesson" in parsed) {
+      // The model may leave the statement empty (it's the confirmed problem text): fill it in, since
+      // the point builder and claim checker read the statement.
+      if (!parsed.lesson.analysis.statement.trim()) {
+        parsed.lesson.analysis.statement = normalizeProblemText(problemText);
+      }
       const result = verifyLesson(tidy(parsed.lesson));
       const score =
         result.verification.status === "verified" ? 3 : result.verification.status === "partial" ? 2 : result.verification.status === "not_checkable" ? 2 : 1;
