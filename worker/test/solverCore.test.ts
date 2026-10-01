@@ -3,6 +3,7 @@ import { evalCondition, evalExpression, evalRelation, variablesOf } from "../../
 import { angleDeg, dist, evaluateFigureCheck, resolveFigure } from "../../shared/src/geometry";
 import type { Figure, ModelLesson, PointDef } from "../../shared/src/solution";
 import { ModelLessonSchema } from "../../shared/src/solution";
+import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
 import { buildTargetIndex, verifyLesson } from "../../shared/src/verify";
 
 // --- expression evaluator ---------------------------------------------------
@@ -242,12 +243,15 @@ describe("verifyLesson", () => {
 
   it("treats a complete lesson labelled ambiguous as solvable and verifies it", () => {
     const lesson = isoscelesLesson();
-    lesson.analysis = { ...lesson.analysis, status: "ambiguous", statusReason: "The problem statement is clear; no ambiguity detected." };
+    lesson.analysis = { ...lesson.analysis, status: "ambiguous", statusReason: "Góc A có thể là 40° hoặc 140° (ảnh mờ)." };
     const result = verifyLesson(lesson);
     expect(result.lesson.analysis.status).toBe("solvable");
     expect(result.lesson.analysis.statusReason).toBeNull();
-    expect(result.lesson.analysis.interpretationNotes).toContain("The problem statement is clear; no ambiguity detected.");
+    expect(result.lesson.analysis.interpretationNotes).toEqual(["Góc A có thể là 40° hoặc 140° (ảnh mờ)."]);
     expect(result.verification.status).toBe("verified");
+    // A reason that reports nothing ("the problem is clear") is not kept as a note.
+    lesson.analysis = { ...lesson.analysis, statusReason: "The problem statement is clear; no ambiguity detected." };
+    expect(verifyLesson(lesson).lesson.analysis.interpretationNotes).toEqual([]);
   });
 
   it("keeps an ambiguous status when there is no lesson", () => {
@@ -386,5 +390,71 @@ describe("expandSegmentRefs", () => {
     };
     const out = expandSegmentRefs(figure as never);
     expect(out.checks.map((c) => c.refs)).toEqual([["A", "B", "A", "C"], ["A", "H1", "B", "C"], ["C", "c"], ["XY", "A"]]);
+  });
+});
+
+describe("language hygiene", () => {
+  it.each([
+    ["phuong trinh: x^2 + 2ax + 3b = 0", true],
+    ["moi phuong trinh co hai nghiem phan biet", true],
+    ["dieukien co hai nghiem phan biet", true],
+    ["phương trình: $x^2 + 2ax + 3b = 0$", false],
+    ["$x^2 + 2ax + 3b = 0$", false],
+    ["Vieta's formulas", false],
+    ["the sum of the roots", false],
+  ])("isStrippedVietnamese(%s) = %s", (text, expected) => {
+    expect(isStrippedVietnamese(text)).toBe(expected);
+  });
+
+  const viLesson = () => {
+    const lesson = isoscelesLesson();
+    lesson.analysis = {
+      ...lesson.analysis,
+      givens: ["phuong trinh: x^2 + 2ax + 3b = 0", "$AB = AC$"],
+      concepts: ["biet thuc", "công thức Vi-ét"],
+      interpretationNotes: ["The problem statement is clear and complete; no OCR corrections needed."],
+    };
+    return lesson;
+  };
+
+  it("drops stripped-Vietnamese list items and no-op notes without asking for a retry", () => {
+    const { lesson, feedback } = cleanLanguage(viLesson());
+    expect(lesson.analysis.givens).toEqual(["$AB = AC$"]);
+    expect(lesson.analysis.concepts).toEqual(["công thức Vi-ét"]);
+    expect(lesson.analysis.interpretationNotes).toEqual([]);
+    expect(feedback).toEqual([]);
+  });
+
+  it.each([
+    ["Giải (a-b)(2t-3)=0 để得到 t=3/2, sau đó thay vào.", "Giải (a-b)(2t-3)=0 để có t=3/2, sau đó thay vào."],
+    ["áp dụng hằng đẳng thức, bạn得到 hai thừa số", "áp dụng hằng đẳng thức, bạn được hai thừa số"],
+    ["sau khi lấy ra因子 16, chúng ta", "sau khi lấy ra thừa số 16, chúng ta"],
+    ["Tỉ số các边 trong tam giác", "Tỉ số các cạnh trong tam giác"],
+    ["bất đẳng thức vừa得到.", "bất đẳng thức vừa có."],
+    ["ta sẽ得到什么样的表达式？", "ta sẽ được biểu thức nào?"],
+    ["thay t vào một phương trình gốc để求 a+b", "thay t vào một phương trình gốc để tìm a+b"],
+  ])("patchVietnamese(%s)", (input, expected) => {
+    expect(patchVietnamese(input)).toBe(expected);
+  });
+
+  it("patches known Chinese words without asking for a retry", () => {
+    const lesson = isoscelesLesson();
+    lesson.steps[0]!.explanation = "Cộng hai bất đẳng thức để得到 kết quả.";
+    const { lesson: fixed, feedback } = cleanLanguage(lesson);
+    expect(fixed.steps[0]!.explanation).toBe("Cộng hai bất đẳng thức để có kết quả.");
+    expect(feedback).toEqual([]);
+  });
+
+  it("asks for a retry when a hint switches to Chinese", () => {
+    const lesson = viLesson();
+    lesson.hints[1]!.question = "Nếu mở rộng các bình phương, 我们可以看到 điều gì?";
+    expect(cleanLanguage(lesson).feedback.join(" ")).toMatch(/hint h2 .*Chinese/);
+    expect(verifyLesson(lesson).feedback.join(" ")).toMatch(/Chinese/);
+  });
+
+  it("asks for a retry when a step is Vietnamese without diacritics", () => {
+    const lesson = viLesson();
+    lesson.steps[0]!.explanation = "Vi moi phuong trinh co hai nghiem phan biet nen biet thuc duong.";
+    expect(cleanLanguage(lesson).feedback.join(" ")).toMatch(/step s1 is Vietnamese without diacritics/);
   });
 });

@@ -12,6 +12,7 @@
  * feedback when asking the model to correct itself.
  */
 import { checkClaims, statementGivens, statementParts } from "./claims";
+import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
 import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, type Env } from "./expr";
@@ -553,11 +554,12 @@ export function reconcileStatus(lesson: ModelLesson): ModelLesson {
 }
 
 export function verifyLesson(input: ModelLesson): LessonVerification {
-  input = reconcileStatus(input);
+  const language = cleanLanguage(reconcileStatus(input));
+  input = language.lesson;
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
   let lesson = repaired;
-  const feedback = [...report.errors, ...(report.retryHints ?? [])];
+  const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback];
   const checks: Verification["checks"] = [];
   let answerLevelPassed = 0;
   let answerLevelFailed = 0;

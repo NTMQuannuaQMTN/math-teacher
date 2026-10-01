@@ -363,7 +363,23 @@ export function containsVietnamese(input: string): boolean {
 /** Clearly maths: a LaTeX command, a power/subscript, or a relation inside a token ("x=3"). */
 const STRONG_TOKEN = /\\[a-zA-Z]+|[\^_]|.[=<>≤≥]|[=<>≤≥]./;
 /** Could be part of a formula next to a strong token: point names, numbers, variables, operators. */
-const WEAK_TOKEN = /^(?:[A-Z]{1,4}'*|\d+(?:[.,]\d+)?|\d*[a-z]\d*|[+\-*/=<>≤≥·×:]|[()[\]{}A-Z0-9+\-*/^_.,\\'=]+)$/;
+const WEAK_TOKEN = new RegExp(
+  "^(?:" +
+    [
+      "[A-Z]{1,4}'*", // point names
+      "\\d+(?:[.,]\\d+)?", // numbers
+      "[([]*\\d*[a-z]\\d*[)\\]]*", // a variable, possibly bracketed: x, (x, y)
+      "[([]*\\d+[a-z]{1,3}[)\\]]*", // a coefficient times variables: 4ac, 2xy
+      "[ΔδαβγπφθλμΩω]\\d*", // Greek letters
+      "[+\\-*/=<>≤≥·×:]", // operators
+      "[()[\\]{}A-Z0-9+\\-*/^_.,\\\\'=]+",
+      // short lowercase expressions with a digit or operator, but no word (3+ letters): 3b+3a, 3(a+b)
+      "(?=.*[\\d+\\-*/=()])(?!.*[a-z]{3})[a-z0-9()+\\-*/=<>^.]+",
+    ].join("|") +
+    ")$",
+);
+/** A run that starts or ends on an operator is a fragment of a formula, not the formula: leave it as text. */
+const DANGLING_OPERATOR = /^[+\-*/=<>≤≥·×:]\s|\s[+\-*/=<>≤≥·×:]$/;
 
 function wrapProse(text: string): string {
   if (!/[\\^_]/.test(text)) return text;
@@ -399,7 +415,7 @@ function wrapProse(text: string): string {
     }
     const run = parts.slice(i, j + 1).join("");
     const body = trailing ? run.slice(0, -trailing.length) : run;
-    out += strong ? `$${body}$${trailing}` : run;
+    out += strong && !DANGLING_OPERATOR.test(body) ? `$${body}$${trailing}` : run;
     i = j + 1;
   }
   return out;

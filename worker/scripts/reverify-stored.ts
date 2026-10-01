@@ -16,7 +16,8 @@ const q = (s: string) => `'${s.replace(/'/g, "''")}'`;
 for (const row of rows) {
   const { lesson, verification } = verifyLesson(JSON.parse(row.lesson_json));
   const before = row.verification_json ? JSON.parse(row.verification_json).status : null;
-  if (lesson.analysis.status === JSON.parse(row.lesson_json).analysis.status && verification.status === before) continue;
-  console.error(`${row.id}: ${JSON.parse(row.lesson_json).analysis.status}/${before} → ${lesson.analysis.status}/${verification.status}`);
+  const textChanged = JSON.stringify(lesson) !== row.lesson_json;
+  if (lesson.analysis.status === JSON.parse(row.lesson_json).analysis.status && verification.status === before && !textChanged) continue;
+  console.error(`${row.id}: ${JSON.parse(row.lesson_json).analysis.status}/${before} → ${lesson.analysis.status}/${verification.status}${textChanged ? " (text cleaned)" : ""}`);
   console.log(`update solutions set lesson_json = ${q(JSON.stringify(lesson))}, verification_json = ${q(JSON.stringify(verification))} where id = ${q(row.id)};`);
 }
