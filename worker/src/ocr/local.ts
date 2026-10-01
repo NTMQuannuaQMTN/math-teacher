@@ -5,6 +5,12 @@ import { OcrFailure, type OcrInput, type OcrProvider, type ProviderOutput } from
 import { classifyHttpStatus, isAbort } from "./httpErrors";
 import { ocrTextToCompactJson } from "./textFormat";
 
+/** Mean log-probability of the generated tokens (undefined when the server returned none). */
+export function meanLogprob(tokens: { logprob?: number }[] | undefined): number | undefined {
+  const values = (tokens ?? []).map((t) => t.logprob).filter((v): v is number => typeof v === "number" && Number.isFinite(v));
+  return values.length ? values.reduce((a, b) => a + b, 0) / values.length : undefined;
+}
+
 /**
  * OCR with a vision-capable open model behind an OpenAI-compatible server (llama.cpp llama-server
  * with --mmproj, vLLM, SGLang, LM Studio, or a hosted open-model endpoint). Same prompt, schema and
@@ -61,7 +67,7 @@ export class LocalOcrProvider implements OcrProvider {
     }
     if (!response.ok) throw classifyHttpStatus("local OCR model", response.status, (await response.text().catch(() => "")).slice(0, 300));
     const body = (await response.json().catch(() => null)) as {
-      choices?: { finish_reason?: string; message?: { content?: string | null } }[];
+      choices?: { finish_reason?: string; message?: { content?: string | null }; logprobs?: { content?: { logprob?: number }[] } }[];
       usage?: { prompt_tokens?: number; completion_tokens?: number };
     } | null;
     if (body?.usage) console.log(`[ocr] usage: model=${this.model} (local) in=${body.usage.prompt_tokens} out=${body.usage.completion_tokens} ≈ $0`);
@@ -69,7 +75,7 @@ export class LocalOcrProvider implements OcrProvider {
     if (choice?.finish_reason === "length") throw new OcrFailure("malformed_output", "local OCR output was truncated", true);
     const text = choice?.message?.content?.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
     if (!text) throw new OcrFailure("malformed_output", "local OCR model returned no content", true);
-    return { text: this.format === "text" ? ocrTextToCompactJson(text) : text, model: this.model };
+    return { text: this.format === "text" ? ocrTextToCompactJson(text, meanLogprob(choice?.logprobs?.content)) : text, model: this.model };
   }
 
   /** Document-OCR models take the image plus a fixed task tag, and no system prompt or grammar. */
@@ -78,6 +84,7 @@ export class LocalOcrProvider implements OcrProvider {
       model: this.model,
       temperature: 0,
       max_tokens: 4096,
+      logprobs: true,
       messages: [
         {
           role: "user",

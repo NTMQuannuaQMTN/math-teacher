@@ -13,6 +13,8 @@ export interface Env {
   LOCAL_LLM_URL?: string;
   LOCAL_LLM_API_KEY?: string;
   LOCAL_OCR_MODEL?: string;
+  /** Separate server for OCR (e.g. a small document-OCR model); defaults to LOCAL_LLM_URL. */
+  LOCAL_OCR_URL?: string;
   /** Local OCR output: "compact" (default; text written once) or "full" (raw + formatted + problems). */
   OCR_OUTPUT_FORMAT?: string;
   /** Task tag for OCR_OUTPUT_FORMAT=text models, e.g. "OCR:" (PaddleOCR-VL) or "Text Recognition:" (GLM-OCR). */

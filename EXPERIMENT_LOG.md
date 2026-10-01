@@ -116,6 +116,27 @@ drawn figure is set aside instead of failing every claim; (5) "tam giác ABC có
   local Qwen3.5-9B OCR matches the paid APIs on accuracy but is ~10× slower on this Mac. For whole
   dense pages it is not usable; keep a hosted vision model (or crop per question) for those.
 
+## EXP-007: OCR speed — compact format, smaller/specialised models (2026-10-01)
+
+- Problem (user report): local OCR took too long (Qwen3.5-9B: 20–50 s per photo, 5–10 min or a
+  failure per exam page). Several earlier timing runs were invalidated because the Mac slept with the
+  lid closed on battery. `tools/benchmark/run-ocr-matrix.sh` now marks a run INVALID if the Mac slept.
+- Changes: (1) **compact OCR format**: the model writes the transcription once instead of three times
+  (raw_text, formatted_text, problems); the server derives the rest. (2) **Text mode for dedicated
+  document-OCR models**: Markdown/LaTeX output → problems via a deterministic parser (split at
+  "Câu/Bài n", including "Câu n (x điểm)" joined onto the previous line; the exam header and
+  instructions before the first question are dropped; a real maths signal is required).
+  (3) **Confidence from token log-probabilities**: the mean logprob of the generated tokens. The
+  blurry photo scores −0.62 vs ≥ −0.043 for every readable photo; threshold −0.35 → low_quality.
+- **PaddleOCR-VL-1.6 (0.9B, Apache-2.0, official GGUF), end to end through the worker: 20/20 PASS,
+  mean CER 0.020**. Single photos 2.1–4.6 s; exam pages 19–23 s, each split correctly (9 / 6 / 5
+  questions); blurry, non-maths and injection photos all correct. API cost $0.
+- Versus Qwen3.5-9B local (EXP-006): 16/17 on single photos at ~28 s, 0/3 exam pages. Versus stored
+  API runs (fixtures 01–17 only): OpenAI 17/17, Gemini 16/17.
+- **Caveat:** the parser rules and the logprob threshold were developed on these same 20 fixtures,
+  so new photos are the real test. GLM-OCR, Qwen3.5-2B/4B and the 9B compact-vs-full comparison are
+  downloaded; the matrix script runs them when the Mac is plugged in and awake.
+
 ---
 
 ## Environment notes

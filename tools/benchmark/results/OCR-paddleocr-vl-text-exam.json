@@ -1,0 +1,58 @@
+{
+ "summary": {
+  "tag": "paddleocr-vl-text-exam",
+  "format": "text",
+  "size": null,
+  "model": "paddleocr-vl-text",
+  "n": 3,
+  "pass": 1,
+  "meanCer": 0.2658,
+  "meanMs": 42309,
+  "medianMs": 45596,
+  "meanPromptMs": 8928,
+  "meanGenMs": 33230,
+  "meanOutTokens": 1061,
+  "meanPromptTokens": 1268
+ },
+ "rows": [
+  {
+   "id": "18-exam-kc-p1",
+   "ms": 26561,
+   "promptTokens": 1268,
+   "promptMs": 7309,
+   "outTokens": 1210,
+   "genMs": 19156,
+   "finish": "stop",
+   "status": "success",
+   "cer": 0.4925,
+   "problems": 9,
+   "pass": false
+  },
+  {
+   "id": "19-exam-kc-p2",
+   "ms": 54770,
+   "promptTokens": 1268,
+   "promptMs": 10970,
+   "outTokens": 975,
+   "genMs": 43683,
+   "finish": "stop",
+   "status": "success",
+   "cer": 0.0914,
+   "problems": 6,
+   "pass": true
+  },
+  {
+   "id": "20-exam-chuyen",
+   "ms": 45596,
+   "promptTokens": 1268,
+   "promptMs": 8505,
+   "outTokens": 998,
+   "genMs": 36851,
+   "finish": "stop",
+   "status": "success",
+   "cer": 0.2135,
+   "problems": 4,
+   "pass": false
+  }
+ ]
+}

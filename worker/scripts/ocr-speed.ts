@@ -13,6 +13,7 @@ import { join } from "node:path";
 import { Agent, setGlobalDispatcher } from "undici";
 import { MODEL_OCR_COMPACT_JSON_SCHEMA, MODEL_OCR_JSON_SCHEMA, normalizeOcrOutput } from "../src/ocr/normalize";
 import { OCR_SYSTEM_PROMPT, OCR_SYSTEM_PROMPT_COMPACT, OCR_USER_INSTRUCTION } from "../src/ocr/prompt";
+import { meanLogprob } from "../src/ocr/local";
 import { ocrTextToCompactJson } from "../src/ocr/textFormat";
 
 setGlobalDispatcher(new Agent({ headersTimeout: 0, bodyTimeout: 0 }));
@@ -64,11 +65,13 @@ for (const c of cases) {
   try {
     const res = await fetch(`${url}/v1/chat/completions`, {
       method: "POST",
+      signal: AbortSignal.timeout(12 * 60_000),
       headers: { "content-type": "application/json" },
       body: JSON.stringify(format === "text" ? {
         model,
         temperature: 0,
         max_tokens: maxTokens,
+        logprobs: true,
         messages: [{ role: "user", content: [{ type: "image_url", image_url: { url: `data:image/jpeg;base64,${bytes.toString("base64")}` } }, { type: "text", text: textPrompt }] }],
       } : {
         model,
@@ -83,12 +86,13 @@ for (const c of cases) {
       }),
     });
     const body = (await res.json()) as {
-      choices?: { finish_reason?: string; message?: { content?: string } }[];
+      choices?: { finish_reason?: string; message?: { content?: string }; logprobs?: { content?: { logprob?: number }[] } }[];
       timings?: { prompt_n?: number; prompt_ms?: number; predicted_n?: number; predicted_ms?: number };
     };
     const ms = Date.now() - started;
     const content = body.choices?.[0]?.message?.content ?? "";
-    const text = format === "text" ? ocrTextToCompactJson(content) : content;
+    const lp = meanLogprob(body.choices?.[0]?.logprobs?.content);
+    const text = format === "text" ? ocrTextToCompactJson(content, lp) : content;
     const t = body.timings ?? {};
     row = { ...row, ms, promptTokens: t.prompt_n, promptMs: Math.round(t.prompt_ms ?? 0), outTokens: t.predicted_n, genMs: Math.round(t.predicted_ms ?? 0), finish: body.choices?.[0]?.finish_reason };
     const ocr = normalizeOcrOutput(text, { provider: "local", model, durationMs: ms });
@@ -101,7 +105,7 @@ for (const c of cases) {
       cer = editDistance(normalize(c.expected), normalize(ocr.rawText)) / Math.max(1, normalize(c.expected).length);
       pass = cer <= 0.1 && (ocr.status === "success" || ocr.status === "low_quality") && (!c.expectProblems || ocr.problems.length === c.expectProblems);
     }
-    row = { ...row, status: ocr.status, cer: cer === null ? null : Number(cer.toFixed(4)), problems: ocr.problems.length, pass };
+    row = { ...row, status: ocr.status, cer: cer === null ? null : Number(cer.toFixed(4)), problems: ocr.problems.length, pass, meanLogprob: lp === undefined ? null : Number(lp.toFixed(3)), rawText: ocr.rawText, formattedText: ocr.formattedText, modelText: content };
   } catch (err) {
     row = { ...row, ms: Date.now() - started, pass: false, error: (err as Error).message.slice(0, 120) };
   }

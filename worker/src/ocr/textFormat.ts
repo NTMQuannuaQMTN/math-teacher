@@ -9,7 +9,10 @@
  */
 import { containsVietnamese, wrapBareLatex } from "../../../shared/src/mathText";
 
-const HEADING = /(?:^|\n)[ \t>*#_]*((?:Câu|Bài|Bài tập|Ví dụ|Exercise|Problem|Question)\s*\d+[a-z]?)\s*[.:)]?/giu;
+// A heading starts a line, or follows a sentence end when it carries the exam's mark scale
+// ("… vào a và b. Câu 2 (1.5 điểm). …": OCR sometimes joins lines).
+const HEADING =
+  /(?:^|\n|(?<=[.!?]\s{1,3})(?=(?:Câu|Bài)\s*\d+\s*\(\s*\d+(?:[.,]\d+)?\s*điểm\s*\)))[ \t>*#_]*((?:Câu|Bài|Bài tập|Ví dụ|Exercise|Problem|Question)\s*\d+[a-z]?)\s*[.:)]?/giu;
 
 function cleanMarkdown(text: string): string {
   return text
@@ -27,27 +30,31 @@ function cleanMarkdown(text: string): string {
 export function splitProblems(text: string): { label: string; formatted_text: string }[] {
   const marks = [...text.matchAll(HEADING)].map((m) => ({ index: m.index! + (m[0].startsWith("\n") ? 1 : 0), label: m[1]!.replace(/\s+/g, " ").trim() }));
   if (marks.length <= 1) return text ? [{ label: marks[0]?.label ?? "", formatted_text: text }] : [];
-  const out: { label: string; formatted_text: string }[] = [];
-  // Anything before the first heading is kept with the first problem only if it looks like shared context.
-  const preamble = text.slice(0, marks[0]!.index).trim();
-  marks.forEach((m, i) => {
-    const chunk = text.slice(m.index, marks[i + 1]?.index ?? text.length).trim();
-    out.push({ label: m.label, formatted_text: i === 0 && preamble && /[=<>≤≥]|\$|\d/.test(preamble) ? `${preamble}\n${chunk}` : chunk });
-  });
-  return out;
+  // With several numbered questions, text before the first one is the page header / instructions
+  // ("ĐẠI HỌC…", "Môn thi…", "Học sinh kẻ bảng…"), not part of any problem: drop it.
+  return marks.map((m, i) => ({ label: m.label, formatted_text: text.slice(m.index, marks[i + 1]?.index ?? text.length).trim() }));
 }
 
-/** Compact OCR JSON (see MODEL_OCR_COMPACT_JSON_SCHEMA) from a document-OCR model's text output. */
-export function ocrTextToCompactJson(raw: string): string {
+/** Real maths signals: relations/operators/symbols, LaTeX, or problem verbs. A lone digit ("lớp 9A") isn't one. */
+const MATH_SIGNAL =
+  /[=<>≤≥≠+×÷√∠△°^π]|\$|\\[a-zA-Z]+|\d\s*[-*/]\s*\d|(?<!\p{L})(?:tính|giải|chứng minh|tìm|rút gọn|phương trình|bất phương trình|tam giác|đường tròn|solve|prove|find|calculate|equation|triangle)(?!\p{L})/iu;
+
+/**
+ * Compact OCR JSON (see MODEL_OCR_COMPACT_JSON_SCHEMA) from a document-OCR model's text output.
+ * confidence: from the model's own token probabilities when available (mean log-probability of the
+ * generated tokens). Document-OCR models transcribe even unreadable images, so this is the only
+ * signal that the text may be invented; "low" makes the app ask the student to check or retake.
+ */
+export function ocrTextToCompactJson(raw: string, meanLogprob?: number, lowThreshold = -0.35): string {
   const text = wrapBareLatex(cleanMarkdown(raw));
-  const mathLike = /\d|[=<>≤≥+×÷√∠△°]|\$/.test(text);
+  const mathLike = MATH_SIGNAL.test(text);
   const problems = mathLike ? splitProblems(text) : [];
   const vietnamese = containsVietnamese(text);
   const english = /\b(the|and|find|solve|if|of|prove|calculate)\b/i.test(text);
   return JSON.stringify({
     status: !text ? "unreadable" : mathLike ? "success" : "no_math_found",
     language: vietnamese ? (english ? "mixed" : "vi") : english ? "en" : "unknown",
-    confidence: "medium",
+    confidence: meanLogprob === undefined ? "medium" : meanLogprob < lowThreshold ? "low" : "high",
     issues: problems.length > 1 ? ["multiple_problems"] : [],
     problems,
   });

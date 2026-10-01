@@ -36,3 +36,10 @@ describe("document-OCR text → OCR result", () => {
     expect(JSON.parse(ocrTextToCompactJson("   ")).status).toBe("unreadable");
   });
 });
+
+describe("headings joined onto the previous line", () => {
+  it("splits at 'Câu n (x điểm)' after a sentence end, but not at a mid-sentence mention", () => {
+    const text = "Câu 1 (1.5 điểm). Cho a, b. Chứng minh r + s không đổi. Câu 2 (1.5 điểm). Cho tứ giác ABCD.\nCâu 3 (2 điểm). Như Câu 2 ta có x = 1.";
+    expect(splitProblems(text).map((p) => p.label)).toEqual(["Câu 1", "Câu 2", "Câu 3"]);
+  });
+});

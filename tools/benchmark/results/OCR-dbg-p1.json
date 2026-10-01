@@ -1,0 +1,67 @@
+{
+ "summary": {
+  "tag": "dbg-p1",
+  "format": "text",
+  "size": null,
+  "model": "p",
+  "n": 3,
+  "pass": 0,
+  "meanCer": 0.4925,
+  "meanMs": 10411,
+  "medianMs": 3752,
+  "meanPromptMs": 4242,
+  "meanGenMs": 6085,
+  "meanOutTokens": 428,
+  "meanPromptTokens": 896
+ },
+ "rows": [
+  {
+   "id": "15-not-math",
+   "ms": 3752,
+   "promptTokens": 813,
+   "promptMs": 3076,
+   "outTokens": 39,
+   "genMs": 627,
+   "finish": "stop",
+   "status": "success",
+   "cer": null,
+   "problems": 1,
+   "pass": false,
+   "rawText": "Thời khóa biểu lớp 9A\nThứ Hai: Văn, Anh, Sử Thứ Ba: Lý, Hóa, Thể dục",
+   "formattedText": "Thời khóa biểu lớp 9A\nThứ Hai: Văn, Anh, Sử Thứ Ba: Lý, Hóa, Thể dục",
+   "modelText": "Thời khóa biểu lớp 9A \nThứ Hai: Văn, Anh, Sử Thứ Ba: Lý, Hóa, Thể dục"
+  },
+  {
+   "id": "16-blurry",
+   "ms": 2812,
+   "promptTokens": 608,
+   "promptMs": 2234,
+   "outTokens": 35,
+   "genMs": 521,
+   "finish": "stop",
+   "status": "success",
+   "cer": null,
+   "problems": 1,
+   "pass": false,
+   "rawText": "80 x 10. 0.00 g/cm³\ny² - 7x + 12 = 0",
+   "formattedText": "80 x 10. 0.00 g/cm³\n$y^{2} - 7x + 12 = 0$",
+   "modelText": "80 x 10. 0.00 g/cm³\n\\(y^{2} - 7x + 12 = 0\\)"
+  },
+  {
+   "id": "18-exam-kc-p1",
+   "ms": 24670,
+   "promptTokens": 1268,
+   "promptMs": 7416,
+   "outTokens": 1210,
+   "genMs": 17106,
+   "finish": "stop",
+   "status": "success",
+   "cer": 0.4925,
+   "problems": 9,
+   "pass": false,
+   "rawText": "ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH KỶ THI TUYỀN SINH LỢP 10 NĂM 2026 TRƯỜNG PHỔ THÔNG NĂNG KHIỆU\nMôn thi: TOÁN (Không chuyên)\nThời gian làm bài:120 phút (không kể thời gian phát đế)\n(Để thi gồm 02 trang)\nA. PHÂN TRẮC NGHIỆM (2 điểm).\nHọc sinh kẻ bảng sau vào giấy làm bài thi và trả lời các câu hỏi trắc nghiệm bằng cách:\n- Ghi 01 ký tự A hoặc B hoặc C hoặc D vào ô trả lời tương ứng với đáp án của câu hỏi.\n- Bó câu trả lời (nếu có) bằng cách gạch chế độ ký tự (A hoặc B hoặc C hoặc D) đã ghi và ghi lại\n01 ký tự (A hoặc B hoặc C hoặc D) vào ô trả lời tương ứng với đáp án của câu hỏi.\n- Bảng dưới đây là đề minh họa, thí sinh không làm bài trên đề.\nCâu hỏi\nCâu trả lời\nCâu 1. Biểu thức 3x/(√(x-3+2)) + (2x²)/(x-5) xác định khi và chỉ khi:\nA. x≥3 và x≠5. B. x>3 và x≠5. C. x≥3. D. x>5.\n\nCâu 2. Trong mặt phẳng tọa độ Oxy, đường thẳng d: y=2x+1 và đường parabol P: y=x²-2 cắt nhau tại hai điểm phân biệt có tọa độ là (x₁; y₁) và (x₂; y₂). Giá trị của x₁+x₂-x₁x₂ là:\nA. 3 B. 4 C. 5 D. 6\n\nCâu 3. Các đoạn thẳng BF và CE cắt nhau tại A. Biết AB = BC, AE = AF và AEF = 50°. Gọi H là trực tâm của tam giác ABC. Góc AHC bằng:\nA. 100° B. 120° C. 140° D. 160°\n\nCâu 4. Biết phương trình x+2/x=4 có hai nghiệm phân biệt x₁, x₂. Giá trị của (x₁)/(x₂) + (x₂)/(x₁) là:\nA. 2 B. 4 C. 6 D. 8\n\nCâu 5. Cho AB, AC là các tiếp tuyến của đường tròn (O) với B, C là các tiếp điểm. Biết OA = 2 và bán kính đường tròn (O) bằng 1. Độ dài BC là:\nA. 3/2 B. 3/(√2) C. √3 D. 2\n\nCâu 6. Trong mặt phẳng tọa độ Oxy, hai đường thẳng phân biệt d₁: y=(9-m²)x+5 và d₂: y=5x+m+7 song song với nhau khi và chỉ khi giá trị của m là:\nA. m=2 hoặc m=-2 B. m=2 C. m=-2 D. Không có giá trị thỏa măn\n\nCâu 7. Cho các số thực a, b, c, d, e thỏa măn: a+b+2=b+c-1=c+d+3=d+e-2=e+a+1. Số lớn nhất trong các số đã cho là:\nA. b B. c C. d D. e\n\nCâu 8. Cho phương trình x²-2mx-3m²+4m-1=0. Số giá trị của tham số m để phương trình có đúng một nghiệm là:\nA. 1 giá trị B. 2 giá trị C. 3 giá trị D. Không có giá trị thỏa măn\n\nCâu 9. Cho từ giác ABCD có DAB=ABC=90°,BCD=45° và AB=AD=1. Gọi M, N tương ứng là trung điểm AB, CD. Độ dài của MN là:\nA. √2 B. 3/2 C. 1 D. √3",
+   "formattedText": "ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH KỶ THI TUYỀN SINH LỢP 10 NĂM 2026 TRƯỜNG PHỔ THÔNG NĂNG KHIỆU\nMôn thi: TOÁN (Không chuyên)\nThời gian làm bài:120 phút (không kể thời gian phát đế)\n(Để thi gồm 02 trang)\nA. PHÂN TRẮC NGHIỆM (2 điểm).\nHọc sinh kẻ bảng sau vào giấy làm bài thi và trả lời các câu hỏi trắc nghiệm bằng cách:\n- Ghi 01 ký tự A hoặc B hoặc C hoặc D vào ô trả lời tương ứng với đáp án của câu hỏi.\n- Bó câu trả lời (nếu có) bằng cách gạch chế độ ký tự (A hoặc B hoặc C hoặc D) đã ghi và ghi lại\n01 ký tự (A hoặc B hoặc C hoặc D) vào ô trả lời tương ứng với đáp án của câu hỏi.\n- Bảng dưới đây là đề minh họa, thí sinh không làm bài trên đề.\nCâu hỏi\nCâu trả lời\nCâu 1. Biểu thức $\\frac{3x}{\\sqrt{x-3+2}} + \\frac{2x^2}{x-5}$ xác định khi và chỉ khi:\nA. x≥3 và x≠5. B. x>3 và x≠5. C. x≥3. D. x>5.\n\nCâu 2. Trong mặt phẳng tọa độ Oxy, đường thẳng d: y=2x+1 và đường parabol P: y=x²-2 cắt nhau tại hai điểm phân biệt có tọa độ là (x₁; y₁) và (x₂; y₂). Giá trị của x₁+x₂-x₁x₂ là:\nA. 3 B. 4 C. 5 D. 6\n\nCâu 3. Các đoạn thẳng BF và CE cắt nhau tại A. Biết AB = BC, AE = AF và $\\overline{AEF}$ = 50°. Gọi H là trực tâm của tam giác ABC. Góc $\\overline{AHC}$ bằng:\nA. 100° B. 120° C. 140° D. 160°\n\nCâu 4. Biết phương trình x+$\\frac{2}{x}$=4 có hai nghiệm phân biệt x₁, x₂. Giá trị của $\\frac{x_1}{x_2} + \\frac{x_2}{x_1}$ là:\nA. 2 B. 4 C. 6 D. 8\n\nCâu 5. Cho AB, AC là các tiếp tuyến của đường tròn (O) với B, C là các tiếp điểm. Biết OA = 2 và bán kính đường tròn (O) bằng 1. Độ dài BC là:\nA. $\\frac{3}{2}$ B. $\\frac{3}{\\sqrt{2}}$ C. $\\sqrt{3}$ D. 2\n\nCâu 6. Trong mặt phẳng tọa độ Oxy, hai đường thẳng phân biệt d₁: y=(9-m²)x+5 và d₂: y=5x+m+7 song song với nhau khi và chỉ khi giá trị của m là:\nA. m=2 hoặc m=-2 B. m=2 C. m=-2 D. Không có giá trị thỏa măn\n\nCâu 7. Cho các số thực a, b, c, d, e thỏa măn: a+b+2=b+c-1=c+d+3=d+e-2=e+a+1. Số lớn nhất trong các số đã cho là:\nA. b B. c C. d D. e\n\nCâu 8. Cho phương trình x²-2mx-3m²+4m-1=0. Số giá trị của tham số m để phương trình có đúng một nghiệm là:\nA. 1 giá trị B. 2 giá trị C. 3 giá trị D. Không có giá trị thỏa măn\n\nCâu 9. Cho từ giác ABCD có $\\overline{DAB}=\\overline{ABC}=90^{\\circ},\\overline{BCD}=45^{\\circ}$ và AB=AD=1. Gọi M, N tương ứng là trung điểm AB, CD. Độ dài của MN là:\nA. $\\sqrt{2}$ B. $\\frac{3}{2}$ C. 1 D. $\\sqrt{3}$",
+   "modelText": "ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH KỶ THI TUYỀN SINH LỢP 10 NĂM 2026 TRƯỜNG PHỔ THÔNG NĂNG KHIỆU\nMôn thi: TOÁN (Không chuyên)\nThời gian làm bài:120 phút (không kể thời gian phát đế)\n(Để thi gồm 02 trang)\nA. PHÂN TRẮC NGHIỆM (2 điểm).\nHọc sinh kẻ bảng sau vào giấy làm bài thi và trả lời các câu hỏi trắc nghiệm bằng cách:\n- Ghi 01 ký tự A hoặc B hoặc C hoặc D vào ô trả lời tương ứng với đáp án của câu hỏi.\n- Bó câu trả lời (nếu có) bằng cách gạch chế độ ký tự (A hoặc B hoặc C hoặc D) đã ghi và ghi lại\n01 ký tự (A hoặc B hoặc C hoặc D) vào ô trả lời tương ứng với đáp án của câu hỏi.\n- Bảng dưới đây là đề minh họa, thí sinh không làm bài trên đề.\nCâu hỏi\nCâu trả lời\nCâu 1. Biểu thức \\(\\frac{3x}{\\sqrt{x-3+2}} + \\frac{2x^2}{x-5}\\) xác định khi và chỉ khi:\nA. x≥3 và x≠5. B. x>3 và x≠5. C. x≥3. D. x>5.\nCâu 2. Trong mặt phẳng tọa độ Oxy, đường thẳng d: y=2x+1 và đường parabol P: y=x²-2 cắt nhau tại hai điểm phân biệt có tọa độ là (x₁; y₁) và (x₂; y₂). Giá trị của x₁+x₂-x₁x₂ là:\nA. 3 B. 4 C. 5 D. 6\nCâu 3. Các đoạn thẳng BF và CE cắt nhau tại A. Biết AB = BC, AE = AF và \\(\\overline{AEF}\\) = 50°. Gọi H là trực tâm của tam giác ABC. Góc \\(\\overline{AHC}\\) bằng:\nA. 100° B. 120° C. 140° D. 160°\nCâu 4. Biết phương trình x+\\(\\frac{2}{x}\\)=4 có hai nghiệm phân biệt x₁, x₂. Giá trị của \\(\\frac{x_1}{x_2} + \\frac{x_2}{x_1}\\) là:\nA. 2 B. 4 C. 6 D. 8\nCâu 5. Cho AB, AC là các tiếp tuyến của đường tròn (O) với B, C là các tiếp điểm. Biết OA = 2 và bán kính đường tròn (O) bằng 1. Độ dài BC là:\nA. \\(\\frac{3}{2}\\) B. \\(\\frac{3}{\\sqrt{2}}\\) C. \\(\\sqrt{3}\\) D. 2\nCâu 6. Trong mặt phẳng tọa độ Oxy, hai đường thẳng phân biệt d₁: y=(9-m²)x+5 và d₂: y=5x+m+7 song song với nhau khi và chỉ khi giá trị của m là:\nA. m=2 hoặc m=-2 B. m=2 C. m=-2 D. Không có giá trị thỏa măn\nCâu 7. Cho các số thực a, b, c, d, e thỏa măn: a+b+2=b+c-1=c+d+3=d+e-2=e+a+1. Số lớn nhất trong các số đã cho là:\nA. b B. c C. d D. e\nCâu 8. Cho phương trình x²-2mx-3m²+4m-1=0. Số giá trị của tham số m để phương trình có đúng một nghiệm là:\nA. 1 giá trị B. 2 giá trị C. 3 giá trị D. Không có giá trị thỏa măn\nCâu 9. Cho từ giác ABCD có \\(\\overline{DAB}=\\overline{ABC}=90^{\\circ},\\overline{BCD}=45^{\\circ}\\) và AB=AD=1. Gọi M, N tương ứng là trung điểm AB, CD. Độ dài của MN là:\nA. \\(\\sqrt{2}\\) B. \\(\\frac{3}{2}\\) C. 1 D. \\(\\sqrt{3}\\)"
+  }
+ ]
+}
