@@ -10,6 +10,9 @@ import type { JsonModel } from "./llm";
  * `thinking` toggles the model's reasoning phase (Qwen3: chat_template_kwargs.enable_thinking).
  * With thinking on, the server returns the reasoning separately and only the answer is parsed.
  */
+/** Per-request cap for hosted endpoints (free tiers can queue a request for minutes). */
+const HOSTED_REQUEST_TIMEOUT_MS = 120_000;
+
 export interface LocalModelOptions {
   apiKey?: string;
   thinking?: boolean;
@@ -56,17 +59,27 @@ export class LocalJsonModel implements JsonModel {
           { provider: { require_parameters: true } }
         : { chat_template_kwargs: { enable_thinking: thinking } }),
     };
-    let response: Response;
-    try {
-      response = await fetch(`${this.baseUrl.replace(/\/$/, "")}/v1/chat/completions`, {
-        method: "POST",
-        signal,
-        headers: { "content-type": "application/json", ...(this.options.apiKey ? { authorization: `Bearer ${this.options.apiKey}` } : {}) },
-        body: JSON.stringify(body),
-      });
-    } catch (err) {
-      if (isAbort(err)) throw new OcrFailure("timeout", "local model request timed out", true);
-      throw new OcrFailure("provider_error", `local model network error: ${String(err)}`, true);
+    let response!: Response;
+    // Hosted free tiers: cap each request (a stuck call fails fast; the pipeline keeps an earlier
+    // attempt) and back off briefly on 429 rate limits instead of failing at once.
+    const attempts = this.hosted ? 3 : 1;
+    for (let attempt = 1; ; attempt++) {
+      const perRequest = this.hosted ? AbortSignal.any([signal, AbortSignal.timeout(HOSTED_REQUEST_TIMEOUT_MS)]) : signal;
+      try {
+        response = await fetch(`${this.baseUrl.replace(/\/$/, "")}/v1/chat/completions`, {
+          method: "POST",
+          signal: perRequest,
+          headers: { "content-type": "application/json", ...(this.options.apiKey ? { authorization: `Bearer ${this.options.apiKey}` } : {}) },
+          body: JSON.stringify(body),
+        });
+      } catch (err) {
+        if (isAbort(err)) throw new OcrFailure("timeout", "local model request timed out", true);
+        throw new OcrFailure("provider_error", `local model network error: ${String(err)}`, true);
+      }
+      if (response.status !== 429 || attempt >= attempts || signal.aborted) break;
+      const retryAfter = Number(response.headers.get("retry-after"));
+      await response.body?.cancel();
+      await new Promise((r) => setTimeout(r, Math.min(20_000, Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 4_000 * attempt)));
     }
     if (!response.ok) throw classifyHttpStatus("local model", response.status, (await response.text().catch(() => "")).slice(0, 400));
     const json = (await response.json().catch(() => null)) as {

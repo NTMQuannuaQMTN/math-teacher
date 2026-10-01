@@ -320,7 +320,7 @@ export async function solveProblem(
   model: JsonModel,
   curriculum: Curriculum,
   problemText: string,
-  { signal, maxAttempts = 2, fallback, log = () => undefined, onRaw, retryPolicy = model.grammarConstrained ? "serious" : "any" }: SolveOptions,
+  { signal, maxAttempts = 2, fallback, log = () => undefined, onRaw, retryPolicy = model.name === "local" ? "serious" : "any" }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).

@@ -38,6 +38,14 @@ const ids = flag("ids")?.split(",");
 const offline = args.includes("--offline");
 const exp = flag("exp") ?? "EXP-adhoc";
 
+// Hosted open models (OpenAI-compatible); the key comes from worker/.dev.vars (LOCAL_LLM_API_KEY), never printed.
+const HOSTED: Record<string, { url: string; model: string }> = {
+  "or-qwen3.8-27b": { url: "https://openrouter.ai/api", model: "qwen/qwen3.8-27b:free" },
+  "or-nemotron-3-super": { url: "https://openrouter.ai/api", model: "nvidia/nemotron-3-super-120b-a12b:free" },
+};
+const devVar = (name: string) =>
+  readFileSync(new URL("../.dev.vars", import.meta.url), "utf8").split("\n").find((l) => l.startsWith(`${name}=`))?.slice(name.length + 1).trim();
+
 const LOCAL: Record<string, { file: string; thinking: boolean; presencePenalty?: number }> = {
   "qwen3-4b": { file: "qwen3-4b-q4_k_m", thinking: false },
   "qwen3-4b-think": { file: "qwen3-4b-q4_k_m", thinking: true },
@@ -50,8 +58,8 @@ const LOCAL: Record<string, { file: string; thinking: boolean; presencePenalty?:
   "gemma-4-12b": { file: "gemma-4-12b-it-q4_k_m", thinking: false },
   "gemma-4-12b-think": { file: "gemma-4-12b-it-q4_k_m", thinking: true },
 };
-if (!LOCAL[system] && system !== "stored-gemini") {
-  console.error(`unknown system "${system}". Known: ${[...Object.keys(LOCAL), "stored-gemini"].join(", ")}`);
+if (!LOCAL[system] && !HOSTED[system] && system !== "stored-gemini") {
+  console.error(`unknown system "${system}". Known: ${[...Object.keys(LOCAL), ...Object.keys(HOSTED), "stored-gemini"].join(", ")}`);
   process.exit(2);
 }
 
@@ -101,7 +109,10 @@ function storedGemini(): Map<string, { lesson: ModelLesson; model: string }> {
 const rows: Row[] = [];
 const stored = system === "stored-gemini" ? storedGemini() : null;
 const local = LOCAL[system];
-const cached = local
+const hosted = HOSTED[system];
+const cached = hosted
+  ? new CachedModel(new LocalJsonModel(hosted.url, hosted.model, { apiKey: devVar("LOCAL_LLM_API_KEY") }), `hosted;prompt=${PROMPT_VERSION}`, offline)
+  : local
   ? new CachedModel(
       new LocalJsonModel(process.env.LOCAL_LLM_URL ?? "http://127.0.0.1:8080", local.file, { thinking: local.thinking, maxTokens: local.thinking ? 16_000 : 12_000, presencePenalty: local.presencePenalty }),
       `thinking=${local.thinking};prompt=${PROMPT_VERSION}${local.presencePenalty ? `;pp=${local.presencePenalty}` : ""}`,
