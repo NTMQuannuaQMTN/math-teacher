@@ -69,3 +69,13 @@ describe("multi-value checks", () => {
     expect(c("10 5").passed).toBe(false);
   });
 });
+
+describe("LaTeX in answer checks", () => {
+  it("evaluates \\le, \\frac, \\sqrt, \\cdot and ^{…} like plain maths, with or without spaces", () => {
+    const ineq = (s: string) => runAnswerCheck({ kind: "inequality", statements: [s], assignments: [], expected: "x <= 2" });
+    expect(ineq("3(x - 2) \\le 5x + 4 - 7x").passed).toBe(true);
+    expect(ineq("3(x-2)\\le5x+4-7x").passed).toBe(true);
+    const v = runAnswerCheck({ kind: "value", statements: ["\\frac{3}{2} + \\sqrt{16} \\cdot 2 + 2^{3}"], assignments: [], expected: "17.5" });
+    expect(v.passed).toBe(true);
+  });
+});

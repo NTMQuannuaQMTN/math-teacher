@@ -39,8 +39,32 @@ export class ExprError extends Error {
 }
 
 /** Maps common Unicode maths notation to the ASCII grammar. */
+/** LaTeX that models often put in checks ("3(x-2) \\le 5x", "\\frac{1}{2}") → the plain grammar. */
+function delatex(input: string): string {
+  let s = input.replace(/\$/g, "").replace(/\\left|\\right|\\,|\\;|\\!|\\displaystyle/g, "");
+  // Innermost first, repeated, so nested \frac / \sqrt resolve.
+  for (let i = 0; i < 6; i++) {
+    const next = s
+      .replace(/\\d?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "(($1)/($2))")
+      .replace(/\\sqrt\s*\[\s*3\s*\]\s*\{([^{}]*)\}/g, "cbrt($1)")
+      .replace(/\\sqrt\s*\{([^{}]*)\}/g, "sqrt($1)")
+      .replace(/\^\s*\{([^{}]*)\}/g, "^($1)");
+    if (next === s) break;
+    s = next;
+  }
+  return s
+    .replace(/\\(?:leq|le)(?![a-zA-Z])/g, "<=")
+    .replace(/\\(?:geq|ge)(?![a-zA-Z])/g, ">=")
+    .replace(/\\(?:neq|ne)(?![a-zA-Z])/g, "!=")
+    .replace(/\\(?:cdot|times)(?![a-zA-Z])/g, "*")
+    .replace(/\\div(?![a-zA-Z])/g, "/")
+    .replace(/\\pi(?![a-zA-Z])/g, "pi")
+    .replace(/\\circ(?![a-zA-Z])/g, "")
+    .replace(/[{}]/g, (b) => (b === "{" ? "(" : ")"));
+}
+
 export function normalizeExpression(input: string): string {
-  return input
+  return delatex(input)
     .replace(/[−–—]/g, "-")
     .replace(/[×·⋅∙]/g, "*")
     .replace(/÷|:/g, "/")
