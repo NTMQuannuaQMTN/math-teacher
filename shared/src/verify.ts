@@ -272,6 +272,9 @@ export function isTrivialCheck(check: AnswerCheck): boolean {
   if (check.kind === "substitute") {
     // Substituting into statements that contain no variables tests nothing — unless the model already
     // substituted the values itself ("2^2 - 5*2 + 6 = 0"): that relation is real arithmetic and is evaluated.
+    // A computation with an expected value ("((2*(2+1))^2 - 2*(2^2+3))" → 22) is real work too.
+    const first = check.statements[0] ?? "";
+    if (check.expected && first && !splitRelation(first.replace(/\s+/g, "")) && hasWork(first)) return false;
     return check.statements.every((st) => {
       try {
         return variablesOf(st).size === 0 && !(splitRelation(st.replace(/\s+/g, "")) && hasWork(st));
@@ -294,6 +297,20 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
   try {
     switch (check.kind) {
       case "substitute": {
+        // A computation labelled "substitute" ("((2*(2+1))^2 - 2*(2^2+3))" expecting "22", with "m > 1"):
+        // evaluate it as a value under each assignment; the other statements are conditions.
+        const [first, ...conditions] = check.statements;
+        if (first && check.expected && !splitRelation(first.replace(/\s+/g, ""))) {
+          for (const set of check.assignments.length ? check.assignments : [[]]) {
+            const env: Env = {};
+            for (const { variable, value } of set) env[variable.replace("_", "")] = evalValue(value);
+            if (conditions.some((c) => evalCondition(c, env) !== true)) return { label, passed: false, detail: `a condition fails for ${JSON.stringify(env)}` };
+            const got = evalExpression(first.replace(/,(\d)/g, ".$1"), env);
+            const want = evalValue(check.expected);
+            if (!approxEqual(got, want, 1e-6)) return { label, passed: false, detail: `${got} vs ${want}` };
+          }
+          return { label, passed: true, detail: "the computed value matches" };
+        }
         if (check.assignments.length === 0) {
           // Already-substituted numeric relations ("3^2 - 5*3 + 6 = 0"): each must hold as written.
           const numeric = check.statements.length > 0 && check.statements.every((st) => variablesOf(st).size === 0 && splitRelation(st.replace(/\s+/g, "")));
@@ -392,7 +409,8 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
           return { label, passed: holds === want, detail: `relation is ${holds}, expected ${want}` };
         }
         // Several quantities in one check ("sqrt(6^2+8^2)", "6*8/10" expecting "10 4,8"): compare pairwise.
-        const expectedValues = check.expected.trim().split(/\s*;\s*|\s+/).filter(Boolean);
+        // Separators: ";", ", " (comma + space) or spaces — "4,8" without a space is a Vietnamese decimal.
+        const expectedValues = check.expected.trim().split(/\s*;\s*|\s*,\s+|\s+/).filter(Boolean);
         if (check.statements.length > 1 && expectedValues.length === check.statements.length) {
           const pairs = check.statements.map((st, i) => [evalValue(st), evalValue(expectedValues[i]!)] as const);
           const bad = pairs.findIndex(([x, y]) => !approxEqual(x, y, 1e-6));

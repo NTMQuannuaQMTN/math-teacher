@@ -156,6 +156,23 @@ describe("answer checks the model already substituted", () => {
   });
 });
 
+describe("answer checks in a slightly wrong form (OPT-008)", () => {
+  const run = (check: ModelLesson["answerChecks"][number]) => verifyLesson(inequalityLesson({ answerChecks: [check] }));
+
+  it("evaluates a computation labelled substitute, with its conditions", () => {
+    const ok = run({ kind: "substitute", statements: ["((2*(2+1))^2 - 2*(2^2+3))", "m > 1"], assignments: [[{ variable: "m", value: "2" }]], expected: "22" });
+    expect(ok.verification.checks[0]).toMatchObject({ passed: true });
+    const wrong = run({ kind: "substitute", statements: ["((2*(2+1))^2 - 2*(2^2+3))"], assignments: [], expected: "23" });
+    expect(wrong.verification.status).toBe("unverified");
+  });
+
+  it("pairs several values with a comma-separated expected list, keeping decimal commas", () => {
+    expect(run({ kind: "value", statements: ["sqrt(6^2 + 8^2)", "48/10"], assignments: [], expected: "10, 4.8" }).verification.checks[0]).toMatchObject({ passed: true });
+    expect(run({ kind: "value", statements: ["sqrt(6^2 + 8^2)", "48/10"], assignments: [], expected: "10 4,8" }).verification.checks[0]).toMatchObject({ passed: true });
+    expect(run({ kind: "value", statements: ["sqrt(6^2 + 8^2)", "48/10"], assignments: [], expected: "10, 5" }).verification.status).toBe("unverified");
+  });
+});
+
 // --- adaptive policy ----------------------------------------------------------
 
 describe("lesson size per tier", () => {

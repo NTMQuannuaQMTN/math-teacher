@@ -76,7 +76,22 @@ be wrong.
 | Real-solve second attempts with a deterministic fix (OPT-003) | 2 of 4 | 0 of those 2 (repaired without a model call) |
 | Final hosted configuration, validation (OPT-006) | median 45.6 s / P90 113 s | **not measured** |
 
-OPT-008 (local, same laptop, same problems): _(filled in below when the run completes)_.
+OPT-008, measured on the same laptop with the same model (Qwen3.5-9B local), the same three problems and no
+sleep. Before is prompt v1.8 with the old verifier (EXP-008); after is prompt v2.0 with the new verifier:
+
+| Problem | Before | After |
+|---|---|---|
+| a3 (simplify) | PARTIAL, 1 attempt, 246 s, 2,237 tokens | PARTIAL, 1 attempt, 264 s, 2,350 tokens |
+| a7 (Vi-ét parameter) | **FAIL**, 2 attempts, 525 s, 3,709 tokens | **PASS** (after the check salvage), 1 attempt, 214 s, 1,896 tokens |
+| g5 (right triangle) | PASS, 2 attempts, 764 s, 4,394 tokens | PASS, 1 attempt, 289 s, 2,247 tokens |
+| **Total** | 5 calls, 1,534 s, 10,340 tokens | **3 calls, 766 s (−50 %), 6,493 tokens (−37 %)** |
+
+n = 3, single samples (sampling noise). g5's second attempt was skipped by the 150 s budget, so its
+lesson was served without the figure (the figure contradicted a given angle; the answer was verified).
+On the hosted model attempts take 15–90 s, so the budget rarely applies there.
+
+Verifier-only regrade of the stored lessons (same model output, current verifier): EXP-010 hosted
+5 → **6 PASS**; EXP-004b local 6 → **7 PASS**; OPT-008 1 → **2 PASS**; CRITICAL stays 0 everywhere.
 
 ## 6. Before / after accuracy
 

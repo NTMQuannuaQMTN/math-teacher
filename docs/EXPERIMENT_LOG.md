@@ -80,6 +80,17 @@ Apple M5 laptop on battery in Low Power Mode (5–9 tok/s), which also sleeps wh
 - **After (live worker):** fails in < 1 s with `solve_quota_exhausted`, not retryable, and a message giving
   the reset time ("Lượt giải miễn phí hôm nay đã hết…").
 
+## OPT-008 — Local before/after on the same problems
+
+- **Configuration:** Qwen3.5-9B local, prompt v2.0 with the new verifier and retry policy; compared with
+  EXP-008 (prompt v1.8, same laptop, same items). No sleep during the run.
+- **Result:** a3 PARTIAL (264 s vs 246 s); a7 FAIL → PASS (214 s vs 525 s, 1 attempt vs 2); g5 PASS
+  (289 s vs 764 s, 1 attempt vs 2). Total 3 calls / 766 s / 6,493 tokens vs 5 / 1,534 s / 10,340.
+- **Found:** two answer-check formats the model uses but the verifier couldn't evaluate (a computation
+  labelled `substitute`; "10, 4.8" as a list). Both are now salvaged and tested. The regrade turned a7
+  PASS, and EXP-010 and EXP-004b each gained one PASS, with no CRITICAL.
+- **Trade-off seen:** g5's second attempt (to fix the figure) was skipped by the 150 s budget.
+
 ## OPT-006 / OPT-007 — Pending (need hosted quota)
 
 The final configuration on validation, the simple tier at `minimal`, and the held-out test split.
