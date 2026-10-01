@@ -10,6 +10,8 @@ import { solveProblem } from "../src/solver/pipeline";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 import { problemTier } from "../src/solver/routing";
+import { FailoverJsonModel } from "../src/solver/failover";
+import { SolutionSchema } from "../../shared/src/solution";
 import type { JsonModel } from "../src/solver/llm";
 
 /** A correct, verifiable Grade 9 lesson: 3(x − 2) ≤ 5x + 4 − 7x  ⇔  x ≤ 2. */
@@ -392,5 +394,87 @@ describe("pipeline progress", () => {
     expect(seen.map((p) => p.stage)).toEqual(["thinking", "thinking", "writing", "writing", "checking"]);
     expect(seen[2]).toMatchObject({ problemKind: "bất phương trình bậc nhất một ẩn", strategy: expect.stringMatching(/^Rút gọn/) });
     expect(seen.at(-1)!.stepsWritten).toBe(3);
+  });
+});
+
+// --- reliability: unavailable models, ambiguous input, OCR slips, compatibility -----
+
+describe("failover and unavailable models", () => {
+  const ok = (name: string, text = "{}"): JsonModel & { calls: number } => ({
+    name: "local",
+    model: name,
+    calls: 0,
+    async complete() {
+      this.calls++;
+      return text;
+    },
+  });
+  const failing = (err: Error): JsonModel & { calls: number } => ({
+    name: "local",
+    model: "hosted",
+    calls: 0,
+    async complete() {
+      this.calls++;
+      throw err;
+    },
+  });
+  const req = () => ({ messages: [], schema: {}, schemaName: "lesson", signal: new AbortController().signal });
+
+  it("switches to the failover model when the daily quota is exhausted, and stays there", async () => {
+    const primary = failing(new OcrFailure("quota_exhausted", "quota", false));
+    const secondary = ok("local-qwen");
+    const m = new FailoverJsonModel(primary, secondary);
+    await m.complete(req());
+    await m.complete(req());
+    expect(primary.calls).toBe(1);
+    expect(secondary.calls).toBe(2);
+    expect(m.model).toBe("local-qwen");
+  });
+
+  it("does not switch for a timeout or truncated output (the pipeline handles those)", async () => {
+    const m = new FailoverJsonModel(failing(new OcrFailure("timeout", "slow", true)), ok("local-qwen"));
+    await expect(m.complete(req())).rejects.toThrow(/slow/);
+  });
+
+  it("a 503 from the provider is a retryable provider error; the pipeline tries again", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("upstream down", { status: 503 })));
+    const err = await call(new LocalJsonModel("http://127.0.0.1:8080", "qwen", {})).catch((e) => e);
+    expect((err as OcrFailure).kind).toBe("provider_error");
+    expect((err as OcrFailure).retryable).toBe(true);
+    const model = scripted([new OcrFailure("provider_error", "503", true), JSON.stringify(inequalityLesson())]);
+    const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal });
+    expect(model.calls).toBe(2);
+    expect(r.verification.status).toBe("verified");
+  });
+});
+
+describe("input the model must not guess", () => {
+  it("keeps an ambiguous problem ambiguous when no lesson is written (nothing is invented)", async () => {
+    const l = inequalityLesson({ steps: [], hints: [], finalAnswer: { text: "", math: null }, answerChecks: [] });
+    l.analysis = { ...l.analysis, status: "ambiguous", statusReason: "Không đọc được hệ số của $x$ ở vế phải." };
+    const model = scripted([JSON.stringify(l)]);
+    const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình 3(x - 2) ≤ 5x + ▒ - 7x.", { signal: new AbortController().signal });
+    expect(r.lesson.analysis.status).toBe("ambiguous");
+    expect(r.lesson.analysis.statusReason).toMatch(/Không đọc được/);
+    expect(r.verification.status).toBe("not_checkable");
+  });
+
+  it("an interpreted OCR slip is recorded as a note and the lesson is still verified", () => {
+    const l = inequalityLesson();
+    l.analysis = { ...l.analysis, interpretationNotes: ['Đọc "5x + 4 - 7x" từ "5x+4-7×" (chữ × là chữ x).'] };
+    const r = verifyLesson(l);
+    expect(r.lesson.analysis.interpretationNotes).toHaveLength(1);
+    expect(r.verification.status).toBe("verified");
+  });
+});
+
+describe("API compatibility", () => {
+  const base = { id: "s", scanId: "c", questionId: "q1", status: "ready", createdAt: "2026-10-01T00:00:00Z", lesson: null, verification: null, error: null, model: "m", promptVersion: "solver-v1.8", attempts: 1 };
+  it("accepts a solution from an older server without the progress field", () => {
+    expect(SolutionSchema.safeParse(base).success).toBe(true);
+  });
+  it("accepts live progress on a pending solution", () => {
+    const progress = { stage: "writing", attempt: 1, elapsedMs: 12_000, stepsWritten: 2, problemKind: "bất phương trình", strategy: null };
+    expect(SolutionSchema.safeParse({ ...base, status: "pending", progress }).success).toBe(true);
   });
 });

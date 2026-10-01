@@ -11,6 +11,7 @@ import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
 import { GeminiJsonModel } from "../solver/geminiModel";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
+import { FailoverJsonModel } from "../solver/failover";
 import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
@@ -104,6 +105,10 @@ function createModels(env: Env, request: Request, problemText: string): { model:
       thinking: false,
       reasoningEffort: effort,
     });
+    if (env.SOLVER_FAILOVER_URL) {
+      const failover = new LocalJsonModel(env.SOLVER_FAILOVER_URL, env.SOLVER_FAILOVER_MODEL || "local", { apiKey: env.SOLVER_FAILOVER_API_KEY, thinking: false });
+      return { model: new FailoverJsonModel(model, failover, (m) => console.log(`[solve] ${m}`)) };
+    }
     return { model };
   }
 

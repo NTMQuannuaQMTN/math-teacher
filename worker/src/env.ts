@@ -31,6 +31,10 @@ export interface Env {
   LOCAL_REASONING_EFFORT?: string;
   /** …and for simple problems (one question, no figure, no proof; default "minimal"). */
   LOCAL_SIMPLE_REASONING_EFFORT?: string;
+  /** Optional second OpenAI-compatible server used when the solver model is unavailable (quota, bad key). */
+  SOLVER_FAILOVER_URL?: string;
+  SOLVER_FAILOVER_MODEL?: string;
+  SOLVER_FAILOVER_API_KEY?: string;
   SOLVER_FALLBACK_MODEL?: string;
   SOLVER_FALLBACK_REASONING_EFFORT?: string;
   SOLVER_GEOMETRY_MODEL?: string;
