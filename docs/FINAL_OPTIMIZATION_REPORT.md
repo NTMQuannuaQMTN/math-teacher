@@ -109,7 +109,7 @@ Verifier-only regrade of the stored lessons (same model output, current verifier
 - The final configuration's accuracy on the hosted model is **not measured** (OPT-006).
 - On the local model with the final prompt and verifier (OPT-008 to 010, 6 distinct problems, single
   samples): **every final answer correct, 0 CRITICAL**. The two problems that were wrong before (a7, w1)
-  are now verified, and 6 of the 7 lessons graded across those runs are PASS.
+  are now verified, and 7 of the 8 lessons graded across those runs are PASS (after the verifier regrade).
 - Accuracy safeguards that are measured: the replay (OPT-003) changes no correct/incorrect outcome; every
   new rule only adds checks or repairs a format; CRITICAL stays 0 in every run; the regression suite
   passes (§13).
