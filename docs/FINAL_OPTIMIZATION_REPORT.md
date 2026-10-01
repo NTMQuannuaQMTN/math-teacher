@@ -90,6 +90,10 @@ n = 3, single samples (sampling noise). g5's second attempt was skipped by the 1
 lesson was served without the figure (the figure contradicted a given angle; the answer was verified).
 On the hosted model attempts take 15–90 s, so the budget rarely applies there.
 
+OPT-009 (prompt v2.1, the per-tier size target): a3 and a7 lessons shrank from 7 and 6 steps to 4 and 4,
+with output tokens unchanged on the local model. An extra hint pointing past the last step is now
+repaired deterministically (it had caused a3's retry).
+
 Verifier-only regrade of the stored lessons (same model output, current verifier): EXP-010 hosted
 5 → **6 PASS**; EXP-004b local 6 → **7 PASS**; OPT-008 1 → **2 PASS**; CRITICAL stays 0 everywhere.
 

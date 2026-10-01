@@ -91,6 +91,17 @@ Apple M5 laptop on battery in Low Power Mode (5–9 tok/s), which also sleeps wh
   PASS, and EXP-010 and EXP-004b each gained one PASS, with no CRITICAL.
 - **Trade-off seen:** g5's second attempt (to fix the figure) was skipped by the 150 s budget.
 
+## OPT-009 — Lesson size per tier (prompt v2.1), local
+
+- **Hypothesis:** asking simple problems for 2–4 steps and 2–3 hints shortens the lesson and the output.
+- **Result (a3, a7; Qwen3.5-9B local, no sleep):** steps 7 → **4** (a3) and 6 → **4** (a7). Output tokens
+  unchanged (a7: 1,907 vs 1,896). a3 needed a second attempt (583 s): the model wrote 5 hints for 4 steps,
+  and an extra hint pointing past the last step was a structural error.
+- **Change:** an extra hint pointing past the last step is attached to the last step (deterministic; a
+  low-numbered hint with a bad reference is still reported). Regrade: OPT-009 → 2/2 PASS.
+- **Conclusion:** v2.1 makes simple lessons pass the conciseness rubric (a3 had 7 steps under v2.0). It
+  does not reduce the local model's output; its effect on the hosted model's reasoning is unmeasured.
+
 ## OPT-006 / OPT-007 — Pending (need hosted quota)
 
 The final configuration on validation, the simple tier at `minimal`, and the held-out test split.

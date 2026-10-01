@@ -173,6 +173,21 @@ export function checkLessonStructure(lesson: ModelLesson): { lesson: ModelLesson
     stepIds.add(s.id);
   }
   const hintIds = new Set<string>();
+  // Trailing hints that point past the last step (5 hints for 4 steps) lead to the end of the solution:
+  // attach them to the last step. A bad reference anywhere else is a real inconsistency and is reported.
+  const knownSteps = new Set(lesson.steps.map((s) => s.id));
+  const lastStep = lesson.steps.at(-1)?.id;
+  const lastValid = lesson.hints.reduce((last, h, i) => (knownSteps.has(h.stepId) ? i : last), -1);
+  // An extra hint ("h5" → "step5" when there are 4 steps) points past the end wherever it sits (the app
+  // reorders hints by step). A low-numbered hint with a bad reference stays an error: moving it to the end
+  // would turn the first hint into the last.
+  const num = (id: string) => Number(/(\d+)$/.exec(id)?.[1] ?? 0);
+  const extraHint = (h: ModelLesson["hints"][number]) => num(h.stepId) > lesson.steps.length && num(h.id) > lesson.steps.length;
+  const repairable = (h: ModelLesson["hints"][number], i: number) => !knownSteps.has(h.stepId) && (i > lastValid || extraHint(h));
+  if (lastStep && lastValid >= 0 && lesson.hints.some(repairable)) {
+    report.warnings.push("hints pointing past the last step were attached to it");
+    lesson = { ...lesson, hints: lesson.hints.map((h, i) => (repairable(h, i) ? { ...h, stepId: lastStep } : h)) };
+  }
   // Nothing references hint ids except the app's progress state: renumber duplicates instead of rejecting.
   if (new Set(lesson.hints.map((h) => h.id)).size < lesson.hints.length) {
     report.warnings.push("duplicate hint ids were renumbered");

@@ -218,6 +218,15 @@ describe("figure check normalisation", () => {
     expect(dropped[0]).toMatch(/left out of the figure/);
   });
 
+  it("attaches a hint that points past the last step to the last step (5 hints, 4 steps)", () => {
+    const l = inequalityLesson();
+    l.hints.push({ ...l.hints[1]!, id: "h3", stepId: "s4" });
+    const result = verifyLesson(l);
+    expect(result.lesson.hints.at(-1)!.stepId).toBe("s3");
+    expect(result.feedback.join(" ")).not.toMatch(/unknown step/);
+    expect(result.verification.status).toBe("verified");
+  });
+
   it("renumbers duplicate hint ids instead of rejecting the lesson", () => {
     const l = inequalityLesson();
     l.hints = l.hints.map((h) => ({ ...h, id: "question" }));
