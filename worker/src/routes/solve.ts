@@ -290,6 +290,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
       );
   };
 
+  let keptPrevious: ErrorCode | null = null;
   const work = (async () => {
     try {
       const result = await solveProblem(model, VN_GRADE_9, problemText, {
@@ -308,6 +309,18 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
     } catch (err) {
       console.error(`[solve ${scanId}] failed`, err instanceof Error ? err.message : err);
       await writes;
+      // A failed Regenerate (quota, timeout…) must not take away the lesson the student already had.
+      if (existing?.status === "ready" && existing.lesson_json && sameText) {
+        await env.DB.prepare(
+          `UPDATE solutions SET status = 'ready', error_code = NULL, problem_hash = ?, model = ?, prompt_version = ?, started_at = NULL, updated_at = ?
+           WHERE scan_id = ? AND question_id = ?`,
+        )
+          .bind(existing.problem_hash, existing.model, existing.prompt_version, nowIso(), scanId, questionId)
+          .run();
+        keptPrevious = failureCode(err);
+        console.log(`[solve ${scanId}/${questionId}] kept the previous lesson after a failed regenerate (${keptPrevious})`);
+        return;
+      }
       await env.DB.prepare(
         `UPDATE solutions SET status = 'failed', error_code = ?, started_at = NULL, updated_at = ? WHERE scan_id = ? AND question_id = ?`,
       )
@@ -318,6 +331,10 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
   // Keep generating (and save the result) even if the student leaves the screen.
   ctx.waitUntil(work);
   await work;
+  if (keptPrevious) {
+    // Tell the app the regenerate failed; the previous lesson is still there when the student reopens it.
+    throw new ApiError(503, keptPrevious, "Regenerating failed; the previous lesson was kept.", keptPrevious !== "solve_quota_exhausted");
+  }
 
   const row = await findSolution(env.DB, ownerId, scanId, questionId);
   if (!row) throw new ApiError(500, "internal_error", "Solution vanished.");
