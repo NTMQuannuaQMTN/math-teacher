@@ -27,6 +27,8 @@ export interface LocalModelOptions {
    * the plain strict schema.
    */
   grammar?: boolean;
+  /** Hosted reasoning models (OpenRouter `reasoning.effort`): "low" keeps hidden thinking from eating the output budget. */
+  reasoningEffort?: "minimal" | "low" | "medium" | "high";
 }
 
 export class LocalJsonModel implements JsonModel {
@@ -48,15 +50,15 @@ export class LocalJsonModel implements JsonModel {
     const body = {
       model: this.model,
       messages,
-      max_tokens: this.options.maxTokens ?? 12_000,
+      max_tokens: this.options.maxTokens ?? (this.hosted ? 16_000 : 12_000),
       // Qwen3 recommended sampling: thinking 0.6 / 0.95, non-thinking 0.7 / 0.8.
       temperature: this.options.temperature ?? (thinking ? 0.6 : 0.7),
       top_p: this.options.topP ?? (thinking ? 0.95 : 0.8),
       ...(this.options.presencePenalty ? { presence_penalty: this.options.presencePenalty } : {}),
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
       ...(this.hosted
-        ? // OpenRouter: only route to providers that honour response_format/json_schema.
-          { provider: { require_parameters: true } }
+        ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
+          { provider: { require_parameters: true }, reasoning: { effort: this.options.reasoningEffort ?? "low" } }
         : { chat_template_kwargs: { enable_thinking: thinking } }),
     };
     let response!: Response;

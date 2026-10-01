@@ -360,7 +360,12 @@ export async function solveProblem(
         onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
       });
     } catch (err) {
-      // A failed retry (truncated, overloaded, timed out) must not throw away the lesson we already have.
+      // A temporary failure on the first attempt (truncated output, rate limit, timeout) gets the next
+      // attempt instead of failing the solve; a failed retry never throws away a lesson we already have.
+      if (!best && attempt < maxAttempts && err instanceof OcrFailure && err.retryable) {
+        log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again`);
+        continue;
+      }
       if (!best) throw err;
       log(`attempt ${attempt} failed (${(err as Error).message.slice(0, 120)}); keeping attempt ${attempt - 1}`);
       return { lesson: best.lesson, verification: best.verification, ...finish(attempt, best.model) };
