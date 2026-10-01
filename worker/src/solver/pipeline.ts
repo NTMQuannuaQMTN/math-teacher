@@ -40,6 +40,13 @@ export interface SolveOptions {
    */
   fallback?: JsonModel;
   log?: (message: string) => void;
+  /**
+   * "any": retry whenever the verifier has feedback. "serious": retry only for problems that can make a
+   * lesson wrong or incomplete (failed checks, false claims, invalid/missing figure, broken structure),
+   * not for ones that only reduce how much could be checked (a malformed check, a hint pointing to a
+   * missing step). Default: "serious" for slow local models, "any" otherwise.
+   */
+  retryPolicy?: "any" | "serious";
   /** Debugging: receives each attempt's raw model output. */
   onRaw?: (attempt: number, text: string) => void;
 }
@@ -204,6 +211,50 @@ export function expandSegmentRefs(figure: NonNullable<ModelLesson["figure"]>): N
   return { ...figure, checks: figure.checks.map((c) => ({ ...c, refs: c.refs.flatMap(split) })) };
 }
 
+/**
+ * Small models refer to objects instead of points: foot(I, "line_BC"), intersection("line_AB",
+ * "line_AC"), angle_value(["ang_BAC", "90"]), parallel(["seg_d1", "seg_d2"]). Expand line/segment/
+ * angle ids (defined in the figure or named seg_XY / line_XY / ang_XYZ) into their points, move a
+ * number given as a ref into `value`, and turn a line × circle "intersection" into line_circle.
+ */
+export function expandObjectRefs(figure: NonNullable<ModelLesson["figure"]>): NonNullable<ModelLesson["figure"]> {
+  const pointIds = new Set(figure.points.map((p) => p.id));
+  const circleIds = new Set(figure.circles.map((c) => c.id));
+  const lines = new Map(figure.lines.map((l) => [l.id, [l.from, l.to]]));
+  const angles = new Map(figure.angles.map((a) => [a.id, [a.from, a.vertex, a.to]]));
+  const named = (ref: string): string[] | null => {
+    if (pointIds.has(ref) || circleIds.has(ref)) return [ref];
+    if (lines.has(ref)) return lines.get(ref)!;
+    if (angles.has(ref)) return angles.get(ref)!;
+    const m = /^(?:line|seg|ray|segment)_((?:[A-Z]'*){2})$|^(?:ang|angle)_((?:[A-Z]'*){3})$/.exec(ref);
+    const letters = (m?.[1] ?? m?.[2])?.match(/[A-Z]'*/g);
+    return letters && letters.every((l) => pointIds.has(l)) ? letters : null;
+  };
+  const points = figure.points.map((p) => {
+    if (p.kind === "free") return p;
+    const circleRefs = p.refs.filter((r) => circleIds.has(r));
+    const refs = p.refs.flatMap((r) => (circleIds.has(r) ? [r] : named(r) ?? [r]));
+    if (p.kind === "intersection" && circleRefs.length === 1) {
+      const linePts = refs.filter((r) => !circleIds.has(r));
+      if (linePts.length === 2) return { ...p, kind: "line_circle" as const, refs: [...linePts, circleRefs[0]!], value: p.value ?? 1 };
+    }
+    return refs.join() === p.refs.join() ? p : { ...p, refs };
+  });
+  const checks = figure.checks.map((c) => {
+    let value = c.value;
+    const refs: string[] = [];
+    for (const r of c.refs) {
+      if (/^-?\d+(?:[.,]\d+)?$/.test(r.trim()) && (c.kind === "angle_value" || c.kind === "length_value" || c.kind === "length_ratio")) {
+        value ??= Number(r.replace(",", "."));
+        continue;
+      }
+      refs.push(...(c.kind === "on_circle" && circleIds.has(r) ? [r] : named(r) ?? [r]));
+    }
+    return refs.join() === c.refs.join() && value === c.value ? c : { ...c, refs, value };
+  });
+  return { ...figure, points, checks };
+}
+
 const CIRCLE_ARGS: Partial<Record<string, number[]>> = { line_circle: [2], on_circle: [0], tangent: [1], circle_circle: [0, 1] };
 
 /** Models sometimes write a circle's center ("I") where a circle id ("c_I") is expected. */
@@ -231,7 +282,7 @@ export function repairCircleRefs(figure: NonNullable<ModelLesson["figure"]>): No
 }
 
 /** Normalizes all student-facing strings (NFC for Vietnamese, no control characters). */
-function tidy(lesson: ModelLesson): ModelLesson {
+export function tidy(lesson: ModelLesson): ModelLesson {
   const t = (s: string) => wrapBareLatex(fixDoubledEscapes(normalizeProblemText(s)));
   const tn = (s: string | null) => (s === null ? null : t(s));
   const stackMathLines = (m: string | null) => stackLines(m === null ? null : fixDoubledEscapes(m));
@@ -246,10 +297,13 @@ function tidy(lesson: ModelLesson): ModelLesson {
     hints: lesson.hints.map((h) => ({ ...h, question: t(h.question), cue: tn(h.cue), explanation: t(h.explanation), math: stackMathLines(h.math) })),
     steps: lesson.steps.map((s) => ({ ...s, title: t(s.title), explanation: t(s.explanation), reason: tn(s.reason), math: stackMathLines(s.math) })),
     finalAnswer: { text: t(lesson.finalAnswer.text), math: stackMathLines(lesson.finalAnswer.math) },
-    figure: lesson.figure ? repairCircleRefs(expandSegmentRefs(lesson.figure)) : lesson.figure,
+    figure: lesson.figure ? repairCircleRefs(expandSegmentRefs(expandObjectRefs(lesson.figure))) : lesson.figure,
   };
 }
 const stackLines = (m: string | null) => stackMathLines(m);
+
+/** Feedback that lowers how much of a lesson could be checked, but can't make it wrong (see retryPolicy). */
+const MINOR_FEEDBACK = [/can't be evaluated/, /points to unknown step/, /left out of the figure/, /the claim of .* can't be checked/];
 
 /**
  * Problem text → verified lesson.
@@ -266,7 +320,7 @@ export async function solveProblem(
   model: JsonModel,
   curriculum: Curriculum,
   problemText: string,
-  { signal, maxAttempts = 2, fallback, log = () => undefined, onRaw }: SolveOptions,
+  { signal, maxAttempts = 2, fallback, log = () => undefined, onRaw, retryPolicy = model.grammarConstrained ? "serious" : "any" }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
@@ -331,7 +385,9 @@ export async function solveProblem(
       }
       problems = result.feedback;
       log(`attempt ${attempt}: ${result.verification.status}, ${problems.length} problem(s)${problems.length ? `: ${problems.slice(0, 3).join(" | ")}` : ""}`);
-      if (problems.length === 0) {
+      const worthRetry = retryPolicy === "any" ? problems : problems.filter((p) => !MINOR_FEEDBACK.some((re) => re.test(p)));
+      if (worthRetry.length === 0) {
+        if (problems.length) log(`attempt ${attempt}: only minor feedback; not retrying`);
         return { lesson: result.lesson, verification: result.verification, ...finish(attempt, current.model) };
       }
     } else {

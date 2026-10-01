@@ -212,3 +212,48 @@ describe("messy ids", () => {
     expect(result.lesson.steps[0]!.id).toBe("step_1");
   });
 });
+
+describe("object references in figures", () => {
+  it("expands line/angle ids, numeric refs and line×circle intersections", async () => {
+    const { expandObjectRefs } = await import("../src/solver/pipeline");
+    const P = (id: string, kind: string, refs: string[] = [], extra = {}) => ({ id, label: id, kind, refs, x: 0, y: 0, value: null, value2: null, draggable: false, hidden: false, ...extra });
+    const figure = {
+      scale: "schematic",
+      points: [P("A", "free"), P("B", "free"), P("C", "free"), P("I", "incenter", ["A", "B", "C"]), P("D", "foot", ["I", "line_BC"]), P("K", "intersection", ["line_AB", "line_AC"]), P("H", "intersection", ["line_AD", "circle_I"])],
+      lines: [{ id: "seg_d1", kind: "segment", from: "A", to: "B", style: "given", label: null }],
+      circles: [{ id: "circle_I", center: "I", through: "D", radius: null, style: "given", label: null }],
+      angles: [{ id: "ang_BAC", from: "B", vertex: "A", to: "C", label: null, right: true, style: "given" }],
+      marks: [],
+      checks: [
+        { kind: "angle_value", refs: ["ang_BAC", "90"], value: null, role: "given" },
+        { kind: "parallel", refs: ["seg_d1", "line_BC"], value: null, role: "given" },
+      ],
+    };
+    const out = expandObjectRefs(figure as never);
+    const byId = new Map(out.points.map((p) => [p.id, p]));
+    expect(byId.get("D")!.refs).toEqual(["I", "B", "C"]);
+    expect(byId.get("K")!.refs).toEqual(["A", "B", "A", "C"]);
+    expect(byId.get("H")!.kind).toBe("line_circle");
+    expect(byId.get("H")!.refs).toEqual(["A", "D", "circle_I"]);
+    expect(out.checks[0]).toMatchObject({ refs: ["B", "A", "C"], value: 90 });
+    expect(out.checks[1]!.refs).toEqual(["A", "B", "B", "C"]);
+  });
+});
+
+describe("retry policy", () => {
+  it("does not regenerate a lesson whose only feedback is a malformed check, but does for a wrong answer", async () => {
+    const { solveProblem } = await import("../src/solver/pipeline");
+    const { mockAlgebraLesson } = await import("../src/solver/mock");
+    const { VN_GRADE_9 } = await import("../src/solver/curriculum");
+    const run = async (check: { statements: string[]; expected: string }) => {
+      const lesson = mockAlgebraLesson() as unknown as { answerChecks: unknown[] };
+      lesson.answerChecks = [{ kind: "value", statements: check.statements, assignments: [], expected: check.expected }];
+      let calls = 0;
+      const model = { model: "fake", complete: async () => (calls++, JSON.stringify(lesson)) };
+      await solveProblem(model as never, VN_GRADE_9, "Giải phương trình $x^2 - 5x + 6 = 0$.", { signal: AbortSignal.timeout(5000), retryPolicy: "serious" });
+      return calls;
+    };
+    expect(await run({ statements: ["a + b"], expected: "5" })).toBe(1); // malformed: unknown letters
+    expect(await run({ statements: ["2 + 2"], expected: "5" })).toBe(2); // a real failed check
+  });
+});
