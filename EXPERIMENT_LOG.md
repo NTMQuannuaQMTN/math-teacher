@@ -137,6 +137,28 @@ drawn figure is set aside instead of failing every claim; (5) "tam giác ABC có
   so new photos are the real test. GLM-OCR, Qwen3.5-2B/4B and the 9B compact-vs-full comparison are
   downloaded; the matrix script runs them when the Mac is plugged in and awake.
 
+## EXP-009: Solving speed — free hosted open model (2026-10-01)
+
+- Problem (user report): solving was still slow. On this Mac in Low Power Mode on battery, generation
+  is 5–9 tok/s for **any** local model size (4B ≈ 9B, grammar on or off: measured), so a 2.5–3.5K
+  token lesson takes 5–10 min per attempt. Speculative decoding (Qwen3.5-2B draft) does not engage
+  for Qwen3.5 (hybrid recurrent) in llama.cpp b11272.
+- User decision: use a free hosted open model. OpenRouter free models supporting structured output
+  were checked via the public model API. `nvidia/nemotron-3-super-120b-a12b:free` works;
+  `qwen/qwen3.8-27b:free` returned 429 (rate-limited upstream).
+- Fixes found end to end (scan → confirm → solve through the local worker):
+  1. Reasoning model hidden thinking ran past the output limit → `reasoning.effort = low`.
+  2. A runaway first attempt (~16K tokens) → temperature 0.3, 6K output cap; a temporarily failed
+     first attempt now gets the second attempt instead of failing the solve.
+  3. Hosted models write answer checks in LaTeX (`\le`, `\frac`) → the evaluator translates LaTeX;
+     previously such a check counted as "restates the answer" and caused a retry.
+  4. Retries only for serious feedback on local/hosted models.
+- Result on "Giải bất phương trình 3(x − 2) ≤ 5x + 4 − 7x": the solve went from 30 min (local
+  Qwen3.5-9B, and its answer was wrong: x ≤ 2/5) → 118 s (failed) → 127 s → 48 s → **22 s, one
+  attempt, correct (x ≤ 2)**. The scan takes 1 s (local PaddleOCR-VL). $0.
+- Limits: OpenRouter free tier (rate-limited; a daily request cap applies without purchased credit);
+  problem text is sent to OpenRouter and the model host. Photos stay local.
+
 ---
 
 ## Environment notes
