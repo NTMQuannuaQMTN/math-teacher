@@ -1,0 +1,48 @@
+{
+ "summary": {
+  "exp": "EXP-009",
+  "system": "or-qwen3.8-27b",
+  "split": "validation",
+  "promptVersion": "solver-v1.8",
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 0,
+  "fail": 1,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 1,
+  "verifiedRate": 0,
+  "errors": 1,
+  "meanModelSeconds": 0,
+  "meanInputTokens": 0,
+  "meanOutputTokens": 0,
+  "cache": {
+   "hits": 0,
+   "misses": 1,
+   "modelMs": 0
+  },
+  "createdAt": "2026-10-01T00:54:31.440Z"
+ },
+ "rows": [
+  {
+   "id": "a2",
+   "topic": "algebra",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.3,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "error": "local model returned HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"qwen/qwen3.8-27b:free is temporarily rate-limited upstream. Please retry shortly, or add your"
+  }
+ ]
+}

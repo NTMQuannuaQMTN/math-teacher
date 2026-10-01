@@ -1,0 +1,48 @@
+{
+ "summary": {
+  "exp": "EXP-010b",
+  "system": "or-nemotron-3-super",
+  "split": "validation",
+  "promptVersion": "solver-v1.8",
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 0,
+  "fail": 1,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 1,
+  "verifiedRate": 0,
+  "errors": 1,
+  "meanModelSeconds": 0,
+  "meanInputTokens": 0,
+  "meanOutputTokens": 0,
+  "cache": {
+   "hits": 0,
+   "misses": 2,
+   "modelMs": 0
+  },
+  "createdAt": "2026-10-01T04:12:06.882Z"
+ },
+ "rows": [
+  {
+   "id": "ch-1",
+   "topic": "algebra",
+   "difficulty": 3,
+   "format": "multi_part",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 240,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "error": "empty model output"
+  }
+ ]
+}

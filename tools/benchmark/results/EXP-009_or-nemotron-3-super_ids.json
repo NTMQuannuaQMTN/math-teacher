@@ -1,0 +1,169 @@
+{
+ "summary": {
+  "exp": "EXP-009",
+  "system": "or-nemotron-3-super",
+  "split": "validation",
+  "promptVersion": "solver-v1.8",
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 1,
+  "fail": 0,
+  "critical": 0,
+  "answerAccuracy": 1,
+  "gradableN": 1,
+  "verifiedRate": 0,
+  "errors": 0,
+  "meanModelSeconds": 58,
+  "meanInputTokens": 7058,
+  "meanOutputTokens": 2517,
+  "cache": {
+   "hits": 0,
+   "misses": 2,
+   "modelMs": 57989
+  },
+  "createdAt": "2026-10-01T00:58:14.097Z"
+ },
+ "rows": [
+  {
+   "id": "a2",
+   "topic": "algebra",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 7058,
+   "outputTokens": 2517,
+   "modelSeconds": 58,
+   "wallSeconds": 214,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Nghiệm của phương trình là x = 2 và x = 5. {2,5} Nghiệm của phương trình là x = 2 và x = 5. \\{2,5\\}",
+   "lesson": {
+    "analysis": {
+     "statement": "Giải phương trình: $x^{2} - 7x + 10 = 0$",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "phương trình bậc hai",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "phân tích đa thức",
+      "phương trình bậc hai có một ẩn"
+     ],
+     "givens": [
+      "phương trình $x^{2} - 7x + 10 = 0$"
+     ],
+     "unknowns": [
+      "giá trị của $x$ thỏa mãn phương trình"
+     ],
+     "constraints": [
+      "$x$ là số thực"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Phân tích thành nhân tử hai biểu thức bậc nhất bằng cách tìm hai số có tích bằng 10 và tổng bằng -7, sau đó đặt mỗi nhân tử bằng không để tìm nghiệm.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Hai số nào có tích bằng 10 và tổng bằng -7?",
+      "cue": null,
+      "explanation": "Ta cần hai số để viết dưới dạng (x + a)(x + b) sao cho a·b = 10 và a + b = -7.",
+      "math": null,
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Sau khi tìm được hai số, ta viết phương trình dưới dạng nhân tử như thế nào?",
+      "cue": null,
+      "explanation": "Với hai số -2 và -5, ta có x² - 7x + 10 = (x - 2)(x - 5).",
+      "math": "(x-2)(x-5)",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Khi tích của hai nhân tử bằng không, mỗi nhân tử bằng bao nhiêu?",
+      "cue": null,
+      "explanation": "Từ (x - 2)(x - 5) = 0 suy ra x - 2 = 0 hoặc x - 5 = 0.",
+      "math": null,
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint4",
+      "level": 4,
+      "question": "Giải hai phương trình đơn kia để tìm nghiệm của phương trình ban đầu là gì?",
+      "cue": null,
+      "explanation": "x - 2 = 0 cho x = 2; x - 5 = 0 cho x = 5.",
+      "math": "x=2,\\; x=5",
+      "stepId": "step3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Tìm hai số để phân tích",
+      "explanation": "Ta tìm hai số có tích bằng 10 (hằng số) và tổng bằng -7 (hệ số của x). Hai số đó là -2 và -5.",
+      "math": "x^{2} - 7x + 10 = (x-2)(x-5)",
+      "reason": "phân tích đa thức bậc hai bằng phương pháp tìm hai số",
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Đặt mỗi nhân tử bằng không",
+      "explanation": "Vì tích của hai nhân tử bằng không, nên mỗi nhân tử phải bằng không.",
+      "math": "(x-2)(x-5)=0 \\Rightarrow \\begin{cases} x-2=0 \\\\ x-5=0 \\end{cases}",
+      "reason": "nhân tửzero property",
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Giải hai phương trình đơn",
+      "explanation": "Giải x - 2 = 0 và x - 5 = 0 để得到 nghiệm.",
+      "math": "x=2 \\quad \\text{hoặc} \\quad x=5",
+      "reason": "giải phương trình bậc nhất",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Nghiệm của phương trình là x = 2 và x = 5.",
+     "math": "\\{2,5\\}"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "$x^{2} - 7x + 10 = 0$"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x",
+         "value": "2"
+        }
+       ],
+       [
+        {
+         "variable": "x",
+         "value": "5"
+        }
+       ]
+      ],
+      "expected": null
+     }
+    ],
+    "figure": null
+   }
+  }
+ ]
+}

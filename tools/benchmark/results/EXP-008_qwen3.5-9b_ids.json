@@ -1,0 +1,635 @@
+{
+ "summary": {
+  "exp": "EXP-008",
+  "system": "qwen3.5-9b",
+  "split": "validation",
+  "promptVersion": "solver-v1.8",
+  "dataset": "v1",
+  "n": 4,
+  "pass": 1,
+  "partial": 1,
+  "fail": 1,
+  "critical": 1,
+  "answerAccuracy": 0.5,
+  "gradableN": 4,
+  "verifiedRate": 0.5,
+  "errors": 0,
+  "meanModelSeconds": 1400.875,
+  "meanInputTokens": 8668,
+  "meanOutputTokens": 4955,
+  "cache": {
+   "hits": 0,
+   "misses": 7,
+   "modelMs": 5603483
+  },
+  "createdAt": "2026-10-01T02:17:49.235Z"
+ },
+ "rows": [
+  {
+   "id": "ch-2",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "calculation",
+   "grade": "CRITICAL",
+   "answerCorrect": false,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 13765,
+   "outputTokens": 9480,
+   "modelSeconds": 4069.6,
+   "wallSeconds": 4069.7,
+   "figurePoints": 0,
+   "failedChecks": [],
+   "answer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 10√2. 10√2 Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $10\\sqrt{2}$. 10\\sqrt{2}",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "quadrilaterals, perpendicular diagonals, perimeter optimization",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "tính chất đường chéo vuông góc",
+      "bất đẳng thức Cauchy (trường hợp 2 số) hoặc tính chất trung bình cộng - trung bình nhân",
+      "chu vi tứ giác",
+      "Định lý Pythagoras"
+     ],
+     "givens": [
+      "$ABCD$ là tứ giác lồi",
+      "$BC = 7$",
+      "$DA = 1$",
+      "$AC \\perp BD$"
+     ],
+     "unknowns": [
+      "Giá trị lớn nhất của $P = AB + BC + CD + DA$"
+     ],
+     "constraints": [
+      "$AC$ và $BD$ cắt nhau tại một điểm $O$"
+     ],
+     "status": "solvable",
+     "statusReason": "Bài toán thuộc chương trình Toán lớp 9 về hình học và đại số (bất đẳng thức). Dữ liệu đầu vào rõ ràng, không có lỗi OCR đáng kể.",
+     "interpretationNotes": []
+    },
+    "strategy": "Ta sẽ đặt giao điểm của hai đường chéo là $O$. Khi đó, chu vi của tứ giác bằng tổng 4 cạnh, và 4 cạnh này có thể biểu diễn qua các đoạn trên hai đường chéo vuông góc. Ta cần tìm cách nhóm các đoạn sao cho áp dụng được bất đẳng thức về trung bình cộng và trung bình nhân (hoặc đơn giản là tính chất $a+b \\ge 2\\sqrt{ab}$) để tìm giá trị lớn nhất.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Gọi $O$ là giao điểm của hai đường chéo $AC$ và $BD$. Khi đó, tứ giác $ABCD$ được chia thành 4 tam giác nhỏ có chung đỉnh $O$. Hãy quan sát xem các cạnh $AB, BC, CD, DA$ liên hệ như thế nào với các đoạn thẳng $OA, OB, OC, OD$.",
+      "cue": "Định lý Pythagoras trong tam giác vuông",
+      "explanation": "Vì $AC \\perp BD$ tại $O$, nên các tam giác $AOB, BOC, COD, DOA$ đều là tam giác vuông. Ta có thể viết độ dài các cạnh của tứ giác dưới dạng căn bậc hai của tổng bình phương hai cạnh bên.",
+      "math": "AB = \\sqrt{OA^2 + OB^2}, BC = \\sqrt{OB^2 + OC^2}, CD = \\sqrt{OC^2 + OD^2}, DA = \\sqrt{OD^2 + OA^2}",
+      "stepId": "S1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Chu vi $P = AB + BC + CD + DA$. Thay các biểu thức ở trên vào, ta có một biểu thức chứa 4 căn thức. Để tìm giá trị lớn nhất, bạn có nhớ một tính chất của trung bình cộng và trung bình nhân không? Cụ thể là mối liên hệ giữa $\\sqrt{a^2+b^2}$ và $a+b$?",
+      "cue": "Bất đẳng thức $\\sqrt{a^2+b^2} \\le \\frac{a+b}{\\sqrt{2}}$ (hoặc chứng minh bằng cách bình phương hai vế)",
+      "explanation": "Ta có bất đẳng thức quen thuộc: $\\sqrt{x^2+y^2} \\le \\frac{x+y}{\\sqrt{2}}$ (dấu '=' xảy ra khi $x=y$). Áp dụng vào từng cạnh, ví dụ $AB = \\sqrt{OA^2+OB^2} \\le \\frac{OA+OB}{\\sqrt{2}}$.",
+      "math": "\\sqrt{x^2+y^2} \\le \\frac{x+y}{\\sqrt{2}}",
+      "stepId": "S2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Hãy cộng các bất đẳng thức tương tự cho cả 4 cạnh lại với nhau. Sau đó, hãy nhóm các hạng tử chứa $OA, OB, OC, OD$ lại. Bạn sẽ thấy xuất hiện $(OA+OC)$ và $(OB+OD)$, tức là độ dài hai đường chéo $AC$ và $BD$. Hãy thử viết biểu thức chu vi dưới dạng phụ thuộc vào $AC$ và $BD$.",
+      "cue": "Tính chất bắc cầu và phép cộng bất đẳng thức",
+      "explanation": "Ta sẽ có $P \\le \\frac{AC+BD}{\\sqrt{2}} + \\frac{AC+BD}{\\sqrt{2}} = \\sqrt{2}(AC+BD)$. Bây giờ bài toán chuyển sang tìm giá trị lớn nhất của $AC+BD$ với điều kiện $BC=7, DA=1$.",
+      "math": "P \\le \\sqrt{2}(AC+BD)",
+      "stepId": "S3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 4,
+      "question": "Bây giờ ta cần tìm $AC+BD$ lớn nhất như thế nào? Ta có $AC = OA+OC$ và $BD = OB+OD$. Hãy xét tam giác vuông $BOC$ (có cạnh huyền $BC=7$) và tam giác vuông $AOD$ (có cạnh huyền $DA=1$). Làm sao để $OA+OB+OC+OD$ lớn nhất?",
+      "cue": "Tổng các cạnh góc vuông trong tam giác vuông so với cạnh huyền",
+      "explanation": "Trong tam giác vuông, tổng hai cạnh góc vuông luôn nhỏ hơn hoặc bằng $\\sqrt{2}$ lần cạnh huyền (bất đẳng thức $a+b \\le \\sqrt{2}c$). Vậy $OA+OC \\le \\sqrt{2} AC$? Không, ta cần dùng $OA+OC \\le \\sqrt{2} AC$ là sai. Hãy nhớ lại: $OA+OC$ là tổng hai đoạn thẳng trên một đường thẳng. Điều kiện là $OA^2+OC^2 = AC^2$ không đúng, mà $OA+OC$ là tổng các đoạn. Thực ra, ta nên xét $AC = OA+OC$ và $BD = OB+OD$. Ta có $OA+OC \\le \\sqrt{2} AC$ là đúng nhưng chưa giúp. Hãy quay lại: $OA^2+OB^2+OC^2+OD^2 = BC^2+DA^2 = 49+1=50$. Ta cần tìm max của $(OA+OC)+(OB+OD)$ biết $OA^2+OC^2 = AC^2$ và $OB^2+OD^2=BD^2$? Không, hãy dùng bất đẳng thức $x+y \\le \\sqrt{2(x^2+y^2)}$. Áp dụng cho $OA, OC$ và $OB, OD$.",
+      "math": "OA+OC \\le \\sqrt{2(OA^2+OC^2)} = \\sqrt{2} AC \\text{ (sai)} \\rightarrow \\text{Thực tế: } OA+OC \\le \\sqrt{2} AC \\text{ là đúng nhưng ta cần liên hệ với } BC, DA.",
+      "stepId": "S4",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 4,
+      "question": "Hãy thử một cách tiếp cận khác cho phần cuối. Ta có $OA^2+OC^2 = AC^2$ và $OB^2+OD^2 = BD^2$. Nhưng ta biết $OA^2+OC^2+OB^2+OD^2 = BC^2+DA^2 = 50$. Hãy xét tổng $S = (OA+OC) + (OB+OD)$. Áp dụng bất đẳng thức $a+b \\le \\sqrt{2(a^2+b^2)}$ cho từng cặp $(OA, OC)$ và $(OB, OD)$, ta sẽ có biểu thức chứa \\$",
+      "cue": "Bất đẳng thức $a+b \\le \\sqrt{2(a^2+b^2)}$ và $a+b \\le \\sqrt{2(a^2+b^2)}$",
+      "explanation": "Ta có $AC+BD = (OA+OC) + (OB+OD)$. Áp dụng $x+y \\le \\sqrt{2(x^2+y^2)}$ cho $OA, OC$ thì $OA+OC \\le \\sqrt{2} AC$ (không đúng vì $OA, OC$ không vuông góc). Đúng là $OA+OC \\le \\sqrt{2} AC$ chỉ đúng nếu $OA \\perp OC$. Ở đây $OA$ và $OC$ cùng nằm trên $AC$. Hãy sửa lại: Ta có $OA^2+OB^2+OC^2+OD^2 = 50$. Ta cần tìm max của $OA+OB+OC+OD$. Áp dụng $a+b \\le \\sqrt{2(a^2+b^2)}$ cho toàn bộ 4 số? Không. Hãy nhóm: $(OA+OC) + (OB+OD)$. Ta biết $OA+OC \\le \\sqrt{2(OA^2+OC^2)}$ là sai. Ta cần dùng $OA+OC \\le \\sqrt{2} AC$ là sai. Hãy dùng: $OA+OC \\le \\sqrt{2} AC$ chỉ đúng khi $OA \\perp OC$. Nhưng ở đây $OA, OC$ thẳng hàng. Vậy $OA+OC = AC$. Tương tự $OB+OD = BD$. Vậy $P \\le \\sqrt{2}(AC+BD)$. Bây giờ ta cần tìm max của $AC+BD$ với $AC^2+BD^2 = OA^2+OC^2+OB^2+OD^2 = BC^2+DA^2 = 50$. Dùng bất đẳng thức $(AC+BD)^2 \\le 2(AC^2+BD^2)$.",
+      "math": "(AC+BD)^2 \\le 2(AC^2+BD^2) = 2(50) = 100 \\Rightarrow AC+BD \\le 10",
+      "stepId": "S5",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "S1",
+      "title": "Gọi giao điểm và biểu diễn cạnh",
+      "explanation": "Gọi $O$ là giao điểm của hai đường chéo $AC$ và $BD$. Vì $AC \\perp BD$, nên các tam giác $AOB, BOC, COD, DOA$ đều vuông tại $O$. Áp dụng định lý Pythagoras, ta biểu diễn độ dài 4 cạnh của tứ giác qua các đoạn $OA, OB, OC, OD$.",
+      "math": "AB = \\sqrt{OA^2+OB^2}, BC = \\sqrt{OB^2+OC^2}, CD = \\sqrt{OC^2+OD^2}, DA = \\sqrt{OD^2+OA^2}",
+      "reason": "Định lý Pythagoras",
+      "geometryActions": []
+     },
+     {
+      "id": "S2",
+      "title": "Áp dụng bất đẳng thức cho từng cạnh",
+      "explanation": "Ta nhớ bất đẳng thức $\\sqrt{x^2+y^2} \\le \\frac{x+y}{\\sqrt{2}}$ (dấu '=' xảy ra khi $x=y$). Áp dụng vào từng cạnh, ta có bất đẳng thức cho chu vi $P$.",
+      "math": "AB+BC+CD+DA \\le \\frac{OA+OB}{\\sqrt{2}} + \\frac{OB+OC}{\\sqrt{2}} + \\frac{OC+OD}{\\sqrt{2}} + \\frac{OD+OA}{\\sqrt{2}}",
+      "reason": "Bất đẳng thức giữa trung bình cộng và trung bình nhân (dạng $a+b \\ge 2\\sqrt{ab}$ suy ra $\\sqrt{a^2+b^2} \\le \\frac{a+b}{\\sqrt{2}}$)",
+      "geometryActions": []
+     },
+     {
+      "id": "S3",
+      "title": "Nhóm các hạng tử",
+      "explanation": "Tổng hợp lại các hạng tử chứa $OA, OB, OC, OD$, ta thấy mỗi đoạn xuất hiện 2 lần. Nhóm lại ta được biểu thức phụ thuộc vào độ dài hai đường chéo $AC$ và $BD$.",
+      "math": "P \\le \\frac{2(OA+OC) + 2(OB+OD)}{\\sqrt{2}} = \\sqrt{2}(AC+BD)",
+      "reason": "Phép cộng và rút gọn",
+      "geometryActions": []
+     },
+     {
+      "id": "S4",
+      "title": "Tìm quan hệ giữa các đường chéo",
+      "explanation": "Ta cần tìm giá trị lớn nhất của $AC+BD$. Trước hết, hãy tìm tổng bình phương của hai đường chéo. Ta có $BC^2 = OB^2+OC^2$ và $DA^2 = OD^2+OA^2$. Cộng lại ta được $BC^2+DA^2 = (OA^2+OC^2) + (OB^2+OD^2) = AC^2 + BD^2$.",
+      "math": "AC^2 + BD^2 = BC^2 + DA^2 = 7^2 + 1^2 = 50",
+      "reason": "Định lý Pythagoras",
+      "geometryActions": []
+     },
+     {
+      "id": "S5",
+      "title": "Tìm giá trị lớn nhất của AC+BD",
+      "explanation": "Ta có $AC^2+BD^2=50$. Áp dụng bất đẳng thức $(AC+BD)^2 \\le 2(AC^2+BD^2)$ (dấu '=' xảy ra khi $AC=BD$). Từ đó tìm được giá trị lớn nhất của $AC+BD$.",
+      "math": "(AC+BD)^2 \\le 2(50) = 100 \\Rightarrow AC+BD \\le 10",
+      "reason": "Bất đẳng thức giữa trung bình cộng và trung bình nhân (hoặc $a+b \\le \\sqrt{2(a^2+b^2)}$)",
+      "geometryActions": []
+     },
+     {
+      "id": "S6",
+      "title": "Kết luận giá trị lớn nhất của chu vi",
+      "explanation": "Thay giá trị lớn nhất của $AC+BD$ vào biểu thức chu vi đã tìm được ở bước 3. Khi đó $P_{max} = \\sqrt{2} \\cdot 10 = 10\\sqrt{2}$. Dấu '=' xảy ra khi $OA=OB=OC=OD$ và $AC=BD$, tức là $ABCD$ là hình vuông (hoặc hình chữ nhật có đường chéo bằng nhau và vuông góc - thực chất là hình vuông).",
+      "math": "P_{max} = \\sqrt{2} \\cdot 10 = 10\\sqrt{2}",
+      "reason": "Kết hợp các bất đẳng thức",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $10\\sqrt{2}$.",
+     "math": "10\\sqrt{2}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "sqrt(2) * 10"
+      ],
+      "assignments": [],
+      "expected": "10*sqrt(2)"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [],
+     "lines": [],
+     "circles": [],
+     "angles": [],
+     "marks": [],
+     "checks": []
+    }
+   }
+  },
+  {
+   "id": "a3",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "calculation",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "not_checkable",
+   "attempts": 1,
+   "inputTokens": 2667,
+   "outputTokens": 2237,
+   "modelSeconds": 245.6,
+   "wallSeconds": 245.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Biểu thức rút gọn là A = (x - 1)/(√x) với x > 0, x ≠ 1. (x - 1)/(√x) Biểu thức rút gọn là $A = \\frac{x - 1}{\\sqrt{x}}$ với $x > 0, x \\ne 1$. \\frac{x - 1}{\\sqrt{",
+   "lesson": {
+    "analysis": {
+     "statement": "Rút gọn biểu thức $A = \\left(\\frac{\\sqrt{x}}{\\sqrt{x} - 1} - \\frac{1}{x - \\sqrt{x}}\\right) : \\left(\\frac{1}{\\sqrt{x} + 1} + \\frac{2}{x - 1}\\right)$ với $x > 0, x \\ne 1$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "rút gọn biểu thức chứa căn thức bậc hai",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "biến đổi đại số",
+      "cộng trừ phân thức đại số",
+      "nhân tử chung",
+      "hằng đẳng thức $(a+b)(a-b)=a^2-b^2$"
+     ],
+     "givens": [
+      "biểu thức A với hai vế",
+      "điều kiện xác định $x > 0, x \\ne 1$"
+     ],
+     "unknowns": [
+      "dạng rút gọn của biểu thức A"
+     ],
+     "constraints": [
+      "$x > 0$ để căn thức xác định",
+      "$x \\ne 1$ để mẫu số khác 0"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ lần lượt rút gọn từng ngoặc đơn (vế trái và vế phải) bằng cách quy đồng mẫu số, rồi thực hiện phép chia phân thức. Sau đó mới nhân các kết quả lại với nhau.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Bạn nhìn vào vế trái của dấu ngoặc đầu tiên, mẫu số thứ hai là $x - \\sqrt{x}$. Bạn có nhận thấy mối liên hệ giữa mẫu số này và mẫu số thứ nhất $\\sqrt{x} - 1$ không?",
+      "cue": "nhân tử chung",
+      "explanation": "null",
+      "math": null,
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Để trừ hai phân thức, chúng ta cần quy đồng mẫu số. Mẫu số chung ở đây sẽ là gì?",
+      "cue": "mẫu số chung là $(\\sqrt{x}-1)^2$",
+      "explanation": "null",
+      "math": null,
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 2,
+      "question": "Bây giờ hãy nhìn vào vế phải của dấu ngoặc thứ hai. Mẫu số thứ hai là $x-1$, còn mẫu số đầu là $\\sqrt{x}+1$. Bạn có thể biến đổi mẫu số $x-1$ thành dạng có chứa $\\sqrt{x}$ không?",
+      "cue": "hằng đẳng thức $a^2-b^2=(a-b)(a+b)$",
+      "explanation": "null",
+      "math": null,
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Sau khi đã rút gọn xong cả hai ngoặc đơn, bạn sẽ có hai phân thức. Khi gặp dấu hai chấm (:), bạn cần làm gì tiếp theo?",
+      "cue": "chia cho một phân thức thì nhân với phân thức đảo ngược",
+      "explanation": "null",
+      "math": null,
+      "stepId": "step4",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 3,
+      "question": "Cuối cùng, khi nhân hai phân thức lại với nhau, mẫu số chung sẽ triệt tiêu nhau. Hãy tính toán tử số còn lại để tìm kết quả cuối cùng nhé!",
+      "cue": "rút gọn tử số",
+      "explanation": "null",
+      "math": null,
+      "stepId": "step5",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Rút gọn vế trái của dấu ngoặc đầu tiên",
+      "explanation": "Mình thấy mẫu số thứ hai $x - \\sqrt{x}$ có thể đặt nhân tử chung ra $\\sqrt{x}$, nên nó sẽ bằng $\\sqrt{x}(\\sqrt{x} - 1)$. Điều này giúp ta dễ dàng quy đồng với mẫu số thứ nhất là $\\sqrt{x} - 1$.",
+      "math": "\\frac{\\sqrt{x}}{\\sqrt{x} - 1} - \\frac{1}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{\\sqrt{x} - \\frac{1}{\\sqrt{x}}}{\\sqrt{x} - 1}",
+      "reason": "đặt nhân tử chung",
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Quy đồng và tính toán vế trái",
+      "explanation": "Mẫu số chung là $\\sqrt{x}(\\sqrt{x} - 1)$. Mình sẽ nhân chéo tử số, rồi biến đổi tử số thành $\\frac{x-1}{\\sqrt{x}}$ để dễ trừ với mẫu số. Sau đó rút gọn được $\\frac{\\sqrt{x}-1}{\\sqrt{x}(\\sqrt{x}-1)}$.",
+      "math": "\\frac{\\sqrt{x} \\cdot \\sqrt{x} - 1}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{x - 1}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{(\\sqrt{x} - 1)(\\sqrt{x} + 1)}{\\sqrt{x}(\\sqrt{x} - 1)} = \\frac{\\sqrt{x} + 1}{\\sqrt{x}}",
+      "reason": "hằng đẳng thức $(a+b)(a-b)=a^2-b^2$",
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Rút gọn vế phải của dấu ngoặc thứ hai",
+      "explanation": "Ở vế phải, mình sẽ biến đổi mẫu số $x-1$ thành $(\\sqrt{x}-1)(\\sqrt{x}+1)$ bằng hằng đẳng thức hiệu hai bình phương. Khi đó mẫu số chung với $\\sqrt{x}+1$ sẽ là $(\\sqrt{x}+1)(\\sqrt{x}-1)$.",
+      "math": "\\frac{1}{\\sqrt{x} + 1} + \\frac{2}{(\\sqrt{x} - 1)(\\sqrt{x} + 1)} = \\frac{\\sqrt{x} - 1 + 2}{(\\sqrt{x} + 1)(\\sqrt{x} - 1)} = \\frac{\\sqrt{x} + 1}{x - 1}",
+      "reason": "hằng đẳng thức $(a+b)(a-b)=a^2-b^2$",
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Thực hiện phép chia",
+      "explanation": "Bây giờ mình có kết quả của hai ngoặc đơn. Phép chia cho một phân thức thì tương đương với phép nhân với phân thức đảo ngược của nó.",
+      "math": "A = \\frac{\\sqrt{x} + 1}{\\sqrt{x}} \\cdot \\frac{x - 1}{\\sqrt{x} + 1}",
+      "reason": "quy tắc chia phân thức",
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Rút gọn và kết luận",
+      "explanation": "Ta thấy tử số của phân thức thứ hai $(x-1)$ và mẫu số của phân thức thứ nhất $(\\sqrt{x})$ không triệt tiêu ngay, nhưng $(\\sqrt{x}+1)$ ở tử và mẫu sẽ triệt tiêu nhau. Tuy nhiên, nhìn kỹ lại bước 2 và 3, ta thấy kết quả rút gọn cuối cùng thực ra là $\\frac{x-1}{\\sqrt{x}}$ nếu không có sự nhầm lẫn, nhưng dựa vào logic triệt tiêu $(\\sqrt{x}+1)$, kết quả chính xác là $\\frac{x-1}{\\sqrt{x}}$.",
+      "math": "A = \\frac{\\sqrt{x} + 1}{\\sqrt{x}} \\cdot \\frac{x - 1}{\\sqrt{x} + 1} = \\frac{x - 1}{\\sqrt{x}}",
+      "reason": "rút gọn phân thức",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Biểu thức rút gọn là $A = \\frac{x - 1}{\\sqrt{x}}$ với $x > 0, x \\ne 1$.",
+     "math": "\\frac{x - 1}{\\sqrt{x}}"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "((sqrt(x)/(sqrt(x)-1) - 1/(x-sqrt(x))) / (1/(sqrt(x)+1) + 2/(x-1)))",
+       "((sqrt(x)+1)/sqrt(x) * (x-1)/(sqrt(x)+1))"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x",
+         "value": "4"
+        }
+       ]
+      ],
+      "expected": "(4-1)/sqrt(4)"
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "a7",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 7271,
+   "outputTokens": 3709,
+   "modelSeconds": 524.7,
+   "wallSeconds": 524.7,
+   "figurePoints": null,
+   "failedChecks": [
+    "m = -7"
+   ],
+   "answer": "Giá trị của m thỏa mãn yêu cầu đề bài là m = -7. m = -7 Giá trị của $m$ thỏa mãn yêu cầu đề bài là $m = -7$. m = -7",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho phương trình $x^{2} - 2(m + 1)x + m^{2} + 3 = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_{1}, x_{2}$ thỏa mãn $x_{1}^{2} + x_{2}^{2} = 22$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "quadratic equations and Vieta's formulas",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "phương trình bậc hai một ẩn",
+      "điều kiện có hai nghiệm phân biệt",
+      "hệ thức Vi-ét",
+      "biến đổi đại số"
+     ],
+     "givens": [
+      "Phương trình: $x^{2} - 2(m + 1)x + m^{2} + 3 = 0$",
+      "Điều kiện: $x_{1}^{2} + x_{2}^{2} = 22$"
+     ],
+     "unknowns": [
+      "m"
+     ],
+     "constraints": [
+      "Phương trình phải có hai nghiệm phân biệt ($\\Delta > 0$)"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Ta sẽ dùng hệ thức Vi-ét để liên hệ giữa tổng và tích hai nghiệm với tham số $m$. Sau đó, biến đổi biểu thức $x_1^2 + x_2^2$ về dạng chứa tổng và tích để lập phương trình tìm $m$. Cuối cùng, kiểm tra lại điều kiện để phương trình có hai nghiệm phân biệt.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để làm việc với hai nghiệm $x_1, x_2$ của một phương trình bậc hai, bạn cần nhớ công thức nào liên hệ giữa các hệ số của phương trình với tổng và tích hai nghiệm?",
+      "cue": "Hệ thức Vi-ét",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Biểu thức $x_1^2 + x_2^2$ không có ngay trong công thức Vi-ét. Bạn có thể biến đổi nó thành dạng nào chứa $x_1 + x_2$ và $x_1 x_2$?",
+      "cue": "Công thức: $A^2 + B^2 = (A+B)^2 - 2AB$",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Hãy thay các giá trị của $x_1 + x_2$ và $x_1 x_2$ (theo $m$) vào biểu thức đã biến đổi ở trên, rồi giải phương trình tìm được để tìm $m$.",
+      "cue": "Giải phương trình bậc nhất một ẩn",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 1,
+      "question": "Cuối cùng, một phương trình bậc hai có hai nghiệm phân biệt khi nào? Bạn hãy tính $ext{\\Delta}$ của phương trình với $m$ vừa tìm và kiểm tra xem có thỏa mãn điều kiện này không nhé.",
+      "cue": "Điều kiện: $\\text{\\Delta} > 0$",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "S1",
+      "title": "Áp dụng hệ thức Vi-ét",
+      "explanation": "Phương trình đã cho có dạng $ax^2 + bx + c = 0$ với $a=1, b=-2(m+1), c=m^2+3$. Theo hệ thức Vi-ét, ta có tổng hai nghiệm và tích hai nghiệm.",
+      "math": "\\begin{cases} x_1 + x_2 = 2(m+1) \\\\ x_1 x_2 = m^2 + 3 \\end{cases}",
+      "reason": "Hệ thức Vi-ét",
+      "geometryActions": []
+     },
+     {
+      "id": "S2",
+      "title": "Biến đổi biểu thức $x_1^2 + x_2^2$",
+      "explanation": "Ta biến đổi $x_1^2 + x_2^2$ thành $(x_1 + x_2)^2 - 2x_1 x_2$ để thay thế vào giả thiết đã cho.",
+      "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2 = 22",
+      "reason": "Biến đổi đại số",
+      "geometryActions": []
+     },
+     {
+      "id": "S3",
+      "title": "Lập và giải phương trình tìm $m$",
+      "explanation": "Thay các biểu thức theo Vi-ét vào phương trình ở bước trước, ta được phương trình bậc nhất theo $m$. Giải phương trình này ta tìm được giá trị của $m$.",
+      "math": "\\begin{aligned} [2(m+1)]^2 - 2(m^2+3) &= 22 \\\\ 4(m^2 + 2m + 1) - 2m^2 - 6 &= 22 \\\\ 4m^2 + 8m + 4 - 2m^2 - 6 &= 22 \\\\ 2m^2 + 8m - 14 &= 0 \\\\ m^2 + 4m - 7 &= 0 \\end{aligned}",
+      "reason": "Giải phương trình bậc hai",
+      "geometryActions": []
+     },
+     {
+      "id": "S4",
+      "title": "Kiểm tra điều kiện nghiệm tồn tại",
+      "explanation": "Phương trình có hai nghiệm phân biệt khi và chỉ khi $\\text{\\Delta} > 0$. Ta tính $\\text{\\Delta}$ của phương trình ban đầu với $m=1$ và $m=-7$.",
+      "math": "\\begin{aligned} \\text{\\Delta} &= b^2 - 4ac = [-2(m+1)]^2 - 4(1)(m^2+3) = 4(m+1)^2 - 4(m^2+3) \\\\ &= 4(m^2+2m+1) - 4m^2 - 12 = 8m - 8 \\\\ \\text{\\Delta} > 0 \\Leftrightarrow 8m - 8 > 0 \\Leftrightarrow m > 1 \\end{aligned}",
+      "reason": "Điều kiện phương trình có hai nghiệm phân biệt",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị của $m$ thỏa mãn yêu cầu đề bài là $m = -7$.",
+     "math": "m = -7"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "m = -7",
+       "(-7)^2 + 4*(-7) - 7 = 0",
+       "8*(-7) - 8 < 0"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "m",
+         "value": "-7"
+        }
+       ]
+      ],
+      "expected": "true"
+     }
+    ],
+    "figure": null
+   }
+  },
+  {
+   "id": "g5",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 10969,
+   "outputTokens": 4394,
+   "modelSeconds": 763.6,
+   "wallSeconds": 763.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Độ dài cạnh huyền BC là 10 cm và độ dài đường cao AH là 4,8 cm. BC = 10 cm, AH = 4,8 cm Độ dài cạnh huyền $BC$ là $10$ cm và độ dài đường cao $AH$ là $4,8$ cm. ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ vuông tại $A$ có $AB = 6$ cm, $AC = 8$ cm. Tính $BC$ và đường cao $AH$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "Hệ thức lượng trong tam giác vuông",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Tam giác vuông",
+      "Định lý Py-ta-go",
+      "Hệ thức lượng trong tam giác vuông ($b^2 = a\\cdot b'$, $h^2 = b'\\cdot c'$, $a\\cdot h = b\\cdot c$)"
+     ],
+     "givens": [
+      "Tam giác $ABC$ vuông tại $A$",
+      "$AB = 6$ cm",
+      "$AC = 8$ cm"
+     ],
+     "unknowns": [
+      "Cạnh huyền $BC$ (kí hiệu là $a$)",
+      "Đường cao $AH$ (kí hiệu là $h$)"
+     ],
+     "constraints": [
+      "$AH \\perp BC$",
+      "$H$ thuộc $BC$"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ dùng Định lý Py-ta-go để tính cạnh huyền $BC$ trước. Sau đó, mình sẽ áp dụng hệ thức lượng liên hệ giữa đường cao và các cạnh góc vuông để tìm $AH$. Cách này nhanh và chính xác nhất.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để tính độ dài cạnh huyền $BC$ khi biết hai cạnh góc vuông $AB$ và $AC$, bạn nhớ đến định lý nào?",
+      "cue": "Định lý Py-ta-go",
+      "explanation": "Định lý Py-ta-go nói rằng bình phương cạnh huyền bằng tổng bình phương hai cạnh góc vuông. Áp dụng vào tam giác $ABC$ vuông tại $A$.",
+      "math": "$BC^2 = AB^2 + AC^2$",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Sau khi có $BC$, để tìm đường cao $AH$, bạn cần tìm hệ thức nào liên hệ giữa $AH, AB, AC$?",
+      "cue": "Hệ thức lượng: $a \\cdot h = b \\cdot c$",
+      "explanation": "Trong tam giác vuông, tích hai cạnh góc vuông bằng tích cạnh huyền và đường cao tương ứng. Ta có $AB \\cdot AC = BC \\cdot AH$.",
+      "math": "$AB \\cdot AC = BC \\cdot AH$",
+      "stepId": "step2",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Tính cạnh huyền $BC$",
+      "explanation": "Áp dụng định lý Py-ta-go vào tam giác $ABC$ vuông tại $A$, ta có $BC^2 = AB^2 + AC^2$. Thay số và tính ra $BC$.",
+      "math": "$BC = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = 10$ (cm)",
+      "reason": "Định lý Py-ta-go",
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Tính đường cao $AH$",
+      "explanation": "Sử dụng hệ thức lượng $AB \\cdot AC = BC \\cdot AH$ để tìm $AH$. Ta có $AH = \\dfrac{AB \\cdot AC}{BC}$. Thay các giá trị đã tìm được vào.",
+      "math": "$AH = \\dfrac{6 \\cdot 8}{10} = \\dfrac{48}{10} = 4,8$ (cm)",
+      "reason": "Hệ thức lượng trong tam giác vuông ($a \\cdot h = b \\cdot c$)",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Độ dài cạnh huyền $BC$ là $10$ cm và độ dài đường cao $AH$ là $4,8$ cm.",
+     "math": "BC = 10 \\text{ cm}, \\quad AH = 4,8 \\text{ cm}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "sqrt(6^2 + 8^2)",
+       "6 * 8 / sqrt(6^2 + 8^2)"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "BC",
+         "value": "10"
+        }
+       ],
+       [
+        {
+         "variable": "AH",
+         "value": "4.8"
+        }
+       ]
+      ],
+      "expected": "10"
+     }
+    ],
+    "figure": null
+   }
+  }
+ ]
+}
