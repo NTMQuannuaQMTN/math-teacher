@@ -11,7 +11,7 @@ import type { JsonModel } from "./llm";
  * With thinking on, the server returns the reasoning separately and only the answer is parsed.
  */
 /** Per-request cap for hosted endpoints (free tiers can queue a request for minutes). */
-const HOSTED_REQUEST_TIMEOUT_MS = 120_000;
+const HOSTED_REQUEST_TIMEOUT_MS = 180_000;
 
 export interface LocalModelOptions {
   apiKey?: string;
@@ -50,8 +50,9 @@ export class LocalJsonModel implements JsonModel {
     const body = {
       model: this.model,
       messages,
-      // Hosted: a normal lesson is 2–4K tokens; a lower cap abandons a runaway (looping) attempt quickly.
-      max_tokens: this.options.maxTokens ?? (this.hosted ? 6_000 : 12_000),
+      // Hosted: easy lessons are 2–4K tokens, hard multi-part proofs need more; the per-request
+      // timeout (not this cap) is what stops a runaway attempt.
+      max_tokens: this.options.maxTokens ?? 12_000,
       // Qwen3 recommended sampling: thinking 0.6 / 0.95, non-thinking 0.7 / 0.8.
       temperature: this.options.temperature ?? (this.hosted ? 0.3 : thinking ? 0.6 : 0.7),
       top_p: this.options.topP ?? (thinking ? 0.95 : 0.8),
