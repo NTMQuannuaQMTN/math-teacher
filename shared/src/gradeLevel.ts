@@ -33,10 +33,12 @@ const FORBIDDEN: Marker[] = [
   { re: /định lí (hàm số )?(sin|côsin|cosin|cos)\b|law of (sines|cosines)|-\s*2\s*[a-z]{1,2}\s*(\\cdot\s*)?\\cos/iu, label: "the law of sines/cosines" },
   // Words only: \begin{matrix} is also how a grid (e.g. a magic square) is typeset.
   { re: /ma trận|định thức|\bmatrices\b|\bmatrix (multiplication|of)|determinant|số phức|complex number/iu, label: "matrices or complex numbers" },
+  { re: /logarit|\\log\b|\\ln\b|\blogarithm/iu, label: "logarithms" },
 ];
 
 const ADVISORY: Marker[] = [
-  { re: /bunh?iac[oô]p?xki|bunyakovsky|cauchy[\s–-]*schwarz|jensen|chebyshev|trê-?bư-?sép|schur|h[oö]lder|minkowski/iu, label: "a named olympiad inequality" },
+  // Cô-si and Bunhiacopxki (Cauchy–Schwarz) belong to the entrance-exam topic "bất đẳng thức và cực trị".
+  { re: /jensen|chebyshev|trê-?bư-?sép|schur|h[oö]lder|minkowski/iu, label: "an olympiad-only inequality" },
   { re: /≡|\\equiv|\\pmod|\bmod\b|đồng dư/iu, label: "congruence notation" },
   { re: /quy nạp|induction/iu, label: "mathematical induction" },
   { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson|chinese remainder|số dư trung hoa|\bCRT\b/iu, label: "a number-theory theorem beyond Grade 9" },
@@ -106,9 +108,27 @@ export function gradeLevelReport(lesson: ModelLesson): GradeLevelReport {
   };
 }
 
+/** A problem whose own text needs mathematics beyond Grade 9 (the only case where "unsupported" is right). */
+export function needsAdvancedMaths(statement: string): boolean {
+  return FORBIDDEN.some((m) => m.re.test(statement));
+}
+
+/**
+ * "Unsupported" for a problem that uses no outside method: every entrance-exam problem is within the
+ * Grade 9 curriculum (the 13 review topics), so the model is asked to solve it.
+ */
+export function unsupportedFeedback(lesson: ModelLesson): string[] {
+  const a = lesson.analysis;
+  if (a.status !== "unsupported" || needsAdvancedMaths(a.statement)) return [];
+  return [
+    "this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+  ];
+}
+
 /** Retry feedback for methods outside the curriculum. */
 export function gradeLevelFeedback(lesson: ModelLesson): string[] {
-  if (lesson.analysis.status !== "solvable" || !lesson.analysis.withinCurriculum) return [];
+  // The model's own withinCurriculum flag is not trusted: only a problem that itself needs advanced maths may use it.
+  if (lesson.analysis.status !== "solvable" || needsAdvancedMaths(lesson.analysis.statement)) return [];
   return gradeLevelReport(lesson).forbidden.map(
     (f) => `the solution uses ${f}, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)`,
   );

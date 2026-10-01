@@ -12,7 +12,7 @@
  * feedback when asking the model to correct itself.
  */
 import { checkClaims, statementGivens, statementParts } from "./claims";
-import { gradeLevelFeedback } from "./gradeLevel";
+import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
@@ -638,7 +638,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
   let lesson = repaired;
-  const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback, ...gradeLevelFeedback(repaired)];
+  const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback, ...gradeLevelFeedback(repaired), ...unsupportedFeedback(repaired)];
   const checks: Verification["checks"] = [];
   let answerLevelPassed = 0;
   let answerLevelFailed = 0;

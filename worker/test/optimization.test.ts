@@ -90,8 +90,8 @@ describe("grade-level review", () => {
     expect(gradeLevelReport(l).forbidden.join()).toMatch(/coordinates/);
   });
 
-  it("treats named olympiad inequalities and congruences as advisory, never as a retry", () => {
-    const l = withStep("Theo bất đẳng thức Bunhiacopxki, $(a+b)^2 \\le 2(a^2+b^2)$; và $n \\equiv 1 \\pmod 3$.");
+  it("treats olympiad-only inequalities and congruences as advisory, never as a retry", () => {
+    const l = withStep("Theo bất đẳng thức Schur, ...; và $n \\equiv 1 \\pmod 3$.");
     const r = gradeLevelReport(l);
     expect(r.forbidden).toEqual([]);
     expect(r.rubric.familiarMethods).toBe(false);
@@ -120,6 +120,40 @@ describe("grade-level review", () => {
   it("verifyLesson asks for a Grade 9 method when the solution uses calculus", () => {
     const result = verifyLesson(withStep("Xét đạo hàm của vế trái."));
     expect(result.feedback.join(" ")).toMatch(/calculus/);
+  });
+});
+
+describe("entrance-exam curriculum (13 review topics)", () => {
+  const unsupported = (statement: string) => {
+    const l = inequalityLesson({ steps: [], hints: [], finalAnswer: { text: "", math: null }, answerChecks: [] });
+    l.analysis = { ...l.analysis, statement, status: "unsupported", withinCurriculum: false, statusReason: "Cần kiến thức ngoài chương trình." };
+    return verifyLesson(l).feedback.join(" ");
+  };
+
+  it("sends an in-curriculum problem marked unsupported back to be solved", () => {
+    expect(unsupported("Tìm giá trị nhỏ nhất của $P = a + b$ biết $a, b > 0$ và $ab = 4$.")).toMatch(/within the Vietnamese Grade 9/);
+    expect(unsupported("Một hình nón có bán kính đáy 3 cm và chiều cao 4 cm. Tính thể tích.")).toMatch(/within the Vietnamese Grade 9/);
+  });
+
+  it("accepts unsupported for a problem that itself needs calculus", () => {
+    expect(unsupported("Tính tích phân $\\int_0^1 x^2 dx$.")).not.toMatch(/within the Vietnamese Grade 9/);
+  });
+
+  it("treats Cô-si and Bunhiacopxki as entrance-exam methods, Jensen as olympiad-only", () => {
+    expect(gradeLevelReport(withStep("Theo bất đẳng thức Bunhiacopxki, $(a+b)^2 \\le 2(a^2+b^2)$.")).rubric.familiarMethods).toBe(true);
+    expect(gradeLevelReport(withStep("Áp dụng bất đẳng thức Cô-si cho ba số dương.")).rubric.familiarMethods).toBe(true);
+    expect(gradeLevelReport(withStep("Áp dụng bất đẳng thức Jensen cho hàm lồi.")).rubric.familiarMethods).toBe(false);
+  });
+
+  it("still checks methods when the model flags its own problem as out of curriculum", () => {
+    const l = withStep("Xét đạo hàm của vế trái.");
+    l.analysis = { ...l.analysis, withinCurriculum: false };
+    expect(gradeLevelFeedback(l).join(" ")).toMatch(/calculus/);
+  });
+
+  it("lists every review topic in the prompt", () => {
+    const prompt = buildSystemPrompt(VN_GRADE_9, { withFigure: false });
+    for (const topic of [/Vi-ét/, /y = ax²/, /hệ thức lượng/, /Statistics/, /Probability/, /cylinder/, /Cô-si/, /real-life optimisation/, /non-symmetric/]) expect(prompt).toMatch(topic);
   });
 });
 

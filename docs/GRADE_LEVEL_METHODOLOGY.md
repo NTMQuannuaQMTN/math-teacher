@@ -6,6 +6,24 @@ document defines the policy, how it is enforced, and the rubric used to measure 
 
 ## 1. Curriculum boundary
 
+**Scope (2026-10-01): the 13 topics of the Grade 10 entrance-exam review** ("13 chuyên đề ôn thi tuyển sinh
+vào lớp 10 môn Toán", toanmath.com, 2025). Every problem being tested is inside them, so the solver never
+calls one of these problems "unsupported":
+
+1. Hệ phương trình bậc nhất hai ẩn; giải bài toán bằng cách lập hệ phương trình
+2. Phương trình bậc hai và hệ thức Vi-ét
+3. Vi-ét với những biểu thức không đối xứng
+4. Giải bài toán bằng cách lập phương trình
+5. Hàm số bậc hai (y = ax²) và các bài toán tương giao
+6. Rút gọn biểu thức và các bài toán liên quan
+7. Hệ thức lượng trong tam giác vuông và ứng dụng tỉ số lượng giác
+8. Một số yếu tố thống kê
+9. Một số yếu tố xác suất
+10. Nón – trụ – cầu và hình khối
+11. Các mô hình thường gặp và bài toán tổng hợp hình học
+12. Bất đẳng thức và các bài toán cực trị
+13. Các bài toán thực tế có liên quan cực trị
+
 Source of truth: `worker/src/solver/curriculum.ts` (`VN_GRADE_9`). The solver prompt is generated from it,
 so changing the boundary is a data change.
 
@@ -18,16 +36,23 @@ Pythagoras; quadrilaterals; Thales and similar triangles; right-triangle relatio
 trigonometric ratios of acute angles; circles (chords, tangents, inscribed and central angles, tangent–chord
 angle, cyclic quadrilaterals); arc length and areas; basic statistics and probability.
 
+Also in scope (from the 13 topics): non-symmetric Vi-ét expressions; parabola–line intersections;
+cylinder, cone and sphere (surface area, volume, composite solids); statistics (frequency tables, charts);
+classical probability; **Cô-si (AM–GM) for two or three numbers and Bunhiacopxki (Cauchy–Schwarz)** in their
+usual school forms for extremum problems; real-life optimisation.
+
 **Outside the boundary (never, unless the problem itself asks for it):** calculus (derivatives, integrals,
 limits); vectors and dot products as a method; coordinates as a shortcut for a synthetic geometry problem;
-the laws of sines and cosines for non-right triangles; complex numbers, matrices, linear algebra;
-university-level theorems or notation.
+the laws of sines and cosines for non-right triangles; complex numbers, matrices, linear algebra,
+logarithms; university-level theorems or notation.
 
-**Grey zone (allowed when the problem needs it, never as a shortcut):** named olympiad inequalities
-(Cauchy–Schwarz / Bunyakovsky, AM–GM beyond two terms), congruence notation (≡, mod), induction,
-number-theory theorems (Fermat's little theorem). Chuyên entrance exams use these; for a regular problem the
-lesson should use the school version (e.g. "chia cho 3 dư 1" instead of "≡ 1 (mod 3)", (a − b)² ≥ 0
-instead of Cauchy–Schwarz).
+**"Unsupported"** is accepted only when the problem text itself needs one of those (e.g. an integral). For
+any other problem, an "unsupported" answer is sent back to the model to be solved.
+
+**Grey zone (advisory, never a retry):** olympiad-only inequalities (Jensen, Schur, Hölder, Chebyshev,
+Minkowski), congruence notation (≡, mod), induction, number-theory theorems (Fermat's little theorem,
+Chinese remainder theorem). For a regular problem the lesson should use the school version (e.g. "chia cho
+3 dư 1" instead of "≡ 1 (mod 3)").
 
 A concept is not excluded because its name sounds advanced: "trigonometric ratios" are Grade 9, the law of
 cosines is not; "Cô-si for two numbers" is Grade 9, Jensen is not.
@@ -66,7 +91,8 @@ hints, steps and final answer. A method is never flagged when the problem statem
 | Finding | Effect |
 |---|---|
 | Forbidden method (calculus, vectors, law of sines/cosines, matrices / complex numbers, coordinates in a synthetic geometry problem) | Retry feedback: "the solution uses …, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods". Counts as serious (the retry is made). |
-| Grey-zone method (named olympiad inequality, congruence notation, induction, Fermat/Euler/Wilson) | Advisory: recorded in the rubric, no retry |
+| "Unsupported" for a problem whose text needs no outside method | Retry feedback: the problem is within the entrance-exam curriculum; solve it |
+| Grey-zone method (olympiad-only inequality, congruence notation, induction, Fermat/Euler/Wilson/CRT) | Advisory: recorded in the rubric, no retry |
 | Style (too long, hand-waving, too many hints, a hint that gives the answer away) | Advisory: rubric only |
 
 Related deterministic checks that serve the same goal: language hygiene (`shared/src/language.ts`:
@@ -78,7 +104,7 @@ result.
 | Criterion | Pass when | Fails, e.g. |
 |---|---|---|
 | **Curriculum fit** | No forbidden method | Uses a derivative for a maximum; places a coordinate system on a synthetic quadrilateral problem |
-| **Familiar methods** | No grey-zone method | "Theo bất đẳng thức Bunhiacopxki…" for a regular problem; "n ≡ 1 (mod 3)" |
+| **Familiar methods** | No grey-zone method | "Theo bất đẳng thức Jensen…"; "n ≡ 1 (mod 3)" (Cô-si and Bunhiacopxki are allowed) |
 | **Concise** | A simple problem (one question with a formula, no figure, no proof, ≤ 220 characters) has ≤ 6 steps, and no step explanation exceeds ~3 sentences (320 characters) | 9 steps to solve 2x + 3 = 7 |
 | **No hand-waving** | No step asserts a result without showing it | "Dễ thấy…", "ta chứng minh được…", "obviously" |
 | **Hints progressive** | Hint 1 doesn't contain the final answer; ≤ 4 hints for a simple problem, ≤ 6 otherwise; at least one hint | "Bạn có thấy x ≤ 2 không?" as the first hint |
