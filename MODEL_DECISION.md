@@ -1,6 +1,6 @@
-# Model decision (2026-09-30)
+# Model decision (2026-09-30, updated 2026-10-01)
 
-Evidence: EXPERIMENT_LOG.md (EXP-000…006), MODEL_BENCHMARK.md, DATASET.md, `tools/benchmark/`.
+Evidence: EXPERIMENT_LOG.md (EXP-000…010), MODEL_BENCHMARK.md, DATASET.md, `tools/benchmark/`.
 Constraints during the sprint: Gemini disabled, no paid API calls, an Apple M5 laptop, ~1 day.
 
 ## Answers
@@ -66,8 +66,42 @@ Constraints during the sprint: Gemini disabled, no paid API calls, an Apple M5 l
 
 ## Test split (held out, Toán KC 2026, 15 problems): Qwen3.5-9B
 
-_(filled in from EXP-005)_
+Incomplete: the run was paused at 10 of 15 problems because the throttled laptop took 5–30 min
+per problem (kc-3…kc-5 not run). No result file was written; numbers are from the run's console log.
+
+- PASS: mcq2, mcq4, mcq8. PARTIAL: mcq1, mcq5, mcq7.
+- FAIL: mcq6, wrong answer, **flagged unverified** (not CRITICAL).
+- No lesson: mcq3, mcq10, kc-1 (output truncated, repetition loops); mcq9, kc-2 (timeout).
+
+So on the held-out exam: **6 of 10 attempted got a correct, usable lesson; 0 CRITICAL.** The main
+local failure mode is not wrong answers but not finishing (5 of 10) on this hardware.
+The hosted Nemotron solver (below) has not been run on the test split yet (free-tier quota).
 
 ## Next steps
 
-_(filled in with the final recommendation)_
+**Recommendation (2026-10-01): use a free hosted open model now, keep the verifier as the gate.**
+
+What the app runs today (local worker, `worker/.dev.vars`):
+`photo → PaddleOCR-VL-1.6 (local, ≈ 3 s/photo, 20/20 fixtures) → confirm → Nemotron-3-Super-120B-A12B
+(OpenRouter free tier) → deterministic verifier → retry once on serious feedback → "verified" or
+an honest "unverified"`. API cost: **$0**.
+
+Evidence: EXP-010 validation, 5 PASS · 3 PARTIAL · 3 FAIL · 0 CRITICAL, every produced answer
+correct, mean 58 s (vs ≈ 14 min locally on this laptop, with similar accuracy).
+
+Known limits and what to do about them:
+1. **Hard geometry proofs don't finish** (ch-4, g5 truncated at 12K, ≈ 5K is hidden reasoning).
+   Next: retry a truncated attempt with `reasoning.effort = minimal` or a higher cap; measure on
+   ch-4/g5 only.
+2. **Free tier**: rate limits and ≈ 50 requests/day without credit; the provider may change or
+   withdraw the free model. For production, switch `LOCAL_LLM_URL`/`LOCAL_SOLVER_MODEL` to a paid
+   open-model endpoint (same code path; Qwen3.5-9B hosted ≈ $1–2 per 1,000 problems) or keep Gemini
+   as a paid fallback for lessons that don't verify (§7, §14).
+3. **Privacy**: the problem text (not the photo) goes to OpenRouter and the model host.
+4. **Held-out test**: run `scripts/benchmark.ts or-nemotron-3-super --split test --exp EXP-011` on a
+   day with fresh quota (≈ 25 requests), and finish EXP-005 (kc-3…kc-5) on mains power.
+5. **Production deploy** (user action): set `ALLOWED_ORIGINS`, the provider variables and the
+   OpenRouter key as a Cloudflare secret (`wrangler secret put LOCAL_LLM_API_KEY`), never in
+   `wrangler.toml`. PaddleOCR-VL needs a host for production OCR; until then keep Gemini/OpenAI OCR
+   there (≈ $0.0008/photo).
+6. **Fine-tuning** stays deferred (FINE_TUNING.md); revisit once ≥ 200 verified lessons are logged.

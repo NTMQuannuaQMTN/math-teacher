@@ -159,6 +159,37 @@ drawn figure is set aside instead of failing every claim; (5) "tam giác ABC có
 - Limits: OpenRouter free tier (rate-limited; a daily request cap applies without purchased credit);
   problem text is sent to OpenRouter and the model host. Photos stay local.
 
+## EXP-010: Hosted Nemotron-3-Super (free) on the validation split (2026-10-01)
+
+- System `or-nemotron-3-super`, prompt solver-v1.8, verifier v2, up to 2 attempts, hosted settings
+  from EXP-009 except the output cap.
+- First run with a 6K output cap: ch-1 and ch-2 both truncated → stopped. Probing ch-1
+  (`scripts/probe-hosted.ts`): 7,971 completion tokens, of which 4,951 hidden reasoning at
+  `effort=low`. Cap raised to 12K and the per-request timeout to 180 s (the 117 s attempt was close to
+  the old 120 s timeout).
+- Result (n = 11): **5 PASS · 3 PARTIAL · 3 FAIL · 0 CRITICAL**; 5/11 verified.
+
+| id | grade | status | answer | attempts | model s |
+|---|---|---|---|---:|---:|
+| ch-1 | PARTIAL | not_checkable | correct | 1 | 46 |
+| ch-2 | PASS | verified | correct | 2 | 249 |
+| ch-3 | PASS | verified | correct | 1 | 76 |
+| ch-4 | FAIL | — | truncated (12K) on both attempts | 2 | — |
+| ch-5 | PASS | verified | (proof) | 1 | 58 |
+| a3 | PASS | verified | correct | 1 | 45 |
+| a7 | PARTIAL | not_checkable | correct | 1 | 15 |
+| g5 | FAIL | — | truncated (12K) on both attempts | 2 | — |
+| g8 | FAIL | unverified (shown as such) | (proof) | 2 | 79 |
+| w1 | PASS | verified | correct | 1 | 34 |
+| x3 | PARTIAL | not_checkable | correct | 2 | 38 |
+
+- Compared with Qwen3.5-9B local (EXP-004, regraded): 6 PASS · 3 PARTIAL · 2 FAIL · 0 CRITICAL, answers
+  7/8 — **similar accuracy, ≈ 15× faster** (58 s vs ≈ 14 min per problem on this laptop), and it gets
+  w1 right (Qwen did not). Every answer it produced was correct; its failures are hard geometry
+  proofs that don't finish (truncation) or don't verify, which the app shows honestly.
+- Requests used: 16 (free-tier daily cap ≈ 50 without credit).
+- Not measured on the held-out test split yet (quota).
+
 ---
 
 ## Environment notes
