@@ -1,0 +1,20 @@
+{"id":"rephrase-1","kind":"rephrased","text":"Tìm các số thực x, y, z thỏa mãn đồng thời $x^2+y^2=z$, $y^2+z^2=x$, $z^2+x^2=y$.","expect":["tech.subtract_equations"],"not":[]}
+{"id":"rephrase-2","kind":"rephrased","text":"Hai phương trình $x^2+ax+1=0$ và $x^2+x+a=0$ có nghiệm chung. Tìm $a$.","expect":["tech.subtract_equations"],"not":[]}
+{"id":"rephrase-3","kind":"rephrased","text":"Với giá trị nào của tham số $k$ thì phương trình $x^2-kx+k-1=0$ có hai nghiệm $x_1,x_2$ thỏa $x_1=2x_2$?","expect":["alg.vieta_parameter"],"not":[]}
+{"id":"rephrase-4","kind":"rephrased","text":"Chứng minh rằng với mọi số nguyên $n$, $n^5-n$ chia hết cho 30.","expect":["nt.divisibility_cases"],"not":["alg.inequality_proof"]}
+{"id":"rephrase-5","kind":"rephrased","text":"Có bao nhiêu cặp số nguyên $(x;y)$ sao cho $x^2-y^2=2026$?","expect":["nt.integer_solutions"],"not":[]}
+{"id":"rephrase-6","kind":"rephrased","text":"Cho $a,b>0$ và $a+b=2$. Tìm giá trị nhỏ nhất của $\\frac1a+\\frac1b$.","expect":["alg.extremum"],"not":[]}
+{"id":"rephrase-7","kind":"rephrased","text":"Cho $x,y,z>0$ thỏa $x+y+z=3$. Chứng minh $x^2+y^2+z^2\\ge3$.","expect":["alg.inequality_proof"],"not":["geo.cyclic_proof"]}
+{"id":"rephrase-8","kind":"rephrased","text":"Một bàn cờ $8\\times8$ được tô đen trắng sao cho mỗi hàng có đúng 3 ô đen. Chứng minh có hai cột có cùng số ô đen.","expect":["comb.grid"],"not":[]}
+{"id":"rephrase-9","kind":"rephrased","text":"Cho tam giác $ABC$ nội tiếp $(O)$, đường cao $BE$, $CF$. Chứng minh tứ giác $BCEF$ nội tiếp và $OA\\perp EF$.","expect":["geo.cyclic_proof"],"not":["alg.inequality_proof"]}
+{"id":"rephrase-10","kind":"rephrased","text":"Một người đi xe đạp từ A đến B với vận tốc 12 km/h, lúc về đi với vận tốc 15 km/h nên hết ít hơn 20 phút. Tính quãng đường AB.","expect":["word.motion"],"not":[]}
+{"id":"rephrase-11","kind":"rephrased","text":"Gieo hai con xúc xắc cân đối. Tính xác suất để tổng số chấm là số nguyên tố.","expect":["prob.integer_roots"],"not":[]}
+{"id":"surface-1","kind":"misleading_similarity","text":"Giải phương trình $x^2-5x+6=0$.","expect":[],"not":["alg.vieta_parameter","tech.subtract_equations"]}
+{"id":"surface-2","kind":"misleading_similarity","text":"Tam giác $ABC$ có $AB<AC<BC$. Chứng minh $\\hat C<\\hat B<\\hat A$.","expect":[],"not":["alg.inequality_proof"]}
+{"id":"surface-3","kind":"misleading_similarity","text":"Gọi $d$ là ước chung lớn nhất của $a$ và $b$. Chứng minh $d$ chia hết $a+b$.","expect":["nt.divisibility_cases"],"not":["alg.extremum"]}
+{"id":"distractor-1","kind":"distracting_information","text":"Lớp 9A có 40 học sinh, trong đó 18 bạn thích bóng đá. Giải hệ phương trình $\\begin{cases}x+y=5\\\\ x^2+y^2=13\\end{cases}$.","expect":[],"not":["word.motion"]}
+{"id":"distractor-2","kind":"distracting_information","text":"Biết rằng $2026$ là số chẵn. Tìm số nguyên dương $n$ nhỏ nhất để $n^2+n$ chia hết cho 2026.","expect":["nt.divisibility_cases"],"not":[]}
+{"id":"premise-1","kind":"invalid_premise","text":"Cho phương trình $x^2+1=0$ có hai nghiệm $x_1,x_2$. Tính $x_1^2+x_2^2$.","expect":["alg.vieta_parameter"],"not":[]}
+{"id":"missing-1","kind":"missing_assumption","text":"Tìm giá trị nhỏ nhất của $a+b$.","expect":["alg.extremum"],"not":[]}
+{"id":"diagram-1","kind":"ambiguous_diagram","text":"Cho hình vẽ bên. Chứng minh $AB\\parallel CD$.","expect":[],"not":["geo.cyclic_proof","alg.inequality_proof"]}
+{"id":"multi-1","kind":"multiple_methods","text":"Cho $a,b,c$ là các số thực dương. Chứng minh $\\frac{a}{b}+\\frac{b}{c}+\\frac{c}{a}\\ge3$.","expect":["alg.inequality_proof"],"not":[]}
