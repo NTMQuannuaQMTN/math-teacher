@@ -194,6 +194,13 @@ drawn figure is set aside instead of failing every claim; (5) "tam giác ABC có
   went to hidden reasoning, twice. Change: a hosted answer cut off at the length cap is retried once at
   "minimal" (other problems unaffected). ch-4 stays a known failure (shown as an error, never as
   verified). Requests used today: ≈ 40.
+- **Status bug (found from a user report):** Nemotron sometimes labels a complete lesson "ambiguous" or
+  "not_a_problem" (reason: "the problem statement is clear… no ambiguity detected"). The app then hid
+  the lesson, and the verifier skipped every check. Fix: `reconcileStatus` in shared/src/verify.ts
+  (a lesson with steps, hints and a final answer is solvable; the model's reason becomes an
+  interpretation note). Offline regrade from the cache (EXP-010r, no API calls): **6 PASS · 2 PARTIAL ·
+  3 FAIL · 0 CRITICAL** (a7 PARTIAL → PASS; x3 now accepted on attempt 1). 3 of 48 stored local lessons
+  were affected and were re-verified in place (`scripts/reverify-stored.ts`).
 
 ---
 
