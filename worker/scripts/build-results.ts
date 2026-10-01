@@ -46,12 +46,15 @@ interface Run {
   rows: Row[];
 }
 
+// Items from dataset v1 and the chuyên dataset (ids don't collide: chuyên ids contain the exam name).
 const items = new Map<string, Item>(
-  readFileSync(`${ROOT}dataset/problems.jsonl`, "utf8")
-    .trim()
-    .split("\n")
-    .map((l) => JSON.parse(l) as Item)
-    .map((i) => [i.id, i]),
+  ["problems", "chuyen"].flatMap((name) =>
+    readFileSync(`${ROOT}dataset/${name}.jsonl`, "utf8")
+      .trim()
+      .split("\n")
+      .map((l) => JSON.parse(l) as Item)
+      .map((i) => [i.id, i] as [string, Item]),
+  ),
 );
 
 function failureCategory(r: Row): string {

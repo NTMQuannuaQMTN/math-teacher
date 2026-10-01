@@ -117,3 +117,38 @@ Apple M5 laptop on battery in Low Power Mode (5–9 tok/s), which also sleeps wh
 The final configuration on validation, the simple tier at `minimal`, and the held-out test split.
 Commands and request budgets are in `experiments/optimization_results.json`. Each needs about one day of
 free quota.
+
+---
+
+# Toán chuyên sprint (2026-10-01, evening)
+
+Dataset chuyen-v1 (docs/EXAM_RESEARCH.md, DATASET_SCHEMA.md). Hosted quota exhausted; local Qwen3.5-9B on
+battery, Low Power Mode, with the Mac sleeping intermittently.
+
+## CHB-001: Current solver on TP.HCM 2025 chuyên (validation), local, no method cards. Stopped.
+
+- hcm-2025-chuyen_1a: PASS, 2 attempts, 652 s, 5,178 output tokens.
+- hcm-2025-chuyen_1b: PARTIAL (correct, unverified), 2 attempts, 538 s.
+- hcm-2025-chuyen_2a: stopped after > 7,500 output tokens (runaway); 2b, 5a not run.
+- Stopped at 24% battery so the documentation could be finished; source: console log.
+
+## CHB-002 (train items) and CHB-003 (method cards on the same validation items): not run
+
+Battery. Commands: `--dataset chuyen --ids … [--techniques]`.
+
+## RET-001: Method-card retriever on 20 hand-written probes
+
+20/20 as expected (rephrasings 11/11, misleading similarity 3/3, distractors 2/2, premise, missing
+assumption, diagram, multiple methods 1/1 each). Author-biased (docs/GENERALIZATION_EVALUATION.md).
+On the 67 chuyên items: 57 get at least one card, 10 none.
+
+## SFT-001: Teaching records → lesson-format SFT examples
+
+22/22 valid against the production lesson schema and structure checks after fixing one mapping bug in
+the exporter (topic enum). No training run (docs/FINE_TUNING_REPORT.md).
+
+## VER-001: Independent verification of exam answers
+
+43/43 checks pass (`tools/exams/verify_exams.py`): exact, exhaustive (2¹⁶ colourings; 1,034,817 boxes),
+bounded, sampled. Four errors found in official or teacher keys; none changes an answer
+(docs/SOLUTION_VERIFICATION.md).
