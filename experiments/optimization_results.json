@@ -147,12 +147,72 @@
    }
   },
   {
+   "id": "OPT-008",
+   "hypothesis": "Prompt v2.0 + new verifier/retry policy is no worse and cheaper than v1.8 on the same problems.",
+   "change": "Qwen3.5-9B local, prompt solver-v2.0 vs EXP-008 (v1.8), same laptop, no sleep.",
+   "dataset": "a3, a7, g5",
+   "results": {
+    "before": {
+     "calls": 5,
+     "seconds": 1534,
+     "outputTokens": 10340,
+     "grades": "a3 PARTIAL, a7 FAIL, g5 PASS"
+    },
+    "after": {
+     "calls": 3,
+     "seconds": 766,
+     "outputTokens": 6493,
+     "grades": "a3 PARTIAL, a7 PASS (after check salvage), g5 PASS"
+    }
+   },
+   "limitations": "n = 3, single samples; g5's figure retry was skipped by the 150 s budget (lesson served without a figure)."
+  },
+  {
+   "id": "OPT-009",
+   "hypothesis": "A per-tier size target (v2.1) shortens simple lessons.",
+   "change": "prompt solver-v2.1 (simple: 2–4 steps, 2–3 hints).",
+   "dataset": "a3, a7 (local Qwen)",
+   "results": {
+    "steps": {
+     "a3": "7 → 4",
+     "a7": "6 → 4"
+    },
+    "outputTokens": {
+     "a7": "1,896 → 1,907"
+    },
+    "a3": "2 attempts (an extra hint pointed past the last step; now repaired deterministically)",
+    "regrade": "2/2 PASS"
+   },
+   "conclusion": "Shorter lessons (passes the conciseness rubric), no output-token saving on the local model."
+  },
+  {
+   "id": "OPT-010",
+   "hypothesis": "No regression on a word problem, an adversarial input and a geometry proof.",
+   "change": "prompt solver-v2.1 + current verifier vs EXP-004b (v1.7), local Qwen, no sleep.",
+   "dataset": "w1, x3, g8",
+   "results": {
+    "before": {
+     "grades": "w1 FAIL (wrong answer), x3 PARTIAL, g8 PARTIAL",
+     "calls": 6,
+     "seconds": 1600,
+     "outputTokens": 17434
+    },
+    "after": {
+     "grades": "w1 PASS, x3 PASS, g8 PASS",
+     "calls": 5,
+     "seconds": 1633,
+     "outputTokens": 13240
+    }
+   },
+   "notes": "g8 attempt 1 pointed every hint at a step 'Now' (retry justified); w1's malformed 20-point figure check was set aside without a retry (OPT-003 repair working on new output)."
+  },
+  {
    "id": "OPT-006",
    "status": "pending (needs hosted quota; resets 00:00 UTC)",
-   "hypothesis": "The final configuration (adaptive effort, step-down retries, repairs, grade-level checks, prompt solver-v2.0) is faster on simple problems with no accuracy loss.",
+   "hypothesis": "The final configuration is faster on simple problems with no accuracy loss on the hosted model.",
    "commands": [
-    "cd worker && npx tsx scripts/benchmark.ts or-nemotron-3-super --split validation --exp OPT-006   # default effort low (standard/complex)",
-    "npx tsx scripts/benchmark.ts or-nemotron-3-super-min --ids a3,a7,x3 --exp OPT-006s  # simple tier at minimal",
+    "cd worker && npx tsx scripts/benchmark.ts or-nemotron-3-super --split validation --exp OPT-006",
+    "npx tsx scripts/benchmark.ts or-nemotron-3-super-min --ids a3,a7,x3 --exp OPT-006s",
     "npx tsx scripts/build-results.ts ../experiments/opt006.json final=OPT-006_or-nemotron-3-super_validation"
    ],
    "budget": "≈ 15–20 requests"
@@ -164,7 +224,7 @@
    "commands": [
     "cd worker && npx tsx scripts/benchmark.ts or-nemotron-3-super --split test --exp OPT-007"
    ],
-   "budget": "≈ 20–25 requests (one full day of free quota)"
+   "budget": "≈ 20–25 requests"
   }
  ]
 }

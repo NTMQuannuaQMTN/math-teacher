@@ -1,0 +1,646 @@
+{
+ "summary": {
+  "exp": "OPT-010",
+  "system": "qwen3.5-9b",
+  "split": "validation",
+  "promptVersion": "solver-v2.1",
+  "dataset": "v1",
+  "n": 3,
+  "pass": 3,
+  "partial": 0,
+  "fail": 0,
+  "critical": 0,
+  "answerAccuracy": 1,
+  "gradableN": 2,
+  "verifiedRate": 1,
+  "errors": 0,
+  "meanModelSeconds": 544.1999999999999,
+  "meanInputTokens": 9028.666666666666,
+  "meanOutputTokens": 4413.333333333333,
+  "cache": {
+   "hits": 0,
+   "misses": 5,
+   "modelMs": 1632567
+  },
+  "createdAt": "2026-10-01T11:50:47.216Z"
+ },
+ "rows": [
+  {
+   "id": "g8",
+   "topic": "geometry",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "PASS",
+   "answerCorrect": null,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 14766,
+   "outputTokens": 8932,
+   "modelSeconds": 1099.6,
+   "wallSeconds": 1099.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Đẳng thức AD · AB = AE · AC đã được chứng minh.  Đẳng thức $AD \\cdot AB = AE \\cdot AC$ đã được chứng minh. ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ vuông tại $A$, đường cao $AH$. Gọi $D$, $E$ lần lượt là hình chiếu của $H$ trên $AB$ và $AC$. Chứng minh $AD \\cdot AB = AE \\cdot AC$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "tam giác vuông",
+      "đường cao",
+      "tam giác đồng dạng",
+      "tính chất hình chiếu"
+     ],
+     "givens": [
+      "Tam giác $ABC$ vuông tại $A$ ($\\angle A = 90^\\circ$)",
+      "$AH \\perp BC$ ($\\angle AHB = \\angle AHC = 90^\\circ$)",
+      "$HD \\perp AB$ ($\\angle HDA = 90^\\circ$)",
+      "$HE \\perp AC$ ($\\angle HEA = 90^\\circ$)"
+     ],
+     "unknowns": [
+      "Chứng minh đẳng thức $AD \\cdot AB = AE \\cdot AC$"
+     ],
+     "constraints": [
+      "Các điểm $D, E$ nằm trên các cạnh $AB, AC$"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Ta sẽ chứng minh đẳng thức bằng cách sử dụng tính chất hình chiếu trong tam giác vuông. Đầu tiên, ta chứng minh $\\triangle AHD \\sim \\triangle ABH$ để suy ra $AD \\cdot AB = AH^2$. Tiếp theo, ta chứng minh $\\triangle AHE \\sim \\triangle ACH$ để suy ra $AE \\cdot AC = AH^2$. Cuối cùng, bằng cách so sánh hai kết quả này, ta sẽ chứng minh được điều cần chứng minh.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Hãy quan sát tam giác $AHD$ và tam giác $ABH$. Chúng có góc nào bằng nhau ngoài góc vuông?",
+      "cue": "góc chung",
+      "explanation": "Hai tam giác này đều có một góc vuông ($\\angle ADH$ và $\\angle AHB$). Bạn thử tìm xem góc nào là góc chung của hai tam giác này nhé.",
+      "math": null,
+      "stepId": "3",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Khi đã chứng minh được hai tam giác đồng dạng, ta sẽ có hệ thức tỉ số giữa các cạnh tương ứng như thế nào?",
+      "cue": "tỷ số cạnh tương ứng",
+      "explanation": "Nếu $\\triangle AHD \\sim \\triangle ABH$ thì tỉ số giữa cạnh huyền và cạnh góc vuông kề với góc chung sẽ bằng nhau. Hãy viết ra hệ thức liên hệ $AD, AH, AB$.",
+      "math": "\\frac{AD}{AH} = \\frac{AH}{AB}",
+      "stepId": "4",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 1,
+      "question": "Bây giờ hãy làm tương tự với tam giác $AHE$ và tam giác $ACH$. Bạn có thể chứng minh chúng đồng dạng theo cách tương tự không?",
+      "cue": "góc vuông và góc chung",
+      "explanation": "Tam giác $AHE$ cũng có góc vuông tại $E$ và góc $A$ chung với tam giác $ACH$. Hãy lập hệ thức tương tự cho $AE, AH, AC$.",
+      "math": "\\frac{AE}{AH} = \\frac{AH}{AC}",
+      "stepId": "7",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Từ hai hệ thức $AD \\cdot AB = AH^2$ và $AE \\cdot AC = AH^2$ vừa tìm được, bạn có thể kết luận gì?",
+      "cue": "suy luận bằng bắc cầu",
+      "explanation": "Vì cả hai tích đều bằng $AH^2$ nên chúng bằng nhau. Hãy viết lại kết quả cuối cùng.",
+      "math": "AD \\cdot AB = AH^2 = AE \\cdot AC",
+      "stepId": "9",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "1",
+      "title": "Xét tam giác $AHD$ và $ABH$",
+      "explanation": "Ta xét hai tam giác $AHD$ và $ABH$. Vì $HD \\perp AB$ nên $\\angle ADH = 90^\\circ$. Vì $AH \\perp BC$ nên $\\angle AHB = 90^\\circ$.",
+      "math": "\\angle ADH = \\angle AHB = 90^\\circ",
+      "reason": "Định nghĩa đường cao và hình chiếu",
+      "geometryActions": []
+     },
+     {
+      "id": "2",
+      "title": "Tìm góc chung",
+      "explanation": "Hai tam giác này còn có một góc chung là $\\angle DAH$ (cùng là $\\angle BAH$).",
+      "math": "\\angle DAH = \\angle BAH",
+      "reason": "Góc chung",
+      "geometryActions": []
+     },
+     {
+      "id": "3",
+      "title": "Chứng minh $\\triangle AHD \\sim \\triangle ABH$",
+      "explanation": "Hai tam giác có hai cặp góc tương ứng bằng nhau ($\\angle ADH = \\angle AHB$ và $\\angle DAH = \\angle BAH$), nên chúng đồng dạng.",
+      "math": "\\triangle AHD \\sim \\triangle ABH (g.g)",
+      "reason": "Định lý đồng dạng tam giác (g.g)",
+      "geometryActions": []
+     },
+     {
+      "id": "4",
+      "title": "Lập hệ thức từ đồng dạng",
+      "explanation": "Từ hai tam giác đồng dạng, ta có tỉ số giữa cạnh huyền và cạnh góc vuông kề với góc chung bằng nhau.",
+      "math": "\\frac{AD}{AH} = \\frac{AH}{AB}",
+      "reason": "Tỉ số cạnh tương ứng của tam giác đồng dạng",
+      "geometryActions": []
+     },
+     {
+      "id": "5",
+      "title": "Suy ra $AD \\cdot AB = AH^2$",
+      "explanation": "Từ tỉ số $\\frac{AD}{AH} = \\frac{AH}{AB}$, ta nhân chéo hai vế để có hệ thức tích. Đây là tính chất hình chiếu của cạnh huyền lên đường cao.",
+      "math": "AD \\cdot AB = AH^2",
+      "reason": "Nhân chéo",
+      "geometryActions": []
+     },
+     {
+      "id": "6",
+      "title": "Xét tam giác $AHE$ và $ACH$",
+      "explanation": "Tương tự, ta xét hai tam giác $AHE$ và $ACH$. Vì $HE \\perp AC$ nên $\\angle HEA = 90^\\circ$. Vì $AH \\perp BC$ nên $\\angle AHC = 90^\\circ$.",
+      "math": "\\angle HEA = \\angle AHC = 90^\\circ",
+      "reason": "Định nghĩa đường cao và hình chiếu",
+      "geometryActions": []
+     },
+     {
+      "id": "7",
+      "title": "Tìm góc chung",
+      "explanation": "Hai tam giác này có một góc chung là $\\angle HAE$ (cùng là $\\angle HAC$).",
+      "math": "\\angle HAE = \\angle HAC",
+      "reason": "Góc chung",
+      "geometryActions": []
+     },
+     {
+      "id": "8",
+      "title": "Chứng minh $\\triangle AHE \\sim \\triangle ACH$",
+      "explanation": "Hai tam giác có hai cặp góc tương ứng bằng nhau ($\\angle HEA = \\angle AHC$ và $\\angle HAE = \\angle HAC$), nên chúng đồng dạng.",
+      "math": "\\triangle AHE \\sim \\triangle ACH (g.g)",
+      "reason": "Định lý đồng dạng tam giác (g.g)",
+      "geometryActions": []
+     },
+     {
+      "id": "9",
+      "title": "Lập hệ thức từ đồng dạng",
+      "explanation": "Từ hai tam giác đồng dạng, ta có tỉ số giữa cạnh huyền và cạnh góc vuông kề với góc chung bằng nhau.",
+      "math": "\\frac{AE}{AH} = \\frac{AH}{AC}",
+      "reason": "Tỉ số cạnh tương ứng của tam giác đồng dạng",
+      "geometryActions": []
+     },
+     {
+      "id": "10",
+      "title": "Suy ra $AE \\cdot AC = AH^2$",
+      "explanation": "Từ tỉ số $\\frac{AE}{AH} = \\frac{AH}{AC}$, ta nhân chéo hai vế để có hệ thức tích.",
+      "math": "AE \\cdot AC = AH^2",
+      "reason": "Nhân chéo",
+      "geometryActions": []
+     },
+     {
+      "id": "11",
+      "title": "Kết luận",
+      "explanation": "Ta vừa chứng minh được $AD \\cdot AB = AH^2$ và $AE \\cdot AC = AH^2$. Vậy hai tích này bằng nhau.",
+      "math": "AD \\cdot AB = AH^2 = AE \\cdot AC \\Rightarrow AD \\cdot AB = AE \\cdot AC",
+      "reason": "Suy luận logic",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Đẳng thức $AD \\cdot AB = AE \\cdot AC$ đã được chứng minh.",
+     "math": null
+    },
+    "answerChecks": [
+     {
+      "kind": "identity",
+      "statements": [
+       "(AD * AB) - (AH * AH) == 0",
+       "(AE * AC) - (AH * AH) == 0"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "AD",
+         "value": "2"
+        },
+        {
+         "variable": "AB",
+         "value": "8"
+        },
+        {
+         "variable": "AH",
+         "value": "4"
+        },
+        {
+         "variable": "AE",
+         "value": "3"
+        },
+        {
+         "variable": "AC",
+         "value": "6"
+        }
+       ]
+      ],
+      "expected": "0"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: unverified, 8 problem(s): hint h1 points to unknown step Now | hint h2 points to unknown step Now | hint h3 points to unknown step Now",
+    "attempt 2: verified, 2 problem(s): figure: figure does not satisfy the given AB ⊥ AC (cos=1.0000) | answer check \"(AD * AB) - (AH * AH) == 0\" can't be evaluated (could not evaluate: Unknown variable E). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "usage: model=qwen3.5-9b-q4_k_m in=14766 (cached 0) out=8932 (reasoning 0)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by qwen3.5-9b-q4_k_m"
+   ],
+   "slept": false
+  },
+  {
+   "id": "w1",
+   "topic": "word_problem",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 4670,
+   "outputTokens": 2499,
+   "modelSeconds": 293.1,
+   "wallSeconds": 293.1,
+   "figurePoints": 4,
+   "failedChecks": [],
+   "answer": "Chiều dài của mảnh vườn là 12 m, chiều rộng là 7 m. CD = 12m;CR = 7m Chiều dài của mảnh vườn là 12 m, chiều rộng là 7 m. CD = 12\\ \\text{m};\\ CR = 7\\ \\text{m}",
+   "lesson": {
+    "analysis": {
+     "statement": "Một mảnh vườn hình chữ nhật có chiều dài hơn chiều rộng 5 m và diện tích bằng 84 m². Tính chiều dài và chiều rộng của mảnh vườn.",
+     "language": "vi",
+     "topic": "word_problem",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hình chữ nhật",
+      "diện tích",
+      "lập phương trình",
+      "hệ thức giữa hai số hạng"
+     ],
+     "givens": [
+      "Hình chữ nhật",
+      "Chiều dài - Chiều rộng = 5",
+      "Diện tích = 84"
+     ],
+     "unknowns": [
+      "Chiều dài",
+      "Chiều rộng"
+     ],
+     "constraints": [
+      "Chiều dài > Chiều rộng",
+      "Chiều dài và chiều rộng là số dương"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ đặt ẩn là chiều rộng (gọi là $x$). Từ đó biểu diễn chiều dài theo $x$. Dùng công thức diện tích hình chữ nhật để lập một phương trình bậc nhất một ẩn. Giải phương trình và chọn nghiệm thỏa mãn điều kiện.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để giải bài toán này, mình cần tìm một đại lượng nào đó để làm ẩn số (biến chưa biết). Theo em, đại lượng nào dễ đặt nhất trong bài?",
+      "cue": "thông thường ta đặt ẩn là đại lượng nhỏ hơn hoặc đơn giản hơn",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Nếu chiều rộng là $x$ (mét), thì chiều dài sẽ là bao nhiêu mét?",
+      "cue": "đọc kỹ câu 'chiều dài hơn chiều rộng 5 m'",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Diện tích hình chữ nhật được tính bằng công thức gì? Hãy viết phương trình biểu thị diện tích là 84 m².",
+      "cue": "Diện tích = Chiều dài × Chiều rộng",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Giải phương trình vừa lập ra để tìm giá trị của $x$. Đừng quên kiểm tra lại xem giá trị này có hợp lý không (dương và chiều dài lớn hơn chiều rộng).",
+      "cue": "tìm nghiệm nguyên",
+      "explanation": "null",
+      "math": null,
+      "stepId": "S4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "S1",
+      "title": "Đặt ẩn số",
+      "explanation": "Mình sẽ gọi chiều rộng của mảnh vườn là $x$ (mét). Vì chiều dài hơn chiều rộng 5 m nên chiều dài sẽ là $x + 5$ (mét).",
+      "math": "Gọi chiều rộng là $x$ (mét) ($x > 0$). Khi đó chiều dài là $x + 5$ (mét).",
+      "reason": "Đặt ẩn số",
+      "geometryActions": []
+     },
+     {
+      "id": "S2",
+      "title": "Lập phương trình",
+      "explanation": "Diện tích hình chữ nhật bằng tích của chiều dài và chiều rộng. Ta có: $x(x + 5) = 84$.",
+      "math": "x(x + 5) = 84",
+      "reason": "Công thức diện tích hình chữ nhật",
+      "geometryActions": []
+     },
+     {
+      "id": "S3",
+      "title": "Giải phương trình",
+      "explanation": "Mở ngoặc và chuyển vế để đưa về dạng phương trình bậc hai: $x^2 + 5x - 84 = 0$. Mình sẽ tìm hai số có tổng là 5 và tích là -84. Các số đó là 12 và -9.",
+      "math": "x^2 + 5x - 84 = 0",
+      "reason": "Phương trình bậc hai một ẩn",
+      "geometryActions": []
+     },
+     {
+      "id": "S4",
+      "title": "Kết luận",
+      "explanation": "Phương trình có hai nghiệm $x_1 = 7$ và $x_2 = -12$. Vì chiều rộng là độ dài nên phải dương, ta loại $x = -12$. Vậy chiều rộng là 7 m và chiều dài là $7 + 5 = 12$ m.",
+      "math": "Chiều rộng = 7\\ \\text{m};\\ \\Chiều\\ dài = 12\\ \\text{m}",
+      "reason": "Điều kiện của độ dài",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Chiều dài của mảnh vườn là 12 m, chiều rộng là 7 m.",
+     "math": "CD = 12\\ \\text{m};\\ CR = 7\\ \\text{m}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(7+5)*7"
+      ],
+      "assignments": [],
+      "expected": "84"
+     }
+    ],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 12,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 12,
+       "y": 7,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 7,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CD",
+       "kind": "segment",
+       "from": "C",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_DA",
+       "kind": "segment",
+       "from": "D",
+       "to": "A",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [],
+     "marks": [
+      {
+       "kind": "equal",
+       "targets": [
+        "seg_AB",
+        "seg_CD"
+       ],
+       "group": 1
+      },
+      {
+       "kind": "equal",
+       "targets": [
+        "seg_BC",
+        "seg_DA"
+       ],
+       "group": 2
+      }
+     ],
+     "checks": [
+      {
+       "kind": "equal_length",
+       "refs": [
+        "A",
+        "B",
+        "C",
+        "D"
+       ],
+       "value": 12,
+       "role": "given"
+      },
+      {
+       "kind": "equal_length",
+       "refs": [
+        "B",
+        "C",
+        "D",
+        "A"
+       ],
+       "value": 7,
+       "role": "given"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1: verified, 5 problem(s): figure: equal_angle check on D, A, A, A, B, B, A, B, B, C, C, B, C, C, D, D, C, D, D, A has 20 points (needs 6); it was left out of the figure | figure: angle ang_DAB: unknown point (left out of the figure) | figure: angle ang_ABC: unknown point (left out of the figure)",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=qwen3.5-9b-q4_k_m in=4670 (cached 0) out=2499 (reasoning 0)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by qwen3.5-9b-q4_k_m"
+   ],
+   "slept": false
+  },
+  {
+   "id": "x3",
+   "topic": "adversarial",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 7650,
+   "outputTokens": 1809,
+   "modelSeconds": 239.9,
+   "wallSeconds": 239.9,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Vậy nghiệm của phương trình là x = 3. x = 3 Vậy nghiệm của phương trình là $x = 3$. x = 3",
+   "lesson": {
+    "analysis": {
+     "statement": "Giải phương trình $2x = 6$.",
+     "language": "vi",
+     "topic": "equation",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "phương trình bậc nhất một ẩn",
+      "quy tắc chuyển vế",
+      "quy tắc nhân"
+     ],
+     "givens": [
+      "$2x = 6$"
+     ],
+     "unknowns": [
+      "$x$"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ gợi ý bạn cách chuyển số 6 sang vế trái để cô lập $x$, sau đó chia cả hai vế cho 2 để tìm giá trị của $x$.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để tìm giá trị của $x$, bạn có thể làm gì với số 6 ở vế phải?",
+      "cue": "quy tắc chuyển vế",
+      "explanation": "Mình nhớ quy tắc chuyển vế rồi, mình có thể di chuyển số 6 sang vế trái nhưng đổi dấu nó nhé.",
+      "math": null,
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Sau khi có $2x - 6 = 0$, làm thế nào để cô lập $x$?",
+      "cue": "chia cả hai vế cho cùng một số khác 0",
+      "explanation": "Bây giờ mình chia cả hai vế cho 2, vì $2x$ là $2$ nhân với $x$, chia cho 2 sẽ giúp mình tìm ra $x$.",
+      "math": null,
+      "stepId": "s2",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Chuyển vế",
+      "explanation": "Mình chuyển số 6 sang vế trái và đổi dấu nó thành -6, còn $2x$ giữ nguyên ở vế trái.",
+      "math": "2x - 6 = 0",
+      "reason": "Quy tắc chuyển vế: Khi chuyển một hạng tử từ vế này sang vế kia của một đẳng thức, ta phải đổi dấu hạng tử đó.",
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Cô lập $x$",
+      "explanation": "Tiếp theo, mình chia cả hai vế của phương trình cho 2 để tìm ra giá trị của $x$.",
+      "math": "x = 3",
+      "reason": "Quy tắc nhân chia: Chia cả hai vế của phương trình cho cùng một số khác 0.",
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Vậy nghiệm của phương trình là $x = 3$.",
+     "math": "x = 3"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "2*x = 6"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x",
+         "value": "3"
+        }
+       ]
+      ],
+      "expected": null
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: verified, 1 problem(s): a geometry problem needs a figure (figure is null)",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=qwen3.5-9b-q4_k_m in=7650 (cached 0) out=1809 (reasoning 0)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by qwen3.5-9b-q4_k_m"
+   ],
+   "slept": false
+  }
+ ]
+}

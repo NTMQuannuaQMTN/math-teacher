@@ -61,7 +61,9 @@ be wrong.
 | OPT-003 | current verifier and retry policy replayed on recorded outputs | measured (offline, 9 problems) + log analysis of the real solves |
 | OPT-004 | streaming and progress, end to end (local llama.cpp) | measured, 1 problem |
 | OPT-005 | quota fail-fast | measured (live worker) |
-| OPT-008 | local Qwen3.5-9B, prompt v2.0 + new verifier vs v1.8 (EXP-008) | see §5 |
+| OPT-008 | local Qwen3.5-9B, prompt v2.0 + new verifier vs v1.8 (EXP-008) | measured, 3 problems |
+| OPT-009 | local Qwen, prompt v2.1 (size per tier) | measured, 2 problems |
+| OPT-010 | local Qwen, prompt v2.1 vs v1.7 on w1 / x3 / g8 | measured, 3 problems |
 | OPT-006/007 | final config on validation / held-out test (hosted) | **not run** (quota) |
 
 ## 5. Before / after latency (measured)
@@ -90,6 +92,10 @@ n = 3, single samples (sampling noise). g5's second attempt was skipped by the 1
 lesson was served without the figure (the figure contradicted a given angle; the answer was verified).
 On the hosted model attempts take 15–90 s, so the budget rarely applies there.
 
+OPT-010, measured locally against EXP-004b (prompt v1.7, same laptop): w1 (word problem) FAIL with a wrong
+answer → **PASS** (293 s vs 484 s); x3 PARTIAL → **PASS**; g8 (geometry proof) PARTIAL → **PASS** (1,100 s
+vs 946 s). 3/3 PASS vs 0/3, with 5 calls vs 6 and 13,240 output tokens vs 17,434.
+
 OPT-009 (prompt v2.1, the per-tier size target): a3 and a7 lessons shrank from 7 and 6 steps to 4 and 4,
 with output tokens unchanged on the local model. An extra hint pointing past the last step is now
 repaired deterministically (it had caused a3's retry).
@@ -101,6 +107,9 @@ Verifier-only regrade of the stored lessons (same model output, current verifier
 
 - Baseline (OPT-000): 5 PASS · 3 PARTIAL · 3 FAIL · **0 CRITICAL**; final answers 7/9.
 - The final configuration's accuracy on the hosted model is **not measured** (OPT-006).
+- On the local model with the final prompt and verifier (OPT-008 to 010, 6 distinct problems, single
+  samples): **every final answer correct, 0 CRITICAL**. The two problems that were wrong before (a7, w1)
+  are now verified, and 6 of the 7 lessons graded across those runs are PASS.
 - Accuracy safeguards that are measured: the replay (OPT-003) changes no correct/incorrect outcome; every
   new rule only adds checks or repairs a format; CRITICAL stays 0 in every run; the regression suite
   passes (§13).

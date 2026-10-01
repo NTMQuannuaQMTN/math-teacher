@@ -102,6 +102,16 @@ Apple M5 laptop on battery in Low Power Mode (5–9 tok/s), which also sleeps wh
 - **Conclusion:** v2.1 makes simple lessons pass the conciseness rubric (a3 had 7 steps under v2.0). It
   does not reduce the local model's output; its effect on the hosted model's reasoning is unmeasured.
 
+## OPT-010 — No-regression check on harder types, local
+
+- **Configuration:** Qwen3.5-9B local, prompt v2.1 + current verifier, vs EXP-004b (prompt v1.7) on the
+  same laptop. No sleep.
+- **Result:** w1 (word problem) FAIL with a wrong answer → **PASS**, 1 attempt, 293 s vs 484 s; x3
+  (adversarial input) PARTIAL → **PASS**; g8 (geometry proof) PARTIAL → **PASS**, but slower (1,100 s vs
+  946 s, 2 attempts both times). Total 3/3 PASS vs 0/3; 5 calls vs 6; 13,240 output tokens vs 17,434.
+- **Notes:** g8's first attempt pointed every hint at a step called "Now", so the retry was justified.
+  w1's malformed figure check was set aside without a retry.
+
 ## OPT-006 / OPT-007 — Pending (need hosted quota)
 
 The final configuration on validation, the simple tier at `minimal`, and the held-out test split.
