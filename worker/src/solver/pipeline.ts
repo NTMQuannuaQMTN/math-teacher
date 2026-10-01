@@ -47,6 +47,11 @@ export interface SolveOptions {
    * missing step). Default: "serious" for slow local models, "any" otherwise.
    */
   retryPolicy?: "any" | "serious";
+  /**
+   * After this long, a second attempt is only made when the lesson is wrong (a failed check or
+   * invalid structure), not to improve presentation (default 150 s; the student is waiting).
+   */
+  retryBudgetMs?: number;
   /** Debugging: receives each attempt's raw model output. */
   onRaw?: (attempt: number, text: string) => void;
 }
@@ -320,7 +325,15 @@ export async function solveProblem(
   model: JsonModel,
   curriculum: Curriculum,
   problemText: string,
-  { signal, maxAttempts = 2, fallback, log = () => undefined, onRaw, retryPolicy = model.name === "local" ? "serious" : "any" }: SolveOptions,
+  {
+    signal,
+    maxAttempts = 2,
+    fallback,
+    log = () => undefined,
+    onRaw,
+    retryPolicy = model.name === "local" ? "serious" : "any",
+    retryBudgetMs = 150_000,
+  }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
@@ -398,6 +411,11 @@ export async function solveProblem(
       const worthRetry = retryPolicy === "any" ? problems : problems.filter((p) => !MINOR_FEEDBACK.some((re) => re.test(p)));
       if (worthRetry.length === 0) {
         if (problems.length) log(`attempt ${attempt}: only minor feedback; not retrying`);
+        return { lesson: result.lesson, verification: result.verification, ...finish(attempt, current.model) };
+      }
+      const elapsed = Date.now() - started;
+      if (attempt < maxAttempts && score >= 2 && elapsed > retryBudgetMs) {
+        log(`attempt ${attempt}: ${Math.round(elapsed / 1000)} s spent and nothing is wrong; not retrying for presentation feedback`);
         return { lesson: result.lesson, verification: result.verification, ...finish(attempt, current.model) };
       }
     } else {

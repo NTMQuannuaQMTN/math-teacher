@@ -28,6 +28,29 @@ export function looksLikeGeometry(problemText: string): boolean {
   return GEOMETRY_SYMBOLS.test(problemText) || GEOMETRY_WORDS.some((w) => text.includes(w));
 }
 
+export type ProblemTier = "simple" | "standard" | "complex";
+
+const PROOF_WORDS = /chứng minh|chứng tỏ|\bprove\b|show that/iu;
+
+/**
+ * How much reasoning a problem deserves, from its text alone (no model call):
+ * - simple: one question with a formula, no figure, no proof, short (a direct equation, an expression to simplify);
+ * - complex: a geometry proof, a multi-part proof, or three or more parts;
+ * - standard: everything else (word problems, Vi-ét with parameters, geometry calculations…).
+ * Length alone never makes a problem complex.
+ */
+export function problemTier(problemText: string): ProblemTier {
+  const text = problemText.normalize("NFC");
+  const parts = new Set([...text.matchAll(/(?:^|[\s.;:])([a-e])\)/gu)].map((m) => m[1])).size;
+  const proof = PROOF_WORDS.test(text);
+  const geometry = looksLikeGeometry(text);
+  if ((geometry && proof) || (proof && parts >= 2) || parts >= 3) return "complex";
+  // A word problem (no formula in the text) needs an equation set up first: at least standard.
+  const formula = /\$|[=<>≤≥]|\^|\\sqrt|\\frac/u.test(text);
+  if (!geometry && !proof && parts <= 1 && formula && text.length <= 220) return "simple";
+  return "standard";
+}
+
 export interface SolverModelChoice {
   /** Model id for the first attempt. */
   primary: string;

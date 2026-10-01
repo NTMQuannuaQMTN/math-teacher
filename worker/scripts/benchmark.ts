@@ -39,9 +39,14 @@ const offline = args.includes("--offline");
 const exp = flag("exp") ?? "EXP-adhoc";
 
 // Hosted open models (OpenAI-compatible); the key comes from worker/.dev.vars (LOCAL_LLM_API_KEY), never printed.
-const HOSTED: Record<string, { url: string; model: string }> = {
+type Effort = "none" | "minimal" | "low";
+const NEMOTRON = "nvidia/nemotron-3-super-120b-a12b:free";
+const HOSTED: Record<string, { url: string; model: string; effort?: Effort }> = {
   "or-qwen3.8-27b": { url: "https://openrouter.ai/api", model: "qwen/qwen3.8-27b:free" },
-  "or-nemotron-3-super": { url: "https://openrouter.ai/api", model: "nvidia/nemotron-3-super-120b-a12b:free" },
+  "or-nemotron-3-super": { url: "https://openrouter.ai/api", model: NEMOTRON },
+  // Reasoning-effort variants (optimisation sprint): hidden reasoning dominates hosted latency.
+  "or-nemotron-3-super-min": { url: "https://openrouter.ai/api", model: NEMOTRON, effort: "minimal" },
+  "or-nemotron-3-super-none": { url: "https://openrouter.ai/api", model: NEMOTRON, effort: "none" },
 };
 const devVar = (name: string) =>
   readFileSync(new URL("../.dev.vars", import.meta.url), "utf8").split("\n").find((l) => l.startsWith(`${name}=`))?.slice(name.length + 1).trim();
@@ -88,6 +93,10 @@ interface Row {
   answer: string;
   /** The final lesson (for error analysis and fine-tuning export). */
   lesson: ModelLesson | null;
+  /** Pipeline log: one line per attempt with the verifier feedback that triggered a retry. */
+  log: string[];
+  /** The machine slept during this item (macOS: performance.now() pauses in sleep, Date.now() doesn't); timings invalid. */
+  slept: boolean;
   error?: string;
 }
 
@@ -111,7 +120,11 @@ const stored = system === "stored-gemini" ? storedGemini() : null;
 const local = LOCAL[system];
 const hosted = HOSTED[system];
 const cached = hosted
-  ? new CachedModel(new LocalJsonModel(hosted.url, hosted.model, { apiKey: devVar("LOCAL_LLM_API_KEY") }), `hosted;prompt=${PROMPT_VERSION}`, offline)
+  ? new CachedModel(
+      new LocalJsonModel(hosted.url, hosted.model, { apiKey: devVar("LOCAL_LLM_API_KEY"), reasoningEffort: hosted.effort }),
+      `hosted;prompt=${PROMPT_VERSION}${hosted.effort ? `;effort=${hosted.effort}` : ""}`,
+      offline,
+    )
   : local
   ? new CachedModel(
       new LocalJsonModel(process.env.LOCAL_LLM_URL ?? "http://127.0.0.1:8080", local.file, { thinking: local.thinking, maxTokens: local.thinking ? 16_000 : 12_000, presencePenalty: local.presencePenalty }),
@@ -122,6 +135,8 @@ const cached = hosted
 
 for (const item of items) {
   const started = Date.now();
+  const startedMono = performance.now();
+  const log: string[] = [];
   let lesson: ModelLesson | null = null;
   let verification: Verification | null = null;
   let attempts = 0;
@@ -137,7 +152,7 @@ for (const item of items) {
       verification = v.verification;
       attempts = 1;
     } else {
-      const r = await solveProblem(cached!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(40 * 60_000), maxAttempts: 2 });
+      const r = await solveProblem(cached!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(40 * 60_000), maxAttempts: 2, log: (m) => log.push(m) });
       lesson = r.lesson;
       verification = r.verification;
       attempts = r.attempts;
@@ -164,11 +179,13 @@ for (const item of items) {
     failedChecks: verification?.checks.filter((c) => !c.passed).map((c) => c.label.slice(0, 80)) ?? [],
     answer: lesson ? answerText(lesson).slice(0, 160) : "",
     lesson,
+    log,
+    slept: Date.now() - started - (performance.now() - startedMono) > 5_000,
     ...(error ? { error } : {}),
   };
   rows.push(row);
   console.log(
-    `${row.grade.padEnd(8)} ${row.id.padEnd(9)} ${String(row.status).padEnd(13)} ans=${String(row.answerCorrect).padEnd(5)} ${row.attempts}try ${row.modelSeconds}s in=${row.inputTokens} out=${row.outputTokens}${error ? ` ERROR ${error}` : ""}`,
+    `${row.grade.padEnd(8)} ${row.id.padEnd(9)} ${String(row.status).padEnd(13)} ans=${String(row.answerCorrect).padEnd(5)} ${row.attempts}try ${row.modelSeconds}s in=${row.inputTokens} out=${row.outputTokens}${row.slept ? " SLEPT(timing invalid)" : ""}${error ? ` ERROR ${error}` : ""}`,
   );
 }
 

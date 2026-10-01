@@ -13,6 +13,14 @@ import type { JsonModel } from "./llm";
 /** Per-request cap for hosted endpoints (free tiers can queue a request for minutes). */
 const HOSTED_REQUEST_TIMEOUT_MS = 180_000;
 const TRUNCATED = "output truncated";
+const DAILY_QUOTA = /per-day|per day|daily/i;
+const EMPTY = "empty model output";
+const LOWER_EFFORT: Partial<Record<NonNullable<LocalModelOptions["reasoningEffort"]>, NonNullable<LocalModelOptions["reasoningEffort"]>>> = {
+  high: "medium",
+  medium: "low",
+  low: "minimal",
+  minimal: "none",
+};
 
 export interface LocalModelOptions {
   apiKey?: string;
@@ -29,7 +37,7 @@ export interface LocalModelOptions {
    */
   grammar?: boolean;
   /** Hosted reasoning models (OpenRouter `reasoning.effort`): "low" keeps hidden thinking from eating the output budget. */
-  reasoningEffort?: "minimal" | "low" | "medium" | "high";
+  reasoningEffort?: "none" | "minimal" | "low" | "medium" | "high";
 }
 
 export class LocalJsonModel implements JsonModel {
@@ -52,9 +60,12 @@ export class LocalJsonModel implements JsonModel {
       return await this.request(args, effort);
     } catch (err) {
       // A hosted reasoning model can spend the whole output budget thinking (EXP-010: g5 truncated at
-      // "low", verified at "minimal"). Retry a truncated answer once with the shortest reasoning.
-      if (!this.hosted || effort === "minimal" || !(err instanceof OcrFailure) || err.message !== TRUNCATED || args.signal.aborted) throw err;
-      return this.request(args, "minimal");
+      // "low", verified at "minimal"; ch-4 truncated even at "minimal"), or finish with an empty answer.
+      // Retry once with one step less reasoning; the verifier still gates the result.
+      const lower = LOWER_EFFORT[effort];
+      const budgetSpent = err instanceof OcrFailure && (err.message === TRUNCATED || err.message === EMPTY);
+      if (!this.hosted || !lower || !budgetSpent || args.signal.aborted) throw err;
+      return this.request(args, lower);
     }
   }
 
@@ -97,11 +108,18 @@ export class LocalJsonModel implements JsonModel {
         throw new OcrFailure("provider_error", `local model network error: ${String(err)}`, true);
       }
       if (response.status !== 429 || attempt >= attempts || signal.aborted) break;
+      // OpenRouter free tier: a daily cap ("free-models-per-day") doesn't clear by waiting seconds.
+      const detail = await response.clone().text().catch(() => "");
+      if (DAILY_QUOTA.test(detail)) break;
       const retryAfter = Number(response.headers.get("retry-after"));
       await response.body?.cancel();
       await new Promise((r) => setTimeout(r, Math.min(20_000, Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 4_000 * attempt)));
     }
-    if (!response.ok) throw classifyHttpStatus("local model", response.status, (await response.text().catch(() => "")).slice(0, 400));
+    if (!response.ok) {
+      const detail = (await response.text().catch(() => "")).slice(0, 400);
+      if (response.status === 429 && DAILY_QUOTA.test(detail)) throw new OcrFailure("quota_exhausted", "hosted model daily quota exhausted", false);
+      throw classifyHttpStatus("local model", response.status, detail);
+    }
     const json = (await response.json().catch(() => null)) as {
       choices?: { finish_reason?: string; message?: { content?: string | null; reasoning_content?: string | null } }[];
       usage?: { prompt_tokens?: number; completion_tokens?: number };
@@ -119,7 +137,7 @@ export class LocalJsonModel implements JsonModel {
     let text = (choice?.message?.content ?? "").replace(/<think>[\s\S]*?<\/think>/g, "").trim();
     const start = text.indexOf("{");
     if (start > 0) text = text.slice(start);
-    if (!text) throw new OcrFailure("malformed_output", "empty model output", true);
+    if (!text) throw new OcrFailure("malformed_output", EMPTY, true);
     return text;
   }
 }

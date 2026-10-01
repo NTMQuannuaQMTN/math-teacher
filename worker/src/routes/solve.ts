@@ -11,11 +11,11 @@ import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
 import { GeminiJsonModel } from "../solver/geminiModel";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
-import { LocalJsonModel } from "../solver/localModel";
+import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
-import { selectSolverModelIds } from "../solver/routing";
+import { problemTier, selectSolverModelIds } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import type { RouteContext } from "./scans";
 
@@ -93,9 +93,14 @@ function createModels(env: Env, request: Request, problemText: string): { model:
 
   if (provider === "local") {
     // Open model behind an OpenAI-compatible server; no API cost when self-hosted.
+    // Adaptive reasoning (hosted reasoning models): hidden reasoning is most of the latency, and a simple
+    // problem doesn't need much of it. Local llama.cpp models ignore this (thinking stays off).
+    const tier = problemTier(problemText);
+    const effort = (tier === "simple" ? env.LOCAL_SIMPLE_REASONING_EFFORT || "minimal" : env.LOCAL_REASONING_EFFORT || "low") as LocalModelOptions["reasoningEffort"];
     const model = new LocalJsonModel(env.LOCAL_LLM_URL || "http://127.0.0.1:8080", env.LOCAL_SOLVER_MODEL || "local", {
       apiKey: env.LOCAL_LLM_API_KEY,
       thinking: false,
+      reasoningEffort: effort,
     });
     return { model };
   }
@@ -111,6 +116,7 @@ function createModels(env: Env, request: Request, problemText: string): { model:
 
 function failureCode(err: unknown): ErrorCode {
   if (err instanceof OcrFailure) {
+    if (err.kind === "quota_exhausted") return "solve_quota_exhausted";
     return err.kind === "timeout" ? "solve_timeout" : err.kind === "malformed_output" ? "solve_malformed_output" : "solve_provider_error";
   }
   return isAbort(err) ? "solve_timeout" : "internal_error";

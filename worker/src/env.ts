@@ -27,6 +27,10 @@ export interface Env {
   SOLVER_PROVIDER: string;
   SOLVER_MODEL: string;
   SOLVER_REASONING_EFFORT: string;
+  /** Hosted open model (SOLVER_PROVIDER=local, hosted URL): reasoning effort for standard/complex problems (default "low"). */
+  LOCAL_REASONING_EFFORT?: string;
+  /** …and for simple problems (one question, no figure, no proof; default "minimal"). */
+  LOCAL_SIMPLE_REASONING_EFFORT?: string;
   SOLVER_FALLBACK_MODEL?: string;
   SOLVER_FALLBACK_REASONING_EFFORT?: string;
   SOLVER_GEOMETRY_MODEL?: string;

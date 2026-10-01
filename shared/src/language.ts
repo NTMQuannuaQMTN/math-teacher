@@ -83,6 +83,8 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const keep = (items: string[]) => (vi ? items.filter((t) => !isStrippedVietnamese(t)) : items);
   const analysis = {
     ...a,
+    // Shown as "Dạng bài": only when it is proper Vietnamese (models often leave it in English or without diacritics).
+    subtopic: vi && !VI_MARKED.test(a.subtopic) ? "" : a.subtopic,
     concepts: keep(a.concepts),
     givens: keep(a.givens),
     unknowns: keep(a.unknowns),

@@ -27,6 +27,8 @@ Never use:
 ${c.forbidden.map((f) => `- ${f}`).join("\n")}
 When several correct methods exist:
 ${c.preferences.map((p) => `- ${p}`).join("\n")}
+Method selection: identify the kind of problem, then use the method the teacher expects for it:
+${c.methods.map((m) => `- ${m}`).join("\n")}
 If the problem genuinely requires mathematics outside this level, set analysis.status = "unsupported", withinCurriculum = false, and say why in statusReason. Do not produce a fake elementary solution.`;
 }
 
@@ -103,7 +105,6 @@ const VERIFICATION = `answerChecks[]: machine-checkable claims about the answer,
 - value: statements[0] = an arithmetic expression that computes the answer from the givens; expected = the answer's value (e.g. "sqrt(6^2+8^2)" and "10").
 A check must re-derive or test the answer, never restate it: "3" expecting "3" or "m = 3" alone proves nothing and is rejected. For a parameter found through Vi-ét or a condition, use a "value" check that plugs the parameter into the original condition (e.g. statements ["(2*(3+1))^2 - 2*(3^2+3)"], expected "22").
 - integers: for "find all integers/natural numbers n such that…" (divisibility, remainders). statements[0] = the problem's condition in the variable, written with % (remainder), e.g. "((n+4)^4 - n^4) % 3 = 0"; statements[1..] = the domain, e.g. "n >= 1"; expected = your answer set as a condition, e.g. "n % 3 = 1", "n % 18 = 16", "n % 3 = 1 or n % 3 = 2", or "none". The program tries every integer from -200 to 200, so a wrong answer set is always caught.
-A check must re-derive or test the answer, never restate it: "3" expecting "3" or "m = 3" alone proves nothing and is rejected. For a parameter found through Vi-ét or a condition, use a "value" check that plugs the parameter into the original condition (e.g. statements ["(2*(3+1))^2 - 2*(3^2+3)"], expected "22").
 Include one answer check for EVERY part (a, b, c…) whose answer is a number, a set of values, an equation's or inequality's solution, or a simplified expression. Proofs need none (use figure checks instead).
 Accuracy comes first. Work the whole problem out carefully before writing: test your answer on small cases (e.g. n = 1, 2, 3 …) and against every condition, and fix any mistake. Every step must contain the actual argument or computation — never write "ta chứng minh được…" / "it can be shown…" without showing how. If you cannot fully solve a part, say so in that step instead of guessing.`;
 

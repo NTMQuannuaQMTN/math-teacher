@@ -26,7 +26,7 @@ export interface OcrProvider {
   extract(input: OcrInput): Promise<ProviderOutput>;
 }
 
-export type OcrFailureKind = "timeout" | "provider_error" | "refused" | "malformed_output";
+export type OcrFailureKind = "timeout" | "provider_error" | "refused" | "malformed_output" | "quota_exhausted";
 
 export class OcrFailure extends Error {
   constructor(

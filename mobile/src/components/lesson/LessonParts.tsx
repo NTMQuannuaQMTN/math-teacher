@@ -27,10 +27,10 @@ export function Card({ children, accent }: { children: ReactNode; accent?: "prim
 }
 
 /** Given / find / key ideas — the "understand the problem" stage. */
-export function UnderstandCard(props: { givens: string[]; unknowns: string[]; concepts: string[]; notes: string[]; strategy: string | null }) {
+export function UnderstandCard(props: { kind?: string; givens: string[]; unknowns: string[]; concepts: string[]; notes: string[]; strategy: string | null }) {
   const { colors } = useTheme();
   const s = useStrings();
-  const row = (icon: "information-circle-outline" | "help-circle-outline" | "bulb-outline" | "eye-outline" | "navigate-outline", title: string, items: string[]) =>
+  const row = (icon: "pricetag-outline" | "information-circle-outline" | "help-circle-outline" | "bulb-outline" | "eye-outline" | "navigate-outline", title: string, items: string[]) =>
     items.length ? (
       <View style={styles.understandRow}>
         <Ionicons name={icon} size={20} color={colors.primary} style={styles.rowIcon} />
@@ -44,6 +44,7 @@ export function UnderstandCard(props: { givens: string[]; unknowns: string[]; co
     ) : null;
   return (
     <Card>
+      {props.kind ? row("pricetag-outline", s.solve.problemKind, [props.kind]) : null}
       {row("information-circle-outline", s.solve.given, props.givens)}
       {row("help-circle-outline", s.solve.find, props.unknowns)}
       {row("bulb-outline", s.solve.concepts, props.concepts)}

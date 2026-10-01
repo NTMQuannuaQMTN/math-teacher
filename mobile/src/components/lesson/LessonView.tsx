@@ -119,6 +119,7 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
 
         <SectionTitle>{s.solve.understand}</SectionTitle>
         <UnderstandCard
+          kind={analysis.subtopic.trim() || undefined}
           givens={analysis.givens}
           unknowns={analysis.unknowns}
           concepts={analysis.concepts}

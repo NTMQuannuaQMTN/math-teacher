@@ -12,6 +12,7 @@
  * feedback when asking the model to correct itself.
  */
 import { checkClaims, statementGivens, statementParts } from "./claims";
+import { gradeLevelFeedback } from "./gradeLevel";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
@@ -172,6 +173,11 @@ export function checkLessonStructure(lesson: ModelLesson): { lesson: ModelLesson
     stepIds.add(s.id);
   }
   const hintIds = new Set<string>();
+  // Nothing references hint ids except the app's progress state: renumber duplicates instead of rejecting.
+  if (new Set(lesson.hints.map((h) => h.id)).size < lesson.hints.length) {
+    report.warnings.push("duplicate hint ids were renumbered");
+    lesson = { ...lesson, hints: lesson.hints.map((h, i) => ({ ...h, id: `h${i + 1}` })) };
+  }
   for (const h of lesson.hints) {
     if (hintIds.has(h.id)) report.errors.push(`duplicate hint id ${h.id}`);
     hintIds.add(h.id);
@@ -409,6 +415,39 @@ const SHAPE_INDEPENDENT: ReadonlySet<FigureCheck["kind"]> = new Set([
   "concyclic",
 ]);
 
+/** How many refs each figure check kind takes (collinear/concyclic: at least). */
+const CHECK_ARITY: Record<FigureCheck["kind"], number> = {
+  equal_length: 4,
+  length_value: 2,
+  length_ratio: 4,
+  angle_value: 3,
+  equal_angle: 6,
+  perpendicular: 4,
+  parallel: 4,
+  collinear: 3,
+  on_circle: 2,
+  concyclic: 4,
+};
+
+/**
+ * Repairs figure checks whose kind doesn't match their refs when the intent is clear (equal_length with
+ * two points and a value is a length_value), and sets aside the rest. A malformed check must never
+ * count as a false claim: that would mark a correct lesson unverified and cost a retry.
+ */
+export function normalizeFigureChecks(checks: FigureCheck[]): { checks: FigureCheck[]; dropped: string[] } {
+  const out: FigureCheck[] = [];
+  const dropped: string[] = [];
+  for (const c of checks) {
+    const n = CHECK_ARITY[c.kind];
+    const fits = c.kind === "collinear" || c.kind === "concyclic" ? c.refs.length >= n : c.refs.length === n;
+    if (fits) out.push(c);
+    else if ((c.kind === "equal_length" || c.kind === "length_ratio") && c.refs.length === 2 && c.value !== null) out.push({ ...c, kind: "length_value" });
+    else if (c.kind === "equal_angle" && c.refs.length === 3 && c.value !== null) out.push({ ...c, kind: "angle_value" });
+    else dropped.push(`${c.kind} check on ${c.refs.join(", ")} has ${c.refs.length} points (needs ${n}); it was left out of the figure`);
+  }
+  return { checks: out, dropped };
+}
+
 function describeFigureCheck(check: FigureCheck): string {
   const r = check.refs;
   switch (check.kind) {
@@ -559,7 +598,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
   let lesson = repaired;
-  const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback];
+  const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback, ...gradeLevelFeedback(repaired)];
   const checks: Verification["checks"] = [];
   let answerLevelPassed = 0;
   let answerLevelFailed = 0;
@@ -569,6 +608,11 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   let resolved: ResolvedFigure | null = null;
 
   if (lesson.figure) {
+    const normalized = normalizeFigureChecks(lesson.figure.checks);
+    if (normalized.dropped.length || normalized.checks.some((c, i) => c !== lesson.figure!.checks[i])) {
+      lesson = { ...lesson, figure: { ...lesson.figure, checks: normalized.checks } };
+      feedback.push(...normalized.dropped.map((d) => `figure: ${d}`));
+    }
     const figureProblems = [...report.figureErrors];
     if (figureProblems.length > 0) {
       const salvaged = salvageStructure(lesson, figureProblems);

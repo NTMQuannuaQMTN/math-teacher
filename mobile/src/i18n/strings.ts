@@ -187,6 +187,7 @@ const en = {
     solve_timeout: "Preparing the lesson took too long. Please try again.",
     solve_provider_error: "The solving service had a problem. Please try again.",
     solve_malformed_output: "We couldn't prepare a reliable lesson. Please try again.",
+    solve_quota_exhausted: "Today's free solving quota is used up. It resets at 07:00 (Vietnam time); lessons you already have still work.",
     solve_not_configured: "Solving is temporarily unavailable. Please try again later.",
   } satisfies Record<ErrorCode, string>,
   solve: {
@@ -198,6 +199,7 @@ const en = {
     leaveNote: "You can leave this screen. The lesson will be ready when you come back.",
     problem: "Problem",
     understand: "Understand the problem",
+    problemKind: "Problem type",
     given: "Given",
     find: "Find",
     concepts: "Key ideas",
@@ -433,6 +435,7 @@ const vi: Strings = {
     solve_timeout: "Chuẩn bị bài học mất quá lâu. Vui lòng thử lại.",
     solve_provider_error: "Dịch vụ giải bài đang gặp sự cố. Vui lòng thử lại.",
     solve_malformed_output: "Chưa chuẩn bị được bài học đáng tin cậy. Vui lòng thử lại.",
+    solve_quota_exhausted: "Lượt giải miễn phí hôm nay đã hết. Lượt mới có lúc 7:00 sáng (giờ Việt Nam); các bài đã giải vẫn xem được.",
     solve_not_configured: "Tính năng giải bài tạm thời không khả dụng. Vui lòng thử lại sau.",
   },
   solve: {
@@ -444,6 +447,7 @@ const vi: Strings = {
     leaveNote: "Bạn cứ rời màn hình này. Bài học sẽ sẵn sàng khi bạn quay lại.",
     problem: "Đề bài",
     understand: "Tìm hiểu đề bài",
+    problemKind: "Dạng bài",
     given: "Cho biết",
     find: "Cần tìm",
     concepts: "Kiến thức sử dụng",

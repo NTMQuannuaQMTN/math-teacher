@@ -13,6 +13,8 @@ export interface Curriculum {
   forbidden: string[];
   /** How to choose between several valid methods. */
   preferences: string[];
+  /** The method a teacher at this level expects, per kind of problem (method-selection policy). */
+  methods: string[];
 }
 
 export const VN_GRADE_9: Curriculum = {
@@ -57,5 +59,17 @@ export const VN_GRADE_9: Curriculum = {
     "Standard school theorems, named the way a Vietnamese Grade 9 textbook names them",
     "The shortest method a strong Grade 9 teacher would expect a student to find",
     "Show every algebraic transformation a student would need to write, but no trivial filler steps",
+    "Never mention an advanced alternative (\"or by derivatives\", \"or with vectors\") — it confuses the student",
+  ],
+  methods: [
+    "Equation / inequality in one variable: expand, collect, isolate; state the condition of definition first when there are denominators or roots; check the solutions against it",
+    "Quadratic equation: factorise when a factor is visible, otherwise Δ (or Δ' for an even b); sums/products of roots and parameter conditions with Vi-ét",
+    "System of two linear equations: substitution or elimination",
+    "Simplifying expressions: factorise with the seven identities, conditions of definition, then cancel",
+    "Maximum / minimum: complete the square or use (a − b)² ≥ 0 (Cô-si for two non-negative numbers); say when equality holds",
+    "Word problem: choose the unknown and its condition, set up the equation or system, solve, check against the story, answer with units",
+    "Integers / divisibility: factorise, then split into cases by remainder (\"n chia 3 dư 1\"), not congruence notation",
+    "Geometry calculation: Pythagoras, right-triangle relations (hệ thức lượng), trigonometric ratios of acute angles, Thales, similar triangles",
+    "Geometry proof: angle chasing, congruent or similar triangles, isosceles/parallel properties, inscribed angles, tangent properties, cyclic quadrilaterals — a chain of named school theorems, never coordinates, vectors or the laws of sines/cosines",
   ],
 };

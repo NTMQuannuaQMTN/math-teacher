@@ -74,6 +74,7 @@ const FAILURE_TO_ERROR: Record<OcrFailure["kind"], ApiError["code"]> = {
   provider_error: "ocr_provider_error",
   refused: "ocr_refused",
   malformed_output: "ocr_malformed_output",
+  quota_exhausted: "ocr_provider_error",
 };
 
 const FAILURE_MESSAGES: Record<OcrFailure["kind"], string> = {
@@ -81,6 +82,7 @@ const FAILURE_MESSAGES: Record<OcrFailure["kind"], string> = {
   provider_error: "The text recognition service had a problem. Please try again.",
   refused: "This image couldn't be processed. Try a photo that shows only the maths problem.",
   malformed_output: "We couldn't read the problem clearly. Please try again or retake the photo.",
+  quota_exhausted: "The text recognition service's daily quota is used up. Please try again later.",
 };
 
 export function ocrFailureToApiError(failure: OcrFailure): ApiError {
