@@ -50,9 +50,9 @@ logarithms; university-level theorems or notation.
 any other problem, an "unsupported" answer is sent back to the model to be solved.
 
 **Grey zone (advisory, never a retry):** olympiad-only inequalities (Jensen, Schur, Hölder, Chebyshev,
-Minkowski), congruence notation (≡, mod), induction, number-theory theorems (Fermat's little theorem,
-Chinese remainder theorem). For a regular problem the lesson should use the school version (e.g. "chia cho
-3 dư 1" instead of "≡ 1 (mod 3)").
+Minkowski), induction, number-theory theorems (Fermat's little theorem, Chinese remainder theorem).
+Congruence notation (≡, mod) is **not** flagged: the official PTNK 2026 solutions use it. The conclusion
+should still be in words ("n chia 3 dư 1").
 
 A concept is not excluded because its name sounds advanced: "trigonometric ratios" are Grade 9, the law of
 cosines is not; "Cô-si for two numbers" is Grade 9, Jensen is not.

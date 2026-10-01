@@ -3,7 +3,7 @@ import { gradeLevelFeedback, gradeLevelReport, isSimpleProblem } from "../../sha
 import { previewPartialLesson } from "../../shared/src/progressPreview";
 import type { SolveProgress } from "../../shared/src/solution";
 import type { ModelLesson } from "../../shared/src/solution";
-import { normalizeFigureChecks, verifyLesson } from "../../shared/src/verify";
+import { normalizeFigureChecks, restatesAnswer, verifyLesson } from "../../shared/src/verify";
 import { OcrFailure } from "../src/ocr/provider";
 import { LocalJsonModel } from "../src/solver/localModel";
 import { solveProblem } from "../src/solver/pipeline";
@@ -91,7 +91,7 @@ describe("grade-level review", () => {
   });
 
   it("treats olympiad-only inequalities and congruences as advisory, never as a retry", () => {
-    const l = withStep("Theo bất đẳng thức Schur, ...; và $n \\equiv 1 \\pmod 3$.");
+    const l = withStep("Theo bất đẳng thức Schur, ...; và dùng quy nạp.");
     const r = gradeLevelReport(l);
     expect(r.forbidden).toEqual([]);
     expect(r.rubric.familiarMethods).toBe(false);
@@ -187,6 +187,38 @@ describe("answer checks the model already substituted", () => {
 
   it("still rejects a bare restatement", () => {
     expect(quadratic(["2 = 2"]).feedback.join(" ")).toMatch(/only restates/);
+  });
+});
+
+describe("answer checks that only restate the answer (EXP-008 Câu 2: wrong 10√2 shown as verified)", () => {
+  const lessonFor = (statement: string, answer: string, check: ModelLesson["answerChecks"][number]) => {
+    const l = inequalityLesson({ answerChecks: [check], finalAnswer: { text: `Đáp số: $${answer}$`, math: answer } });
+    l.analysis = { ...l.analysis, statement };
+    return l;
+  };
+  const quad = "Câu 2 (1,5 điểm). Cho tứ giác $ABCD$ với $AC$ vuông góc $BD$. Biết rằng $AD = 1$, $BC = 7$. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.";
+
+  it("rejects a check that rewrites the answer without any given", () => {
+    const l = lessonFor(quad, "10\\sqrt{2}", { kind: "value", statements: ["sqrt(2) * 10"], assignments: [], expected: "10*sqrt(2)" });
+    expect(restatesAnswer(l.answerChecks[0]!, l)).toBe(true);
+    const r = verifyLesson(l);
+    expect(r.verification.status).not.toBe("verified");
+    expect(r.feedback.join(" ")).toMatch(/only restates the answer/);
+  });
+
+  it("accepts the official computation from the givens (√(2·(7² + 1²)) + 7 + 1 = 18)", () => {
+    const l = lessonFor(quad, "18", { kind: "value", statements: ["sqrt(2*(7^2+1^2)) + 7 + 1"], assignments: [], expected: "18" });
+    expect(restatesAnswer(l.answerChecks[0]!, l)).toBe(false);
+  });
+
+  it("accepts a substitution into a derived condition (m = 2 into m² + 4m − 12 = 0)", () => {
+    const l = lessonFor("Cho phương trình $x^2 - 2(m+1)x + m^2 + 3 = 0$. Tìm $m$ để $x_1^2 + x_2^2 = 22$.", "m = 2", { kind: "value", statements: ["2^2 + 4*2 - 12"], assignments: [], expected: "0" });
+    expect(restatesAnswer(l.answerChecks[0]!, l)).toBe(false);
+  });
+
+  it("accepts testing the answer against a given (magic square row sums to 15)", () => {
+    const l = lessonFor("Câu 5. Số 15 có phải là số tốt không? Điền 9 số nguyên dương phân biệt vào bảng 3 × 3.", "2, 7, 6, 9, 5, 1, 4, 3, 8", { kind: "value", statements: ["8+1+6"], assignments: [], expected: "15" });
+    expect(restatesAnswer(l.answerChecks[0]!, l)).toBe(false);
   });
 });
 

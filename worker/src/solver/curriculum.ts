@@ -79,7 +79,7 @@ export const VN_GRADE_9: Curriculum = {
     "Statistics and probability: list the data or the outcomes explicitly, build the table, then compute the frequency or probability as a fraction",
     "Cylinder / cone / sphere: write the formula (S_xq, S_tp, V), substitute the given dimensions, keep π until the end and state units",
     "Maximum / minimum (including real-life optimisation): complete the square or use (a − b)² ≥ 0, or Cô-si for non-negative terms; always state when equality holds and check it is attainable",
-    "Integers / divisibility: factorise, then split into cases by remainder (\"n chia 3 dư 1\"), not congruence notation",
+    "Integers / divisibility: factorise, then split into cases by remainder; ≡ (mod) notation is fine (official PTNK solutions use it), but state the conclusion in words (\"n chia 3 dư 1\", \"n = 18k + 16\")",
     "Geometry proof: angle chasing, congruent or similar triangles, isosceles/parallel properties, inscribed angles, tangent properties, cyclic quadrilaterals — a chain of named school theorems, never coordinates, vectors or the laws of sines/cosines",
   ],
 };

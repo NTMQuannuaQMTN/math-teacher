@@ -73,3 +73,20 @@ seen by any system or prompt, so it is the test set.
 - Proof problems have no machine-gradable final answer. They are graded by the pipeline's own
   verification (measured claims); the reasoning quality of proofs is reviewed manually on a sample.
 - The diagram in Toán chuyên Câu 5 (an empty 3×3 grid) is described in text; no other item has a diagram.
+
+## Official solutions for the PTNK 2026 chuyên items (ch-1 … ch-5)
+
+Checked on 2026-10-01 against the official "Đề thi và hướng dẫn giải" (Kỳ thi tuyển sinh lớp 10 Trường Phổ
+thông Năng khiếu 2026–2027, Toán chuyên): https://cdn.thuvienphapluat.vn/uploads/Hoidapphapluat/2026/LNMK/THANG5/23/toann.pdf
+(SHA-256 `78947411ff22e8a1aad8601b6772b37b740ba4b89cc8fa63f00f65659b9044a7`). All reference answers agree:
+
+| Item | Official answer | Official method |
+|---|---|---|
+| ch-1 | (a − 3/2)² + (b − 3/2)² > 9/2; r + s = −3/2 | Δ₁, Δ₂ > 0 added; subtract the equations → common root 3/2, Vi-ét |
+| ch-2 | max perimeter 18 (AB = CD = 5) | "four-point theorem" AB² − BC² = AD² − CD² (Pythagoras at the diagonals' intersection), Cauchy–Schwarz |
+| ch-3 | 16 ∣ f(n); n chia 3 dư 1; n = 18k + 16 | expansion; cases mod 3; f(n) = 16(n + 2)(n² + 4n + 8), cases mod 4 and mod 9 |
+| ch-4 | proofs (IDJ ∽ IDA; D, I, J, H concyclic; GJ and AL meet on (I)) | similar triangles, power of a point, cyclic quadrilaterals |
+| ch-5 | 2 7 6 / 9 5 1 / 4 3 8; n ≥ 15 and 3 ∣ n | add k to every cell; centre e = n/3; sum ≥ 1 + … + 9 |
+
+The official solutions use Cauchy–Schwarz and ≡ (mod) notation, so neither is flagged by the grade-level
+checker for these problems.

@@ -39,7 +39,6 @@ const FORBIDDEN: Marker[] = [
 const ADVISORY: Marker[] = [
   // Cô-si and Bunhiacopxki (Cauchy–Schwarz) belong to the entrance-exam topic "bất đẳng thức và cực trị".
   { re: /jensen|chebyshev|trê-?bư-?sép|schur|h[oö]lder|minkowski/iu, label: "an olympiad-only inequality" },
-  { re: /≡|\\equiv|\\pmod|\bmod\b|đồng dư/iu, label: "congruence notation" },
   { re: /quy nạp|induction/iu, label: "mathematical induction" },
   { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson|chinese remainder|số dư trung hoa|\bCRT\b/iu, label: "a number-theory theorem beyond Grade 9" },
 ];

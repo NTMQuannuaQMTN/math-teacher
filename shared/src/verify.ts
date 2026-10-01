@@ -301,6 +301,28 @@ export function isTrivialCheck(check: AnswerCheck): boolean {
   return !check.statements.some(hasWork);
 }
 
+/** Numbers in a text, ignoring 0, 1, 2 (exponents, halves, "2x"). Decimal commas are read as points. */
+function significantNumbers(text: string): Set<string> {
+  return new Set((text.match(/\d+(?:[.,]\d+)?/g) ?? []).map((n) => n.replace(",", ".")).filter((n) => !["0", "1", "2"].includes(n)));
+}
+
+/**
+ * A "value" check that only rewrites the final answer ("sqrt(2) * 10" expecting "10*sqrt(2)") passes any
+ * answer, right or wrong (EXP-008: a wrong 10√2 was shown as verified). It restates when it uses no number
+ * from the problem's givens, its expected value is not a given either (then it would test the answer against
+ * a condition, like a magic-square sum), and every number it uses already appears in the final answer.
+ */
+export function restatesAnswer(check: AnswerCheck, lesson: ModelLesson): boolean {
+  if (check.kind !== "value" || !check.expected) return false;
+  const problem = lesson.analysis.statement.replace(/^\s*(Câu|Bài|Question)\s*\d+\s*(\([^)]*\))?\s*[.:]?/iu, "");
+  const givens = significantNumbers(problem);
+  if (givens.size === 0) return false;
+  const used = significantNumbers(check.statements.join(" "));
+  const answer = significantNumbers(`${lesson.finalAnswer.text} ${lesson.finalAnswer.math ?? ""}`);
+  if ([...used].some((n) => givens.has(n)) || [...significantNumbers(check.expected)].some((n) => givens.has(n))) return false;
+  return [...used].every((n) => answer.has(n));
+}
+
 const SAMPLE_POOL = [0.37, 1.73, 2.9, 4.41, 6.2, 9.7, -0.61, -2.3, -3.7, 13.1, 0.83, 5.55];
 
 function evalValue(src: string): number {
@@ -765,7 +787,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
 
   let answerChecksPassed = 0;
   for (const check of lesson.answerChecks) {
-    if (isTrivialCheck(check)) {
+    if (isTrivialCheck(check) || restatesAnswer(check, lesson)) {
       feedback.push(
         `answer check "${check.statements.join("; ")}" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition`,
       );
