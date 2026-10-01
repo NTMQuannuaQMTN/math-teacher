@@ -189,6 +189,11 @@ drawn figure is set aside instead of failing every claim; (5) "tam giác ABC có
   proofs that don't finish (truncation) or don't verify, which the app shows honestly.
 - Requests used: 16 (free-tier daily cap ≈ 50 without credit).
 - Not measured on the held-out test split yet (quota).
+- Follow-up probe with `reasoning.effort = minimal` on the two truncated items: **g5 verified** in one
+  attempt (54 s; 3.5K reasoning tokens instead of > 7K); **ch-4 still truncated**: all 12,000 tokens
+  went to hidden reasoning, twice. Change: a hosted answer cut off at the length cap is retried once at
+  "minimal" (other problems unaffected). ch-4 stays a known failure (shown as an error, never as
+  verified). Requests used today: ≈ 40.
 
 ---
 

@@ -12,6 +12,7 @@ import type { JsonModel } from "./llm";
  */
 /** Per-request cap for hosted endpoints (free tiers can queue a request for minutes). */
 const HOSTED_REQUEST_TIMEOUT_MS = 180_000;
+const TRUNCATED = "output truncated";
 
 export interface LocalModelOptions {
   apiKey?: string;
@@ -45,7 +46,22 @@ export class LocalJsonModel implements JsonModel {
     this.grammarConstrained = options.grammar ?? !this.hosted;
   }
 
-  async complete({ messages, schema, schemaName, signal, onUsage }: Parameters<JsonModel["complete"]>[0]): Promise<string> {
+  async complete(args: Parameters<JsonModel["complete"]>[0]): Promise<string> {
+    const effort = this.options.reasoningEffort ?? "low";
+    try {
+      return await this.request(args, effort);
+    } catch (err) {
+      // A hosted reasoning model can spend the whole output budget thinking (EXP-010: g5 truncated at
+      // "low", verified at "minimal"). Retry a truncated answer once with the shortest reasoning.
+      if (!this.hosted || effort === "minimal" || !(err instanceof OcrFailure) || err.message !== TRUNCATED || args.signal.aborted) throw err;
+      return this.request(args, "minimal");
+    }
+  }
+
+  private async request(
+    { messages, schema, schemaName, signal, onUsage }: Parameters<JsonModel["complete"]>[0],
+    effort: NonNullable<LocalModelOptions["reasoningEffort"]>,
+  ): Promise<string> {
     const thinking = this.options.thinking ?? false;
     const body = {
       model: this.model,
@@ -60,7 +76,7 @@ export class LocalJsonModel implements JsonModel {
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
       ...(this.hosted
         ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
-          { provider: { require_parameters: true }, reasoning: { effort: this.options.reasoningEffort ?? "low" } }
+          { provider: { require_parameters: true }, reasoning: { effort } }
         : { chat_template_kwargs: { enable_thinking: thinking } }),
     };
     let response!: Response;
@@ -98,7 +114,7 @@ export class LocalJsonModel implements JsonModel {
       output: json?.usage?.completion_tokens ?? 0,
       reasoning: Math.round(reasoning.length / 3.5),
     });
-    if (choice?.finish_reason === "length") throw new OcrFailure("malformed_output", "output truncated", true);
+    if (choice?.finish_reason === "length") throw new OcrFailure("malformed_output", TRUNCATED, true);
     // Some templates leave the reasoning inline; keep only the JSON object.
     let text = (choice?.message?.content ?? "").replace(/<think>[\s\S]*?<\/think>/g, "").trim();
     const start = text.indexOf("{");

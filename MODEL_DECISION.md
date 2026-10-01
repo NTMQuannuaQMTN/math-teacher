@@ -91,8 +91,8 @@ correct, mean 58 s (vs ≈ 14 min locally on this laptop, with similar accuracy)
 
 Known limits and what to do about them:
 1. **Hard geometry proofs don't finish** (ch-4, g5 truncated at 12K, ≈ 5K is hidden reasoning).
-   Next: retry a truncated attempt with `reasoning.effort = minimal` or a higher cap; measure on
-   ch-4/g5 only.
+   Done: a truncated attempt is retried at `reasoning.effort = minimal` (fixed g5; ch-4 still spends
+   all 12K tokens reasoning). A stronger fallback is the only fix for ch-4-class proofs.
 2. **Free tier**: rate limits and ≈ 50 requests/day without credit; the provider may change or
    withdraw the free model. For production, switch `LOCAL_LLM_URL`/`LOCAL_SOLVER_MODEL` to a paid
    open-model endpoint (same code path; Qwen3.5-9B hosted ≈ $1–2 per 1,000 problems) or keep Gemini
