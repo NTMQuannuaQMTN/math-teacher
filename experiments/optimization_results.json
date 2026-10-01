@@ -1,0 +1,170 @@
+{
+ "generatedAt": "2026-10-01",
+ "note": "Measured results only. Values from console logs are labelled 'source: console log'. Pending experiments list their exact commands. See docs/EXPERIMENT_LOG.md.",
+ "geminiDisabled": true,
+ "paidCalls": 0,
+ "experiments": [
+  {
+   "id": "OPT-000",
+   "hypothesis": "Baseline (before this sprint's changes).",
+   "change": "Hosted Nemotron-3-Super free, reasoning effort low, prompt solver-v1.8, 12K output cap.",
+   "dataset": "validation (11)",
+   "source": "experiments/baseline_results.json (EXP-010)",
+   "results": {
+    "grades": "5 PASS / 3 PARTIAL / 3 FAIL / 0 CRITICAL",
+    "finalAnswerAccuracy": "7/9",
+    "gradeLevelSuitable": "7/9",
+    "medianLatencyS": 45.6,
+    "p90LatencyS": 113,
+    "meanOutputTokens": 8682,
+    "modelRequests": 16,
+    "meanAttempts": 1.1
+   },
+   "realUsage": {
+    "source": "D1 + worker log, user's own exam problems",
+    "meanSolveS": 166,
+    "n": 6,
+    "maxSolveS": 362,
+    "note": "3 of 6 needed two attempts; one more solve failed after 360 s (two empty outputs)"
+   }
+  },
+  {
+   "id": "OPT-001",
+   "hypothesis": "Turning hidden reasoning off (effort none) cuts latency without hurting accuracy.",
+   "change": "reasoning.effort = none (benchmark system or-nemotron-3-super-none), prompt solver-v1.9.",
+   "dataset": "validation — stopped after 3 of 11 by the free-tier daily quota (HTTP 429 free-models-per-day)",
+   "source": "console log (run stopped before writing a results file); responses are cached",
+   "results": {
+    "rows": [
+     {
+      "id": "ch-1",
+      "grade": "PARTIAL",
+      "answerCorrect": true,
+      "attempts": 1,
+      "modelS": 46,
+      "outputTokens": 2921,
+      "baselineLowS": 45.6
+     },
+     {
+      "id": "ch-2",
+      "grade": "PARTIAL",
+      "answerCorrect": true,
+      "attempts": 2,
+      "modelS": 55.4,
+      "outputTokens": 6750,
+      "baselineLowS": 249.3
+     },
+     {
+      "id": "ch-3",
+      "grade": "FAIL",
+      "answerCorrect": false,
+      "attempts": 1,
+      "modelS": 13.5,
+      "outputTokens": 813,
+      "baselineLowS": 75.8
+     }
+    ],
+    "probe": {
+     "id": "a3",
+     "firstAttemptS": 15.9,
+     "firstAttemptOutputTokens": 1560,
+     "baselineLowS": 44.5,
+     "note": "needed a second attempt (reason not logged); the second request spanned a system sleep and its time is invalid"
+    }
+   },
+   "conclusion": "Fast (3–5× fewer output tokens) but ch-3 (number theory, chuyên) became WRONG. Rejected as a global setting; motivates the adaptive policy (less reasoning only for simple problems).",
+   "limitations": "n = 3 (+1 probe); quota."
+  },
+  {
+   "id": "OPT-002",
+   "hypothesis": "A lower effort rescues answers that run out of output budget.",
+   "change": "Truncated answer → one retry at minimal (EXP-010 follow-up probes).",
+   "dataset": "ch-4, g5 (the two EXP-010 truncations)",
+   "source": "EXPERIMENT_LOG.md EXP-010 follow-up",
+   "results": {
+    "g5": "verified, 1 attempt, 54 s (3.5K reasoning tokens instead of > 7K)",
+    "ch-4": "still truncated: 12,000 tokens of reasoning at minimal, twice"
+   },
+   "conclusion": "Kept, extended: empty output also steps down, and minimal → none (implemented; the none step is not yet measured on ch-4)."
+  },
+  {
+   "id": "OPT-003",
+   "hypothesis": "Deterministic repairs and stricter quality checks change how many second attempts are needed.",
+   "change": "Current verifier + retry policy replayed on the recorded first-attempt outputs of EXP-010 (scripts/replay-attempts.ts; outputs recovered offline from the response cache).",
+   "dataset": "validation, 9 problems with recorded output",
+   "results": {
+    "modelCallsBefore": 11,
+    "modelCallsNow": 12,
+    "retried": {
+     "ch-2": "still retried (now also flagged: mentions derivatives)",
+     "g8": "still retried (false similarity claim — a correct retry)",
+     "w1": "NEW retry: hints/steps in Vietnamese without diacritics"
+    },
+    "unchanged": 7
+   },
+   "realUsageCauses": {
+    "source": "worker log of the user's 4 two-attempt solves",
+    "causes": {
+     "LaTeX check counted as restating the answer": "fixed before this sprint",
+     "duplicate hint id": "now repaired deterministically (no retry)",
+     "malformed figure check reported as a false claim": "now normalised / set aside (no retry, lesson no longer unverified)",
+     "empty model output": "now retried inside the call one effort step lower"
+    }
+   },
+   "conclusion": "On benchmark outputs the new quality rules add one justified retry (undiacritized Vietnamese); on the real solves the deterministic repairs remove the causes of 2 of 4 second attempts. Net latency effect: needs the live run (OPT-005).",
+   "limitations": "Replay is instant, so the 150 s retry budget is not exercised; real-solve outputs were not cached, so their effect is inferred from the logged reasons."
+  },
+  {
+   "id": "OPT-004",
+   "hypothesis": "Streaming lets the student see progress long before the lesson is complete.",
+   "change": "SSE streaming + progress rows + app polling (scripts/stream-check.ts end to end).",
+   "dataset": "'Giải phương trình x^2 - 5x + 6 = 0' on the local llama.cpp Qwen3.5-9B (battery, Low Power Mode) — hosted quota exhausted",
+   "results": {
+    "firstAnswerTokenS": 17.6,
+    "problemTypeShownS": 24.7,
+    "strategyDraftShownS": 47.5,
+    "stepsWrittenAtS": {
+     "1": 131.3,
+     "2": 146.2,
+     "3": 162.3
+    },
+    "checkingS": 184.1,
+    "totalS": 184.1,
+    "answer": "x1 = 2, x2 = 3 (correct)",
+    "retryBudget": "applied: 184 s spent, only presentation feedback → no second attempt"
+   },
+   "conclusion": "Useful content (problem type, plan) appears at ~13–26 % of the total time instead of nothing. Hosted time to first token not measured yet (quota).",
+   "limitations": "Local, throttled hardware; one problem. Found and fixed a verifier false negative (pre-substituted checks)."
+  },
+  {
+   "id": "OPT-005",
+   "hypothesis": "An exhausted daily quota should fail fast with a clear message.",
+   "change": "429 free-models-per-day → quota_exhausted (no back-off), error code solve_quota_exhausted.",
+   "dataset": "live worker, inequality fixture",
+   "results": {
+    "before": "3 requests with 4–20 s back-off, then a generic 'service had a problem' (retryable)",
+    "after": "failed in < 1 s, error_code solve_quota_exhausted, not retryable, Vietnamese message with the reset time"
+   }
+  },
+  {
+   "id": "OPT-006",
+   "status": "pending (needs hosted quota; resets 00:00 UTC)",
+   "hypothesis": "The final configuration (adaptive effort, step-down retries, repairs, grade-level checks, prompt solver-v2.0) is faster on simple problems with no accuracy loss.",
+   "commands": [
+    "cd worker && npx tsx scripts/benchmark.ts or-nemotron-3-super --split validation --exp OPT-006   # default effort low (standard/complex)",
+    "npx tsx scripts/benchmark.ts or-nemotron-3-super-min --ids a3,a7,x3 --exp OPT-006s  # simple tier at minimal",
+    "npx tsx scripts/build-results.ts ../experiments/opt006.json final=OPT-006_or-nemotron-3-super_validation"
+   ],
+   "budget": "≈ 15–20 requests"
+  },
+  {
+   "id": "OPT-007",
+   "status": "pending",
+   "hypothesis": "Held-out test (Toán KC 2026, 15 problems) with the final configuration.",
+   "commands": [
+    "cd worker && npx tsx scripts/benchmark.ts or-nemotron-3-super --split test --exp OPT-007"
+   ],
+   "budget": "≈ 20–25 requests (one full day of free quota)"
+  }
+ ]
+}

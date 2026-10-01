@@ -200,13 +200,16 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
   if (existing && isFresh(existing, env)) {
     throw new ApiError(409, "solve_in_progress", "This problem is already being solved.", true);
   }
-  if (existing && existing.status === "ready" && existing.problem_hash === problemHash && !regenerate) {
+  const key = await problemKey(problemText);
+  // The student's own finished lesson for the same text is kept across prompt versions: re-solving it
+  // after every deploy would spend quota on something they already have ("Regenerate" asks for a new one).
+  const sameText = existing?.problem_hash === problemHash || (existing?.problem_key != null && existing.problem_key === key);
+  if (existing && existing.status === "ready" && sameText && !regenerate) {
     return json({ solution: toApiSolution(existing) } satisfies SolutionResponse);
   }
 
   // Shared library: if anyone already has a verified lesson for this exact problem, reuse it —
   // no AI call, no cost, no rate-limit use. Unverified lessons are never shared.
-  const key = await problemKey(problemText);
   const shared = regenerate ? null : await env.DB.prepare(
     `SELECT lesson_json, verification_json, model FROM solutions
      WHERE problem_key = ? AND prompt_version = ? AND status = 'ready' AND lesson_json IS NOT NULL
