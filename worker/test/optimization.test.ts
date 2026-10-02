@@ -271,6 +271,18 @@ describe("problemTier", () => {
 
 // --- verifier repairs that avoid retries --------------------------------------
 
+describe("a figure emptied by repairs", () => {
+  it("is removed so the lesson stays valid for the app", async () => {
+    const l = inequalityLesson();
+    l.analysis = { ...l.analysis, topic: "geometry" };
+    l.figure = { scale: "schematic", points: [], lines: [], circles: [], angles: [], marks: [], checks: [] } as unknown as ModelLesson["figure"];
+    const r = verifyLesson(l);
+    expect(r.lesson.figure).toBeNull();
+    const { ModelLessonSchema } = await import("../../shared/src/solution");
+    expect(ModelLessonSchema.safeParse(r.lesson).success).toBe(true);
+  });
+});
+
 describe("figure check normalisation", () => {
   it("turns a two-point equal_length with a value into length_value", () => {
     const { checks, dropped } = normalizeFigureChecks([{ kind: "equal_length", refs: ["B", "C"], value: 7, role: "given" }]);

@@ -842,6 +842,19 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   else if (checks.length > 0) status = "partial";
   else status = "not_checkable";
 
+  // Repairs can remove every point of a broken figure; an empty figure is not a valid lesson (the schema needs
+  // ≥ 1 point), so drop it like any unusable figure — the text lesson is still served.
+  if (lesson.figure && lesson.figure.points.length === 0) {
+    lesson = {
+      ...lesson,
+      figure: null,
+      hints: lesson.hints.map((h) => ({ ...h, focus: [] })),
+      steps: lesson.steps.map((s) => ({ ...s, geometryActions: [] })),
+    };
+    figureIssue = figureIssue ?? "figure_invalid";
+    resolved = null;
+  }
+
   return {
     verification: { status, checks: checks.slice(0, 40), figureIssue },
     feedback,

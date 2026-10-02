@@ -305,6 +305,12 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
         onProgress,
       });
       await writes;
+      // Never store a lesson the app can't read: it would surface as a generic failure on every reload.
+      const valid = ModelLessonSchema.safeParse(result.lesson);
+      if (!valid.success) {
+        console.error(`[solve ${scanId}/${questionId}] lesson fails the schema: ${valid.error.issues.slice(0, 3).map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`);
+        throw new OcrFailure("malformed_output", "lesson fails the schema", true);
+      }
       await env.DB.prepare(
         `UPDATE solutions SET status = 'ready', lesson_json = ?, verification_json = ?, error_code = NULL, model = ?, problem_key = ?,
            attempts = ?, duration_ms = ?, started_at = NULL, created_at = ?, updated_at = ? WHERE scan_id = ? AND question_id = ?`,
