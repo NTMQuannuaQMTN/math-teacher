@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { regularizeTriangle } from "../../shared/src/figureShape";
 import { resolveFigure } from "../../shared/src/geometry";
@@ -69,6 +68,13 @@ describe("user report: f(n) lesson notation and method", () => {
     expect(simplifyNotation(input)).toBe(expected);
   });
 
+  it("cleans the summary lists too (Kiến thức sử dụng)", async () => {
+    const { cleanLanguage } = await import("../../shared/src/language");
+    const l = incircleLesson();
+    l.analysis = { ...l.analysis, concepts: ["rút gọn biểu thức, lấy fator chung"] };
+    expect(cleanLanguage(l).lesson.analysis.concepts).toEqual(["rút gọn biểu thức, lấy nhân tử chung"]);
+  });
+
   it("replaces 'fator' and the foreign name 'Lo Shu'", () => {
     expect(patchVietnamese("Rút gọn bằng cách lấy fator chung")).toBe("Rút gọn bằng cách lấy nhân tử chung");
     expect(patchVietnamese("Vuông ma Lo Shu sử dụng các số 1–9.")).toBe("Ma phương 3 × 3 sử dụng các số 1–9.");
@@ -92,6 +98,6 @@ describe("prompt carries the new method rules", () => {
     expect(prompt).toMatch(/n chẵn/);
     expect(prompt).toMatch(/never cite the Chinese remainder theorem/);
     expect(prompt).toMatch(/Lo Shu/);
-    expect(readFileSync(new URL("../src/solver/curriculum.ts", import.meta.url), "utf8")).toMatch(/theo câu a/);
+    expect(prompt).toMatch(/theo câu a/);
   });
 });
