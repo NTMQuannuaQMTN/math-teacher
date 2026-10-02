@@ -10,9 +10,9 @@ Branch `sprint/model-research`. Related docs: [SOLVER_AUDIT.md](SOLVER_AUDIT.md)
 |---|---|
 | `ec9caf3` | Knowledge base A–E in code; domain-scoped prompt; boundary realigned (B2/B5 tools advisory, Jensen/Schur/Hölder/Minkowski and inversion/polar/harmonic/antiparallel/nine-point/Euler line forbidden, induction allowed); prompt `solver-v2.7` |
 | `cbc1c45` | Schema: `analysis.techniques`, `step.uses`, `Verification.steps` (per-step status) with repairs and tests |
-| (geometry) | `completeFigure`: arcs for mentioned angles, step highlights merged with everything named (incl. circles); `figureCoverage` |
+| `193fa16` | `completeFigure`: arcs for mentioned angles, step highlights merged with everything named (incl. circles); `figureCoverage` |
 | `40225f3` | App: methods row, "Dựa vào bước …", per-step check badge, tap object → step |
-| (eval) | `worker/scripts/figure-coverage.ts` |
+| `30d709b` | `worker/scripts/figure-coverage.ts` |
 | `860806d` | Verifier: answer that denies the question's premise → failed check + retry feedback; docs; EXP-011 |
 
 ## Files
