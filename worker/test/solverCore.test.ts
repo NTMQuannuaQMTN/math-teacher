@@ -6,6 +6,7 @@ import { ModelLessonSchema } from "../../shared/src/solution";
 import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
 import { buildTargetIndex, verifyLesson } from "../../shared/src/verify";
 import { problemDomains } from "../../shared/src/knowledgeBase";
+import { figureCoverage } from "../../shared/src/figureComplete";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 
@@ -521,5 +522,35 @@ describe("problem domains", () => {
     expect(geo).not.toMatch(/C2\b/);
     expect(geo).toMatch(/antiparallel/);
     expect(buildSystemPrompt(VN_GRADE_9, { domains: ["algebra", "number_theory"] })).toMatch(/C2/);
+  });
+});
+
+describe("figure completeness", () => {
+  it("draws an arc for a mentioned angle and highlights it in the step that uses it", () => {
+    const l = isoscelesLesson();
+    l.figure = { ...l.figure!, angles: l.figure!.angles.filter((x) => x.id !== "ang_C") };
+    l.steps = [l.steps[0]!, { ...l.steps[1]!, explanation: "Vì $\\widehat{ACB} = \\widehat{ABC}$ nên …", geometryActions: [] }];
+    const out = verifyLesson(l).lesson;
+    const arc = out.figure!.angles.find((x) => x.vertex === "C");
+    expect(arc).toBeTruthy();
+    const targets = out.steps[1]!.geometryActions.flatMap((x) => x.targets);
+    expect(targets).toContain(arc!.id);
+    expect(targets).toContain("ang_B");
+  });
+
+  it("adds what a step names to the model's partial highlight", () => {
+    const l = isoscelesLesson();
+    l.steps = [{ ...l.steps[0]!, explanation: "Ta có $AB = AC$ và $BC$ là đáy.", geometryActions: [{ action: "highlight", targets: ["seg_AB"] }] }, l.steps[1]!];
+    const targets = verifyLesson(l).lesson.steps[0]!.geometryActions.find((x) => x.action === "highlight")!.targets;
+    expect(targets[0]).toBe("seg_AB");
+    expect(targets).toEqual(expect.arrayContaining(["seg_AC", "seg_BC"]));
+  });
+
+  it("measures coverage: every named object drawn and every step synced after completion", () => {
+    const { lesson, resolvedFigure } = verifyLesson(isoscelesLesson());
+    const c = figureCoverage(lesson, resolvedFigure!)!;
+    expect(c.missing).toEqual([]);
+    expect(c.segments.drawn).toBe(c.segments.mentioned);
+    expect(c.steps.synced).toBe(c.steps.mentioning);
   });
 });
