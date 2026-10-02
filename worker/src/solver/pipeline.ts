@@ -10,6 +10,7 @@ import type { ChatMessage, JsonModel } from "./llm";
 import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
 import { looksLikeGeometry, problemTier } from "./routing";
 import { techniqueHints } from "./techniques";
+import { problemDomains } from "../../../shared/src/knowledgeBase";
 import { addUsage, emptyUsage, estimateCost, formatUsage, type Usage } from "./pricing";
 
 const LESSON_JSON_SCHEMA = toStrictJsonSchema(ModelLessonSchema);
@@ -348,9 +349,11 @@ export async function solveProblem(
   let withFigure = looksLikeGeometry(problemText);
   const vietnamese = containsVietnamese(problemText);
   const tier = problemTier(problemText);
+  // Only the knowledge-base sections relevant to this problem go into the prompt.
+  const domains = problemDomains(problemText);
   const methodHints = withTechniques ? techniqueHints(problemText) : "";
   let messages: ChatMessage[] = [
-    { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
+    { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
   ];
   let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number } | null = null;
@@ -447,7 +450,7 @@ export async function solveProblem(
         // Fresh start for a different model (or the full geometry prompt): send what was wrong,
         // not the rejected lesson, which would cost thousands of input tokens.
         messages = [
-          { role: "system", content: buildSystemPrompt(curriculum, { withFigure }) },
+          { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
           { role: "user", content: buildEscalationMessage(problemText, problems, tier, methodHints) },
         ];
       } else {

@@ -142,7 +142,8 @@ describe("prompts", () => {
   it("states the grade level and forbidden methods", () => {
     const prompt = buildSystemPrompt(VN_GRADE_9);
     expect(prompt).toMatch(/Grade 9/);
-    expect(prompt).toMatch(/Calculus/);
+    expect(prompt).toMatch(/Calculus|calculus/);
+    expect(prompt).toMatch(/never use/);
   });
 });
 

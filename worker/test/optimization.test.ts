@@ -90,8 +90,8 @@ describe("grade-level review", () => {
     expect(gradeLevelReport(l).forbidden.join()).toMatch(/coordinates/);
   });
 
-  it("treats olympiad-only inequalities and congruences as advisory, never as a retry", () => {
-    const l = withStep("Theo bất đẳng thức Schur, ...; và dùng quy nạp.");
+  it("treats advanced chuyên tools (Ceva, Chebyshev) as advisory, never as a retry", () => {
+    const l = withStep("Theo định lý Ceva và bất đẳng thức Chebyshev, ...");
     const r = gradeLevelReport(l);
     expect(r.forbidden).toEqual([]);
     expect(r.rubric.familiarMethods).toBe(false);
@@ -139,10 +139,15 @@ describe("entrance-exam curriculum (13 review topics)", () => {
     expect(unsupported("Tính tích phân $\\int_0^1 x^2 dx$.")).not.toMatch(/within the Vietnamese Grade 9/);
   });
 
-  it("treats Cô-si and Bunhiacopxki as entrance-exam methods, Jensen as olympiad-only", () => {
+  it("treats Cô-si and Bunhiacopxki as entrance-exam methods, Jensen as outside the knowledge base", () => {
     expect(gradeLevelReport(withStep("Theo bất đẳng thức Bunhiacopxki, $(a+b)^2 \\le 2(a^2+b^2)$.")).rubric.familiarMethods).toBe(true);
     expect(gradeLevelReport(withStep("Áp dụng bất đẳng thức Cô-si cho ba số dương.")).rubric.familiarMethods).toBe(true);
     expect(gradeLevelReport(withStep("Áp dụng bất đẳng thức Jensen cho hàm lồi.")).rubric.familiarMethods).toBe(false);
+    expect(gradeLevelFeedback(withStep("Áp dụng bất đẳng thức Jensen cho hàm lồi.")).join(" ")).toMatch(/Jensen/);
+  });
+
+  it("allows induction (D4) without a note", () => {
+    expect(gradeLevelReport(withStep("Chứng minh bằng quy nạp theo n.")).advisory).toEqual([]);
   });
 
   it("still checks methods when the model flags its own problem as out of curriculum", () => {

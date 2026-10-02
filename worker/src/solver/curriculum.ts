@@ -57,8 +57,9 @@ export const VN_GRADE_9: Curriculum = {
     "Coordinates as a shortcut for a synthetic geometry problem that doesn't mention coordinates",
     "The law of sines / law of cosines for non-right triangles",
     "Complex numbers, matrices, linear algebra, logarithms",
-    "Olympiad-only inequalities (Jensen, Schur, Hölder, Chebyshev, Minkowski)",
-    "Olympiad geometry tools and terms: antiparallel lines (đối song), homothety (phép vị tự), inversion, radical axis (trục đẳng phương), pole/polar, harmonic division (hàng điểm điều hòa), cross-ratio, Ceva, Menelaus, Simson line, nine-point circle, Euler line — prove with similar triangles, congruent triangles and angle chasing instead",
+    "Olympiad-only inequalities (Jensen, Schur, Hölder, Minkowski)",
+    "Geometry tools outside the knowledge base: inversion, pole/polar, harmonic division, cross-ratio, antiparallel lines (đối song), nine-point circle, Euler line — prove with similar triangles, congruent triangles and angle chasing instead",
+    "The Chinese remainder theorem (combine remainder conditions by hand)",
     "University-level theorems or notation",
   ],
   preferences: [

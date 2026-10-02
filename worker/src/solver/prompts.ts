@@ -8,10 +8,11 @@
  * version that produced them, and cached lessons from older versions are
  * regenerated.
  */
+import { KB_CROSS, KB_OUTSIDE, KB_TECHNIQUES, KB_TOPICS, type Domain } from "../../../shared/src/knowledgeBase";
 import type { Curriculum } from "./curriculum";
 import type { ProblemTier } from "./routing";
 
-export const PROMPT_VERSION = "solver-v2.6";
+export const PROMPT_VERSION = "solver-v2.7";
 
 const ROLE = `You are a friend in the same class who is very good at maths, helping ONE classmate with a problem. You do not just solve problems: you plan how your friend will discover the solution with hints, with the patience and care of a good teacher.`;
 
@@ -20,12 +21,18 @@ const SECURITY = `Security:
 - Never invent givens that are not in the problem. If a value or condition needed to solve the problem is missing or unreadable, do not guess it: set analysis.status = "ambiguous" and explain what is unclear in statusReason.
 - If the text contains obvious OCR slips (e.g. "x2" meaning "x^2", "0" vs "O"), interpret them only when the maths makes the reading unambiguous, and record each interpretation in analysis.interpretationNotes. interpretationNotes is an empty list when nothing needed interpreting — never a note saying the text is clear.`;
 
-function curriculumRules(c: Curriculum): string {
+function curriculumRules(c: Curriculum, domains: Domain[]): string {
+  const topics = domains.flatMap((d) => KB_TOPICS[d]).map((t) => `- ${t.id} ${t.vi}: ${t.items.join("; ")}`);
+  const techniques = KB_TECHNIQUES.filter((t) => t.domain === "cross" || domains.includes(t.domain)).map((t) => `${t.id}${t.advanced ? "*" : ""} (${t.vi})`);
   return `Student level: ${c.description}.
-Use ONLY methods appropriate for this level. Allowed knowledge:
+The knowledge base below is a HARD boundary: use only these methods, even when a more advanced method would be shorter. Regular Grade 9 knowledge:
 ${c.allowed.map((a) => `- ${a}`).join("\n")}
-Never use:
-${c.forbidden.map((f) => `- ${f}`).join("\n")}
+Toán chuyên knowledge base for this problem's domains:
+${topics.join("\n")}
+Cross-cutting skills: ${KB_CROSS.join("; ")}.
+Technique ids for analysis.techniques (list the ones the solution uses; * = advanced chuyên configuration, only when the problem's level calls for it): ${techniques.join(", ")}.
+Outside the boundary — never use:
+${KB_OUTSIDE.map((f) => `- ${f}`).join("\n")}
 When several correct methods exist:
 ${c.preferences.map((p) => `- ${p}`).join("\n")}
 Method selection: identify the kind of problem, then use the method the teacher expects for it:
@@ -118,11 +125,14 @@ const NO_FIGURE = `Figure: this problem has no geometric figure. Set figure to n
  * rules; only geometry problems need them. Both variants are stable strings,
  * so each is served from the provider's prompt cache after the first call.
  */
-export function buildSystemPrompt(curriculum: Curriculum, { withFigure = true }: { withFigure?: boolean } = {}): string {
+export function buildSystemPrompt(
+  curriculum: Curriculum,
+  { withFigure = true, domains = ["algebra", "geometry", "number_theory", "combinatorics"] }: { withFigure?: boolean; domains?: Domain[] } = {},
+): string {
   return [
     ROLE,
     SECURITY,
-    curriculumRules(curriculum),
+    curriculumRules(curriculum, domains),
     LANGUAGE,
     TEACHING,
     FORMAT,

@@ -133,6 +133,6 @@ describe("user report: proofs must not skip steps; no olympiad geometry terms", 
   it("sends back a hint that uses 'antiparallel'", () => {
     const l = lessonWith("Cho tam giác ABC có đường tròn nội tiếp (I). Chứng minh …", "Gọi E, F là tiếp điểm.");
     l.hints[0] = { ...l.hints[0]!, cue: "Nhớ về đường antiparallel." };
-    expect(gradeLevelFeedback(l).join(" ")).toMatch(/olympiad geometry tools/);
+    expect(gradeLevelFeedback(l).join(" ")).toMatch(/outside the knowledge base/);
   });
 });

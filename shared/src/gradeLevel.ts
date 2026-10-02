@@ -35,18 +35,21 @@ const FORBIDDEN: Marker[] = [
   { re: /ma trận|định thức|\bmatrices\b|\bmatrix (multiplication|of)|determinant|số phức|complex number/iu, label: "matrices or complex numbers" },
   // Students combine remainder conditions by hand (n = 9k + 7, k lẻ ⇒ n = 18l + 16), not by citing this theorem.
   { re: /chinese remainder|số dư (trung hoa|trung quốc|china)|định l[íý] (số dư )?(trung hoa|china)|\bCRT\b/iu, label: "the Chinese remainder theorem" },
-  // Olympiad geometry tools and terms (EXP review: a hint called EF "antiparallel" to BC — wrong, and not taught).
+  // Outside the agreed knowledge base (docs/CURRICULUM_KNOWLEDGE_BASE.md). Ceva, Menelaus, Simson, homothety,
+  // spiral similarity and radical axis are INSIDE it (B2, B5) — advisory below, not forbidden.
   {
-    re: /antiparallel|đối song|homothe|phép vị tự|vị tự|inversion|phép nghịch đảo|radical axis|trục đẳng phương|tâm đẳng phương|\bpolar\b|đường đối cực|harmonic (division|range|conjugate)|hàng điểm điều hòa|chùm điều hòa|cross[- ]ratio|tỉ số kép|\bceva\b|menelaus|mê-nê-la|simson|nine[- ]point|đường tròn chín điểm|đường thẳng euler|euler line/iu,
-    label: "olympiad geometry tools (antiparallel, homothety, inversion, radical axis, harmonic division, Ceva, Menelaus, …)",
+    re: /antiparallel|đối song|inversion|phép nghịch đảo|\bpolar\b|đường đối cực|harmonic (division|range|conjugate)|hàng điểm điều hòa|chùm điều hòa|cross[- ]ratio|tỉ số kép|nine[- ]point|đường tròn chín điểm|đường thẳng euler|euler line/iu,
+    label: "geometry tools outside the knowledge base (antiparallel, inversion, pole/polar, harmonic division, cross-ratio, nine-point circle, Euler line)",
   },
+  { re: /jensen|schur|h[oö]lder|minkowski/iu, label: "olympiad-only inequalities (Jensen, Schur, Hölder, Minkowski)" },
   { re: /logarit|\\log\b|\\ln\b|\blogarithm/iu, label: "logarithms" },
 ];
 
 const ADVISORY: Marker[] = [
   // Cô-si and Bunhiacopxki (Cauchy–Schwarz) belong to the entrance-exam topic "bất đẳng thức và cực trị".
-  { re: /jensen|chebyshev|trê-?bư-?sép|schur|h[oö]lder|minkowski/iu, label: "an olympiad-only inequality" },
-  { re: /quy nạp|induction/iu, label: "mathematical induction" },
+  // Advanced chuyên tools inside the knowledge base: allowed, noted so a reviewer can check they were needed.
+  { re: /\bceva\b|menelaus|mê-nê-la|simson|homothe|phép vị tự|\bvị tự\b|spiral similarity|đồng dạng xoắn|radical axis|trục đẳng phương|tâm đẳng phương/iu, label: "an advanced chuyên configuration (Ceva, Menelaus, Simson, homothety, radical axis)" },
+  { re: /chebyshev|trê-?bư-?sép/iu, label: "Chebyshev's sum inequality" },
   { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson/iu, label: "a number-theory theorem beyond Grade 9" },
 ];
 
@@ -108,7 +111,7 @@ export function gradeLevelReport(lesson: ModelLesson): GradeLevelReport {
     advisory,
     rubric: {
       curriculumFit: forbidden.length === 0,
-      familiarMethods: !advisory.some((a) => a.startsWith("uses ")),
+      familiarMethods: forbidden.length === 0 && !advisory.some((a) => a.startsWith("uses ")),
       concise,
       noHandWaving: !handWaving,
       hintsProgressive: !revealsEarly && !tooManyHints && lesson.hints.length > 0,
