@@ -60,6 +60,7 @@ const WORD_GLOSSARY: [RegExp, string][] = [
   [/(hình\s+)?vuông\s+ma\s+Lo\s*Shu/giu, "ma phương 3 × 3"],
   [/(ma phương|bảng)\s+Lo\s*Shu/giu, "$1"],
   [/\bLo\s*Shu\b/giu, "ma phương 3 × 3"],
+  [/(?<!\p{L})vuông\s+ma(?!\p{L})/giu, "ma phương"],
   [/(?<=\p{L})Known\b/gu, " đã biết"],
   [/\bKnown\b/gu, "đã biết"],
 ];
