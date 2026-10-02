@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { FeedbackSheet } from "./FeedbackSheet";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
@@ -35,6 +36,7 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
   const { height: screenHeight } = useWindowDimensions();
   const [focus, setFocus] = useState<Focus>(null);
   const [figureOpen, setFigureOpen] = useState(true);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const figureHeight = Math.round(Math.min(Math.max(screenHeight * 0.36, 220), 380));
   const lesson = solution.lesson!;
   const { analysis, hints, steps, figure } = lesson;
@@ -69,7 +71,9 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
           <StateView icon="help-buoy-outline" title={title} body={analysis.statusReason ?? undefined}>
             <Button label={s.common.back} variant="secondary" onPress={() => router.back()} />
             <Button label={s.solve.regenerate} icon="refresh" variant="ghost" onPress={onRegenerate} />
+            <Button label={s.feedback.button} icon="flag-outline" variant="ghost" onPress={() => setFeedbackOpen(true)} />
           </StateView>
+          <FeedbackSheet visible={feedbackOpen} onClose={() => setFeedbackOpen(false)} scanId={solution.scanId} questionId={solution.questionId} lesson={lesson} />
         </ScrollView>
       </SafeAreaView>
     );
@@ -167,12 +171,27 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
             <Button label={s.solve.regenerate} icon="refresh" variant="ghost" size="md" onPress={onRegenerate} />
           </>
         ) : null}
+        {/* "Báo lỗi": report a mistake (the step or hint in focus is preselected). */}
+        <View style={styles.feedbackRow}>
+          <Button testID="feedback-open" label={s.feedback.button} icon="flag-outline" variant="secondary" size="md" onPress={() => setFeedbackOpen(true)} style={styles.flexOne} />
+          <Button label={s.feedback.viewAll} icon="list-outline" variant="ghost" size="md" onPress={() => router.push("/feedback")} style={styles.flexOne} />
+        </View>
       </ScrollView>
+      <FeedbackSheet
+        visible={feedbackOpen}
+        onClose={() => setFeedbackOpen(false)}
+        scanId={solution.scanId}
+        questionId={solution.questionId}
+        lesson={lesson}
+        initialTarget={focus ? { kind: focus.kind, id: focus.id } : undefined}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  feedbackRow: { flexDirection: "row", gap: 8, marginTop: 8 },
+  flexOne: { flex: 1 },
   flex: { flex: 1 },
   content: { padding: spacing.lg, gap: spacing.md, maxWidth: 720, width: "100%", alignSelf: "center", paddingBottom: spacing.xxl },
   figurePane: { paddingHorizontal: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: StyleSheet.hairlineWidth },

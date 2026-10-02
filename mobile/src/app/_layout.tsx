@@ -43,6 +43,7 @@ export default function RootLayout() {
           <Stack.Screen name="history" options={{ title: s.history.title }} />
           <Stack.Screen name="pdf-pages" options={{ title: s.webSources.pagesTitle }} />
           <Stack.Screen name="solve/[id]" options={{ title: s.solve.title }} />
+          <Stack.Screen name="feedback" options={{ title: s.feedback.listTitle }} />
         </Stack>
       </ThemeProvider>
     </SafeAreaProvider>

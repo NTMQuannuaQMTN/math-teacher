@@ -11,7 +11,7 @@ import {
   type ScanSource,
   type z,
 } from "@shared/contract";
-import { SolutionResponseSchema, type Solution } from "@shared/solution";
+import { FeedbackListResponseSchema, FeedbackRequestSchema, FeedbackResponseSchema, SolutionResponseSchema, type Feedback, type FeedbackRequest, type Solution } from "@shared/solution";
 import { API_URL } from "@/lib/config";
 import { getDeviceToken } from "@/lib/deviceToken";
 import { AppError } from "./errors";
@@ -190,6 +190,22 @@ export const api = {
   async getSolution(id: string, questionId = "q1", signal?: AbortSignal): Promise<Solution> {
     const { solution } = await request(`/v1/scans/${id}/questions/${questionId}/solution`, { schema: SolutionResponseSchema, signal });
     return solution;
+  },
+
+  /** "Báo lỗi": reports a mistake in a lesson (saved with a snapshot for review). */
+  async reportFeedback(id: string, questionId: string, input: { target: FeedbackRequest["target"]; category: FeedbackRequest["category"]; note?: string | null }): Promise<Feedback> {
+    const { feedback } = await request(`/v1/scans/${id}/questions/${questionId}/feedback`, {
+      method: "POST",
+      body: JSON.stringify(FeedbackRequestSchema.parse({ ...input, note: input.note?.trim() || null })),
+      headers: { "content-type": "application/json" },
+      schema: FeedbackResponseSchema,
+    });
+    return feedback;
+  },
+
+  async listFeedback(signal?: AbortSignal): Promise<Feedback[]> {
+    const { items } = await request("/v1/feedback", { schema: FeedbackListResponseSchema, signal });
+    return items;
   },
 
   deleteScan(id: string): Promise<void> {
