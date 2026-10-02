@@ -1,0 +1,694 @@
+{
+ "summary": {
+  "exp": "EXP-011",
+  "system": "or-nemotron-3-super",
+  "split": "validation",
+  "promptVersion": "solver-v2.7",
+  "techniqueHints": false,
+  "dataset": "chuyen",
+  "n": 10,
+  "pass": 2,
+  "partial": 0,
+  "fail": 8,
+  "critical": 0,
+  "answerAccuracy": 0.2,
+  "gradableN": 10,
+  "verifiedRate": 0.2,
+  "errors": 7,
+  "meanModelSeconds": 29.810000000000002,
+  "meanInputTokens": 3195.9,
+  "meanOutputTokens": 3930.2,
+  "cache": {
+   "hits": 0,
+   "misses": 12,
+   "modelMs": 298055
+  },
+  "createdAt": "2026-10-02T11:59:48.736Z"
+ },
+ "rows": [
+  {
+   "id": "hcm-2025-chuyen_1a",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 4382,
+   "outputTokens": 6133,
+   "modelSeconds": 62.5,
+   "wallSeconds": 62.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Giá trị của biểu thức P là 8. P=8 Giá trị của biểu thức P là 8. P=8",
+   "lesson": {
+    "analysis": {
+     "statement": "Với $a,b$ là các số thực dương thỏa mãn $(a+b)(a-b)=1$. Tính giá trị của biểu thức $P=\\sqrt{(4a+5)^2+(3b)^2}-\\sqrt{(4a-5)^2+(3b)^2}$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hằng đẳng thức (a+b)(a-b)=a^2-b^2",
+      "bình phương hoàn hảo",
+      "rút gọn căn bậc hai",
+      "đặt ẩn phụ"
+     ],
+     "techniques": [
+      "substitution",
+      "factorization",
+      "complete_square",
+      "domain_conditions"
+     ],
+     "givens": [
+      "a > 0",
+      "b > 0",
+      "(a+b)(a-b)=1"
+     ],
+     "unknowns": [
+      "P"
+     ],
+     "constraints": [
+      "a, b là số thực dương"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Chúng ta sẽ đặt ẩn phụ để viết biểu thức dưới dạng căn của tổng và hiệu hai số, sau đó dùng điều kiện a²−b²=1 để đơn giản hóa những biểu thức bên trong căn thành bình phương hoàn hảo, từ đó tính được giá trị của P.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Điều kiện (a+b)(a-b)=1 cho ta được mối quan hệ nào giữa a² và b²?",
+      "cue": "",
+      "explanation": "Áp dụng hằng đẳng thức (a+b)(a-b)=a²-b² để rút gọn điều kiện.",
+      "math": "a^2 - b^2 = 1",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Nếu đặt x = 4a và y = 3b, thì biểu thức P trở thành gì?",
+      "cue": "",
+      "explanation": "Thay x, y vào để nhìn nhận cấu trúc của hai căn bậc hai.",
+      "math": "P = \\sqrt{(x+5)^2 + y^2} - \\sqrt{(x-5)^2 + y^2}",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Hai biểu thức bên trong căn có thể viết dưới dạng A±B với A và B là gì? Sau khi thay a²−b²=1, A±B trở thành bình phương nào?",
+      "cue": "",
+      "explanation": "Mở rộng (x±5)²+y², nhóm thành A+B và A−B, sau đó thay x=4a, y=3b và dùng a²−b²=1 để rút gọn.",
+      "math": "A = x^2 + y^2 + 25,\\ B = 10x\\Rightarrow\\ A+B = (5a+4)^2,\\ A-B = (5a-4)^2",
+      "stepId": "step4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Rút gọn điều kiện cho a và b",
+      "explanation": "Áp dụng hằng đẳng thức (a+b)(a-b)=a²-b² vào điều kiện đã cho.",
+      "math": "(a+b)(a-b)=a^2-b^2=1\\Rightarrow a^2-b^2=1",
+      "reason": "hằng đẳng thức $(a+b)(a-b)=a^2-b^2$",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Đặt ẩn phụ để đơn giản hóa biểu thức",
+      "explanation": "Đặt x = 4a, y = 3b để viết P dưới dạng hai căn bậc hai có cấu trúc tương tự.",
+      "math": "P = \\sqrt{(x+5)^2 + y^2} - \\sqrt{(x-5)^2 + y^2}",
+      "reason": "đặt ẩn phụ",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Mở rộng và nhóm các항 trong dấu căn",
+      "explanation": "Mở rộng (x±5)²+y², sau đó viết dưới dạng A±B với A = x²+y²+25, B = 10x.",
+      "math": "(x+5)^2+y^2 = x^2+10x+25+y^2 = (x^2+y^2+25)+10x = A+B,\\\\(x-5)^2+y^2 = x^2-10x+25+y^2 = (x^2+y^2+25)-10x = A-B",
+      "reason": "phép mở rộng và nhóm đồng nhất",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Thay x, y và dùng điều kiện a²−b²=1 để rút gọn A và B",
+      "explanation": "Thay x=4a, y=3b vào A và B, sau đó sử dụng b² = a²−1 (từ a²−b²=1).",
+      "math": "\\begin{gathered}A = (4a)^2 + (3b)^2 + 25 = 16a^2+9b^2+25,\\\\ B = 2·(4a)·5 = 40a \\\\ b^2 = a^2-1\\Rightarrow\\ A = 16a^2+9(a^2-1)+25 = 25a^2+16 \\\\ A+B = 25a^2+16+40a = (5a+4)^2,\\\\ A-B = 25a^2+16-40a = (5a-4)^2\\end{gathered}",
+      "reason": "thay thế, rút gọn và nhận dạng bình phương hoàn hảo",
+      "uses": [
+       "step1",
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Tính giá trị của P",
+      "explanation": "Vì a≥1 (từ a²−b²=1 và b≥0) nên 5a±4>0, vì vậy căn của bình phương chính là giá trị tuyệt đối, tức là 5a±4. Trừ hai căn ta được P = 8.",
+      "math": "\\sqrt{A+B} = 5a+4,\\ \\sqrt{A-B}=5a-4\\\\\\Rightarrow\\ P = (5a+4)-(5a-4)=8",
+      "reason": "căn bậc hai của số dương là gốc dương và phép trừ",
+      "uses": [
+       "step4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị của biểu thức P là 8.",
+     "math": "P=8"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "sqrt((4*a+5)^2+(3*b)^2)-sqrt((4*a-5)^2+(3*b)^2)"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "a",
+         "value": "sqrt(2)"
+        },
+        {
+         "variable": "b",
+         "value": "1"
+        }
+       ]
+      ],
+      "expected": "8"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=4382 (cached 0) out=6133 (reasoning 4327)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_1b",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 16824,
+   "outputTokens": 20549,
+   "modelSeconds": 161.9,
+   "wallSeconds": 161.9,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "-1 -1 -1 -1",
+   "lesson": {
+    "analysis": {
+     "statement": "Biết $a,b$ là hai nghiệm thực của phương trình $x^2-4x+c=0$ và $-a$ là một nghiệm thực của phương trình $11x^2-x+2c=0$ với $c$ là một số thực khác 0. Tính giá trị của biểu thức $a^{2025}+b^{2025}+c^{2025}$.",
+     "language": "vi",
+     "topic": "word_problem",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Vieta's formulas",
+      "system of linear equations",
+      "parity of exponents"
+     ],
+     "techniques": [
+      "substitution",
+      "subtract_equations",
+      "domain_conditions"
+     ],
+     "givens": [
+      "a,b are real roots of x^2 - 4x + c = 0",
+      "-a is a real root of 11x^2 - x + 2c = 0",
+      "c ≠ 0"
+     ],
+     "unknowns": [
+      "a",
+      "b",
+      "c"
+     ],
+     "constraints": [
+      "c ≠ 0",
+      "a,b real"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Dùng Vieta để viết a+b và ab, thay -a vào phương trình thứ hai để tìm mối quan hệ giữa a và b, giải hệ phương trình tuyến tính để tìm a,b,c, sau đó tính lũy thừa bằng cách xem xét chẵn/lẻ của số mũ.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Vieta cho phương trình bậc hai $x^2-4x+c=0$ cho chúng ta gì về tổng và tích của hai nghiệm $a$ và $b$?",
+      "cue": "Tổng nghiệm là $-(-4)=4$, tích là $c$.",
+      "explanation": "Từ Vieta, $a+b=4$ và $ab=c$.",
+      "math": "a+b=4\\\\ab=c",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Nếu $-a$ là nghiệm của $11x^2-x+2c=0$, ta thay $x=-a$ vào phương trình này được gì?",
+      "cue": "Thay $x=-a$ vào $11x^2-x+2c$ và bằng 0.",
+      "explanation": "Thay $x=-a$ ta được $11a^2+a+2c=0$.",
+      "math": "11a^2+a+2c=0",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Ta biết $c=ab$ từ Vieta. Thay $c$ vào phương trình $11a^2+a+2c=0$ để loại $c$, sau đó rút gọn để tìm mối quan hệ giữa $a$ và $b$.",
+      "cue": "Thay $c=ab$ và rút gọn, lưu ý $a\\neq0$ vì $c\\neq0$.",
+      "explanation": "Thay $c=ab$ ta được $11a^2+a+2ab=0\\\\\\Rightarrow a(11a+1+2b)=0$. Vì $c\\neq0$ nên $a\\neq0$, do đó $11a+1+2b=0$ hoặc $11a+2b=-1$.",
+      "math": "11a+2b=-1",
+      "stepId": "step3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Áp dụng Vieta cho phương trình đầu",
+      "explanation": "Từ $x^2-4x+c=0$ có hai nghiệm thực $a,b$, ta được tổng và tích.",
+      "math": "a+b=4\\\\ab=c",
+      "reason": "Vieta's formulas",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Thay $-a$ vào phương trình thứ hai",
+      "explanation": "Vì $-a$ là nghiệm của $11x^2-x+2c=0$, ta thay $x=-a$ vào phương trình này.",
+      "math": "11(-a)^2-(-a)+2c=0\\\\\\Rightarrow 11a^2+a+2c=0",
+      "reason": "definition of a root",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Loại $c$ bằng cách dùng $ab=c$",
+      "explanation": "Thay $c=ab$ vào $11a^2+a+2c=0$ và rút gọn, lưu ý $a\\neq0$ vì $c\\neq0$.",
+      "math": "11a^2+a+2ab=0\\\\\\Rightarrow a(11a+1+2b)=0\\\\\\Rightarrow 11a+2b=-1",
+      "reason": "substitution and factoring",
+      "uses": [
+       "step1",
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Giải hệ phương trình tuyến tính để tìm $a$ và $b$",
+      "explanation": "Ta có hệ $\\begin{cases}a+b=4\\\\11a+2b=-1\\end{cases}$. Giải ra $a$ và $b$.",
+      "math": "b=4-a\\\\\\Rightarrow 11a+2(4-a)=-1\\\\\\Rightarrow 9a+8=-1\\\\\\Rightarrow a=-1\\\\\\Rightarrow b=5",
+      "reason": "substitution method",
+      "uses": [
+       "step1",
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Tính $c$ và kiểm tra điều kiện $c\\neq0$",
+      "explanation": "Vì $c=ab$, ta thay $a=-1$, $b=5$ để tìm $c$.",
+      "math": "c=ab=(-1)\\cdot5=-5\\\\\\Rightarrow c\\neq0",
+      "reason": "definition of product",
+      "uses": [
+       "step1",
+       "step4"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step6",
+      "title": "Tính giá trị của biểu thức $a^{2025}+b^{2025}+c^{2025}$",
+      "explanation": "Thay $a=-1$, $b=5$, $c=-5$ vào biểu thức. Vì số mũ $2025$ là lẻ, $(-5)^{2025}=-5^{2025}$. Do đó $5^{2025}+(-5)^{2025}=0$ và biểu thức còn lại là $(-1)^{2025}=-1$.",
+      "math": "a^{2025}+b^{2025}+c^{2025}=(-1)^{2025}+5^{2025}+(-5)^{2025}\\\\= -1+5^{2025}-5^{2025}\\\\= -1",
+      "reason": "properties of exponents (odd power preserves sign)",
+      "uses": [
+       "step4",
+       "step5"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "-1",
+     "math": "-1"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(-1)^{2025}"
+      ],
+      "assignments": [],
+      "expected": "-1"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: unverified, 2 problem(s): a geometry problem needs a figure (figure is null) | answer check \"(-1)^{2025}+5^{2025}+(-5)^{2025}\" failed: NaN vs -1",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=16824 (cached 0) out=20549 (reasoning 11347)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_2a",
+   "topic": "word_problem",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 10753,
+   "outputTokens": 12620,
+   "modelSeconds": 73.7,
+   "wallSeconds": 73.7,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Vô nghiệm (không có thời gian nào thỏa mãn điều kiện của bài). No solution Vô nghiệm (không có thời gian nào thỏa mãn điều kiện của bài). \\text{No solution}",
+   "lesson": {
+    "analysis": {
+     "statement": "Một ô tô và một xe tải chuyển động cùng tốc độ không đổi a (km/h) dọc theo hai con đường giao nhau hướng đến giao lộ (a>0). Biết rằng vào các thời điểm 14 giờ và 15 giờ cùng ngày, khoảng cách từ ô tô đến giao lộ đều gấp đôi khoảng cách từ xe tải đến giao lộ. Hỏi xe tải đến giao lộ lúc mấy giờ?",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "khoảng cách, tốc độ, thời gian",
+      "phương trình bậc nhất",
+      "giải hệ phương trình"
+     ],
+     "techniques": [
+      "substitution",
+      "domain_conditions"
+     ],
+     "givens": [
+      "cùng tốc độ a > 0",
+      "vào 14h: d_c = 2 d_t",
+      "vào 15h: d_c = 2 d_t"
+     ],
+     "unknowns": [
+      "thời điểm xe tải đến giao lộ"
+     ],
+     "constraints": [
+      "a > 0",
+      "khoảng cách không âm (hoặc có thể xét sau khi qua giao lộ)"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "Điều kiện đưa ra dẫn đến hệ phương trình có nghiệm duy nhất a = 0, mâu thuẫn với giả thiết a > 0. Do đó không có giá trị a thỏa mãn cả hai điều kiện, vấn đề không có giải trong tập số thực dương."
+     ]
+    },
+    "strategy": "Ta biểu diễn khoảng cách của mỗi xe theo thời gian sau 14h, sau đó lập hai phương trình từ điều kiện tại 14h và 15h. Giải hệ để tìm a và khoảng cách ban đầu, sau đó kiểm tra điều kiện a > 0.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Ta đặt t = 0 là lúc 14h. Biểu diễn khoảng cách từ ô tô và từ xe tải đến giao lộ sau t giờ là gì?",
+      "cue": "Công thức khoảng cách = khoảng cách ban đầu – tốc độ × thời gian (vì chúng đang tiến gần giao lộ).",
+      "explanation": "Đặt $d_c0$, $d_t0$ là khoảng cách ban đầu (lúc 14h) của ô tô và xe tải. Sau t giờ, khoảng cách sẽ giảm theo tốc độ a.",
+      "math": "d_c(t) = d_c0 - a t,\\quad d_t(t) = d_t0 - a t",
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Viết hai phương trình từ thông tin rằng vào 14h và 15h, khoảng cách của ô tô là gấp đôi khoảng cách của xe tải.",
+      "cue": "Thay t = 0 và t = 1 vào hai biểu thức trên.",
+      "explanation": "Vào $14h (t=0)$: $d_c0 = 2 d_t0$. Vào $15h (t=1)$: $d_c0 - a = 2 (d_t0 - a)$.",
+      "math": "\\begin{cases} d_c0 = 2 d_t0 \\\\ d_c0 - a = 2(d_t0 - a) \\end{cases}",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Giải hệ phương trình vừa có. Kết quả có ý nghĩa gì đối với a?",
+      "cue": "Thay $d_c0$ từ phương trình đầu vào phương trình thứ hai.",
+      "explanation": "Sau thay ta được -a = -2a, suy ra a = 0. Điều này mâu thuẫn với giả thiết a > 0.",
+      "math": "d_c0 = 2 d_t0 \\Rightarrow 2 d_t0 - a = 2 d_t0 - 2a \\Rightarrow a = 0",
+      "stepId": "s3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Đặt biến và biểu diễn khoảng cách theo thời gian",
+      "explanation": "Cho t là số giờ sau 14h. Khi t=0 là 14h, t=1 là 15h. Vì cả hai xe đều di chuyển với tốc độ a về phía giao lộ, khoảng cách từ mỗi xe đến giao lộ giảm đều theo thời gian.",
+      "math": "d_c(t) = d_c0 - a t,\\quad d_t(t) = d_t0 - a t",
+      "reason": "định nghĩa tốc độ và khoảng cách",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Lập hệ phương trình từ điều kiện tại 14h và 15h",
+      "explanation": "Vào $14h (t=0)$: $d_c(0) = d_c0$, $d_t(0) = d_t0$, và $d_c0 = 2 d_t0$. Vào $15h (t=1)$: $d_c(1) = d_c0 - a$, $d_t(1) = d_t0 - a$, và $d_c0 - a = 2(d_t0 - a)$.",
+      "math": "\\begin{cases} d_c0 = 2 d_t0 \\\\ d_c0 - a = 2(d_t0 - a) \\end{cases}",
+      "reason": "dịch trực tiếp điều kiện của bài",
+      "uses": [
+       "s1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Giải hệ phương trình",
+      "explanation": "Thay $d_c0 = 2 d_t0$ từ phương trình đầu vào phương trình thứ hai: $2 d_t0 - a = 2(d_t0 - a)$. Rút gọn được -a = -2a, từ đó suy ra a = 0.",
+      "math": "2 d_t0 - a = 2 d_t0 - 2a \\Rightarrow -a = -2a \\Rightarrow a = 0",
+      "reason": "phép thay và rút gọn đồng nhất",
+      "uses": [
+       "s2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s4",
+      "title": "Kiểm tra điều kiện a > 0 và suy ra kết luận",
+      "explanation": "Nhiệm đề yêu cầu a > 0, nhưng ta đã được a = 0. Điều này mâu thuẫn, vì vậy không tồn tại giá trị a thỏa mãn cả hai điều kiện. Do đó không có thời điểm nào mà xe tải đến giao lộ thỏa mãn bài toán.",
+      "math": "a = 0 \\text{ mâu thuẫn với } a > 0 \\Rightarrow \\text{vô nghiệm}",
+      "reason": "kiểm tra điều kiện và suy luận mâu thuẫn",
+      "uses": [
+       "s3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Vô nghiệm (không có thời gian nào thỏa mãn điều kiện của bài).",
+     "math": "\\text{No solution}"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "d_c0 = 2 d_t0",
+       "d_c0 - a = 2(d_t0 - a)"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "a",
+         "value": "0"
+        },
+        {
+         "variable": "d_c0",
+         "value": "0"
+        },
+        {
+         "variable": "d_t0",
+         "value": "0"
+        }
+       ]
+      ],
+      "expected": "0 = 0"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 1 problem(s): answer check \"d_c0 = 2 d_t0; d_c0 - a = 2(d_t0 - a)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"d_t0 / a\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=10753 (cached 0) out=12620 (reasoning 8101)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_2b",
+   "topic": "applied_optimization",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "hcm-2025-chuyen_3a",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "hcm-2025-chuyen_3b",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "hcm-2025-chuyen_4a",
+   "topic": "number_theory",
+   "difficulty": 1,
+   "format": "construct",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "hcm-2025-chuyen_4b",
+   "topic": "number_theory",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "hcm-2025-chuyen_5a",
+   "topic": "probability",
+   "difficulty": 3,
+   "format": "compute",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "hcm-2025-chuyen_5b",
+   "topic": "combinatorics",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  }
+ ]
+}

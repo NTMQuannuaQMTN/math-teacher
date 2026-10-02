@@ -671,6 +671,18 @@ export function reconcileStatus(lesson: ModelLesson): ModelLesson {
   return { ...lesson, analysis: { ...a, status: "solvable", statusReason: null, interpretationNotes: notes } };
 }
 
+const answerTextOf = (l: ModelLesson) => `${l.finalAnswer.text} ${l.finalAnswer.math ?? ""}`;
+
+/** A question for one value ("Hỏi … lúc mấy giờ?", "Tính …") — not "tìm tất cả", "có … không", "chứng minh". */
+export function presupposesAnswer(statement: string): boolean {
+  const t = statement.normalize("NFC").toLowerCase();
+  if (/tìm tất cả|tìm mọi|có (tồn tại|thể)|hay không|được không|có .{0,40} không\s*\?|chứng minh|biện luận|xác định .{0,20} để|với giá trị nào|tìm (điều kiện|m|tham số)/u.test(t)) return false;
+  return /hỏi .{0,80}(mấy|bao nhiêu|bao lâu|lúc nào)|\bmấy giờ|\btính\b|bao nhiêu/u.test(t);
+}
+
+export const deniesAnswer = (answer: string) =>
+  /vô nghiệm|không tồn tại|không có (giá trị|thời điểm|thời gian|số) .{0,20}(nào|thỏa)|không có lời giải|no solution|does not exist/iu.test(answer.normalize("NFC"));
+
 /**
  * Which steps the machine actually checked: a step's geometric claims measured on the exact figure, or the
  * final step backed by a passing answer check. Everything else is "not_checked" — said plainly, never implied.
@@ -847,6 +859,16 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   if (uncovered) {
     feedback.push(
       `the problem has ${parts.length} parts that ask for a result (${parts.join(", ")}) but only ${answerChecksPassed} answer check(s) pass: add one answerCheck per part that independently re-derives that part's result (kind "integers" for "find all integers n such that…", "substitute" for equations, "value" for computed quantities)`,
+    );
+  }
+
+  // "Hỏi xe tải đến giao lộ lúc mấy giờ?" presupposes an answer: concluding "vô nghiệm" from a contradiction
+  // means the model set the problem up wrongly (a distance without |…|, a vehicle that has already passed).
+  if (lesson.analysis.status === "solvable" && presupposesAnswer(lesson.analysis.statement) && deniesAnswer(answerTextOf(lesson))) {
+    checks.push({ label: "the question asks for a value, but the answer says none exists", passed: false });
+    answerLevelFailed++;
+    feedback.push(
+      `the question asks for a specific value, so the exam expects one to exist, but the final answer says there is none. A contradiction here means the setup is wrong: re-read the problem (distances are non-negative — use |…| or consider that a moving object may already have passed the point; check units and which quantity is unknown) and solve it again.`,
     );
   }
 

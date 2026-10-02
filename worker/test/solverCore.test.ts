@@ -4,7 +4,7 @@ import { angleDeg, dist, evaluateFigureCheck, resolveFigure } from "../../shared
 import type { Figure, ModelLesson, PointDef } from "../../shared/src/solution";
 import { ModelLessonSchema } from "../../shared/src/solution";
 import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
-import { buildTargetIndex, verifyLesson } from "../../shared/src/verify";
+import { buildTargetIndex, deniesAnswer, presupposesAnswer, verifyLesson } from "../../shared/src/verify";
 import { problemDomains } from "../../shared/src/knowledgeBase";
 import { figureCoverage } from "../../shared/src/figureComplete";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
@@ -552,5 +552,26 @@ describe("figure completeness", () => {
     expect(c.missing).toEqual([]);
     expect(c.segments.drawn).toBe(c.segments.mentioned);
     expect(c.steps.synced).toBe(c.steps.mentioning);
+  });
+});
+
+describe("answers that deny what the question presupposes", () => {
+  it("rejects 'vô nghiệm' for a question that asks for one value", () => {
+    const l = algebraBase();
+    l.analysis = { ...l.analysis, statement: "Hai xe cùng tốc độ $a$ hướng đến giao lộ. Hỏi xe tải đến giao lộ lúc mấy giờ?" };
+    l.finalAnswer = { text: "Vô nghiệm (không có thời điểm nào thỏa mãn).", math: null };
+    l.answerChecks = [];
+    const v = verifyLesson(l);
+    expect(v.verification.status).toBe("unverified");
+    expect(v.feedback.join(" ")).toMatch(/expects one to exist/);
+  });
+
+  it("allows 'không tồn tại' when the question asks whether something exists", () => {
+    expect(presupposesAnswer("Số học sinh trường A có thể là 25 được không? Vì sao?")).toBe(false);
+    expect(presupposesAnswer("Tìm tất cả số nguyên n sao cho n^2 + 1 chia hết cho 3.")).toBe(false);
+    expect(presupposesAnswer("Giải phương trình x^2 + 1 = 0.")).toBe(false);
+    expect(presupposesAnswer("Tính diện tích tam giác ABC.")).toBe(true);
+    expect(deniesAnswer("Phương trình vô nghiệm.")).toBe(true);
+    expect(deniesAnswer("$x = 3$")).toBe(false);
   });
 });

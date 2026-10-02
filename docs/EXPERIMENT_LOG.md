@@ -152,3 +152,42 @@ the exporter (topic enum). No training run (docs/FINE_TUNING_REPORT.md).
 43/43 checks pass (`tools/exams/verify_exams.py`): exact, exhaustive (2¹⁶ colourings; 1,034,817 boxes),
 bounded, sampled. Four errors found in official or teacher keys; none changes an answer
 (docs/SOLUTION_VERIFICATION.md).
+
+---
+
+# Curriculum-aware sprint (2026-10-02)
+
+## DOM-001: `problemDomains` vs the chuyên-v1 topic labels (deterministic)
+
+The labelled domain is detected for 63/67 items (word problem, optimisation → algebra; probability, statistics →
+combinatorics). Misses, all in the test split and **not** tuned for: hanoi-2025 I.1 (statistics chart), V.1 and V.2
+(acquaintance counting), khtn-2025 IV (rational/irrational set). 17/67 items get an extra non-algebra domain,
+which only adds topic lines to the prompt.
+
+## FIG-001: Figure coverage on stored lessons (deterministic, `worker/scripts/figure-coverage.ts`)
+
+13 stored lessons with a figure (local D1, 2026-09-29 → 10-02), as stored vs after the current verifier:
+segments drawn 43/43 → 43/43; mentioned angles with an arc 16/20 → 20/20; named points/circles missing 0 → 0;
+steps whose highlight covers everything they name 17/33 → 33/33. Highlight size after: median 3, p90 6, max 9
+targets per step. Caveat: "mentioned" and "synced" use the same pattern detector the repair uses, so the
+"after" numbers show the repair works as designed, not that a human would judge the figure complete.
+
+## EXP-011: Hosted Nemotron 3 Super, solver-v2.7, chuyên-v1 validation (10 items). Quota-limited.
+
+Only 3/10 items ran before the free daily quota ran out (the other 7 errored at once with
+`quota_exhausted`; they say nothing about quality). The summary file's "answerAccuracy 0.2" counts the errors;
+on the items that ran: **2/3 PASS (verified)**, 1 FAIL.
+
+| Item | Result | Attempts | Model time | Output tokens |
+|---|---|---|---|---|
+| hcm-2025-chuyen_1a | PASS, verified | 1 | 62.5 s | 6,133 |
+| hcm-2025-chuyen_1b | PASS, verified | 2 | 161.9 s | 20,549 |
+| hcm-2025-chuyen_2a | FAIL (said "vô nghiệm"; answer 14 giờ 45 phút), not_checkable | 2 | 73.7 s | 12,620 |
+
+- New schema fields: all 3 lessons declared valid technique ids (e.g. `substitution, factorization,
+  complete_square, domain_conditions`) and step dependencies that point only to earlier steps.
+- 2a: distances written without |…| (the truck has passed the junction by 15:00) → "a = 0, contradiction".
+  Follow-up (found on validation, general rule): a question that asks for one value but gets "no solution / does
+  not exist" is now a failed check with retry feedback. False-positive check: 0/15 presupposing dataset questions
+  have such a ground truth; 0/53 stored lessons flagged. The rest of the split runs after the quota resets
+  (08:00 local): `npx tsx scripts/benchmark.ts or-nemotron-3-super --dataset chuyen --split validation --exp EXP-011b`.
