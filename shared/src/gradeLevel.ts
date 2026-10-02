@@ -35,6 +35,11 @@ const FORBIDDEN: Marker[] = [
   { re: /ma trận|định thức|\bmatrices\b|\bmatrix (multiplication|of)|determinant|số phức|complex number/iu, label: "matrices or complex numbers" },
   // Students combine remainder conditions by hand (n = 9k + 7, k lẻ ⇒ n = 18l + 16), not by citing this theorem.
   { re: /chinese remainder|số dư (trung hoa|trung quốc|china)|định l[íý] (số dư )?(trung hoa|china)|\bCRT\b/iu, label: "the Chinese remainder theorem" },
+  // Olympiad geometry tools and terms (EXP review: a hint called EF "antiparallel" to BC — wrong, and not taught).
+  {
+    re: /antiparallel|đối song|homothe|phép vị tự|vị tự|inversion|phép nghịch đảo|radical axis|trục đẳng phương|tâm đẳng phương|\bpolar\b|đường đối cực|harmonic (division|range|conjugate)|hàng điểm điều hòa|chùm điều hòa|cross[- ]ratio|tỉ số kép|\bceva\b|menelaus|mê-nê-la|simson|nine[- ]point|đường tròn chín điểm|đường thẳng euler|euler line/iu,
+    label: "olympiad geometry tools (antiparallel, homothety, inversion, radical axis, harmonic division, Ceva, Menelaus, …)",
+  },
   { re: /logarit|\\log\b|\\ln\b|\blogarithm/iu, label: "logarithms" },
 ];
 
@@ -46,7 +51,9 @@ const ADVISORY: Marker[] = [
 ];
 
 const COORDINATES_IN_TEXT = /tọa độ|toạ độ|hệ trục|\bOxy\b|coordinate/iu;
-const HAND_WAVING = /(dễ (dàng )?(thấy|chứng minh được|suy ra)|hiển nhiên|ta chứng minh được|it can be shown|obviously|clearly)/iu;
+const HAND_WAVING = /(dễ (dàng )?(thấy|chứng minh được|suy ra|kiểm tra)|(?<!như )đã thấy|hiển nhiên|rõ ràng là|ta chứng minh được|ta có ngay|it can be shown|obviously|clearly)/iu;
+/** A proof (or a "find all" that needs a necessity + sufficiency argument). */
+const PROOF_PROBLEM = /chứng minh|chứng tỏ|tìm tất cả|tìm mọi|prove|show that/iu;
 
 /** Every student-facing text that carries the method: strategy, hints, steps, final answer. */
 function methodText(lesson: ModelLesson): string {
@@ -128,9 +135,30 @@ export function unsupportedFeedback(lesson: ModelLesson): string[] {
 
 /** Retry feedback for methods outside the curriculum. */
 export function gradeLevelFeedback(lesson: ModelLesson): string[] {
+  if (lesson.analysis.status !== "solvable") return [];
+  const out: string[] = [];
   // The model's own withinCurriculum flag is not trusted: only a problem that itself needs advanced maths may use it.
-  if (lesson.analysis.status !== "solvable" || needsAdvancedMaths(lesson.analysis.statement)) return [];
-  return gradeLevelReport(lesson).forbidden.map(
-    (f) => `the solution uses ${f}, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)`,
+  if (!needsAdvancedMaths(lesson.analysis.statement)) {
+    out.push(
+      ...gradeLevelReport(lesson).forbidden.map(
+        (f) => `the solution uses ${f}, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)`,
+      ),
+    );
+  }
+  out.push(...proofGapFeedback(lesson));
+  return out;
+}
+
+/**
+ * In a proof every step must carry its argument. A step that asserts instead ("dễ thấy", "đã thấy",
+ * "từ bước 2 và 3 đã thấy …") is sent back: the student needs the deduction, not a reference to it.
+ */
+export function proofGapFeedback(lesson: ModelLesson): string[] {
+  if (!PROOF_PROBLEM.test(lesson.analysis.statement)) return [];
+  const gaps = lesson.steps
+    .map((s, i) => ({ n: i + 1, text: `${s.title} ${s.explanation} ${s.reason ?? ""}`, match: HAND_WAVING.exec(`${s.title} ${s.explanation} ${s.reason ?? ""}`) }))
+    .filter((g) => g.match);
+  return gaps.map(
+    (g) => `step ${g.n} asserts a result instead of proving it ("${g.match![0]}"): write the deduction itself — the claim and why it holds (a given, a named theorem, or the earlier step it follows from, restating what that step proved)`,
   );
 }

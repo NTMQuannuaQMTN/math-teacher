@@ -322,3 +322,34 @@ export const SolutionResponseSchema = z.object({ solution: SolutionSchema });
 export type SolutionResponse = z.infer<typeof SolutionResponseSchema>;
 
 export const SolveRequestSchema = z.object({ regenerate: z.boolean().default(false) });
+
+/** What a mistake report ("Báo lỗi") is about. */
+export const FeedbackCategorySchema = z.enum(["wrong_math", "skipped_step", "not_grade9", "figure", "unclear", "language", "other"]);
+export type FeedbackCategory = z.infer<typeof FeedbackCategorySchema>;
+export const FeedbackTargetKindSchema = z.enum(["lesson", "step", "hint", "answer", "figure"]);
+
+export const FeedbackRequestSchema = z.object({
+  target: z.object({ kind: FeedbackTargetKindSchema, id: z.string().max(40).nullable().default(null) }),
+  category: FeedbackCategorySchema,
+  note: z.string().trim().max(1000).nullable().default(null),
+});
+export type FeedbackRequest = z.infer<typeof FeedbackRequestSchema>;
+
+export const FeedbackSchema = z.object({
+  id: z.string(),
+  scanId: z.string(),
+  questionId: z.string(),
+  targetKind: FeedbackTargetKindSchema,
+  targetId: z.string().nullable(),
+  targetText: z.string().nullable(),
+  category: FeedbackCategorySchema,
+  note: z.string().nullable(),
+  problemText: z.string().nullable(),
+  model: z.string().nullable(),
+  promptVersion: z.string().nullable(),
+  verificationStatus: z.string().nullable(),
+  createdAt: z.string(),
+});
+export type Feedback = z.infer<typeof FeedbackSchema>;
+export const FeedbackResponseSchema = z.object({ feedback: FeedbackSchema });
+export const FeedbackListResponseSchema = z.object({ items: z.array(FeedbackSchema) });

@@ -101,3 +101,38 @@ describe("prompt carries the new method rules", () => {
     expect(prompt).toMatch(/theo câu a/);
   });
 });
+
+describe("user report: proofs must not skip steps; no olympiad geometry terms", () => {
+  const lessonWith = (statement: string, explanation: string) => {
+    const P = (id: string) => ({ id, label: id, kind: "free", refs: [], x: 0, y: 0, value: null, value2: null, draggable: false, hidden: false });
+    return {
+      analysis: { statement, language: "vi", topic: "other", subtopic: "", gradeLevel: 9, withinCurriculum: true, concepts: [], givens: [], unknowns: [], constraints: [], status: "solvable", statusReason: null, interpretationNotes: [] },
+      strategy: "",
+      hints: [{ id: "h1", level: 1, question: "?", cue: null, explanation: "…", math: null, stepId: "s1", focus: [] }],
+      steps: [{ id: "s1", title: "Kết luận phần c", explanation, math: null, reason: null, geometryActions: [] }],
+      finalAnswer: { text: "n ⋮ 3 và n ≥ 15", math: null },
+      figure: null,
+      answerChecks: [],
+      _unused: P,
+    } as unknown as ModelLesson;
+  };
+
+  it("sends back a proof step that only says 'đã thấy'", async () => {
+    const { proofGapFeedback } = await import("../../shared/src/gradeLevel");
+    const l = lessonWith("c) Chứng minh nếu n là số tốt thì n ≥ 15 và n chia hết cho 3.", "Từ bước 2 và 3 đã thấy nếu tồn tại bảng tốt thì n phải chia hết cho 3 và n ≥ 15.");
+    expect(proofGapFeedback(l).join(" ")).toMatch(/step 1 asserts a result instead of proving it/);
+    expect(gradeLevelFeedback(l).join(" ")).toMatch(/asserts a result/);
+  });
+
+  it("accepts a proof step that states the argument (and 'như đã thấy' references)", async () => {
+    const { proofGapFeedback } = await import("../../shared/src/gradeLevel");
+    const l = lessonWith("Chứng minh n chia hết cho 3.", "Cộng hai đường chéo rồi trừ hai hàng ngoài: 2e = b + h; thay vào hàng giữa được 3e = n, như đã thấy ở bước 2 e là số nguyên nên n ⋮ 3.");
+    expect(proofGapFeedback(l)).toEqual([]);
+  });
+
+  it("sends back a hint that uses 'antiparallel'", () => {
+    const l = lessonWith("Cho tam giác ABC có đường tròn nội tiếp (I). Chứng minh …", "Gọi E, F là tiếp điểm.");
+    l.hints[0] = { ...l.hints[0]!, cue: "Nhớ về đường antiparallel." };
+    expect(gradeLevelFeedback(l).join(" ")).toMatch(/olympiad geometry tools/);
+  });
+});
