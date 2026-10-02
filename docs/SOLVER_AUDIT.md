@@ -25,7 +25,7 @@ photo → OCR (PaddleOCR-VL, local) → student confirms text
 | Simplest valid method | Method policy and preferences in the prompt; optional method cards | — | unchanged; the KB lists "advanced — only when the problem calls for it" |
 | Vietnamese first | Language rule, glossary clean-up, diacritics/Chinese detection and retry | — | unchanged |
 | No skipped reasoning | Proof rule (one deduction per step, never "dễ thấy"); `proofGapFeedback` heuristic | Dependencies between steps implicit | `step.uses` (validated: earlier steps only), shown as "Dựa vào bước …" |
-| Verification | Answer checks (5 kinds, executed), figure givens, geometric claims measured on the exact figure, hand-waving heuristic | Status was lesson-level only; student couldn't see which step was checked | per-step status: checked / failed / answer / not_checked |
+| Verification | Answer checks (5 kinds, executed), figure givens, geometric claims measured on the exact figure, hand-waving heuristic | Status was lesson-level only; a "no solution" answer to a question asking for one value went unflagged (EXP-011, 2a) | per-step status: checked / failed / answer / not_checked; "answer denies the question's premise" is a failed check |
 | Complete diagrams | Missing segments added; missing points/circles sent back | Mentioned angles without arcs; steps with a partial highlight didn't light up everything they named | arcs for mentioned angles; step highlights merged with everything named; coverage measure |
 | Interactive sync | step/hint → highlight; constructions revealed by step | No object → step | tap object → step (or revealed hint), with scroll |
 | No paid API | Gemini disabled; free OpenRouter tier; local OCR | — | unchanged; no paid call was made |
@@ -46,7 +46,8 @@ The app says this: steps without a machine check carry "Chưa kiểm tra tự đ
 
 ## Operational findings
 
-- The free hosted model is the main quality limit: slow (≈ 1–5 min per hard problem) and ~50 requests/day.
+- The free hosted model is the main quality limit: 62–162 s of model time per chuyên item in EXP-011 (one
+  attempt or two), and about 50 requests/day — the quota ran out after 3 of 10 validation items.
 - A solve that "took 810 s" on 2026-10-02 coincided with the laptop sleeping (pmset log 18:07–18:36); timers
   pause during sleep — not a timeout bug.
 - Production still needs (user action): remote D1 migrations 0005/0006, `ALLOWED_ORIGINS`, secrets.
