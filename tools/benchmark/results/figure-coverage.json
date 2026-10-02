@@ -1,0 +1,468 @@
+{
+  "createdAt": "2026-10-02T11:55:13.504Z",
+  "before": {
+    "lessons": 13,
+    "segMentioned": 43,
+    "segDrawn": 43,
+    "angMentioned": 20,
+    "angDrawn": 16,
+    "missing": 0,
+    "stepsMentioning": 33,
+    "stepsSynced": 17
+  },
+  "after": {
+    "lessons": 13,
+    "segMentioned": 43,
+    "segDrawn": 43,
+    "angMentioned": 20,
+    "angDrawn": 20,
+    "missing": 0,
+    "stepsMentioning": 33,
+    "stepsSynced": 33
+  },
+  "skipped": 0,
+  "lessons": [
+    {
+      "id": "9140e893-025e-46ec-8584-20c02c84a675/q1",
+      "promptVersion": "solver-v1.0",
+      "before": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 3
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 5,
+          "synced": 3
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 5,
+          "synced": 5
+        }
+      }
+    },
+    {
+      "id": "b5dda817-676f-4b6f-9e22-9f5fa213c18b/q1",
+      "promptVersion": "solver-v1.0",
+      "before": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 3
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 0
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 4
+        }
+      }
+    },
+    {
+      "id": "0df0f745-2e1f-4c0d-b777-71d77ce59211/q1",
+      "promptVersion": "solver-v1.0",
+      "before": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 2
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 4
+        }
+      }
+    },
+    {
+      "id": "e260a0f7-39a4-4134-9a00-225886054973/q1",
+      "promptVersion": "solver-v1.0",
+      "before": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 3
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 4
+        }
+      }
+    },
+    {
+      "id": "9d3e7293-517f-4a6b-9b93-84b57bfd4373/q2",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 2
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 4,
+          "synced": 4
+        }
+      }
+    },
+    {
+      "id": "5123e266-c733-4f59-a3c8-efe1f1e5d235/q1",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 3
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 5,
+          "synced": 2
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 5,
+          "drawn": 5
+        },
+        "angles": {
+          "mentioned": 4,
+          "drawn": 4
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 5,
+          "synced": 5
+        }
+      }
+    },
+    {
+      "id": "3d37f731-3849-4dad-a632-57cf18c55a4b/q1",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    },
+    {
+      "id": "9e5fad2b-d956-4e0d-aa30-f5fa63550b04/q2",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    },
+    {
+      "id": "685ecbbb-7ba8-4f01-a5dd-12eb6c899a8f/q1",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    },
+    {
+      "id": "484d29be-660f-4705-8198-7fa0872d6f1b/q1",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    },
+    {
+      "id": "6dc873e8-8ab3-4026-893b-b0ccbb6708c9/q2",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    },
+    {
+      "id": "29907758-b3d1-4553-a675-f278f41f8608/q1",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    },
+    {
+      "id": "66093a60-5d6b-41bb-9699-848f52bb29c2/q2",
+      "promptVersion": "solver-v1.1",
+      "before": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 2,
+          "drawn": 2
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 1
+        }
+      }
+    }
+  ]
+}
