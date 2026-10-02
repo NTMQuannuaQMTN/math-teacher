@@ -17,11 +17,42 @@ import { spacing, typography, useTheme } from "@/theme";
 
 type Phase = { kind: "loading" } | { kind: "ready"; solution: Solution } | { kind: "error"; error: unknown };
 
-const POLL_MS = 2000;
-const MAX_POLLS = 80;
+const POLL_MS = 2500;
+/** How long to keep checking for a lesson the worker is still generating (it continues without the app). */
+const POLL_DEADLINE_MS = 12 * 60_000;
 const STAGE_MS = 7000;
 /** While the solve request is open, read the server's live progress this often. */
 const PROGRESS_MS = 2500;
+
+/**
+ * Polls the stored solution until it is no longer pending. Brief network failures are retried (the device
+ * may still be offline); if the worker never received the solve (404), the request is sent once more.
+ */
+async function waitForSolution(id: string, questionId: string, signal: AbortSignal, resend: () => Promise<Solution>): Promise<Solution> {
+  const deadline = Date.now() + POLL_DEADLINE_MS;
+  let resent = false;
+  for (;;) {
+    if (signal.aborted) throw new AppError("aborted", false);
+    try {
+      const solution = await api.getSolution(id, questionId, signal);
+      if (solution.status !== "pending") return solution;
+    } catch (err) {
+      if (isAbort(err) || signal.aborted) throw err;
+      if (err instanceof AppError && err.code === "not_found" && !resent) {
+        resent = true;
+        try {
+          return await resend();
+        } catch (again) {
+          if (!(again instanceof AppError && (again.kind === "network" || again.kind === "timeout" || again.code === "solve_in_progress"))) throw again;
+        }
+      } else if (!(err instanceof AppError && (err.kind === "network" || err.kind === "timeout"))) {
+        throw err;
+      }
+    }
+    if (Date.now() > deadline) throw new AppError("timeout", true);
+    await new Promise((r) => setTimeout(r, POLL_MS));
+  }
+}
 
 export default function SolveScreen() {
   const params = useLocalSearchParams<{ id: string; q?: string }>();
@@ -80,14 +111,12 @@ export default function SolveScreen() {
         try {
           solution = await api.solve(id, { questionId, regenerate, signal: abort.signal });
         } catch (err) {
-          if (!(err instanceof AppError && err.code === "solve_in_progress")) throw err;
-          // Another request (e.g. before the student left and came back) is generating it: wait for that one.
-          solution = await api.getSolution(id, questionId, abort.signal);
-          for (let i = 0; solution.status === "pending" && i < MAX_POLLS; i++) {
-            await new Promise((r) => setTimeout(r, POLL_MS));
-            if (abort.signal.aborted) return;
-            solution = await api.getSolution(id, questionId, abort.signal);
-          }
+          // The worker keeps generating after the connection drops (a backgrounded tab, a sleeping laptop,
+          // ERR_NETWORK_IO_SUSPENDED, a mobile network switch): wait for that result instead of failing.
+          // "solve_in_progress": another request (e.g. before the student came back) is generating it.
+          const lostConnection = err instanceof AppError && (err.kind === "network" || err.kind === "timeout");
+          if (!(err instanceof AppError && (err.code === "solve_in_progress" || lostConnection))) throw err;
+          solution = await waitForSolution(id, questionId, abort.signal, () => api.solve(id, { questionId, regenerate, signal: abort.signal }));
         }
         if (abort.signal.aborted) return;
         if (solution.status === "ready") lessonStore.putSolution(key, solution);
