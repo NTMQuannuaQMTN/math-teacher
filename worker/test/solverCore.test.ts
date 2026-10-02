@@ -5,6 +5,9 @@ import type { Figure, ModelLesson, PointDef } from "../../shared/src/solution";
 import { ModelLessonSchema } from "../../shared/src/solution";
 import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
 import { buildTargetIndex, verifyLesson } from "../../shared/src/verify";
+import { problemDomains } from "../../shared/src/knowledgeBase";
+import { VN_GRADE_9 } from "../src/solver/curriculum";
+import { buildSystemPrompt } from "../src/solver/prompts";
 
 // --- expression evaluator ---------------------------------------------------
 
@@ -184,6 +187,7 @@ function isoscelesLesson(overrides: Partial<ModelLesson> = {}): ModelLesson {
       gradeLevel: 7,
       withinCurriculum: true,
       concepts: ["isosceles triangle", "triangle angle sum"],
+      techniques: [],
       givens: ["$AB = AC$", "$\\widehat{A} = 40^{\\circ}$"],
       unknowns: ["$\\widehat{B}$"],
       constraints: [],
@@ -197,8 +201,8 @@ function isoscelesLesson(overrides: Partial<ModelLesson> = {}): ModelLesson {
       { id: "h2", level: 2, question: "Base angles?", cue: null, explanation: "Equal.", math: null, stepId: "s2", focus: ["angle_B", "ACB"] },
     ],
     steps: [
-      { id: "s1", title: "Isosceles", explanation: "AB = AC", math: null, reason: null, geometryActions: [{ action: "highlight", targets: ["seg_AB", "AC"] }] },
-      { id: "s2", title: "Angle sum", explanation: "…", math: "2\\widehat{B} + 40^{\\circ} = 180^{\\circ}", reason: null, geometryActions: [{ action: "highlight", targets: ["ABC", "ghost"] }] },
+      { id: "s1", title: "Isosceles", explanation: "AB = AC", math: null, reason: null, uses: [], geometryActions: [{ action: "highlight", targets: ["seg_AB", "AC"] }] },
+      { id: "s2", title: "Angle sum", explanation: "…", math: "2\\widehat{B} + 40^{\\circ} = 180^{\\circ}", reason: null, uses: [], geometryActions: [{ action: "highlight", targets: ["ABC", "ghost"] }] },
     ],
     finalAnswer: { text: "$\\widehat{B} = 70^{\\circ}$", math: null },
     figure: {
@@ -412,6 +416,7 @@ describe("language hygiene", () => {
       ...lesson.analysis,
       givens: ["phuong trinh: x^2 + 2ax + 3b = 0", "$AB = AC$"],
       concepts: ["biet thuc", "công thức Vi-ét"],
+      techniques: [],
       interpretationNotes: ["The problem statement is clear and complete; no OCR corrections needed."],
     };
     return lesson;
@@ -464,5 +469,57 @@ describe("language hygiene", () => {
     const lesson = viLesson();
     lesson.steps[0]!.explanation = "Vi moi phuong trinh co hai nghiem phan biet nen biet thuc duong.";
     expect(cleanLanguage(lesson).feedback.join(" ")).toMatch(/step s1 is Vietnamese without diacritics/);
+  });
+});
+
+// --- knowledge base: techniques, step dependencies, per-step verification ----
+
+describe("knowledge-base metadata", () => {
+  it("keeps only knowledge-base technique ids", () => {
+    const l = isoscelesLesson();
+    l.analysis = { ...l.analysis, techniques: ["angle_chasing", "Congruent_Triangles", "inversion", "angle_chasing"] };
+    expect(verifyLesson(l).lesson.analysis.techniques).toEqual(["angle_chasing", "congruent_triangles"]);
+  });
+
+  it("drops step dependencies on later or unknown steps", () => {
+    const l = isoscelesLesson();
+    l.steps = [{ ...l.steps[0]!, uses: ["s2"] }, { ...l.steps[1]!, uses: ["s1", "s9"] }];
+    const out = verifyLesson(l).lesson;
+    expect(out.steps.map((s) => s.uses)).toEqual([[], ["s1"]]);
+  });
+
+  it("reports per step what was machine-checked, and nothing more", () => {
+    const v = verifyLesson(isoscelesLesson()).verification;
+    expect(v.steps?.map((s) => s.stepId)).toEqual(["s1", "s2"]);
+    expect(v.steps?.[0]).toMatchObject({ status: "checked" });
+    expect(v.steps?.[0]!.claims).toBeGreaterThan(0);
+  });
+
+  it("flags a step whose claim is false on the figure", () => {
+    const l = isoscelesLesson();
+    l.steps = [{ ...l.steps[0]!, explanation: "Ta có $AB = BC$." }, l.steps[1]!];
+    expect(verifyLesson(l).verification.steps?.[0]!.status).toBe("failed");
+  });
+
+  it("marks only the final step of a checked algebra answer, the rest as not checked", () => {
+    const v = verifyLesson(algebraBase()).verification;
+    expect(v.steps?.map((s) => s.status)).toEqual(["not_checked", "answer"]);
+  });
+});
+
+describe("problem domains", () => {
+  it("detects the domains a problem draws on", () => {
+    expect(problemDomains("Cho tam giác ABC nội tiếp đường tròn (O).")).toEqual(["algebra", "geometry"]);
+    expect(problemDomains("Tìm số nguyên dương n sao cho n^2 + 3 chia hết cho n + 1.")).toEqual(["algebra", "number_theory"]);
+    expect(problemDomains("Có bao nhiêu cách tô màu bảng 3 × 3?")).toEqual(["algebra", "combinatorics"]);
+    expect(problemDomains("Giải phương trình x^2 - 5x + 6 = 0.")).toEqual(["algebra"]);
+  });
+
+  it("puts only the relevant knowledge-base topics in the prompt, and always the outside list", () => {
+    const geo = buildSystemPrompt(VN_GRADE_9, { domains: ["algebra", "geometry"] });
+    expect(geo).toMatch(/B2/);
+    expect(geo).not.toMatch(/C2\b/);
+    expect(geo).toMatch(/antiparallel/);
+    expect(buildSystemPrompt(VN_GRADE_9, { domains: ["algebra", "number_theory"] })).toMatch(/C2/);
   });
 });

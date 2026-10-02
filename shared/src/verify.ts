@@ -14,6 +14,7 @@
 import { checkClaims, statementGivens, statementParts } from "./claims";
 import { regularizeTriangle } from "./figureShape";
 import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
+import { isKnownTechnique } from "./knowledgeBase";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
@@ -173,6 +174,19 @@ export function checkLessonStructure(lesson: ModelLesson): { lesson: ModelLesson
     if (stepIds.has(s.id)) report.errors.push(`duplicate step id ${s.id}`);
     stepIds.add(s.id);
   }
+  // Declared techniques must be knowledge-base ids; dependencies must point to earlier steps.
+  const techniques = [...new Set(lesson.analysis.techniques.map((t) => t.trim().toLowerCase()))].filter(isKnownTechnique);
+  if (techniques.length !== lesson.analysis.techniques.length) {
+    report.warnings.push(`unknown technique ids dropped: ${lesson.analysis.techniques.filter((t) => !isKnownTechnique(t.trim().toLowerCase())).join(", ") || "duplicates"}`);
+  }
+  const earlier = new Set<string>();
+  const steps = lesson.steps.map((s) => {
+    const uses = [...new Set(s.uses)].filter((u) => earlier.has(u));
+    earlier.add(s.id);
+    return uses.length === s.uses.length ? s : { ...s, uses };
+  });
+  if (steps.some((s, i) => s !== lesson.steps[i])) report.warnings.push("step dependencies on later or unknown steps were dropped");
+  lesson = { ...lesson, analysis: { ...lesson.analysis, techniques }, steps };
   const hintIds = new Set<string>();
   // Trailing hints that point past the last step (5 hints for 4 steps) lead to the end of the solution:
   // attach them to the last step. A bad reference anywhere else is a real inconsistency and is reported.
@@ -657,6 +671,20 @@ export function reconcileStatus(lesson: ModelLesson): ModelLesson {
   return { ...lesson, analysis: { ...a, status: "solvable", statusReason: null, interpretationNotes: notes } };
 }
 
+/**
+ * Which steps the machine actually checked: a step's geometric claims measured on the exact figure, or the
+ * final step backed by a passing answer check. Everything else is "not_checked" — said plainly, never implied.
+ */
+export function perStepStatus(lesson: ModelLesson, resolved: ResolvedFigure | null, answerChecked: boolean): NonNullable<Verification["steps"]> {
+  return lesson.steps.map((s, i) => {
+    const claims = resolved && lesson.figure ? checkClaims([s.title, s.explanation, s.math], resolved, { exact: lesson.figure.scale === "exact" }) : [];
+    if (claims.some((c) => !c.passed)) return { stepId: s.id, status: "failed" as const, claims: claims.length };
+    if (claims.length > 0) return { stepId: s.id, status: "checked" as const, claims: claims.length };
+    if (answerChecked && i === lesson.steps.length - 1) return { stepId: s.id, status: "answer" as const, claims: 0 };
+    return { stepId: s.id, status: "not_checked" as const, claims: 0 };
+  });
+}
+
 export function verifyLesson(input: ModelLesson): LessonVerification {
   const language = cleanLanguage(reconcileStatus(input));
   input = language.lesson;
@@ -837,6 +865,8 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     );
   }
 
+  const stepStatus = perStepStatus(lesson, resolved, answerChecksPassed > 0 && !uncovered);
+
   let status: Verification["status"];
   if (lesson.analysis.status !== "solvable") status = "not_checkable";
   else if (answerLevelFailed > 0 || report.errors.length > 0) status = "unverified";
@@ -859,7 +889,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   }
 
   return {
-    verification: { status, checks: checks.slice(0, 40), figureIssue },
+    verification: { status, checks: checks.slice(0, 40), figureIssue, steps: stepStatus },
     feedback,
     lesson,
     resolvedFigure: resolved,

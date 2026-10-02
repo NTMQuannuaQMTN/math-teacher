@@ -46,6 +46,8 @@ export const AnalysisSchema = z.strictObject({
   /** Can it be solved with the configured curriculum's methods? */
   withinCurriculum: z.boolean(),
   concepts: z.array(ShortText).max(8),
+  /** Knowledge-base technique ids the solution uses (knowledgeBase.ts); unknown ids are dropped by the verifier. */
+  techniques: z.array(z.string().max(40)).max(6).default([]),
   givens: z.array(ShortText).max(12),
   unknowns: z.array(ShortText).max(8),
   constraints: z.array(ShortText).max(8),
@@ -207,6 +209,8 @@ export const StepSchema = z.strictObject({
   math: Latex.nullable(),
   /** The property/theorem used, named as a Grade 9 student learned it. */
   reason: ShortText.nullable(),
+  /** Ids of the earlier steps this step relies on (its dependencies); later or unknown ids are dropped. */
+  uses: z.array(Id).max(4).default([]),
   geometryActions: z.array(GeometryActionSchema).max(4),
 });
 export type Step = z.infer<typeof StepSchema>;
@@ -279,6 +283,17 @@ export const VerificationSchema = z.strictObject({
   checks: z.array(z.strictObject({ label: z.string(), passed: z.boolean() })).max(40),
   /** Why the figure is missing, if the lesson had one that couldn't be trusted. */
   figureIssue: z.string().nullable(),
+  /**
+   * What the machine could check per step (older solutions omit it):
+   * checked     — every claim in the step that could be measured on the exact figure holds (claims ≥ 1)
+   * failed      — a claim in the step is false on the figure
+   * answer      — the step reaches the final answer and an independent answer check passed
+   * not_checked — nothing in the step is machine-checkable (it is reasoning the student should read critically)
+   */
+  steps: z
+    .array(z.strictObject({ stepId: z.string(), status: z.enum(["checked", "failed", "answer", "not_checked"]), claims: z.number().int() }))
+    .max(14)
+    .optional(),
 });
 export type Verification = z.infer<typeof VerificationSchema>;
 
