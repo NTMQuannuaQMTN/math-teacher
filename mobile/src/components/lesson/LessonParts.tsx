@@ -27,10 +27,10 @@ export function Card({ children, accent }: { children: ReactNode; accent?: "prim
 }
 
 /** Given / find / key ideas — the "understand the problem" stage. */
-export function UnderstandCard(props: { kind?: string; givens: string[]; unknowns: string[]; concepts: string[]; notes: string[]; strategy: string | null }) {
+export function UnderstandCard(props: { kind?: string; givens: string[]; unknowns: string[]; concepts: string[]; techniques?: string[]; notes: string[]; strategy: string | null }) {
   const { colors } = useTheme();
   const s = useStrings();
-  const row = (icon: "pricetag-outline" | "information-circle-outline" | "help-circle-outline" | "bulb-outline" | "eye-outline" | "navigate-outline", title: string, items: string[]) =>
+  const row = (icon: "pricetag-outline" | "information-circle-outline" | "help-circle-outline" | "bulb-outline" | "construct-outline" | "eye-outline" | "navigate-outline", title: string, items: string[]) =>
     items.length ? (
       <View style={styles.understandRow}>
         <Ionicons name={icon} size={20} color={colors.primary} style={styles.rowIcon} />
@@ -48,6 +48,7 @@ export function UnderstandCard(props: { kind?: string; givens: string[]; unknown
       {row("information-circle-outline", s.solve.given, props.givens)}
       {row("help-circle-outline", s.solve.find, props.unknowns)}
       {row("bulb-outline", s.solve.concepts, props.concepts)}
+      {props.techniques?.length ? row("construct-outline", s.solve.techniques, [props.techniques.join(" · ")]) : null}
       {row("eye-outline", s.solve.interpretation, props.notes)}
       {props.strategy ? row("navigate-outline", s.solve.strategy, [props.strategy]) : null}
     </Card>
@@ -97,8 +98,26 @@ export function HintCard({ hint, index, revealed, active, onReveal, onFocus }: H
   );
 }
 
-export function StepCard({ step, index, active, onPress }: { step: Step; index: number; active: boolean; onPress: () => void }) {
+export function StepCard({
+  step,
+  index,
+  active,
+  onPress,
+  uses = [],
+  check,
+}: {
+  step: Step;
+  index: number;
+  active: boolean;
+  onPress: () => void;
+  /** 1-based numbers of the earlier steps this one relies on. */
+  uses?: number[];
+  /** What the machine checked in this step (absent for older solutions). */
+  check?: "checked" | "failed" | "answer" | "not_checked";
+}) {
   const { colors } = useTheme();
+  const s = useStrings();
+  const checkTone = check === "failed" ? colors.danger : check === "checked" || check === "answer" ? colors.success : colors.textMuted;
   return (
     <Pressable testID={`step-${step.id}`} onPress={onPress} accessibilityRole="button" accessibilityState={{ selected: active }}>
       <View style={[styles.step, { borderLeftColor: active ? colors.primary : colors.border, backgroundColor: active ? colors.primarySoft : "transparent" }]}>
@@ -108,12 +127,24 @@ export function StepCard({ step, index, active, onPress }: { step: Step; index: 
           </View>
           <RichText text={step.title} style={[typography.bodyStrong, styles.flex, { color: colors.text }]} />
         </View>
+        {uses.length > 0 ? (
+          <View style={styles.reasonRow}>
+            <Ionicons name="git-merge-outline" size={15} color={colors.textMuted} />
+            <Text style={[typography.caption, { color: colors.textMuted }]}>{s.solve.usesSteps(uses)}</Text>
+          </View>
+        ) : null}
         <RichText text={step.explanation} style={[typography.body, { color: colors.text }]} />
         {step.math ? <MathText text={`$$${step.math}$$`} fontSize={17} /> : null}
         {step.reason ? (
           <View style={styles.reasonRow}>
             <Ionicons name="book-outline" size={15} color={colors.textMuted} />
             <RichText text={step.reason} style={[typography.caption, styles.flex, { color: colors.textMuted }]} />
+          </View>
+        ) : null}
+        {check ? (
+          <View style={styles.reasonRow} testID={`step-check-${step.id}`}>
+            <Ionicons name={check === "failed" ? "alert-circle-outline" : check === "not_checked" ? "ellipse-outline" : "checkmark-circle-outline"} size={15} color={checkTone} />
+            <Text style={[typography.caption, { color: checkTone }]}>{s.solve.stepCheck[check]}</Text>
           </View>
         ) : null}
       </View>

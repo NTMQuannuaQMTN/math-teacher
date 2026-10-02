@@ -1,9 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { FeedbackSheet } from "./FeedbackSheet";
 import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { techniqueName } from "@shared/knowledgeBase";
 import type { Solution } from "@shared/solution";
 import { Banner } from "@/components/Banner";
 import { Button } from "@/components/Button";
@@ -37,6 +38,8 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
   const [focus, setFocus] = useState<Focus>(null);
   const [figureOpen, setFigureOpen] = useState(true);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const scroll = useRef<ScrollView>(null);
+  const layout = useRef({ steps: 0, step: new Map<string, number>() });
   const figureHeight = Math.round(Math.min(Math.max(screenHeight * 0.36, 220), 380));
   const lesson = solution.lesson!;
   const { analysis, hints, steps, figure } = lesson;
@@ -59,6 +62,25 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
     if (focus.kind === "hint") return hints.find((h) => h.id === focus.id)?.focus ?? [];
     return steps.find((step) => step.id === focus.id)?.geometryActions.flatMap((a) => a.targets) ?? [];
   }, [focus, hints, steps]);
+
+  const stepChecks = new Map((solution.verification?.steps ?? []).map((c) => [c.stepId, c.status]));
+
+  // Tapping an object in the figure jumps to the first step that draws or highlights it (once the solution is
+  // open), or to a revealed hint that focuses it — never to something the student hasn't unlocked.
+  const selectObject = (id: string | null) => {
+    if (!id) return;
+    if (progress.showSolution) {
+      const step = steps.find((st) => st.geometryActions.some((a) => a.targets.includes(id)));
+      if (step) {
+        setFocus({ kind: "step", id: step.id });
+        const y = layout.current.step.get(step.id);
+        if (y !== undefined) scroll.current?.scrollTo({ y: Math.max(0, layout.current.steps + y - spacing.md), animated: true });
+        return;
+      }
+    }
+    const hint = hints.find((h) => progress.revealed.includes(h.id) && h.focus.includes(id));
+    if (hint) setFocus({ kind: "hint", id: hint.id });
+  };
 
   if (analysis.status !== "solvable") {
     const title = analysis.status === "ambiguous" ? s.solve.ambiguousTitle : analysis.status === "unsupported" ? s.solve.unsupportedTitle : s.solve.notProblemTitle;
@@ -108,12 +130,14 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
               highlight={highlight}
               shownConstructions={shownConstructions}
               height={figureHeight}
+              onSelect={selectObject}
             />
           ) : null}
+          {figureOpen && progress.showSolution ? <Text style={[typography.caption, { color: colors.textMuted }]}>{s.solve.figureTapHint}</Text> : null}
         </View>
       ) : null}
 
-      <ScrollView style={styles.flex} contentContainerStyle={styles.content}>
+      <ScrollView ref={scroll} style={styles.flex} contentContainerStyle={styles.content}>
         {solution.verification?.figureIssue ? <Banner tone="info" message={s.solve.figureUnavailable} /> : null}
 
         <Card>
@@ -127,6 +151,7 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
           givens={analysis.givens}
           unknowns={analysis.unknowns}
           concepts={analysis.concepts}
+          techniques={analysis.techniques.map((t) => (analysis.language === "en" ? t.replace(/_/g, " ") : techniqueName(t) ?? t))}
           notes={analysis.interpretationNotes}
           strategy={progress.revealed.length > 0 || progress.showSolution ? lesson.strategy : null}
         />
@@ -162,9 +187,18 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
         {progress.showSolution ? (
           <>
             <SectionTitle>{s.solve.solution}</SectionTitle>
-            <View style={styles.steps}>
+            <View style={styles.steps} onLayout={(e) => (layout.current.steps = e.nativeEvent.layout.y)}>
               {steps.map((step, i) => (
-                <StepCard key={step.id} step={step} index={i} active={focus?.kind === "step" && focus.id === step.id} onPress={() => setFocus({ kind: "step", id: step.id })} />
+                <View key={step.id} onLayout={(e) => layout.current.step.set(step.id, e.nativeEvent.layout.y)}>
+                  <StepCard
+                    step={step}
+                    index={i}
+                    active={focus?.kind === "step" && focus.id === step.id}
+                    onPress={() => setFocus({ kind: "step", id: step.id })}
+                    uses={step.uses.map((id) => (stepIndex.get(id) ?? -1) + 1).filter((n) => n > 0)}
+                    check={stepChecks.get(step.id)}
+                  />
+                </View>
               ))}
             </View>
             <FinalAnswerCard text={lesson.finalAnswer.text} math={lesson.finalAnswer.math} verification={solution.verification} hasFigure={!!figure} />
