@@ -33,6 +33,8 @@ const FORBIDDEN: Marker[] = [
   { re: /định lí (hàm số )?(sin|côsin|cosin|cos)\b|law of (sines|cosines)|-\s*2\s*[a-z]{1,2}\s*(\\cdot\s*)?\\cos/iu, label: "the law of sines/cosines" },
   // Words only: \begin{matrix} is also how a grid (e.g. a magic square) is typeset.
   { re: /ma trận|định thức|\bmatrices\b|\bmatrix (multiplication|of)|determinant|số phức|complex number/iu, label: "matrices or complex numbers" },
+  // Students combine remainder conditions by hand (n = 9k + 7, k lẻ ⇒ n = 18l + 16), not by citing this theorem.
+  { re: /chinese remainder|số dư (trung hoa|trung quốc|china)|định l[íý] (số dư )?(trung hoa|china)|\bCRT\b/iu, label: "the Chinese remainder theorem" },
   { re: /logarit|\\log\b|\\ln\b|\blogarithm/iu, label: "logarithms" },
 ];
 
@@ -40,7 +42,7 @@ const ADVISORY: Marker[] = [
   // Cô-si and Bunhiacopxki (Cauchy–Schwarz) belong to the entrance-exam topic "bất đẳng thức và cực trị".
   { re: /jensen|chebyshev|trê-?bư-?sép|schur|h[oö]lder|minkowski/iu, label: "an olympiad-only inequality" },
   { re: /quy nạp|induction/iu, label: "mathematical induction" },
-  { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson|chinese remainder|số dư trung hoa|\bCRT\b/iu, label: "a number-theory theorem beyond Grade 9" },
+  { re: /fermat nhỏ|little fermat|fermat's little|định lí euler|wilson/iu, label: "a number-theory theorem beyond Grade 9" },
 ];
 
 const COORDINATES_IN_TEXT = /tọa độ|toạ độ|hệ trục|\bOxy\b|coordinate/iu;

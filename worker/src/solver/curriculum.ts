@@ -66,6 +66,7 @@ export const VN_GRADE_9: Curriculum = {
     "The shortest method a strong Grade 9 teacher would expect a student to find",
     "Show every algebraic transformation a student would need to write, but no trivial filler steps",
     "Never mention an advanced alternative (\"or by derivatives\", \"or with vectors\") — it confuses the student",
+    "School notation and names only: write \"và\", \"hoặc\", \"với mọi\" instead of logic symbols (∧, ∨, ∀, ∃); call objects by their Vietnamese school names (\"ma phương 3 × 3\", \"bảng ở câu a\"), never foreign names (Lo Shu, …)",
   ],
   methods: [
     "Equation / inequality in one variable: expand, collect, isolate; state the condition of definition first when there are denominators or roots; check the solutions against it",
@@ -79,7 +80,9 @@ export const VN_GRADE_9: Curriculum = {
     "Statistics and probability: list the data or the outcomes explicitly, build the table, then compute the frequency or probability as a fraction",
     "Cylinder / cone / sphere: write the formula (S_xq, S_tp, V), substitute the given dimensions, keep π until the end and state units",
     "Maximum / minimum (including real-life optimisation): complete the square or use (a − b)² ≥ 0, or Cô-si for non-negative terms; always state when equality holds and check it is attainable",
-    "Integers / divisibility: factorise, then split into cases by remainder; ≡ (mod) notation is fine (official PTNK solutions use it), but state the conclusion in words (\"n chia 3 dư 1\", \"n = 18k + 16\")",
+    "Integers / divisibility: factorise first — a difference of powers with a hằng đẳng thức, e.g. (n + 4)⁴ − n⁴ = [(n + 4)² − n²][(n + 4)² + n²] = 16(n + 2)(n² + 4n + 8), never by expanding the binomial — then split into cases by remainder; ≡ (mod) notation is fine, but state every condition in its simplest form (\"n ≡ 0 hoặc 2 (mod 4)\" is \"n chẵn\") and the conclusion in words (\"n chia 3 dư 1\", \"n = 18k + 16\")",
+    "Combining conditions on n (e.g. n chẵn and n chia 9 dư 7): write n = 9k + 7, require the other condition on k (k lẻ), substitute k = 2l + 1 to get n = 18l + 16 — never cite the Chinese remainder theorem",
+    "Multi-part problems: solve the parts in order (a, b, c), each part's steps together and ending with that part's conclusion; a later part may reuse an earlier result by naming it (\"theo câu a\")",
     "Geometry proof: angle chasing, congruent or similar triangles, isosceles/parallel properties, inscribed angles, tangent properties, cyclic quadrilaterals — a chain of named school theorems, never coordinates, vectors or the laws of sines/cosines",
   ],
 };

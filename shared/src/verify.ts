@@ -12,6 +12,7 @@
  * feedback when asking the model to correct itself.
  */
 import { checkClaims, statementGivens, statementParts } from "./claims";
+import { regularizeTriangle } from "./figureShape";
 import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
@@ -503,6 +504,8 @@ export function normalizeFigureChecks(checks: FigureCheck[]): { checks: FigureCh
     const n = CHECK_ARITY[c.kind];
     const fits = c.kind === "collinear" || c.kind === "concyclic" ? c.refs.length >= n : c.refs.length === n;
     if (fits) out.push(c);
+    // "on_circle I, D, J, H" means the four points are concyclic.
+    else if (c.kind === "on_circle" && c.refs.length >= 4) out.push({ ...c, kind: "concyclic" });
     else if ((c.kind === "equal_length" || c.kind === "length_ratio") && c.refs.length === 2 && c.value !== null) out.push({ ...c, kind: "length_value" });
     else if (c.kind === "equal_angle" && c.refs.length === 3 && c.value !== null) out.push({ ...c, kind: "angle_value" });
     else dropped.push(`${c.kind} check on ${c.refs.join(", ")} has ${c.refs.length} points (needs ${n}); it was left out of the figure`);
@@ -658,7 +661,7 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   const language = cleanLanguage(reconcileStatus(input));
   input = language.lesson;
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
-  const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(constructNamedPoints(input).lesson));
+  const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(regularizeTriangle(constructNamedPoints(input).lesson).lesson));
   let lesson = repaired;
   const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback, ...gradeLevelFeedback(repaired), ...unsupportedFeedback(repaired)];
   const checks: Verification["checks"] = [];

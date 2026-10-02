@@ -11,7 +11,7 @@
 import type { Curriculum } from "./curriculum";
 import type { ProblemTier } from "./routing";
 
-export const PROMPT_VERSION = "solver-v2.3";
+export const PROMPT_VERSION = "solver-v2.4";
 
 const ROLE = `You are a friend in the same class who is very good at maths, helping ONE classmate with a problem. You do not just solve problems: you plan how your friend will discover the solution with hints, with the patience and care of a good teacher.`;
 

@@ -50,8 +50,12 @@ class Builder {
     return id;
   }
 
-  /** Adds `name`, or replaces it when the model only placed it; never touches a constructed point. */
-  define(name: string, kind: PointDef["kind"], refs: string[], value: number | null = null): void {
+  /**
+   * Adds `name`, or replaces it when the model only placed it; never touches a constructed point — unless
+   * `force`: the text's definition is the only correct one (the incentre / circumcentre of a named
+   * triangle), so a different construction is wrong (e.g. I = reflect(A, BC) drawn as "the incentre").
+   */
+  define(name: string, kind: PointDef["kind"], refs: string[], value: number | null = null, force = false): void {
     const refOk = (r: string) => this.has(r) || this.circles.some((c) => c.id === r);
     if (!refs.every(refOk) || refs.includes(name)) return;
     const existing = this.points.find((p) => p.id === name);
@@ -59,7 +63,7 @@ class Builder {
     if (!existing) {
       this.points.push(def);
       this.changed.push(name);
-    } else if (PLACED.has(existing.kind) && !(existing.kind === kind && existing.refs.join() === refs.join())) {
+    } else if ((force || PLACED.has(existing.kind)) && !(existing.kind === kind && existing.refs.join() === refs.join())) {
       // A defining point can't be placed arbitrarily; free vertices ("Cho tam giác ABC") never get a definition here.
       Object.assign(existing, { ...def, label: existing.label, hidden: existing.hidden });
       this.changed.push(name);
@@ -248,7 +252,7 @@ function defineTriangleCircles(b: Builder, text: string): void {
   for (const m of text.matchAll(re)) {
     const [a, bb, c, kind, center] = [m[1]!, m[2]!, m[3]!, m[4]!.toLowerCase(), m[5]!];
     if (![a, bb, c].every((x) => b.has(x))) continue;
-    b.define(center, kind === "nội" ? "incenter" : "circumcenter", [a, bb, c]);
+    b.define(center, kind === "nội" ? "incenter" : "circumcenter", [a, bb, c], null, true);
     if (!b.has(center)) continue;
     b.circleWithCenter(center, kind === "nội" ? b.hiddenFoot(center, bb, c) : a, `(${center})`);
   }
