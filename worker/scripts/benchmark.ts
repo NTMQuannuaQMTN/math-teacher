@@ -19,6 +19,7 @@ import { verifyLesson } from "../../shared/src/verify";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { LocalJsonModel } from "../src/solver/localModel";
 import { solveProblem } from "../src/solver/pipeline";
+import { hostedModelOptions } from "../src/solver/routing";
 import { PROMPT_VERSION } from "../src/solver/prompts";
 import { grade, answerText, type BenchItem, type Grade } from "./lib/grade";
 import { CachedModel, OfflineMiss } from "./lib/modelCache";
@@ -49,6 +50,7 @@ const HOSTED: Record<string, { url: string; model: string; effort?: Effort }> = 
   // Reasoning-effort variants (optimisation sprint): hidden reasoning dominates hosted latency.
   "or-nemotron-3-super-min": { url: "https://openrouter.ai/api", model: NEMOTRON, effort: "minimal" },
   "or-nemotron-3-super-none": { url: "https://openrouter.ai/api", model: NEMOTRON, effort: "none" },
+  "or-nemotron-3-super-prod": { url: "https://openrouter.ai/api", model: NEMOTRON },
 };
 const devVar = (name: string) =>
   readFileSync(new URL("../.dev.vars", import.meta.url), "utf8").split("\n").find((l) => l.startsWith(`${name}=`))?.slice(name.length + 1).trim();
@@ -123,6 +125,19 @@ const rows: Row[] = [];
 const stored = system === "stored-gemini" ? storedGemini() : null;
 const local = LOCAL[system];
 const hosted = HOSTED[system];
+// "-prod": exactly what the app gets — per-problem effort and budget (hostedModelOptions) and the local server's
+// solve time limit (SOLVE_TIMEOUT_MS in .dev.vars, 420 s).
+const production = system === "or-nemotron-3-super-prod";
+const solveLimitMs = production ? Number(devVar("SOLVE_TIMEOUT_MS") ?? 170_000) : 40 * 60_000;
+const modelFor = (problemText: string) => {
+  if (!production) return cached!;
+  const o = hostedModelOptions(problemText);
+  return new CachedModel(
+    new LocalJsonModel("https://openrouter.ai/api", NEMOTRON, { apiKey: devVar("LOCAL_LLM_API_KEY"), ...o }),
+    `hosted;prompt=${PROMPT_VERSION};effort=${o.reasoningEffort};max=${o.maxTokens ?? 12_000}`,
+    offline,
+  );
+};
 const cached = hosted
   ? new CachedModel(
       new LocalJsonModel(hosted.url, hosted.model, { apiKey: devVar("LOCAL_LLM_API_KEY"), reasoningEffort: hosted.effort }),
@@ -146,7 +161,8 @@ for (const item of items) {
   let attempts = 0;
   let usage = { input: 0, output: 0 };
   let error: string | undefined;
-  const before = cached?.stats.modelMs ?? 0;
+  const itemModel = stored ? null : modelFor(item.problem_text);
+  const before = itemModel?.stats.modelMs ?? 0;
   try {
     if (stored) {
       const s = stored.get(item.id);
@@ -156,7 +172,7 @@ for (const item of items) {
       verification = v.verification;
       attempts = 1;
     } else {
-      const r = await solveProblem(cached!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(40 * 60_000), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques });
+      const r = await solveProblem(itemModel!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(solveLimitMs), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques });
       lesson = r.lesson;
       verification = r.verification;
       attempts = r.attempts;
@@ -177,7 +193,7 @@ for (const item of items) {
     attempts,
     inputTokens: usage.input,
     outputTokens: usage.output,
-    modelSeconds: Math.round(((cached?.stats.modelMs ?? 0) - before) / 100) / 10,
+    modelSeconds: Math.round(((itemModel?.stats.modelMs ?? 0) - before) / 100) / 10,
     wallSeconds: Math.round((Date.now() - started) / 100) / 10,
     figurePoints: lesson?.figure ? lesson.figure.points.filter((p) => !p.hidden).length : null,
     failedChecks: verification?.checks.filter((c) => !c.passed).map((c) => c.label.slice(0, 80)) ?? [],

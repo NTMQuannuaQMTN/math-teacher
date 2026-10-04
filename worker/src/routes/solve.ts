@@ -16,7 +16,7 @@ import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
-import { problemTier, selectSolverModelIds } from "../solver/routing";
+import { hostedModelOptions, problemTier, selectSolverModelIds } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import type { RouteContext } from "./scans";
 
@@ -98,15 +98,15 @@ function createModels(env: Env, request: Request, problemText: string): { model:
     // Open model behind an OpenAI-compatible server; no API cost when self-hosted.
     // Adaptive reasoning (hosted reasoning models): hidden reasoning is most of the latency, and a simple
     // problem doesn't need much of it. Local llama.cpp models ignore this (thinking stays off).
-    const tier = problemTier(problemText);
-    const effort = (tier === "simple" ? env.LOCAL_SIMPLE_REASONING_EFFORT || "minimal" : env.LOCAL_REASONING_EFFORT || "low") as LocalModelOptions["reasoningEffort"];
     const model = new LocalJsonModel(env.LOCAL_LLM_URL || "http://127.0.0.1:8080", env.LOCAL_SOLVER_MODEL || "local", {
       apiKey: env.LOCAL_LLM_API_KEY,
       thinking: false,
-      reasoningEffort: effort,
-      // Hard multi-part chuyên problems (proofs + figure) can reason past 12K tokens and come back truncated on
-      // every attempt (user report, 2026-10-04): give the complex tier a bigger budget and the time to use it.
-      ...(tier === "complex" ? { maxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, 24_000), requestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, 240_000) } : {}),
+      ...hostedModelOptions(problemText, {
+        simpleEffort: env.LOCAL_SIMPLE_REASONING_EFFORT,
+        effort: env.LOCAL_REASONING_EFFORT,
+        complexMaxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, 24_000),
+        complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, 240_000),
+      }),
     });
     if (env.SOLVER_FAILOVER_URL) {
       const failover = new LocalJsonModel(env.SOLVER_FAILOVER_URL, env.SOLVER_FAILOVER_MODEL || "local", { apiKey: env.SOLVER_FAILOVER_API_KEY, thinking: false });

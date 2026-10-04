@@ -107,3 +107,24 @@ export function selectSolverModelIds(
 
   return { primary: cheap, primaryEffort: cheapEffort };
 }
+
+export interface HostedSettings {
+  simpleEffort?: string;
+  effort?: string;
+  complexMaxTokens?: number;
+  complexRequestTimeoutMs?: number;
+}
+
+/**
+ * Per-problem settings for a hosted reasoning model (one place, used by the solve route and the benchmark):
+ * hidden reasoning is most of the latency, so a simple problem gets less of it; hard multi-part chuyên problems
+ * (proofs + figure) can reason past 12K tokens, so the complex tier gets a bigger budget and the time to use it.
+ */
+export function hostedModelOptions(problemText: string, s: HostedSettings = {}) {
+  const tier = problemTier(problemText);
+  const reasoningEffort = (tier === "simple" ? s.simpleEffort || "minimal" : s.effort || "low") as "none" | "minimal" | "low" | "medium" | "high";
+  return {
+    reasoningEffort,
+    ...(tier === "complex" ? { maxTokens: s.complexMaxTokens ?? 24_000, requestTimeoutMs: s.complexRequestTimeoutMs ?? 240_000 } : {}),
+  };
+}
