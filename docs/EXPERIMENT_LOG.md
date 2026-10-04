@@ -191,3 +191,15 @@ on the items that ran: **2/3 PASS (verified)**, 1 FAIL.
   not exist" is now a failed check with retry feedback. False-positive check: 0/15 presupposing dataset questions
   have such a ground truth; 0/53 stored lessons flagged. The rest of the split runs after the quota resets
   (08:00 local): `npx tsx scripts/benchmark.ts or-nemotron-3-super --dataset chuyen --split validation --exp EXP-011b`.
+
+## USR-002: Fixes from the user's first app test of solver-v2.7 (2026-10-04)
+
+Reports ("Báo lỗi"): `\[2pt]` in a formula (Câu 2), a literal `\n` with prose in a formula (Câu 3), Câu 4 shown as
+beyond Grade 9, a miscounted `e` in the magic-square derivation (Câu 5, step 8).
+- KaTeX audit (`worker/scripts/latex-audit.ts`, 53 stored lessons, 1,816 formulas): 4 fail as stored (all from this
+  test); 0 after the server's tidy; 0 as the app now renders stored lessons.
+- Câu 4: attempt 1 truncated (27K reasoning tokens), attempt 2 answered "unsupported"; no attempt was left, so the
+  give-up was stored. Now a give-up on an in-curriculum problem scores below any lesson and is never stored
+  (`solve_incomplete`, retryable; a previous lesson is kept).
+- Derivation check (`shared/src/derivations.ts`) over 699 steps (stored lessons + benchmark results): flags the 2
+  slips of Câu 5 step 8 and nothing else.
