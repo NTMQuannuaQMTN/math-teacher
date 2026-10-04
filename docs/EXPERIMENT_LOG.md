@@ -203,3 +203,10 @@ beyond Grade 9, a miscounted `e` in the magic-square derivation (Câu 5, step 8)
   (`solve_incomplete`, retryable; a previous lesson is kept).
 - Derivation check (`shared/src/derivations.ts`) over 699 steps (stored lessons + benchmark results): flags the 2
   slips of Câu 5 step 8 and nothing else.
+
+## PTNK25-1: PTNK 2025 Toán chuyên, production settings (2026-10-04). Quota-limited; development set.
+
+6/13 sub-questions ran (1a–3a); the rest hit the daily quota. Hand-graded (docs/PTNK_2025_EVALUATION.md):
+answers 6/6 correct, fully successful 1/6. Issues: invalid monotonicity step (1c), vectors wording (1b), foreign
+words (1c, 2b, 3a), an overclaimed "verified" (1a), and a false positive of our derivation check (2b). These items are
+in the train split and were seen in development (teaching records for 1a–3b).
