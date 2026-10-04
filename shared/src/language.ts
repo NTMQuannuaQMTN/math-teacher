@@ -41,6 +41,7 @@ const CJK_GLOSSARY: [RegExp, string][] = [
   [/求/gu, " tìm "],
   [/成比例/gu, " tỉ lệ "],
   [/因子/gu, " thừa số "],
+  [/[項项]/gu, " hạng tử "],
   [/議論|议论|论证/gu, " lập luận "],
   [/边/gu, " cạnh "],
   [/角/gu, " góc "],
@@ -63,7 +64,18 @@ const WORD_GLOSSARY: [RegExp, string][] = [
   [/(?<!\p{L})vuông\s+ma(?!\p{L})/giu, "ma phương"],
   [/(?<=\p{L})Known\b/gu, " đã biết"],
   [/\bKnown\b/gu, "đã biết"],
+  // PTNK 2025 review: English glued to Vietnamese, and calques of English terms.
+  [/(?<=\p{Ll})Strict(ly)?\b/gu, ""],
+  [/\bcorresponding\b/giu, "tương ứng"],
+  [/\brespectively\b/giu, "lần lượt"],
+  [/hạng tử đồng loại/giu, "hạng tử đồng dạng"],
+  [/\bphép mở rộng\b/giu, "khai triển"],
+  [/\bhạn chế dưới\b/giu, "chặn dưới"],
 ];
+
+/** English (or other foreign) words left in Vietnamese prose after the glossary: sent back to the model. */
+const FOREIGN_WORDS =
+  /(?<![\p{L}\\])(?:injective|surjective|bijective|strict(?:ly)?|with|where|therefore|hence|such that|increasing|decreasing|function|feit|diferen\p{L}*|vše)(?!\p{L})|\p{Ll}[A-Z][a-z]{2,}/u;
 
 /**
  * School notation: two residues that form one class modulo half the modulus are one condition
@@ -117,7 +129,7 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const vi = input.analysis.language === "vi";
   const fix = <T extends string | null>(t: T): T => (vi && t ? (simplifyNotation(patchVietnamese(t)) as T) : t);
   const fixMath = <T extends string | null>(t: T): T =>
-    vi && t ? (simplifyNotation(t.replace(/(vuông\s+ma\s+)?Lo\s*Shu/giu, "ma phương 3 × 3")) as T) : t;
+    vi && t ? (simplifyNotation(t.replace(/(vuông\s+ma\s+)?Lo\s*Shu/giu, "ma phương 3 × 3").replace(/\\text\{\s*with\s*\}/g, "\\text{ với }")) as T) : t;
   const lesson: ModelLesson = vi
     ? {
         ...input,
@@ -158,6 +170,18 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const foreign = [...new Set(body.filter(([, t]) => t && CJK.test(t)).map(([where]) => where))];
   if (foreign.length > 0) {
     feedback.push(`${foreign.join(", ")} contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language`);
+  }
+  // Prose outside $…$, plus the words inside \text{…} of the maths fields.
+  const prose = (t: string) => t.replace(/\$[^$]*\$/g, " ");
+  const texts = (m: string | null) => [...(m ?? "").matchAll(/\\text\{([^{}]*)\}/g)].map((x) => x[1]).join(" ");
+  const withMath: [string, string | null][] = [
+    ...body,
+    ...lesson.steps.map((s): [string, string | null] => [`step ${s.id}`, texts(s.math)]),
+    ...lesson.hints.map((h): [string, string | null] => [`hint ${h.id}`, texts(h.math)]),
+  ];
+  const english = vi ? [...new Set(withMath.flatMap(([where, t]) => { const m = t ? FOREIGN_WORDS.exec(prose(t)) : null; return m ? [`${where} ("${m[0]}")`] : []; }))] : [];
+  if (english.length > 0) {
+    feedback.push(`${english.join(", ")}: English or other foreign words in a Vietnamese lesson — write them in Vietnamese ("đồng biến", "tương ứng", "với"), using only terms a Grade 9 student knows`);
   }
   const stripped = vi ? [...new Set(body.filter(([, t]) => t && isStrippedVietnamese(t)).map(([where]) => where))] : [];
   if (stripped.length > 0) {

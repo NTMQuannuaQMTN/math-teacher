@@ -684,6 +684,14 @@ export function presupposesAnswer(statement: string): boolean {
 export const deniesAnswer = (answer: string) =>
   /vô nghiệm|không tồn tại|không có (giá trị|thời điểm|thời gian|số) .{0,20}(nào|thỏa)|không có lời giải|no solution|does not exist/iu.test(answer.normalize("NFC"));
 
+/** "Chứng minh …" with nothing to find or compute. */
+export function isProofOnly(statement: string): boolean {
+  const t = statement.normalize("NFC");
+  const word = (w: string) => `(?<!\\p{L})(?:${w})(?!\\p{L})`;
+  return new RegExp(word("chứng minh|chứng tỏ|prove|show that"), "iu").test(t) &&
+    !new RegExp(word("tìm|tính|giải|rút gọn|xác định|hỏi|find|compute|calculate|solve|simplify|determine"), "iu").test(t);
+}
+
 /**
  * Which steps the machine actually checked: a step's geometric claims measured on the exact figure, or the
  * final step backed by a passing answer check. Everything else is "not_checked" — said plainly, never implied.
@@ -900,6 +908,13 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     slips.some((x) => x.stepId === s.stepId) ? { ...s, status: "failed" as const } : s,
   );
 
+  // A method outside the curriculum that survived the retries: the lesson isn't fit to show as checked.
+  const outside = gradeLevelFeedback(lesson).filter((f) => f.startsWith("the solution uses "));
+  if (outside.length > 0) {
+    checks.push({ label: `methods within the curriculum (${outside.map((f) => f.slice(18).split(",")[0]).join("; ")})`, passed: false });
+    answerLevelFailed++;
+  }
+
   let status: Verification["status"];
   if (lesson.analysis.status !== "solvable") status = "not_checkable";
   else if (answerLevelFailed > 0 || report.errors.length > 0) status = "unverified";
@@ -907,6 +922,9 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
   else if (answerLevelPassed > 0) status = "verified";
   else if (checks.length > 0) status = "partial";
   else status = "not_checkable";
+  // Machine checks test claims and answers, never the argument itself: a problem that only asks for a proof is at
+  // most "partial" (PTNK 2025 1a: a check of Δ at m = 0 must not label "Δ > 0 với mọi m" as verified).
+  if (status === "verified" && isProofOnly(lesson.analysis.statement)) status = "partial";
 
   // Repairs can remove every point of a broken figure; an empty figure is not a valid lesson (the schema needs
   // ≥ 1 point), so drop it like any unusable figure — the text lesson is still served.

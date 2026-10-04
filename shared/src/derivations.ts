@@ -4,6 +4,7 @@
  * A step's `math` is read line by line. When two consecutive lines are equations that keep one side unchanged and
  * use the same variables, the other side was only rewritten — so it must be the same expression. That is tested by
  * evaluating both at random values. Deliberately narrow, to avoid false alarms:
+ *   - a line with its own leading label ("Trường hợp 2: …") starts a new statement and is not compared;
  *   - lines with prose (\text, except a leading label), several relations, commas, |…| or segment names (AB, CD) are skipped;
  *   - a change of variables (substituting b = 2, or a + b + c = n) is a legitimate step and is skipped;
  *   - an unchanged side that is 0 or ±1 is skipped ("x² − 5x + 6 = 0 ⇒ x − 2 = 0", "x² = 1 ⇒ x = 1");
@@ -19,6 +20,8 @@ export interface DerivationSlip {
 
 interface Eq {
   raw: string;
+  /** The line starts with its own label ("\text{Trường hợp 2: } …"): a new statement, not a rewrite of the line above. */
+  labelled: boolean;
   sides: [string, string];
   vars: string;
 }
@@ -46,7 +49,7 @@ function equation(line: string): Eq | null {
     const vars = [...new Set(sides.flatMap((s) => [...variablesOf(s)]))].sort().join(",");
     sample(sides[0], vars.split(","));
     sample(sides[1], vars.split(","));
-    return { raw: body, sides, vars };
+    return { raw: body, sides, vars, labelled: /^\s*(?:&\s*)?(?:\\(?:Rightarrow|Leftrightarrow|implies|iff)\s*)?\\text\{/.test(line) };
   } catch {
     return null;
   }
@@ -69,7 +72,7 @@ export function derivationSlips(lesson: ModelLesson): DerivationSlip[] {
     const eqs = lines(step.math).map(equation);
     for (let i = 1; i < eqs.length; i++) {
       const [p, q] = [eqs[i - 1], eqs[i]];
-      if (!p || !q || p.vars !== q.vars || !p.vars) continue;
+      if (!p || !q || q.labelled || p.vars !== q.vars || !p.vars) continue;
       const vars = p.vars.split(",");
       const [pl, pr, ql, qr] = [sample(p.sides[0], vars), sample(p.sides[1], vars), sample(q.sides[0], vars), sample(q.sides[1], vars)];
       if (![pl, pr, ql, qr].every((v) => v.every(Number.isFinite))) continue;

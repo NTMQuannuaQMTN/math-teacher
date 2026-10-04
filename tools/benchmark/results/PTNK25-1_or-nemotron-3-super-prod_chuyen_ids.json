@@ -1,0 +1,1305 @@
+{
+ "summary": {
+  "exp": "PTNK25-1",
+  "system": "or-nemotron-3-super-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.8",
+  "techniqueHints": false,
+  "dataset": "chuyen",
+  "n": 13,
+  "pass": 2,
+  "partial": 4,
+  "fail": 7,
+  "critical": 0,
+  "answerAccuracy": 0.125,
+  "gradableN": 8,
+  "verifiedRate": 0.15384615384615385,
+  "errors": 7,
+  "meanModelSeconds": 20.06153846153846,
+  "meanInputTokens": 4880.692307692308,
+  "meanOutputTokens": 4918.153846153846,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "createdAt": "2026-10-04T08:31:09.355Z"
+ },
+ "rows": [
+  {
+   "id": "ptnk-2025-chuyen_1a",
+   "topic": "algebra",
+   "difficulty": 1,
+   "format": "proof",
+   "grade": "PASS",
+   "answerCorrect": null,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 9951,
+   "outputTokens": 3951,
+   "modelSeconds": 37.5,
+   "wallSeconds": 37.5,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Với mọi m thực, phương trình luôn có hai nghiệm phân biệt. Δ = 4(m²+1) > 0 Với mọi m thực, phương trình luôn có hai nghiệm phân biệt. \\Delta = 4(m^2+1) > 0",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh rằng với mọi $m$ phương trình luôn có hai nghiệm phân biệt $x_1,x_2$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "phương trình bậc hai",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "biệt thức Δ",
+      "điều kiện có hai nghiệm phân biệt"
+     ],
+     "techniques": [
+      "discriminant"
+     ],
+     "givens": [
+      "phương trình $x^2-2(m+1)x+2m=0$",
+      "m là tham số thực"
+     ],
+     "unknowns": [],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Tính biệt thức Δ của phương trình, rút gọn biểu thức và thấy rằng Δ luôn dương với mọi m thực, từ đó suy ra phương trình luôn có hai nghiệm phân biệt.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Để phương trình bậc hai có hai nghiệm phân biệt, điều kiện trên biệt thức Δ là gì?",
+      "cue": "Biệt thức Δ",
+      "explanation": "Hai nghiệm phân biệt thực khi Δ>0.",
+      "math": null,
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Ta cần tính Δ cho phương trình đã cho. Bạn có thể thay a, b, c vào công thức Δ=b^2-4ac không?",
+      "cue": "a, b, c",
+      "explanation": "Xác định a=1, b=-2(m+1), c=2m rồi thay vào.",
+      "math": null,
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Sau khi tính Δ, bạn được biểu thức nào? Làm sao để thấy nó luôn dương?",
+      "cue": "rút gọn",
+      "explanation": "Rút gọn được Δ=4(m^2+1). Vì $m^2≥0$ nên $m^2+1≥1>0$, do đó Δ>0.",
+      "math": null,
+      "stepId": "step3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Viết biệt thức Δ của phương trình",
+      "explanation": "Đối với phương trình bậc hai $ax^2+bx+c=0$, biệt thức $Δ = b^2-4ac$.",
+      "math": "a=1,\\ b=-2(m+1),\\ c=2m\\ \\Rightarrow\\ \\Delta = [-2(m+1)]^2 - 4\\cdot1\\cdot2m",
+      "reason": "Định nghĩa biệt thức Δ",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Rút gọn biểu thức Δ",
+      "explanation": "Thực hiện phép mở rộng và cộng các hạng tử đồng loại.",
+      "math": "\\Delta = 4(m+1)^2 - 8m = 4(m^2+2m+1) - 8m = 4m^2+8m+4-8m = 4m^2+4 = 4(m^2+1)",
+      "reason": "Phép mở rộng và cộng các hạng tử đồng loại",
+      "uses": [
+       "step1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Kết luận về số nghiệm",
+      "explanation": "Vì $m^2+1>0$ với mọi $m$ thực, nên $\\Delta =4(m^2+1)>0$. Theo biệt thức Δ>0 => phương trình có hai nghiệm phân biệt thực.",
+      "math": "\\Delta = 4(m^2+1) > 0\\ \\forall m\\in\\mathbb{R}\\ \\Rightarrow\\ \\text{hai nghiệm phân biệt}",
+      "reason": "Tính chất của bình phương và điều kiện Δ>0 cho hai nghiệm phân biệt",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Với mọi m thực, phương trình luôn có hai nghiệm phân biệt.",
+     "math": "\\Delta = 4(m^2+1) > 0"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "4*(0^2+1)"
+      ],
+      "assignments": [],
+      "expected": "4"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 2 problem(s): step step2 contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language | the final answer states a value (\"Với mọi m thực, phương trình luôn có hai nghiệm phân biệt. \\Delta = 4(m^2+1) > 0\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=9951 (cached 0) out=3951 (reasoning 2006)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_1b",
+   "topic": "algebra",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 13242,
+   "outputTokens": 34728,
+   "modelSeconds": 54.2,
+   "wallSeconds": 165.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Với mọi tham số thực m, có x₁⁴+x₂⁴>9/2. x₁⁴+x₂⁴>9/2 Với mọi tham số thực $m$, có $x_1^4+x_2^4>\\dfrac92$. x_1^4+x_2^4>\\frac92",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh $x_1^4+x_2^4>\\frac92$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "phương trình bậc hai có tham số, bất đẳng thức, Viète, Cauchy-Schwarz",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Viète",
+      "Cauchy-Schwarz",
+      "hoàn thành bình phương",
+      "điều kiện xác định"
+     ],
+     "techniques": [
+      "vieta",
+      "cauchy_schwarz",
+      "complete_square",
+      "equality_case"
+     ],
+     "givens": [
+      "phương trình $x^2-2(m+1)x+2m=0$",
+      "$m$ là tham số thực"
+     ],
+     "unknowns": [
+      "$x_1$, $x_2$ là hai nghiệm của phương trình"
+     ],
+     "constraints": [
+      "m ∈ R (do Δ = 4(m^2+1) > 0 luôn có hai nghiệm phân biệt thực)"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Ta sẽ dùng Viète để viết $x_1+x_2$ và $x_1x_2$, sau đó áp dụng bất đẳng thức Cauchy-Schwarz để có $x_1^4+x_2^4\\ge\\frac{(x_1^2+x_2^2)^2}{2}$. Tiếp theo, biểu diễn $x_1^2+x_2^2$ bằng $m$ và hoàn thành bình phương để tìm giá trị nhỏ nhất của nó. Cuối cùng, ta chỉ ra rằng hai dấu bằng trong các bước không thể xảy ra cùng lúc nên bất đẳng thức là nghiêm ngặt.",
+    "hints": [
+     {
+      "id": "hints_1",
+      "level": 1,
+      "question": "Giá trị của $x_1+x_2$ và $x_1x_2$ theo Viète là gì?",
+      "cue": "Viète cho phương trình bậc hai",
+      "explanation": "Ở phương trình $x^2-2(m+1)x+2m=0$, ta có $a=1$, $b=-2(m+1)$, $c=2m$. Theo Viète: $x_1+x_2 = -\\frac{b}{a}=2(m+1)$ và $x_1x_2 = \\frac{c}{a}=2m$.",
+      "math": "x_1+x_2=2(m+1),\\quad x_1x_2=2m",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Làm sao để biểu diễn $x_1^2+x_2^2$ bằng $x_1+x_2$ và $x_1x_2$?",
+      "cue": "Công thức $x_1^2+x_2^2=(x_1+x_2)^2-2x_1x_2$",
+      "explanation": "Đây là hằng đẳng thức nổi tiếng, dễ suy ra từ $(x_1+x_2)^2=x_1^2+2x_1x_2+x_2^2$.",
+      "math": "x_1^2+x_2^2=(x_1+x_2)^2-2x_1x_2",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Bất đẳng thức nào cho mối liên hệ giữa $x_1^4+x_2^4$ và $(x_1^2+x_2^2)^2$?",
+      "cue": "Cauchy-Schwarz (Bunhiacopxki) với hai vectơ $(1,1)$ và $(x_1^2,x_2^2)$",
+      "explanation": "Theo Cauchy-Schwarz: $(1^2+1^2)(x_1^4+x_2^4)\\ge (1\\cdot x_1^2+1\\cdot x_2^2)^2=(x_1^2+x_2^2)^2$. Do đó $2(x_1^4+x_2^4)\\ge (x_1^2+x_2^2)^2$.",
+      "math": "2(x_1^4+x_2^4)\\ge (x_1^2+x_2^2)^2",
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "hint4",
+      "level": 4,
+      "question": "Giá trị nhỏ nhất của biểu thức $m^2+m+1$ là gì và đạt khi nào?",
+      "cue": "Hoàn thành bình phương: $m^2+m+1=(m+\\frac12)^2+\\frac34$",
+      "explanation": "Bình phương luôn không âm, nên giá trị nhỏ nhất là $\\frac34$ khi $m+\\frac12=0$, tức là $m=-\\frac12$.",
+      "math": "m^2+m+1=\\left(m+\\frac12\\right)^2+\\frac34\\ge\\frac34",
+      "stepId": "step4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Áp dụng Viète",
+      "explanation": "Từ phương trình $x^2-2(m+1)x+2m=0$, ta viết ra tổng và tích của hai nghiệm.",
+      "math": "x_1+x_2=2(m+1),\\quad x_1x_2=2m",
+      "reason": "Viète",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Tính $x_1^2+x_2^2$",
+      "explanation": "Dùng công thức $x_1^2+x_2^2=(x_1+x_2)^2-2x_1x_2$ và thay giá trị từ bước 1.",
+      "math": "x_1^2+x_2^2=(2(m+1))^2-2(2m)=4(m^2+m+1)",
+      "reason": "hằng đẳng thức $(x_1+x_2)^2-2x_1x_2$",
+      "uses": [
+       "step1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Áp dụng bất đẳng thức Cauchy-Schwarz",
+      "explanation": "Với vectơ $(1,1)$ và $(x_1^2,x_2^2)$, ta có $(1^2+1^2)(x_1^4+x_2^4)\\ge (x_1^2+x_2^2)^2$. Do đó $x_1^4+x_2^4\\ge\\dfrac{(x_1^2+x_2^2)^2}{2}$.",
+      "math": "2(x_1^4+x_2^4)\\ge (x_1^2+x_2^2)^2\\;\\Rightarrow\\; x_1^4+x_2^4\\ge\\frac{(x_1^2+x_2^2)^2}{2}",
+      "reason": "Cauchy-Schwarz (Bunhiacopxki)",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Hạn chế dưới của $(x_1^2+x_2^2)^2$",
+      "explanation": "Thay $x_1^2+x_2^2=4(m^2+m+1)$ vào bất đẳng thức từ bước 3, ta được $x_1^4+x_2^4\\ge 8(m^2+m+1)^2$. Tiếp theo, hoàn thành bình phương cho $m^2+m+1$ để tìm giá trị nhỏ nhất.",
+      "math": "x_1^4+x_2^4\\ge 8(m^2+m+1)^2,\\quad m^2+m+1=\\left(m+\\frac12\\right)^2+\\frac34\\ge\\frac34",
+      "reason": "thay thế và hoàn thành bình phương",
+      "uses": [
+       "step2",
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Kết luận bất đẳng thức nghiêm ngặt",
+      "explanation": "Từ bước 4, $x_1^4+x_2^4\\ge 8\\cdot\\left(\\frac34\\right)^2=\\frac92$. Dấu bằng trong bước 3 xảy ra khi $x_1^2=x_2^2$ (tức là $x_1=-x_2$ vì nghiệm phân biệt), điều này đòi hỏi $x_1+x_2=0\\Rightarrow m=-1$. Dấu bằng trong bước 4 xảy ra khi $m=-\\frac12$. Hai điều kiện này không thể đồng thời thỏa mãn, vì vậy ít nhất một trong hai bất đẳng thức là nghiêm ngặt. Do đó $x_1^4+x_2^4>\\frac92$ cho mọi $m\\in\\mathbb R$.",
+      "math": "x_1^4+x_2^4>\\frac92",
+      "reason": "phân tích trường hợp bằng",
+      "uses": [
+       "step4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Với mọi tham số thực $m$, có $x_1^4+x_2^4>\\dfrac92$.",
+     "math": "x_1^4+x_2^4>\\frac92"
+    },
+    "answerChecks": [],
+    "figure": null
+   },
+   "log": [
+    "attempt 1 failed (output truncated); trying again",
+    "attempt 2: not_checkable, 1 problem(s): the solution uses vectors, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=13242 (cached 0) out=34728 (reasoning 30780)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_1c",
+   "topic": "algebra",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "not_checkable",
+   "attempts": 1,
+   "inputTokens": 4442,
+   "outputTokens": 5790,
+   "modelSeconds": 51.9,
+   "wallSeconds": 51.9,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Đẳng thức xảy ra khi và chỉ khi m = -1. m=-1 Đẳng thức xảy ra khi và chỉ khi m = -1. m=-1",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh $\\left(x_1+\\sqrt{x_1^2+1}\\right)\\left(x_2+\\sqrt{x_2^2+1}\\right)=1$ khi và chỉ khi $m=-1$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "phương trình bậc hai, Vieta, hàm số đơn điệu",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "định lý Vi-ét",
+      "hàm số $f(t)=t+\\sqrt{t^2+1}$",
+      "tính đơn điệu",
+      "điều kiện đủ và cần"
+     ],
+     "techniques": [
+      "substitution",
+      "vieta",
+      "domain_conditions"
+     ],
+     "givens": [
+      "phương trình $x^2-2(m+1)x+2m=0$ có hai nghiệm $x_1, x_2$ (có thể bằng nhau)",
+      "m là tham số thực"
+     ],
+     "unknowns": [
+      "chứng minh đẳng thức về $x_1, x_2$ xảy ra khi và chỉ khi $m=-1$"
+     ],
+     "constraints": [
+      "m ∈ ℝ (không có ràng buộc đặc biệt từ phương trình)"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Chúng ta sẽ nghiên cứu hàm $f(t)=t+\\sqrt{t^2+1}$, chứng minh rằng $f(t)f(-t)=1$ và $f$ là hàm tăngStrict (do đó injective). Từ đó suy ra $f(x_1)f(x_2)=1 \\Rightarrow x_2=-x_1$. Cuối cùng áp dụng định lý Vi-ét để liên hệ tổng và tích của các nghiệm với tham số $m$, từ đó suy ra $m=-1$ là điều kiện cần và đủ.",
+    "hints": [
+     {
+      "id": "hints_1",
+      "level": 2,
+      "question": "Biểu thức $t+\\sqrt{t^2+1}$ có tính chất gì khi nhân với $-t+\\sqrt{t^2+1}$?",
+      "cue": "Nhớ công thức diferen hai bình phương.",
+      "explanation": "Nhân hai biểu thức này ta được $(\\sqrt{t^2+1})^2-t^2=1$, vậy $f(t)f(-t)=1$.",
+      "math": "(t+\\sqrt{t^2+1})(-t+\\sqrt{t^2+1})=1",
+      "stepId": "steps_1",
+      "focus": []
+     },
+     {
+      "id": "hints_2",
+      "level": 2,
+      "question": "Hàm $f(t)=t+\\sqrt{t^2+1}$ có đơn điệu như thế nào trên tập số thực?",
+      "cue": "Hàm bậc hai và hàm căn đều tăng.",
+      "explanation": "Với $a<b$, ta có $b-a>0$ và $\\sqrt{b^2+1}-\\sqrt{a^2+1}>0$, nên $f(b)-f(a)>0$.",
+      "math": "\\forall a<b\\in\\mathbb{R},\\; f(b)-f(a)>0",
+      "stepId": "steps_2",
+      "focus": []
+     },
+     {
+      "id": "hints_3",
+      "level": 3,
+      "question": "Nếu $f(x_1)f(x_2)=1$ và chúng ta biết $f(t)f(-t)=1$, thì chúng ta có thể suy ra gì về $x_2$ so với $x_1$?",
+      "cue": "Do $f$ là hàm một-nhất.",
+      "explanation": "Từ $f(x_2)=1/f(x_1)=f(-x_1)$ và tính injective của $f$ ta được $x_2=-x_1$.",
+      "math": "f(x_2)=f(-x_1) \\Rightarrow x_2=-x_1",
+      "stepId": "steps_3",
+      "focus": []
+     },
+     {
+      "id": "hints_4",
+      "level": 3,
+      "question": "Áp dụng định lý Vi-ét cho phương trình $x^2-2(m+1)x+2m=0$, tổng và tích của các nghiệm là gì?",
+      "cue": "Tổng = $-b/a$, tích = $c/a$.",
+      "explanation": "Tổng $x_1+x_2=2(m+1)$, tích $x_1x_2=2m$. Nếu $x_2=-x_1$ thì tổng bằng 0, từ đó tìm $m$.",
+      "math": "x_1+x_2=2(m+1),\\; x_1x_2=2m",
+      "stepId": "steps_4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "steps_1",
+      "title": "Định nghĩa hàm $f(t)$ và chứng minh $f(t)f(-t)=1$",
+      "explanation": "Đặt $f(t)=t+\\sqrt{t^2+1}$. Nhân $f(t)$ với $f(-t)$ và áp dụng công thức diferen hai bình phương.",
+      "math": "f(t)f(-t)=(t+\\sqrt{t^2+1})(-t+\\sqrt{t^2+1})=(\\sqrt{t^2+1})^2-t^2=1",
+      "reason": "Công thức $(a+b)(a-b)=a^2-b^2$",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "steps_2",
+      "title": "Chứng minh $f(t)$ là hàm tăngStrict trên $\\mathbb{R}$",
+      "explanation": "Với bất kỳ $a<b$, ta có $b-a>0$ và $\\sqrt{b^2+1}-\\sqrt{a^2+1}>0$ vì hàm $\\sqrt{\\cdot}$ tăng. Do đó $f(b)-f(a)=(b-a)+(\\sqrt{b^2+1}-\\sqrt{a^2+1})>0$.",
+      "math": "\\forall a<b\\in\\mathbb{R},\\; f(b)-f(a)>0",
+      "reason": "Tính đơn điệu của hàm bậc hai và hàm căn",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "steps_3",
+      "title": "Từ $f(x_1)f(x_2)=1$ suy ra $x_2=-x_1$",
+      "explanation": "Vì $f(t)f(-t)=1$ nên $1/f(x_1)=f(-x_1)$. Hàm $f$ tăngStrict nên injective, từ $f(x_2)=1/f(x_1)=f(-x_1)$ được $x_2=-x_1$.",
+      "math": "f(x_2)=\\frac{1}{f(x_1)}=f(-x_1)\\Rightarrow x_2=-x_1",
+      "reason": "Hàm tăngStrict là hàm một-nhất (injective)",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "steps_4",
+      "title": "Áp dụng định lý Vi-ét để liên hệ với $m$",
+      "explanation": "Theo Vi-ét: $x_1+x_2=2(m+1)$, $x_1x_2=2m$. Nếu $x_2=-x_1$ thì tổng $x_1+x_2=0$ cho $2(m+1)=0\\Rightarrow m=-1$. Ngược lại, nếu $m=-1$ thì phương trình trở thành $x^2-2=0$ có nghiệm $\\sqrt{2}$ và $-\\sqrt{2}$, thỏa $x_2=-x_1$ và do đó $f(x_1)f(x_2)=1$.",
+      "math": "x_1+x_2=2(m+1),\\; x_1x_2=2m\\\\\\text{Nếu }x_2=-x_1:\\;2(m+1)=0\\Rightarrow m=-1\\\\\\text{Ngược lại }m=-1:\\;x^2-2=0\\Rightarrow x_1=\\sqrt{2},\\;x_2=-\\sqrt{2}\\;\\text{(hoặc đổi chỗ)}\\Rightarrow f(x_1)f(x_2)=1",
+      "reason": "Định lý Vi-ét và tính chất của phương trình bậc hai",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "steps_5",
+      "title": "Kết luận",
+      "explanation": "Từ các bước trên, đẳng thức $(x_1+\\sqrt{x_1^2+1})(x_2+\\sqrt{x_2+1})=1$ xảy ra khi và chỉ khi $m=-1$.",
+      "math": "(x_1+\\sqrt{x_1^2+1})(x_2+\\sqrt{x_2+1})=1\\ \\Leftrightarrow\\ m=-1",
+      "reason": "Tổng hợp các bước trước",
+      "uses": [],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Đẳng thức xảy ra khi và chỉ khi m = -1.",
+     "math": "m=-1"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(x1+sqrt(x1^2+1))*(x2+sqrt(x2^2+1))"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x1",
+         "value": "sqrt(2)"
+        },
+        {
+         "variable": "x2",
+         "value": "-sqrt(2)"
+        }
+       ]
+      ],
+      "expected": "1"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 1 problem(s): answer check \"(x1+sqrt(x1^2+1))*(x2+sqrt(x2^2+1))\" can't be evaluated (could not evaluate: Unknown variable x1). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=4442 (cached 0) out=5790 (reasoning 3625)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_2a",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "construct",
+   "grade": "PASS",
+   "answerCorrect": null,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 15160,
+   "outputTokens": 6344,
+   "modelSeconds": 29.3,
+   "wallSeconds": 29.4,
+   "figurePoints": 4,
+   "failedChecks": [],
+   "answer": "Một cách ghi số thỏa mãn là: A = 2, B = -2, C = 3, D = 0 (hoặc bất kỳ bộ số nào được suy ra từ a=2 trong trường hợp (s1,s2,s3)=(1,3,2)). (A,B,C,D)=(2,-2,3,0) Mộ",
+   "lesson": {
+    "analysis": {
+     "statement": "Người ta muốn ghi bốn số thực ở bốn đỉnh của hình vuông $ABCD$ (mỗi đỉnh một số) thỏa mãn: i) Bốn số được ghi là đôi một phân biệt; ii) Tổng hai số được ghi ở hai đầu của cạnh $AB$ là 0; iii) Tổng hai số được ghi ở hai đầu của ba cạnh còn lại là ba giá trị phân biệt: 1, 2, 3. Hãy chỉ ra một cách ghi thỏa mãn các điều kiện trên.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hệ phương trình tuyến tính",
+      "đặt ẩn phụ",
+      "phân biệt"
+     ],
+     "techniques": [
+      "substitution"
+     ],
+     "givens": [
+      "hình vuông ABCD",
+      "mỗi đỉnh một số thực",
+      "tổng hai số ở AB = 0",
+      "tổng hai số ở BC, CD, DA là ba giá trị phân biệt 1,2,3"
+     ],
+     "unknowns": [
+      "số tại A, B, C, D"
+     ],
+     "constraints": [
+      "bốn số đôi một phân biệt"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Ta đặt ẩn cho các số ở các đỉnh, dùng điều kiện tổng ở AB để biểu diễn một số bằng số còn lại, sau đó thay vào ba tổng còn lại để tìm mối quan hệ giữa các tổng và ẩn. Từ đó xác định hoán vị của 1,2,3 thỏa mãn, rồi chọn một giá trị thích hợp để các số phân biệt.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Bạn nên đặt ẩn cho các số ở đỉnh A, B, C, D là gì?",
+      "cue": "đặt ẩn",
+      "explanation": "Đặt số tại A là a, tại B là b, tại C là c, tại D là d. Điều này giúp chuyển đổi bài toán thành hệ phương trình.",
+      "math": null,
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Từ điều kiện tổng hai số ở cạnh AB bằng 0, bạn có thể biểu diễn một số bằng số còn lại như thế nào?",
+      "cue": "a+b=0",
+      "explanation": "Từ a+b=0 ta có b = -a. Điều này giảm số ẩn trong hệ.",
+      "math": null,
+      "stepId": "step2",
+      "focus": [
+       "seg_AB"
+      ]
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Sau khi thay b = -a vào ba phương trình còn lại, bạn sẽ được biểu diễn c và d bằng a và các tổng chưa biết s1, s2, s3 (tổng ở BC, CD, DA). Những biểu thức này là gì?",
+      "cue": "thay vào",
+      "explanation": "Ta được c = s1 + a, d = s2 - s1 - a, và điều kiện d + a = s3 sẽ dẫn tới một phương trình chỉ liên quan đến s1, s2, s3.",
+      "math": null,
+      "stepId": "step3",
+      "focus": [
+       "seg_BC",
+       "seg_CD",
+       "seg_DA"
+      ]
+     },
+     {
+      "id": "hint4",
+      "level": 4,
+      "question": "Làm sao để xác định hoán vị của (1,2,3) thỏa mãn phương trình s3 = s2 - s1? Sau khi biết hoán vị, chọn một giá trị a sao cho bốn số a, -a, s1+a, s2-s1-a đôi một phân biệt.",
+      "cue": "hoán vị",
+      "explanation": "Thử các hoán vị của 1,2,3, chỉ những hoán vị (1,3,2) và (2,3,1) thỏa mãn s3 = s2 - s1. Sau đó chọn a (ví dụ a=2) thỏa mãn điều kiện phân biệt và tính các số.",
+      "math": null,
+      "stepId": "step4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Đặt ẩn và viết hệ phương trình",
+      "explanation": "Đặt số tại A, B, C, D lần lượt là a, b, c, d (số thực). Từ đề ta có: a+b=0; b+c = s1; c+d = s2; d+a = s3, trong đó {s1,s2,s3} là hoán vị của {1,2,3}.",
+      "math": "\\begin{cases}a+b=0\\\\ b+c = s1\\\\ c+d = s2\\\\ d+a = s3\\end{cases}\\quad\\text{with}\\ \\{s1,s2,s3\\}=\\{1,2,3\\}",
+      "reason": "gán nhãn và dịch điều kiện thành phương trình",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Biểu diễn b bằng a",
+      "explanation": "Từ phương trình đầu a+b=0 ta suy ra b = -a.",
+      "math": "b = -a",
+      "reason": "cộng vế hai phương trình với -a",
+      "uses": [
+       "step1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step3",
+      "title": "Thay b vào các phương trình còn lại để biểu diễn c, d",
+      "explanation": "Thay b = -a vào b+c=s1 được c = s1 + a. Thay c vào c+d=s2 được d = s2 - c = s2 - s1 - a.",
+      "math": "c = s1 + a\\\\ d = s2 - s1 - a",
+      "reason": "thay thế và rút gọn",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_BC",
+         "seg_CD",
+         "seg_DA"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step4",
+      "title": "Xác định hoán vị của (1,2,3) và chọn a thỏa mãn phân biệt",
+      "explanation": "Thay d và a vào d+a=s3: (s2 - s1 - a) + a = s2 - s1 = s3. Do đó cần s3 = s2 - s1. Kiểm tra các hoán vị của 1,2,3, chỉ (s1,s2,s3) = (1,3,2) hoặc (2,3,1) thỏa mãn. Chọn trường hợp (1,3,2) và lấy a=2 (a≠0,1,±0,5). Khi đó a=2, b=-2, c=1+2=3, d=2-2=0. Các số 2, -2, 3, 0 đôi một phân biệt và thỏa mãn các điều kiện.",
+      "math": "s_3 = s_2 - s_1\\\\ (s_1,s_2,s_3)=(1,3,2)\\\\ a=2\\\\ b=-2\\\\ c=3\\\\ d=0",
+      "reason": "giải phương trình và kiểm tra điều kiện phân biệt",
+      "uses": [
+       "step3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Một cách ghi số thỏa mãn là: A = 2, B = -2, C = 3, D = 0 (hoặc bất kỳ bộ số nào được suy ra từ a=2 trong trường hợp (s1,s2,s3)=(1,3,2)).",
+     "math": "(A,B,C,D)=(2,-2,3,0)"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "a+b=0",
+       "b+c=1",
+       "c+d=3",
+       "d+a=2"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "a",
+         "value": "2"
+        },
+        {
+         "variable": "b",
+         "value": "-2"
+        },
+        {
+         "variable": "c",
+         "value": "3"
+        },
+        {
+         "variable": "d",
+         "value": "0"
+        }
+       ]
+      ],
+      "expected": "true"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0,
+       "value2": 1,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "polar",
+       "refs": [
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": 1,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": 1,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CD",
+       "kind": "segment",
+       "from": "C",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_DA",
+       "kind": "segment",
+       "from": "D",
+       "to": "A",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [],
+     "marks": [],
+     "checks": []
+    }
+   },
+   "log": [
+    "attempt 1: verified, 1 problem(s): a geometry problem needs a figure (figure is null)",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=15160 (cached 0) out=6344 (reasoning 2421)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_2b",
+   "topic": "algebra",
+   "difficulty": 3,
+   "format": "compute",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 15989,
+   "outputTokens": 8512,
+   "modelSeconds": 42.8,
+   "wallSeconds": 42.9,
+   "figurePoints": null,
+   "failedChecks": [
+    "step step3: derivation is consistent"
+   ],
+   "answer": "Tổng bình phương nhỏ nhất là 19/4. Các cách ghi thỏa mãn điều kiện và đạt giá trị này là:\n- A = 1/4, B = -1/4, C = 5/4, D = 7/4;\n- A = -1/4, B = 1/4, C = 7/4, D",
+   "lesson": {
+    "analysis": {
+     "statement": "Người ta muốn ghi bốn số thực ở bốn đỉnh của hình vuông $ABCD$ (mỗi đỉnh một số) thỏa mãn: i) Bốn số được ghi là đôi một phân biệt; ii) Tổng hai số được ghi ở hai đầu của cạnh $AB$ là 0; iii) Tổng hai số được ghi ở hai đầu của ba cạnh còn lại là ba giá trị phân biệt: 1, 2, 3. Trong các cách ghi thỏa mãn các điều kiện trên, tìm cách ghi có tổng bình phương của các số ở bốn đỉnh là nhỏ nhất.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hệ phương trình tuyến tính",
+      "biểu thức bậc hai",
+      "hoàn thành bình phương",
+      "điều kiện phân biệt"
+     ],
+     "techniques": [
+      "substitution",
+      "complete_square"
+     ],
+     "givens": [
+      "ABCD là hình vuông",
+      "mỗi đỉnh ghi một số thực, bốn số đôi một phân biệt",
+      "tổng hai số ở đầu cạnh AB bằng 0",
+      "tổng hai số ở đầu ba cạnh BC, CD, DA là ba giá trị phân biệt 1, 2, 3"
+     ],
+     "unknowns": [
+      "số tại A, B, C, D (a, b, c, d)"
+     ],
+     "constraints": [
+      "a + b = 0",
+      "{b + c, c + d, d + a} = {1, 2, 3}",
+      "a, b, c, d đôi một phân biệt"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Đặt số tại các đỉnh là a, b, c, d. Từ điều kiện a+b=0 ta có b=-a. Viết tổng trên ba cạnh còn lại dưới dạng biểu thức của a, c, d và dùng feit chúng là {1,2,3} để suy ra một trong ba tổng bằng tổng hai tổng còn lại, từ đó xác định tổng trên cạnh CD bằng 3 và hai tổng còn lại là 1 và 2. Giải hai trường hợp để biểu diễn c, d bằng a, sau đó tính tổng bình phương S = a²+b²+c²+d² dưới dạng hàm bậc hai của a, hoàn thành bình phương để tìm giá trị nhỏ nhất. Cuối cùng kiểm tra điều kiện các số phân biệt.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Đặt số tại A, B, C, D lần lượt là a, b, c, d. Từ điều kiện tổng trên cạnh AB bằng 0, bạn có thể biểu diễn b bằng gì?",
+      "cue": "b = -a",
+      "explanation": "Vì a + b = 0 nên b = -a.",
+      "math": "b = -a",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Viết tổng trên ba cạnh BC, CD, DA bằng a, c, d. Biết chúng là ba số phân biệt 1, 2, 3, bạn có thể suy ra mối quan hệ nào giữa ba tổng này?",
+      "cue": "một tổng bằng tổng hai tổng còn lại",
+      "explanation": "Ta có hệ: c−a = p, c+d = q, d+a = r với {p,q,r}={1,2,3}. Cộng hai phương trình đầu và thứ ba cho c+d = p+r. Nhưng c+d cũng bằng q, nên q = p+r. Trong tập {1,2,3} chỉ có 3 = 1+2, nên q phải là 3 và {p,r} = {1,2}.",
+      "math": "c+d = 3,\\quad \\{c-a,\\; d+a\\} = \\{1,2\\}",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Trong mỗi trường hợp (c−a=1, d+a=2) hoặc (c−a=2, d+a=1), hãy giải để tìm c và d theo a. Sau đó tính tổng bình phương S = a²+b²+c²+d² và viết dưới dạng hàm bậc hai của a.",
+      "cue": "c = a+1, d = 2−a hoặc c = a+2, d = 1−a",
+      "explanation": "Giải hệ tuyến tính đơn giản để có c, d. Nhớ b = -a. Thay vào S và rút gọn.",
+      "math": "S(a) = 4a^2 - 2a + 5\\quad\\text{hoặc}\\quad S(a) = 4a^2 + 2a + 5",
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "hint4",
+      "level": 4,
+      "question": "Hoàn thành bình phương cho mỗi biểu thức S(a) để tìm giá trị nhỏ nhất và corresponding a. Kiểm tra xem các số a, b, c, d có đôi một phân biệt không.",
+      "cue": "S = 4(a−1/4)² + 19/4 hoặc S = 4(a+1/4)² + 19/4",
+      "explanation": "Hai biểu thức đều có giá trị nhỏ nhất là 19/4 khi a = 1/4 hoặc a = -1/4. Thay vào để lấy bộ số và xác nhận chúng phân biệt.",
+      "math": "S_{\\min} = \\frac{19}{4}",
+      "stepId": "step4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Đặt ẩn và dùng điều kiện trên cạnh AB",
+      "explanation": "Đặt số tại A, B, C, D là a, b, c, d. Từ a+b=0 suy ra b = -a.",
+      "math": "b = -a",
+      "reason": "điều kiện a+b=0",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Xác định tổng trên ba cạnh còn lại",
+      "explanation": "Viết tổng trên BC, CD, DA: b+c = c−a, c+d, d+a. Vì chúng là ba số phân biệt 1,2,3 nên một trong chúng bằng tổng hai số còn lại. Từ c−a + d+a = c+d suy ra c+d phải là tổng của hai tổng còn lại. Trong {1,2,3} chỉ có 3 = 1+2, nên c+d = 3 và {c−a, d+a} = {1,2}.",
+      "math": "\\begin{cases}c+d = 3\\\\\\{c-a,\\; d+a\\} = \\{1,2\\}\\end{cases}",
+      "reason": "phân tích hệ phương trình và tính chất của tập {1,2,3}",
+      "uses": [
+       "step1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Giải hai trường hợp và biểu diễn c, d bằng a",
+      "explanation": "Trường hợp 1: c−a = 1, d+a = 2 → c = a+1, d = 2−a.\nTrường hợp 2: c−a = 2, d+a = 1 → c = a+2, d = 1−a.\nTrong cả hai trường hợp tính S = a²+b²+c²+d² = 2a² + c² + d².",
+      "math": "\\text{Trường hợp 1: } S(a)=4a^2-2a+5\\\\\\text{Trường hợp 2: } S(a)=4a^2+2a+5",
+      "reason": "thay b=-a và các biểu thức của c, d vào S và rút gọn",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Hoàn thành bình phương để tìm giá trị nhỏ nhất",
+      "explanation": "Trường hợp 1: S = 4a²−2a+5 = 4(a−1/4)² + 19/4 ≥ 19/4, bằng khi a = 1/4.\nTrường hợp 2: S = 4a²+2a+5 = 4(a+1/4)² + 19/4 ≥ 19/4, bằng khi a = −1/4.",
+      "math": "S_{\\min} = \\frac{19}{4}",
+      "reason": "hoàn thành bình phương",
+      "uses": [
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Lấy bộ số tương ứng và kiểm tra điều kiện phân biệt",
+      "explanation": "Nếu a = 1/4 (trường hợp 1) thì b = −1/4, c = 5/4, d = 7/4.\nNếu a = −1/4 (trường hợp 2) thì b = 1/4, c = 7/4, d = 5/4.\nHai bộ số đều có bốn giá trị phân biệt và thỏa mãn tất cả điều kiện.",
+      "math": "(A,B,C,D)=\\left(\\frac14,-\\frac14,\\frac54,\\frac74\\right)\\text{ hoặc }\\left(-\\frac14,\\frac14,\\frac74,\\frac54\\right)",
+      "reason": "thay giá trị a vào các biểu thức của b, c, d và kiểm tra phân biệt",
+      "uses": [
+       "step4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Tổng bình phương nhỏ nhất là $\\frac{19}{4}$. Các cách ghi thỏa mãn điều kiện và đạt giá trị này là:\n- A = $\\frac14$, B = $-\\frac14$, C = $\\frac54$, D = $\\frac74$;\n- A = $-\\frac14$, B = $\\frac14$, C = $\\frac74$, D = $\\frac54$.",
+     "math": "\\frac{19}{4}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(1/4)^2+(-1/4)^2+(5/4)^2+(7/4)^2"
+      ],
+      "assignments": [],
+      "expected": "19/4"
+     },
+     {
+      "kind": "value",
+      "statements": [
+       "(-1/4)^2+(1/4)^2+(7/4)^2+(5/4)^2"
+      ],
+      "assignments": [],
+      "expected": "19/4"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: unverified, 2 problem(s): step 3: \"S(a)=4a^2-2a+5\" ⇒ \"S(a)=4a^2+2a+5\" keeps the left side but the right side changed value (34.378 vs 46.264 at the same values of S,a): an arithmetic slip — recount the terms and rewrite this step correctly | step 5: the formula \"(A,B,C,D)=\\left(\\frac14,\\-\\frac14,\\frac54,\\frac74\\right)\\text{ hoặc }\\left(-\\frac14,\\frac14,\\frac74,\\frac54\\right)\" doesn't render (Undefined control sequence: \\- at position 25: …=\\left(\\frac14,\\̲-̲\\frac14,\\frac54…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "attempt 2: unverified, 1 problem(s): step 3: \"S(a)=4a^2-2a+5\" ⇒ \"S(a)=4a^2+2a+5\" keeps the left side but the right side changed value (34.378 vs 46.264 at the same values of S,a): an arithmetic slip — recount the terms and rewrite this step correctly",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=15989 (cached 0) out=8512 (reasoning 3899)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_3a",
+   "topic": "number_theory",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 4665,
+   "outputTokens": 4611,
+   "modelSeconds": 45.1,
+   "wallSeconds": 45.4,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Không tồn tại số nguyên dương m nào thỏa mãn điều kiện khi n = 3. ∅ Không tồn tại số nguyên dương m nào thỏa mãn điều kiện khi n = 3. \\varnothing",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho các số nguyên dương $m,n$ thỏa mãn: $m^2+m+n^2$ chia hết cho tích $mn$ (1). Chứng minh không tồn tại $m,n$ thỏa mãn (1) khi $n=3$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "tính chia hết",
+      "phương trình bậc hai",
+      "biệt thức Δ",
+      "số chính phương"
+     ],
+     "techniques": [
+      "substitution",
+      "discriminant",
+      "factorization",
+      "case_analysis"
+     ],
+     "givens": [
+      "m, n là số nguyên dương",
+      "m^2 + m + n^2 chia hết cho mn"
+     ],
+     "unknowns": [
+      "m khi n = 3"
+     ],
+     "constraints": [
+      "m > 0",
+      "n = 3"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Thay n = 3 vào điều kiện chia hết, viết dưới dạng phương trình với một số nguyên k, sau đó biến đổi thành phương trình bậc hai về m và sử dụng điều kiện biệt thức phải là số chính phương để tìm k, cuối cùng giải phương trình và thấy không có nghiệm dương.",
+    "hints": [
+     {
+      "id": "hints_1",
+      "level": 1,
+      "question": "Khi n = 3, điều kiện $\"m^2 + m + n^2$ chia hết cho mn\" trở thành gì?",
+      "cue": "Chia hết cho mn nghĩa là tồn tại số nguyên k sao cho biểu thức bằng k·mn.",
+      "explanation": "Ta có mn = 3m, nên tồn tại số nguyên k thỏa mãn m^2 + m + 9 = k·(3m).",
+      "math": "m^2 + m + 9 = 3km",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Sau khi có phương trình $m^2 + m + 9 = 3km$, ta có thể đưa về dạng nào để tìm m?",
+      "cue": "Đưa tất cả các項 về một vế, ta được phương trình bậc hai ẩn m.",
+      "explanation": "Đặt vše về một vế: $m^2 + m + 9 - 3km = 0$ → $m^2 + (1 - 3k)m + 9 = 0$.",
+      "math": "m^2 + (1 - 3k)m + 9 = 0",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Để phương trình bậc hai có nghiệm nguyên m, điều kiện gì trên biệt thức phải được thỏa mãn?",
+      "cue": "Biệt thức Δ phải là số chính phương (bằng 0 hoặc bình phương của một số nguyên).",
+      "explanation": "Δ = (1 - 3k)^2 - 4·1·9 = (1 - 3k)^2 - 36. Đặt $Δ = s^2 (s ≥ 0$ nguyên) và biến đổi thành hiệu hai bình phương.",
+      "math": "(1 - 3k)^2 - s^2 = 36 \\;\\Leftrightarrow\\; (1 - 3k - s)(1 - 3k + s) = 36",
+      "stepId": "step3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Viết điều kiện chia hết khi n = 3",
+      "explanation": "Vì mn chia hết $m^2 + m + n^2$, nên tồn tại số nguyên k sao cho m^2 + m + n^2 = k·mn. Thay n = 3 ta được m^2 + m + 9 = k·(3m).",
+      "math": "m^2 + m + 9 = 3km",
+      "reason": "Định nghĩa tính chia hết",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Đưa về phương trình bậc hai ẩn m",
+      "explanation": "Đưa tất cả các項 về vế trái và nhóm các項 chứa m.",
+      "math": "m^2 + (1 - 3k)m + 9 = 0",
+      "reason": "Phép cộng, trừ vế theo vế",
+      "uses": [
+       "step1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Xét điều kiện biệt thức phải là số chính phương",
+      "explanation": "Để phương trình bậc hai có nghiệm nguyên, biệt thức $Δ = (1 - 3k)^2 - 36$ phải là bình phương của một số nguyên s ≥ 0.",
+      "math": "\\Delta = (1 - 3k)^2 - 36 = s^2",
+      "reason": "Điều kiện để phương trình bậc hai có nghiệm nguyên",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Biến đổi thành hiệu hai bình phương và tìm k",
+      "explanation": "Viết $(1 - 3k)^2 - s^2 = 36$ dưới dạng (1 - 3k - s)(1 - 3k + s) = 36. Hai thừa số có cùng chẵn lẻ và tích bằng 36. Liệt kê các cách phân tích 36 thành hai số nguyên cùng chẵn lẻ, sau đó tìm k nguyên.",
+      "math": "(1 - 3k - s)(1 - 3k + s) = 36",
+      "reason": "Phân tích hiệu hai bình phương",
+      "uses": [
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Tìm các giá trị nguyên khả thi của k",
+      "explanation": "Các cặp (u, v) = (1 - 3k - s, 1 - 3k + s) thỏa mãn uv = 36 và u, v cùng chẵn lẻ. Các cặp thỏa mãn là (2,18), (6,6), (‑18,‑2), (‑6,‑6). Từ mỗi cặp ta tính t = (u+v)/2 = 1 - 3k, sau đó tìm k. Chỉ có k = ‑3 là số nguyên.",
+      "math": "k = -3",
+      "reason": "Phân tích trường hợp và tính toán",
+      "uses": [
+       "step4"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step6",
+      "title": "Thay k = ‑3 vào phương trình bậc hai và giải",
+      "explanation": "Thay k = ‑3 vào m^2 + (1 - 3k)m + 9 = 0 được $m^2 + 10m + 9 = 0$. Phân tích nhân tử: (m + 1)(m + 9) = 0, nên m = ‑1 hoặc m = ‑9.",
+      "math": "m^2 + 10m + 9 = 0 \\;\\Rightarrow\\; (m+1)(m+9)=0 \\;\\Rightarrow\\; m=-1 \\text{ hoặc } m=-9",
+      "reason": "Phân tích nhân tử bằng hằng đẳng thức",
+      "uses": [
+       "step5"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step7",
+      "title": "Kết luận không tồn tại m nguyên dương",
+      "explanation": "Hai nghiệm m = ‑1 và m = ‑9 đều âm, không thỏa mãn điều kiện m > 0. Do đó không có số nguyên dương m nào thỏa mãn điều kiện khi n = 3.",
+      "math": "\\text{Không tồn tại } m \\in \\mathbb{Z}^+ \\text{ thỏa mãn}",
+      "reason": "Kiểm tra điều kiện của nghiệm",
+      "uses": [
+       "step6"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Không tồn tại số nguyên dương m nào thỏa mãn điều kiện khi n = 3.",
+     "math": "\\varnothing"
+    },
+    "answerChecks": [],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 2 problem(s): hint hint2, step step2 contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language | the final answer states a value (\"Không tồn tại số nguyên dương m nào thỏa mãn điều kiện khi n = 3. \\varnothing\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)",
+    "attempt 2 failed (hosted model daily quota exhausted); keeping attempt 1",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=4665 (cached 0) out=4611 (reasoning 2783)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_3b",
+   "topic": "number_theory",
+   "difficulty": 3,
+   "format": "solve",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "ptnk-2025-chuyen_3c",
+   "topic": "number_theory",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "ptnk-2025-chuyen_4a",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "ptnk-2025-chuyen_4b",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "ptnk-2025-chuyen_4c",
+   "topic": "geometry",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "ptnk-2025-chuyen_5a",
+   "topic": "combinatorics",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  },
+  {
+   "id": "ptnk-2025-chuyen_5b",
+   "topic": "combinatorics",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [],
+   "slept": false,
+   "error": "hosted model daily quota exhausted"
+  }
+ ]
+}

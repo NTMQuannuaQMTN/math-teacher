@@ -3,7 +3,8 @@ import { gradeLevelFeedback, gradeLevelReport, isSimpleProblem } from "../../sha
 import { previewPartialLesson } from "../../shared/src/progressPreview";
 import type { SolveProgress } from "../../shared/src/solution";
 import type { ModelLesson } from "../../shared/src/solution";
-import { normalizeFigureChecks, restatesAnswer, verifyLesson } from "../../shared/src/verify";
+import { isProofOnly, normalizeFigureChecks, restatesAnswer, verifyLesson } from "../../shared/src/verify";
+import { cleanLanguage } from "../../shared/src/language";
 import { derivationSlips } from "../../shared/src/derivations";
 import { repairLatex, textifyProse } from "../../shared/src/mathText";
 import { latexFeedback, plainUnrenderable } from "../src/solver/latexCheck";
@@ -741,5 +742,45 @@ describe("hard problems fail fast instead of taking 7 minutes (user report 2026-
     const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal });
     expect(r.lesson.analysis.status).toBe("solvable");
     expect(model.calls).toBe(2);
+  });
+});
+
+describe("derivation check: separate cases are not a derivation (PTNK 2025 2b false positive)", () => {
+  it("does not compare 'Trường hợp 1: S(a) = …' with 'Trường hợp 2: S(a) = …'", () => {
+    const l = inequalityLesson();
+    l.steps[1] = { ...l.steps[1]!, math: String.raw`\text{Trường hợp 1: } S(a)=4a^2-2a+5\\\text{Trường hợp 2: } S(a)=4a^2+2a+5` };
+    expect(derivationSlips(l)).toEqual([]);
+  });
+  it("still compares a labelled line with the arrow line that follows it", () => {
+    const l = inequalityLesson();
+    l.steps[1] = { ...l.steps[1]!, math: String.raw`\text{Cộng ba hàng: } (a+b+c)+(d+e+f)+(g+h+i)=3n\\\Rightarrow (a+c+g+i)+(b+d+f+h)+3e = 3n` };
+    expect(derivationSlips(l)).toHaveLength(1);
+  });
+});
+
+describe("PTNK 2025 review: honesty and language", () => {
+  it("a proof-only problem is at most 'partial', even when a value check passes", () => {
+    expect(isProofOnly("Cho phương trình $x^2-2(m+1)x+2m=0$. Chứng minh rằng với mọi $m$ phương trình luôn có hai nghiệm phân biệt.")).toBe(true);
+    expect(isProofOnly("Chứng minh ... và tìm giá trị nhỏ nhất.")).toBe(false);
+    expect(isProofOnly("Tìm cách ghi có tổng bình phương nhỏ nhất.")).toBe(false);
+    const l = inequalityLesson();
+    l.analysis = { ...l.analysis, statement: "Chứng minh rằng $3(x - 2) \\le 5x + 4 - 7x$ khi $x \\le 2$." };
+    expect(verifyLesson(l).verification.status).toBe("partial");
+  });
+
+  it("a method outside the curriculum that survives the retries makes the lesson unverified", () => {
+    const l = withStep("Với vectơ $(1,1)$ và $(x_1^2,x_2^2)$, ta có …");
+    const v = verifyLesson(l);
+    expect(v.verification.status).toBe("unverified");
+    expect(v.verification.checks.some((c) => !c.passed && /within the curriculum/.test(c.label))).toBe(true);
+  });
+
+  it("sends back English words in a Vietnamese lesson and fixes the known ones", () => {
+    const l = withStep("Hàm $f$ tăngStrict nên injective, các hạng tử đồng loại corresponding.");
+    const r = cleanLanguage(l);
+    expect(r.lesson.steps[1]!.explanation).toBe("Hàm $f$ tăng nên injective, các hạng tử đồng dạng tương ứng.");
+    expect(r.feedback.join(" ")).toMatch(/"injective"/);
+    const cjk = cleanLanguage(withStep("Đưa các項 về vế trái."));
+    expect(cjk.lesson.steps[1]!.explanation).not.toMatch(/項/);
   });
 });

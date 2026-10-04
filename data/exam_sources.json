@@ -202,5 +202,32 @@
   "license_or_usage_notes": "Third-party copyright; kept locally (data/exams/raw is gitignored), cited, not redistributed. Question statements are transcribed for evaluation.",
   "local_file": "data/exams/raw/tm-de-tuyen-sinh-lop-10-mon-toan-vong-2-nam-2025-truong-chuyen-khtn-ha-noi.pdf",
   "notes": "Scanned; solution by 'Lớp toán thầy Khánh chuyên Sư Phạm'."
+ },
+ {
+  "source_id": "ptnk-2025-chuyen-star",
+  "exam_id": "ptnk-2025-chuyen",
+  "school": "Trường Phổ thông Năng khiếu, ĐHQG-HCM",
+  "province": "TP. Hồ Chí Minh",
+  "year": 2025,
+  "exam_name": "Đáp án tham khảo đề thi tuyển sinh lớp 10 PTNK năm học 2025–2026, môn Toán chuyên (STAR Education)",
+  "source_url": "https://star-education.net/hot-news/dap-an-de-thi-toan-chuyen-ptnk-2025-2026/",
+  "published_on": "https://star-education.net/hot-news/dap-an-de-thi-toan-chuyen-ptnk-2025-2026/",
+  "source_type": "third_party_reference_solutions",
+  "access_date": "2026-10-04",
+  "verification_status": "downloaded",
+  "sha256": {
+   "page.html": "ca1336e97330bcfee149e7b2f9fa0499f4acccd37096877a3fa3e8b32bda79ae",
+   "p1.png": "ef6541888607682075071a37577674acf15d631b63af6785c11f11ea91126f85",
+   "p2.png": "eca73a70eb0baee2794d97ddee791d3ba43892bb59c0d86be8d4e195f898f2ce",
+   "p3.png": "857b331b70646af735d942521146eda84a5de3733071d4b15a0aa79fe462c9db",
+   "p4.png": "29b134c9887f7980a60f00d0d1ffc7f53cfdb36a81b88293ac06bee649aa2876",
+   "p5.png": "d3d8fec485b047bfc2e6eeb63dcf393e36f4fa9ff56fb335396925a0e08924e7",
+   "p6.png": "f1bf78acf98df1493ed5226156d67bc585e15dd711786d66e4fd4c299bfa7b15"
+  },
+  "license_or_usage_notes": "Third-party copyright (STAR Education). Kept locally only (data/exams/raw is gitignored) for internal evaluation; not redistributed; reference solutions are never given to the solver.",
+  "local_file": "data/exams/raw/ptnk-2025-star/",
+  "extraction": "HTML page fetched with curl; the exam + solutions are six PNG images (1654×2339, 2025_PTNK_Toan_CHUYEN_26-5-1..6.png) read visually. No OCR text was stored.",
+  "available": "All 5 bài / 13 sub-questions (1a–c, 2a–b, 3a–c, 4a–c, 5a–b) with reference solutions; figures for Bài 4 (two diagrams) and Bài 5 (colourings).",
+  "notes": "STAR states the paper was collected from students and may contain typing errors. Compared with the official paper (ptnk-2025-chuyen-de): Bài 4 omits 'nhọn' (acute); Bài 5 reorders a turn (official: An moves to a new adjacent cell first, then Bình asks; STAR: Bình asks, then An moves), which changes how turns are counted; Bài 2 conditions are paraphrased. Evaluation inputs use the official wording; STAR is used only as the reference."
  }
 ]
