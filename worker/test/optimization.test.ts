@@ -726,3 +726,20 @@ describe("schema slips after a long solve (Câu 4 probe, 2026-10-04)", () => {
     expect(parsed.lesson.hints[0]!.id).toMatch(/^[A-Za-z0-9_']+$/);
   });
 });
+
+describe("hard problems fail fast instead of taking 7 minutes (user report 2026-10-04)", () => {
+  it("does not start a second full attempt after a long failed one", async () => {
+    const model = scripted([new OcrFailure("malformed_output", "output truncated", true), JSON.stringify(inequalityLesson())]);
+    await expect(
+      solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal, retryBudgetMs: -1 }),
+    ).rejects.toMatchObject({ kind: "incomplete" });
+    expect(model.calls).toBe(1);
+  });
+
+  it("still retries a quick failure", async () => {
+    const model = scripted([new OcrFailure("malformed_output", "output truncated", true), JSON.stringify(inequalityLesson())]);
+    const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal });
+    expect(r.lesson.analysis.status).toBe("solvable");
+    expect(model.calls).toBe(2);
+  });
+});

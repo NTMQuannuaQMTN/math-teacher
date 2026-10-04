@@ -400,9 +400,16 @@ export async function solveProblem(
     } catch (err) {
       // A temporary failure on the first attempt (truncated output, rate limit, timeout) gets the next
       // attempt instead of failing the solve; a failed retry never throws away a lesson we already have.
-      if (!best && attempt < maxAttempts && err instanceof OcrFailure && err.retryable) {
+      // …but only while a retry can still finish in a reasonable time: after a long failed request (a hard problem
+      // the model ran out of tokens or time on), another full attempt would double the wait for a likely failure.
+      const spent = Date.now() - started;
+      if (!best && attempt < maxAttempts && err instanceof OcrFailure && err.retryable && spent <= retryBudgetMs) {
         log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again`);
         continue;
+      }
+      if (!best && err instanceof OcrFailure && err.retryable && err.kind !== "quota_exhausted" && spent > retryBudgetMs) {
+        log(`attempt ${attempt} failed after ${Math.round(spent / 1000)} s (${err.message.slice(0, 80)}); not retrying`);
+        throw new OcrFailure("incomplete", `the model could not finish this problem in time (${err.message})`, true);
       }
       if (!best || best.gaveUp) throw err;
       log(`attempt ${attempt} failed (${(err as Error).message.slice(0, 120)}); keeping attempt ${attempt - 1}`);

@@ -13,6 +13,7 @@ import type { JsonModel } from "./llm";
 /** Per-request cap for hosted endpoints (free tiers can queue a request for minutes). */
 const HOSTED_REQUEST_TIMEOUT_MS = 180_000;
 const TRUNCATED = "output truncated";
+const STEP_DOWN_WITHIN_MS = 90_000;
 const DAILY_QUOTA = /per-day|per day|daily/i;
 const EMPTY = "empty model output";
 const LOWER_EFFORT: Partial<Record<NonNullable<LocalModelOptions["reasoningEffort"]>, NonNullable<LocalModelOptions["reasoningEffort"]>>> = {
@@ -58,6 +59,7 @@ export class LocalJsonModel implements JsonModel {
 
   async complete(args: Parameters<JsonModel["complete"]>[0]): Promise<string> {
     const effort = this.options.reasoningEffort ?? "low";
+    const started = Date.now();
     try {
       return await this.request(args, effort);
     } catch (err) {
@@ -66,7 +68,9 @@ export class LocalJsonModel implements JsonModel {
       // Retry once with one step less reasoning; the verifier still gates the result.
       const lower = LOWER_EFFORT[effort];
       const budgetSpent = err instanceof OcrFailure && (err.message === TRUNCATED || err.message === EMPTY);
-      if (!this.hosted || !lower || !budgetSpent || args.signal.aborted) throw err;
+      // Only after a quick failure: a request that already ran for minutes would make the student wait as long again.
+      const quick = Date.now() - started < STEP_DOWN_WITHIN_MS;
+      if (!this.hosted || !lower || !budgetSpent || !quick || args.signal.aborted) throw err;
       return this.request(args, lower);
     }
   }
