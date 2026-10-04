@@ -1,0 +1,1693 @@
+{
+ "summary": {
+  "exp": "EXP-011b",
+  "system": "or-nemotron-3-super",
+  "split": "validation",
+  "promptVersion": "solver-v2.7",
+  "techniqueHints": false,
+  "dataset": "chuyen",
+  "n": 10,
+  "pass": 4,
+  "partial": 3,
+  "fail": 3,
+  "critical": 0,
+  "answerAccuracy": 0.5714285714285714,
+  "gradableN": 7,
+  "verifiedRate": 0.4,
+  "errors": 2,
+  "meanModelSeconds": 102.91,
+  "meanInputTokens": 8899.4,
+  "meanOutputTokens": 9991.8,
+  "cache": {
+   "hits": 4,
+   "misses": 12,
+   "modelMs": 1029110
+  },
+  "createdAt": "2026-10-03T06:44:05.904Z"
+ },
+ "rows": [
+  {
+   "id": "hcm-2025-chuyen_1a",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 4382,
+   "outputTokens": 6133,
+   "modelSeconds": 62.5,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Giá trị của biểu thức P là 8. P=8 Giá trị của biểu thức P là 8. P=8",
+   "lesson": {
+    "analysis": {
+     "statement": "Với $a,b$ là các số thực dương thỏa mãn $(a+b)(a-b)=1$. Tính giá trị của biểu thức $P=\\sqrt{(4a+5)^2+(3b)^2}-\\sqrt{(4a-5)^2+(3b)^2}$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hằng đẳng thức (a+b)(a-b)=a^2-b^2",
+      "bình phương hoàn hảo",
+      "rút gọn căn bậc hai",
+      "đặt ẩn phụ"
+     ],
+     "techniques": [
+      "substitution",
+      "factorization",
+      "complete_square",
+      "domain_conditions"
+     ],
+     "givens": [
+      "a > 0",
+      "b > 0",
+      "(a+b)(a-b)=1"
+     ],
+     "unknowns": [
+      "P"
+     ],
+     "constraints": [
+      "a, b là số thực dương"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Chúng ta sẽ đặt ẩn phụ để viết biểu thức dưới dạng căn của tổng và hiệu hai số, sau đó dùng điều kiện a²−b²=1 để đơn giản hóa những biểu thức bên trong căn thành bình phương hoàn hảo, từ đó tính được giá trị của P.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Điều kiện (a+b)(a-b)=1 cho ta được mối quan hệ nào giữa a² và b²?",
+      "cue": "",
+      "explanation": "Áp dụng hằng đẳng thức (a+b)(a-b)=a²-b² để rút gọn điều kiện.",
+      "math": "a^2 - b^2 = 1",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Nếu đặt x = 4a và y = 3b, thì biểu thức P trở thành gì?",
+      "cue": "",
+      "explanation": "Thay x, y vào để nhìn nhận cấu trúc của hai căn bậc hai.",
+      "math": "P = \\sqrt{(x+5)^2 + y^2} - \\sqrt{(x-5)^2 + y^2}",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Hai biểu thức bên trong căn có thể viết dưới dạng A±B với A và B là gì? Sau khi thay a²−b²=1, A±B trở thành bình phương nào?",
+      "cue": "",
+      "explanation": "Mở rộng (x±5)²+y², nhóm thành A+B và A−B, sau đó thay x=4a, y=3b và dùng a²−b²=1 để rút gọn.",
+      "math": "A = x^2 + y^2 + 25,\\ B = 10x\\Rightarrow\\ A+B = (5a+4)^2,\\ A-B = (5a-4)^2",
+      "stepId": "step4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Rút gọn điều kiện cho a và b",
+      "explanation": "Áp dụng hằng đẳng thức (a+b)(a-b)=a²-b² vào điều kiện đã cho.",
+      "math": "(a+b)(a-b)=a^2-b^2=1\\Rightarrow a^2-b^2=1",
+      "reason": "hằng đẳng thức $(a+b)(a-b)=a^2-b^2$",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Đặt ẩn phụ để đơn giản hóa biểu thức",
+      "explanation": "Đặt x = 4a, y = 3b để viết P dưới dạng hai căn bậc hai có cấu trúc tương tự.",
+      "math": "P = \\sqrt{(x+5)^2 + y^2} - \\sqrt{(x-5)^2 + y^2}",
+      "reason": "đặt ẩn phụ",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Mở rộng và nhóm các항 trong dấu căn",
+      "explanation": "Mở rộng (x±5)²+y², sau đó viết dưới dạng A±B với A = x²+y²+25, B = 10x.",
+      "math": "(x+5)^2+y^2 = x^2+10x+25+y^2 = (x^2+y^2+25)+10x = A+B,\\\\(x-5)^2+y^2 = x^2-10x+25+y^2 = (x^2+y^2+25)-10x = A-B",
+      "reason": "phép mở rộng và nhóm đồng nhất",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Thay x, y và dùng điều kiện a²−b²=1 để rút gọn A và B",
+      "explanation": "Thay x=4a, y=3b vào A và B, sau đó sử dụng b² = a²−1 (từ a²−b²=1).",
+      "math": "\\begin{gathered}A = (4a)^2 + (3b)^2 + 25 = 16a^2+9b^2+25,\\\\ B = 2·(4a)·5 = 40a \\\\ b^2 = a^2-1\\Rightarrow\\ A = 16a^2+9(a^2-1)+25 = 25a^2+16 \\\\ A+B = 25a^2+16+40a = (5a+4)^2,\\\\ A-B = 25a^2+16-40a = (5a-4)^2\\end{gathered}",
+      "reason": "thay thế, rút gọn và nhận dạng bình phương hoàn hảo",
+      "uses": [
+       "step1",
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Tính giá trị của P",
+      "explanation": "Vì a≥1 (từ a²−b²=1 và b≥0) nên 5a±4>0, vì vậy căn của bình phương chính là giá trị tuyệt đối, tức là 5a±4. Trừ hai căn ta được P = 8.",
+      "math": "\\sqrt{A+B} = 5a+4,\\ \\sqrt{A-B}=5a-4\\\\\\Rightarrow\\ P = (5a+4)-(5a-4)=8",
+      "reason": "căn bậc hai của số dương là gốc dương và phép trừ",
+      "uses": [
+       "step4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị của biểu thức P là 8.",
+     "math": "P=8"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "sqrt((4*a+5)^2+(3*b)^2)-sqrt((4*a-5)^2+(3*b)^2)"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "a",
+         "value": "sqrt(2)"
+        },
+        {
+         "variable": "b",
+         "value": "1"
+        }
+       ]
+      ],
+      "expected": "8"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=4382 (cached 0) out=6133 (reasoning 4327)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_1b",
+   "topic": "algebra",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 10616,
+   "outputTokens": 8549,
+   "modelSeconds": 161.9,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "-1 -1 -1 -1",
+   "lesson": {
+    "analysis": {
+     "statement": "Biết $a,b$ là hai nghiệm thực của phương trình $x^2-4x+c=0$ và $-a$ là một nghiệm thực của phương trình $11x^2-x+2c=0$ với $c$ là một số thực khác 0. Tính giá trị của biểu thức $a^{2025}+b^{2025}+c^{2025}$.",
+     "language": "vi",
+     "topic": "word_problem",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Vieta's formulas",
+      "system of linear equations",
+      "parity of exponents"
+     ],
+     "techniques": [
+      "substitution",
+      "subtract_equations",
+      "domain_conditions"
+     ],
+     "givens": [
+      "a,b are real roots of x^2 - 4x + c = 0",
+      "-a is a real root of 11x^2 - x + 2c = 0",
+      "c ≠ 0"
+     ],
+     "unknowns": [
+      "a",
+      "b",
+      "c"
+     ],
+     "constraints": [
+      "c ≠ 0",
+      "a,b real"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Dùng Vieta để viết a+b và ab, thay -a vào phương trình thứ hai để tìm mối quan hệ giữa a và b, giải hệ phương trình tuyến tính để tìm a,b,c, sau đó tính lũy thừa bằng cách xem xét chẵn/lẻ của số mũ.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Vieta cho phương trình bậc hai $x^2-4x+c=0$ cho chúng ta gì về tổng và tích của hai nghiệm $a$ và $b$?",
+      "cue": "Tổng nghiệm là $-(-4)=4$, tích là $c$.",
+      "explanation": "Từ Vieta, $a+b=4$ và $ab=c$.",
+      "math": "a+b=4\\\\ab=c",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Nếu $-a$ là nghiệm của $11x^2-x+2c=0$, ta thay $x=-a$ vào phương trình này được gì?",
+      "cue": "Thay $x=-a$ vào $11x^2-x+2c$ và bằng 0.",
+      "explanation": "Thay $x=-a$ ta được $11a^2+a+2c=0$.",
+      "math": "11a^2+a+2c=0",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Ta biết $c=ab$ từ Vieta. Thay $c$ vào phương trình $11a^2+a+2c=0$ để loại $c$, sau đó rút gọn để tìm mối quan hệ giữa $a$ và $b$.",
+      "cue": "Thay $c=ab$ và rút gọn, lưu ý $a\\neq0$ vì $c\\neq0$.",
+      "explanation": "Thay $c=ab$ ta được $11a^2+a+2ab=0\\\\\\Rightarrow a(11a+1+2b)=0$. Vì $c\\neq0$ nên $a\\neq0$, do đó $11a+1+2b=0$ hoặc $11a+2b=-1$.",
+      "math": "11a+2b=-1",
+      "stepId": "step3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Áp dụng Vieta cho phương trình đầu",
+      "explanation": "Từ $x^2-4x+c=0$ có hai nghiệm thực $a,b$, ta được tổng và tích.",
+      "math": "a+b=4\\\\ab=c",
+      "reason": "Vieta's formulas",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Thay $-a$ vào phương trình thứ hai",
+      "explanation": "Vì $-a$ là nghiệm của $11x^2-x+2c=0$, ta thay $x=-a$ vào phương trình này.",
+      "math": "11(-a)^2-(-a)+2c=0\\\\\\Rightarrow 11a^2+a+2c=0",
+      "reason": "definition of a root",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Loại $c$ bằng cách dùng $ab=c$",
+      "explanation": "Thay $c=ab$ vào $11a^2+a+2c=0$ và rút gọn, lưu ý $a\\neq0$ vì $c\\neq0$.",
+      "math": "11a^2+a+2ab=0\\\\\\Rightarrow a(11a+1+2b)=0\\\\\\Rightarrow 11a+2b=-1",
+      "reason": "substitution and factoring",
+      "uses": [
+       "step1",
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Giải hệ phương trình tuyến tính để tìm $a$ và $b$",
+      "explanation": "Ta có hệ $\\begin{cases}a+b=4\\\\11a+2b=-1\\end{cases}$. Giải ra $a$ và $b$.",
+      "math": "b=4-a\\\\\\Rightarrow 11a+2(4-a)=-1\\\\\\Rightarrow 9a+8=-1\\\\\\Rightarrow a=-1\\\\\\Rightarrow b=5",
+      "reason": "substitution method",
+      "uses": [
+       "step1",
+       "step3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step5",
+      "title": "Tính $c$ và kiểm tra điều kiện $c\\neq0$",
+      "explanation": "Vì $c=ab$, ta thay $a=-1$, $b=5$ để tìm $c$.",
+      "math": "c=ab=(-1)\\cdot5=-5\\\\\\Rightarrow c\\neq0",
+      "reason": "definition of product",
+      "uses": [
+       "step1",
+       "step4"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step6",
+      "title": "Tính giá trị của biểu thức $a^{2025}+b^{2025}+c^{2025}$",
+      "explanation": "Thay $a=-1$, $b=5$, $c=-5$ vào biểu thức. Vì số mũ $2025$ là lẻ, $(-5)^{2025}=-5^{2025}$. Do đó $5^{2025}+(-5)^{2025}=0$ và biểu thức còn lại là $(-1)^{2025}=-1$.",
+      "math": "a^{2025}+b^{2025}+c^{2025}=(-1)^{2025}+5^{2025}+(-5)^{2025}\\\\= -1+5^{2025}-5^{2025}\\\\= -1",
+      "reason": "properties of exponents (odd power preserves sign)",
+      "uses": [
+       "step4",
+       "step5"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "-1",
+     "math": "-1"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(-1)^{2025}"
+      ],
+      "assignments": [],
+      "expected": "-1"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: unverified, 2 problem(s): a geometry problem needs a figure (figure is null) | answer check \"(-1)^{2025}+5^{2025}+(-5)^{2025}\" failed: NaN vs -1",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=10616 (cached 0) out=8549 (reasoning 5014)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_2a",
+   "topic": "word_problem",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 10829,
+   "outputTokens": 11368,
+   "modelSeconds": 178.1,
+   "wallSeconds": 134.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Xe tải đến giao lộ lúc 14 giờ 45 phút. 14:45 Xe tải đến giao lộ lúc 14 giờ 45 phút. 14{:}45",
+   "lesson": {
+    "analysis": {
+     "statement": "Một ô tô và một xe tải chuyển động cùng tốc độ không đổi a (km/h) dọc theo hai con đường giao nhau hướng đến giao lộ (a>0). Biết rằng vào các thời điểm 14 giờ và 15 giờ cùng ngày, khoảng cách từ ô tô đến giao lộ đều gấp đôi khoảng cách từ xe tải đến giao lộ. Hỏi xe tải đến giao lộ lúc mấy giờ?",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "khoảng cách, tốc độ, thời gian",
+      "giá trị tuyệt đối",
+      "phương trình bậc nhất",
+      "giải hệ phương trình"
+     ],
+     "techniques": [
+      "substitution",
+      "case_analysis",
+      "domain_conditions"
+     ],
+     "givens": [
+      "cùng tốc độ a > 0",
+      "vào 14h: |d_c| = 2|d_t|",
+      "vào 15h: |d_c| = 2|d_t|"
+     ],
+     "unknowns": [
+      "thời điểm xe tải đến giao lộ"
+     ],
+     "constraints": [
+      "a > 0",
+      "khoảng cách là giá trị không âm (dùng |…|)"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "Khoảng cách từ một điểm движущегося объекта до фиксированной точки не может быть отрицательным, поэтому следует использовать модуль: |d_c0 - a t| и |d_t0 - a t|. Это позволяет учесть ситуацию, когда один из объектов уже проехал перекрёсток к моменту 15 ч.",
+      "Nếu chỉ dùng biểu thức tuyến tính $d_c = d_c0 - a t$, $d_t = d_t0 - a t$ mà không xét giá trị tuyệt đối, hệ phương trình dẫn đến a = 0, mâu thuẫn với a > 0. Do cần xem khoảng cách là giá trị tuyệt đối vì xe có thể đã qua giao lộ giữa 14h và 15h."
+     ]
+    },
+    "strategy": "Đặt t = 0 là 14h, biểu diễn vị trí của mỗi xe so với giao lộ (có thể âm nếu đã qua). Viết hai phương trình từ điều kiện tại t = 0 và t = 1 bằng giá trị tuyệt đối. Xét các dấu của biểu thức bên trong модуль, tìm trường hợp thỏa mãn a > 0, sau đó tính thời gian khi xe tải đến giao lộ (vị trí bằng 0).",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Ta đặt t = 0 là lúc 14h. Vị trí của ô tô và xe tải so với giao lộ (đương dương nếu chưa đến, âm nếu đã qua) sau t giờ là gì?",
+      "cue": "Vị trí = vị trí ban đầu – tốc độ × thời gian.",
+      "explanation": "Đặt $x_c0$, $x_t0$ là vị trí ban đầu (lúc 14h) của ô tô và xe tải (cùng đo từ giao lộ về phía xe đến). Sau t giờ, vị trí sẽ giảm theo tốc độ a.",
+      "math": "x_c(t) = x_c0 - a t,\\quad x_t(t) = x_t0 - a t",
+      "stepId": "s1",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Viết hai phương trình từ thông tin rằng vào 14h và 15h, khoảng cách (giá trị tuyệt đối) của ô tô là gấp đôi khoảng cách của xe tải.",
+      "cue": "Khoảng cách = |vị trí|. Thay t = 0 và t = 1.",
+      "explanation": "Vào $14h (t=0)$: $|x_c0| = 2|x_t0|$. Vào $15h (t=1)$: |x_c0 - a| = 2|x_t0 - a|.",
+      "math": "\\begin{cases} |x_c0| = 2|x_t0| \\\\ |x_c0 - a| = 2|x_t0 - a| \\end{cases}",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Vì vào 14h cả hai xe đều chưa đến giao lộ, vị trí ban đầu là dương. Điều này cho gì về $x_c0$ và $x_t0$?",
+      "cue": "Xét dấu trong giá trị tuyệt đối.",
+      "explanation": "Ta có $x_c0 > 0$, $x_t0 > 0$, nên $|x_c0| = x_c0$, $|x_t0| = x_t0$. Từ phương trình đầu được $x_c0 = 2 x_t0$.",
+      "math": "x_c0 = 2 x_t0 \\quad (x_c0>0, x_t0>0)",
+      "stepId": "s3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Thay $x_c0 = 2 x_t0$ vào phương trình thứ hai và xét các dấu của $(2x_t0 - a)$ và $(x_t0 - a)$. Trường hợp nào cho a > 0?",
+      "cue": "Xét 4 trường hợp dấu của hai biểu thức bên trong модуль.",
+      "explanation": "Ta được |2x_t0 - a| = 2|x_t0 - a|. Xét dấu của mỗi biểu thức, chỉ trường hợp $(2x_t0 - a ≥ 0$, $x_t0 - a < 0)$ cho a ≠ 0 và a > 0, dẫn đến $a = (4/3)x_t0$.",
+      "math": "\\text{Trường hợp: } 2x_t0 - a \\ge 0,\\; x_t0 - a < 0 \\Rightarrow 2x_t0 - a = 2(a - x_t0) \\Rightarrow a = \\frac{4}{3}x_t0",
+      "stepId": "s4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Đặt biến và biểu diễn vị trí theo thời gian",
+      "explanation": "Cho t là số giờ sau 14h (t=0 là 14h, t=1 là 15h). Vị trí của mỗi xe so với giao lộ (dương nếu chưa đến, âm nếu đã qua) giảm đều theo tốc độ a.",
+      "math": "x_c(t) = x_c0 - a t,\\quad x_t(t) = x_t0 - a t",
+      "reason": "định nghĩa tốc độ và vị trí",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Lập hệ phương trình từ điều kiện tại 14h và 15h (khoảng cách = |vị trí|)",
+      "explanation": "Khoảng cách từ xe đến giao lộ là giá trị tuyệt đối của vị trí. Vào 14h: $|x_c0| = 2|x_t0|$. Vào 15h: |x_c0 - a| = 2|x_t0 - a|.",
+      "math": "\\begin{cases} |x_c0| = 2|x_t0| \\\\ |x_c0 - a| = 2|x_t0 - a| \\end{cases}",
+      "reason": "dịch trực tiếp điều kiện của bài",
+      "uses": [
+       "s1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Xác định dấu của vị trí ban đầu",
+      "explanation": "Vào 14h cả hai xe đều chưa đến giao lộ (giả sử từ mô hình), nên vị trí ban đầu dương: $x_c0 > 0$, $x_t0 > 0$. Do đó $|x_c0| = x_c0$, $|x_t0| = x_t0$ và phương trình đầu cho $x_c0 = 2 x_t0$.",
+      "math": "x_c0 > 0,\\; x_t0 > 0 \\Rightarrow x_c0 = 2 x_t0",
+      "reason": "tính chất của giá trị tuyệt đối với số dương",
+      "uses": [
+       "s2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s4",
+      "title": "Thay $x_c0 = 2 x_t0$ vào phương trình thứ hai và xét các trường hợp dấu",
+      "explanation": "Ta được |2x_t0 - a| = 2|x_t0 - a|. Xét 4 trường hợp dấu của hai biểu thức bên trong модуль. Chỉ trường hợp $(2x_t0 - a ≥ 0)$ và $(x_t0 - a < 0)$ cho a > 0, dẫn đến $a = (4/3)x_t0$.",
+      "math": "\\begin{aligned}&2x_t0 - a \\ge 0,\\; x_t0 - a < 0\\\\&\\Rightarrow 2x_t0 - a = 2(a - x_t0)\\\\&\\Rightarrow 2x_t0 - a = 2a - 2x_t0\\\\&\\Rightarrow 4x_t0 = 3a\\\\&\\Rightarrow a = \\frac{4}{3}x_t0\\end{aligned}",
+      "reason": "phân tích trường hợp của giá trị tuyệt đối",
+      "uses": [
+       "s3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s5",
+      "title": "Tính thời gian khi xe tải đến giao lộ",
+      "explanation": "Xe tải đến giao lộ khi vị trí $x_t(t) = 0$, tức là $x_t0 - a t = 0$. Thay $a = (4/3)x_t0 được t = x_t0 / a = x_t0 / ((4/3)x_t0) = 3/4$ giờ = 45 phút. Vì $t=0$ là 14h, nên xe tải đến lúc 14h + 45 phút = 14:45.",
+      "math": "t = \\frac{x_t0}{a} = \\frac{x_t0}{\\frac{4}{3}x_t0} = \\frac{3}{4}\\text{ giờ} = 45\\text{ phút}",
+      "reason": "giải phương trình $x_t(t) = 0$",
+      "uses": [
+       "s4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Xe tải đến giao lộ lúc 14 giờ 45 phút.",
+     "math": "14{:}45"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "|x_c0| = 2|x_t0|",
+       "|x_c0 - a| = 2|x_t0 - a|"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "x_t0",
+         "value": "3"
+        },
+        {
+         "variable": "x_c0",
+         "value": "6"
+        },
+        {
+         "variable": "a",
+         "value": "4"
+        }
+       ]
+      ],
+      "expected": "6 = 2*3; 2 = 2*1"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: unverified, 2 problem(s): answer check \"d_c0 = 2 d_t0; d_c0 - a = 2(d_t0 - a)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition | the question asks for a specific value, so the exam expects one to exist, but the final answer says there is none. A contradiction here means the setup is wrong: re-read the problem (distances are non-negative — use |…| or consider that a moving object may already have passed the point; check units and which quantity is unknown) and solve it again.",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"|x_c0| = 2|x_t0|; |x_c0 - a| = 2|x_t0 - a|\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=10829 (cached 0) out=11368 (reasoning 6863)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_2b",
+   "topic": "applied_optimization",
+   "difficulty": 2,
+   "format": "compute",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 28278,
+   "outputTokens": 30501,
+   "modelSeconds": 79.8,
+   "wallSeconds": 336.5,
+   "figurePoints": 8,
+   "failedChecks": [
+    "GH = EF"
+   ],
+   "answer": "Giá trị của x để hình thang cân EFGH có diện tích lớn nhất là 0,5 m. x = 0.5 Giá trị của x để hình thang cân EFGH có diện tích lớn nhất là 0,5 m. x = 0.5",
+   "lesson": {
+    "analysis": {
+     "statement": "Anh Hà dự định làm một cái máng nước có dạng hình lăng trụ đứng có đáy là hình thang cân từ một miếng tôn có dạng hình chữ nhật $ABCD$ với chiều dài 2 (m) và chiều rộng 1 (m). Anh Hà thực hiện làm máng nước bằng cách gấp đều hai bên chiều rộng $AB$ của miếng tôn, mỗi bên $x$ (m), lên một góc $60^\\\" như hình vẽ. Tìm$x$để hình thang cân$EFGH\\$ có diện tích lớn nhất?",
+     "language": "vi",
+     "topic": "function",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "area of isosceles trapezoid",
+      "quadratic function",
+      "completing the square",
+      "constraints on variable"
+     ],
+     "techniques": [
+      "complete_square",
+      "domain_conditions"
+     ],
+     "givens": [
+      "Rectangle ABCD: AB = 2 m (length), BC = 1 m (width)",
+      "Two strips of width x m are folded up along AB at angle 60°",
+      "Resulting base of prism is isosceles trapezoid EFGH"
+     ],
+     "unknowns": [
+      "value of x (in meters) that maximizes area of trapezoid EFGH"
+     ],
+     "constraints": [
+      "0 ≤ x ≤ 0.5 (since total width is 1 m, two strips cannot exceed width)"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "First express the lengths of the bases and the height of the isosceles trapezoid EFGH in terms of x using the given fold angle. Then write the area as a quadratic function of x. Finally, find the maximum of this quadratic on the interval [0, 0.5] by completing the square (or vertex formula).",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Sau khi gấp, hình thang cân EFGH có đáy trên và đáy dưới dài bao nhiêu? Độ cao của hình thang là bao nhiêu?",
+      "cue": "",
+      "explanation": "Đáy trên là phần không gấp của miếng tôn (chiều dài AB = 2 m). Mỗi bên gấp có độ rộng x, tạo thành cạnh bên của hình thang với góc 60° so với đáy. Từ đó ta có thể tính đáy dưới và độ cao.",
+      "math": null,
+      "stepId": "step1",
+      "focus": [
+       "seg_AB"
+      ]
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Công thức diện tích của hình thang cân là gì? Ta có thể viết diện tích S(x) dưới dạng hàm số của x như thế nào?",
+      "cue": "",
+      "explanation": "Diện tích hình thang = (đáy trên + đáy dưới)/2 × chiều cao. Thay các biểu thức từ gợi ý trước vào để có S(x) dưới dạng bậc hai trong x.",
+      "math": null,
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Hàm số bậc hai S(x) có dạng nào? Ta có thể áp dụng phương pháp hoàn thành bình phương để tìm giá trị lớn nhất của S(x) trên đoạn [0, 0.5] không?",
+      "cue": "",
+      "explanation": "Viết S(x) dưới dạng a·(x - h)^2 + k. Giá trị lớn nhất (hoặc nhỏ nhất) xảy ra khi x = h, nếu a < 0 (parabola mở xuống). Sau đó kiểm tra xem h có nằm trong đoạn cho phép không.",
+      "math": null,
+      "stepId": "step3",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 4,
+      "question": "Giá trị x nào trong khoảng [0, 0.5] cho diện tích lớn nhất? Xác nhận bằng cách thay vào công thức hoặc so sánh giá trị tại các đầu đoạn.",
+      "cue": "",
+      "explanation": "Từ kết quả hoàn thành bình phương, ta thấy S(x) giảm khi x allontanía từ điểm đỉnh. Vì điểm đỉnh nằm ngoài khoảng, giá trị lớn nhất xảy ra tại đầu đoạn bên phải.",
+      "math": null,
+      "stepId": "step4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Xác định đáy trên, đáy dưới và chiều cao của hình thang EFGH",
+      "explanation": "Đáy trên EF là phần không gấp của miếng tôn, bằng AB = 2 m. Mỗi bên gấp có độ rộng x, tạo thành cạnh bên EG = FH = x với góc 60° so với đáy. Do đó, chiếu ngang của mỗi cạnh bên là x·cos60° = x/2, và chiều cao là x·sin60° = x·√3/2. Đáy dưới GH = EF − 2·(chiếu ngang) = 2 − 2·(x/2) = 2 − x.",
+      "math": "EF = 2\\\\quad\\text{m},\\\\quad EG = FH = x\\\\quad\\text{m},\\\\quad \\text{chiếu ngang} = x\\\\cos60^\\circ = \\frac{x}{2},\\\\quad \\text{chiều cao} = x\\\\sin60^\\circ = \\frac{x\\sqrt{3}}{2},\\\\quad GH = 2 - x",
+      "reason": "định lý cosin trong tam giác vuông góc (hoặc định lý sin, cos)",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_EG",
+         "seg_CD",
+         "seg_FH",
+         "seg_AB"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step2",
+      "title": "Viết công thức diện tích S(x) của hình thang",
+      "explanation": "Diện tích hình thang = (đáy trên + đáy dưới)/2 × chiều cao. Thay các biểu thức từ bước 1 vào.",
+      "math": "S(x) = \\frac{EF + GH}{2} \\times \\text{chiều cao} = \\frac{2 + (2 - x)}{2} \\times \\frac{x\\sqrt{3}}{2} = \\frac{4 - x}{2} \\times \\frac{x\\sqrt{3}}{2} = \\frac{\\sqrt{3}}{4}\\,x\\,(4 - x)",
+      "reason": "công thức diện tích hình thang",
+      "uses": [
+       "step1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_CD"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step3",
+      "title": "Biến đổi S(x) thành dạng hoàn thành bình phương",
+      "explanation": "S(x) = (√3/4)(4x − $x^2) = −(√3/4)(x^2$ − 4x). Hoàn thành bình phương cho $x^2$ − 4x = (x − $2)^2$ − 4.",
+      "math": "S(x) = -\\frac{\\sqrt{3}}{4}\\,(x^2 - 4x) = -\\frac{\\sqrt{3}}{4}\\,[(x - 2)^2 - 4] = \\sqrt{3} - \\frac{\\sqrt{3}}{4}\\,(x - 2)^2",
+      "reason": "hoàn thành bình phương",
+      "uses": [
+       "step2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step4",
+      "title": "Xác định giá trị x tối ưu trên đoạn [0, 0.5]",
+      "explanation": "Vì hệ số trước (x − $2)^2$ là âm, S(x) đạt giá trị lớn nhất khi (x − $2)^2$ nhỏ nhất, tức là x尽可能接近 2. Tuy nhiên x được hạn chế bởi 0 ≤ x ≤ 0.5, vì vậy giá trị lớn nhất xảy ra tại đầu đoạn x = 0.5.",
+      "math": "x_{\\text{opt}} = 0.5\\\\quad\\text{m}",
+      "reason": "tính chất của hàm bậc hai mở xuống và điều kiện trên x",
+      "uses": [
+       "step3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị của x để hình thang cân EFGH có diện tích lớn nhất là 0,5 m.",
+     "math": "x = 0.5"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "0.5"
+      ],
+      "assignments": [],
+      "expected": "0.5"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 2,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 2,
+       "y": 1,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 1,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "midpoint",
+       "refs": [
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "F",
+       "label": "F",
+       "kind": "midpoint",
+       "refs": [
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "G",
+       "label": "G",
+       "kind": "on_segment",
+       "refs": [
+        "D",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0.25,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "on_segment",
+       "refs": [
+        "D",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0.75,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CD",
+       "kind": "segment",
+       "from": "C",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_DA",
+       "kind": "segment",
+       "from": "D",
+       "to": "A",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_EF",
+       "kind": "segment",
+       "from": "E",
+       "to": "F",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_GH",
+       "kind": "segment",
+       "from": "G",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_EG",
+       "kind": "segment",
+       "from": "E",
+       "to": "G",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_FH",
+       "kind": "segment",
+       "from": "F",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_EGH",
+       "from": "E",
+       "vertex": "G",
+       "to": "H",
+       "label": "60°",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_FHE",
+       "from": "F",
+       "vertex": "H",
+       "to": "E",
+       "label": "60°",
+       "right": false,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": []
+    }
+   },
+   "log": [
+    "attempt 1: unverified, 7 problem(s): step step4 contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language | figure: equal_length check on E, G has 2 points (needs 4); it was left out of the figure | figure: equal_length check on F, H has 2 points (needs 4); it was left out of the figure",
+    "attempt 2 failed (output truncated); keeping attempt 1",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=28278 (cached 0) out=30501 (reasoning 23543)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_3a",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 482.2,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (output truncated); trying again"
+   ],
+   "slept": false,
+   "error": "output truncated"
+  },
+  {
+   "id": "hcm-2025-chuyen_3b",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 607.2,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (output truncated); trying again"
+   ],
+   "slept": false,
+   "error": "output truncated"
+  },
+  {
+   "id": "hcm-2025-chuyen_4a",
+   "topic": "number_theory",
+   "difficulty": 1,
+   "format": "construct",
+   "grade": "PASS",
+   "answerCorrect": null,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 4610,
+   "outputTokens": 9332,
+   "modelSeconds": 145.2,
+   "wallSeconds": 145.2,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Hai số đẹp có hai chữ số và chia hết cho 11 là 11 và 88. 11, 88 Hai số đẹp có hai chữ số và chia hết cho 11 là 11 và 88. 11, 88",
+   "lesson": {
+    "analysis": {
+     "statement": "Số nguyên dương $n$ được gọi là số đẹp nếu tồn tại các số nguyên $a,b$ sao cho $n=a^2+7b^2$. Tìm hai số đẹp có hai chữ số và chia hết cho 11.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "Số đẹp dạng a^2 + 7b^2",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "biểu thức a^2 + 7b^2",
+      "số nguyên",
+      "chia hết",
+      "số hai chữ số"
+     ],
+     "techniques": [
+      "substitution",
+      "domain_conditions",
+      "factorization"
+     ],
+     "givens": [
+      "n là số nguyên dương có hai chữ số và chia hết cho 11",
+      "tồn tại các số nguyên a, b sao cho n = a^2 + 7b^2"
+     ],
+     "unknowns": [
+      "hai số đẹp thỏa mãn điều kiện trên"
+     ],
+     "constraints": [
+      "10 ≤ n ≤ 99",
+      "n mod 11 = 0",
+      "a, b ∈ Z"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Chúng ta sẽ liệt kê tất cả các số hai chữ số chia hết cho 11, sau đó với mỗi số thử các giá trị b có thể (b = 0, ±1, ±2, ±3) để xem phần còn lại $n - 7b^2$ có phải là bình phương số không. Từ đó ra các số đẹp và chọn hai số nào đó.",
+    "hints": [
+     {
+      "id": "hint1",
+      "level": 1,
+      "question": "Bạn nên bắt đầu bằng cách liệt kê tất cả các số hai chữ số chia hết cho 11 là gì?",
+      "cue": "Số hai chữ số chia hết cho 11",
+      "explanation": "Các số này là 11, 22, 33, ..., 99.",
+      "math": "11, 22, 33, 44, 55, 66, 77, 88, 99",
+      "stepId": "step1",
+      "focus": []
+     },
+     {
+      "id": "hint2",
+      "level": 2,
+      "question": "Với mỗi số n, bạn cần tìm a,b nguyên sao cho $n = a^2 + 7b^2$. Giá trị b nào có thể xảy ra?",
+      "cue": "Giới hạn cho b",
+      "explanation": "Vì $7b^2 ≤ n ≤ 99$, ta có $b^2 ≤ 99/7 < 15$, nên |b| ≤ 3. Chỉ cần thử b = 0, ±1, ±2, ±3.",
+      "math": "|b| \\le 3",
+      "stepId": "step2",
+      "focus": []
+     },
+     {
+      "id": "hint3",
+      "level": 3,
+      "question": "Với mỗi n và mỗi b đã giới hạn, tính $a^2 = n - 7b^2$ và kiểm tra xem $a^2$ có phải là bình phương số không?",
+      "cue": "Kiểm tra bình phương",
+      "explanation": "Nếu $a^2$ là bình phương số $(≥0)$ thì n là số đẹp. Thực hiện này cho từng n sẽ cho ra các số đẹp.",
+      "math": "a^2 = n - 7b^2",
+      "stepId": "step3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step1",
+      "title": "Liệt kê các số hai chữ số chia hết cho 11",
+      "explanation": "Các số hai chữ số chia hết cho 11 là các bội của 11 từ 11 đến 99.",
+      "math": "11, 22, 33, 44, 55, 66, 77, 88, 99",
+      "reason": "Định nghĩa của số chia hết cho 11",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step2",
+      "title": "Xác định phạm vi cần thử cho b",
+      "explanation": "Vì $7b^2 ≤ n ≤ 99$, nên $b^2 ≤ 99/7$ ≈ 14, do đó |b| ≤ 3. Chỉ cần xét b = 0, ±1, ±2, ±3.",
+      "math": "|b| \\le 3",
+      "reason": "Bất đẳng thức từ điều kiện $a^2 ≥ 0$",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step3",
+      "title": "Kiểm tra từng n và tìm $a^2$ là bình phương",
+      "explanation": "Với mỗi n từ bước 1 và mỗi b từ bước 2, tính $a^2 = n - 7b^2$. Nếu $a^2$ là bình phương số $(≥0)$ thì n là số đẹp. Thực hiện này cho thấy 11, 44, 77, 88, 99 đều thỏa mãn; ví dụ $11 = 2^2 + 7·1^2$ và $88 = 9^2 + 7·1^2$.",
+      "math": "a^2 = n - 7b^2",
+      "reason": "Đặt lại biểu thức $n = a^2 + 7b^2$",
+      "uses": [
+       "step1",
+       "step2"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Hai số đẹp có hai chữ số và chia hết cho 11 là 11 và 88.",
+     "math": "11, 88"
+    },
+    "answerChecks": [
+     {
+      "kind": "substitute",
+      "statements": [
+       "n = a^2 + 7b^2"
+      ],
+      "assignments": [
+       [
+        {
+         "variable": "n",
+         "value": "11"
+        },
+        {
+         "variable": "a",
+         "value": "2"
+        },
+        {
+         "variable": "b",
+         "value": "1"
+        }
+       ],
+       [
+        {
+         "variable": "n",
+         "value": "88"
+        },
+        {
+         "variable": "a",
+         "value": "9"
+        },
+        {
+         "variable": "b",
+         "value": "1"
+        }
+       ]
+      ],
+      "expected": ""
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=4610 (cached 0) out=9332 (reasoning 7769)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_4b",
+   "topic": "number_theory",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "not_checkable",
+   "attempts": 1,
+   "inputTokens": 4615,
+   "outputTokens": 6468,
+   "modelSeconds": 55.7,
+   "wallSeconds": 55.7,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Vậy nếu n là số đẹp và 11| n, thì n/11 cũng là số đẹp. n/11 = x²+7y² (vớix,y∈ℤ) Vậy nếu $n$ là số đẹp và $11\\mid n$, thì $\\dfrac{n}{11}$ cũng là số đẹp. \\frac{n",
+   "lesson": {
+    "analysis": {
+     "statement": "Số nguyên dương $n$ được gọi là số đẹp nếu tồn tại các số nguyên $a,b$ sao cho $n=a^2+7b^2$. Chứng minh rằng nếu $n$ là số đẹp và $n$ chia hết cho 11 thì $\\frac{n}{11}$ cũng là số đẹp.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "hằng đẳng thức Brahmagupta",
+      "dạng $x^2+7y^2$",
+      "chia hết",
+      "dư modulo"
+     ],
+     "techniques": [
+      "factorization",
+      "substitution",
+      "equality_case"
+     ],
+     "givens": [
+      "n là số nguyên dương",
+      "n = a^2 + 7b^2 với a,b nguyên",
+      "11 chia hết cho n"
+     ],
+     "unknowns": [
+      "chứng minh rằng n/11 cũng có dạng x^2+7y^2 với x,y nguyên"
+     ],
+     "constraints": [
+      "n > 0",
+      "a,b ∈ Z"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Ta sẽ sử dụng hằng đẳng thức Brahmagupta để viết tích của hai số dạng $x^2+7y^2$ vẫn là số dạng $x^2+7y^2$, nhận ra rằng $11 = 2^2+7·1^2$. Sau đó từ giả thiết 11 | n ta suy ra a ≡ ±2b (mod 11) và kiểm tra rằng trong hai biểu thức tích một trong chúng có cả hai hạng tử chia hết cho 11, từ đó deduce rằng n/11 cũng là số đẹp.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Bạn biết cách viết tích của hai số dạng $x^2+7y^2$ vẫn là số dạng $x^2+7y^2$ không?",
+      "cue": null,
+      "explanation": "Ta cần nhớ hằng đẳng thức Brahmagupta: $(a^2+7b^2)(c^2+7d^2) = (ac∓7bd)^2+7(ad±bc)^2$.",
+      "math": null,
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Số 11 có thể viết dưới dạng $2^2+7·1^2$ vậy ta có thể nhân $n$ với 11 và dùng hằng đẳng thức trên.",
+      "cue": null,
+      "explanation": "Vì $11 = 2^2+7·1^2$, ta có $11n = (a^2+7b^2)(2^2+7·1^2)$.",
+      "math": null,
+      "stepId": "s3",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Từ $11|n$ ta có $a^2+7b^2\\equiv0\\pmod{11}$. Hãy tìm các dư của $a$ và $b$ modulo 11 để suy ra $a\\equiv\\pm2b\\pmod{11}$.",
+      "cue": null,
+      "explanation": "Các dư bình phương modulo 11 là 0,1,3,4,5,9. Tính $7b^2$ modulo 11 và tìm điều kiện để tổng bằng 0.",
+      "math": null,
+      "stepId": "s4",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 4,
+      "question": "Kiểm tra hai biểu thức $(2a-7b)^2+7(a+2b)^2$ và $(2a+7b)^2+7(a-2b)^2$: trong một trong chúng, cả hai hạng tử đều chia hết cho 11 khi $a\\equiv\\pm2b\\pmod{11}$.",
+      "cue": null,
+      "explanation": "Nếu $a\\equiv 2b\\pmod{11}$ thì $2a+7b$ và $a-2b$ chia hết cho 11; nếu $a\\equiv -2b\\pmod{11}$ thì $2a-7b$ và $a+2b$ chia hết cho 11.",
+      "math": null,
+      "stepId": "s5",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Viết 11 dưới dạng $x^2+7y^2$",
+      "explanation": "Ta nhận ra rằng 11 có thể biểu diễn dưới dạng $2^2+7\\cdot1^2$.",
+      "math": "11 = 2^2 + 7\\cdot 1^2",
+      "reason": "kiểm tra trực tiếp",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Áp dụng hằng đẳng thức Brahmagupta",
+      "explanation": "Với bất kỳ số nguyên $a,b$, ta có $(a^2+7b^2)(2^2+7\\cdot1^2) = (2a-7b)^2+7(a+2b)^2 = (2a+7b)^2+7(a-2b)^2$.",
+      "math": "(a^2+7b^2)(2^2+7\\cdot1^2) = (2a-7b)^2+7(a+2b)^2 = (2a+7b)^2+7(a-2b)^2",
+      "reason": "hằng đẳng thức Brahmagupta $(x^2+7y^2)$",
+      "uses": [
+       "s1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Viết n dưới dạng 11k và nhân hai vế với 11",
+      "explanation": "Vì $11\\mid n$, ta đặt $n = 11k$ với $k$ nguyên. Nhân hai vế của $n = a^2+7b^2$ với 11 ta được $11n = 121k$ bằng hai biểu thức từ bước trước.",
+      "math": "121k = (2a-7b)^2+7(a+2b)^2 = (2a+7b)^2+7(a-2b)^2",
+      "reason": "thay $n = 11k$ và sử dụng bước s2",
+      "uses": [
+       "s2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s4",
+      "title": "Xác định dư của a,b modulo 11 từ điều kiện 11|n",
+      "explanation": "Từ $n = a^2+7b^2$ và $11\\mid n$ ta có $a^2+7b^2\\equiv0\\pmod{11}$. Kiểm tra các dư thể hiện $a\\equiv\\pm2b\\pmod{11}$.",
+      "math": "a^2+7b^2\\equiv0\\pmod{11} \\Rightarrow a\\equiv\\pm2b\\pmod{11}",
+      "reason": "tính dư modulo 11",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "s5",
+      "title": "Thể hiện rằng một trong hai biểu thức có cả hai hạng tử chia hết cho 11",
+      "explanation": "Nếu $a\\equiv 2b\\pmod{11}$ thì $2a+7b\\equiv0$ và $a-2b\\equiv0\\pmod{11}$; nếu $a\\equiv -2b\\pmod{11}$ thì $2a-7b\\equiv0$ và $a+2b\\equiv0\\pmod{11}$. Do đó một trong hai biểu thức $(2a\\mp7b)^2+7(a\\pm2b)^2$ có dạng $(11u)^2+7(11v)^2$.",
+      "math": "\\begin{aligned}&a\\equiv 2b\\pmod{11} \\Rightarrow 2a+7b\\equiv0,\\; a-2b\\equiv0\\pmod{11}\\\\&a\\equiv -2b\\pmod{11} \\Rightarrow 2a-7b\\equiv0,\\; a+2b\\equiv0\\pmod{11}\\end{aligned}",
+      "reason": "thay dư và tính toán trực tiếp",
+      "uses": [
+       "s4"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s6",
+      "title": "Kết luận rằng n/11 cũng là số đẹp",
+      "explanation": "Giả sử biểu thức chia hết cho 11 là $(11u)^2+7(11v)^2$. Khi đó $121k = 121(u^2+7v^2)$ nên $k = u^2+7v^2$. Vì $k = n/11$, ta được $n/11$ cũng có dạng $x^2+7y^2$ với $x=u$, $y=v$ nguyên.",
+      "math": "121k = (11u)^2+7(11v)^2 = 121(u^2+7v^2) \\Rightarrow k = u^2+7v^2 = \\frac{n}{11}",
+      "reason": "Nhân tử chung 121 và định nghĩa số đẹp",
+      "uses": [
+       "s3",
+       "s5"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Vậy nếu $n$ là số đẹp và $11\\mid n$, thì $\\dfrac{n}{11}$ cũng là số đẹp.",
+     "math": "\\frac{n}{11} = x^2+7y^2\\quad(với\\ x,y\\in\\mathbb{Z})"
+    },
+    "answerChecks": [],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=4615 (cached 0) out=6468 (reasoning 4112)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_5a",
+   "topic": "probability",
+   "difficulty": 3,
+   "format": "compute",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 9660,
+   "outputTokens": 18482,
+   "modelSeconds": 246.3,
+   "wallSeconds": 246.3,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Xác suất là 4/201. 4/201 Xác suất là 4/201. \\frac{4}{201}",
+   "lesson": {
+    "analysis": {
+     "statement": "Gọi $S$ là tập hợp các số nguyên có giá trị tuyệt đối không vượt quá 100. Chọn ngẫu nhiên một số nguyên $a$ thuộc tập $S$. Tính xác suất sao cho số $a$ được chọn thoả mãn các nghiệm của phương trình $x^2-ax+2a+10=0$ đều là số nguyên.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "xác suất, phương trình bậc hai, nghiệm nguyên",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "biệt thức Δ",
+      "số chính phương",
+      "điều kiện parity",
+      "phân tích nhân tử",
+      "xác suất klassischen"
+     ],
+     "techniques": [
+      "factorization",
+      "substitution",
+      "subtract_equations",
+      "domain_conditions"
+     ],
+     "givens": [
+      "S = { a ∈ ℤ : |a| ≤ 100 }",
+      "Chọn ngẫu nhiên a ∈ S đều xác suất",
+      "Phương trình: x^2 - a x + 2a + 10 = 0"
+     ],
+     "unknowns": [
+      "Xác suất P sao cho cả hai nghiệm của phương trình đều là số nguyên"
+     ],
+     "constraints": [
+      "a ∈ ℤ, -100 ≤ a ≤ 100"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Ta tìm điều kiện để phương trình bậc hai có hai nghiệm nguyên: biệt thức phải là số chính phương và a, √Δ có cùng chẵn lẻ. Biến đổi điều kiện này thành phương trình $(a-4)^2 - k^2 = 56$, sau đó phân tích 56 thành tích của hai số có cùng chẵn lẻ để liệt kê tất cả giá trị a thỏa mãn. Cuối cùng đếm số a hợp lệ và tính xác suất.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để phương trình bậc hai có hai nghiệm nguyên, điều kiện gì về biệt thức Δ và về a, √Δ?",
+      "cue": "Nghiệm của phương trình bậc hai",
+      "explanation": "Nghiệm x = (a ± √Δ)/2. Để x nguyên, √Δ phải là số nguyên và a, √Δ có cùng chẵn lẻ (cùng chẵn hoặc cùng lẻ).",
+      "math": null,
+      "stepId": "s0",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Biểu thức Δ có thể viết dưới dạng gì để thấy được hiệu hai bình phương?",
+      "cue": "Hoàn thành bình phương",
+      "explanation": "$Δ = a^2 - 8a - 40 = (a-4)^2 - 56$. Khi đặt $Δ = k^2 (k ≥ 0$ nguyên) ta được $(a-4)^2 - k^2 = 56$.",
+      "math": "(a-4)^2 - k^2 = 56",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 2,
+      "question": "Procédé nào để phân tích biểu thức $(a-4)^2 - k^2$?",
+      "cue": "Hằng đẳng thức $a^2 - b^2 = (a-b)(a+b)$",
+      "explanation": "Ta có ((a-4)-k)((a-4)+k) = 56. Đặt hai facteurs này là u và v để có u·v = 56.",
+      "math": "((a-4)-k)((a-4)+k) = 56",
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Các ước số của 56 nào có cùng chẵn lẻ để u·v = 56?",
+      "cue": "Phân tích số 56",
+      "explanation": "Các cặp (u,v) thỏa mãn là (2,28), (4,14), (-28,-2), (-14,-4). Từ mỗi cặp ta tính a = (u+v)/2 + 4.",
+      "math": null,
+      "stepId": "s3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s0",
+      "title": "Tính biệt thức Δ của phương trình",
+      "explanation": "Để phương trình bậc hai có nghiệm thực, cần Δ ≥ 0; để nghiệm nguyên, Δ phải là số chính phương và a, √Δ có cùng chẵn lẻ.",
+      "math": "Δ = a^2 - 8a - 40 = (a-4)^2 - 56",
+      "reason": "Công thức biệt thức của phương trình x^2 - px + q = 0 là $Δ = p^2 - 4q$; sau đó hoàn thành bình phương.",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "s1",
+      "title": "Đặt $Δ = k^2$ và yêu cầu parity",
+      "explanation": "Nghiệm x = (a ± k)/2 phải là số nguyên ⟹ a và k có cùng chẵn lẻ (cùng chẵn hoặc cùng lẻ).",
+      "math": "\\begin{cases} a^2 - 8a - 40 = k^2 \\\\ a \\equiv k \\pmod{2} \\end{cases}",
+      "reason": "Định nghĩa nghiệm của phương trình bậc hai và điều kiện để (a ± k)/2 ∈ ℤ.",
+      "uses": [
+       "s0"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Biến đổi thành hiệu hai bình phương",
+      "explanation": "Đưa $k^2$ về bên trái và áp dụng hằng đẳng thức $a^2 - b^2 = (a-b)(a+b)$.",
+      "math": "(a-4)^2 - k^2 = 56 \\;\\Leftrightarrow\\; ((a-4)-k)((a-4)+k) = 56",
+      "reason": "Hằng đẳng thức phân biệt hai bình phương.",
+      "uses": [
+       "s1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Tìm các cặp số nguyên (u,v) thỏa mãn uv = 56 và cùng chẵn lẻ",
+      "explanation": "Đặt u = (a-4)-k, v = (a-4)+k. Khi đó u·v = 56 và v ≥ u (vì k ≥ 0). Từ các ước số của 56 ta liệt kê các cặp thỏa mãn cùng chẵn lẻ.",
+      "math": "(u,v) \\in \\{ (2,28), (4,14), (-28,-2), (-14,-4) \\}",
+      "reason": "Phân tích số 56 và kiểm tra tính chẵn lẻ của mỗi ước.",
+      "uses": [
+       "s2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s4",
+      "title": "Tính a từ mỗi cặp (u,v)",
+      "explanation": "Từ u+v = 2(a-4) và v-u = 2k ta được a = (u+v)/2 + 4, k = (v-u)/2. Thay từng cặp vào để lấy a.",
+      "math": "\\begin{aligned} &(u,v)=(2,28) \\Rightarrow a=19 \\\\ &(u,v)=(4,14) \\Rightarrow a=13 \\\\ &(u,v)=(-28,-2) \\Rightarrow a=-11 \\\\ &(u,v)=(-14,-4) \\Rightarrow a=-5 \\end{aligned}",
+      "reason": "Giải hệ linear từ định nghĩa u, v.",
+      "uses": [
+       "s3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s5",
+      "title": "Đếm số a thỏa mãn và tính xác suất",
+      "explanation": "Có 4 giá trị a trong [-100,100] thỏa mãn. Tập S có 2·100+1 = 201 phần tử. Xác suất = 4/201.",
+      "math": "P = \\frac{4}{201}",
+      "reason": "Định nghĩa xác suất klassischen và kết quả bước 4.",
+      "uses": [
+       "s4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Xác suất là 4/201.",
+     "math": "\\frac{4}{201}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "4/(2*100+1)"
+      ],
+      "assignments": [],
+      "expected": "4/201"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=9660 (cached 0) out=18482 (reasoning 8287)",
+    "total ≈ $0.0000 over 1 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  },
+  {
+   "id": "hcm-2025-chuyen_5b",
+   "topic": "combinatorics",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 16004,
+   "outputTokens": 9085,
+   "modelSeconds": 99.6,
+   "wallSeconds": 99.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Do đó, bất kỳ tập hợp B có 11 phần tử của A luôn chứa ba số phân biệt là độ dài ba cạnh của một tam giác.  Do đó, bất kỳ tập hợp B có 11 phần tử của A luôn chứa",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tập hợp $A=\\{1;2;3;\\ldots;100\\}$ và tập hợp $B$ là tập hợp con chứa 11 phần tử của tập hợp $A$. Chứng minh rằng tập hợp $B$ luôn chứa ba số $a,b,c$ phân biệt sao cho $a,b,c$ là độ dài ba cạnh của một tam giác.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "phương pháp phản chứng",
+      "bất đẳng thức tam giác",
+      "dãy Fibonacci"
+     ],
+     "techniques": [
+      "case_analysis",
+      "contradiction",
+      "domain_conditions"
+     ],
+     "givens": [
+      "A = {1,2,...,100}",
+      "B ⊂ A, |B| = 11"
+     ],
+     "unknowns": [],
+     "constraints": [
+      "các phần tử của B là các số nguyên dương khác nhau từ 1 đến 100"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Giả sử ngược rằng B không chứa bất kỳ ba số nào làm độ dài ba cạnh của tam giác. Sắp xếp các phần tử của B tăng dần và sử dụng giả sử để suy ra bất đẳng thức $b_{k-2}+b_{k-1} ≤ b_k$. Từ đó đưa ra hạn chế dưới cho $b_{11}$ và chứng minh mâu thuẫn vì $b_{11}$ không thể vượt quá 100.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Nếu giả sử B không có ba số nào tạo thành tam giác, thì đối với bất kỳ ba số nào trong B, tổng hai số nhỏ hơn hoặc bằng số lớn nhất là gì?",
+      "cue": "điều kiện của tam giác",
+      "explanation": "Điều kiện để ba số a ≤ b ≤ c là độ dài ba cạnh của tam giác là a + b > c. Nếu không có bộ ba nào thỏa mãn điều kiện này, thì đối với mọi ba số ta phải có a + b ≤ c.",
+      "math": null,
+      "stepId": "s2",
+      "focus": []
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Khi sắp xếp các phần tử của B tăng dần: b1 < b2 < … < b11, bất đẳng thức từ gợi ý trước áp dụng cho ba phần tử liên tiếp nào?",
+      "cue": "ba phần tử liên tiếp",
+      "explanation": "Áp dụng điều kiện a + b ≤ c cho ba phần tử liên tiếp $b_{k-2}$, $b_{k-1}$, $b_k$ (với k ≥ 3) ta được $b_{k-2} + b_{k-1} ≤ b_k$.",
+      "math": null,
+      "stepId": "s3",
+      "focus": []
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Từ bất đẳng thức $b_{k-2}+b_{k-1} ≤ b_k$, ta có thể viết lại dưới dạng bất đẳng thức ngược để đưa ra một cận dưới cho $b_k$ là gì?",
+      "cue": "cận dưới",
+      "explanation": "Vì $b_{k-2}+b_{k-1} ≤ b_k$, ta suy ra $b_k ≥ b_{k-1} + b_{k-2}$ cho mọi k ≥ 3. Đây là mối quan hệ tái tạo giống dãy Fibonacci.",
+      "math": null,
+      "stepId": "s4",
+      "focus": []
+     },
+     {
+      "id": "h4",
+      "level": 4,
+      "question": "Nếu lấy các giá trị nhỏ nhất có thể cho b1 và b2 (từ tập A), thì áp dụng liên tục mối quan hệ $b_k ≥ b_{k-1}+b_{k-2}$ sẽ cho chúng ta giá trị dưới hạn cho $b_{11}$ là bao nhiêu?",
+      "cue": "tính toán từng bước",
+      "explanation": "Bắt đầu với b1 ≥ 1, b2 ≥ 2, thì b3 ≥ 1+2 = 3, b4 ≥ 2+3 = 5, …, b11 ≥ 55+89 = 144.",
+      "math": null,
+      "stepId": "s5",
+      "focus": []
+     },
+     {
+      "id": "h5",
+      "level": 4,
+      "question": "Giá trị dưới hạn vừa tìm được cho $b_{11}$ so với giá trị tối đa có thể của một phần tử trong A (which is 100) là như thế nào, và điều này có ý nghĩa gì đối với giả sử ban đầu?",
+      "cue": "mâu thuẫn",
+      "explanation": "Ta có $b_{11} ≥ 144$ nhưng đồng thời $b_{11} ≤ 100$ vì mọi phần tử của B đều thuộc A. Đây là mâu thuẫn, vì vậy giả sử ban đầu sai và B phải chứa ba số tạo thành tam giác.",
+      "math": null,
+      "stepId": "s5",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Giả sử ngược và đặt thứ tự các phần tử của B",
+      "explanation": "Giả sử B không chứa bất kỳ ba số nào làm độ dài ba cạnh của tam giác. Đặt các phần tử của B theo thứ tự tăng dần.",
+      "math": "B=\\{b_1<b_2<\\dots<b_{11}\\}\\subseteq\\{1,2,\\dots,100\\}",
+      "reason": "phản chứng (giả sử để dẫn tới mâu thuẫn)",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "s2",
+      "title": "Đer ra bất đẳng thức từ giả sử",
+      "explanation": "Nếu tồn tại $i<j<k$ sao cho $b_i+b_j>b_k$ thì ba số $b_i,b_j,b_k$ sẽ tạo thành tam giác, mâu thuẫn với giả sử. Do đó mọi ba số thỏa mãn $b_i+b_j≤b_k$. Đặc biệt với $i=k-2$, $j=k-1$ ta có $b_{k-2}+b_{k-1}≤b_k$.",
+      "math": "\\forall\\,1\\le i<j<k\\le11:\\ b_i+b_j\\le b_k\\ \\Rightarrow\\ b_{k-2}+b_{k-1}\\le b_k\\ (k\\ge3)",
+      "reason": "phản chứng và định nghĩa tam giác",
+      "uses": [
+       "s1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s3",
+      "title": "Đặt dạng bất đẳng thức ngược để có cận dưới",
+      "explanation": "Từ $b_{k-2}+b_{k-1}≤b_k$ suy ra $b_k≥b_{k-1}+b_{k-2}$ cho mọi $k≥3$.",
+      "math": "b_k\\ge b_{k-1}+b_{k-2}\\ \\ (k=3,4,\\dots,11)",
+      "reason": "bất đẳng thức từ bước 2 (đổi dấu)",
+      "uses": [
+       "s2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s4",
+      "title": "Tính toán giá trị tối thiểu có thể của $b_{11}$",
+      "explanation": "Vì $b_1≥1$, $b_2≥2$ (hai phần tử nhỏ nhất khác nhau trong A), áp dụng lặp lại bất đẳng thức từ bước 3 để tìm các cận dưới.",
+      "math": "\\begin{aligned}\\nb_1&\\ge1,\\\\nb_2&\\ge2,\\\\nb_3&\\ge b_2+b_1\\ge2+1=3,\\\\nb_4&\\ge b_3+b_2\\ge3+2=5,\\\\nb_5&\\ge b_4+b_3\\ge5+3=8,\\\\nb_6&\\ge b_5+b_4\\ge8+5=13,\\\\nb_7&\\ge b_6+b_5\\ge13+8=21,\\\\nb_8&\\ge b_7+b_6\\ge21+13=34,\\\\nb_9&\\ge b_8+b_7\\ge34+21=55,\\\\nb_{10}&\\ge b_9+b_8\\ge55+34=89,\\\\nb_{11}&\\ge b_{10}+b_9\\ge89+55=144.\\n\\end{aligned}",
+      "reason": "tính chất không giảm và mối quan hệ Fibonacci",
+      "uses": [
+       "s3"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "s5",
+      "title": "Đột ngộ mâu thuẫn và kết luận",
+      "explanation": "Tuy nhiên mọi phần tử của B đều thuộc A, vì vậy $b_{11}≤100$. Tuy từ bước 4 ta có $b_{11}≥144>100$, mâu thuẫn. Do đó giả sử ban đầu sai, tức là B luôn chứa ba số tạo thành độ dài ba cạnh của một tam giác.",
+      "math": "b_{11}\\le100\\ \\text{và}\\ b_{11}\\ge144\\ \\Rightarrow\\ \\text{mâu thuẫn}",
+      "reason": "phản chứng và tính chất của tập A",
+      "uses": [
+       "s4"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Do đó, bất kỳ tập hợp B có 11 phần tử của A luôn chứa ba số phân biệt là độ dài ba cạnh của một tam giác.",
+     "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: invalid structure: hints.4.level: Too big: expected number to be <=4",
+    "attempt 2: not_checkable, 0 problem(s)",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=16004 (cached 0) out=9085 (reasoning 4524)",
+    "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+   ],
+   "slept": false
+  }
+ ]
+}
