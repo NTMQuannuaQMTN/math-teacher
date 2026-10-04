@@ -104,6 +104,9 @@ function createModels(env: Env, request: Request, problemText: string): { model:
       apiKey: env.LOCAL_LLM_API_KEY,
       thinking: false,
       reasoningEffort: effort,
+      // Hard multi-part chuyên problems (proofs + figure) can reason past 12K tokens and come back truncated on
+      // every attempt (user report, 2026-10-04): give the complex tier a bigger budget and the time to use it.
+      ...(tier === "complex" ? { maxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, 32_000), requestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, 330_000) } : {}),
     });
     if (env.SOLVER_FAILOVER_URL) {
       const failover = new LocalJsonModel(env.SOLVER_FAILOVER_URL, env.SOLVER_FAILOVER_MODEL || "local", { apiKey: env.SOLVER_FAILOVER_API_KEY, thinking: false });

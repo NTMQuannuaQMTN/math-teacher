@@ -26,6 +26,8 @@ export interface LocalModelOptions {
   apiKey?: string;
   thinking?: boolean;
   maxTokens?: number;
+  /** Hosted only: per-request time limit (default 180 s). A bigger output budget needs a longer limit. */
+  requestTimeoutMs?: number;
   temperature?: number;
   topP?: number;
   /** Qwen recommends 0–2 (1.5 for quantized models) against endless repetition; 0 = off. */
@@ -97,7 +99,7 @@ export class LocalJsonModel implements JsonModel {
     // attempt) and back off briefly on 429 rate limits instead of failing at once.
     const attempts = this.hosted ? 3 : 1;
     for (let attempt = 1; ; attempt++) {
-      const perRequest = this.hosted ? AbortSignal.any([signal, AbortSignal.timeout(HOSTED_REQUEST_TIMEOUT_MS)]) : signal;
+      const perRequest = this.hosted ? AbortSignal.any([signal, AbortSignal.timeout(this.options.requestTimeoutMs ?? HOSTED_REQUEST_TIMEOUT_MS)]) : signal;
       try {
         response = await fetch(`${this.baseUrl.replace(/\/$/, "")}/v1/chat/completions`, {
           method: "POST",

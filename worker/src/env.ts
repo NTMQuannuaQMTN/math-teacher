@@ -29,6 +29,9 @@ export interface Env {
   SOLVER_REASONING_EFFORT: string;
   /** Hosted open model (SOLVER_PROVIDER=local, hosted URL): reasoning effort for standard/complex problems (default "low"). */
   LOCAL_REASONING_EFFORT?: string;
+  /** Output-token budget and per-request timeout for the complex tier (defaults 32000 and 330000). */
+  LOCAL_COMPLEX_MAX_TOKENS?: string;
+  LOCAL_COMPLEX_REQUEST_TIMEOUT_MS?: string;
   /** …and for simple problems (one question, no figure, no proof; default "minimal"). */
   LOCAL_SIMPLE_REASONING_EFFORT?: string;
   /** Optional second OpenAI-compatible server used when the solver model is unavailable (quota, bad key). */

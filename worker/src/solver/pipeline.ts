@@ -108,15 +108,16 @@ function sanitizeIds(value: unknown, key = ""): unknown {
   return value;
 }
 
-type Issue = { code: string; path: PropertyKey[]; maximum?: number | bigint; origin?: string };
+type Issue = { code: string; path: PropertyKey[]; maximum?: number | bigint; minimum?: number | bigint; origin?: string };
 
 /**
- * Repairs size/format slips anywhere in the lesson: arrays and strings over their maximum are cut,
+ * Repairs size/format slips anywhere in the lesson: arrays and strings over their maximum are cut, numbers out
+ * of range are clamped (a hint "level" 5 → 4),
  * empty or malformed ids are replaced (a hint's empty stepId points at the step with the same index).
  * Returns null when any issue is of another kind (a wrong type or a missing field needs the model).
  */
 function salvageLimits(json: unknown, issues: Issue[]): unknown | null {
-  const fixable = (i: Issue) => i.code === "too_big" || i.code === "invalid_format" || (i.code === "too_small" && i.origin === "string");
+  const fixable = (i: Issue) => i.code === "too_big" || i.code === "invalid_format" || (i.code === "too_small" && (i.origin === "string" || i.origin === "number"));
   if (issues.length === 0 || !issues.every(fixable)) return null;
   const copy = structuredClone(json) as Json;
   const steps = Array.isArray(copy.steps) ? (copy.steps as Json[]) : [];
@@ -130,6 +131,9 @@ function salvageLimits(json: unknown, issues: Issue[]): unknown | null {
     const value = holder[key];
     if (issue.code === "too_big" && (Array.isArray(value) || typeof value === "string") && issue.maximum !== undefined) {
       holder[key] = value.slice(0, Number(issue.maximum));
+    } else if (typeof value === "number") {
+      if (issue.code === "too_big" && issue.maximum !== undefined) holder[key] = Number(issue.maximum);
+      if (issue.code === "too_small" && issue.minimum !== undefined) holder[key] = Number(issue.minimum);
     } else if (typeof value === "string" || value === null) {
       const index = typeof path[path.length - 2] === "number" ? (path[path.length - 2] as number) : 0;
       const section = String(path[0]);

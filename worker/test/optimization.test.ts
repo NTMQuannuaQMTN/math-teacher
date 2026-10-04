@@ -9,7 +9,7 @@ import { repairLatex, textifyProse } from "../../shared/src/mathText";
 import { latexFeedback, plainUnrenderable } from "../src/solver/latexCheck";
 import { OcrFailure } from "../src/ocr/provider";
 import { LocalJsonModel } from "../src/solver/localModel";
-import { solveProblem, tidy } from "../src/solver/pipeline";
+import { parseLesson, solveProblem, tidy } from "../src/solver/pipeline";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 import { problemTier } from "../src/solver/routing";
@@ -709,5 +709,20 @@ describe("'beyond Grade 9' for a problem within the curriculum (reported: incirc
 
   it("tells the model that hard is never unsupported", () => {
     expect(buildSystemPrompt(VN_GRADE_9)).toMatch(/long or hard is never a reason for "unsupported"/);
+  });
+});
+
+describe("schema slips after a long solve (Câu 4 probe, 2026-10-04)", () => {
+  it("repairs too many concepts, a bad hint id and an out-of-range hint level instead of discarding the lesson", () => {
+    const l = inequalityLesson() as unknown as { analysis: { concepts: string[] }; hints: { id: string; level: number }[] };
+    l.analysis.concepts = Array.from({ length: 11 }, (_, i) => `ý ${i + 1}`);
+    l.hints[0]!.id = "";
+    l.hints[1]!.level = 6;
+    const parsed = parseLesson(JSON.stringify(l));
+    expect("lesson" in parsed).toBe(true);
+    if (!("lesson" in parsed)) return;
+    expect(parsed.lesson.analysis.concepts).toHaveLength(8);
+    expect(parsed.lesson.hints[1]!.level).toBe(4);
+    expect(parsed.lesson.hints[0]!.id).toMatch(/^[A-Za-z0-9_']+$/);
   });
 });
