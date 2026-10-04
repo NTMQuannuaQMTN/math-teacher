@@ -1,12 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import type { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { displayFormula as displayMath } from "@shared/mathText";
 import type { Hint, Step, Verification } from "@shared/solution";
 import { Button } from "@/components/Button";
 import { MathText } from "@/components/math/MathText";
 import { useStrings } from "@/i18n";
 import { radius, spacing, typography, useTheme } from "@/theme";
 import { RichText } from "./RichText";
+
 
 export function SectionTitle({ children, right }: { children: string; right?: ReactNode }) {
   const { colors } = useTheme();
@@ -86,7 +88,7 @@ export function HintCard({ hint, index, revealed, active, onReveal, onFocus }: H
       {revealed ? (
         <View style={[styles.reveal, { backgroundColor: colors.surfaceMuted }]} accessibilityLiveRegion="polite">
           <RichText text={hint.explanation} style={[typography.body, { color: colors.text }]} />
-          {hint.math ? <MathText text={`$$${hint.math}$$`} fontSize={17} /> : null}
+          {hint.math ? <MathText text={displayMath(hint.math)} fontSize={17} /> : null}
         </View>
       ) : (
         <>
@@ -134,7 +136,7 @@ export function StepCard({
           </View>
         ) : null}
         <RichText text={step.explanation} style={[typography.body, { color: colors.text }]} />
-        {step.math ? <MathText text={`$$${step.math}$$`} fontSize={17} /> : null}
+        {step.math ? <MathText text={displayMath(step.math)} fontSize={17} /> : null}
         {step.reason ? (
           <View style={styles.reasonRow}>
             <Ionicons name="book-outline" size={15} color={colors.textMuted} />
@@ -176,7 +178,7 @@ export function FinalAnswerCard({ text, math, verification, hasFigure }: { text:
         <Text style={[typography.label, { color: tone.fg }]}>{s.solve.finalAnswer.toUpperCase()}</Text>
       </View>
       <RichText text={text} style={[typography.subtitle, { color: colors.text }]} />
-      {math ? <MathText text={`$$${math}$$`} fontSize={18} /> : null}
+      {math ? <MathText text={displayMath(math)} fontSize={18} /> : null}
       <View style={[styles.verify, { borderTopColor: colors.border }]} accessibilityRole="summary">
         <Ionicons name={info.icon} size={20} color={info.color} />
         <View style={styles.flex}>

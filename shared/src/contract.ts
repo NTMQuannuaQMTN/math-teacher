@@ -139,6 +139,7 @@ export const ErrorCodeSchema = z.enum([
   "solve_timeout",
   "solve_provider_error",
   "solve_malformed_output",
+  "solve_incomplete",
   /** The solving provider's daily quota is used up (free tiers); retrying before the reset can't help. */
   "solve_quota_exhausted",
   "solve_not_configured",

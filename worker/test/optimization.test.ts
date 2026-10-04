@@ -4,9 +4,12 @@ import { previewPartialLesson } from "../../shared/src/progressPreview";
 import type { SolveProgress } from "../../shared/src/solution";
 import type { ModelLesson } from "../../shared/src/solution";
 import { normalizeFigureChecks, restatesAnswer, verifyLesson } from "../../shared/src/verify";
+import { derivationSlips } from "../../shared/src/derivations";
+import { repairLatex, textifyProse } from "../../shared/src/mathText";
+import { latexFeedback, plainUnrenderable } from "../src/solver/latexCheck";
 import { OcrFailure } from "../src/ocr/provider";
 import { LocalJsonModel } from "../src/solver/localModel";
-import { solveProblem } from "../src/solver/pipeline";
+import { solveProblem, tidy } from "../src/solver/pipeline";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 import { problemTier } from "../src/solver/routing";
@@ -597,5 +600,114 @@ describe("API compatibility", () => {
   it("accepts live progress on a pending solution", () => {
     const progress = { stage: "writing", attempt: 1, elapsedMs: 12_000, stepsWritten: 2, problemKind: "bất phương trình", strategy: null };
     expect(SolutionSchema.safeParse({ ...base, status: "pending", progress }).success).toBe(true);
+  });
+});
+
+// --- user test 2026-10-04: LaTeX, false "beyond Grade 9", arithmetic slips ------------
+
+describe("LaTeX repairs (reported: \\[2pt], literal \\n)", () => {
+  it("removes a stray row-spacing argument and keeps a valid one", () => {
+    expect(repairLatex(String.raw`(AB+CD)^2 &\[2pt]\le 100`)).toBe(String.raw`(AB+CD)^2 & \le 100`);
+    expect(repairLatex(String.raw`x^2 \\[2pt] y`)).toBe(String.raw`x^2 \\[2pt] y`);
+  });
+
+  it("turns a literal \\n into a line break, but keeps \\neq, \\nu, \\notin", () => {
+    expect(repairLatex(String.raw`chẵn.\nModulo 9`)).toBe("chẵn.\nModulo 9");
+    expect(repairLatex(String.raw`k ≥ 0).\nc) f(n)`)).toBe("k ≥ 0).\nc) f(n)");
+    expect(repairLatex(String.raw`a \neq b, \nu, x \notin A`)).toBe(String.raw`a \neq b, \nu, x \notin A`);
+  });
+
+  it("wraps prose inside a display formula, leaves variables alone", () => {
+    expect(textifyProse("Modulo 4: t(t^2+4) ≡ 0 (mod 4) ⟺ t chẵn.")).toBe(String.raw`\text{ Modulo } 4: t(t^2+4) ≡ 0 \pmod{4} ⟺ t \text{ chẵn. }`);
+    expect(textifyProse(String.raw`\overline{abcd} = 1000a + AB \cdot CD`)).toBe(String.raw`\overline{abcd} = 1000a + AB \cdot CD`);
+    expect(textifyProse(String.raw`\text{Theo tổng hàng: } a+b+c = n`)).toBe(String.raw`\text{Theo tổng hàng: } a+b+c = n`);
+  });
+
+  it("tidy fixes the reported lesson text: no LaTeX wrapped around a line break", () => {
+    const l = inequalityLesson({ finalAnswer: { text: String.raw`a) được chứng minh.\n b) Tổng $r+s=-\frac{3}{2}$.`, math: null } });
+    expect(tidy(l).finalAnswer.text).toBe("a) được chứng minh.\n b) Tổng $r+s=-\\frac{3}{2}$.");
+  });
+
+  it("sends an unrenderable formula back, and shows it as plain text if it stays", () => {
+    const l = inequalityLesson();
+    l.steps[0] = { ...l.steps[0]!, math: String.raw`\frac{1}{2` };
+    expect(latexFeedback(l).join(" ")).toMatch(/doesn't render/);
+    const shown = plainUnrenderable(l);
+    expect(shown.steps[0]!.math).toBeNull();
+    expect(latexFeedback(shown)).toEqual([]);
+  });
+});
+
+describe("arithmetic slips inside a derivation (reported: magic square, step 8)", () => {
+  const magic = () => {
+    const l = inequalityLesson();
+    l.steps[1] = {
+      ...l.steps[1]!,
+      math: String.raw`(a+e+i)+(c+e+g)+(d+e+f)+(b+e+h) = 4n\\\Rightarrow (a+c+g+i)+2e+(d+f)+(b+h)+3e = 4n\\\Rightarrow (a+c+g+i)+(b+d+f+h)+5e = 4n`,
+    };
+    return l;
+  };
+
+  it("flags a rewritten side that changed value, and only that line", () => {
+    const slips = derivationSlips(magic());
+    expect(slips).toHaveLength(1);
+    expect(slips[0]!.message).toMatch(/2e\+\(d\+f\)/);
+    const v = verifyLesson(magic());
+    expect(v.verification.status).toBe("unverified");
+    expect(v.verification.steps?.find((s) => s.stepId === "s2")?.status).toBe("failed");
+  });
+
+  it("accepts correct rewrites, substitutions, factor picking and divisions", () => {
+    const ok = (math: string) => {
+      const l = inequalityLesson();
+      l.steps[1] = { ...l.steps[1]!, math };
+      return derivationSlips(l);
+    };
+    expect(ok(String.raw`(a+e+i)+(c+e+g)+(d+e+f)+(b+e+h) = 4n\\(a+b+c+d+f+g+h+i)+4e = 4n`)).toEqual([]);
+    expect(ok(String.raw`x_1 + x_2 = 5\\\Rightarrow 3 + x_2 = 5`)).toEqual([]);
+    expect(ok(String.raw`x^2 - 5x + 6 = 0\\\Rightarrow x - 2 = 0`)).toEqual([]);
+    expect(ok(String.raw`2x + 2y = 10\\\Rightarrow x + y = 5`)).toEqual([]);
+    expect(ok(String.raw`P = AB+BC+CD+DA\\P = AB+CD+8`)).toEqual([]);
+    expect(ok(String.raw`f(n) = (n+4)^4 - n^4\\f(n) = 16(n+2)(n^2+4n+8)`)).toEqual([]);
+    expect(ok(String.raw`f(n) = (n+4)^4 - n^4\\f(n) = 16(n+2)(n^2+4n+6)`)).toHaveLength(1);
+  });
+});
+
+describe("'beyond Grade 9' for a problem within the curriculum (reported: incircle geometry)", () => {
+  const unsupported = () =>
+    inequalityLesson({
+      analysis: { ...inequalityLesson().analysis, status: "unsupported", withinCurriculum: false, statusReason: "Bài toán cần các tính chất nâng cao." },
+      hints: [],
+      steps: [],
+      finalAnswer: { text: "", math: null },
+      answerChecks: [],
+    });
+
+  it("never stores the give-up: retries, and fails with solve_incomplete if it persists", async () => {
+    const model = scripted([JSON.stringify(unsupported()), JSON.stringify(unsupported())]);
+    await expect(solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal })).rejects.toMatchObject({ kind: "incomplete" });
+    expect(model.calls).toBe(2);
+  });
+
+  it("uses the real lesson when the retry solves it", async () => {
+    const model = scripted([JSON.stringify(unsupported()), JSON.stringify(inequalityLesson())]);
+    const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal });
+    expect(r.lesson.analysis.status).toBe("solvable");
+  });
+
+  it("a truncated attempt followed by a give-up is still not stored", async () => {
+    const model = scripted([new OcrFailure("malformed_output", "output truncated", true), JSON.stringify(unsupported())]);
+    await expect(solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal })).rejects.toMatchObject({ kind: "incomplete" });
+  });
+
+  it("keeps a genuine 'unsupported' (the problem asks for a derivative)", async () => {
+    const l = unsupported();
+    l.analysis = { ...l.analysis, statement: "Tính đạo hàm của $f(x) = x^3$." };
+    const r = await solveProblem(scripted([JSON.stringify(l)]), VN_GRADE_9, "Tính đạo hàm của $f(x) = x^3$.", { signal: new AbortController().signal });
+    expect(r.lesson.analysis.status).toBe("unsupported");
+  });
+
+  it("tells the model that hard is never unsupported", () => {
+    expect(buildSystemPrompt(VN_GRADE_9)).toMatch(/long or hard is never a reason for "unsupported"/);
   });
 });

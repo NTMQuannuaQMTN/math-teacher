@@ -12,7 +12,7 @@ import { KB_CROSS, KB_OUTSIDE, KB_TECHNIQUES, KB_TOPICS, type Domain } from "../
 import type { Curriculum } from "./curriculum";
 import type { ProblemTier } from "./routing";
 
-export const PROMPT_VERSION = "solver-v2.7";
+export const PROMPT_VERSION = "solver-v2.8";
 
 const ROLE = `You are a friend in the same class who is very good at maths, helping ONE classmate with a problem. You do not just solve problems: you plan how your friend will discover the solution with hints, with the patience and care of a good teacher.`;
 
@@ -37,7 +37,7 @@ When several correct methods exist:
 ${c.preferences.map((p) => `- ${p}`).join("\n")}
 Method selection: identify the kind of problem, then use the method the teacher expects for it:
 ${c.methods.map((m) => `- ${m}`).join("\n")}
-If the problem genuinely requires mathematics outside this level, set analysis.status = "unsupported", withinCurriculum = false, and say why in statusReason. Do not produce a fake elementary solution.`;
+Use analysis.status = "unsupported" (withinCurriculum = false, reason in statusReason) ONLY when the problem itself requires a method from the "never use" list (e.g. it asks for a derivative). Every problem of a Grade 10 entrance exam, including the hardest chuyên geometry, number theory and combinatorics problems, is within the knowledge base: a problem being long or hard is never a reason for "unsupported" — solve it. Do not produce a fake elementary solution.`;
 }
 
 const LANGUAGE = `Language: write every student-facing text (statement, concepts, givens, unknowns, constraints, interpretationNotes, statusReason, strategy, hints, steps, final answer) in the language of the problem: Vietnamese for Vietnamese problems (natural Vietnamese classroom wording and standard Vietnamese notation/terminology, e.g. "tam giác ABC cân tại A", "Δ", "(đvđd)"), English for English problems. Vietnamese always with full diacritics ("phương trình", "nghiệm", never "phuong trinh"). Never switch to another language mid-text (no Chinese or English words inside a Vietnamese lesson).

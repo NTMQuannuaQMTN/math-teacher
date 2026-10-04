@@ -14,6 +14,7 @@
 import { checkClaims, statementGivens, statementParts } from "./claims";
 import { regularizeTriangle } from "./figureShape";
 import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
+import { derivationSlips } from "./derivations";
 import { isKnownTechnique } from "./knowledgeBase";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
@@ -887,7 +888,17 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
     );
   }
 
-  const stepStatus = perStepStatus(lesson, resolved, answerChecksPassed > 0 && !uncovered);
+  // Arithmetic slips inside a step's derivation: wrong even when the final answer happens to be right.
+  const slips = lesson.analysis.status === "solvable" ? derivationSlips(lesson) : [];
+  for (const slip of slips) {
+    checks.push({ label: `step ${slip.stepId}: derivation is consistent`, passed: false });
+    answerLevelFailed++;
+    feedback.push(slip.message);
+  }
+
+  const stepStatus = perStepStatus(lesson, resolved, answerChecksPassed > 0 && !uncovered).map((s) =>
+    slips.some((x) => x.stepId === s.stepId) ? { ...s, status: "failed" as const } : s,
+  );
 
   let status: Verification["status"];
   if (lesson.analysis.status !== "solvable") status = "not_checkable";

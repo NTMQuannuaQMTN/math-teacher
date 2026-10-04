@@ -124,6 +124,7 @@ function createModels(env: Env, request: Request, problemText: string): { model:
 function failureCode(err: unknown): ErrorCode {
   if (err instanceof OcrFailure) {
     if (err.kind === "quota_exhausted") return "solve_quota_exhausted";
+    if (err.kind === "incomplete") return "solve_incomplete";
     return err.kind === "timeout" ? "solve_timeout" : err.kind === "malformed_output" ? "solve_malformed_output" : "solve_provider_error";
   }
   return isAbort(err) ? "solve_timeout" : "internal_error";

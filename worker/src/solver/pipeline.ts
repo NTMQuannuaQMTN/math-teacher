@@ -1,7 +1,9 @@
 import { z } from "zod";
 import { previewPartialLesson } from "../../../shared/src/progressPreview";
 import { ModelLessonSchema, type ModelLesson, type SolveProgress, type Verification } from "../../../shared/src/solution";
-import { containsVietnamese, normalizeProblemText, wrapBareLatex } from "../../../shared/src/mathText";
+import { unsupportedFeedback } from "../../../shared/src/gradeLevel";
+import { latexFeedback, plainUnrenderable } from "./latexCheck";
+import { containsVietnamese, normalizeProblemText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
 import { OcrFailure } from "../ocr/provider";
 import type { Curriculum } from "./curriculum";
@@ -295,9 +297,10 @@ export function repairCircleRefs(figure: NonNullable<ModelLesson["figure"]>): No
 
 /** Normalizes all student-facing strings (NFC for Vietnamese, no control characters). */
 export function tidy(lesson: ModelLesson): ModelLesson {
-  const t = (s: string) => wrapBareLatex(fixDoubledEscapes(normalizeProblemText(s)));
+  // repairLatex first: a literal "\n" would otherwise look like a LaTeX command to wrapBareLatex.
+  const t = (s: string) => wrapBareLatex(fixDoubledEscapes(repairLatex(normalizeProblemText(s))));
   const tn = (s: string | null) => (s === null ? null : t(s));
-  const stackMathLines = (m: string | null) => stackLines(m === null ? null : fixDoubledEscapes(m));
+  const stackMathLines = (m: string | null) => stackLines(m === null ? null : textifyProse(repairLatex(fixDoubledEscapes(m))));
   return {
     ...lesson,
     analysis: {
@@ -356,7 +359,7 @@ export async function solveProblem(
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
   ];
-  let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number } | null = null;
+  let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number; gaveUp: boolean } | null = null;
   const usage: Record<string, Usage> = {};
   const finish = (attempts: number, producedBy: string) => {
     let costUsd = 0;
@@ -397,7 +400,7 @@ export async function solveProblem(
         log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again`);
         continue;
       }
-      if (!best) throw err;
+      if (!best || best.gaveUp) throw err;
       log(`attempt ${attempt} failed (${(err as Error).message.slice(0, 120)}); keeping attempt ${attempt - 1}`);
       return { lesson: best.lesson, verification: best.verification, ...finish(attempt, best.model) };
     }
@@ -412,9 +415,16 @@ export async function solveProblem(
       if (!parsed.lesson.analysis.statement.trim()) {
         parsed.lesson.analysis.statement = normalizeProblemText(problemText);
       }
-      const result = verifyLesson(tidy(parsed.lesson));
-      const score =
-        result.verification.status === "verified" ? 3 : result.verification.status === "partial" ? 2 : result.verification.status === "not_checkable" ? 2 : 1;
+      const checked = verifyLesson(tidy(parsed.lesson));
+      // Formulas the app can't render go back to the model; whatever is left is shown as plain text.
+      const latex = latexFeedback(checked.lesson);
+      const result = { ...checked, lesson: latex.length ? plainUnrenderable(checked.lesson) : checked.lesson, feedback: [...checked.feedback, ...latex] };
+      // "unsupported" for a problem that needs no outside method is the model giving up (e.g. after running out
+      // of reasoning on a hard chuyên problem), not a property of the problem: it never wins over a real lesson.
+      const gaveUp = unsupportedFeedback(result.lesson).length > 0;
+      const score = gaveUp
+        ? 0
+        : result.verification.status === "verified" ? 3 : result.verification.status === "partial" ? 2 : result.verification.status === "not_checkable" ? 2 : 1;
       // Same score: prefer the more complete figure, then the attempt with fewer remaining problems.
       const f = result.lesson.figure;
       const drawn = f ? f.points.length + f.circles.length + f.lines.length : 0;
@@ -423,7 +433,7 @@ export async function solveProblem(
         score > best.score ||
         (score === best.score && (drawn > best.drawn || (drawn === best.drawn && result.feedback.length < best.problems)));
       if (better) {
-        best = { lesson: result.lesson, verification: result.verification, score, model: current.model, problems: result.feedback.length, drawn };
+        best = { lesson: result.lesson, verification: result.verification, score, model: current.model, problems: result.feedback.length, drawn, gaveUp };
       }
       problems = result.feedback;
       log(`attempt ${attempt}: ${result.verification.status}, ${problems.length} problem(s)${problems.length ? `: ${problems.slice(0, 3).join(" | ")}` : ""}`);
@@ -460,5 +470,9 @@ export async function solveProblem(
   }
 
   if (!best) throw new OcrFailure("malformed_output", "no structurally valid lesson after retries", true);
+  if (best.gaveUp) {
+    log(`the model marked a problem within the curriculum as unsupported on every attempt; not storing that`);
+    throw new OcrFailure("incomplete", "the model could not finish a problem that is within the curriculum", true);
+  }
   return { lesson: best.lesson, verification: best.verification, ...finish(maxAttempts, best.model) };
 }

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.128.0",
+    "katex": "^0.16.47",
     "zod": "^4.6.5"
   },
   "devDependencies": {

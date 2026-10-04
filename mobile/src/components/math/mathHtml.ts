@@ -1,4 +1,4 @@
-import { parseMathText, wrapBareLatex, type MathSegment } from "@shared/mathText";
+import { parseMathText, repairLatex, wrapBareLatex, type MathSegment } from "@shared/mathText";
 
 export interface MathPayload {
   segments: MathSegment[];
@@ -12,7 +12,8 @@ export interface MathPayload {
  * after it would render as an extra blank line. Drop exactly one.
  */
 export function layoutSegments(text: string): MathSegment[] {
-  const segments = parseMathText(wrapBareLatex(text));
+  // repairLatex also fixes lessons stored before the server repaired them ("\n", "\[2pt]").
+  const segments = parseMathText(wrapBareLatex(repairLatex(text)));
   return segments
     .map((segment, i) => {
       if (segment.kind !== "text") return segment;

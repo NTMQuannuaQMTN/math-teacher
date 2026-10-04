@@ -431,3 +431,63 @@ export function wrapBareLatex(input: string): string {
     .map((s) => (s.kind === "text" ? wrapProse(s.value.replace(/\$/g, "\\$")) : s.display ? `$$${s.value}$$` : `$${s.value}$`))
     .join("");
 }
+
+// ---------------------------------------------------------------------------
+// LaTeX repairs for model output
+// ---------------------------------------------------------------------------
+
+/** KaTeX commands that start with "\n" — everything else after a literal "\n" is a line break the model escaped twice. */
+const N_COMMANDS = new Set(
+  ("ne neq neg ni nu nabla not notin nmid nleq ngeq nless ngtr newline nexists natural nearrow nwarrow nsubseteq nsupseteq " +
+    "nparallel ncong nsim nleftarrow nrightarrow nleftrightarrow nLeftarrow nRightarrow nLeftrightarrow nshortmid nvdash nVdash " +
+    "nprec nsucc normalsize nolimits nonumber notag nleqslant ngeqslant nleqq ngeqq").split(" "),
+);
+const DIMENSION = String.raw`\[\s*-?[\d.]+\s*(?:pt|em|ex|mm|cm|mu)\s*\]`;
+
+/**
+ * Repairs the LaTeX slips models make in JSON strings, for text with `$…$` and for display maths alike:
+ *   - "\n" written as two characters → a real line break (unless it starts a command such as \neq, \nu);
+ *   - a stray row-spacing argument "\[2pt]" (from a mangled "\\[2pt]") → removed;
+ *   - display delimiters \[ … \] or \( … \) inside a maths field → removed.
+ */
+export function repairLatex(input: string): string {
+  return input
+    .replace(/(?<!\\)\\n([A-Za-z]*)/g, (m, rest: string) => {
+      for (let k = rest.length; k >= 0; k--) if (N_COMMANDS.has(`n${rest.slice(0, k)}`) && !/^[a-z]/.test(rest.slice(k)) || (k === rest.length && N_COMMANDS.has(`n${rest}`))) return m;
+      return `\n${rest}`;
+    })
+    .replace(new RegExp(String.raw`(?<!\\)\\${DIMENSION}`, "g"), " ");
+}
+
+const TEXT_GROUP = /\\(?:text|mbox|mathrm|textbf|operatorname)\s*\{[^{}]*\}/g;
+const WORD = String.raw`[A-Za-zÀ-ỹĐđ]+[.:]?`;
+const PROSE_RUN = new RegExp(String.raw`(?<![\\A-Za-zÀ-ỹĐđ{])(${WORD}(?:[ ]+${WORD})*)`, "gu");
+
+/**
+ * A display-maths field must be maths: prose inside it ("Modulo 4: … ⟺ t chẵn.") renders as italic letters run
+ * together. Wrap word runs that are clearly prose (a Vietnamese letter, or a capitalised word of 3+ letters) in
+ * \text{}, and write "(mod 4)" as \pmod{4}. Variables (x, ab, AB) are left alone.
+ */
+export function textifyProse(math: string): string {
+  const keep: string[] = [];
+  const masked = math
+    .replace(/^\s*\\[[(]|\\[\])]\s*$/g, "")
+    .replace(/(?<!\\p)\(\s*mod\s+([^()]+?)\s*\)/g, (_m, n: string) => `\\pmod{${n}}`)
+    .replace(TEXT_GROUP, (m) => `\u0000${keep.push(m) - 1}\u0000`);
+  const prose = (run: string) => /[^\x00-\x7F]/.test(run) || /(^|\s)[A-Z][a-z]{2,}/.test(run);
+  return masked
+    .replace(PROSE_RUN, (run: string) => {
+      if (!prose(run)) return run;
+      // Single ASCII letters at the edges are variables ("t chẵn" → "t \text{chẵn}").
+      const m = /^((?:[A-Za-z]\s+)*)(.*?)((?:\s+[A-Za-z](?![A-Za-zÀ-ỹ]))*)$/su.exec(run)!;
+      return `${m[1]}\\text{ ${m[2]} }${m[3]}`;
+    })
+    .replace(/\u0000(\d+)\u0000/g, (_m, i: string) => keep[Number(i)]!);
+}
+
+/** A display-maths field as `$$…$$` for the renderer: repaired, prose in \text{}, several lines stacked. */
+export function displayFormula(math: string): string {
+  const m = textifyProse(repairLatex(math));
+  const lines = m.split("\n").map((l) => l.trim()).filter(Boolean);
+  return `$$${lines.length > 1 && !/\\begin\{/.test(m) ? `\\begin{gathered}${lines.join(" \\\\ ")}\\end{gathered}` : m}$$`;
+}
