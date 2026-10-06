@@ -57,6 +57,8 @@ export interface Scene {
   angles: SceneAngle[];
   points: ScenePoint[];
   marks: SceneMark[];
+  /** Fills for highlighted polygons ("tam giác ABC" in the selected step): only present while highlighted. */
+  polygons: { id: string; path: string }[];
 }
 
 export interface SceneState {
@@ -283,7 +285,15 @@ export function buildScene(figure: Figure, resolved: ResolvedFigure, t: ViewTran
     }
   }
 
-  return { lines, circles, angles, points, marks };
+  // A named polygon (id "poly_ABC") is not part of the figure: it only exists as a fill while it is highlighted.
+  const polygons: Scene["polygons"] = [];
+  for (const id of state.highlighted) {
+    if (!id.startsWith("poly_")) continue;
+    const vertices = (id.slice(5).match(/[A-Z]'*/g) ?? []).map((v) => S(v));
+    if (vertices.length < 3 || vertices.some((v) => !v)) continue;
+    polygons.push({ id, path: `M${vertices.map((v) => `${fmt(v!.x)} ${fmt(v!.y)}`).join(" L")} Z` });
+  }
+  return { lines, circles, angles, points, marks, polygons };
 }
 
 export type HitKind = "point" | "angle" | "line" | "circle";

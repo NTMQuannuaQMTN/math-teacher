@@ -6,7 +6,8 @@ import { ModelLessonSchema } from "../../shared/src/solution";
 import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
 import { buildTargetIndex, deniesAnswer, presupposesAnswer, verifyLesson } from "../../shared/src/verify";
 import { problemDomains } from "../../shared/src/knowledgeBase";
-import { figureCoverage } from "../../shared/src/figureComplete";
+import { figureCoverage, mentionedTargets, polygonId } from "../../shared/src/figureComplete";
+import { buildScene } from "../../shared/src/figureScene";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 
@@ -573,5 +574,32 @@ describe("answers that deny what the question presupposes", () => {
     expect(presupposesAnswer("Tính diện tích tam giác ABC.")).toBe(true);
     expect(deniesAnswer("Phương trình vô nghiệm.")).toBe(true);
     expect(deniesAnswer("$x = 3$")).toBe(false);
+  });
+});
+
+describe("everything a step or hint names is highlighted (user request 2026-10-06)", () => {
+  const fig = () => {
+    const v = verifyLesson(isoscelesLesson());
+    return { figure: v.lesson.figure!, resolved: v.resolvedFigure! };
+  };
+
+  it("finds points, segments, three-letter and vertex angles, and polygons", () => {
+    const { figure, resolved } = fig();
+    const t = mentionedTargets(["Xét tam giác $ABC$ có $\\widehat{A} = 40^{\\circ}$ và $\\widehat{ABC} = \\widehat{ACB}$; điểm $B$ nằm trên $BC$."], figure, resolved);
+    expect(t).toEqual(expect.arrayContaining(["A", "B", "C", "seg_AB", "seg_AC", "seg_BC", "ang_A", "ang_B", "ang_C", polygonId(["A", "B", "C"])]));
+  });
+
+  it("ignores words that merely start with a capital letter", () => {
+    const { figure, resolved } = fig();
+    expect(mentionedTargets(["Vậy Ta có kết quả."], figure, resolved)).toEqual([]);
+  });
+
+  it("fills a highlighted polygon in the scene, and only while highlighted", () => {
+    const { figure, resolved } = fig();
+    const view = { scale: 20, tx: 100, ty: 100 } as never;
+    const on = buildScene(figure, resolved, view, { highlighted: new Set([polygonId(["A", "B", "C"])]), shownConstructions: new Set(), showLabels: true });
+    const off = buildScene(figure, resolved, view, { highlighted: new Set(), shownConstructions: new Set(), showLabels: true });
+    expect(on.polygons).toHaveLength(1);
+    expect(off.polygons).toHaveLength(0);
   });
 });

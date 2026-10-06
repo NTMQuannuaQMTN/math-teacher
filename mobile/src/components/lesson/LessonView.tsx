@@ -4,6 +4,8 @@ import { router } from "expo-router";
 import { useMemo, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { mentionedTargets } from "@shared/figureComplete";
+import { resolveFigure } from "@shared/geometry";
 import { techniqueName } from "@shared/knowledgeBase";
 import type { Solution } from "@shared/solution";
 import { Banner } from "@/components/Banner";
@@ -57,11 +59,22 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
     () => steps.slice(0, reachedStep + 1).flatMap((step) => step.geometryActions.filter((a) => a.action === "show").flatMap((a) => a.targets)),
     [steps, reachedStep],
   );
+  // Selecting a step or hint highlights everything its text names (points, segments, angles, circles, polygons),
+  // plus what the model chose to highlight. A hint not yet revealed only uses its question (no spoiler).
+  const resolved = useMemo(() => (figure ? resolveFigure(figure) : null), [figure]);
   const highlight = useMemo(() => {
     if (!focus) return [];
-    if (focus.kind === "hint") return hints.find((h) => h.id === focus.id)?.focus ?? [];
-    return steps.find((step) => step.id === focus.id)?.geometryActions.flatMap((a) => a.targets) ?? [];
-  }, [focus, hints, steps]);
+    const named = (texts: (string | null)[]) => (figure && resolved ? mentionedTargets(texts, figure, resolved) : []);
+    if (focus.kind === "hint") {
+      const h = hints.find((x) => x.id === focus.id);
+      if (!h) return [];
+      const open = progress.revealed.includes(h.id);
+      return [...new Set([...h.focus, ...named(open ? [h.question, h.cue, h.explanation, h.math] : [h.question, h.cue])])];
+    }
+    const st = steps.find((x) => x.id === focus.id);
+    if (!st) return [];
+    return [...new Set([...st.geometryActions.flatMap((a) => a.targets), ...named([st.title, st.explanation, st.math, st.reason])])];
+  }, [focus, hints, steps, figure, resolved, progress.revealed]);
 
   const stepChecks = new Map((solution.verification?.steps ?? []).map((c) => [c.stepId, c.status]));
 

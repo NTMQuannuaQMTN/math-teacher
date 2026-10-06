@@ -242,6 +242,9 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
       >
         {width > 0 ? (
           <Svg width={width} height={height} pointerEvents="none" style={styles.clip}>
+            {scene.polygons.map((p) => (
+              <Path key={p.id} d={p.path} fill={accent} fillOpacity={0.12} stroke="none" />
+            ))}
             {scene.circles.map((c) => (
               <Circle
                 key={c.id}

@@ -55,6 +55,8 @@ export interface Env {
   GEMINI_API_KEY?: string;
   /** With SOLVER_PROVIDER=local: "off" disables the temporary Gemini fallback for failed solves (default on when GEMINI_API_KEY is set). */
   SOLVER_GEMINI_FALLBACK?: string;
+  /** Daily spending cap for the Gemini fallback in USD (default 0.5); over it the fallback is skipped. */
+  SOLVER_GEMINI_DAILY_BUDGET_USD?: string;
 }
 
 export function isDevelopment(env: Env): boolean {

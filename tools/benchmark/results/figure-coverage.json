@@ -1,24 +1,24 @@
 {
-  "createdAt": "2026-10-02T11:55:13.504Z",
+  "createdAt": "2026-10-06T14:39:02.097Z",
   "before": {
-    "lessons": 13,
-    "segMentioned": 43,
-    "segDrawn": 43,
-    "angMentioned": 20,
-    "angDrawn": 16,
+    "lessons": 14,
+    "segMentioned": 81,
+    "segDrawn": 81,
+    "angMentioned": 34,
+    "angDrawn": 30,
     "missing": 0,
-    "stepsMentioning": 33,
-    "stepsSynced": 17
+    "stepsMentioning": 40,
+    "stepsSynced": 15
   },
   "after": {
-    "lessons": 13,
-    "segMentioned": 43,
-    "segDrawn": 43,
-    "angMentioned": 20,
-    "angDrawn": 20,
+    "lessons": 14,
+    "segMentioned": 81,
+    "segDrawn": 81,
+    "angMentioned": 34,
+    "angDrawn": 34,
     "missing": 0,
-    "stepsMentioning": 33,
-    "stepsSynced": 33
+    "stepsMentioning": 40,
+    "stepsSynced": 38
   },
   "skipped": 0,
   "lessons": [
@@ -231,8 +231,8 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -241,13 +241,13 @@
         "missing": [],
         "steps": {
           "mentioning": 1,
-          "synced": 1
+          "synced": 0
         }
       },
       "after": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -265,8 +265,8 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -275,13 +275,13 @@
         "missing": [],
         "steps": {
           "mentioning": 1,
-          "synced": 1
+          "synced": 0
         }
       },
       "after": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -299,8 +299,8 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -309,13 +309,13 @@
         "missing": [],
         "steps": {
           "mentioning": 1,
-          "synced": 1
+          "synced": 0
         }
       },
       "after": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -333,8 +333,8 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -343,13 +343,13 @@
         "missing": [],
         "steps": {
           "mentioning": 1,
-          "synced": 1
+          "synced": 0
         }
       },
       "after": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -367,8 +367,8 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -377,13 +377,13 @@
         "missing": [],
         "steps": {
           "mentioning": 1,
-          "synced": 1
+          "synced": 0
         }
       },
       "after": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -401,8 +401,8 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -411,13 +411,13 @@
         "missing": [],
         "steps": {
           "mentioning": 1,
-          "synced": 1
+          "synced": 0
         }
       },
       "after": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -435,8 +435,23 @@
       "promptVersion": "solver-v1.1",
       "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 3,
+          "drawn": 3
+        },
+        "angles": {
+          "mentioned": 0,
+          "drawn": 0
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 1,
+          "synced": 0
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 3,
+          "drawn": 3
         },
         "angles": {
           "mentioned": 0,
@@ -447,20 +462,39 @@
           "mentioning": 1,
           "synced": 1
         }
-      },
-      "after": {
+      }
+    },
+    {
+      "id": "b0f85f87-0a3c-4129-8817-1bfc73e1b130/q4",
+      "promptVersion": "solver-v2.8",
+      "before": {
         "segments": {
-          "mentioned": 2,
-          "drawn": 2
+          "mentioned": 31,
+          "drawn": 31
         },
         "angles": {
-          "mentioned": 0,
-          "drawn": 0
+          "mentioned": 14,
+          "drawn": 14
         },
         "missing": [],
         "steps": {
-          "mentioning": 1,
-          "synced": 1
+          "mentioning": 7,
+          "synced": 5
+        }
+      },
+      "after": {
+        "segments": {
+          "mentioned": 31,
+          "drawn": 31
+        },
+        "angles": {
+          "mentioned": 14,
+          "drawn": 14
+        },
+        "missing": [],
+        "steps": {
+          "mentioning": 7,
+          "synced": 5
         }
       }
     }

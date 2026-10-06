@@ -36,12 +36,19 @@ interface Mentions {
   unknownPoints: Set<string>;
   /** Circle names written as "(S)" or "(O; R)". */
   circles: Set<string>;
+  /** Every point the text names (alone, or as part of a segment, angle or polygon). */
+  points: Set<string>;
+  /** Polygons named as such ("tam giác ABC", "tứ giác ABCD"). */
+  polygons: string[][];
+  /** Angles named by their vertex only ("\widehat{A}", "góc B"). */
+  vertexAngles: Set<string>;
 }
 
 const RUN = /(?<![\p{L}\d])((?:[A-Z]'*){1,5})(?![\p{L}\d_])/gu;
-const ANGLE_BEFORE = /(\\widehat\{|\\hat\{|\\angle\s*|∠\s*|góc\s+)$/;
-const POLYGON_BEFORE = /(\\triangle\s*|\\Delta\s*|Δ\s*|tam giác\s+|tứ giác\s+|hình thang\s+|hình bình hành\s+|hình chữ nhật\s+|hình vuông\s+|hình thoi\s+|triangle\s+|quadrilateral\s+)$/i;
-const NAMING_BEFORE = /(Gọi\s+|gọi\s+|điểm\s+|tại\s+|lấy\s+|point\s+|at\s+|Let\s+)$/;
+// A "$" may open the maths between the word and the name ("góc $A$", "tam giác $ABC$").
+const ANGLE_BEFORE = /(\\widehat\{|\\hat\{|\\angle\s*|∠\s*|góc\s+\$?)$/;
+const POLYGON_BEFORE = /(\\triangle\s*|\\Delta\s*|Δ\s*|(?:tam giác|tứ giác|hình thang|hình bình hành|hình chữ nhật|hình vuông|hình thoi|triangle|quadrilateral)\s+\$?)$/i;
+const NAMING_BEFORE = /(Gọi\s+|gọi\s+|điểm\s+|tại\s+|lấy\s+|point\s+|at\s+|Let\s+)\$?$/;
 const CIRCLE_NAME = /\(\s*([A-Z]'*)\s*(?:\)|;|,)/g;
 
 function splitRun(run: string): string[] {
@@ -62,13 +69,17 @@ function scan(text: string, pointIds: Set<string>, out: Mentions): void {
       out.unknownPoints.add(unknown[0]!);
     }
     if (unknown.length > 0) continue;
+    if (!inCircleName) for (const l of letters) out.points.add(l);
 
-    if (letters.length === 3 && ANGLE_BEFORE.test(before)) {
+    if (letters.length === 1 && ANGLE_BEFORE.test(before)) {
+      out.vertexAngles.add(letters[0]!);
+    } else if (letters.length === 3 && ANGLE_BEFORE.test(before)) {
       const [a, v, b] = letters as [string, string, string];
       out.angles.push([a, v, b]);
       out.segments.push([v, a], [v, b]);
     } else if (letters.length >= 3 && POLYGON_BEFORE.test(before)) {
       letters.forEach((l, i) => out.segments.push([l, letters[(i + 1) % letters.length]!]));
+      out.polygons.push(letters);
     } else if (letters.length === 2) {
       out.segments.push([letters[0]!, letters[1]!]);
     }
@@ -76,7 +87,7 @@ function scan(text: string, pointIds: Set<string>, out: Mentions): void {
 }
 
 function mentionsOf(texts: (string | null | undefined)[], pointIds: Set<string>): Mentions {
-  const out: Mentions = { segments: [], angles: [], unknownPoints: new Set(), circles: new Set() };
+  const out: Mentions = { segments: [], angles: [], unknownPoints: new Set(), circles: new Set(), points: new Set(), polygons: [], vertexAngles: new Set() };
   for (const t of texts) if (t) scan(t, pointIds, out);
   return out;
 }
@@ -360,4 +371,40 @@ export function figureCoverage(lesson: ModelLesson, resolved: ResolvedFigure): F
     missing,
     steps: { mentioning, synced },
   };
+}
+
+/** Id of the highlight-only fill for a named polygon (drawn by the scene while highlighted). */
+export const polygonId = (vertices: string[]) => `poly_${vertices.join("")}`;
+
+/**
+ * Every figure object a piece of lesson text names: points, the segments (or the drawn lines containing them),
+ * angles (∠ABC, or \widehat{A} when the figure has exactly one angle at A), circles "(O)", and polygons "tam giác ABC"
+ * (their sides, vertices and a fill). Selecting a step or hint highlights all of these.
+ */
+export function mentionedTargets(texts: (string | null | undefined)[], figure: Figure, resolved: ResolvedFigure): string[] {
+  const pointIds = new Set(figure.points.filter((p) => !p.hidden).map((p) => p.id));
+  const m = mentionsOf(texts, pointIds);
+  const xs = Object.values(resolved.points).map((p) => p.x);
+  const ys = Object.values(resolved.points).map((p) => p.y);
+  const size = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 1e-6);
+  const out = new Set<string>();
+  for (const p of m.points) out.add(p);
+  for (const pair of m.segments) {
+    const line = pair[0] !== pair[1] ? covered(figure, resolved, pair, size) : null;
+    if (line) out.add(line.id);
+  }
+  for (const [f, v, t] of m.angles) {
+    const a = figure.angles.find((x) => x.vertex === v && ((x.from === f && x.to === t) || (x.from === t && x.to === f)));
+    if (a) out.add(a.id);
+  }
+  for (const v of m.vertexAngles) {
+    const at = figure.angles.filter((x) => x.vertex === v);
+    if (at.length === 1) out.add(at[0]!.id);
+  }
+  for (const name of m.circles) {
+    const c = figure.circles.find((c) => c.center === name || c.id === name || c.id === `c_${name}` || (c.label ?? "").includes(name));
+    if (c) out.add(c.id);
+  }
+  for (const poly of m.polygons) out.add(polygonId(poly));
+  return [...out];
 }

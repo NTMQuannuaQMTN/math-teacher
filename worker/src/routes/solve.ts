@@ -11,6 +11,7 @@ import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
 import { GeminiJsonModel } from "../solver/geminiModel";
 import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
+import { BudgetedJsonModel } from "../solver/budget";
 import { FailoverJsonModel } from "../solver/failover";
 import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
@@ -119,8 +120,11 @@ function createModels(env: Env, request: Request, problemText: string): { model:
     // truncated or empty output, a give-up, or an exhausted daily quota. Corrective retries stay on the free model.
     // Off with SOLVER_GEMINI_FALLBACK=off, or by removing GEMINI_API_KEY.
     if (geminiFallbackOn(env)) {
-      const gemini = new GeminiJsonModel(env.GEMINI_API_KEY!, env.SOLVER_FALLBACK_MODEL || "gemini-3.5-flash", env.SOLVER_FALLBACK_REASONING_EFFORT || "medium");
-      return { model, fallback: gemini, fallbackOnlyOnFailure: true };
+      // gemini-3.8-flash: $3.75/M output tokens vs $9 for 3.5-flash. A daily cap bounds the spend (default $0.50/day).
+      const gemini = new GeminiJsonModel(env.GEMINI_API_KEY!, env.SOLVER_FALLBACK_MODEL || "gemini-3.8-flash", env.SOLVER_FALLBACK_REASONING_EFFORT || "medium");
+      const budget = Number(env.SOLVER_GEMINI_DAILY_BUDGET_USD ?? "0.5");
+      const capped = new BudgetedJsonModel(gemini, env.DB, Number.isFinite(budget) ? budget : 0.5, (m) => console.log(`[solve] ${m}`));
+      return { model, fallback: capped, fallbackOnlyOnFailure: true };
     }
     return { model };
   }
