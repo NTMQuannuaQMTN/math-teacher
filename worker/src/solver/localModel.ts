@@ -27,6 +27,12 @@ export interface LocalModelOptions {
   apiKey?: string;
   thinking?: boolean;
   maxTokens?: number;
+  /**
+   * Hosted (OpenRouter) only: route only to providers that declare every parameter we send (default true). Some
+   * models honour json_schema without declaring it (Nemotron 3 Ultra): turn this off for them; the schema check
+   * after parsing still rejects anything malformed.
+   */
+  requireParameters?: boolean;
   /** Hosted only: per-request time limit (default 180 s). A bigger output budget needs a longer limit. */
   requestTimeoutMs?: number;
   temperature?: number;
@@ -95,7 +101,7 @@ export class LocalJsonModel implements JsonModel {
       ...(onDelta ? { stream: true, stream_options: { include_usage: true } } : {}),
       ...(this.hosted
         ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
-          { provider: { require_parameters: true }, reasoning: { effort } }
+          { provider: { require_parameters: this.options.requireParameters ?? true }, reasoning: { effort } }
         : { chat_template_kwargs: { enable_thinking: thinking } }),
     };
     let response!: Response;

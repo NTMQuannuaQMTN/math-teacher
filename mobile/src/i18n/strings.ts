@@ -281,6 +281,7 @@ const en = {
     editProblem: "Edit problem",
     regenerate: "Create a new lesson",
     failedTitle: "Couldn't prepare the lesson",
+    regenerateKept: (reason: string) => `The new lesson couldn't be prepared (${reason.replace(/\.$/, "")}). This is your previous lesson.`,
   },
   a11y: {
     problemImage: "Photo of the problem",
@@ -568,6 +569,7 @@ const vi: Strings = {
     editProblem: "Sửa đề bài",
     regenerate: "Tạo bài học mới",
     failedTitle: "Chưa chuẩn bị được bài học",
+    regenerateKept: (reason: string) => `Chưa tạo lại được bài giải (${reason.replace(/\.$/, "")}). Đây là bài giải trước của bạn.`,
   },
   a11y: {
     problemImage: "Ảnh bài toán",

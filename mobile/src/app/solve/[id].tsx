@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { Solution, SolveProgress } from "@shared/solution";
 import { api } from "@/api/client";
 import { AppError, errorMessage, isAbort } from "@/api/errors";
+import { Banner } from "@/components/Banner";
 import { Button } from "@/components/Button";
 import { LessonView } from "@/components/lesson/LessonView";
 import { RichText } from "@/components/lesson/RichText";
@@ -70,6 +71,8 @@ export default function SolveScreen() {
   const [phase, setPhase] = useState<Phase>(cached?.status === "ready" ? { kind: "ready", solution: cached } : { kind: "loading" });
   const [stage, setStage] = useState(0);
   const [live, setLive] = useState<SolveProgress | null>(null);
+  /** A regenerate failed and the server kept the previous lesson: shown above that lesson. */
+  const [keptNotice, setKeptNotice] = useState<string | null>(null);
   const [progress, setProgressState] = useState<LessonProgress>(() => (id ? lessonStore.getProgress(key) : { revealed: [], unlocked: 1, showSolution: false }));
   const controller = useRef<AbortController | null>(null);
 
@@ -92,6 +95,7 @@ export default function SolveScreen() {
       controller.current = abort;
       setStage(0);
       setLive(null);
+      setKeptNotice(null);
       // Live progress: poll the pending solution while the solve request is open (older servers send none).
       let open = true;
       void (async () => {
@@ -123,12 +127,22 @@ export default function SolveScreen() {
         setPhase(solution.status === "ready" ? { kind: "ready", solution } : { kind: "error", error: new AppError("api", solution.error?.retryable ?? true, (solution.error?.code as never) ?? "internal_error") });
       } catch (err) {
         if (isAbort(err) || abort.signal.aborted) return;
+        // A failed regenerate keeps the previous lesson on the server: show it again rather than an error screen.
+        if (regenerate) {
+          const kept = await api.getSolution(id, questionId, abort.signal).catch(() => null);
+          if (kept?.status === "ready" && kept.lesson && !abort.signal.aborted) {
+            lessonStore.putSolution(key, kept);
+            setKeptNotice(s.solve.regenerateKept(errorMessage(err)));
+            setPhase({ kind: "ready", solution: kept });
+            return;
+          }
+        }
         setPhase({ kind: "error", error: err });
       } finally {
         open = false;
       }
     },
-    [id, key, questionId],
+    [id, key, questionId, s.solve],
   );
 
   useEffect(() => {
@@ -209,12 +223,18 @@ export default function SolveScreen() {
   return (
     <>
       {header}
+      {keptNotice ? (
+        <View style={styles.notice}>
+          <Banner tone="warning" message={keptNotice} />
+        </View>
+      ) : null}
       <LessonView solution={phase.solution} progress={progress} setProgress={setProgress} onRegenerate={regenerate} />
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  notice: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm, maxWidth: 720, width: "100%", alignSelf: "center" },
   flex: { flex: 1 },
   center: { alignItems: "center", justifyContent: "center" },
   centerText: { textAlign: "center" },
