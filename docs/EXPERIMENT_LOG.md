@@ -210,3 +210,7 @@ beyond Grade 9, a miscounted `e` in the magic-square derivation (Câu 5, step 8)
 answers 6/6 correct, fully successful 1/6. Issues: invalid monotonicity step (1c), vectors wording (1b), foreign
 words (1c, 2b, 3a), an overclaimed "verified" (1a), and a false positive of our derivation check (2b). These items are
 in the train split and were seen in development (teaching records for 1a–3b).
+- GEM-002 (same day): the first fallback run truncated at Gemini's 40K output cap (thinking counts) after 187 s →
+  cap raised to the model maximum 65,536. "low" thinking measured on Câu 4: 20 s but unverified (hand-waved step);
+  with one corrective retry, 29 s and no usable figure → kept "medium". The free model now hands off after 120 s on
+  complex problems when the fallback is on, leaving Gemini ~5 min within the 420 s solve limit.

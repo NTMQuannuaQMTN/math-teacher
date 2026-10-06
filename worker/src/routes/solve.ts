@@ -107,8 +107,8 @@ function createModels(env: Env, request: Request, problemText: string): { model:
         simpleEffort: env.LOCAL_SIMPLE_REASONING_EFFORT,
         effort: env.LOCAL_REASONING_EFFORT,
         complexMaxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, 24_000),
-        // With the Gemini fallback on, stop the free model sooner so the fallback (~150 s on a hard problem) still fits.
-        complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, geminiFallbackOn(env) ? 180_000 : 240_000),
+        // With the Gemini fallback on, stop the free model sooner so the fallback (Gemini 3.5 Flash, medium thinking: 145–190 s on a 3-part chuyên geometry proof) still fits; "low" thinking was measured and gave unusable lessons.
+        complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, geminiFallbackOn(env) ? 120_000 : 240_000),
       }),
     });
     if (env.SOLVER_FAILOVER_URL) {
