@@ -52,7 +52,9 @@ function solveTimeoutMs(env: Env): number {
  * Cheap/mid primary plus an optional stronger fallback used only when checks fail.
  * Default provider is Gemini (flash → pro). OpenAI remains available via SOLVER_PROVIDER=openai.
  */
-function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel } {
+const geminiFallbackOn = (env: Env) => !!env.GEMINI_API_KEY && (env.SOLVER_GEMINI_FALLBACK || "on").toLowerCase() !== "off";
+
+function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean } {
   const provider = (env.SOLVER_PROVIDER || "gemini").toLowerCase();
 
   if (provider === "gemini" && env.GEMINI_API_KEY) {
@@ -105,12 +107,20 @@ function createModels(env: Env, request: Request, problemText: string): { model:
         simpleEffort: env.LOCAL_SIMPLE_REASONING_EFFORT,
         effort: env.LOCAL_REASONING_EFFORT,
         complexMaxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, 24_000),
-        complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, 240_000),
+        // With the Gemini fallback on, stop the free model sooner so the fallback (~150 s on a hard problem) still fits.
+        complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, geminiFallbackOn(env) ? 180_000 : 240_000),
       }),
     });
     if (env.SOLVER_FAILOVER_URL) {
       const failover = new LocalJsonModel(env.SOLVER_FAILOVER_URL, env.SOLVER_FAILOVER_MODEL || "local", { apiKey: env.SOLVER_FAILOVER_API_KEY, thinking: false });
       return { model: new FailoverJsonModel(model, failover, (m) => console.log(`[solve] ${m}`)) };
+    }
+    // Temporary (2026-10-06, user decision): Gemini takes over only when the free model fails outright — a timeout,
+    // truncated or empty output, a give-up, or an exhausted daily quota. Corrective retries stay on the free model.
+    // Off with SOLVER_GEMINI_FALLBACK=off, or by removing GEMINI_API_KEY.
+    if (geminiFallbackOn(env)) {
+      const gemini = new GeminiJsonModel(env.GEMINI_API_KEY!, env.SOLVER_FALLBACK_MODEL || "gemini-3.5-flash", env.SOLVER_FALLBACK_REASONING_EFFORT || "medium");
+      return { model, fallback: gemini, fallbackOnlyOnFailure: true };
     }
     return { model };
   }
@@ -246,7 +256,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
     if (row) return json({ solution: toApiSolution(row) } satisfies SolutionResponse);
   }
 
-  const { model, fallback } = createModels(env, request, problemText);
+  const { model, fallback, fallbackOnlyOnFailure } = createModels(env, request, problemText);
   await consumeRateLimit(env.DB, `solve:device:${ownerId}`, intVar(env.SOLVE_LIMIT_PER_DEVICE_PER_HOUR, 30), HOUR);
   await consumeRateLimit(env.DB, `solve:ip:${getClientIp(request)}`, intVar(env.SOLVE_LIMIT_PER_IP_PER_HOUR, 90), HOUR);
 
@@ -304,6 +314,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
     try {
       const result = await solveProblem(model, VN_GRADE_9, problemText, {
         fallback,
+        fallbackOnlyOnFailure,
         signal: AbortSignal.timeout(solveTimeoutMs(env)),
         log: (m) => console.log(`[solve ${scanId}/${questionId}] ${m}`),
         onProgress,

@@ -61,6 +61,11 @@ export interface SolveOptions {
   onProgress?: (progress: SolveProgress) => void;
   /** Add retrieved method cards for the problem type (techniques.ts) to the request. */
   techniqueHints?: boolean;
+  /**
+   * Use `fallback` only after the previous attempt failed outright (timeout, truncated or empty output, or the model
+   * gave up on an in-curriculum problem) — not for corrective retries, which stay on the primary model.
+   */
+  fallbackOnlyOnFailure?: boolean;
   /** Debugging: receives each attempt's raw model output. */
   onRaw?: (attempt: number, text: string) => void;
 }
@@ -349,6 +354,7 @@ export async function solveProblem(
     retryBudgetMs = 150_000,
     onProgress,
     techniqueHints: withTechniques = false,
+    fallbackOnlyOnFailure = false,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
@@ -375,8 +381,11 @@ export async function solveProblem(
     return { attempts, durationMs: Date.now() - started, usage, costUsd, model: producedBy };
   };
 
+  /** The previous attempt produced no usable lesson (threw, or gave up). */
+  let lastFailed = false;
+  const modelFor = (attempt: number) => (attempt > 1 && fallback && (!fallbackOnlyOnFailure || lastFailed) ? fallback : model);
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    const current = attempt > 1 && fallback ? fallback : model;
+    const current = modelFor(attempt);
     if (current !== model) log(`escalating to ${current.model}`);
     const report = (stage: SolveProgress["stage"], partial = "") =>
       onProgress?.({ stage, attempt, elapsedMs: Date.now() - started, ...previewPartialLesson(partial, { vietnamese }) });
@@ -403,7 +412,10 @@ export async function solveProblem(
       // …but only while a retry can still finish in a reasonable time: after a long failed request (a hard problem
       // the model ran out of tokens or time on), another full attempt would double the wait for a likely failure.
       const spent = Date.now() - started;
-      if (!best && attempt < maxAttempts && err instanceof OcrFailure && err.retryable && spent <= retryBudgetMs) {
+      // A failure-only fallback (a different, faster model) is worth trying even after a long failed attempt.
+      const switching = fallbackOnlyOnFailure && !!fallback && current !== fallback;
+      if (!best && attempt < maxAttempts && err instanceof OcrFailure && (err.retryable || switching) && (spent <= retryBudgetMs || switching)) {
+        lastFailed = true;
         log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again`);
         continue;
       }
@@ -433,6 +445,7 @@ export async function solveProblem(
       // "unsupported" for a problem that needs no outside method is the model giving up (e.g. after running out
       // of reasoning on a hard chuyên problem), not a property of the problem: it never wins over a real lesson.
       const gaveUp = unsupportedFeedback(result.lesson).length > 0;
+      lastFailed = gaveUp;
       const score = gaveUp
         ? 0
         : result.verification.status === "verified" ? 3 : result.verification.status === "partial" ? 2 : result.verification.status === "not_checkable" ? 2 : 1;
@@ -466,7 +479,7 @@ export async function solveProblem(
     if (attempt < maxAttempts) {
       const needsFigure = !withFigure && problems.some((p) => p.includes("needs a figure"));
       if (needsFigure) withFigure = true;
-      const next = attempt + 1 > 1 && fallback ? fallback : model;
+      const next = modelFor(attempt + 1);
       if (next !== current || needsFigure) {
         // Fresh start for a different model (or the full geometry prompt): send what was wrong,
         // not the rejected lesson, which would cost thousands of input tokens.

@@ -784,3 +784,31 @@ describe("PTNK 2025 review: honesty and language", () => {
     expect(cjk.lesson.steps[1]!.explanation).not.toMatch(/項/);
   });
 });
+
+describe("failure-only fallback (temporary Gemini fallback, 2026-10-06)", () => {
+  const text = "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.";
+  const opts = (fallback: JsonModel) => ({ signal: new AbortController().signal, fallback, fallbackOnlyOnFailure: true });
+
+  it("switches to the fallback after a long failed attempt (no fail-fast when another model is available)", async () => {
+    const primary = scripted([new OcrFailure("timeout", "local model request timed out", true)]);
+    const backup = scripted([JSON.stringify(inequalityLesson())]);
+    const r = await solveProblem(primary, VN_GRADE_9, text, { ...opts(backup), retryBudgetMs: -1 });
+    expect(r.lesson.analysis.status).toBe("solvable");
+    expect([primary.calls, backup.calls]).toEqual([1, 1]);
+  });
+
+  it("switches when the daily quota is exhausted", async () => {
+    const primary = scripted([new OcrFailure("quota_exhausted", "hosted model daily quota exhausted", false)]);
+    const backup = scripted([JSON.stringify(inequalityLesson())]);
+    await solveProblem(primary, VN_GRADE_9, text, opts(backup));
+    expect(backup.calls).toBe(1);
+  });
+
+  it("keeps corrective retries on the primary model", async () => {
+    const bad = inequalityLesson({ answerChecks: [{ kind: "inequality", statements: ["3(x - 2) <= 5x + 4 - 7x"], assignments: [], expected: "x <= 3" }] });
+    const primary = scripted([JSON.stringify(bad), JSON.stringify(inequalityLesson())]);
+    const backup = scripted([JSON.stringify(inequalityLesson())]);
+    await solveProblem(primary, VN_GRADE_9, text, opts(backup));
+    expect([primary.calls, backup.calls]).toEqual([2, 0]);
+  });
+});

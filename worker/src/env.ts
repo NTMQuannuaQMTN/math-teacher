@@ -53,6 +53,8 @@ export interface Env {
   OPENAI_API_KEY?: string;
   ANTHROPIC_API_KEY?: string;
   GEMINI_API_KEY?: string;
+  /** With SOLVER_PROVIDER=local: "off" disables the temporary Gemini fallback for failed solves (default on when GEMINI_API_KEY is set). */
+  SOLVER_GEMINI_FALLBACK?: string;
 }
 
 export function isDevelopment(env: Env): boolean {
