@@ -72,7 +72,9 @@ export class LocalJsonModel implements JsonModel {
       // A hosted reasoning model can spend the whole output budget thinking (EXP-010: g5 truncated at
       // "low", verified at "minimal"; ch-4 truncated even at "minimal"), or finish with an empty answer.
       // Retry once with one step less reasoning; the verifier still gates the result.
-      const lower = LOWER_EFFORT[effort];
+      // On a gateway that can't go below "low", a step down would repeat the same request.
+      const floor = this.hosted && !/openrouter\.ai/.test(this.baseUrl) && (effort === "low" || effort === "minimal" || effort === "none");
+      const lower = floor ? undefined : LOWER_EFFORT[effort];
       const budgetSpent = err instanceof OcrFailure && (err.message === TRUNCATED || err.message === EMPTY);
       // Only after a quick failure: a request that already ran for minutes would make the student wait as long again.
       const quick = Date.now() - started < STEP_DOWN_WITHIN_MS;
@@ -99,10 +101,14 @@ export class LocalJsonModel implements JsonModel {
       response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
       // Streaming only feeds the progress display; the result is assembled exactly as without it.
       ...(onDelta ? { stream: true, stream_options: { include_usage: true } } : {}),
-      ...(this.hosted
-        ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
-          { provider: { require_parameters: this.options.requireParameters ?? true }, reasoning: { effort } }
-        : { chat_template_kwargs: { enable_thinking: thinking } }),
+      ...(!this.hosted
+        ? { chat_template_kwargs: { enable_thinking: thinking } }
+        : /openrouter\.ai/.test(this.baseUrl)
+          ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
+            { provider: { require_parameters: this.options.requireParameters ?? true }, reasoning: { effort } }
+          : // Other OpenAI-compatible gateways (SOCLAAS): the standard parameter. Some models accept only
+            // low | medium | xhigh (qwen3.8 rejects "minimal"), so nothing below "low" is sent.
+            { reasoning_effort: effort === "minimal" || effort === "none" ? "low" : effort }),
     };
     let response!: Response;
     // Hosted free tiers: cap each request (a stuck call fails fast; the pipeline keeps an earlier
@@ -111,7 +117,7 @@ export class LocalJsonModel implements JsonModel {
     for (let attempt = 1; ; attempt++) {
       const perRequest = this.hosted ? AbortSignal.any([signal, AbortSignal.timeout(this.options.requestTimeoutMs ?? HOSTED_REQUEST_TIMEOUT_MS)]) : signal;
       try {
-        response = await fetch(`${this.baseUrl.replace(/\/$/, "")}/v1/chat/completions`, {
+        response = await fetch(`${this.baseUrl.replace(/\/$/, "").replace(/\/v1$/, "")}/v1/chat/completions`, {
           method: "POST",
           signal: perRequest,
           headers: { "content-type": "application/json", ...(this.options.apiKey ? { authorization: `Bearer ${this.options.apiKey}` } : {}) },

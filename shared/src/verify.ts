@@ -287,6 +287,27 @@ export interface CheckOutcome {
  * relation between plain numbers ("3 = 3") — restates the answer instead of
  * testing it. Such checks must never make a lesson "verified".
  */
+/**
+ * Models write checks in programming style: "a == b and c % d == 0". Write "==" as "=", and split a conjunction into
+ * separate statements (all must hold — the meaning of a check's statement list). Only for kinds whose statements are
+ * all conditions; "identity"/"inequality"/"integers" give statements[0] a special role.
+ */
+export function normalizeCheck(check: AnswerCheck): AnswerCheck {
+  const eq = (s: string) => s.replace(/==/g, "=");
+  if (check.kind !== "substitute" && check.kind !== "value") return { ...check, statements: check.statements.map(eq) };
+  const statements = check.statements.flatMap((s) => eq(s).split(/\s+and\s+|\s*&&\s*/i)).filter((s) => s.trim());
+  return { ...check, statements: statements.slice(0, 6) };
+}
+
+/** splitRelation, but a statement it can't split ("a == b and c == d", "1 < x < 3") is simply not a single relation. */
+function relationOf(s: string): ReturnType<typeof splitRelation> {
+  try {
+    return splitRelation(s);
+  } catch {
+    return null;
+  }
+}
+
 export function isTrivialCheck(check: AnswerCheck): boolean {
   const hasWork = (src: string) => {
     const s = src.replace(/\s+/g, "");
@@ -297,7 +318,7 @@ export function isTrivialCheck(check: AnswerCheck): boolean {
       return false;
     }
     // Arithmetic between numbers (not just a sign on a single number).
-    const sides = splitRelation(s)?.sides ?? [s];
+    const sides = relationOf(s)?.sides ?? [s];
     return sides.some((side) => /[\d)a-z]\s*[-+*/^:]|sqrt|cbrt|abs|sin|cos|tan|cot|\(/i.test(side.replace(/^[-+]/, "")));
   };
   if (check.kind === "substitute") {
@@ -305,7 +326,7 @@ export function isTrivialCheck(check: AnswerCheck): boolean {
     // substituted the values itself ("2^2 - 5*2 + 6 = 0"): that relation is real arithmetic and is evaluated.
     // A computation with an expected value ("((2*(2+1))^2 - 2*(2^2+3))" → 22) is real work too.
     const first = check.statements[0] ?? "";
-    if (check.expected && first && !splitRelation(first.replace(/\s+/g, "")) && hasWork(first)) return false;
+    if (check.expected && first && !relationOf(first.replace(/\s+/g, "")) && hasWork(first)) return false;
     return check.statements.every((st) => {
       try {
         return variablesOf(st).size === 0 && !(splitRelation(st.replace(/\s+/g, "")) && hasWork(st));
@@ -839,13 +860,25 @@ export function verifyLesson(input: ModelLesson): LessonVerification {
 
   let answerChecksPassed = 0;
   for (const check of lesson.answerChecks) {
-    if (isTrivialCheck(check) || restatesAnswer(check, lesson)) {
+    // A check the evaluator can't even read ("1 < x < 3", a chained relation) is a malformed check, never a crash.
+    let trivial: boolean;
+    let outcome: CheckOutcome;
+    try {
+      const normalized = normalizeCheck(check);
+      trivial = isTrivialCheck(normalized) || restatesAnswer(normalized, lesson);
+      outcome = trivial ? { label: "", passed: false, detail: "" } : runAnswerCheck(normalized);
+    } catch (err) {
+      feedback.push(
+        `answer check "${check.statements.join("; ").slice(0, 120)}" can't be evaluated (${(err as Error).message}). Write one relation per statement (e.g. "x > 1" and "x < 3", not "1 < x < 3").`,
+      );
+      continue;
+    }
+    if (trivial) {
       feedback.push(
         `answer check "${check.statements.join("; ")}" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition`,
       );
       continue;
     }
-    const outcome = runAnswerCheck(check);
     if (outcome.malformed) {
       // A check we can't evaluate proves nothing either way: ask for a proper one, don't count it as a failure.
       feedback.push(

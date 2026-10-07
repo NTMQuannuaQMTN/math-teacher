@@ -3,7 +3,7 @@ import { gradeLevelFeedback, gradeLevelReport, isSimpleProblem } from "../../sha
 import { previewPartialLesson } from "../../shared/src/progressPreview";
 import type { SolveProgress } from "../../shared/src/solution";
 import type { ModelLesson } from "../../shared/src/solution";
-import { isProofOnly, normalizeFigureChecks, restatesAnswer, verifyLesson } from "../../shared/src/verify";
+import { isProofOnly, isTrivialCheck, normalizeCheck, normalizeFigureChecks, restatesAnswer, runAnswerCheck, verifyLesson } from "../../shared/src/verify";
 import { cleanLanguage } from "../../shared/src/language";
 import { derivationSlips } from "../../shared/src/derivations";
 import { repairLatex, textifyProse } from "../../shared/src/mathText";
@@ -810,5 +810,25 @@ describe("failure-only fallback (temporary Gemini fallback, 2026-10-06)", () => 
     const backup = scripted([JSON.stringify(inequalityLesson())]);
     await solveProblem(primary, VN_GRADE_9, text, opts(backup));
     expect([primary.calls, backup.calls]).toEqual([2, 0]);
+  });
+});
+
+describe("answer checks in programming style never crash the solve (PTNK 2025 3b, qwen3.6)", () => {
+  const check = (pairs: [number, number][]) => ({
+    kind: "substitute" as const,
+    statements: ["(m^2 + m + n^2) % (m * n) == 0 and m % n == 0"],
+    assignments: pairs.map(([m, n]) => [{ variable: "m", value: String(m) }, { variable: "n", value: String(n) }]),
+    expected: "true",
+  });
+
+  it("evaluates '==' and 'and' instead of throwing", () => {
+    expect(runAnswerCheck(normalizeCheck(check([[1, 1], [4, 2]]))).passed).toBe(true);
+    expect(runAnswerCheck(normalizeCheck(check([[2, 1]]))).passed).toBe(false);
+    expect(isTrivialCheck(normalizeCheck(check([[1, 1]])))).toBe(false);
+  });
+
+  it("verifyLesson survives a check it can't read", () => {
+    const l = inequalityLesson({ answerChecks: [{ kind: "inequality", statements: ["-1 < x - 2 < 5 < x"], assignments: [], expected: "x <= 2" }] });
+    expect(() => verifyLesson(l)).not.toThrow();
   });
 });

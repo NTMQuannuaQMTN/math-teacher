@@ -44,13 +44,19 @@ const withTechniques = args.includes("--techniques");
 // Hosted open models (OpenAI-compatible); the key comes from worker/.dev.vars (LOCAL_LLM_API_KEY), never printed.
 type Effort = "none" | "minimal" | "low";
 const NEMOTRON = "nvidia/nemotron-3-super-120b-a12b:free";
-const HOSTED: Record<string, { url: string; model: string; effort?: Effort }> = {
+// keyVar: the .dev.vars variable holding the key; prod: per-problem settings exactly as the app (hostedModelOptions).
+const SOCLAAS = "https://soclaas-api.comp.nus.edu.sg/v1";
+const HOSTED: Record<string, { url: string; model: string; effort?: Effort; keyVar?: string; prod?: boolean }> = {
   "or-qwen3.8-27b": { url: "https://openrouter.ai/api", model: "qwen/qwen3.8-27b:free" },
   "or-nemotron-3-super": { url: "https://openrouter.ai/api", model: NEMOTRON },
   // Reasoning-effort variants (optimisation sprint): hidden reasoning dominates hosted latency.
   "or-nemotron-3-super-min": { url: "https://openrouter.ai/api", model: NEMOTRON, effort: "minimal" },
   "or-nemotron-3-super-none": { url: "https://openrouter.ai/api", model: NEMOTRON, effort: "none" },
-  "or-nemotron-3-super-prod": { url: "https://openrouter.ai/api", model: NEMOTRON },
+  "or-nemotron-3-super-prod": { url: "https://openrouter.ai/api", model: NEMOTRON, prod: true },
+  // SOCLAAS (NUS, paid per token; prices in its /v1/models listing).
+  "soclaas-qwen3.6-35b-prod": { url: SOCLAAS, model: "qwen3.6:35b", keyVar: "SOCLAAS_API_KEY", prod: true },
+  "soclaas-qwen3.8-27b-prod": { url: SOCLAAS, model: "qwen3.8:27b", keyVar: "SOCLAAS_API_KEY", prod: true },
+  "soclaas-gemma4-26b-prod": { url: SOCLAAS, model: "gemma4:26b", keyVar: "SOCLAAS_API_KEY", prod: true },
 };
 const devVar = (name: string) =>
   readFileSync(new URL("../.dev.vars", import.meta.url), "utf8").split("\n").find((l) => l.startsWith(`${name}=`))?.slice(name.length + 1).trim();
@@ -127,20 +133,20 @@ const local = LOCAL[system];
 const hosted = HOSTED[system];
 // "-prod": exactly what the app gets — per-problem effort and budget (hostedModelOptions) and the local server's
 // solve time limit (SOLVE_TIMEOUT_MS in .dev.vars, 420 s).
-const production = system === "or-nemotron-3-super-prod";
+const production = !!hosted?.prod;
 const solveLimitMs = production ? Number(devVar("SOLVE_TIMEOUT_MS") ?? 170_000) : 40 * 60_000;
 const modelFor = (problemText: string) => {
   if (!production) return cached!;
   const o = hostedModelOptions(problemText);
   return new CachedModel(
-    new LocalJsonModel("https://openrouter.ai/api", NEMOTRON, { apiKey: devVar("LOCAL_LLM_API_KEY"), ...o }),
+    new LocalJsonModel(hosted!.url, hosted!.model, { apiKey: devVar(hosted!.keyVar ?? "LOCAL_LLM_API_KEY"), ...o }),
     `hosted;prompt=${PROMPT_VERSION};effort=${o.reasoningEffort};max=${o.maxTokens ?? 12_000}`,
     offline,
   );
 };
 const cached = hosted
   ? new CachedModel(
-      new LocalJsonModel(hosted.url, hosted.model, { apiKey: devVar("LOCAL_LLM_API_KEY"), reasoningEffort: hosted.effort }),
+      new LocalJsonModel(hosted.url, hosted.model, { apiKey: devVar(hosted.keyVar ?? "LOCAL_LLM_API_KEY"), reasoningEffort: hosted.effort }),
       `hosted;prompt=${PROMPT_VERSION}${hosted.effort ? `;effort=${hosted.effort}` : ""}`,
       offline,
     )
@@ -172,7 +178,7 @@ for (const item of items) {
       verification = v.verification;
       attempts = 1;
     } else {
-      const r = await solveProblem(itemModel!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(solveLimitMs), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques });
+      const r = await solveProblem(itemModel!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(solveLimitMs), ...(production ? { onProgress: () => undefined } : {}), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques });
       lesson = r.lesson;
       verification = r.verification;
       attempts = r.attempts;
