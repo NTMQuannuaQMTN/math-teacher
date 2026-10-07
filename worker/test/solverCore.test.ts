@@ -7,6 +7,7 @@ import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shar
 import { buildTargetIndex, deniesAnswer, presupposesAnswer, verifyLesson } from "../../shared/src/verify";
 import { problemDomains } from "../../shared/src/knowledgeBase";
 import { describeStatementFigure } from "../../shared/src/figureFromText";
+import { constructNamedPoints } from "../../shared/src/pointDefinitions";
 import { figureCoverage, mentionedTargets, polygonId } from "../../shared/src/figureComplete";
 import { buildScene } from "../../shared/src/figureScene";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
@@ -657,5 +658,25 @@ describe("solutions that don't match the figure; highlighting (user report 2026-
     const named = buildScene(fig, v.resolvedFigure!, view, { highlighted: new Set(["seg_BC"]), shownConstructions: new Set(), showLabels: true });
     expect(hidden.lines.some((l) => l.id === "seg_BC")).toBe(false);
     expect(named.lines.some((l) => l.id === "seg_BC")).toBe(true);
+  });
+});
+
+describe("a model construction that collapses onto another point is replaced (user report: H drawn at I)", () => {
+  it("rebuilds H from 'giao điểm khác I của IK với đường tròn đường kính AI'", () => {
+    const P = (id: string, kind: string, refs: string[], x: number | null = null, y: number | null = null, value: number | null = null) =>
+      ({ id, label: id, kind, refs, x, y, value, value2: null, draggable: false, hidden: false }) as never;
+    const l = isoscelesLesson();
+    l.analysis = { ...l.analysis, statement: "Cho tam giác $ABC$. Gọi $I$ là tâm đường tròn nội tiếp tam giác $ABC$, $K$ là trung điểm $BC$. Gọi $H$ là giao điểm khác $I$ của $IK$ với đường tròn đường kính $AI$." };
+    l.figure = {
+      ...l.figure!,
+      points: [P("A", "free", [], 0, 4), P("B", "free", [], -3, 0), P("C", "free", [], 4, 0), P("I", "incenter", ["A", "B", "C"]), P("K", "midpoint", ["B", "C"]), P("H", "intersection", ["I", "K", "A", "I"])],
+      checks: [],
+      angles: [],
+      marks: [],
+    };
+    const fig = constructNamedPoints(l).lesson.figure!;
+    const r = resolveFigure(fig);
+    expect(Math.hypot(r.points.H!.x - r.points.I!.x, r.points.H!.y - r.points.I!.y)).toBeGreaterThan(0.1);
+    expect(fig.points.find((p) => p.id === "H")!.kind).toBe("line_circle");
   });
 });

@@ -37,6 +37,8 @@ class Builder {
   readonly points: PointDef[];
   readonly circles: CircleDef[];
   readonly changed: string[] = [];
+  /** The text's definition of a point the model constructed differently: used if the model's version degenerates. */
+  readonly alternatives = new Map<string, PointDef>();
   /** Tangent points that must not coincide with a named point ("H ≠ D"): value 0/1 is chosen after resolving. */
   readonly tangentAvoid = new Map<string, string>();
 
@@ -73,6 +75,9 @@ class Builder {
       // A defining point can't be placed arbitrarily; free vertices ("Cho tam giác ABC") never get a definition here.
       Object.assign(existing, { ...def, label: existing.label, hidden: existing.hidden });
       this.changed.push(name);
+    } else if (!(existing.kind === kind && existing.refs.join() === refs.join() && existing.value === value)) {
+      // The model built it its own way: keep that unless it degenerates (checked after resolving).
+      this.alternatives.set(name, { ...def, label: existing.label, hidden: existing.hidden });
     }
   }
 
@@ -459,8 +464,30 @@ export function constructNamedPoints(lesson: ModelLesson): { lesson: ModelLesson
       }
     }
   }
-  if (b.changed.length === 0) return { lesson, constructed: [] };
+  if (b.changed.length === 0 && b.alternatives.size === 0 && b.tangentAvoid.size === 0) return { lesson, constructed: [] };
   const figure = { ...lesson.figure, points: b.points, circles: b.circles.slice(0, 6) };
+  // A model construction that collapses onto another named point (H = IK ∩ AI is just I) or can't be built is wrong;
+  // the text's exact definition replaces it — if that one does better.
+  if (b.alternatives.size > 0) {
+    const r = resolveFigure(figure);
+    const visible = figure.points.filter((p) => !p.hidden);
+    const xs = Object.values(r.points).map((p) => p.x);
+    const ys = Object.values(r.points).map((p) => p.y);
+    const size = Math.max(Math.max(...xs, 0) - Math.min(...xs, 0), Math.max(...ys, 0) - Math.min(...ys, 0), 1e-6);
+    const collapsed = (res: typeof r, id: string) => {
+      const p = res.points[id];
+      return !p || visible.some((q) => q.id !== id && res.points[q.id] && Math.hypot(res.points[q.id]!.x - p.x, res.points[q.id]!.y - p.y) < 1e-6 * size);
+    };
+    for (const [name, def] of b.alternatives) {
+      if (!collapsed(r, name)) continue;
+      const i = figure.points.findIndex((p) => p.id === name);
+      const trial = { ...figure, points: figure.points.map((p, k) => (k === i ? def : p)) };
+      if (!collapsed(resolveFigure(trial), name)) {
+        figure.points[i] = def;
+        b.changed.push(name);
+      }
+    }
+  }
   // A tangent point that must differ from a named point ("H ≠ D"): take the other one if it lands on it.
   for (const [name, avoid] of b.tangentAvoid) {
     const def = figure.points.find((p) => p.id === name);
@@ -472,5 +499,7 @@ export function constructNamedPoints(lesson: ModelLesson): { lesson: ModelLesson
       if (p && q && Math.hypot(p.x - q.x, p.y - q.y) > 1e-6) break;
     }
   }
+  // Nothing was replaced after all: keep the model's figure as it was (no unused helper circles).
+  if (b.changed.length === 0) return { lesson, constructed: [] };
   return { lesson: { ...lesson, figure }, constructed: [...new Set(b.changed)] };
 }
