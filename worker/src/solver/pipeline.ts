@@ -438,7 +438,7 @@ export async function solveProblem(
       if (!parsed.lesson.analysis.statement.trim()) {
         parsed.lesson.analysis.statement = normalizeProblemText(problemText);
       }
-      const checked = verifyLesson(tidy(parsed.lesson));
+      const checked = verifyLesson(tidy(parsed.lesson), { problemText: normalizeProblemText(problemText) });
       // Formulas the app can't render go back to the model; whatever is left is shown as plain text.
       const latex = latexFeedback(checked.lesson);
       const result = { ...checked, lesson: latex.length ? plainUnrenderable(checked.lesson) : checked.lesson, feedback: [...checked.feedback, ...latex] };

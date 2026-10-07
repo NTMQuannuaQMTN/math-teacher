@@ -163,7 +163,7 @@ function claimsIn(sentence: string): Claim[] {
   const collinear = new RegExp(`(${P})\\s*,\\s*(${P})\\s*,\\s*(${P})\\s+(?:thẳng hàng|are collinear|collinear)`, "g");
   while ((m = collinear.exec(sentence))) out.push(fromCheck(`${m[1]}, ${m[2]}, ${m[3]} thẳng hàng`, { kind: "collinear", refs: [m[1]!, m[2]!, m[3]!] }));
 
-  const concyclic = new RegExp(`(${P})\\s*,\\s*(${P})\\s*,\\s*(${P})\\s*,\\s*(${P})\\s+(?:cùng thuộc|cùng nằm trên|are concyclic|lie on)`, "g");
+  const concyclic = new RegExp(`(${P})\\s*,\\s*(${P})\\s*,\\s*(${P})\\s*(?:,|và|and)\\s*(${P})\\s+(?:cùng thuộc|cùng nằm trên|thuộc một đường tròn|nằm trên một đường tròn|are concyclic|lie on)`, "g");
   while ((m = concyclic.exec(sentence))) {
     out.push(fromCheck(`${m[1]}, ${m[2]}, ${m[3]}, ${m[4]} cùng thuộc một đường tròn`, { kind: "concyclic", refs: [m[1]!, m[2]!, m[3]!, m[4]!] }));
   }

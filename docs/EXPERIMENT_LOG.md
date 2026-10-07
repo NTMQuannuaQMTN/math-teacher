@@ -228,3 +228,12 @@ in the train split and were seen in development (teaching records for 1a–3b).
 The first pass (PTNK25-S) exposed two bugs, fixed before S2: qwen3.8 rejects reasoning_effort "minimal"
 (gateway floor is "low"), and an answer check written as "a == b and c == d" crashed verifyLesson. qwen3.6 1c is a
 valid elementary proof (Nemotron's 1c had an invalid step). Chosen as the solver: SOLVER_PROVIDER=soclaas.
+
+## FIG-002: Figures built from the statement (2026-10-07)
+
+20 distinct geometry statements (chuyen-v1 + v1): base shape 18, all named points built 16, givens failing 0,
+"chứng minh" claims measured true 15, false 0 (incl. the user's Câu 4: 5/5; PTNK 2025 4c: ∠RKD = 90.000°, CD > AB with
+margin). Re-verifying stored/benchmark lessons: the statement figure is adopted for 14 geometry lessons, among them
+qwen3.6's PTNK 4a/4b which had no figure; on the exact figure, qwen3.6's 4c claims "SD ⊥ ID", "SA ⊥ OA" are false
+(S lies on the tangent at D of (O), so SD ⊥ OD) — now caught. One found bug in the builder itself (CD > AB violated by
+the arc point) fixed: finer arc search, and inequalities must hold before adoption.

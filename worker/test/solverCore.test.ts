@@ -243,8 +243,18 @@ const algebraBase = (): ModelLesson => {
 };
 
 describe("verifyLesson", () => {
-  it("requires a figure for geometry problems", () => {
-    expect(verifyLesson(isoscelesLesson({ figure: null })).feedback.join(" ")).toMatch(/needs a figure/);
+  it("requires a figure for geometry problems the statement doesn't define a shape for", () => {
+    const l = isoscelesLesson({ figure: null });
+    l.analysis = { ...l.analysis, statement: "Hai đoạn thẳng $BF$ và $CE$ cắt nhau tại $A$. Tính $\\widehat{AHC}$." };
+    expect(verifyLesson(l).feedback.join(" ")).toMatch(/needs a figure/);
+  });
+
+  it("draws the figure from the statement when the model draws none", () => {
+    const v = verifyLesson(isoscelesLesson({ figure: null }));
+    expect(v.feedback.join(" ")).not.toMatch(/needs a figure/);
+    expect(v.lesson.figure?.points.map((p) => p.id)).toEqual(expect.arrayContaining(["A", "B", "C"]));
+    const [A, B, C] = ["A", "B", "C"].map((id) => v.resolvedFigure!.points[id]!);
+    expect(Math.abs(Math.hypot(A!.x - B!.x, A!.y - B!.y) - Math.hypot(A!.x - C!.x, A!.y - C!.y))).toBeLessThan(1e-9);
   });
 
   it("treats a complete lesson labelled ambiguous as solvable and verifies it", () => {
@@ -287,8 +297,18 @@ describe("verifyLesson", () => {
     expect(result.feedback.join(" ")).toMatch(/derived claim/);
   });
 
-  it("drops a figure that contradicts the givens but keeps the lesson", () => {
+  it("replaces a model's placement that contradicts the givens with the statement's construction", () => {
     const lesson = isoscelesLesson();
+    lesson.figure!.points[2]!.value2 = 7; // AB ≠ AC in the model's figure
+    const r = verifyLesson(lesson);
+    const [A, B, C] = ["A", "B", "C"].map((id) => r.resolvedFigure!.points[id]!);
+    expect(Math.abs(Math.hypot(A!.x - B!.x, A!.y - B!.y) - Math.hypot(A!.x - C!.x, A!.y - C!.y))).toBeLessThan(1e-9);
+    expect(r.verification.figureIssue).toBeNull();
+  });
+
+  it("drops a figure that contradicts the givens when the statement can't be built, but keeps the lesson", () => {
+    const lesson = isoscelesLesson();
+    lesson.analysis = { ...lesson.analysis, statement: lesson.analysis.statement.replace("Cho tam giác $ABC$", "Cho $ABC$") };
     lesson.figure!.points[2]!.value2 = 7; // AB ≠ AC now
     const result = verifyLesson(lesson);
     expect(result.lesson.figure).toBeNull();

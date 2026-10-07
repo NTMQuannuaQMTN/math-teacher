@@ -124,7 +124,9 @@ describe("input-token savings", () => {
   });
 
   it("switches to the full figure prompt if a lesson turns out to need a figure", async () => {
-    const geometryWithoutFigure = { ...mockGeometryLesson(), figure: null };
+    // A statement the figure builder can't construct (no base shape), so the model must draw it.
+    const base = mockGeometryLesson();
+    const geometryWithoutFigure = { ...base, analysis: { ...base.analysis, statement: "Hai đoạn thẳng $BF$ và $CE$ cắt nhau tại $A$. Tính số đo $x$." }, figure: null };
     const model = new ScriptedModel([JSON.stringify(geometryWithoutFigure), good]);
     await solveProblem(model, VN_GRADE_9, "Tính số đo x", { signal: signal() });
     expect(model.calls[0]![0]!.content).toMatch(/no geometric figure/);

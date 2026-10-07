@@ -10,6 +10,31 @@ Points are given as constructions (`free`, `midpoint`, `foot`, `intersection`, `
 `incenter`, `circumcenter`, …) and resolved to coordinates by [shared/src/geometry.ts](../shared/src/geometry.ts) —
 never as raw coordinates.
 
+## 1b. The statement builds the figure (2026-10-07)
+
+`figureFromStatement` ([shared/src/figureFromText.ts](../shared/src/figureFromText.ts)) constructs the figure from the
+student's confirmed problem text, with no model involved:
+
+1. **Base shape** placed so the stated properties hold with a margin: a triangle ("nhọn", "vuông tại", "cân tại",
+   "đều", "AB < AC", "Â > B̂ > Ĉ", given angles "góc A bằng 40 độ" / "∠A = 40°", given sides), inscribed in "(O)"
+   when said; a cyclic quadrilateral (with "AC đi qua tâm O"); a parallelogram/rectangle/square/rhombus; a circle with
+   tangents from an outside point; a circle with a chord.
+2. **Every other point from its definition**, in order ([pointDefinitions.ts](../shared/src/pointDefinitions.ts)):
+   midpoints, feet, intersections ("K = AD ∩ EF" too), incircle contact points, altitudes and the orthocentre,
+   perpendicular bisectors, "kẻ ND vuông góc với BC tại D", rays and lines meeting a circle, diameters, tangent lines and
+   their intersection, the foot of an external bisector, a tangent point other than a named one, circles named by
+   their center or through three points, lists "lần lượt / theo thứ tự / tương ứng là …", points on an arc chosen so the
+   stated inequalities ("CD > AB") hold.
+3. **Adopted only if trustworthy**: nothing named is left unbuilt, the givens and stated inequalities hold, no
+   "chứng minh" claim measured on it is false, and the model's own givens hold on it. Then statement points come from
+   the statement (the model's placement is discarded) and the model's auxiliary points, lines, angles and checks are
+   kept on top; a model circle with the same center keeps its id so highlights still work.
+
+On the 20 distinct geometry statements in our datasets (`npx tsx scripts/statement-figures.ts`): a base shape for 18,
+every named point built for 16, givens failing 0, measured claims true 15 / false 0. Not covered: a tangent chosen by
+a condition (khtn III.1), two crossing segments as the base (kc-mcq3), quadrilaterals defined only by angles or
+diagonals (kc-mcq9, ch-2).
+
 ## 2. Deterministic repairs ([shared/src/verify.ts](../shared/src/verify.ts) `verifyLesson`)
 
 In order:

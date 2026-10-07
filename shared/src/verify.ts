@@ -15,6 +15,7 @@ import { checkClaims, statementGivens, statementParts } from "./claims";
 import { regularizeTriangle } from "./figureShape";
 import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
 import { derivationSlips } from "./derivations";
+import { adoptStatementFigure } from "./figureFromText";
 import { isKnownTechnique } from "./knowledgeBase";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
@@ -727,10 +728,14 @@ export function perStepStatus(lesson: ModelLesson, resolved: ResolvedFigure | nu
   });
 }
 
-export function verifyLesson(input: ModelLesson): LessonVerification {
+/** `problemText`: the student's confirmed problem text (the figure is built from it when possible). */
+export function verifyLesson(input: ModelLesson, { problemText }: { problemText?: string } = {}): LessonVerification {
   const language = cleanLanguage(reconcileStatus(input));
   input = language.lesson;
   // Points the text defines exactly ("Gọi M là trung điểm BC") are built from the definition, not left to the model.
+  // The statement's own construction is the base of the figure whenever it can be built and checked: every point the
+  // statement defines is drawn exactly from its definition, not where the model put it.
+  input = adoptStatementFigure(input, problemText).lesson;
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(regularizeTriangle(constructNamedPoints(input).lesson).lesson));
   let lesson = repaired;
   const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback, ...gradeLevelFeedback(repaired), ...unsupportedFeedback(repaired)];
