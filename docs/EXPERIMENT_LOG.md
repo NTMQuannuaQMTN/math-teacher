@@ -214,3 +214,17 @@ in the train split and were seen in development (teaching records for 1a–3b).
   cap raised to the model maximum 65,536. "low" thinking measured on Câu 4: 20 s but unverified (hand-waved step);
   with one corrective retry, 29 s and no usable figure → kept "medium". The free model now hands off after 120 s on
   complex problems when the fallback is on, leaving Gemini ~5 min within the 420 s solve limit.
+
+## PTNK25-S2: SOCLAAS models on PTNK 2025, app settings, streaming (2026-10-07). Development set.
+
+| | qwen3.6:35b ("default") | qwen3.8:27b |
+|---|---|---|
+| Lessons produced | 13/13 | 9/13 (4a–4c timed out, 5b truncated) |
+| Computed answers (2b, 3b) | both correct, verified | both correct (2b partial) |
+| Verified / partial-or-not-checkable / unverified | 3 / 8 / 2 | 3 / 6 / 0 (+4 no lesson) |
+| Geometry (Bài 4) | lessons, but no usable figure; 4b keeps calculus wording | none |
+| Output tokens (13 items) | ≈ 214K (≈ $0.37 total at $1.52/M) | — |
+
+The first pass (PTNK25-S) exposed two bugs, fixed before S2: qwen3.8 rejects reasoning_effort "minimal"
+(gateway floor is "low"), and an answer check written as "a == b and c == d" crashed verifyLesson. qwen3.6 1c is a
+valid elementary proof (Nemotron's 1c had an invalid step). Chosen as the solver: SOLVER_PROVIDER=soclaas.
