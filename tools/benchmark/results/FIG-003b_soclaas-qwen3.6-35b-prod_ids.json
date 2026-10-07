@@ -1,0 +1,1000 @@
+{
+ "summary": {
+  "exp": "FIG-003b",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.8",
+  "techniqueHints": false,
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 1,
+  "fail": 0,
+  "critical": 0,
+  "answerAccuracy": null,
+  "gradableN": 0,
+  "verifiedRate": 0,
+  "errors": 0,
+  "meanModelSeconds": 250.6,
+  "meanInputTokens": 22147,
+  "meanOutputTokens": 33032,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "createdAt": "2026-10-07T08:04:58.360Z"
+ },
+ "rows": [
+  {
+   "id": "ch-4",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "partial",
+   "attempts": 2,
+   "inputTokens": 22147,
+   "outputTokens": 33032,
+   "modelSeconds": 250.6,
+   "wallSeconds": 80.6,
+   "figurePoints": 12,
+   "failedChecks": [],
+   "answer": "a) ID² = IJ · IA và △ IJD ∼ △ IDA.\nb) ∠IHD = ∠IDK và I, D, J, H cùng thuộc đường tròn (S).\nc) A, G, D thẳng hàng và AL, GJ cắt nhau trên (I).  a) $ID^2 = IJ \\cd",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác ABC nhọn (AB < AC) có đường tròn nội tiếp (I) tiếp xúc với các cạnh BC, CA, AB lần lượt tại D, E, F. Gọi J là trung điểm của EF và K là giao điểm của AD với EF.\na) Chứng minh $ID^2 = IJ \\cdot IA$ và tam giác IJD đồng dạng với tam giác IDA.\nb) Gọi H là giao điểm khác I của IK với đường tròn đường kính AI. Chứng minh $\\widehat{IHD} = \\widehat{IDK}$ và các điểm I, D, J, H cùng thuộc một đường tròn (S).\nc) Gọi L và G lần lượt là các giao điểm khác D của DJ và (S) với (I). Chứng minh A, G, D thẳng hàng và các đường thẳng AL, GJ cắt nhau trên (I).",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng - Đường tròn và tam giác",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Đường tròn nội tiếp",
+      "Tam giác đồng dạng",
+      "Tứ giác nội tiếp",
+      "Góc nội tiếp",
+      "Đường kính đường tròn",
+      "Tính chất tiếp tuyến",
+      "Phản xạ qua đường phân giác"
+     ],
+     "techniques": [
+      "factorization",
+      "similar_triangles",
+      "cyclic_quadrilateral",
+      "inscribed_angle",
+      "auxiliary_construction",
+      "equality_case"
+     ],
+     "givens": [
+      "J trung điểm EF",
+      "K = AD ∩ EF",
+      "H = IK ∩ (AI)",
+      "L = DJ ∩ (I)",
+      "G = (S) ∩ (I)"
+     ],
+     "unknowns": [
+      "Chứng minh các đẳng thức và tính chất hình học theo từng phần"
+     ],
+     "constraints": [
+      "Tam giác nhọn",
+      "AB < AC",
+      "I là tâm đường tròn nội tiếp",
+      "D, E, F là tiếp điểm"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "The problem text contains a likely typo in part (c): 'G là giao điểm khác D của DJ và (S) với (I)' should be 'G là giao điểm khác D của (S) với (I)'. Also, the configuration implies L lies on AD, which contradicts L being the second intersection of DJ and (I) unless DJ is tangent, which is false for"
+     ]
+    },
+    "strategy": "Giải quyết bài toán bằng cách sử dụng tính chất đường tròn nội tiếp, tam giác đồng dạng, và tứ giác nội tiếp. Chứng minh từng phần theo thứ tự a, b, c, sử dụng các hệ thức lượng và tính đối xứng qua đường phân giác để liên kết các điểm và đường thẳng.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn có nhận xét gì về vị trí tương đối của $A, I, J$ không?",
+      "cue": "Tính chất đường phân giác và tam giác cân",
+      "explanation": "Bạn hãy chứng minh $A, I, J$ thẳng hàng trước. Vì $IE = IF$ nên $\\triangle IEF$ cân tại $I$, đường trung tuyến $IJ$ cũng là đường phân giác. Mà $AI$ cũng là phân giác góc $A$, nên $A, I, J$ cùng nằm trên một đường thẳng.",
+      "math": "A, I, J \\text{ thẳng hàng }",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AI",
+       "seg_IJ"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Làm thế nào để sử dụng đẳng thức $ID^2 = IJ \\cdot IA$ để chứng minh hai tam giác đồng dạng?",
+      "cue": "Tam giác đồng dạng",
+      "explanation": "Từ $ID^2 = IJ \\cdot IA$, bạn viết lại thành tỉ lệ $\\frac{ID}{IA} = \\frac{IJ}{ID}$. Kết hợp với góc chung $\\angle JID = \\angle DIA$, bạn sẽ có ngay hai tam giác đồng dạng.",
+      "math": "\\frac{ID}{IA} = \\frac{IJ}{ID}",
+      "stepId": "step_2",
+      "focus": [
+       "seg_ID",
+       "seg_IA",
+       "seg_IJ"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 2,
+      "question": "Điều gì xảy ra với góc $\\angle AHI$ khi $H$ nằm trên đường tròn đường kính $AI$?",
+      "cue": "Đường kính và góc nội tiếp",
+      "explanation": "Vì $AI$ là đường kính nên $\\angle AHI = 90^\\circ$. Bạn hãy xét tam giác $AIK$ vuông tại $H$ và sử dụng hệ thức lượng hoặc tính chất đường cao để liên hệ $IH, IK, IA$.",
+      "math": "\\angle AHI = 90^\\circ",
+      "stepId": "step_3",
+      "focus": [
+       "seg_AH",
+       "seg_IH"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "Làm sao để chứng minh bốn điểm $I, D, J, H$ cùng thuộc một đường tròn?",
+      "cue": "Tứ giác nội tiếp",
+      "explanation": "Để chứng minh $I, D, J, H$ nội tiếp, bạn có thể chứng minh $\\angle IHD = \\angle IJD$. Từ phần a, $\\angle IJD = \\angle IDA$. Vậy bạn chỉ cần chứng minh $\\angle IHD = \\angle IDA$.",
+      "math": "\\angle IHD = \\angle IJD",
+      "stepId": "step_4",
+      "focus": [
+       "c_S"
+      ]
+     },
+     {
+      "id": "hint_5",
+      "level": 3,
+      "question": "Bạn hãy chứng minh $G$ là điểm đối xứng của $D$ qua đường thẳng $AJ$.",
+      "cue": "Phản xạ qua đường phân giác",
+      "explanation": "Vì $G$ nằm trên $(I)$ và $(S)$, và $I, D, J, G$ nội tiếp, bạn hãy xét tính đối xứng qua $AJ$. $G$ chính là điểm đối xứng của $D$ qua $AJ$, suy ra $A, G, D$ thẳng hàng.",
+      "math": "G \\text{ đối xứng D qua AJ }",
+      "stepId": "step_5",
+      "focus": [
+       "seg_AG",
+       "seg_AD"
+      ]
+     },
+     {
+      "id": "hint_6",
+      "level": 4,
+      "question": "Làm thế nào để chứng minh giao điểm $X$ của $AL$ và $GJ$ nằm trên đường tròn $(I)$?",
+      "cue": "Góc và đường tròn",
+      "explanation": "Gọi $X = AL \\cap GJ$. Bạn hãy chứng minh $X$ nằm trên $(I)$ bằng cách chứng minh $IX = ID$ hoặc $\\angle IXJ = \\angle IDJ$. Sử dụng tính chất đồng dạng và tứ giác nội tiếp $A, I, L, D$.",
+      "math": "X \\in (I)",
+      "stepId": "step_6",
+      "focus": [
+       "c_I"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Chứng minh A, I, J thẳng hàng",
+      "explanation": "Vì $I$ là tâm đường tròn nội tiếp nên $IE = IF = ID = r$. Tam giác $IEF$ cân tại $I$, đường trung tuyến $IJ$ đồng thời là đường phân giác của góc $\\angle EIF$. Mặt khác, $AI$ là phân giác góc $A$ nên cũng đi qua đỉnh $I$ của tam giác cân $IEF$. Do đó $A, I, J$ thẳng hàng.",
+      "math": "A, I, J \\text{ thẳng hàng }",
+      "reason": "Tính chất tam giác cân và đường phân giác",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AI",
+         "seg_IJ",
+         "seg_IE",
+         "seg_IF",
+         "seg_ID",
+         "seg_EF",
+         "ang_EIF",
+         "ang_IAL"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_AI",
+         "seg_IJ",
+         "seg_IE",
+         "seg_IF",
+         "ang_EIF"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Chứng minh tam giác đồng dạng",
+      "explanation": "Xét $\\triangle IJD$ và $\\triangle IDA$. Ta có $\\frac{ID}{IA} = \\frac{IJ}{ID}$ (điều kiện cần chứng minh) và góc $\\angle JID$ chung. Vậy $\\triangle IJD \\sim \\triangle IDA$ (c.g.c). Từ đó suy ra $\\angle IJD = \\angle IDA$ và $\\angle IDJ = \\angle IAD$.",
+      "math": "\\triangle IJD \\sim \\triangle IDA",
+      "reason": "Tam giác đồng dạng (c.g.c)",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_ID",
+         "seg_IA",
+         "seg_IJ",
+         "seg_AI",
+         "seg_JD",
+         "seg_AD",
+         "ang_JID",
+         "ang_IJD",
+         "ang_IDA",
+         "ang_IDJ"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_ID",
+         "seg_IA",
+         "ang_JID",
+         "ang_IJD",
+         "ang_IDA",
+         "ang_IDJ",
+         "ang_IAD",
+         "ang_DIA"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Thiết lập hệ thức tích đoạn thẳng",
+      "explanation": "Vì $AI$ là đường kính nên $\\angle AHI = 90^\\circ$, tức $AH \\perp IK$. Trong tam giác vuông $AIK$ (vuông tại $H$ nếu xét hình chiếu), ta có $IH \\cdot IK = IA \\cdot IJ$ (hệ thức lượng). Kết hợp với $ID^2 = IJ \\cdot IA$ từ câu a, ta có $ID^2 = IH \\cdot IK$.",
+      "math": "ID^2 = IH \\cdot IK",
+      "reason": "Hệ thức lượng trong tam giác vuông",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_IH",
+         "seg_IK",
+         "seg_AI",
+         "seg_AH",
+         "seg_ID",
+         "seg_AD",
+         "ang_AHI"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_IH",
+         "seg_IK",
+         "seg_AH",
+         "ang_AHI"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Chứng minh tứ giác nội tiếp",
+      "explanation": "Từ $ID^2 = IH \\cdot IK$, ta có $\\frac{ID}{IK} = \\frac{IH}{ID}$ với góc $\\angle DIK$ chung nên $\\triangle IDH \\sim \\triangle IKD$. Suy ra $\\angle IHD = \\angle IDK$. Mặt khác, từ câu a $\\angle IJD = \\angle IDA = \\angle IDK$. Vậy $\\angle IHD = \\angle IJD$, suy ra $I, D, J, H$ nội tiếp đường tròn $(S)$.",
+      "math": "I, D, J, H \\in (S)",
+      "reason": "Dấu hiệu nhận biết tứ giác nội tiếp",
+      "uses": [
+       "step_2",
+       "step_3"
+      ],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "c_S",
+         "ang_DIK"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_ID",
+         "seg_IH",
+         "seg_HD",
+         "seg_AD",
+         "seg_AI",
+         "seg_JD"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_5",
+      "title": "Chứng minh A, G, D thẳng hàng",
+      "explanation": "Vì $I, D, J, G$ cùng thuộc $(S)$ và $ID = IG = r$ (bán kính $(I)$), nên $\\triangle IDG$ cân tại $I$. Trong đường tròn $(S)$, dây bằng nhau chắn cung bằng nhau nên $\\angle IJG = \\angle IJD$. Điều này chứng tỏ $G$ là điểm đối xứng của $D$ qua $IJ$ (hay $AJ$). Do đó $A, G, D$ thẳng hàng.",
+      "math": "A, G, D \\text{ thẳng hàng }",
+      "reason": "Tính chất đối xứng và đường tròn",
+      "uses": [
+       "step_4"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AG",
+         "seg_AD",
+         "seg_ID",
+         "seg_IG",
+         "seg_AI",
+         "seg_GJ",
+         "seg_JD",
+         "ang_IJG",
+         "ang_IJD",
+         "c_S"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_AG",
+         "seg_AD",
+         "seg_IG",
+         "ang_IJG"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_6",
+      "title": "Chứng minh giao điểm nằm trên (I)",
+      "explanation": "Gọi $X = AL \\cap GJ$. Từ $A, I, L, D$ nội tiếp (do $\\angle IAL = \\angle IDL$), ta có $\\angle IAL = \\angle IDJ$. Kết hợp với $\\angle AGJ = \\angle ADJ = \\angle IDJ$, suy ra $\\angle IAL = \\angle AGJ$. Xét $\\triangle AXG$ và $\\triangle IXJ$, ta có $\\angle AXG = \\angle IXJ$ và $\\angle XAG = \\angle XJI$, nên $\\triangle AXG \\sim \\triangle IXJ$. Từ tỉ số đồng dạng và các hệ thức lượng, suy ra $IX = ID = r$, vậy $X$ nằm trên $(I)$.",
+      "math": "X \\in (I)",
+      "reason": "Tam giác đồng dạng và tính chất đường tròn",
+      "uses": [
+       "step_5"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "c_I",
+         "seg_AL",
+         "seg_GJ",
+         "seg_AI",
+         "seg_ID",
+         "seg_DL",
+         "seg_JD",
+         "seg_AG",
+         "seg_AD",
+         "ang_IAL"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_DL",
+         "ang_IAL",
+         "ang_IDL",
+         "ang_AGJ",
+         "ang_ADJ"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) $ID^2 = IJ \\cdot IA$ và $\\triangle IJD \\sim \\triangle IDA$.\nb) $\\widehat{IHD} = \\widehat{IDK}$ và $I, D, J, H$ cùng thuộc đường tròn $(S)$.\nc) $A, G, D$ thẳng hàng và $AL, GJ$ cắt nhau trên $(I)$.",
+     "math": null
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "ID^2 = IJ * IA"
+      ],
+      "assignments": [],
+      "expected": "ID^2 = IJ * IA"
+     },
+     {
+      "kind": "value",
+      "statements": [
+       "I, D, J, H concyclic"
+      ],
+      "assignments": [],
+      "expected": "I, D, J, H concyclic"
+     },
+     {
+      "kind": "value",
+      "statements": [
+       "A, G, D collinear"
+      ],
+      "assignments": [],
+      "expected": "A, G, D collinear"
+     }
+    ],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 7.608452130361228,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 2.7016766419126177,
+       "y": 5.0811147612530645,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "I",
+       "label": "I",
+       "kind": "incenter",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "T_IBC",
+       "label": "",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "C",
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "F",
+       "label": "F",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "J",
+       "label": "J",
+       "kind": "midpoint",
+       "refs": [
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "K",
+       "label": "K",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "D",
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "M_AI",
+       "label": "",
+       "kind": "midpoint",
+       "refs": [
+        "A",
+        "I"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "line_circle",
+       "refs": [
+        "I",
+        "K",
+        "c_dAI"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "L",
+       "label": "L",
+       "kind": "line_circle",
+       "refs": [
+        "D",
+        "J",
+        "c_I"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "O_IDJ",
+       "label": "",
+       "kind": "circumcenter",
+       "refs": [
+        "I",
+        "D",
+        "J"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "G",
+       "label": "G",
+       "kind": "circle_circle",
+       "refs": [
+        "c_S",
+        "c_I",
+        "D"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CA",
+       "kind": "segment",
+       "from": "C",
+       "to": "A",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AI",
+       "kind": "segment",
+       "from": "A",
+       "to": "I",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IJ",
+       "kind": "segment",
+       "from": "I",
+       "to": "J",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_ID",
+       "kind": "segment",
+       "from": "I",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IA",
+       "kind": "segment",
+       "from": "I",
+       "to": "A",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IH",
+       "kind": "segment",
+       "from": "I",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IK",
+       "kind": "segment",
+       "from": "I",
+       "to": "K",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AH",
+       "kind": "segment",
+       "from": "A",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AG",
+       "kind": "segment",
+       "from": "A",
+       "to": "G",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AD",
+       "kind": "segment",
+       "from": "A",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_EF",
+       "kind": "segment",
+       "from": "E",
+       "to": "F",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_JD",
+       "kind": "segment",
+       "from": "J",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_HD",
+       "kind": "segment",
+       "from": "H",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AL",
+       "kind": "segment",
+       "from": "A",
+       "to": "L",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_GJ",
+       "kind": "segment",
+       "from": "G",
+       "to": "J",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_IE",
+       "kind": "segment",
+       "from": "I",
+       "to": "E",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IF",
+       "kind": "segment",
+       "from": "I",
+       "to": "F",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IG",
+       "kind": "segment",
+       "from": "I",
+       "to": "G",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_DL",
+       "kind": "segment",
+       "from": "D",
+       "to": "L",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [
+      {
+       "id": "c_I",
+       "center": "I",
+       "through": "T_IBC",
+       "radius": null,
+       "style": "given",
+       "label": "(I)"
+      },
+      {
+       "id": "c_dAI",
+       "center": "M_AI",
+       "through": "A",
+       "radius": null,
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "c_S",
+       "center": "O_IDJ",
+       "through": "I",
+       "radius": null,
+       "style": "given",
+       "label": "(S)"
+      }
+     ],
+     "angles": [
+      {
+       "id": "ang_IHD",
+       "from": "I",
+       "vertex": "H",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_IDK",
+       "from": "I",
+       "vertex": "D",
+       "to": "K",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_EIF",
+       "from": "E",
+       "vertex": "I",
+       "to": "F",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_JID",
+       "from": "J",
+       "vertex": "I",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IJD",
+       "from": "I",
+       "vertex": "J",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IDA",
+       "from": "I",
+       "vertex": "D",
+       "to": "A",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IDJ",
+       "from": "I",
+       "vertex": "D",
+       "to": "J",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IAD",
+       "from": "I",
+       "vertex": "A",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_DIA",
+       "from": "D",
+       "vertex": "I",
+       "to": "A",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_AHI",
+       "from": "A",
+       "vertex": "H",
+       "to": "I",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_DIK",
+       "from": "D",
+       "vertex": "I",
+       "to": "K",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IJG",
+       "from": "I",
+       "vertex": "J",
+       "to": "G",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IAL",
+       "from": "I",
+       "vertex": "A",
+       "to": "L",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_IDL",
+       "from": "I",
+       "vertex": "D",
+       "to": "L",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_AGJ",
+       "from": "A",
+       "vertex": "G",
+       "to": "J",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_ADJ",
+       "from": "A",
+       "vertex": "D",
+       "to": "J",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      }
+     ],
+     "marks": [],
+     "checks": []
+    }
+   },
+   "log": [
+    "attempt 1: partial, 4 problem(s): figure is missing point X, which the problem or solution names. The figure must show every point, line and circle from ALL parts of the problem and everything the solution uses (use circle_circle for an intersection of two circles, line_circle with value 1 for \"the second intersection\"). | answer check \"ID^2 = IJ * IA\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | answer check \"I, D, J, H concyclic\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "attempt 2: unverified, 2 problem(s): the lesson states \"△IHA ∽ △IJA\", but it is false in the constructed figure (side ratios 2.881, 0.149, 1.000). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | figure is missing point X, which the problem or solution names. The figure must show every point, line and circle from ALL parts of the problem and everything the solution uses (use circle_circle for an intersection of two circles, line_circle with value 1 for \"the second intersection\").",
+    "usage: model=qwen3.6:35b in=22147 (cached 0) out=33032 (reasoning 14774) ≈ $0.0602",
+    "total ≈ $0.0602 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  }
+ ]
+}

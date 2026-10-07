@@ -15,6 +15,7 @@ import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 import { problemTier } from "../src/solver/routing";
 import { FailoverJsonModel } from "../src/solver/failover";
+import { mockGeometryLesson as mockGeometryLessonForTest } from "../src/solver/mock";
 import { SolutionSchema } from "../../shared/src/solution";
 import type { JsonModel } from "../src/solver/llm";
 
@@ -830,5 +831,22 @@ describe("answer checks in programming style never crash the solve (PTNK 2025 3b
   it("verifyLesson survives a check it can't read", () => {
     const l = inequalityLesson({ answerChecks: [{ kind: "inequality", statements: ["-1 < x - 2 < 5 < x"], assignments: [], expected: "x <= 2" }] });
     expect(() => verifyLesson(l)).not.toThrow();
+  });
+});
+
+describe("a malformed model figure never costs the lesson (FIG-003)", () => {
+  it("cuts a figure with too many checks", () => {
+    const l = JSON.parse(JSON.stringify(mockGeometryLessonForTest()));
+    l.figure.checks = Array.from({ length: 20 }, () => l.figure.checks[0]);
+    const p = parseLesson(JSON.stringify(l));
+    expect("lesson" in p && p.lesson.figure?.checks.length).toBe(16);
+  });
+  it("drops a figure that stays malformed, keeping the lesson", () => {
+    const l = JSON.parse(JSON.stringify(mockGeometryLessonForTest()));
+    l.figure.points = "not a list";
+    l.analysis.statusReason = "x".repeat(400);
+    const p = parseLesson(JSON.stringify(l));
+    expect("lesson" in p).toBe(true);
+    if ("lesson" in p) expect(p.lesson.figure).toBeNull();
   });
 });

@@ -237,3 +237,12 @@ margin). Re-verifying stored/benchmark lessons: the statement figure is adopted 
 qwen3.6's PTNK 4a/4b which had no figure; on the exact figure, qwen3.6's 4c claims "SD ⊥ ID", "SA ⊥ OA" are false
 (S lies on the tangent at D of (O), so SD ⊥ OD) — now caught. One found bug in the builder itself (CD > AB violated by
 the arc point) fixed: finer arc search, and inequalities must hold before adoption.
+
+## FIG-003: Câu 4 with the statement figure's definitions given to the solver (qwen3.6, 2026-10-07)
+
+First run lost the lesson to format slips in the model's own figure (too many checks; a one-ref check) — fixed: size
+slips are cut, and a figure that stays malformed is dropped (the statement figure replaces it). Rerun (FIG-003b): steps
+1–4 match the figure (12/12 measured claims true: ID² = IJ·IA, △IJD ∽ △IDA, I, D, J, H concyclic, A, G, D collinear …);
+steps 5–6 (part c) still reason wrongly ("G is the reflection of D in IJ", "A, I, L, D concyclic" — false on the exact
+figure) and are marked "Không khớp với hình vẽ"; the retry was worse and was not kept. Highlighting on all stored
+geometry lessons: 581/583 named objects highlightable (the 2 left are straight angles in false claims).

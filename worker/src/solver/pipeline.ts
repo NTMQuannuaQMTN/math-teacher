@@ -79,14 +79,24 @@ export function parseLesson(text: string): { lesson: ModelLesson } | { problems:
     return { problems: ["the response was not valid JSON"] };
   }
   let data = sanitizeIds(json);
-  let parsed = ModelLessonSchema.safeParse(data);
   // Mechanical slips (a malformed figure check, one list item too many, an over-long label, an empty id)
   // shouldn't cost a whole new lesson: repair them and parse again.
-  for (let round = 0; !parsed.success && round < 3; round++) {
-    const next = salvageFigureChecks(data, parsed.error.issues) ?? salvageLimits(data, parsed.error.issues);
-    if (!next) break;
-    data = next;
-    parsed = ModelLessonSchema.safeParse(data);
+  const salvage = () => {
+    let result = ModelLessonSchema.safeParse(data);
+    for (let round = 0; !result.success && round < 4; round++) {
+      const next = salvageFigureChecks(data, result.error.issues) ?? salvageLimits(data, result.error.issues);
+      if (!next) break;
+      data = next;
+      result = ModelLessonSchema.safeParse(data);
+    }
+    return result;
+  };
+  let parsed = salvage();
+  // Still broken only (or also) in the model's figure: drop that figure — the figure is built from the statement, and
+  // a lesson must not be lost to a malformed drawing.
+  if (!parsed.success && parsed.error.issues.some((i) => i.path[0] === "figure") && data && typeof data === "object") {
+    data = { ...(data as Json), figure: null };
+    parsed = salvage();
   }
   if (!parsed.success) {
     return {
@@ -170,7 +180,8 @@ function splitIntoPoints(ref: string, pointIds: string[]): string[] | null {
  * segment/triangle names, drop checks that are still malformed, and return the repaired JSON.
  */
 function salvageFigureChecks(json: unknown, issues: { path: PropertyKey[] }[]): unknown | null {
-  if (!issues.every((i) => i.path[0] === "figure" && i.path[1] === "checks")) return null;
+  // Only problems inside individual checks (figure.checks.<i>…); "too many checks" is a size slip for salvageLimits.
+  if (!issues.every((i) => i.path[0] === "figure" && i.path[1] === "checks" && typeof i.path[2] === "number")) return null;
   const figure = (json as Json).figure as Json;
   const points = Array.isArray(figure.points) ? (figure.points as Json[]).map((p) => String(p.id)) : [];
   const bad = new Set(issues.map((i) => i.path[2]));

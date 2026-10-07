@@ -28,6 +28,7 @@ function clean(text: string): string {
     .replace(/\\text\{([^}]*)\}/g, "$1")
     .replace(/\\(?:widehat|hat|angle)\s*\{?\s*((?:[A-Z]'*){1,3})\s*\}?/g, "∠$1")
     .replace(/\\(?:neq|ne)(?![a-zA-Z])/g, "≠")
+    .replace(/\\cap(?![a-zA-Z])/g, "∩")
     .replace(/[{}]/g, "")
     .replace(/\s+/g, " ");
 }

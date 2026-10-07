@@ -1,0 +1,54 @@
+{
+ "summary": {
+  "exp": "FIG-003",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.8",
+  "techniqueHints": false,
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 0,
+  "fail": 1,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 1,
+  "verifiedRate": 0,
+  "errors": 1,
+  "meanModelSeconds": 291.1,
+  "meanInputTokens": 0,
+  "meanOutputTokens": 0,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "createdAt": "2026-10-07T08:02:53.838Z"
+ },
+ "rows": [
+  {
+   "id": "ch-4",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 291.1,
+   "wallSeconds": 291.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1: invalid structure: analysis.statusReason: Too big: expected string to have <=300 characters | figure.checks.8.refs: Too small: expected array to have >=2 items | figure.checks.9.refs: Too small: expected array to have >=2 items",
+    "attempt 2: invalid structure: figure.checks: Too big: expected array to have <=16 items"
+   ],
+   "slept": false,
+   "error": "no structurally valid lesson after retries"
+  }
+ ]
+}
