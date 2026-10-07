@@ -114,7 +114,7 @@ export const isKnownTechnique = (id: string) => TECHNIQUE_IDS.has(id);
 export const techniqueName = (id: string) => KB_TECHNIQUES.find((t) => t.id === id)?.vi ?? null;
 
 const CUES: Record<Exclude<Domain, "algebra">, RegExp> = {
-  geometry: /tam giác|tứ giác|đường tròn|tiếp tuyến|góc|vuông góc|song song|trung điểm|đường cao|nội tiếp|hình (vuông|chữ nhật|thang|thoi|bình hành)|\\widehat|\\triangle|triangle|circle/iu,
+  geometry: /tam giác|tứ giác|đường tròn|tiếp tuyến|góc|vuông góc|song song|trung điểm|đường cao|nội tiếp|đoạn thẳng|đường thẳng|cắt nhau|hình (vuông|chữ nhật|thang|thoi|bình hành)|\\widehat|\\triangle|triangle|circle/iu,
   number_theory: /chia hết|số nguyên|số tự nhiên|nguyên tố|ước|bội|số dư|chia .* dư|chính phương|nghiệm nguyên|\\vdots|⋮|\bmod\b/iu,
   combinatorics: /bảng|ô vuông|tô màu|số cách|có bao nhiêu|xác suất|tập hợp|chọn ra|sắp xếp|trò chơi|lượt|thẻ|dirichlet/iu,
 };

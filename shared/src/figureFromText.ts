@@ -195,6 +195,33 @@ function baseCyclicQuadrilateral(t: string): Figure | null {
   return { scale: "schematic", points, lines: [segment(A, B), segment(B, C), segment(C, D), segment(D, A)], circles: [circle(`c_${O}`, O, null, 4, `(${O})`)], angles: [], marks: [], checks: [] };
 }
 
+/**
+ * "tứ giác (lồi) ABCD … hai đường chéo AC và BD vuông góc": the diagonals on the axes through their intersection, so
+ * A = (0, a), B = (−b, 0), C = (0, −c), D = (d, 0); each given side (BC = 7, DA = 1) fixes its two half-diagonals.
+ */
+function basePerpendicularDiagonals(t: string): Figure | null {
+  const m = new RegExp(`tứ giác\\s+(?:lồi\\s+)?(${PT})(${PT})(${PT})(${PT})`).exec(t);
+  if (!m || !/đường chéo[^.]{0,40}vuông góc|vuông góc với nhau/.test(t)) return null;
+  const [A, B, C, D] = [m[1]!, m[2]!, m[3]!, m[4]!];
+  const len = (u: string, v: string) => {
+    const r = new RegExp(`(?:${u}${v}|${v}${u})\\s*=\\s*(\\d+(?:[.,]\\d+)?)`).exec(t);
+    return r ? Number(r[1]!.replace(",", ".")) : null;
+  };
+  // Half-diagonals a (to A), b (to B), c (to C), d (to D); split a given side 3:4-ish so the quadrilateral is clearly convex.
+  const h = { a: 3, b: 4, c: 3.5, d: 2.5 };
+  const sides: [string, string, "a" | "b" | "c" | "d", "a" | "b" | "c" | "d"][] = [[A, B, "a", "b"], [B, C, "b", "c"], [C, D, "c", "d"], [D, A, "d", "a"]];
+  const fixed = new Set<string>();
+  for (const [u, v, p, q] of sides) {
+    const L = len(u, v);
+    if (L === null || fixed.has(p) || fixed.has(q)) continue;
+    h[p] = L * 0.6;
+    h[q] = L * 0.8;
+    fixed.add(p).add(q);
+  }
+  const points = [free(A, 0, h.a), free(B, -h.b, 0), free(C, 0, -h.c), free(D, h.d, 0)];
+  return { scale: fixed.size ? "exact" : "schematic", points, lines: [segment(A, B), segment(B, C), segment(C, D), segment(D, A), segment(A, C), segment(B, D)], circles: [], angles: [], marks: [], checks: [] };
+}
+
 /** "hình bình hành / hình chữ nhật / hình vuông / hình thoi ABCD". */
 function baseParallelogram(t: string): Figure | null {
   const m = new RegExp(`hình (bình hành|chữ nhật|vuông|thoi)\\s+(${PT})(${PT})(${PT})(${PT})`).exec(t);
@@ -329,7 +356,7 @@ export function figureFromStatement(statement: string): StatementFigure | null {
   const t = clean(statement);
   const spec = triangleSpec(t);
   let figure =
-    baseCyclicQuadrilateral(t) ?? baseParallelogram(t) ?? baseTangents(t) ?? (spec ? baseTriangle(t, spec) : null) ?? baseChord(t);
+    baseCyclicQuadrilateral(t) ?? basePerpendicularDiagonals(t) ?? baseParallelogram(t) ?? baseTangents(t) ?? (spec ? baseTriangle(t, spec) : null) ?? baseChord(t);
   if (!figure) return null;
   figure = placeArcPoints(t, placeSidePoints(t, figure));
   // Every other point from its definition (two passes inside; run twice so arc/side points defined later get used).

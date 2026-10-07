@@ -16,7 +16,7 @@ import { regularizeTriangle } from "./figureShape";
 import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
 import { derivationSlips } from "./derivations";
 import { adoptStatementFigure } from "./figureFromText";
-import { isKnownTechnique } from "./knowledgeBase";
+import { isKnownTechnique, problemDomains } from "./knowledgeBase";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
@@ -163,7 +163,9 @@ export function checkLessonStructure(lesson: ModelLesson): { lesson: ModelLesson
   const solvable = lesson.analysis.status === "solvable";
 
   if (solvable) {
-    if (lesson.analysis.topic === "geometry" && !lesson.figure) {
+    // Only when the problem really describes a figure: a model can label "Giải phương trình …" as geometry, and a
+    // retry for a figure there costs a paid request for nothing.
+    if (lesson.analysis.topic === "geometry" && !lesson.figure && problemDomains(lesson.analysis.statement).includes("geometry")) {
       // A presentation gap, not a mathematical error: retry for it, but it doesn't un-verify correct answers.
       report.retryHints!.push("a geometry problem needs a figure (figure is null)");
     }
