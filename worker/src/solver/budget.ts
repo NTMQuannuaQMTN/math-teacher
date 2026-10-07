@@ -2,11 +2,11 @@ import { OcrFailure } from "../ocr/provider";
 import type { JsonModel } from "./llm";
 import { estimateCost, type Usage } from "./pricing";
 
-/** Worst-case output of one call (the Gemini solver's maxOutputTokens). */
+/** Worst-case output of one call when not given (the Gemini solver's maxOutputTokens). */
 const WORST_CASE_OUTPUT = 65_536;
 
 /**
- * A daily spending cap for a paid model (the temporary Gemini fallback). Spend is kept per UTC day in micro-dollars
+ * A daily spending cap for a paid model (SOCLAAS, or the Gemini fallback). Spend is kept per UTC day in micro-dollars
  * in the rate_limits table. Before each call the worst case (full output budget) is reserved, so a truncated or
  * failed call can never overshoot; after a call that reports usage, the reservation is corrected to the actual cost.
  * Over the cap, the call is refused as quota_exhausted (the lesson fails like any other unavailable model).
@@ -20,6 +20,8 @@ export class BudgetedJsonModel implements JsonModel {
     private readonly db: D1Database,
     private readonly dailyBudgetUsd: number,
     private readonly log: (message: string) => void = () => undefined,
+    /** The most output one call can produce (its max_tokens). */
+    private readonly worstCaseOutput = WORST_CASE_OUTPUT,
   ) {
     this.name = inner.name;
     this.grammarConstrained = inner.grammarConstrained;
@@ -31,7 +33,7 @@ export class BudgetedJsonModel implements JsonModel {
 
   async complete(input: Parameters<JsonModel["complete"]>[0]): Promise<string> {
     const inputTokens = Math.ceil(input.messages.reduce((n, m) => n + m.content.length, 0) / 3);
-    const reserve = toMicro(estimateCost(this.model, { input: inputTokens, cachedInput: 0, output: WORST_CASE_OUTPUT, reasoning: 0 }) ?? 1);
+    const reserve = toMicro(estimateCost(this.model, { input: inputTokens, cachedInput: 0, output: this.worstCaseOutput, reasoning: 0 }) ?? 1);
     const day = Math.floor(Date.now() / 86_400_000) * 86_400;
     const bucket = `spend:${this.model}`;
     const spent = await add(this.db, bucket, day, 0);

@@ -53,8 +53,14 @@ export interface Env {
   OPENAI_API_KEY?: string;
   ANTHROPIC_API_KEY?: string;
   GEMINI_API_KEY?: string;
-  /** With SOLVER_PROVIDER=local: "off" disables the temporary Gemini fallback for failed solves (default on when GEMINI_API_KEY is set). */
+  /** With SOLVER_PROVIDER=local: "on" enables the Gemini fallback for failed solves (default off). */
   SOLVER_GEMINI_FALLBACK?: string;
+  /** SOLVER_PROVIDER=soclaas: NUS SOCLAAS gateway (OpenAI-compatible). */
+  SOCLAAS_BASE_URL?: string;
+  SOCLAAS_API_KEY?: string;
+  SOCLAAS_MODEL?: string;
+  /** Daily spending cap for the SOCLAAS solver in USD (default 1). */
+  SOLVER_DAILY_BUDGET_USD?: string;
   /** Daily spending cap for the Gemini fallback in USD (default 0.5); over it the fallback is skipped. */
   SOLVER_GEMINI_DAILY_BUDGET_USD?: string;
 }

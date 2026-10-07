@@ -53,7 +53,8 @@ function solveTimeoutMs(env: Env): number {
  * Cheap/mid primary plus an optional stronger fallback used only when checks fail.
  * Default provider is Gemini (flash → pro). OpenAI remains available via SOLVER_PROVIDER=openai.
  */
-const geminiFallbackOn = (env: Env) => !!env.GEMINI_API_KEY && (env.SOLVER_GEMINI_FALLBACK || "on").toLowerCase() !== "off";
+// Opt-in (it cost ≈ $1.5 in one evening of testing): SOLVER_GEMINI_FALLBACK=on.
+const geminiFallbackOn = (env: Env) => !!env.GEMINI_API_KEY && (env.SOLVER_GEMINI_FALLBACK || "off").toLowerCase() === "on";
 
 function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean } {
   const provider = (env.SOLVER_PROVIDER || "gemini").toLowerCase();
@@ -118,13 +119,32 @@ function createModels(env: Env, request: Request, problemText: string): { model:
     }
     // Temporary (2026-10-06, user decision): Gemini takes over only when the free model fails outright — a timeout,
     // truncated or empty output, a give-up, or an exhausted daily quota. Corrective retries stay on the free model.
-    // Off with SOLVER_GEMINI_FALLBACK=off, or by removing GEMINI_API_KEY.
+    // On with SOLVER_GEMINI_FALLBACK=on (and GEMINI_API_KEY).
     if (geminiFallbackOn(env)) {
       // gemini-3.8-flash: $3.75/M output tokens vs $9 for 3.5-flash. A daily cap bounds the spend (default $0.50/day).
       const gemini = new GeminiJsonModel(env.GEMINI_API_KEY!, env.SOLVER_FALLBACK_MODEL || "gemini-3.8-flash", env.SOLVER_FALLBACK_REASONING_EFFORT || "medium");
       const budget = Number(env.SOLVER_GEMINI_DAILY_BUDGET_USD ?? "0.5");
       const capped = new BudgetedJsonModel(gemini, env.DB, Number.isFinite(budget) ? budget : 0.5, (m) => console.log(`[solve] ${m}`));
       return { model, fallback: capped, fallbackOnlyOnFailure: true };
+    }
+    return { model };
+  }
+
+  // SOCLAAS (NUS, OpenAI-compatible, paid per token): qwen3.6:35b ("default") solved 13/13 PTNK 2025 parts at
+  // ≈ $0.03 each (PTNK25-S2). Daily spending cap; on an outright failure the free OpenRouter model gets a turn.
+  if (provider === "soclaas" && env.SOCLAAS_API_KEY) {
+    // ~330 tokens/s; the gateway ends a request at ~240 s, so stop just before it.
+    const o = hostedModelOptions(problemText, { complexMaxTokens: 40_000, complexRequestTimeoutMs: 230_000 });
+    const soclaas = new LocalJsonModel(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1", env.SOCLAAS_MODEL || "qwen3.6:35b", {
+      apiKey: env.SOCLAAS_API_KEY,
+      thinking: false,
+      ...o,
+    });
+    const budget = Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
+    const model = new BudgetedJsonModel(soclaas, env.DB, Number.isFinite(budget) ? budget : 1, (m) => console.log(`[solve] ${m}`), o.maxTokens ?? 12_000);
+    if (env.LOCAL_LLM_URL && env.LOCAL_LLM_API_KEY) {
+      const free = new LocalJsonModel(env.LOCAL_LLM_URL, env.LOCAL_SOLVER_MODEL || "local", { apiKey: env.LOCAL_LLM_API_KEY, thinking: false, ...hostedModelOptions(problemText) });
+      return { model, fallback: free, fallbackOnlyOnFailure: true };
     }
     return { model };
   }

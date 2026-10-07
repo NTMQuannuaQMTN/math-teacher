@@ -15,6 +15,11 @@ const PRICES: Record<string, { input: number; cached: number; output: number }> 
   "gpt-4.1": { input: 2, cached: 0.5, output: 8 },
   "gpt-4.1-mini": { input: 0.4, cached: 0.1, output: 1.6 },
   "gpt-4.1-nano": { input: 0.1, cached: 0.025, output: 0.4 },
+  // SOCLAAS (NUS gateway; its /v1/models listing, checked 2026-10-07). "default" is an alias of qwen3.6:35b.
+  "qwen3.6:35b": { input: 0.45, cached: 0.45, output: 1.52 },
+  default: { input: 0.45, cached: 0.45, output: 1.52 },
+  "qwen3.8:27b": { input: 0.41, cached: 0.41, output: 2.32 },
+  "gemma4:26b": { input: 0.1, cached: 0.1, output: 0.38 },
   // Gemini (paid tier, prompts ≤ 200k for Pro). Billed output includes thinking tokens.
   "gemini-3.8-flash": { input: 0.75, cached: 0.075, output: 3.75 },
   "gemini-3.7-flash": { input: 0.75, cached: 0.075, output: 3.75 },
