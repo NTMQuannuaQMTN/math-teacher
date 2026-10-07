@@ -22,7 +22,7 @@ import { solveProblem } from "../src/solver/pipeline";
 import { hostedModelOptions } from "../src/solver/routing";
 import { PROMPT_VERSION } from "../src/solver/prompts";
 import { grade, answerText, type BenchItem, type Grade } from "./lib/grade";
-import { CachedModel, OfflineMiss } from "./lib/modelCache";
+import { CachedModel, OfflineMiss, SPEND } from "./lib/modelCache";
 
 const ROOT = new URL("../../tools/benchmark/", import.meta.url).pathname;
 // Node's fetch aborts if response headers take > 300 s; a local model writing a long proof can take
@@ -237,6 +237,8 @@ const summary = {
   meanInputTokens: rows.reduce((s, r) => s + r.inputTokens, 0) / rows.length,
   meanOutputTokens: rows.reduce((s, r) => s + r.outputTokens, 0) / rows.length,
   cache: cached?.stats ?? null,
+  /** Paid in this run (cache misses only). */
+  costUsd: Math.round(SPEND.usd * 10000) / 10000,
   createdAt: new Date().toISOString(),
 };
 console.log(JSON.stringify(summary));

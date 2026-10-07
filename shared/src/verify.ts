@@ -816,8 +816,9 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
     if (figureProblems.length === 0 && resolved) {
       // Measure the solution's geometric claims on the exact figure: a false "IH ⊥ IK" means wrong reasoning.
       const l = lesson;
+      // The problem's own claims from the student's confirmed text: a model restatement may garble or change them.
       const claimTexts = [
-        l.analysis.statement,
+        problemText ?? l.analysis.statement,
         ...l.steps.flatMap((s) => [s.title, s.explanation, s.math]),
         ...l.hints.flatMap((h) => [h.explanation, h.math]),
         l.finalAnswer.text,

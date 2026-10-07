@@ -9,6 +9,7 @@
  * offline mode: a cache miss throws instead of calling the model — for iterating on the
  * verifier, grader or UI with zero API spend.
  */
+import { estimateCost } from "../../src/solver/pricing";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -29,6 +30,9 @@ export interface CacheStats {
   /** Model time of the calls made through this wrapper (the original latency for cache hits). */
   modelMs: number;
 }
+
+/** What this process paid for model calls (cache misses only). */
+export const SPEND = { usd: 0 };
 
 export class CachedModel implements JsonModel {
   readonly name: string;
@@ -64,6 +68,8 @@ export class CachedModel implements JsonModel {
     const started = Date.now();
     const text = await this.inner.complete({ ...req, onUsage: (u) => ((usage = u), req.onUsage?.(u)) });
     this.stats.modelMs += Date.now() - started;
+    // Money actually spent in this process (cache hits are free); priced as in pricing.ts, 0 for unknown/free models.
+    SPEND.usd += estimateCost(this.inner.model, usage) ?? 0;
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(
       file,

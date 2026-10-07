@@ -1,0 +1,73 @@
+/**
+ * Lessons learned from auditing geometry solutions (worker/scripts/geometry-audit.ts): mistakes the solver made,
+ * confirmed false on the exact figure (and, where noted, independently), turned into general rules that are given to
+ * the solver for every geometry problem. Rules are generic — never the answer to a specific problem — so they help on
+ * new problems without leaking evaluation items. Each rule keeps its evidence; the loop log is in
+ * docs/GEOMETRY_LOOP.md.
+ */
+export interface GeometryLesson {
+  id: string;
+  /** Which check of the loop found it: figure ↔ text, step ↔ figure, or grade level. */
+  check: "figure" | "steps" | "grade";
+  /** The instruction given to the solver (English, imperative, general). */
+  rule: string;
+  /** Where it was seen (dataset ids / stored lessons) and what went wrong. */
+  evidence: string[];
+  added: string;
+}
+
+export const GEOMETRY_LESSONS: GeometryLesson[] = [
+  {
+    id: "one-name-one-point",
+    check: "figure",
+    rule: "A point's name keeps one meaning in the whole solution: never reuse a letter (from the problem or an earlier step) for a new point — pick an unused letter.",
+    evidence: ["Câu 4 (stored lesson b0f85f87/q4): M was the midpoint of JI in step 7 and AL ∩ GJ in step 8; the figure can draw only one, so claims about M contradicted each other."],
+    added: "2026-10-08",
+  },
+  {
+    id: "use-given-definitions",
+    check: "figure",
+    rule: "Use every point exactly as the problem defines it; never swap two names (re-read \"lần lượt\" lists: the first name goes with the first object).",
+    evidence: ["Câu 4: L = DJ ∩ (I) and G = (S) ∩ (I) were swapped in a restated problem and in a solution step."],
+    added: "2026-10-07",
+  },
+  {
+    id: "no-unproved-well-known",
+    check: "steps",
+    rule: "Never justify a step with \"tính chất quen thuộc\" / \"dễ thấy\" / a well-known property: derive it from the definitions and earlier steps, and check it against the measured facts of the figure first — many \"well-known\" facts are false in the given configuration.",
+    evidence: ["Câu 4 (b0f85f87/q4) step 4: \"một tính chất quen thuộc: JD ∥ BC\" — false on the exact figure (the lines are nearly perpendicular)."],
+    added: "2026-10-08",
+  },
+  {
+    id: "collinear-not-concyclic",
+    check: "steps",
+    rule: "Before claiming a right angle ∠XJY or that four points are concyclic, check collinearity: a point on line XY gives a straight (180°) angle, and a circle can't pass through three collinear points.",
+    evidence: ["Câu 4: \"∠IJA = 90° so A, J, H, I are concyclic\" while J lies on AI (AI ⊥ EF at J)."],
+    added: "2026-10-07",
+  },
+  {
+    id: "tangent-radius",
+    check: "steps",
+    rule: "A tangent at P to a circle is perpendicular to the radius from THAT circle's own center to P (the tangent at D to (O) is ⊥ OD) — not to a segment from another center.",
+    evidence: ["PTNK 2025 4c: \"SD ⊥ ID\" where SD is the tangent at D to (O); false on the figure (SD ⊥ OD)."],
+    added: "2026-10-08",
+  },
+  {
+    id: "angle-equalities-need-a-source",
+    check: "steps",
+    rule: "Write an equality of angles only with its source: equal inscribed angles on the same arc (name the circle and the arc), corresponding angles of a named similarity (match vertices in order), or a named parallel/isosceles fact. An equality without such a source is usually false.",
+    evidence: [
+      "PTNK 2025 4a: \"∠EDF = ∠ODE\" — false in 200/200 random valid configurations (independent check).",
+      "PTNK 2025 4b: \"∠EDF = ∠EDB\" — false in 200/200 random valid configurations.",
+    ],
+    added: "2026-10-08",
+  },
+];
+
+/** The rules as a prompt block for a geometry problem. */
+export function geometryLessonsPrompt(): string {
+  return [
+    "Mistakes found in earlier geometry solutions — avoid them (each was false on the exact figure):",
+    ...GEOMETRY_LESSONS.map((l) => `- ${l.rule}`),
+  ].join("\n");
+}

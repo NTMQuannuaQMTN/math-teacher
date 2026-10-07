@@ -27,6 +27,9 @@ const TRI = `${P}${P}${P}`;
 /** LaTeX / Vietnamese wording → a compact symbolic form the patterns below understand. */
 function normalize(text: string): string {
   return text
+    // A dot between point names is a product ("IJ.IA", "IJ \text{.} IA"), not the end of a sentence.
+    .replace(/\\text\{\s*\.\s*\}/g, "·")
+    .replace(/([A-Z]'*)\.(?=[A-Z])/g, "$1·")
     .replace(/\$/g, " ")
     .replace(/\\left|\\right|\\,|\\;|\\!/g, "")
     // Separators: line breaks, spacing, environments.

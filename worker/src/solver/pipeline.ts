@@ -3,6 +3,7 @@ import { previewPartialLesson } from "../../../shared/src/progressPreview";
 import { ModelLessonSchema, type ModelLesson, type SolveProgress, type Verification } from "../../../shared/src/solution";
 import { unsupportedFeedback } from "../../../shared/src/gradeLevel";
 import { describeStatementFigure } from "../../../shared/src/figureFromText";
+import { geometryLessonsPrompt } from "../../../shared/src/geometryLessons";
 import { latexFeedback, plainUnrenderable } from "./latexCheck";
 import { containsVietnamese, normalizeProblemText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
@@ -379,7 +380,8 @@ export async function solveProblem(
   // Geometry: the figure the checker will build from the statement, with exact definitions and measured facts, so the
   // solution reasons about the right objects (and its claims can match the figure).
   const figureNotes = withFigure ? describeStatementFigure(normalizeProblemText(problemText)) : null;
-  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? ""].filter(Boolean).join("\n\n");
+  // …and the general rules learned from auditing earlier geometry solutions (shared/src/geometryLessons.ts).
+  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },

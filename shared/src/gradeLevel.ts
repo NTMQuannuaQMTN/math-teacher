@@ -28,7 +28,9 @@ interface Marker {
 }
 
 const FORBIDDEN: Marker[] = [
-  { re: /đạo hàm|derivative|tích phân|nguyên hàm|integral|\\int\b|\\lim\b|\\frac\{d[a-z]?\}\{d[a-z]\}|\bf'\(|f′\(/iu, label: "calculus (derivatives, integrals, limits)" },
+  { re: /đạo hàm|derivative|tích phân|nguyên hàm|integral|\\int\b|\\lim\b/iu, label: "calculus (derivatives, integrals, limits)" },
+  // Case-sensitive: \frac{DE}{DF} is a ratio of segments (point D), not dy/dx.
+  { re: /\\frac\{d[a-z]?\}\{d[a-z]\}|\bf'\(|f′\(/u, label: "calculus (derivatives, integrals, limits)" },
   { re: /\\vec\b|\\overrightarrow|vectơ|véc-?tơ|tích vô hướng|dot product|\bvector\b/iu, label: "vectors" },
   { re: /định lí (hàm số )?(sin|côsin|cosin|cos)\b|law of (sines|cosines)|-\s*2\s*[a-z]{1,2}\s*(\\cdot\s*)?\\cos/iu, label: "the law of sines/cosines" },
   // Words only: \begin{matrix} is also how a grid (e.g. a magic square) is typeset.
@@ -84,7 +86,7 @@ function answerKey(lesson: ModelLesson): string | null {
 export function gradeLevelReport(lesson: ModelLesson): GradeLevelReport {
   const text = methodText(lesson);
   const statement = lesson.analysis.statement;
-  const forbidden = FORBIDDEN.filter((m) => m.re.test(text) && !m.re.test(statement)).map((m) => m.label);
+  const forbidden = [...new Set(FORBIDDEN.filter((m) => m.re.test(text) && !m.re.test(statement)).map((m) => m.label))];
   if (lesson.analysis.topic === "geometry" && COORDINATES_IN_TEXT.test(text) && !COORDINATES_IN_TEXT.test(statement)) {
     forbidden.push("coordinates for a synthetic geometry problem that doesn't mention them");
   }

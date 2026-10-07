@@ -850,3 +850,10 @@ describe("a malformed model figure never costs the lesson (FIG-003)", () => {
     if ("lesson" in p) expect(p.lesson.figure).toBeNull();
   });
 });
+
+describe("geometry loop findings (checker false positives)", () => {
+  it("a ratio of segments starting with point D is not a derivative", () => {
+    expect(gradeLevelReport(withStep("Ta có $\\frac{DE}{DF} = \\frac{DB}{DC}$.")).forbidden).toEqual([]);
+    expect(gradeLevelReport(withStep("Ta có $\\frac{dy}{dx} = 2x$.")).forbidden.length).toBe(1);
+  });
+});
