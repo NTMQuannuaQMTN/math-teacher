@@ -309,10 +309,12 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
             {scene.points.map((p) => (
               <G key={p.id} opacity={opacity(p.emphasis)}>
                 {p.draggable ? <Circle cx={p.p.x} cy={p.p.y} r={11} fill={accent} fillOpacity={0.15} /> : null}
+                {/* A highlighted point gets a ring, so it stands out even when it is a (always accent) draggable point. */}
+                {p.emphasis === "highlight" ? <Circle cx={p.p.x} cy={p.p.y} r={12} fill="none" stroke={accent} strokeWidth={2.5} /> : null}
                 <Circle
                   cx={p.p.x}
                   cy={p.p.y}
-                  r={p.draggable ? 6 : 4}
+                  r={p.emphasis === "highlight" ? 7 : p.draggable ? 6 : 4}
                   fill={p.draggable ? accent : p.emphasis === "highlight" ? accent : ink}
                   stroke={colors.surface}
                   strokeWidth={1.5}

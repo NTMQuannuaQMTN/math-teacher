@@ -106,7 +106,8 @@ export function buildScene(figure: Figure, resolved: ResolvedFigure, t: ViewTran
     const p = resolved.points[id];
     return p ? toScreen(p, t) : null;
   };
-  const visible = (style: "given" | "construction", id: string) => style === "given" || state.shownConstructions.has(id);
+  // A construction is shown from the step that reveals it — and whenever the selected step or hint names it.
+  const visible = (style: "given" | "construction", id: string) => style === "given" || state.shownConstructions.has(id) || state.highlighted.has(id);
 
   // Figure centre (screen) for placing labels outward.
   const shown = figure.points.filter((p) => !p.hidden && resolved.points[p.id]).map((p) => S(p.id)!);

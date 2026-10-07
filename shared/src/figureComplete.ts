@@ -92,6 +92,20 @@ function mentionsOf(texts: (string | null | undefined)[], pointIds: Set<string>)
   return out;
 }
 
+/** "∠A" with several arcs at A: the widest one (in a triangle, the whole angle; the others are parts of it). */
+function vertexAngleId(figure: Figure, resolved: ResolvedFigure, v: string, angleList = figure.angles): string | undefined {
+  let best: { id: string; deg: number } | undefined;
+  for (const a of angleList.filter((x) => x.vertex === v)) {
+    const [f, c, t] = [resolved.points[a.from], resolved.points[a.vertex], resolved.points[a.to]];
+    if (!f || !c || !t) continue;
+    const u = { x: f.x - c.x, y: f.y - c.y };
+    const w = { x: t.x - c.x, y: t.y - c.y };
+    const deg = (Math.acos(Math.max(-1, Math.min(1, (u.x * w.x + u.y * w.y) / (Math.hypot(u.x, u.y) * Math.hypot(w.x, w.y) || 1)))) * 180) / Math.PI;
+    if (deg < 179 && (!best || deg > best.deg)) best = { id: a.id, deg };
+  }
+  return best?.id;
+}
+
 /** Is segment PQ already drawn — as its own line, or as part of a drawn line through both points? */
 function covered(figure: Figure, resolved: ResolvedFigure, [p, q]: Pair, size: number): LineDef | null {
   const P = resolved.points[p];
@@ -218,6 +232,16 @@ export function completeFigure(lesson: ModelLesson, resolved: ResolvedFigure): F
   };
   problem.angles.forEach((ang) => ensureAngle(ang, null));
   perStep.forEach((m, i) => m.angles.forEach((ang) => ensureAngle(ang, i)));
+  // "∠A" / "\widehat{A}" at a vertex of a named triangle or quadrilateral: the polygon's angle there.
+  const polygons = [problem, ...perStep].flatMap((m) => m.polygons);
+  const vertexAngle = (v: string): [string, string, string] | null => {
+    const poly = polygons.find((p) => p.includes(v));
+    if (!poly) return null;
+    const i = poly.indexOf(v);
+    return [poly[(i + poly.length - 1) % poly.length]!, v, poly[(i + 1) % poly.length]!];
+  };
+  problem.vertexAngles.forEach((v) => { const a = vertexAngle(v); if (a) ensureAngle(a, null); });
+  perStep.forEach((m, i) => m.vertexAngles.forEach((v) => { const a = vertexAngle(v); if (a) ensureAngle(a, i); }));
 
   const circleId = (name: string) =>
     figure.circles.find((c) => c.center === name || c.id === name || c.id === `c_${name}` || (c.label ?? "").includes(name))?.id;
@@ -229,6 +253,10 @@ export function completeFigure(lesson: ModelLesson, resolved: ResolvedFigure): F
     }
     for (const ang of m.angles) {
       const id = angleId(ang);
+      if (id && !out.includes(id)) out.push(id);
+    }
+    for (const v of m.vertexAngles) {
+      const id = vertexAngleId(figure, resolved, v, angles);
       if (id && !out.includes(id)) out.push(id);
     }
     for (const name of m.circles) {
@@ -398,8 +426,8 @@ export function mentionedTargets(texts: (string | null | undefined)[], figure: F
     if (a) out.add(a.id);
   }
   for (const v of m.vertexAngles) {
-    const at = figure.angles.filter((x) => x.vertex === v);
-    if (at.length === 1) out.add(at[0]!.id);
+    const id = vertexAngleId(figure, resolved, v);
+    if (id) out.add(id);
   }
   for (const name of m.circles) {
     const c = figure.circles.find((c) => c.center === name || c.id === name || c.id === `c_${name}` || (c.label ?? "").includes(name));
@@ -407,4 +435,24 @@ export function mentionedTargets(texts: (string | null | undefined)[], figure: F
   }
   for (const poly of m.polygons) out.add(polygonId(poly));
   return [...out];
+}
+
+/** Debug/evaluation: what a text names, and which of those have nothing in the figure to highlight. */
+export function mentionReport(texts: (string | null | undefined)[], figure: Figure, resolved: ResolvedFigure): { named: string[]; missing: string[] } {
+  const pointIds = new Set(figure.points.filter((p) => !p.hidden).map((p) => p.id));
+  const m = mentionsOf(texts, pointIds);
+  const targets = new Set(mentionedTargets(texts, figure, resolved));
+  const named: string[] = [];
+  const missing: string[] = [];
+  const check = (label: string, ok: boolean) => (named.push(label), ok || missing.push(label));
+  for (const p of m.points) check(p, targets.has(p));
+  const xs = Object.values(resolved.points).map((p) => p.x);
+  const ys = Object.values(resolved.points).map((p) => p.y);
+  const size = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 1e-6);
+  for (const [a, b] of m.segments) if (a !== b) check(`${a}${b}`, !!covered(figure, resolved, [a, b], size));
+  for (const [f, v, t] of m.angles) check(`∠${f}${v}${t}`, figure.angles.some((x) => x.vertex === v && ((x.from === f && x.to === t) || (x.from === t && x.to === f))));
+  for (const v of m.vertexAngles) check(`∠${v}`, !!vertexAngleId(figure, resolved, v));
+  for (const c of m.circles) check(`(${c})`, figure.circles.some((x) => x.center === c || x.id === c || x.id === `c_${c}` || (x.label ?? "").includes(c)));
+  for (const poly of m.polygons) check(`△${poly.join("")}`, targets.has(polygonId(poly)));
+  return { named: [...new Set(named)], missing: [...new Set(missing)] };
 }

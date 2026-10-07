@@ -6,6 +6,7 @@ import { ModelLessonSchema } from "../../shared/src/solution";
 import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
 import { buildTargetIndex, deniesAnswer, presupposesAnswer, verifyLesson } from "../../shared/src/verify";
 import { problemDomains } from "../../shared/src/knowledgeBase";
+import { describeStatementFigure } from "../../shared/src/figureFromText";
 import { figureCoverage, mentionedTargets, polygonId } from "../../shared/src/figureComplete";
 import { buildScene } from "../../shared/src/figureScene";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
@@ -621,5 +622,40 @@ describe("everything a step or hint names is highlighted (user request 2026-10-0
     const off = buildScene(figure, resolved, view, { highlighted: new Set(), shownConstructions: new Set(), showLabels: true });
     expect(on.polygons).toHaveLength(1);
     expect(off.polygons).toHaveLength(0);
+  });
+});
+
+describe("solutions that don't match the figure; highlighting (user report 2026-10-07)", () => {
+  const ch4 = "Cho tam giác $ABC$ nhọn ($AB < AC$) có đường tròn nội tiếp $(I)$ tiếp xúc với các cạnh $BC, CA, AB$ lần lượt tại $D, E, F$. Gọi $J$ là trung điểm của $EF$ và $K$ là giao điểm của $AD$ với $EF$. b) Gọi $H$ là giao điểm khác $I$ của $IK$ với đường tròn đường kính $AI$. Chứng minh các điểm $I, D, J, H$ cùng thuộc một đường tròn $(S)$. c) Gọi $L$ và $G$ lần lượt là các giao điểm khác $D$ của $DJ$ và $(S)$ với $(I)$. Chứng minh $A, G, D$ thẳng hàng.";
+
+  it("tells the solver each point's exact definition and the non-obvious facts of the figure", () => {
+    const notes = describeStatementFigure(ch4)!;
+    expect(notes).toMatch(/L = intersection of line DJ with \(I\)/);
+    expect(notes).toMatch(/G = intersection of \(S\) through I, D, J and \(I\) other than D/);
+    expect(notes).toMatch(/A, I, J are collinear/);
+    expect(notes).not.toMatch(/E, J, K are collinear/); // J and K are both defined on EF: not news
+  });
+
+  it("explains a false concyclic claim when three of the points are collinear", () => {
+    const l = isoscelesLesson({ figure: null });
+    l.analysis = { ...l.analysis, topic: "geometry", statement: ch4 };
+    l.steps = [{ ...l.steps[0]!, explanation: "Suy ra $A, J, H, I$ cùng thuộc một đường tròn.", geometryActions: [] }, l.steps[1]!];
+    expect(verifyLesson(l).feedback.join(" ")).toMatch(/collinear, so these four points can't be concyclic/);
+  });
+
+  it("highlights the triangle's angle for '∠A' even when other arcs share the vertex", () => {
+    const v = verifyLesson(isoscelesLesson());
+    const t = mentionedTargets(["Trong tam giác $ABC$, $\\widehat{A} = 40^{\\circ}$"], v.lesson.figure!, v.resolvedFigure!);
+    expect(t).toContain("ang_A");
+  });
+
+  it("shows a construction the selected step names, even before the step that reveals it", () => {
+    const v = verifyLesson(isoscelesLesson());
+    const fig = { ...v.lesson.figure!, lines: v.lesson.figure!.lines.map((l) => (l.id === "seg_BC" ? { ...l, style: "construction" as const } : l)) };
+    const view = { scale: 20, tx: 100, ty: 100 } as never;
+    const hidden = buildScene(fig, v.resolvedFigure!, view, { highlighted: new Set(), shownConstructions: new Set(), showLabels: true });
+    const named = buildScene(fig, v.resolvedFigure!, view, { highlighted: new Set(["seg_BC"]), shownConstructions: new Set(), showLabels: true });
+    expect(hidden.lines.some((l) => l.id === "seg_BC")).toBe(false);
+    expect(named.lines.some((l) => l.id === "seg_BC")).toBe(true);
   });
 });

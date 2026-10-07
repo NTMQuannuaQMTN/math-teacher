@@ -419,3 +419,136 @@ function adoptFrom(lesson: ModelLesson, statement: string): { lesson: ModelLesso
     reason: "statement figure as the base",
   };
 }
+
+/**
+ * The statement's figure as text for the solver: each point's exact definition and a few facts measured on the
+ * exact figure that don't follow directly from a single definition (collinear points, right angles). Given to the
+ * model before it solves, so its reasoning uses the right objects (e.g. not swapping L = DJ ∩ (I) with G = (S) ∩ (I))
+ * and doesn't assume false configurations (e.g. "∠IJA = 90°" when J lies on AI). Null when the figure can't be built.
+ */
+export function describeStatementFigure(problemText: string): string | null {
+  const built = figureFromStatement(problemText);
+  if (!built || built.unbuilt.length > 0 || built.resolved.errors.length > 0) return null;
+  const { figure, resolved } = built;
+  const byId = new Map(figure.points.map((p) => [p.id, p]));
+  const visible = figure.points.filter((p) => !p.hidden && resolved.points[p.id]);
+  const circleName = (id: string) => figure.circles.find((c) => c.id === id)?.label ?? `(${figure.circles.find((c) => c.id === id)?.center ?? id})`;
+  const circleDesc = (id: string): string => {
+    const c = figure.circles.find((x) => x.id === id);
+    if (!c) return id;
+    const center = byId.get(c.center);
+    if (center?.hidden && center.kind === "circumcenter") return `${c.label ?? "the circle"} through ${center.refs.join(", ")}`;
+    if (center?.hidden && center.kind === "midpoint") return `the circle with diameter ${center.refs.join("")}`;
+    return c.label ?? `(${c.center})`;
+  };
+  const line = (a: string, b: string) => {
+    const pa = byId.get(a);
+    const pb = byId.get(b);
+    // A hidden helper on a perpendicular bisector / tangent: describe the line by what it is.
+    if (pb?.hidden && pb.kind === "rotate" && pb.value === 90 && pa?.hidden && pa.kind === "midpoint") return `the perpendicular bisector of ${pa.refs.join("")}`;
+    if (pb?.hidden && pb.kind === "rotate" && pb.value === 90) return `the tangent at ${a} to the circle centered ${pb.refs[0]}`;
+    return `line ${a}${b}`;
+  };
+  const defs: string[] = [];
+  for (const p of visible) {
+    const r = p.refs;
+    switch (p.kind) {
+      case "midpoint": defs.push(`${p.id} = midpoint of ${r.join("")}`); break;
+      case "foot": defs.push(`${p.id} = foot of the perpendicular from ${r[0]} to ${r[1]}${r[2]}`); break;
+      case "intersection": defs.push(`${p.id} = ${line(r[0]!, r[1]!)} ∩ ${line(r[2]!, r[3]!)}`); break;
+      case "line_circle": defs.push(`${p.id} = intersection of line ${byId.get(r[0]!)?.hidden ? `${r[1]} (ray beyond ${byId.get(r[0]!)!.refs[1] ?? ""})` : `${r[0]}${r[1]}`} with ${circleDesc(r[2]!)}${p.value === 1 ? ` (the one other than / farther from ${r[0]})` : ""}`); break;
+      case "circle_circle": defs.push(`${p.id} = intersection of ${circleDesc(r[0]!)} and ${circleDesc(r[1]!)}${r[2] ? ` other than ${r[2]}` : ""}`); break;
+      case "incenter": defs.push(`${p.id} = incenter of triangle ${r.join("")}`); break;
+      case "circumcenter": defs.push(`${p.id} = circumcenter of triangle ${r.join("")}`); break;
+      case "orthocenter": defs.push(`${p.id} = orthocenter of triangle ${r.join("")}`); break;
+      case "centroid": defs.push(`${p.id} = centroid of triangle ${r.join("")}`); break;
+      case "reflect": defs.push(r.length === 2 ? `${p.id} = reflection of ${r[0]} in ${r[1]}` : `${p.id} = reflection of ${r[0]} in line ${r[1]}${r[2]}`); break;
+      case "tangent": defs.push(`${p.id} = point of tangency from ${r[0]} to ${circleName(r[1]!)}`); break;
+      case "on_circle": defs.push(`${p.id} on ${circleName(r[0]!)}`); break;
+      case "on_segment": defs.push(`${p.id} on segment ${r.join("")}`); break;
+      default: break;
+    }
+  }
+  const circles = figure.circles.filter((c) => c.label).map((c) => (byId.get(c.center)?.hidden ? `${c.label} = ${circleDesc(c.id).replace(`${c.label} `, "circle ")}` : `${c.label} = circle centered ${c.center}`));
+
+  // Facts not given by a single definition: collinear triples and right angles among the named points.
+  const P = resolved.points;
+  const ids = visible.map((p) => p.id);
+  const size = Math.max(...ids.map((a) => Math.hypot(P[a]!.x, P[a]!.y)), 1);
+  const onDefiningLine = (x: string, a: string, b: string) => {
+    const d = byId.get(x);
+    if (!d) return false;
+    const pair = (u: string, v: string) => (u === a && v === b) || (u === b && v === a);
+    return (
+      (["midpoint", "on_segment"].includes(d.kind) && pair(d.refs[0]!, d.refs[1]!)) ||
+      (d.kind === "foot" && pair(d.refs[1]!, d.refs[2]!)) ||
+      (d.kind === "intersection" && (pair(d.refs[0]!, d.refs[1]!) || pair(d.refs[2]!, d.refs[3]!))) ||
+      (d.kind === "line_circle" && pair(d.refs[0]!, d.refs[1]!)) ||
+      (d.kind === "reflect" && d.refs.length === 2 && (d.refs.includes(a) && d.refs.includes(b)))
+    );
+  };
+  // Lines given by definitions, with every point defined on them: a triple inside one of these is not news.
+  const defining = new Map<string, Set<string>>();
+  const addLine = (u: string, v: string, ...on: string[]) => {
+    const key = [u, v].sort().join("|");
+    const set = defining.get(key) ?? new Set([u, v]);
+    on.forEach((x) => set.add(x));
+    defining.set(key, set);
+  };
+  for (const d of figure.points) {
+    if (["midpoint", "on_segment"].includes(d.kind)) addLine(d.refs[0]!, d.refs[1]!, d.id);
+    if (d.kind === "foot") addLine(d.refs[1]!, d.refs[2]!, d.id);
+    if (d.kind === "intersection") (addLine(d.refs[0]!, d.refs[1]!, d.id), addLine(d.refs[2]!, d.refs[3]!, d.id));
+    if (d.kind === "line_circle") addLine(d.refs[0]!, d.refs[1]!, d.id);
+  }
+  const knownLine = (a: string, b: string, c: string) => [...defining.values()].some((s) => s.has(a) && s.has(b) && s.has(c));
+  // Collinear points, merged into maximal sets ("A, D, K, G are collinear" once, not four triples).
+  const collinear: Set<string>[] = [];
+  for (let i = 0; i < ids.length; i++)
+    for (let j = i + 1; j < ids.length; j++)
+      for (let k = j + 1; k < ids.length; k++) {
+        const [a, b, c] = [ids[i]!, ids[j]!, ids[k]!];
+        const [pa, pb, pc] = [P[a]!, P[b]!, P[c]!];
+        const cross = (pb.x - pa.x) * (pc.y - pa.y) - (pb.y - pa.y) * (pc.x - pa.x);
+        if (Math.abs(cross) > 1e-7 * size * size) continue;
+        const set = collinear.find((s) => [a, b, c].filter((x) => s.has(x)).length >= 2);
+        if (set) [a, b, c].forEach((x) => set.add(x));
+        else collinear.push(new Set([a, b, c]));
+      }
+  for (const set of collinear) {
+    const pts = [...set];
+    const key = pts.slice(0, 2).sort().join("|");
+    defining.set(`c:${key}:${defining.size}`, set);
+  }
+  const facts = collinear
+    .filter((set) => ![...defining.entries()].some(([k, s]) => !k.startsWith("c:") && [...set].every((x) => s.has(x))))
+    .slice(0, 6)
+    .map((set) => `${[...set].join(", ")} are collinear`);
+  // Right angles, one per pair of perpendicular lines (∠AJE, ∠IJF … are all "AI ⊥ EF").
+  const right: string[] = [];
+  const lineOf = (a: string, b: string) => [...defining.values()].find((s) => s.has(a) && s.has(b)) ?? new Set([a, b]);
+  const seenPairs = new Set<string>();
+  for (const v of ids)
+    for (let i = 0; i < ids.length; i++)
+      for (let j = i + 1; j < ids.length; j++) {
+        const [x, y] = [ids[i]!, ids[j]!];
+        if (x === v || y === v || right.length >= 6) continue;
+        const [pv, px, py] = [P[v]!, P[x]!, P[y]!];
+        const u = { x: px.x - pv.x, y: px.y - pv.y };
+        const w = { x: py.x - pv.x, y: py.y - pv.y };
+        const cos = (u.x * w.x + u.y * w.y) / (Math.hypot(u.x, u.y) * Math.hypot(w.x, w.y) || 1);
+        if (Math.abs(cos) > 1e-7) continue;
+        const d = byId.get(v);
+        if (d?.kind === "foot" && [x, y].includes(d.refs[0]!)) continue; // by definition
+        const key = [[...lineOf(v, x)].sort().join(""), [...lineOf(v, y)].sort().join("")].sort().join("⊥");
+        if (seenPairs.has(key)) continue;
+        seenPairs.add(key);
+        right.push(`∠${x}${v}${y} = 90°`);
+      }
+  return [
+    "Exact construction of the figure from the statement (the checking program builds this figure and measures every claim of your solution on it — use exactly these definitions, do not rename or swap points):",
+    ...defs.map((d) => `- ${d}`),
+    ...circles.map((c) => `- ${c}`),
+    ...(facts.length || right.length ? ["Facts measured on that figure (true; never claim their opposite):", ...[...facts, ...right].map((f) => `- ${f}`)] : []),
+  ].join("\n");
+}

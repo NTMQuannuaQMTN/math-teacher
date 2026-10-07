@@ -706,6 +706,21 @@ export function presupposesAnswer(statement: string): boolean {
 export const deniesAnswer = (answer: string) =>
   /vô nghiệm|không tồn tại|không có (giá trị|thời điểm|thời gian|số) .{0,20}(nào|thỏa)|không có lời giải|no solution|does not exist/iu.test(answer.normalize("NFC"));
 
+/** What the figure shows instead, for a false "A, B, C, D cùng thuộc một đường tròn": usually three are collinear. */
+function whyFalse(label: string, resolved: ResolvedFigure): string {
+  const m = /^((?:[A-Z]'*\s*,\s*){3}[A-Z]'*) cùng thuộc một đường tròn$/.exec(label);
+  if (!m) return "";
+  const pts = m[1]!.split(/\s*,\s*/);
+  for (let i = 0; i < 4; i++) {
+    const t = pts.filter((_, k) => k !== i);
+    const [a, b, c] = t.map((p) => resolved.points[p]);
+    if (!a || !b || !c) continue;
+    const cross = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    if (Math.abs(cross) < 1e-6 * (dist(a, b) * dist(a, c) || 1)) return `; ${t.join(", ")} are collinear, so these four points can't be concyclic`;
+  }
+  return "";
+}
+
 /** "Chứng minh …" with nothing to find or compute. */
 export function isProofOnly(statement: string): boolean {
   const t = statement.normalize("NFC");
@@ -835,7 +850,7 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
         else {
           answerLevelFailed++;
           feedback.push(
-            `the lesson states "${claim.label}", but it is false in the constructed figure (${claim.detail}). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong.`,
+            `the lesson states "${claim.label}", but it is false in the constructed figure (${claim.detail}${whyFalse(claim.label, resolved)}). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong.`,
           );
         }
       }
