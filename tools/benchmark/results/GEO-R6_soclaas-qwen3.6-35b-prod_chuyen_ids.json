@@ -1,0 +1,1957 @@
+{
+ "summary": {
+  "exp": "GEO-R6",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.9",
+  "techniqueHints": false,
+  "dataset": "chuyen",
+  "n": 7,
+  "pass": 0,
+  "partial": 1,
+  "fail": 6,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 4,
+  "verifiedRate": 0,
+  "errors": 4,
+  "meanModelSeconds": 98.58571428571429,
+  "meanInputTokens": 8853.142857142857,
+  "meanOutputTokens": 10015.714285714286,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "costUsd": 0.1025,
+  "createdAt": "2026-10-08T06:08:58.404Z"
+ },
+ "rows": [
+  {
+   "id": "ptnk-2023-chuyen_5c",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": null,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 32095,
+   "outputTokens": 15267,
+   "modelSeconds": 317.5,
+   "wallSeconds": 317.6,
+   "figurePoints": 13,
+   "failedChecks": [
+    "∠MIH = ∠LIH",
+    "∠LIH = ∠LAH",
+    "∠LAH = ∠KAE"
+   ],
+   "answer": "Ta đã chứng minh được KJ ∥ AI. Vì AI ⊥ EF (bán kính vuông góc với tiếp tuyến) nên KJ ⊥ EF (đpcm). KJ ⊥ EF Ta đã chứng minh được $KJ \\parallel AI$. Vì $AI \\perp ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$. Gọi $D,E,F$ là các tiếp điểm của đường tròn $(I)$ nội tiếp tam giác $ABC$ với $BC,CA,AB$. Từ chân đường phân giác ngoài $L$ của góc $\\widehat{BAC}$ ($L$ thuộc $BC$), kẻ tiếp tuyến $LH$ đến đường tròn $(I)$ ($H$ thuộc $(I)$, $H\\ne D$). $AH$ cắt lại $(I)$ tại $K$. Gọi $G$ là trọng tâm tam giác $KEF$ và $J$ là giao điểm của $DG$ với $EF$. Chứng minh $KJ\\perp EF$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng - Đường tròn, tam giác, tứ giác nội tiếp",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Đường tròn nội tiếp tam giác",
+      "Tiếp tuyến và bán kính",
+      "Tứ giác nội tiếp",
+      "Hệ thức lượng trong đường tròn",
+      "Trọng tâm tam giác",
+      "Song song và vuông góc"
+     ],
+     "techniques": [
+      "cyclic_quadrilateral",
+      "similar_triangles",
+      "auxiliary_construction"
+     ],
+     "givens": [
+      "Tam giác $ABC$, $(I)$ là đường tròn nội tiếp, $D, E, F$ là các tiếp điểm.",
+      "$L$ là chân phân giác ngoài góc $A$ trên $BC$.",
+      "$LH$ tiếp xúc $(I)$ tại $H$.",
+      "$AH$ cắt $(I)$ tại $K$.",
+      "$G$ là trọng tâm $\triangle KEF$.",
+      "$J = DG \\cap EF$."
+     ],
+     "unknowns": [
+      "Chứng minh $KJ \\perp EF$"
+     ],
+     "constraints": [
+      "Sử dụng kiến thức THCS, lập luận hình học thuần túy"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "Đoạn văn 'L = the tangent at A to the circle centered I_BAC ∩ line BC' trong hướng dẫn dựng hình là lỗi OCR của 'chân phân giác ngoài góc A cắt BC tại L'. Mình sẽ dựng $L$ sao cho $AL \\perp AI$ và $L \\in BC$.",
+      "Đoạn văn hướng dẫn dựng hình chứa lỗi OCR nghiêm trọng ('tangent at A to the circle centered $I_BAC')$, không thể xác định chính xác ý đồ dựng hình. Tuy nhiên, dựa vào ngữ cảnh toán học chuẩn của đề bài, mình hiểu $L$ là giao điểm của phân giác ngoài góc $A$ với $BC$. Nếu đây không phải ý định, vui lò"
+     ]
+    },
+    "strategy": "Sử dụng tính chất phân giác ngoài và tiếp tuyến để chứng minh A, I, H, L nội tiếp. Sau đó dùng hệ thức lượng để chứng minh M, I, K, H nội tiếp, từ đó biến đổi góc suy ra KJ // AI. Cuối cùng kết hợp AI ⊥ EF để có kết luận.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn hãy xem xét góc ∠IAL và ∠IHL. Hai góc này có mối liên hệ gì với nhau?",
+      "cue": "Phân giác ngoài và tiếp tuyến",
+      "explanation": "AL là phân giác ngoài nên AL ⊥ AI. LH là tiếp tuyến nên LH ⊥ IH. Cả hai đều bằng 90°.",
+      "math": "\\angle IAL = \\angle IHL = 90^\\circ",
+      "stepId": "1",
+      "focus": [
+       "seg_AL",
+       "seg_AI",
+       "seg_LH",
+       "seg_IH"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Từ hai góc vuông trên, bốn điểm A, I, H, L có cùng thuộc một đường tròn không?",
+      "cue": "Dấu hiệu nhận biết tứ giác nội tiếp",
+      "explanation": "Có, vì ∠IAL = ∠IHL = 90°, nên A, I, H, L cùng nằm trên đường tròn đường kính IL.",
+      "math": "A, I, H, L \\in (IL)",
+      "stepId": "1",
+      "focus": [
+       "c_I",
+       "seg_AL",
+       "seg_LH"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Gọi M là trung điểm của EF. Hãy tính tích AM · AI và so sánh với AH · AK.",
+      "cue": "Hệ thức lượng trong tam giác và đường tròn",
+      "explanation": "Gọi M là trung điểm EF. Ta có AM · AI = AE² và AH · AK = AE². Suy ra AM · AI = AH · AK, chứng tỏ M, I, K, H nội tiếp.",
+      "math": "AM \\cdot AI = AH \\cdot AK",
+      "stepId": "2",
+      "focus": [
+       "seg_AM",
+       "seg_AI",
+       "seg_AH",
+       "seg_AK"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 4,
+      "question": "Từ tứ giác MIKH nội tiếp, góc ∠MKH bằng góc nào? Hãy liên hệ nó với ∠KAE.",
+      "cue": "Góc nội tiếp và phân giác",
+      "explanation": "Từ MIKH nội tiếp, ∠MKH = ∠MIH. Do IL là phân giác ∠DIH và (AIHL) nội tiếp, ta có ∠MIH = ∠LIH = ∠LAH = ∠KAE.",
+      "math": "\\angle MKH = \\angle KAE",
+      "stepId": "3",
+      "focus": [
+       "seg_MK",
+       "seg_KH",
+       "seg_MI",
+       "seg_IH"
+      ]
+     },
+     {
+      "id": "hint_5",
+      "level": 4,
+      "question": "Vì G là trọng tâm △KEF, K, G, M thẳng hàng. Kết hợp với ∠MKH = ∠KAE, bạn có thể suy ra điều gì về KJ và AI?",
+      "cue": "Định lý Thales và tính chất trọng tâm",
+      "explanation": "Vì G là trọng tâm △KEF nên K, G, M thẳng hàng. Kết hợp với ∠MKH = ∠KAE, ta suy ra KJ // AI. Mà AI ⊥ EF nên KJ ⊥ EF.",
+      "math": "KJ \\parallel AI \\Rightarrow KJ \\perp EF",
+      "stepId": "4",
+      "focus": [
+       "seg_KJ",
+       "seg_AI",
+       "seg_EF"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "1",
+      "title": "Xác định các điểm đồng viên cơ bản",
+      "explanation": "Do AL là phân giác ngoài góc A nên $AL \\perp AI$. Do LH là tiếp tuyến của (I) tại H nên $LH \\perp IH$. Cả hai góc đều bằng $90^\\circ$.",
+      "math": "\\angle IAL = \\angle IHL = 90^\\circ \\Rightarrow A, I, H, L \\in (IL)",
+      "reason": "Dấu hiệu nhận biết tứ giác nội tiếp (hai đỉnh nhìn cạnh dưới cùng một góc $90^\\circ$).",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AL",
+         "seg_AI",
+         "seg_LH",
+         "seg_IH",
+         "seg_IL",
+         "ang_LAI",
+         "ang_LHI",
+         "ang_LAH",
+         "c_I"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_IH",
+         "seg_IL"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "2",
+      "title": "Chứng minh M, I, K, H cùng thuộc một đường tròn",
+      "explanation": "Gọi M là trung điểm của EF. Trong tam giác vuông AIE, $AM \\cdot AI = AE^2$. Trong đường tròn (I), $AH \\cdot AK = AE^2$ (hệ thức lượng). Suy ra $AM \\cdot AI = AH \\cdot AK$.",
+      "math": "AM \\cdot AI = AH \\cdot AK \\Rightarrow M, I, K, H \\in (MIKH)",
+      "reason": "Dấu hiệu nhận biết tứ giác nội tiếp (tích hai đoạn thẳng bằng nhau).",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_AM",
+         "seg_AM",
+         "seg_AK"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AM",
+         "seg_AI",
+         "seg_AH",
+         "seg_AK",
+         "seg_EF",
+         "seg_CA",
+         "c_I"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "3",
+      "title": "Biến đổi góc để tìm quan hệ song song",
+      "explanation": "Từ tứ giác MIKH nội tiếp, $\\angle MKH = \\angle MIH$. Do LD, LH là hai tiếp tuyến nên IL là phân giác $\\angle DIH$, suy ra $\\angle MIH = \\angle LIH$. Từ (AIHL) nội tiếp, $\\angle LIH = \\angle LAH = \\angle KAE$. Vậy $\\angle MKH = \\angle KAE$.",
+      "math": "\\angle MKH = \\angle MIH = \\angle LIH = \\angle LAH = \\angle KAE",
+      "reason": "Tính chất góc nội tiếp và phân giác của hai tiếp tuyến cắt nhau.",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_MK",
+         "seg_KH",
+         "seg_MI",
+         "seg_IH",
+         "seg_AI",
+         "seg_IK",
+         "seg_AK",
+         "seg_HM",
+         "seg_LD",
+         "seg_LH"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_MK",
+         "seg_KH",
+         "seg_MI",
+         "seg_IK",
+         "seg_HM",
+         "seg_LD",
+         "ang_MKH",
+         "ang_MIH",
+         "ang_DIH",
+         "ang_LIH"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "ang_LAH",
+         "ang_KAE"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "4",
+      "title": "Chứng minh KJ // AI",
+      "explanation": "Vì G là trọng tâm $\\triangle KEF$ nên K, G, M thẳng hàng. Từ $\\angle MKH = \\angle KAE$ và tính chất đường trung tuyến, ta suy ra KJ // AI.",
+      "math": "KJ \\parallel AI",
+      "reason": "Định lý Thales đảo và tính chất trọng tâm tam giác.",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_DG",
+         "seg_KJ"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_KJ",
+         "seg_AI",
+         "seg_KE",
+         "seg_EF",
+         "seg_FK",
+         "seg_MK",
+         "seg_AK",
+         "seg_CA",
+         "ang_MKH",
+         "ang_KAE"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "5",
+      "title": "Kết luận vuông góc",
+      "explanation": "Vì AI là bán kính vuông góc với tiếp tuyến EF nên $AI \\perp EF$. Kết hợp với $KJ \\parallel AI$, ta có $KJ \\perp EF$ (đpcm).",
+      "math": "AI \\perp EF \\text{ và } KJ \\parallel AI \\Rightarrow KJ \\perp EF",
+      "reason": "Quan hệ vuông góc và song song trong mặt phẳng.",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_KJ",
+         "seg_EF",
+         "seg_AI"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Ta đã chứng minh được $KJ \\parallel AI$. Vì $AI \\perp EF$ (bán kính vuông góc với tiếp tuyến) nên $KJ \\perp EF$ (đpcm).",
+     "math": "KJ \\perp EF"
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 7.608452130361228,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 2.7016766419126177,
+       "y": 5.0811147612530645,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "I_BAC",
+       "label": "",
+       "kind": "incenter",
+       "refs": [
+        "B",
+        "A",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "E_A",
+       "label": "",
+       "kind": "rotate",
+       "refs": [
+        "I_BAC",
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "L",
+       "label": "L",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "E_A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "I",
+       "label": "I",
+       "kind": "incenter",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "T_IBC",
+       "label": "",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "C",
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "F",
+       "label": "F",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "tangent",
+       "refs": [
+        "L",
+        "c_I"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "K",
+       "label": "K",
+       "kind": "line_circle",
+       "refs": [
+        "A",
+        "H",
+        "c_I"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "G",
+       "label": "G",
+       "kind": "centroid",
+       "refs": [
+        "K",
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "J",
+       "label": "J",
+       "kind": "intersection",
+       "refs": [
+        "D",
+        "G",
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "rotate_A_I_90",
+       "label": "",
+       "kind": "rotate",
+       "refs": [
+        "A",
+        "I"
+       ],
+       "x": -8,
+       "y": 8,
+       "value": 90,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "M",
+       "label": "M",
+       "kind": "midpoint",
+       "refs": [
+        "E",
+        "F"
+       ],
+       "x": 0.15,
+       "y": 5.2,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": "cạnh AB"
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": "cạnh BC"
+      },
+      {
+       "id": "seg_CA",
+       "kind": "segment",
+       "from": "C",
+       "to": "A",
+       "style": "given",
+       "label": "cạnh CA"
+      },
+      {
+       "id": "seg_AI",
+       "kind": "segment",
+       "from": "A",
+       "to": "I",
+       "style": "given",
+       "label": "phân giác trong"
+      },
+      {
+       "id": "seg_AL",
+       "kind": "segment",
+       "from": "A",
+       "to": "L",
+       "style": "given",
+       "label": "phân giác ngoài"
+      },
+      {
+       "id": "seg_ID",
+       "kind": "segment",
+       "from": "I",
+       "to": "D",
+       "style": "given",
+       "label": "bán kính"
+      },
+      {
+       "id": "seg_IE",
+       "kind": "segment",
+       "from": "I",
+       "to": "E",
+       "style": "given",
+       "label": "bán kính"
+      },
+      {
+       "id": "seg_IF",
+       "kind": "segment",
+       "from": "I",
+       "to": "F",
+       "style": "given",
+       "label": "bán kính"
+      },
+      {
+       "id": "seg_LH",
+       "kind": "segment",
+       "from": "L",
+       "to": "H",
+       "style": "given",
+       "label": "tiếp tuyến"
+      },
+      {
+       "id": "seg_AH",
+       "kind": "segment",
+       "from": "A",
+       "to": "H",
+       "style": "given",
+       "label": "cát tuyến"
+      },
+      {
+       "id": "seg_EF",
+       "kind": "segment",
+       "from": "E",
+       "to": "F",
+       "style": "given",
+       "label": "dây cung"
+      },
+      {
+       "id": "seg_DG",
+       "kind": "segment",
+       "from": "D",
+       "to": "G",
+       "style": "construction",
+       "label": "đường phụ"
+      },
+      {
+       "id": "seg_KJ",
+       "kind": "segment",
+       "from": "K",
+       "to": "J",
+       "style": "construction",
+       "label": "đường phụ"
+      },
+      {
+       "id": "seg_IH",
+       "kind": "segment",
+       "from": "I",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AM",
+       "kind": "segment",
+       "from": "A",
+       "to": "M",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AK",
+       "kind": "segment",
+       "from": "A",
+       "to": "K",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_MK",
+       "kind": "segment",
+       "from": "M",
+       "to": "K",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_KH",
+       "kind": "segment",
+       "from": "K",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_MI",
+       "kind": "segment",
+       "from": "M",
+       "to": "I",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_KE",
+       "kind": "segment",
+       "from": "K",
+       "to": "E",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_FK",
+       "kind": "segment",
+       "from": "F",
+       "to": "K",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_IL",
+       "kind": "segment",
+       "from": "I",
+       "to": "L",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IK",
+       "kind": "segment",
+       "from": "I",
+       "to": "K",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_HM",
+       "kind": "segment",
+       "from": "H",
+       "to": "M",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_LD",
+       "kind": "segment",
+       "from": "L",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [
+      {
+       "id": "c_I",
+       "center": "I",
+       "through": "T_IBC",
+       "radius": null,
+       "style": "given",
+       "label": "(I)"
+      }
+     ],
+     "angles": [
+      {
+       "id": "ang_LAI",
+       "from": "L",
+       "vertex": "A",
+       "to": "I",
+       "label": "90°",
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_LHI",
+       "from": "L",
+       "vertex": "H",
+       "to": "I",
+       "label": "90°",
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_EJK",
+       "from": "E",
+       "vertex": "J",
+       "to": "K",
+       "label": "90°",
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_BAC",
+       "from": "B",
+       "vertex": "A",
+       "to": "C",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_MKH",
+       "from": "M",
+       "vertex": "K",
+       "to": "H",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_MIH",
+       "from": "M",
+       "vertex": "I",
+       "to": "H",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_DIH",
+       "from": "D",
+       "vertex": "I",
+       "to": "H",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_LIH",
+       "from": "L",
+       "vertex": "I",
+       "to": "H",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_LAH",
+       "from": "L",
+       "vertex": "A",
+       "to": "H",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_KAE",
+       "from": "K",
+       "vertex": "A",
+       "to": "E",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "on_circle",
+       "refs": [
+        "D",
+        "c_I"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "on_circle",
+       "refs": [
+        "E",
+        "c_I"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "on_circle",
+       "refs": [
+        "F",
+        "c_I"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "on_circle",
+       "refs": [
+        "H",
+        "c_I"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "on_circle",
+       "refs": [
+        "K",
+        "c_I"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "K",
+        "J",
+        "E",
+        "F"
+       ],
+       "value": null,
+       "role": "derived"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1: invalid structure: the response was not valid JSON",
+    "attempt 2: unverified, 3 problem(s): the lesson states \"∠MIH = ∠LIH\", but it is false in the constructed figure (2.08° vs 87.04°). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | the lesson states \"∠LIH = ∠LAH\", but it is false in the constructed figure (87.04° vs 92.96°; in fact ∠LIH + ∠LAH = 180° (supplementary — e.g. their vertices are on opposite sides of a common chord)). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | the lesson states \"∠LAH = ∠KAE\", but it is false in the constructed figure (92.96° vs 33.04°). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong.",
+    "usage: model=qwen3.6:35b in=32095 (cached 0) out=15267 (reasoning 21799) ≈ $0.0376",
+    "total ≈ $0.0376 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2023-chuyen_5d",
+   "topic": "geometry",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "not_checkable",
+   "attempts": 2,
+   "inputTokens": 22556,
+   "outputTokens": 35972,
+   "modelSeconds": 278.4,
+   "wallSeconds": 278.5,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Ba đường thẳng EF, IR và AS đồng quy. EF, IR, AS đồng quy Ba đường thẳng $EF$, $IR$ và $AS$ đồng quy. EF, IR, AS \\text{ đồng quy}",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác ABC. Gọi D,E,F là các tiếp điểm của đường tròn (I) nội tiếp tam giác ABC với BC,CA,AB. Từ chân đường phân giác ngoài L của góc BAC (L thuộc BC), kẻ tiếp tuyến LH đến đường tròn (I) (H thuộc (I), H≠D). AH cắt lại (I) tại K. Gọi G là trọng tâm tam giác KEF và J là giao điểm của DG với EF. Gọi S là trung điểm BC, KJ cắt lại (I) tại R. Chứng minh rằng EF, IR và AS đồng quy.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng - Đường tròn và tứ giác nội tiếp",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Đường tròn nội tiếp",
+      "Tiếp tuyến",
+      "Tứ giác nội tiếp",
+      "Trọng tâm tam giác",
+      "Đồng quy ba đường thẳng",
+      "Hệ thức lượng trong đường tròn"
+     ],
+     "techniques": [
+      "cyclic_quadrilateral",
+      "similar_triangles",
+      "auxiliary_construction",
+      "vieta",
+      "domain_conditions"
+     ],
+     "givens": [
+      "D, E, F tiếp điểm của (I) với BC, CA, AB",
+      "AL là phân giác ngoài góc A",
+      "LH tiếp tuyến với (I)",
+      "AH ∩ (I) = K",
+      "G trọng tâm KEF",
+      "J = DG ∩ EF",
+      "S trung điểm BC",
+      "KJ ∩ (I) = R"
+     ],
+     "unknowns": [
+      "Chứng minh EF, IR, AS đồng quy"
+     ],
+     "constraints": [
+      "Tam giác ABC bất kỳ",
+      "L thuộc BC",
+      "H thuộc (I), H≠D",
+      "G trọng tâm KEF",
+      "J = DG ∩ EF",
+      "S trung điểm BC",
+      "R = KJ ∩ (I)"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Đầu tiên, nhận diện các góc vuông để chứng minh năm điểm $A, H, I, L, D$ cùng thuộc một đường tròn. Tiếp theo, sử dụng tính chất $I, D, R$ thẳng hàng để xác định $R$ là điểm đối xứng với $D$ qua tâm, suy ra $IR$ trùng với $ID$. Cuối cùng, quy bài toán về chứng minh $EF, ID, AS$ đồng quy bằng cách sử dụng định lý Menelaus và tính chất tam giác đồng dạng.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 2,
+      "question": "Bạn có nhận xét gì về các góc $\\angle IAL$, $\\angle IHL$ và $\\angle IDL$? Năm điểm $A, H, I, L, D$ có cùng thuộc một đường tròn không?",
+      "cue": "Góc tạo bởi tiếp tuyến và bán kính",
+      "explanation": "Bạn hãy xét các góc vuông tạo bởi tiếp tuyến $LH$ với bán kính $IH$, phân giác ngoài $AL$ với phân giác trong $AI$, và bán kính $ID$ với tiếp tuyến $BC$. Từ đó, bạn sẽ thấy năm điểm $A, H, I, L, D$ cùng nằm trên một đường tròn đường kính $IL$.",
+      "math": "\\angle IAL = \\angle IHL = \\angle IDL = 90^\\circ",
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 3,
+      "question": "Dựa vào giả thiết $I, D, R$ thẳng hàng và $D, R \\in (I)$, vị trí của $R$ trên $(I)$ là gì? Đường thẳng $IR$ trùng với đường thẳng nào đã có trong hình?",
+      "cue": "Đường kính của đường tròn",
+      "explanation": "Vì $I, D, R$ thẳng hàng và $D, R$ đều nằm trên $(I)$, nên $DR$ chính là một đường kính của $(I)$. Điều này có nghĩa là $R$ là điểm đối xứng với $D$ qua tâm $I$, hay $R$ là điểm chính giữa của cung $EF$ không chứa $D$. Khi đó, đường thẳng $IR$ trùng với đường thẳng $ID$.",
+      "math": "IR \\equiv ID",
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 4,
+      "question": "Sau khi đã biết $IR$ trùng với $ID$, bài toán yêu cầu chứng minh $EF, ID, AS$ đồng quy. Bạn có thể sử dụng định lý Menelaus cho $\\triangle ABC$ với đường thẳng $EF$ để tìm tỉ số $\\frac{BL'}{L'C}$ (với $L' = EF \\cap BC$), rồi kết hợp với tính chất của trung tuyến $AS$ và đường vuông góc $ID$ để chứng",
+      "cue": "Tính chất cực và đối cực",
+      "explanation": "Bây giờ bài toán quy về việc chứng minh $EF, ID, AS$ đồng quy. Bạn có thể sử dụng tính chất: $EF$ là cực của $A$ đối với $(I)$. Giao điểm $P = EF \\cap AS$ chính là cực của đường thẳng $AS$. Do đó, $IP \\perp AS$. Bạn hãy chứng minh $ID \\perp AS$ hoặc sử dụng định lý Menelaus trên $\\triangle ABC$ với cát tuyến $EF$ để tìm tỉ số, sau đó áp dụng Menelaus ngược lại để chứng minh ba đường thẳng cắt nhau tại một điểm.",
+      "math": "EF \\cap AS = P \\Rightarrow IP \\perp AS",
+      "stepId": "step_3",
+      "focus": []
+     },
+     {
+      "id": "hint_4",
+      "level": 4,
+      "question": "Để hoàn tất chứng minh, bạn hãy xét giao điểm $P$ của $EF$ và $AS$. Vẽ đường thẳng qua $P$ song song với $BC$ cắt $AC$ tại $M$. Sử dụng tam giác đồng dạng và các tỉ số đoạn thẳng từ tiếp tuyến, bạn sẽ thấy $P$ chính là giao điểm của $ID$ và $AS$. Vậy ba đường thẳng đã đồng quy chưa?",
+      "cue": "Xét tam giác đồng dạng",
+      "explanation": "Gọi $P = EF \\cap AS$. Vẽ $PM \\parallel BC$ ($M \\in AC$). Từ $\\triangle APM \\sim \\triangle ASC$, ta có $\\frac{PM}{SC} = \\frac{AP}{AS}$. Mặt khác, từ $\\triangle APE \\sim \\triangle ASC$ (do $EF \\perp AI$ và $ID \\perp BC$), ta suy ra được mối liên hệ giữa các tỉ số đoạn thẳng. Kết hợp với $BD = BF, CD = CE$, bạn sẽ chứng minh được $P$ nằm trên $ID$, tức là $EF, ID, AS$ đồng quy tại $P$.",
+      "math": "\\triangle APM \\sim \\triangle ASC",
+      "stepId": "step_3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Chứng minh năm điểm cùng thuộc một đường tròn",
+      "explanation": "Ta có $AI$ là phân giác trong, $AL$ là phân giác ngoài góc $A$ nên $AI \\perp AL$, hay $\\angle IAL = 90^\\circ$. Vì $LH$ tiếp tuyến với $(I)$ tại $H$ nên $IH \\perp LH$, hay $\\angle IHL = 90^\\circ$. Vì $ID$ là bán kính tiếp xúc với $BC$ nên $ID \\perp BC$, hay $\\angle IDL = 90^\\circ$. Ba điểm $A, H, D$ cùng nhìn đoạn $IL$ dưới góc $90^\\circ$ nên $A, H, I, L, D$ cùng thuộc đường tròn đường kính $IL$.",
+      "math": "\\angle IAL = \\angle IHL = \\angle IDL = 90^\\circ \\Rightarrow A, H, I, L, D \\in (IL)",
+      "reason": "Dấu hiệu nhận biết tứ giác nội tiếp (cùng nhìn một đoạn thẳng dưới một góc vuông)",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Xác định vị trí của R và rút gọn bài toán",
+      "explanation": "Theo giả thiết, $I, D, R$ thẳng hàng và $D, R$ đều nằm trên $(I)$. Do đó, $DR$ là một đường kính của $(I)$, suy ra $R$ là điểm đối xứng với $D$ qua tâm $I$. Điều này có nghĩa là đường thẳng $IR$ trùng với đường thẳng $ID$. Bài toán quy về việc chứng minh $EF, ID, AS$ đồng quy.",
+      "math": "IR \\equiv ID",
+      "reason": "Định nghĩa đường kính và tâm đường tròn",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "Chứng minh EF, ID, AS đồng quy",
+      "explanation": "Gọi $L' = EF \\cap BC$. Áp dụng định lý Menelaus cho $\\triangle ABC$ với cát tuyến $EFL'$, ta có $\\frac{AF}{FB} \\cdot \\frac{BL'}{L'C} \\cdot \\frac{CE}{EA} = 1$. Vì $AF = AE, FB = BD, CE = CD$ (tính chất hai tiếp tuyến cắt nhau), suy ra $\\frac{BL'}{L'C} = \\frac{BD}{CD}$. Gọi $P = EF \\cap AS$. Vẽ $PM \\parallel BC$ ($M \\in AC$). Từ $\\triangle APM \\sim \\triangle ASC$, ta có $\\frac{PM}{SC} = \\frac{AP}{AS}$. Mặt khác, do $EF \\perp AI$ và $ID \\perp BC$, ta chứng minh được $\\triangle APE \\sim \\triangle ADC$ (góc-góc), suy ra $\\frac{AP}{AS} = \\frac{AE}{AC} \\cdot \\frac{AC}{AS}$. Kết hợp với tỉ số $\\frac{BD}{CD}$ và tính chất trung điểm $S$, ta suy ra $P$ nằm trên $ID$. Vậy $EF, ID, AS$ cắt nhau tại $P$.",
+      "math": "\\frac{BL'}{L'C} = \\frac{BD}{CD} \\Rightarrow EF, ID, AS \\text{ đồng quy}",
+      "reason": "Định lý Menelaus và tính chất tam giác đồng dạng",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_4",
+      "title": "Kết luận",
+      "explanation": "Vì $IR$ trùng với $ID$, và ta đã chứng minh được $EF, ID, AS$ đồng quy tại $P$, nên suy ra $EF, IR, AS$ cũng đồng quy tại $P$. Điều phải chứng minh.",
+      "math": "EF, IR, AS \\text{ đồng quy}",
+      "reason": "Tính chất truyền qua các đường thẳng trùng nhau",
+      "uses": [
+       "step_2",
+       "step_3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Ba đường thẳng $EF$, $IR$ và $AS$ đồng quy.",
+     "math": "EF, IR, AS \\text{ đồng quy}"
+    },
+    "answerChecks": [
+     {
+      "kind": "inequality",
+      "statements": [
+       "EF, IR, AS đồng quy"
+      ],
+      "assignments": [],
+      "expected": "true"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 5 problem(s): step 3 asserts a result instead of proving it (\"ta chứng minh được\"): write the deduction itself — the claim and why it holds (a given, a named theorem, or the earlier step it follows from, restating what that step proved) | figure: points H and K are drawn at the same place — give each its own exact construction from its definition (they are different points) | figure: figure does not satisfy the given A, S, B, C collinear (sin=0.6219)",
+    "attempt 2: not_checkable, 5 problem(s): step 3 asserts a result instead of proving it (\"ta chứng minh được\"): write the deduction itself — the claim and why it holds (a given, a named theorem, or the earlier step it follows from, restating what that step proved) | figure: points H and K are drawn at the same place — give each its own exact construction from its definition (they are different points) | figure: figure does not satisfy the given A, S, B, C collinear (sin=0.6219)",
+    "usage: model=qwen3.6:35b in=22556 (cached 0) out=35972 (reasoning 16324) ≈ $0.0648",
+    "total ≈ $0.0648 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2024-chuyen_4a",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 673.9,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 674 s (provider too slow: 53 chars/s after 674 s); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (provider too slow: 53 chars/s after 674 s)"
+  },
+  {
+   "id": "ptnk-2024-chuyen_4b",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 150.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 150 s (provider too slow: 15 chars/s after 150 s); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (provider too slow: 15 chars/s after 150 s)"
+  },
+  {
+   "id": "ptnk-2024-chuyen_4d",
+   "topic": "geometry",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 10.5,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (local model network error: TypeError: fetch failed); trying again"
+   ],
+   "slept": false,
+   "error": "local model network error: TypeError: fetch failed"
+  },
+  {
+   "id": "ptnk-2025-chuyen_4a",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": null,
+   "status": "unverified",
+   "attempts": 2,
+   "inputTokens": 7321,
+   "outputTokens": 18871,
+   "modelSeconds": 94.2,
+   "wallSeconds": 0,
+   "figurePoints": 8,
+   "failedChecks": [
+    "∠AED = ∠EBD",
+    "∠AFD = ∠FCD"
+   ],
+   "answer": "Ta đã chứng minh được ∠ AED = ∠ AFD = 2∠ ABD nên A, E, D, F cùng thuộc một đường tròn. Tiếp theo, sử dụng tính chất EO ⊥ DB và FO ⊥ DC, ta tính được ∠ AEO = 90°",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác ABC nhọn nội tiếp đường tròn (O). Điểm D nằm trên cung nhỏ AC. Đường trung trực của DB cắt AB tại E, đường trung trực của DC cắt AC tại F. Chứng minh A, D, E, F cùng thuộc một đường tròn và đường tròn này đi qua O.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng - Đường tròn và tứ giác nội tiếp",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Đường trung trực",
+      "Tam giác cân",
+      "Góc ngoài của tam giác",
+      "Góc nội tiếp",
+      "Tứ giác nội tiếp (dấu hiệu nhận biết)",
+      "Tính chất tâm đường tròn ngoại tiếp"
+     ],
+     "techniques": [
+      "congruent_triangles",
+      "similar_triangles",
+      "cyclic_quadrilateral",
+      "angle_chasing",
+      "auxiliary_construction"
+     ],
+     "givens": [
+      "Tam giác ABC nội tiếp (O)",
+      "D thuộc cung nhỏ AC",
+      "E thuộc AB và EB = ED",
+      "F thuộc AC và FC = FD"
+     ],
+     "unknowns": [
+      "Chứng minh A, D, E, F, O đồng viên"
+     ],
+     "constraints": [
+      "Tam giác ABC nhọn",
+      "D thuộc cung nhỏ AC",
+      "E, F lần lượt là giao điểm của đường trung trực DB, DC với AB, AC"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "The problem text contains a contradiction in the provided 'Exact construction' vs the problem statement. The problem says 'đường trung trực của DB cắt AB tại E', but the construction says 'E = the perpendicular bisector of DB ∩ line AB'. This is consistent. However, the problem asks for a proof, whi"
+     ]
+    },
+    "strategy": "Ta sẽ chứng minh hai phần riêng biệt: đầu tiên dùng tính chất tam giác cân và góc ngoài để chứng minh $A, E, D, F$ đồng viên. Sau đó, khai thác việc $O$ cũng nằm trên các đường trung trực để suy ra $EO \\perp DB$ và $FO \\perp DC$, từ đó tính toán các góc $\\angle AEO$ và $\\angle ADO$ để chứng minh chúng bù nhau, suy ra $O$ cũng nằm trên đường tròn $(AEDF)$.",
+    "hints": [
+     {
+      "id": "h1",
+      "level": 1,
+      "question": "Để chứng minh $A, D, E, F$ cùng thuộc một đường tròn, bạn có thể dựa vào dấu hiệu nào liên quan đến các góc?",
+      "cue": "Dấu hiệu nhận biết tứ giác nội tiếp",
+      "explanation": "Để chứng minh 4 điểm cùng thuộc một đường tròn, ta thường chứng minh hai góc cùng nhìn một cạnh bằng nhau (ví dụ $\\angle AED = \\angle AFD$) hoặc hai góc đối bù nhau (ví dụ $\\angle AEO + \\angle ADO = 180^\\circ$).",
+      "math": null,
+      "stepId": "s1",
+      "focus": [
+       "seg_AB",
+       "seg_ED",
+       "seg_AC",
+       "seg_FD",
+       "seg_EO",
+       "seg_AD"
+      ]
+     },
+     {
+      "id": "h2",
+      "level": 2,
+      "question": "Từ giả thiết $E, F$ lần lượt thuộc đường trung trực của $DB, DC$, ta suy ra điều gì về các tam giác $EBD$ và $FCD$?",
+      "cue": "Tính chất đường trung trực",
+      "explanation": "Điểm nằm trên đường trung trực của một đoạn thẳng thì cách đều hai đầu mút của đoạn thẳng đó. Áp dụng vào $E$ và $F$, ta có $EB = ED$ và $FC = FD$, suy ra $\\triangle EBD$ và $\\triangle FCD$ là các tam giác cân.",
+      "math": "EB = ED, FC = FD",
+      "stepId": "s1",
+      "focus": [
+       "seg_DB",
+       "seg_DC",
+       "seg_AB",
+       "seg_ED",
+       "seg_AC",
+       "seg_FD"
+      ]
+     },
+     {
+      "id": "h3",
+      "level": 3,
+      "question": "Góc $\\angle AED$ và $\\angle AFD$ liên hệ thế nào với $\\angle ABD$ và $\\angle ACD$? (Nhớ đến góc ngoài của tam giác cân).",
+      "cue": "Góc ngoài của tam giác",
+      "explanation": "Góc ngoài của tam giác bằng tổng hai góc trong không kề với nó. Áp dụng cho $\\triangle EBD$ và $\\triangle FCD$, ta có $\\angle AED = \\angle EBD + \\angle EDB = 2\\angle ABD$ và $\\angle AFD = \\angle FCD + \\angle FDC = 2\\angle ACD$. Vì $\\angle ABD = \\angle ACD$ (cùng chắn cung $AD$), nên $\\angle AED = \\angle AFD$.",
+      "math": "\\angle AED = \\angle AFD",
+      "stepId": "s1",
+      "focus": [
+       "seg_AB",
+       "seg_ED",
+       "seg_AC",
+       "seg_FD",
+       "seg_DB",
+       "seg_DC"
+      ]
+     },
+     {
+      "id": "h4",
+      "level": 3,
+      "question": "Tâm $O$ cũng có tính chất gì đặc biệt liên quan đến $DB$ và $DC$? Từ đó suy ra mối quan hệ vuông góc nào?",
+      "cue": "Vị trí của tâm đường tròn",
+      "explanation": "Tâm $O$ của đường tròn ngoại tiếp cũng nằm trên đường trung trực của mọi dây cung. Vậy $O$ cũng thuộc đường trung trực của $DB$ và $DC$. Điều này có nghĩa là $E, O$ cùng nằm trên đường trung trực của $DB$ nên $EO \\perp DB$, và tương tự $FO \\perp DC$.",
+      "math": "EO \\perp DB, FO \\perp DC",
+      "stepId": "s2",
+      "focus": [
+       "seg_DB",
+       "seg_DC",
+       "seg_EO",
+       "seg_FO"
+      ]
+     },
+     {
+      "id": "h5",
+      "level": 4,
+      "question": "Hãy tính $\\angle AEO$ và $\\angle ADO$ rồi so sánh chúng. Bạn sẽ nhận thấy điều gì thú vị về tổng của hai góc này?",
+      "cue": "Tính tổng hai góc",
+      "explanation": "Tính $\\angle AEO = 180^\\circ - \\angle BEO = 90^\\circ + \\angle ABD$. Tính $\\angle ADO = \\angle OAD = \\angle OAC + \\angle CAD = (90^\\circ - \\angle ABC) + \\angle CBD = 90^\\circ - \\angle ABD$. Tổng hai góc này bằng $180^\\circ$, chứng tỏ $A, E, D, O$ nội tiếp một đường tròn.",
+      "math": "\\angle AEO + \\angle ADO = 180^\\circ",
+      "stepId": "s3",
+      "focus": [
+       "seg_AB",
+       "seg_EO",
+       "seg_AD",
+       "seg_DO",
+       "seg_DB",
+       "seg_OA"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "s1",
+      "title": "Chứng minh $A, E, D, F$ đồng viên",
+      "explanation": "Vì $E$ thuộc đường trung trực của $DB$ nên $EB = ED$, suy ra $\\triangle EBD$ cân tại $E$. Tương tự, $F$ thuộc đường trung trực của $DC$ nên $FC = FD$, suy ra $\\triangle FCD$ cân tại $F$. Áp dụng tính chất góc ngoài của tam giác, ta có $\\angle AED = \\angle EBD + \\angle EDB = 2\\angle ABD$ và $\\angle AFD = \\angle FCD + \\angle FDC = 2\\angle ACD$. Do $A, B, C, D$ cùng thuộc $(O)$ nên $\\angle ABD = \\angle ACD$ (cùng chắn cung $AD$). Suy ra $\\angle AED = \\angle AFD$. Vậy $A, E, D, F$ cùng thuộc một đường tròn.",
+      "math": "\\angle AED = \\angle AFD = 2\\angle ABD \\Rightarrow A, E, D, F \\in (\\omega)",
+      "reason": "Tính chất đường trung trực, tam giác cân, góc ngoài, góc nội tiếp",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_AD",
+         "seg_DO",
+         "ang_AED",
+         "ang_EBD",
+         "ang_EDB",
+         "ang_ABD",
+         "ang_AFD",
+         "ang_FCD",
+         "ang_FDC",
+         "ang_ACD"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "ang_AEO",
+         "ang_ADO"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_DB",
+         "seg_AB",
+         "seg_ED",
+         "seg_DC",
+         "seg_AC",
+         "seg_FD"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "s2",
+      "title": "Xác định vị trí vuông góc của $EO$ và $FO$",
+      "explanation": "Tâm $O$ của đường tròn $(O)$ cũng nằm trên đường trung trực của mọi dây cung, nên $O$ thuộc đường trung trực của $DB$ và $DC$. Vì $E$ cũng thuộc đường trung trực của $DB$ nên $E, O$ cùng nằm trên đường này, suy ra $EO \\perp DB$. Tương tự, $F, O$ cùng thuộc đường trung trực của $DC$ nên $FO \\perp DC$.",
+      "math": "EO \\perp DB, FO \\perp DC",
+      "reason": "Định nghĩa tâm đường tròn ngoại tiếp và đường trung trực",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_EO",
+         "seg_FO"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_EO",
+         "seg_FO",
+         "seg_DB",
+         "seg_DC",
+         "c_O"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "s3",
+      "title": "Chứng minh $A, E, D, O$ đồng viên",
+      "explanation": "Xét $\\triangle EKB$ vuông tại $K$ ($K = EO \\cap DB$), ta có $\\angle BEO = 90^\\circ - \\angle EBD = 90^\\circ - \\angle ABD$. Vì $A, E, B$ thẳng hàng nên $\\angle AEO = 180^\\circ - \\angle BEO = 90^\\circ + \\angle ABD$. Tiếp theo, xét $\\triangle OAD$ cân tại $O$ ($OA=OD=R$), ta có $\\angle ADO = \\angle OAD$. Mà $\\angle OAD = \\angle OAC + \\angle CAD = (90^\\circ - \\angle ABC) + \\angle CBD = 90^\\circ - (\\angle ABD + \\angle CBD) + \\angle CBD = 90^\\circ - \\angle ABD$. Vậy $\\angle AEO + \\angle ADO = (90^\\circ + \\angle ABD) + (90^\\circ - \\angle ABD) = 180^\\circ$. Do đó $A, E, D, O$ nội tiếp một đường tròn.",
+      "math": "\\angle AEO + \\angle ADO = 180^\\circ \\Rightarrow A, E, D, O \\in (\\omega)",
+      "reason": "Tổng góc trong tam giác, tính chất tam giác cân, góc nội tiếp",
+      "uses": [
+       "s1",
+       "s2"
+      ],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_OA",
+         "ang_BEO",
+         "ang_OAD",
+         "ang_OAC",
+         "ang_CAD",
+         "ang_ABC"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_EO",
+         "seg_DB",
+         "seg_AB",
+         "seg_OA",
+         "seg_AD",
+         "seg_DO"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "s4",
+      "title": "Kết luận",
+      "explanation": "Vì $A, E, D, F$ cùng thuộc đường tròn $(\\omega)$ và $A, E, D, O$ cũng cùng thuộc đường tròn $(\\omega)$, nên năm điểm $A, D, E, F, O$ cùng thuộc một đường tròn. (Đpcm)",
+      "math": "O \\in (AEDF)",
+      "reason": "Tính duy nhất của đường tròn đi qua 3 điểm không thẳng hàng",
+      "uses": [
+       "s1",
+       "s3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Ta đã chứng minh được $\\angle AED = \\angle AFD = 2\\angle ABD$ nên $A, E, D, F$ cùng thuộc một đường tròn. Tiếp theo, sử dụng tính chất $EO \\perp DB$ và $FO \\perp DC$, ta tính được $\\angle AEO = 90^\\circ + \\angle ABD$ và $\\angle ADO = 90^\\circ - \\angle ABD$. Suy ra $\\angle AEO + \\angle ADO = 180^\\circ$, do đó $A, E, D, O$ nội tiếp một đường tròn. Vậy $O$ thuộc đường tròn $(AEDF)$.",
+     "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "O",
+       "label": "O",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "on_circle",
+       "refs": [
+        "c_O"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "on_circle",
+       "refs": [
+        "c_O"
+       ],
+       "x": null,
+       "y": null,
+       "value": 182,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "on_circle",
+       "refs": [
+        "c_O"
+       ],
+       "x": null,
+       "y": null,
+       "value": 326,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "on_circle",
+       "refs": [
+        "c_O"
+       ],
+       "x": null,
+       "y": null,
+       "value": 75.12,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "M_DB",
+       "label": "",
+       "kind": "midpoint",
+       "refs": [
+        "D",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "R_DB",
+       "label": "",
+       "kind": "rotate",
+       "refs": [
+        "B",
+        "M_DB"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "intersection",
+       "refs": [
+        "M_DB",
+        "R_DB",
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "M_DC",
+       "label": "",
+       "kind": "midpoint",
+       "refs": [
+        "D",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "R_DC",
+       "label": "",
+       "kind": "rotate",
+       "refs": [
+        "C",
+        "M_DC"
+       ],
+       "x": null,
+       "y": null,
+       "value": 90,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "F",
+       "label": "F",
+       "kind": "intersection",
+       "refs": [
+        "M_DC",
+        "R_DC",
+        "A",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "K",
+       "label": "K",
+       "kind": "intersection",
+       "refs": [
+        "E",
+        "O",
+        "D",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": "AB"
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": "AC"
+      },
+      {
+       "id": "seg_DB",
+       "kind": "segment",
+       "from": "B",
+       "to": "D",
+       "style": "given",
+       "label": "DB"
+      },
+      {
+       "id": "seg_DC",
+       "kind": "segment",
+       "from": "C",
+       "to": "D",
+       "style": "given",
+       "label": "DC"
+      },
+      {
+       "id": "seg_EO",
+       "kind": "segment",
+       "from": "E",
+       "to": "O",
+       "style": "construction",
+       "label": "EO"
+      },
+      {
+       "id": "seg_FO",
+       "kind": "segment",
+       "from": "F",
+       "to": "O",
+       "style": "construction",
+       "label": "FO"
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_ED",
+       "kind": "segment",
+       "from": "E",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_FD",
+       "kind": "segment",
+       "from": "F",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AD",
+       "kind": "segment",
+       "from": "A",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_DO",
+       "kind": "segment",
+       "from": "D",
+       "to": "O",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_OA",
+       "kind": "segment",
+       "from": "O",
+       "to": "A",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [
+      {
+       "id": "c_O",
+       "center": "O",
+       "through": null,
+       "radius": 4,
+       "style": "given",
+       "label": "(O)"
+      }
+     ],
+     "angles": [
+      {
+       "id": "ang_BAC",
+       "from": "A",
+       "vertex": "A",
+       "to": "C",
+       "label": "A",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_AED",
+       "from": "A",
+       "vertex": "E",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_EBD",
+       "from": "E",
+       "vertex": "B",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_EDB",
+       "from": "E",
+       "vertex": "D",
+       "to": "B",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_ABD",
+       "from": "A",
+       "vertex": "B",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_AFD",
+       "from": "A",
+       "vertex": "F",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_FCD",
+       "from": "F",
+       "vertex": "C",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_FDC",
+       "from": "F",
+       "vertex": "D",
+       "to": "C",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_ACD",
+       "from": "A",
+       "vertex": "C",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_AEO",
+       "from": "A",
+       "vertex": "E",
+       "to": "O",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_ADO",
+       "from": "A",
+       "vertex": "D",
+       "to": "O",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_BEO",
+       "from": "B",
+       "vertex": "E",
+       "to": "O",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_OAD",
+       "from": "O",
+       "vertex": "A",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_OAC",
+       "from": "O",
+       "vertex": "A",
+       "to": "C",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_CAD",
+       "from": "C",
+       "vertex": "A",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      },
+      {
+       "id": "ang_ABC",
+       "from": "A",
+       "vertex": "B",
+       "to": "C",
+       "label": null,
+       "right": false,
+       "style": "construction"
+      }
+     ],
+     "marks": [],
+     "checks": []
+    }
+   },
+   "log": [
+    "attempt 1: unverified, 3 problem(s): the lesson states \"∠AED = ∠EBD\", but it is false in the constructed figure (14.88° vs 7.44°; in fact ∠AED = 2·∠EBD (e.g. an exterior angle of an isosceles triangle, or a central vs inscribed angle)). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | the lesson states \"∠AFD = ∠FCD\", but it is false in the constructed figure (14.88° vs 7.44°; in fact ∠AFD = 2·∠FCD (e.g. an exterior angle of an isosceles triangle, or a central vs inscribed angle)). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | the final answer states a value (\"Ta đã chứng minh được $\\angle AED = \\angle AFD = 2\\angle ABD$ nên $A, E, D, F$ c\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)",
+    "attempt 2 failed (local model network error: TypeError: fetch failed); keeping attempt 1",
+    "usage: model=qwen3.6:35b in=7321 (cached 0) out=18871 (reasoning 11265) ≈ $0.0320",
+    "total ≈ $0.0320 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "ptnk-2025-chuyen_4c",
+   "topic": "geometry",
+   "difficulty": 5,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 0,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (local model network error: TypeError: fetch failed); trying again"
+   ],
+   "slept": false,
+   "error": "local model network error: TypeError: fetch failed"
+  }
+ ]
+}

@@ -1,0 +1,184 @@
+{
+ "summary": {
+  "exp": "GEO-R6",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.9",
+  "techniqueHints": false,
+  "dataset": "v1",
+  "n": 1,
+  "pass": 1,
+  "partial": 0,
+  "fail": 0,
+  "critical": 0,
+  "answerAccuracy": 1,
+  "gradableN": 1,
+  "verifiedRate": 1,
+  "errors": 0,
+  "meanModelSeconds": 128.9,
+  "meanInputTokens": 18129,
+  "meanOutputTokens": 17546,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "costUsd": 0.0348,
+  "createdAt": "2026-10-08T05:45:06.229Z"
+ },
+ "rows": [
+  {
+   "id": "ch-2",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 18129,
+   "outputTokens": 17546,
+   "modelSeconds": 128.9,
+   "wallSeconds": 129,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18. P_(max) = 18 Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$. P_{\\max} = 18",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng kết hợp bất đẳng thức đại số",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Định lý Pythagore",
+      "Bất đẳng thức $(a-b)^2 \neq 0$",
+      "Hệ phương trình ẩn dương"
+     ],
+     "techniques": [
+      "pythagoras",
+      "complete_square",
+      "equality_case"
+     ],
+     "givens": [
+      "BC = 7",
+      "DA = 1",
+      "AC ⊥ BD"
+     ],
+     "unknowns": [
+      "Giá trị lớn nhất của chu vi $ABCD$"
+     ],
+     "constraints": [
+      "Tứ giác lồi",
+      "AC ⊥ BD"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "Problem requires optimization with geometric constraints, but is fully solvable with Grade 9 curriculum (Pythagoras + algebraic inequalities). Marking as unsupported to trigger fallback? No, I will mark as supported."
+     ]
+    },
+    "strategy": "Sử dụng tính chất $AB^2 + CD^2 = BC^2 + DA^2$ của tứ giác có hai đường chéo vuông góc để tìm tổng bình phương hai cạnh còn lại. Sau đó áp dụng bất đẳng thức đại số để chặn giá trị lớn nhất của $AB + CD$ và kiểm tra tính khả thi.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Khi hai đường chéo vuông góc với nhau tại $O$, bạn hãy viết $AB^2$ và $CD^2$ theo các đoạn $OA, OB, OC, OD$ bằng định lý Pythagore. Sau đó, thử cộng $AB^2 + CD^2$ và $BC^2 + DA^2$ lại xem sao?",
+      "cue": "Định lý Pythagore trong tam giác vuông",
+      "explanation": "Cả hai tổng $AB^2 + CD^2$ và $BC^2 + DA^2$ đều bằng $OA^2 + OB^2 + OC^2 + OD^2$. Đây là một tính chất rất đẹp của tứ giác có hai đường chéo vuông góc.",
+      "math": "AB^2 + CD^2 = BC^2 + DA^2",
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Bạn đã có $AB^2 + CD^2 = 50$. Chu vi của tứ giác là $AB + CD + 8$. Làm thế nào để tìm giá trị lớn nhất của $AB + CD$ khi biết tổng bình phương của chúng?",
+      "cue": "Bất đẳng thức $(a-b)^2 \\ge 0$ hoặc Cô-si cho hai số",
+      "explanation": "Nhớ lại rằng $(AB - CD)^2 \\ge 0 \\Rightarrow AB^2 + CD^2 \\ge 2AB \\cdot CD$. Nếu cộng $AB^2 + CD^2$ vào cả hai vế, bạn sẽ liên hệ được $(AB + CD)^2$ với $AB^2 + CD^2$.",
+      "math": "(AB + CD)^2 \\le 2(AB^2 + CD^2)",
+      "stepId": "step_3",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Bất đẳng thức trên đạt dấu bằng khi $AB = CD = 5$. Bạn có chắc chắn rằng tồn tại một tứ giác lồi thỏa mãn điều kiện này không? Hãy thử đặt ẩn cho các đoạn $OA, OB, OC, OD$ và xem hệ phương trình có nghiệm dương hay không.",
+      "cue": "Hệ phương trình ẩn dương",
+      "explanation": "Hệ phương trình $OA^2+OB^2=25, OB^2+OC^2=49, OC^2+OD^2=25, OD^2+OA^2=1$ có vô số nghiệm dương. Ví dụ, chọn $OA = 0.5$, bạn sẽ tìm được $OD, OC, OB$ đều dương. Điều này chứng tỏ tứ giác lồi thỏa mãn bài toán thực sự tồn tại.",
+      "math": "OA = 0.5 \\Rightarrow OD = \\sqrt{0.75}, OC = \\sqrt{24.25}, OB = \\sqrt{24.75}",
+      "stepId": "step_4",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Thiết lập quan hệ giữa các cạnh",
+      "explanation": "Gọi $O$ là giao điểm của $AC$ và $BD$. Vì $AC \\perp BD$, bốn tam giác $AOB, BOC, COD, DOA$ đều vuông tại $O$. Áp dụng định lý Pythagore cho từng tam giác, ta có $AB^2 = OA^2 + OB^2$, $BC^2 = OB^2 + OC^2$, $CD^2 = OC^2 + OD^2$, $DA^2 = OD^2 + OA^2$.",
+      "math": "AB^2 + CD^2 = OA^2 + OB^2 + OC^2 + OD^2 = BC^2 + DA^2",
+      "reason": "Định lý Pythagore trong tam giác vuông",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Tính tổng bình phương hai cạnh chưa biết",
+      "explanation": "Từ đẳng thức trên, ta thay số $BC = 7$ và $DA = 1$ vào để tìm giá trị cụ thể của $AB^2 + CD^2$.",
+      "math": "AB^2 + CD^2 = 7^2 + 1^2 = 50",
+      "reason": "Thay số và tính toán đại số",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "Áp dụng bất đẳng thức để tìm max của $AB + CD$",
+      "explanation": "Chu vi $P = AB + CD + 8$. Để $P$ lớn nhất, ta cần $AB + CD$ lớn nhất. Sử dụng bất đẳng thức $(AB - CD)^2 \\ge 0$, ta suy ra $AB^2 + CD^2 \\ge 2AB \\cdot CD$. Cộng $AB^2 + CD^2$ vào hai vế, ta được $2(AB^2 + CD^2) \\ge (AB + CD)^2$.",
+      "math": "(AB + CD)^2 \\le 2 \\times 50 = 100 \\Rightarrow AB + CD \\le 10",
+      "reason": "Bất đẳng thức $(a-b)^2 \\ge 0$ và biến đổi đại số",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_4",
+      "title": "Kiểm tra điều kiện dấu bằng",
+      "explanation": "Dấu \"=\" xảy ra khi $AB = CD = 5$. Ta cần kiểm tra xem có tồn tại tứ giác lồi thỏa mãn $AB = CD = 5$ hay không. Đặt $OA=x, OB=y, OC=z, OD=t$, hệ phương trình $x^2+y^2=25, y^2+z^2=49, z^2+t^2=25, t^2+x^2=1$ luôn có nghiệm dương (ví dụ $x=0.5$). Vậy giá trị lớn nhất này khả thi.",
+      "math": "AB = CD = 5 \\Rightarrow P_{\\max} = 5 + 5 + 7 + 1 = 18",
+      "reason": "Kiểm tra tính khả thi của bài toán cực trị",
+      "uses": [
+       "step_3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$.",
+     "math": "P_{\\max} = 18"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "sqrt(2*(7^2+1^2)) + 7 + 1"
+      ],
+      "assignments": [],
+      "expected": "18"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: verified, 11 problem(s): figure: cycle at point O (left out of the figure) | figure: point A (polar) could not be constructed (left out of the figure) | figure: point C (polar) could not be constructed (left out of the figure)",
+    "attempt 2: unverified, 1 problem(s): derived claim AB = CD is false in the constructed figure (4.276 vs 5.632)",
+    "usage: model=qwen3.6:35b in=18129 (cached 0) out=17546 (reasoning 10511) ≈ $0.0348",
+    "total ≈ $0.0348 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  }
+ ]
+}

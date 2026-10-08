@@ -703,7 +703,8 @@ export function reconcileStatus(lesson: ModelLesson): ModelLesson {
   const a = lesson.analysis;
   if (a.status === "solvable" || lesson.steps.length === 0 || lesson.hints.length === 0 || !lesson.finalAnswer.text.trim()) return lesson;
   const reason = a.statusReason?.trim();
-  const notes = reason && a.interpretationNotes.length < 5 ? [...a.interpretationNotes, reason] : a.interpretationNotes;
+  // A note is at most 300 characters (the schema): a long model reason would make the whole lesson unstorable.
+  const notes = reason && a.interpretationNotes.length < 5 ? [...a.interpretationNotes, reason.length > 300 ? `${reason.slice(0, 297)}…` : reason] : a.interpretationNotes;
   return { ...lesson, analysis: { ...a, status: "solvable", statusReason: null, interpretationNotes: notes } };
 }
 

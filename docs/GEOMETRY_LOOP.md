@@ -106,3 +106,30 @@ shows, not just "false": "in fact ∠AED = 2·∠EBD", "in fact ∠HAD + ∠HID 
 
 Statement figures, all 33 geometry sub-questions: 26 fully built (all 26 development ones), givens failing 0, measured
 claims 20 true / 0 false. The 7 not fully built are in the held-out test split and were deliberately not tuned for.
+
+## Round 6 and summary
+
+Round 6 ($0.14): ch-2 verified with the right maximum (18); 2025 4a repeated "∠AED = ∠EBD" even with the explicit
+"in fact ∠AED = 2·∠EBD" retry feedback — beyond this model; the gateway failed 4 of 8 requests again.
+Also fixed: a "solvable" reconcile kept a model reason longer than the schema allows (> 300 chars), so a paid solve could
+fail at the very end ("lesson fails the schema") — notes are clipped, and size slips are repaired before storing.
+
+**Result on the 24 development geometry problems** (judged by the current verifier; "after" = the best lesson over up to
+six attempts per problem, not one run under identical conditions):
+
+| | Round 1 | After the loop |
+|---|---|---|
+| Lesson produced | 15/24 | 23/24 |
+| Figure ↔ text, steps ↔ figure and grade level all pass | 8/24 | 14/24 |
+
+Still failing: 2024 4a (no lesson — gateway), and nine chuyên parts whose proofs contain claims that are false on the
+exact figure (2023 5b–5d, 2024 4b/4d, 2025 4a–4c, hcm 3a). Those are model reasoning errors, now shown as "Không khớp
+với hình vẽ"; no deterministic fix makes them correct.
+
+**Spent: ≈ $1.43** (cap $3): solving rounds $1.31, diagnostics ≈ $0.12 (one request repeated by mistake ≈ $0.03).
+Two rounds were mostly lost to the SOCLAAS gateway (stalls, "fetch failed"), at almost no cost.
+
+**What changed** — 13 checker/figure/dataset bugs of ours fixed (each was producing false "doesn't match the figure"
+flags or paid retries), 14 general lessons in [shared/src/geometryLessons.ts](../shared/src/geometryLessons.ts) given
+to the solver, retry feedback that states the true relation, thinking off for plain computations (¼ of the tokens),
+and statement figures for all 26 development sub-questions (20/20 measurable claims true).
