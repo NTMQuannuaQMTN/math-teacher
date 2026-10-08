@@ -44,6 +44,8 @@ function normalize(text: string): string {
     .replace(/\\(?:triangle|Delta)\s*/g, "△")
     .replace(/tam giác\s+(?=[A-Z])/g, "△")
     .replace(/\\sim|đồng dạng với/g, "∽")
+    // "△DBE và △DCF đồng dạng" (the vertex order of the statement is the correspondence).
+    .replace(/△\s*([A-Z'\s]+?)\s+(?:và|and)\s+△\s*([A-Z'\s]+?)\s+(?:là hai tam giác\s+)?(?:đồng dạng|are similar)/g, (_, a: string, b: string) => `△${a.replace(/\s/g, "")} ∽ △${b.replace(/\s/g, "")}`)
     .replace(/\s+bằng\s+(?=[∠A-Z\\]|góc)/g, " = ")
     .replace(/\\cdot|\\times|×|·/g, "·")
     .replace(/\^\{?2\}?|²/g, "²")
@@ -105,13 +107,42 @@ function product(expr: string): Measure | null {
 
 const relEq = (a: number, b: number) => Math.abs(a - b) <= 2e-3 * Math.max(1, Math.abs(a), Math.abs(b));
 
+/** A factor of a product claim: a segment (possibly squared, possibly dividing) or a number. */
+export type ProductFactor = { seg: [string, string]; power: 1 | 2; divide: boolean } | { number: number; divide: boolean };
+
+/** A claim in structured form, for the deductive proof planner (shared/src/proof). */
+export type StructuredClaim =
+  | { kind: Exclude<FigureCheck["kind"], "on_circle" | "length_value" | "length_ratio">; refs: string[]; value?: number | null }
+  | { kind: "product"; lhs: ProductFactor[]; rhs: ProductFactor[] }
+  | { kind: "similar"; a: [string, string, string]; b: [string, string, string] };
+
 interface Claim {
   label: string;
   evaluate: (r: ResolvedFigure) => { passed: boolean; detail: string } | null;
+  structured?: StructuredClaim;
+}
+
+function factors(expr: string): ProductFactor[] | null {
+  const tokens = expr.replace(/\s+/g, "").split(/([·/])/);
+  const out: ProductFactor[] = [];
+  for (let i = 0; i < tokens.length; i += 2) {
+    const f = tokens[i]!;
+    const divide = tokens[i - 1] === "/";
+    const seg = new RegExp(`^(${SEG})(²)?$`).exec(f);
+    if (seg) {
+      const [a, b] = pts(seg[1]!) as [string, string];
+      out.push({ seg: [a, b], power: seg[2] ? 2 : 1, divide });
+    } else if (/^\d+(?:[.,]\d+)?$/.test(f)) out.push({ number: Number(f.replace(",", ".")), divide });
+    else return null;
+  }
+  return out;
 }
 
 const fromCheck = (label: string, check: Omit<FigureCheck, "value" | "role"> & { value?: number | null }): Claim => ({
   label,
+  structured: ["equal_length", "perpendicular", "parallel", "collinear", "concyclic", "equal_angle", "angle_value"].includes(check.kind)
+    ? ({ kind: check.kind, refs: check.refs, value: check.value ?? null } as StructuredClaim)
+    : undefined,
   evaluate: (r) => {
     if (!check.refs.every((p) => r.points[p])) return null;
     const res = evaluateFigureCheck({ value: null, role: "derived", ...check }, r);
@@ -154,8 +185,12 @@ function claimsIn(sentence: string): Claim[] {
     const a = product(lhs.replace(/\s+/g, ""));
     const b = product(rhs.replace(/\s+/g, ""));
     if (!a || !b) continue;
+    const [fl, fr] = [factors(lhs), factors(rhs)];
     out.push({
       label: `${lhs} = ${rhs}`,
+      structured: fl && fr ? (fl.length === 1 && fr.length === 1 && "seg" in fl[0]! && "seg" in fr[0]! && fl[0].power === 1 && fr[0].power === 1 && !fl[0].divide && !fr[0].divide
+        ? { kind: "equal_length", refs: [...fl[0].seg, ...fr[0].seg] }
+        : { kind: "product", lhs: fl, rhs: fr }) : undefined,
       evaluate: (r) => {
         const [x, y] = [a(r), b(r)];
         return x === null || y === null ? null : { passed: relEq(x, y), detail: `${x.toFixed(3)} vs ${y.toFixed(3)}` };
@@ -181,6 +216,7 @@ function claimsIn(sentence: string): Claim[] {
     const [x, y] = [pts(m[1]!), pts(m[2]!)];
     out.push({
       label: `△${m[1]} ∽ △${m[2]}`,
+      structured: { kind: "similar", a: x as [string, string, string], b: y as [string, string, string] },
       evaluate: (r) => {
         const X = x.map((p) => r.points[p]);
         const Y = y.map((p) => r.points[p]);
@@ -195,7 +231,8 @@ function claimsIn(sentence: string): Claim[] {
   return out;
 }
 
-const HYPOTHETICAL = /\b(nếu|giả sử|không|chưa|suppose|assume|if|not)\b/i;
+// Words, not segment names: "IF" and "NOT" in capitals are points (case-sensitive on the second letter).
+const HYPOTHETICAL = /(?<![\p{L}])(?:[Nn]ếu|NẾU|[Gg]iả sử|[Kk]hông|[Cc]hưa|[Ss]uppose|[Aa]ssume|[Ii]f|[Nn]ot)(?![\p{L}])/u;
 
 /**
  * Measures every recognisable geometric claim in `texts` on the resolved
@@ -220,6 +257,21 @@ export function checkClaims(
         const res = claim.evaluate(resolved);
         if (res) out.push({ label: claim.label, ...res });
       }
+    }
+  }
+  return out;
+}
+
+/** The recognisable claims of a text in structured form (goals for the proof planner), with their labels. */
+export function parseClaims(text: string): { label: string; claim: StructuredClaim }[] {
+  const out: { label: string; claim: StructuredClaim }[] = [];
+  const seen = new Set<string>();
+  for (const sentence of normalize(text).split(/[.;!?\n]|,\s+(?=[a-zà-ỹ])/)) {
+    if (HYPOTHETICAL.test(sentence)) continue;
+    for (const c of claimsIn(sentence)) {
+      if (!c.structured || seen.has(c.label)) continue;
+      seen.add(c.label);
+      out.push({ label: c.label, claim: c.structured });
     }
   }
   return out;

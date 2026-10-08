@@ -4,6 +4,8 @@ import { ModelLessonSchema, type ModelLesson, type SolveProgress, type Verificat
 import { unsupportedFeedback } from "../../../shared/src/gradeLevel";
 import { describeStatementFigure } from "../../../shared/src/figureFromText";
 import { geometryLessonsPrompt } from "../../../shared/src/geometryLessons";
+import { planProof, type ProofPlan } from "../../../shared/src/proof/planner";
+import { explainPlan, planReadability, verifiedFactsNote } from "../../../shared/src/proof/explain";
 import { latexFeedback, plainUnrenderable } from "./latexCheck";
 import { containsVietnamese, normalizeProblemText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
@@ -70,6 +72,44 @@ export interface SolveOptions {
   fallbackOnlyOnFailure?: boolean;
   /** Debugging: receives each attempt's raw model output. */
   onRaw?: (attempt: number, text: string) => void;
+  /**
+   * Geometry proofs: run the deterministic proof planner first (shared/src/proof). A fully proved, verified and
+   * readable plan becomes the lesson with no model call; partial results are given to the model as verified facts.
+   * Default on.
+   */
+  proofPlanner?: boolean;
+  /** Receives the planner's result (developer observability). */
+  onPlan?: (plan: ProofPlan) => void;
+}
+
+/** The planner's lesson, when it can stand alone: every claim proved and verified, and short enough to read. */
+export function plannerLesson(problemText: string, log: (m: string) => void = () => undefined, onPlan?: (plan: ProofPlan) => void): { plan: ProofPlan; result: { lesson: ModelLesson; verification: Verification } | null } {
+  const statement = normalizeProblemText(problemText);
+  let plan: ProofPlan;
+  try {
+    plan = planProof(statement);
+  } catch (err) {
+    log(`proof planner failed: ${(err as Error).message.slice(0, 200)}`);
+    return { plan: { status: "PARSING_UNCERTAIN", reason: "planner error", figure: null, goals: [], unparsed: [], auxiliary: [], computeParts: [], stats: { givens: 0, facts: 0, rounds: 0, elapsedMs: 0 }, log: [] }, result: null };
+  }
+  onPlan?.(plan);
+  const readability = planReadability(plan);
+  log(`proof planner: ${plan.status} — ${plan.reason} (${plan.stats.elapsedMs} ms, ${plan.stats.facts} facts; ${readability.steps} steps, ≤${readability.maxCited} cited)`);
+  if (plan.status !== "VERIFIED" || !readability.readable) return { plan, result: null };
+  const lesson = explainPlan(plan, { statement });
+  const parsed = ModelLessonSchema.safeParse(lesson);
+  if (!parsed.success) {
+    log(`proof planner lesson failed the schema: ${parsed.error.issues.slice(0, 2).map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
+    return { plan, result: null };
+  }
+  const checked = verifyLesson(tidy(parsed.data), { problemText: statement });
+  if (checked.verification.status === "unverified") {
+    log(`proof planner lesson failed the lesson checks: ${checked.feedback.slice(0, 3).join(" | ")}`);
+    return { plan, result: null };
+  }
+  const proofChecks = plan.goals.map((g) => ({ label: `Chứng minh được kiểm tra từng bước: ${g.label}`.slice(0, 200), passed: g.proved }));
+  const verification: Verification = { ...checked.verification, checks: [...proofChecks, ...checked.verification.checks].slice(0, 40) };
+  return { plan, result: { lesson: checked.lesson, verification } };
 }
 
 export function parseLesson(text: string): { lesson: ModelLesson } | { problems: string[] } {
@@ -368,6 +408,8 @@ export async function solveProblem(
     onProgress,
     techniqueHints: withTechniques = false,
     fallbackOnlyOnFailure = false,
+    proofPlanner = true,
+    onPlan,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
@@ -381,7 +423,17 @@ export async function solveProblem(
   // solution reasons about the right objects (and its claims can match the figure).
   const figureNotes = withFigure ? describeStatementFigure(normalizeProblemText(problemText)) : null;
   // …and the general rules learned from auditing earlier geometry solutions (shared/src/geometryLessons.ts).
-  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
+  // Geometry proofs: the deterministic planner first. A complete verified plan is the lesson (no model call).
+  let plannerNote: string | null = null;
+  if (withFigure && proofPlanner) {
+    const { plan, result } = plannerLesson(problemText, log, onPlan);
+    if (result) {
+      log(`lesson by the proof planner; no model call`);
+      return { ...result, attempts: 0, durationMs: Date.now() - started, usage: {}, costUsd: 0, model: "proof-planner" };
+    }
+    plannerNote = verifiedFactsNote(plan);
+  }
+  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", plannerNote ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },

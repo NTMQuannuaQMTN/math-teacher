@@ -1,0 +1,17 @@
+{
+  "description": "Standard grade-9 geometry proofs written on 2026-10-08 for a held-out check of the proof planner: composed before the planner was ever run on them; the first run is reported as is (docs/GEOMETRY_PTNK_2025_EVALUATION.md). Original wording, not copied from any exam.",
+  "problems": [
+    { "id": "h1-orthic-cyclic", "text": "Cho tam giác $ABC$ nhọn, các đường cao $BE$ và $CF$ cắt nhau tại $H$. Chứng minh tứ giác $BCEF$ nội tiếp và tứ giác $AEHF$ nội tiếp." },
+    { "id": "h2-right-altitude", "text": "Cho tam giác $ABC$ vuông tại $A$, đường cao $AH$. Chứng minh $AB^2 = BH \\cdot BC$ và $AH^2 = HB \\cdot HC$." },
+    { "id": "h3-chords", "text": "Cho đường tròn $(O)$, hai dây $AB$ và $CD$ cắt nhau tại $M$ nằm trong đường tròn. Chứng minh $MA \\cdot MB = MC \\cdot MD$." },
+    { "id": "h4-diameter-tangent", "text": "Cho đường tròn $(O)$ đường kính $AB$ và điểm $C$ thuộc đường tròn. Tiếp tuyến tại $A$ của $(O)$ cắt đường thẳng $BC$ tại $D$. Chứng minh $AC \\perp BD$ và $DA^2 = DC \\cdot DB$." },
+    { "id": "h5-midline", "text": "Cho tam giác $ABC$, $M$ là trung điểm của $AB$, $N$ là trung điểm của $AC$. Chứng minh $MN \\parallel BC$." },
+    { "id": "h6-isosceles-altitudes", "text": "Cho tam giác $ABC$ cân tại $A$, các đường cao $BH$ và $CK$. Chứng minh $BH = CK$." },
+    { "id": "h7-tangent-secant", "text": "Cho tam giác $ABC$ nội tiếp đường tròn $(O)$ có $AB < AC$. Tiếp tuyến tại $A$ của $(O)$ cắt đường thẳng $BC$ tại $M$. Chứng minh $MA^2 = MB \\cdot MC$." },
+    { "id": "h8-isogonal-diameter", "text": "Cho tam giác $ABC$ nhọn nội tiếp đường tròn $(O)$, $AH$ là đường cao và $AD$ là đường kính của $(O)$. Chứng minh $\\widehat{BAH} = \\widehat{CAD}$." },
+    { "id": "h9-two-tangents-midpoint", "text": "Từ điểm $M$ nằm ngoài đường tròn $(O)$ kẻ hai tiếp tuyến $MA$, $MB$ ($A$, $B$ là các tiếp điểm). Gọi $H$ là giao điểm của $OM$ và $AB$. Chứng minh $OM \\perp AB$ và $OA^2 = OH \\cdot OM$." },
+    { "id": "h10-feet-cyclic", "text": "Cho tam giác $ABC$ nhọn nội tiếp đường tròn $(O)$, các đường cao $AD$, $BE$ cắt nhau tại $H$. Chứng minh tứ giác $CDHE$ nội tiếp và $\\widehat{ADE} = \\widehat{ABE}$." },
+    { "id": "h11-semicircle-projection", "text": "Cho nửa đường tròn tâm $O$ đường kính $AB$, điểm $C$ thuộc nửa đường tròn. Gọi $H$ là hình chiếu của $C$ trên $AB$. Chứng minh $CH^2 = HA \\cdot HB$." },
+    { "id": "h12-angle-bisector-arc", "text": "Cho tam giác $ABC$ nội tiếp đường tròn $(O)$. Tia phân giác của góc $BAC$ cắt $(O)$ tại $D$ ($D$ khác $A$). Chứng minh $DB = DC$." }
+  ]
+}
