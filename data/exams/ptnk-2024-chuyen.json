@@ -228,7 +228,7 @@
    "topic": "geometry",
    "kind": "prove",
    "stem": "Cho tứ giác $ABCD$ nội tiếp đường tròn $(O)$ có tam giác $ABD$ là tam giác nhọn và đường chéo $AC$ đi qua tâm $O$ của đường tròn $(O)$. Gọi $I$ là trung điểm $BD$, $H$ là trực tâm của tam giác $ABD$, $E$ là giao điểm khác $A$ của $AI$ với $(O)$ và $K$ là hình chiếu vuông góc của $H$ lên $AI$.",
-   "question": "Trên đường thẳng qua $H$ và song song $AC$ lấy điểm $T$ sao cho $TH=TK$. Chứng minh các điểm $O,K,F,T$ cùng thuộc một đường tròn.",
+   "question": "Lấy điểm $F$ trên cung nhỏ $BD$ của đường tròn $(O)$ sao cho $\\widehat{BAF}=\\widehat{DAI}$. Trên đường thẳng qua $H$ và song song $AC$ lấy điểm $T$ sao cho $TH=TK$. Chứng minh các điểm $O,K,F,T$ cùng thuộc một đường tròn.",
    "problem_text": "Cho tứ giác $ABCD$ nội tiếp đường tròn $(O)$ có tam giác $ABD$ là tam giác nhọn và đường chéo $AC$ đi qua tâm $O$ của đường tròn $(O)$. Gọi $I$ là trung điểm $BD$, $H$ là trực tâm của tam giác $ABD$, $E$ là giao điểm khác $A$ của $AI$ với $(O)$ và $K$ là hình chiếu vuông góc của $H$ lên $AI$. Trên đường thẳng qua $H$ và song song $AC$ lấy điểm $T$ sao cho $TH=TK$. Chứng minh các điểm $O,K,F,T$ cùng thuộc một đường tròn.",
    "diagram": "official figure in the answer key",
    "official_answer": "proof",

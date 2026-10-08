@@ -374,17 +374,37 @@ function defineConstructions(b: Builder, sentenceText: string): void {
     const inc = b.helper(`I_${p}${v}${q}`, "incenter", [p, v, q]);
     b.define(name, "intersection", [v, b.helper(`E_${v}`, "rotate", [inc, v], 90), x, y]);
   }
-  // "kẻ tiếp tuyến LH đến đường tròn (I) (H thuộc (I), H ≠ D)": the tangent point other than D.
-  for (const m of text.matchAll(new RegExp(`tiếp tuyến (${PT})(${PT}) (?:đến|tới|với) (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\)[^.;]{0,40}?(?:(${PT})\\s*(?:≠|\\\\ne|\\\\neq|khác)\\s*(${PT}))?`, "g"))) {
-    const [from, name, cn, , other] = [m[1]!, m[2]!, m[3]!, m[4], m[5]];
+  // "kẻ tiếp tuyến LH đến đường tròn (I) (H thuộc (I), H ≠ D)": the tangent point other than D. The exclusion is looked
+  // for just after the phrase (an optional group after a lazy gap never captured it — PTNK 2023 5b drew H at D).
+  for (const m of text.matchAll(new RegExp(`tiếp tuyến (${PT})(${PT}) (?:đến|tới|với) (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\)`, "g"))) {
+    const [from, name, cn] = [m[1]!, m[2]!, m[3]!];
     const c = b.circleRef(`(${cn})`);
     if (!c || !b.has(from)) continue;
-    // Try both tangent points; keep the one that isn't the excluded point.
     b.define(name, "tangent", [from, c], 0);
-    if (other && b.has(other)) {
-      const def = b.points.find((p) => p.id === name);
-      b.tangentAvoid.set(name, other);
-    }
+    const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 60);
+    const other = new RegExp(`${name}\\s*(?:≠|khác)\\s*(${PT})`).exec(after)?.[1];
+    if (other && b.has(other)) b.tangentAvoid.set(name, other);
+  }
+  // "Lấy điểm F trên cung nhỏ BD của (O) sao cho ∠BAF = ∠DAI": AF and AI are isogonal in angle BAD — AF is the
+  // reflection of AI in the bisector of that angle; F is where it meets the circle again.
+  for (const m of text.matchAll(new RegExp(`(?:điểm\\s+)?(${PT}) (?:trên|thuộc) cung (?:nhỏ |lớn )?(${PT})(${PT}) của (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\) sao cho ∠\\s*(${PT})(${PT})(${PT})\\s*=\\s*∠\\s*(${PT})(${PT})(${PT})`, "g"))) {
+    const [name, , , cn, x1, v1, f1, x2, v2, w2] = m.slice(1) as string[];
+    const c = b.circleRef(`(${cn})`);
+    // ∠X A F = ∠Y A W with the same vertex, X and Y the two arms: F is the isogonal of W.
+    if (!c || v1 !== v2 || f1 !== name || ![x1!, v1!, x2!, w2!].every((p) => b.has(p!))) continue;
+    const bis = b.helper(`I_${x1}${v1}${x2}`, "incenter", [x1!, v1!, x2!]);
+    const iso = b.helper(`G_${w2}${v1}`, "reflect", [w2!, v1!, bis]);
+    b.define(name!, "line_circle", [v1!, iso, c], 1);
+  }
+  // "Trên đường thẳng qua H và song song AC lấy điểm T sao cho TH = TK": that parallel ∩ the perpendicular bisector of HK.
+  for (const m of text.matchAll(new RegExp(`trên đường thẳng (?:đi )?qua (${PT}) (?:và )?song song (?:với )?(${PT})(${PT}) lấy (?:điểm )?(${PT}) sao cho (${PT})(${PT})\\s*=\\s*(${PT})(${PT})`, "gi"))) {
+    const [through, p, q, name, a1, a2, b1, b2] = m.slice(1) as string[];
+    const ends = [a1, a2, b1, b2].filter((z) => z !== name);
+    if (a1 !== name || b1 !== name || ends.length !== 2 || ![through!, p!, q!, ...ends].every((z) => b.has(z!))) continue;
+    const dir = b.helper(`P_${through}${p}${q}`, "translate", [through!, p!, q!], 1);
+    const mid = b.helper(`M_${ends[0]}${ends[1]}`, "midpoint", [ends[0]!, ends[1]!]);
+    const perp = b.helper(`R_${ends[0]}${ends[1]}`, "rotate", [ends[1]!, mid], 90);
+    b.define(name!, "intersection", [through!, dir, mid, perp]);
   }
   // "K = AD ∩ EF", "E = AI ∩ (O)" (compact notation).
   for (const m of text.matchAll(new RegExp(`(${PT})\\s*=\\s*(${PT}${PT}|\\(\\s*${PT}\\s*\\))\\s*∩\\s*(${PT}${PT}|\\(\\s*${PT}\\s*\\))`, "g"))) {

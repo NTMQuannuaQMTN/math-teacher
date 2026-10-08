@@ -90,3 +90,19 @@ Newly clean: g9, 2023 5a. The three flagged lessons are model errors, each confi
 | 2024 4d "∠ACE = 90°" | 86.6° | the right angle is ∠AEC (AC is a diameter) | `angle-vertex-in-the-middle` |
 
 Also: problems that keep hidden thinking get 40K tokens (ch-2 truncated at 24K with thinking).
+
+## Round 5 + fixes ($0.32)
+
+Newly clean: hcm 3b (the `synthetic-not-vectors` rule removed the vector argument), g3. Repeated mistakes despite the
+rules — 2025 4a "∠AED = ∠EBD" in both attempts, 2023 5c "∠HAD = ∠HID" — so the retry feedback now says what the figure
+shows, not just "false": "in fact ∠AED = 2·∠EBD", "in fact ∠HAD + ∠HID = 180°" (also complementary).
+
+| Finding | Classification | Action |
+|---|---|---|
+| 2023 5b: no figure — its own claim "∠BAD = ∠CAH" was false on our figure | **our parser**: "(H thuộc (I), H ≠ D)" never captured (lazy gap + optional group), H drawn at D | exclusion read just after the phrase; the claim is now true; checker covers every sub-question (33), not one per shared opening |
+| 2024 4d used F, defined only in 4b | **our dataset** (as 2023 5d) | 4d text includes 4b's definition of F |
+| "F trên cung nhỏ BD sao cho ∠BAF = ∠DAI"; "T trên đường thẳng qua H song song AC sao cho TH = TK" | **our parser** | isogonal line (reflection of AI in the bisector) ∩ (O); parallel ∩ perpendicular bisector — 4d's claim "O, K, F, T concyclic" holds on the built figure |
+| Thales (g3) and right-triangle-with-legs (g5) figures not to the given lengths; g5's angles swapped | **our builder** | side points at the given ratio, "DE ∥ BC" built as the parallel, two known sides at length; g3 DE = 6.000, g5 AH = 4.800 exactly |
+
+Statement figures, all 33 geometry sub-questions: 26 fully built (all 26 development ones), givens failing 0, measured
+claims 20 true / 0 false. The 7 not fully built are in the held-out test split and were deliberately not tuned for.

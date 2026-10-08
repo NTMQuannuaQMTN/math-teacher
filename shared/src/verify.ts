@@ -721,6 +721,26 @@ export const deniesAnswer = (answer: string) =>
 
 /** What the figure shows instead, for a false "A, B, C, D cùng thuộc một đường tròn": usually three are collinear. */
 function whyFalse(label: string, resolved: ResolvedFigure): string {
+  // "∠X = ∠Y" false: say what the figure shows — supplementary, complementary, or one twice the other (GEO-R5: the
+  // same false equality came back after a bare "false" twice).
+  const eq = /^∠((?:[A-Z]'*){3}) = ∠((?:[A-Z]'*){3})$/.exec(label);
+  if (eq) {
+    const angle = (n: string) => {
+      const [a, v, b] = n.match(/[A-Z]'*/g)!.map((p) => resolved.points[p]);
+      if (!a || !v || !b) return null;
+      const u = { x: a.x - v.x, y: a.y - v.y };
+      const w = { x: b.x - v.x, y: b.y - v.y };
+      return (Math.acos(Math.max(-1, Math.min(1, (u.x * w.x + u.y * w.y) / (Math.hypot(u.x, u.y) * Math.hypot(w.x, w.y) || 1)))) * 180) / Math.PI;
+    };
+    const [x, y] = [angle(eq[1]!), angle(eq[2]!)];
+    if (x === null || y === null) return "";
+    const near = (p: number, q: number) => Math.abs(p - q) < 0.05;
+    if (near(x + y, 180)) return `; in fact ∠${eq[1]} + ∠${eq[2]} = 180° (supplementary — e.g. their vertices are on opposite sides of a common chord)`;
+    if (near(x + y, 90)) return `; in fact ∠${eq[1]} + ∠${eq[2]} = 90° (complementary)`;
+    if (near(x, 2 * y)) return `; in fact ∠${eq[1]} = 2·∠${eq[2]} (e.g. an exterior angle of an isosceles triangle, or a central vs inscribed angle)`;
+    if (near(y, 2 * x)) return `; in fact ∠${eq[2]} = 2·∠${eq[1]} (e.g. an exterior angle of an isosceles triangle, or a central vs inscribed angle)`;
+    return "";
+  }
   const m = /^((?:[A-Z]'*\s*,\s*){3}[A-Z]'*) cùng thuộc một đường tròn$/.exec(label);
   if (!m) return "";
   const pts = m[1]!.split(/\s*,\s*/);

@@ -16,9 +16,10 @@ for (const f of ["chuyen.jsonl", "problems.jsonl"]) {
   for (const line of readFileSync(new URL(`../../tools/benchmark/dataset/${f}`, import.meta.url), "utf8").trim().split("\n")) {
     const d = JSON.parse(line) as { id: string; topic: string; problem_text: string };
     if (d.topic !== "geometry" || !/tam giác|đường tròn|tứ giác|hình (vuông|chữ nhật|bình hành|thoi)/.test(d.problem_text)) continue;
-    const key = d.problem_text.slice(0, 120);
-    if (seen.has(key)) continue;
-    seen.add(key);
+    // Every sub-question: parts share an opening but each has its own claims (PTNK 2023 5b's "∠BAD = ∠CAH" caught a
+    // wrong tangent point that 5a, with no measurable claim, could not).
+    if (seen.has(d.id)) continue;
+    seen.add(d.id);
     items.push({ id: d.id, text: d.problem_text });
   }
 }
@@ -48,4 +49,4 @@ for (const { id, text } of items) {
   );
   if (verbose) console.log("   ", r.figure.points.map((p) => `${p.id}=${p.kind}(${p.refs.join(",")}${p.value !== null ? `;${p.value}` : ""})`).join(" "));
 }
-console.log(`\n${items.length} geometry statements: base built ${built}, all named points built ${complete}, givens failing ${givensFailed}, claims true ${claimsTrue}, false ${claimsFalse}`);
+console.log(`\n${items.length} geometry problems (all sub-questions): base built ${built}, all named points built ${complete}, givens failing ${givensFailed}, claims true ${claimsTrue}, false ${claimsFalse}`);
