@@ -49,7 +49,8 @@ const RUN = /(?<![\p{L}\d])((?:[A-Z]'*){1,5})(?![\p{L}\d_])/gu;
 const ANGLE_BEFORE = /(\\widehat\{|\\hat\{|\\angle\s*|∠\s*|góc\s+\$?)$/;
 const POLYGON_BEFORE = /(\\triangle\s*|\\Delta\s*|Δ\s*|(?:tam giác|tứ giác|hình thang|hình bình hành|hình chữ nhật|hình vuông|hình thoi|triangle|quadrilateral)\s+\$?)$/i;
 const NAMING_BEFORE = /(Gọi\s+|gọi\s+|điểm\s+|tại\s+|lấy\s+|point\s+|at\s+|Let\s+)\$?$/;
-const CIRCLE_NAME = /\(\s*([A-Z]'*)\s*(?:\)|;|,)/g;
+// "(O)", "(O; R)", "(O, R)" — not a parenthetical list of points "(B, C là các tiếp điểm)".
+const CIRCLE_NAME = /\(\s*([A-Z]'*)\s*(?:\)|;|,\s*[A-Za-z0-9.\\ ]{1,12}\))/g;
 
 function splitRun(run: string): string[] {
   return run.match(/[A-Z]'*/g) ?? [];

@@ -36,6 +36,8 @@ export interface LocalModelOptions {
    * after parsing still rejects anything malformed.
    */
   requireParameters?: boolean;
+  /** OpenAI-compatible gateway serving Qwen on vLLM: false switches hidden thinking off. */
+  gatewayThinking?: boolean;
   /** Hosted only: per-request time limit (default 180 s). A bigger output budget needs a longer limit. */
   requestTimeoutMs?: number;
   temperature?: number;
@@ -110,8 +112,13 @@ export class LocalJsonModel implements JsonModel {
           ? // OpenRouter: only route to providers that honour response_format/json_schema; keep reasoning short.
             { provider: { require_parameters: this.options.requireParameters ?? true }, reasoning: { effort } }
           : // Other OpenAI-compatible gateways (SOCLAAS): the standard parameter. Some models accept only
-            // low | medium | xhigh (qwen3.8 rejects "minimal"), so nothing below "low" is sent.
-            { reasoning_effort: effort === "minimal" || effort === "none" ? "low" : effort }),
+            // low | medium | xhigh (qwen3.8 rejects "minimal"), so nothing below "low" is sent. vLLM + Qwen can also
+            // switch hidden thinking off entirely (gatewayThinking: false) — "low" alone still spent 10K reasoning tokens
+            // on a 4-step proof (g9).
+            {
+              reasoning_effort: effort === "minimal" || effort === "none" ? "low" : effort,
+              ...(this.options.gatewayThinking === false ? { chat_template_kwargs: { enable_thinking: false } } : {}),
+            }),
     };
     let response!: Response;
     // Watchdog for a congested gateway (SOCLAAS, 2026-10-08: < 8 tokens/s, a lesson could never finish): when streaming,

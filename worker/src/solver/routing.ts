@@ -140,5 +140,8 @@ export function soclaasModelOptions(problemText: string) {
     ...hostedModelOptions(problemText),
     maxTokens: tier === "complex" ? 40_000 : tier === "standard" ? 24_000 : 16_000,
     requestTimeoutMs: 230_000,
+    // Thinking only where it pays off: on g9 (a 4-step proof) it was 10K of 13.5K tokens; without it the lesson was
+    // equally correct at 3.9K. Hard multi-part proofs keep it.
+    gatewayThinking: tier === "complex",
   };
 }

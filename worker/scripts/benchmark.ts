@@ -140,7 +140,7 @@ const modelFor = (problemText: string) => {
   const o = hosted!.keyVar === "SOCLAAS_API_KEY" ? soclaasModelOptions(problemText) : hostedModelOptions(problemText);
   return new CachedModel(
     new LocalJsonModel(hosted!.url, hosted!.model, { apiKey: devVar(hosted!.keyVar ?? "LOCAL_LLM_API_KEY"), ...o }),
-    `hosted;prompt=${PROMPT_VERSION};effort=${o.reasoningEffort};max=${o.maxTokens ?? 12_000}`,
+    `hosted;prompt=${PROMPT_VERSION};effort=${o.reasoningEffort};max=${o.maxTokens ?? 12_000}${"gatewayThinking" in o && o.gatewayThinking === false ? ";think=off" : ""}`,
     offline,
   );
 };
