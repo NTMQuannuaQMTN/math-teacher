@@ -130,8 +130,9 @@ function triangleSpec(t: string): TriangleSpec | null {
     if (legs.length === 2) {
       // Both legs given: the angles follow from them.
       const [l1, l2] = legs as [[string, number], [string, number]];
-      const at1 = idx(l2[0].replace(right, "")); // angle opposite leg l2 is at the end of leg l1
-      const at2 = idx(l1[0].replace(right, ""));
+      // The angle at the far end of leg l1 faces leg l2: tan = l2 / l1.
+      const at1 = idx(l1[0].replace(right, ""));
+      const at2 = idx(l2[0].replace(right, ""));
       angles[at1] = (Math.atan2(l2[1], l1[1]) * 180) / Math.PI;
       angles[at2] = 90 - angles[at1]!;
       scale = Math.hypot(l1[1], l2[1]);
@@ -168,9 +169,20 @@ function baseTriangle(t: string, spec: TriangleSpec): Figure {
     const ta = 90 + (Math.max(b, c) - Math.min(b, c)) * (90 / Math.PI) * 0.0; // A on top
     points.push(onCircle(A, `c_${O}`, ta), onCircle(B, `c_${O}`, ta + (2 * c * 180) / Math.PI), onCircle(C, `c_${O}`, ta + ((2 * c + 2 * a) * 180) / Math.PI));
   } else {
-    // BC horizontal, A above; |BC| = 2R sin A.
-    const bc = twoR * Math.sin(a);
-    const ab = twoR * Math.sin(c);
+    // BC horizontal, A above; |BC| = 2R sin A. Two known sides (given, or a side split by a point with both parts given:
+    // AB = AD + DB) are drawn at their lengths so the givens hold; the angle at B stays the chosen one.
+    const side = (u: string, v: string): number | null => {
+      const direct = givenLength(t, u, v);
+      if (direct !== null) return direct;
+      for (const m of t.matchAll(new RegExp(`(${PT}) (?:là (?:một )?điểm )?(?:nằm )?(?:trên|thuộc) (?:cạnh|đoạn(?: thẳng)?) (?:${u}${v}|${v}${u})`, "g"))) {
+        const [p1, p2] = [givenLength(t, u, m[1]!), givenLength(t, m[1]!, v)];
+        if (p1 !== null && p2 !== null) return p1 + p2;
+      }
+      return null;
+    };
+    const [knownAB, knownBC] = [side(A, B), side(B, C)];
+    const bc = knownBC ?? twoR * Math.sin(a);
+    const ab = knownAB ?? twoR * Math.sin(c);
     points.push(free(B, 0, 0), free(C, bc, 0), free(A, ab * Math.cos(b), ab * Math.sin(b)));
   }
   return {
@@ -331,13 +343,40 @@ function placeArcPoints(t: string, figure: Figure): Figure {
 }
 
 /** Points on a side: "K là một điểm trên cạnh AB", "lấy M thuộc đoạn BC". */
+/** A given length "XY = 4 (cm)", either order of the letters. */
+function givenLength(t: string, u: string, v: string): number | null {
+  const m = new RegExp(`(?<![A-Z])(?:${u}${v}|${v}${u})\\s*=\\s*(\\d+(?:[.,]\\d+)?)`).exec(t);
+  return m ? Number(m[1]!.replace(",", ".")) : null;
+}
+
+/**
+ * Points on a side: "K là một điểm trên cạnh AB", "điểm D thuộc cạnh AB" — at the given ratio when AD and DB (or AD and
+ * AB) are given; and "E thuộc cạnh AC sao cho DE ∥ BC" built as the parallel through D, so DE ∥ BC holds exactly.
+ */
 function placeSidePoints(t: string, figure: Figure): Figure {
   const points = [...figure.points];
   const ids = new Set(points.map((p) => p.id));
   for (const m of t.matchAll(new RegExp(`(${PT}) (?:là (?:một )?điểm )?(?:nằm )?(?:trên|thuộc) (?:cạnh|đoạn(?: thẳng)?) (${PT})(${PT})`, "g"))) {
     const [name, a, b] = [m[1]!, m[2]!, m[3]!];
     if (ids.has(name) || !ids.has(a) || !ids.has(b)) continue;
-    points.push({ id: name, label: name, kind: "on_segment", refs: [a, b], x: null, y: null, value: 0.38, value2: null, draggable: true, hidden: false });
+    // "… sao cho DE ∥ BC" with D already placed: E is where the parallel to BC through D meets this side.
+    const par = new RegExp(`(?:${name}(${PT})|(${PT})${name})\\s*(?:∥|\\\\parallel|//|song song(?: với)?)\\s*(${PT})(${PT})`).exec(t);
+    const other = par ? (par[1] ?? par[2])! : null;
+    if (par && other && ids.has(other) && ids.has(par[3]!) && ids.has(par[4]!)) {
+      const dir = `P_${other}${par[3]}${par[4]}`;
+      if (!ids.has(dir)) {
+        points.push({ id: dir, label: "", kind: "translate", refs: [other, par[3]!, par[4]!], x: null, y: null, value: 1, value2: null, draggable: false, hidden: true });
+        ids.add(dir);
+      }
+      points.push({ id: name, label: name, kind: "intersection", refs: [other, dir, a, b], x: null, y: null, value: null, value2: null, draggable: false, hidden: false });
+      ids.add(name);
+      continue;
+    }
+    const near = givenLength(t, a, name);
+    const far = givenLength(t, name, b);
+    const whole = givenLength(t, a, b);
+    const ratio = near !== null && far !== null ? near / (near + far) : near !== null && whole ? near / whole : far !== null && whole ? 1 - far / whole : 0.38;
+    points.push({ id: name, label: name, kind: "on_segment", refs: [a, b], x: null, y: null, value: ratio, value2: null, draggable: true, hidden: false });
     ids.add(name);
   }
   return { ...figure, points };

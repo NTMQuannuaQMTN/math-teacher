@@ -6,7 +6,7 @@ import { ModelLessonSchema } from "../../shared/src/solution";
 import { cleanLanguage, isStrippedVietnamese, patchVietnamese } from "../../shared/src/language";
 import { buildTargetIndex, deniesAnswer, presupposesAnswer, verifyLesson } from "../../shared/src/verify";
 import { problemDomains } from "../../shared/src/knowledgeBase";
-import { describeStatementFigure } from "../../shared/src/figureFromText";
+import { describeStatementFigure, figureFromStatement } from "../../shared/src/figureFromText";
 import { constructNamedPoints } from "../../shared/src/pointDefinitions";
 import { figureCoverage, mentionedTargets, polygonId } from "../../shared/src/figureComplete";
 import { buildScene } from "../../shared/src/figureScene";
@@ -678,5 +678,17 @@ describe("a model construction that collapses onto another point is replaced (us
     const r = resolveFigure(fig);
     expect(Math.hypot(r.points.H!.x - r.points.I!.x, r.points.H!.y - r.points.I!.y)).toBeGreaterThan(0.1);
     expect(fig.points.find((p) => p.id === "H")!.kind).toBe("line_circle");
+  });
+});
+
+describe("statement figures honour given lengths (geometry loop)", () => {
+  const len = (P: Record<string, { x: number; y: number }>, a: string, b: string) => Math.hypot(P[a]!.x - P[b]!.x, P[a]!.y - P[b]!.y);
+  it("right triangle with both legs: AB = 6, AC = 8 → BC = 10, AH = 4.8", () => {
+    const P = figureFromStatement("Cho tam giác $ABC$ vuông tại $A$ có $AB = 6$ cm, $AC = 8$ cm. Tính $BC$ và đường cao $AH$.")!.resolved.points;
+    expect([len(P, "A", "B"), len(P, "A", "C"), len(P, "B", "C"), len(P, "A", "H")].map((x) => +x.toFixed(6))).toEqual([6, 8, 10, 4.8]);
+  });
+  it("Thales: D on AB at AD = 4, DB = 2, E on AC with DE ∥ BC, BC = 9 → DE = 6", () => {
+    const P = figureFromStatement("Cho tam giác $ABC$, điểm $D$ thuộc cạnh $AB$, điểm $E$ thuộc cạnh $AC$ sao cho $DE \\parallel BC$. Biết $AD = 4$ cm, $DB = 2$ cm, $BC = 9$ cm. Tính $DE$.")!.resolved.points;
+    expect([len(P, "A", "D"), len(P, "D", "B"), len(P, "B", "C"), len(P, "D", "E")].map((x) => +x.toFixed(6))).toEqual([4, 2, 9, 6]);
   });
 });
