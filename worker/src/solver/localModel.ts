@@ -14,6 +14,9 @@ import type { JsonModel } from "./llm";
 const HOSTED_REQUEST_TIMEOUT_MS = 180_000;
 const TRUNCATED = "output truncated";
 const STEP_DOWN_WITHIN_MS = 90_000;
+/** Streaming watchdog: checked from this many seconds on, requiring this many characters per second on average. */
+const STALL_AFTER_S = 45;
+const MIN_CHARS_PER_S = 100;
 const DAILY_QUOTA = /per-day|per day|daily/i;
 const EMPTY = "empty model output";
 const LOWER_EFFORT: Partial<Record<NonNullable<LocalModelOptions["reasoningEffort"]>, NonNullable<LocalModelOptions["reasoningEffort"]>>> = {
@@ -111,11 +114,26 @@ export class LocalJsonModel implements JsonModel {
             { reasoning_effort: effort === "minimal" || effort === "none" ? "low" : effort }),
     };
     let response!: Response;
+    // Watchdog for a congested gateway (SOCLAAS, 2026-10-08: < 8 tokens/s, a lesson could never finish): when streaming,
+    // nothing in the first 45 s, or less than ~30 tokens/s after that, ends the request early so the fallback gets the time.
+    const stall = new AbortController();
+    let streamed = 0;
+    const started = Date.now();
+    const watchdog = this.hosted && onDelta
+      ? setInterval(() => {
+          const seconds = (Date.now() - started) / 1000;
+          if (seconds >= STALL_AFTER_S && streamed < seconds * MIN_CHARS_PER_S) {
+            stall.abort(new Error(`provider too slow: ${Math.round(streamed / Math.max(seconds, 1))} chars/s after ${Math.round(seconds)} s`));
+          }
+        }, 5_000)
+      : null;
     // Hosted free tiers: cap each request (a stuck call fails fast; the pipeline keeps an earlier
     // attempt) and back off briefly on 429 rate limits instead of failing at once.
     const attempts = this.hosted ? 3 : 1;
     for (let attempt = 1; ; attempt++) {
-      const perRequest = this.hosted ? AbortSignal.any([signal, AbortSignal.timeout(this.options.requestTimeoutMs ?? HOSTED_REQUEST_TIMEOUT_MS)]) : signal;
+      const perRequest = this.hosted
+        ? AbortSignal.any([signal, AbortSignal.timeout(this.options.requestTimeoutMs ?? HOSTED_REQUEST_TIMEOUT_MS), stall.signal])
+        : signal;
       try {
         response = await fetch(`${this.baseUrl.replace(/\/$/, "").replace(/\/v1$/, "")}/v1/chat/completions`, {
           method: "POST",
@@ -124,6 +142,8 @@ export class LocalJsonModel implements JsonModel {
           body: JSON.stringify(body),
         });
       } catch (err) {
+        if (watchdog) clearInterval(watchdog);
+        if (stall.signal.aborted) throw new OcrFailure("timeout", String((stall.signal.reason as Error)?.message ?? "provider too slow"), true);
         if (isAbort(err)) throw new OcrFailure("timeout", "local model request timed out", true);
         throw new OcrFailure("provider_error", `local model network error: ${String(err)}`, true);
       }
@@ -135,16 +155,20 @@ export class LocalJsonModel implements JsonModel {
       await response.body?.cancel();
       await new Promise((r) => setTimeout(r, Math.min(20_000, Number.isFinite(retryAfter) && retryAfter > 0 ? retryAfter * 1000 : 4_000 * attempt)));
     }
+    if (!response.ok && watchdog) clearInterval(watchdog);
     if (!response.ok) {
       const detail = (await response.text().catch(() => "")).slice(0, 400);
       if (response.status === 429 && DAILY_QUOTA.test(detail)) throw new OcrFailure("quota_exhausted", "hosted model daily quota exhausted", false);
       throw classifyHttpStatus("local model", response.status, detail);
     }
     const json = onDelta
-      ? await readStream(response, onDelta).catch((err) => {
-          if (isAbort(err)) throw new OcrFailure("timeout", "local model request timed out", true);
-          throw new OcrFailure("provider_error", `local model stream error: ${String(err)}`, true);
-        })
+      ? await readStream(response, (content, reasoningChars) => ((streamed = content.length + reasoningChars), onDelta(content, reasoningChars)))
+          .catch((err) => {
+            if (stall.signal.aborted) throw new OcrFailure("timeout", String((stall.signal.reason as Error)?.message ?? "provider too slow"), true);
+            if (isAbort(err)) throw new OcrFailure("timeout", "local model request timed out", true);
+            throw new OcrFailure("provider_error", `local model stream error: ${String(err)}`, true);
+          })
+          .finally(() => watchdog && clearInterval(watchdog))
       : ((await response.json().catch(() => null)) as CompletionJson | null);
     const choice = json?.choices?.[0];
     const reasoning = choice?.message?.reasoning_content ?? choice?.message?.reasoning ?? "";

@@ -572,6 +572,8 @@ export function describeStatementFigure(problemText: string): string | null {
         seenPairs.add(key);
         right.push(`∠${x}${v}${y} = 90°`);
       }
+  // Only free base points and nothing measured worth saying: no block at all.
+  if (defs.length === 0 && facts.length === 0 && right.length === 0) return null;
   return [
     "Exact construction of the figure from the statement (the checking program builds this figure and measures every claim of your solution on it — use exactly these definitions, do not rename or swap points):",
     ...defs.map((d) => `- ${d}`),

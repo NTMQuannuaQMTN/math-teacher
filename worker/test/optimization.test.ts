@@ -857,3 +857,29 @@ describe("geometry loop findings (checker false positives)", () => {
     expect(gradeLevelReport(withStep("Ta có $\\frac{dy}{dx} = 2x$.")).forbidden.length).toBe(1);
   });
 });
+
+describe("a congested provider is abandoned early (SOCLAAS, 2026-10-08)", () => {
+  afterEach(() => vi.useRealTimers());
+  it("stops a stream that delivers almost nothing after 45 s", async () => {
+    vi.useFakeTimers();
+    // A stream that sends one tiny chunk and then nothing.
+    const fetchMock = vi.fn(async (_url: string, init: { signal: AbortSignal }) => {
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('data: {"choices":[{"delta":{"content":"{"}}]}\n\n'));
+          init.signal.addEventListener("abort", () => controller.error(new DOMException("aborted", "AbortError")));
+        },
+      });
+      return new Response(stream, { status: 200 });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const model = new LocalJsonModel("https://gateway.example/v1", "m", { apiKey: "k" });
+    const pending = model.complete({ messages: [{ role: "user", content: "x" }], schema: {}, schemaName: "lesson", signal: new AbortController().signal, onDelta: () => undefined });
+    const result = pending.catch((e) => e);
+    await vi.advanceTimersByTimeAsync(55_000);
+    const err = await result;
+    expect(err).toMatchObject({ kind: "timeout" });
+    expect(String(err.message)).toMatch(/too slow/);
+    vi.unstubAllGlobals();
+  });
+});
