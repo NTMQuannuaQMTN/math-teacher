@@ -65,3 +65,15 @@ settings — or the gateway slowed). Audit of the 15 lessons: 7 clean (incl. Câ
 | hcm 3b: "Đặt gốc vectơ tại A" | model error (grade) | rule `synthetic-not-vectors` |
 | 2024 4b: "Vì △ABD cân tại A" (not given) → false right angles | model error | rule `no-unstated-special-case` |
 | 2025 4c: "I, O, D, S concyclic" (S on the tangent at D to (O)) | model error, covered by `tangent-radius` | — |
+
+## Rounds 2–3 — cost and retries ($0.02 + $0.11, plus ≈ $0.07 of diagnostic requests)
+
+Round 2 was lost to the gateway ("fetch failed", stalls); g8 became clean. Round 3 tested hidden thinking:
+
+| Finding | Classification | Action |
+|---|---|---|
+| g9 (4-step tangent proof): 13.5K output tokens, 10K of them hidden reasoning, truncated at 24K in the pipeline | cost: "reasoning_effort: low" barely limits qwen3.6 | thinking off (`enable_thinking: false`) for plain computations: g1–g6 still verified at ~¼ of the tokens (g3 21.8K → 5.3K, g5 21.9K → 5.5K, g6 17.6K → 5.0K) |
+| ch-2 without thinking: perimeter 16 instead of 18 | thinking matters for arguments | thinking stays on for extremum / proof / inequality / "tìm tất cả" problems and the complex tier |
+| "(B, C là các tiếp điểm)" read as a circle (B) → "missing circle" retry | **our parser** | circle names only "(O)", "(O; R)", "(O, R)" |
+| Second attempts caused by the model's own figure checks: swapped givens (g1 "∠ABC = 65°" for Â = 65°; g5 "∠ABC = 90°" for "vuông tại A"), "equal_length A, D, 4", "perpendicular B, M, A", a cyclic definition (g6) | **ours**: repairable slips rejected the correct statement figure / the model figure | checks normalised before the structure check; an exact statement figure wins over a contradicting model "given" (dropped, no retry); replayed offline: g1, g5, g6 now verified at the first attempt |
+| A verified answer with only minor drawing remarks still retried | cost policy | no retry when the answer is verified, a figure remains, and only minor drawing remarks are left |
