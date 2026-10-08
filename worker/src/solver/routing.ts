@@ -134,14 +134,17 @@ export function hostedModelOptions(problemText: string, s: HostedSettings = {}) 
  * lessons (GEO-R1b: g3, g5, g6, g9), and a truncated request is paid for and wasted. The gateway ends a request at
  * ~240 s, so every tier stops at 230 s.
  */
+const NEEDS_REASONING = /lớn nhất|nhỏ nhất|giá trị (?:lớn|nhỏ)|chứng minh|chứng tỏ|bất đẳng thức|tìm tất cả|\b(?:prove|show that|maximum|minimum|inequality)\b/iu;
+
 export function soclaasModelOptions(problemText: string) {
   const tier = problemTier(problemText);
   return {
     ...hostedModelOptions(problemText),
     maxTokens: tier === "complex" ? 40_000 : tier === "standard" ? 24_000 : 16_000,
     requestTimeoutMs: 230_000,
-    // Thinking only where it pays off: on g9 (a 4-step proof) it was 10K of 13.5K tokens; without it the lesson was
-    // equally correct at 3.9K. Hard multi-part proofs keep it.
-    gatewayThinking: tier === "complex",
+    // Thinking only where it pays off. Off for plain computations (g1–g6: same verified answers at ~¼ of the tokens);
+    // on for hard problems and for anything that needs an argument — an extremum, a proof, an inequality (ch-2 "find the
+    // largest perimeter" answered 16 instead of 18 without it).
+    gatewayThinking: tier === "complex" || NEEDS_REASONING.test(problemText.normalize("NFC")),
   };
 }
