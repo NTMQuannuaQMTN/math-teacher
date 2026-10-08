@@ -62,6 +62,30 @@ export const GEOMETRY_LESSONS: GeometryLesson[] = [
     ],
     added: "2026-10-08",
   },
+  {
+    id: "similarity-vertex-order",
+    check: "steps",
+    rule: "Write similar (or congruent) triangles with corresponding vertices in the same order: △XYZ ∽ △X'Y'Z' means ∠X = ∠X', ∠Y = ∠Y', ∠Z = ∠Z'. Find the equal angles first, then order the letters.",
+    evidence: [
+      "g8 (EXP-004, qwen3.5-9b): \"△AHE ∽ △ABC\" — the triangles are similar but A does not correspond to A (correct: △AHE ∽ △BCA).",
+      "g8 (EXP-010, Nemotron): \"△ADH ∽ △ABH\" (correct: △ADH ∽ △AHB).",
+    ],
+    added: "2026-10-08",
+  },
+  {
+    id: "distinct-points-distinct-constructions",
+    check: "figure",
+    rule: "Different points need different constructions: never define two points the same way (e.g. both as the midpoint of AB) — the figure would draw them on top of each other.",
+    evidence: ["hcm-2025 2b (EXP-011b, Nemotron): E and F were both \"midpoint of AB\", so EF = 0 and \"GH = EF\" was false."],
+    added: "2026-10-08",
+  },
+  {
+    id: "no-out-of-curriculum-alternative",
+    check: "grade",
+    rule: "Never mention a method outside the curriculum, even as an aside (\"hoặc bằng đạo hàm\", \"dùng vectơ cũng được\") — give only the school method.",
+    evidence: ["ch-2 (EXP-010, Nemotron): \"(bằng bất đẳng thức Cauchy hoặc bằng đạo hàm)\"."],
+    added: "2026-10-08",
+  },
 ];
 
 /** The rules as a prompt block for a geometry problem. */

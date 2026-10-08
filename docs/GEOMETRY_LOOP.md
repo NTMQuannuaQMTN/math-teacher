@@ -36,3 +36,16 @@ prompt/rule changes justify re-solving, and only the items that failed.
 | 3 stored lessons without a figure (Câu 2 quadrilateral, two others) | statement builder has no base for them | open |
 | Stored lesson "Giải phương trình x² − 7x + 10 = 0" labelled geometry → "needs a figure" retry | **our verifier** trusted the model's topic label (a paid retry for nothing) | a figure is required only when the problem text describes geometry; geometry cues + "đoạn thẳng", "đường thẳng", "cắt nhau" |
 | Câu 2 (convex quadrilateral, BC = 7, DA = 1, perpendicular diagonals) had no figure | **our builder** had no base for it | base "tứ giác … hai đường chéo vuông góc" with given sides exact; statement figures 17/20 complete (was 16) |
+
+## Round 0b — audit of all 61 earlier geometry lessons (free; Gemini, Nemotron, Qwen runs)
+
+| Finding | Classification | Action |
+|---|---|---|
+| ch-2 (max perimeter): "AB = CD = 5" false on the figure, in every model's lesson | **our checker**: claims about the optimal configuration measured on an arbitrary admissible figure | max/min problems: step claims are not measured on the figure; a figure is "exact" only when the givens fix the shape (adoption takes the statement's verdict) |
+| hcm 2b: "GH = EF" false, EF = 0 | model error: E and F both "midpoint of AB" | verifier flags two named points drawn at the same place (retry); rule `distinct-points-distinct-constructions` |
+| g8: "△AHE ∽ △ABC", "△ADH ∽ △ABH" | model error: similar, but vertices not in corresponding order | rule `similarity-vertex-order` |
+| ch-2 (Nemotron): "(… Cauchy hoặc bằng đạo hàm)" | model error (grade level) | rule `no-out-of-curriculum-alternative` |
+
+Audit after the fixes: 40/61 clean (was 35); false-claim steps 59 (was 68) — every removed flag was a false alarm of ours.
+Round 1 (24 dev problems, qwen3.6) did not run: the SOCLAAS gateway was congested (< 8 tokens/s; a 1,500-token request
+got no answer in 200 s). Spent $0.015. Added a streaming watchdog so a congested provider is abandoned after 45 s.

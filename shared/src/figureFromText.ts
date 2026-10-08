@@ -141,7 +141,11 @@ function triangleSpec(t: string): TriangleSpec | null {
     const opposite = side(k[0]!, k[1]!);
     if (opposite !== undefined) scale = len / Math.sin(deg(angles[opposite]!)); // = 2R
   }
-  return { names, angles, scale };
+  // Exact only when the givens fix the shape: all angles known (two given, or a right/isosceles/equilateral triangle with
+  // one more) and a side, or a right triangle with both legs. Otherwise the drawn triangle is one example.
+  const anglesFixed = /đều/.test(after) || given.size >= 2 || ((right || iso) && given.size >= 1) || (!!right && sides.size >= 2);
+  // Shape fixed (angles known): exact; with a given side also to scale. Shape free: schematic.
+  return { names, angles, scale: anglesFixed ? (scale ?? 8) : null };
 }
 
 /** Base shape: the main triangle (inscribed in "(O)" when said so). */
@@ -219,7 +223,9 @@ function basePerpendicularDiagonals(t: string): Figure | null {
     fixed.add(p).add(q);
   }
   const points = [free(A, 0, h.a), free(B, -h.b, 0), free(C, 0, -h.c), free(D, h.d, 0)];
-  return { scale: fixed.size ? "exact" : "schematic", points, lines: [segment(A, B), segment(B, C), segment(C, D), segment(D, A), segment(A, C), segment(B, D)], circles: [], angles: [], marks: [], checks: [] };
+  // Two sides and perpendicular diagonals don't fix the shape (e.g. "find the largest perimeter"): a schematic example,
+  // so lengths claimed for the optimum are not measured on it.
+  return { scale: "schematic", points, lines: [segment(A, B), segment(B, C), segment(C, D), segment(D, A), segment(A, C), segment(B, D)], circles: [], angles: [], marks: [], checks: [] };
 }
 
 /** "hình bình hành / hình chữ nhật / hình vuông / hình thoi ABCD". */
@@ -441,7 +447,8 @@ function adoptFrom(lesson: ModelLesson, statement: string): { lesson: ModelLesso
   const same = (a: LineDef, b: LineDef) => (a.from === b.from && a.to === b.to) || (a.from === b.to && a.to === b.from);
   const lines = [...model.lines, ...base.lines.filter((l) => !lineIds.has(l.id) && !model.lines.some((m) => same(m, l)))].slice(0, 40);
   return {
-    lesson: { ...lesson, figure: { ...model, scale: base.scale === "exact" ? "exact" : model.scale, points: points.slice(0, 30), circles: circles.slice(0, 6), lines } },
+    // Whether the givens fix the shape is a property of the problem, not of the model's drawing.
+    lesson: { ...lesson, figure: { ...model, scale: base.scale, points: points.slice(0, 30), circles: circles.slice(0, 6), lines } },
     adopted: true,
     reason: "statement figure as the base",
   };

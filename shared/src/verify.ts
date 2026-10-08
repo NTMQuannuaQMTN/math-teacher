@@ -753,6 +753,9 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
   // The statement's own construction is the base of the figure whenever it can be built and checked: every point the
   // statement defines is drawn exactly from its definition, not where the model put it.
   input = adoptStatementFigure(input, problemText).lesson;
+  // A max/min problem's steps describe the optimal configuration ("at the maximum AB = CD = 5"): the drawn figure is one
+  // admissible example, so the steps' claims are not measured on it.
+  const extremal = /lớn nhất|nhỏ nhất|giá trị (?:lớn|nhỏ)|\b(?:maximum|minimum|maximi[sz]e|minimi[sz]e|largest|smallest)\b/iu.test(problemText ?? input.analysis.statement);
   const { lesson: repaired, report } = checkLessonStructure(defineReferencedObjects(regularizeTriangle(constructNamedPoints(input).lesson).lesson));
   let lesson = repaired;
   const feedback = [...report.errors, ...(report.retryHints ?? []), ...language.feedback, ...gradeLevelFeedback(repaired), ...unsupportedFeedback(repaired)];
@@ -789,6 +792,15 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
         figureProblems.push(...resolved.errors);
       }
       feedback.push(...duplicateCircles(lesson.figure!, resolved));
+      // Two named points drawn at the same place (E and F both "midpoint of AB"): one of them is constructed wrongly.
+      const shown = lesson.figure!.points.filter((p) => !p.hidden && resolved!.points[p.id]);
+      const span = Math.max(1e-6, ...shown.map((p) => Math.hypot(resolved!.points[p.id]!.x, resolved!.points[p.id]!.y)));
+      for (let i = 0; i < shown.length; i++)
+        for (let j = i + 1; j < shown.length; j++) {
+          const [a, b] = [resolved.points[shown[i]!.id]!, resolved.points[shown[j]!.id]!];
+          if (Math.hypot(a.x - b.x, a.y - b.y) < 1e-6 * span)
+            feedback.push(`figure: points ${shown[i]!.id} and ${shown[j]!.id} are drawn at the same place — give each its own exact construction from its definition (they are different points)`);
+        }
     }
     if (figureProblems.length === 0 && resolved) {
       const figure = lesson.figure!;
@@ -847,7 +859,7 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
         const measured = checkClaims([part.text.replace(/^.*?(chứng minh|prove|show that)/is, "")], resolved, { exact: l.figure!.scale === "exact" });
         if (measured.length === 0) proofUncovered.push(part.letter || "the proof");
       }
-      for (const claim of checkClaims(claimTexts, resolved, { exact: l.figure!.scale === "exact" }).slice(0, 12)) {
+      for (const claim of extremal ? [] : checkClaims(claimTexts, resolved, { exact: l.figure!.scale === "exact" }).slice(0, 12)) {
         checks.push({ label: claim.label, passed: claim.passed });
         if (claim.passed) answerLevelPassed++;
         else {
@@ -960,7 +972,7 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
     feedback.push(slip.message);
   }
 
-  const stepStatus = perStepStatus(lesson, resolved, answerChecksPassed > 0 && !uncovered).map((s) =>
+  const stepStatus = perStepStatus(lesson, extremal ? null : resolved, answerChecksPassed > 0 && !uncovered).map((s) =>
     slips.some((x) => x.stepId === s.stepId) ? { ...s, status: "failed" as const } : s,
   );
 
