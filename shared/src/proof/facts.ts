@@ -211,7 +211,15 @@ export function lengthEquations(f: Fact): Equation[] {
 const seg = (s: Seg) => `${s[0]}${s[1]}`;
 const ang = (a: Tri) => `∠${a.join("")}`;
 const factor = (x: Factor) => ("seg" in x ? `${seg(x.seg)}${x.power === 2 ? "²" : ""}` : `${x.number}`);
-const product = (fs: Factor[]) => {
+const product = (input: Factor[]) => {
+  // Equal segment factors as one power: ID · ID → ID².
+  const fs: Factor[] = [];
+  for (const x of input) {
+    type SegFactor = { seg: Seg; power: 1 | 2; divide: boolean };
+    const same = "seg" in x ? (fs.find((y) => "seg" in y && y.divide === x.divide && y.power === 1 && x.power === 1 && [...y.seg].sort().join() === [...x.seg].sort().join()) as SegFactor | undefined) : undefined;
+    if (same) same.power = 2;
+    else fs.push("seg" in x ? { ...x, seg: [...x.seg] as Seg } : { ...x });
+  }
   const num = fs.filter((x) => !x.divide).map(factor).join(" · ") || "1";
   const den = fs.filter((x) => x.divide).map(factor).join(" · ");
   return den ? `${num} / ${den}` : num;

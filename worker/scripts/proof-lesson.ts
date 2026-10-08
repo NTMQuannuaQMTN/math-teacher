@@ -26,6 +26,6 @@ for (const f of ["chuyen.jsonl", "problems.jsonl"])
     console.log("verification:", checked.verification.status, checked.feedback.slice(0, 6));
     console.log("strategy:", lesson.strategy);
     for (const s of checked.lesson.steps) console.log(`\n[${s.id}] ${s.title}  (uses ${s.uses.join(",")}; ${s.reason})\n  ${s.explanation}\n  $$${s.math}$$`);
-    for (const h of checked.lesson.hints) console.log(`\nhint→${h.stepId}: ${h.question}`);
+    for (const h of checked.lesson.hints) console.log(`\nhint→${h.stepId}: ${h.question}\n  cue: ${h.cue}\n  ${h.explanation}`);
     process.exit(0);
   }

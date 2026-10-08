@@ -10,7 +10,7 @@ import { parseClaims, statementGivens, statementParts, type StructuredClaim } fr
 import { figureFromStatement } from "../figureFromText";
 import type { Figure, FigureCheck, PointDef } from "../solution";
 import { constructionFacts, minimize, Oracle, search, type Derivation, type ProofState, type SearchLimits } from "./engine";
-import { factPoints, type Fact, type Seg, type Tri } from "./facts";
+import { factKey, factPoints, factText, type Fact, type Seg, type Tri } from "./facts";
 import { resolveFigure } from "../geometry";
 import { verifyProof, type VerifyResult } from "./verify";
 
@@ -326,7 +326,11 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
       // A goal counts only when the independent verifier accepts every step of its proof.
       const verification = verifyProof(sub, proof, [g.fact], { statementGivens: shapeGivens, previous: prevFacts });
       if (!verification.ok) log.push(`verifier rejected "${g.label}": ${verification.steps.filter((x) => !x.ok).map((x) => `#${x.id} ${x.problems.join(", ")}`).join("; ")} ${verification.issues.join("; ")}`);
-      if (verification.ok) previous.push({ fact: g.fact, label: g.label, part: g.part });
+      if (verification.ok) {
+        previous.push({ fact: g.fact, label: g.label, part: g.part });
+        // Its intermediate results too ("A, I, J thẳng hàng" shown in part a is cited as "câu a" in part b).
+        for (const x of proof) if (x.premises.length > 0 && !previous.some((q) => factKey(q.fact) === factKey(x.fact))) previous.push({ fact: x.fact, label: factText(x.fact), part: g.part });
+      }
       planGoals.push({ ...g, proved: verification.ok, proof, verification });
     });
   }

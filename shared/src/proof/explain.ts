@@ -24,6 +24,8 @@ const MAX_STEPS = 14;
 function inline(d: Derivation, byId: Map<number, Derivation>): boolean {
   if (d.premises.length === 0) return true; // givens, constructions, previous parts
   if (d.method === "MIDPOINT") return true;
+  // Base angles of an isosceles triangle: "∠EDB = ∠EBD (△EDB cân tại E)".
+  if (d.method === "ISOSCELES") return true;
   // A one-line consequence of givens only ("AE ⊥ IE" from E on AC and IE ⊥ AC; "IE = IF" from two radii).
   if ((d.method === "ANGLE_CHASE" || d.method === "SAME_LINE" || d.method === "LENGTH_ALGEBRA") && d.premises.length <= 2)
     return d.premises.every((p) => byId.get(p)!.premises.length === 0);
@@ -32,7 +34,8 @@ function inline(d: Derivation, byId: Map<number, Derivation>): boolean {
 
 /** Why a given holds, in words. */
 function givenReason(d: Derivation): string {
-  if (d.method === "PREVIOUS_PART") return d.note ?? "đã chứng minh ở trên";
+  if (d.method === "PREVIOUS_PART") return d.note?.replace(/:.*$/, "") ?? "đã chứng minh";
+  if (d.method === "CIRCLE_RADIUS") return d.note?.replace(/^cùng là /, "") ?? "bán kính";
   if (d.note) return d.note;
   switch (d.method) {
     case "GIVEN":
@@ -64,66 +67,85 @@ const quad = (pts: string[]) => {
   return (rot[1]! < rot[3]! ? rot : [rot[0]!, rot[3]!, rot[2]!, rot[1]!]).join("");
 };
 
-/** The method's sentence for a derivation, given the words for its premises. */
-function sentence(d: Derivation, premises: string[], byId: Map<number, Derivation>): string {
+/** Facts that read the same are one statement ("ID² = IA · IJ" and "ID · ID = IJ · IA"). */
+function sameKey(f: Fact): string {
+  if (f.t !== "prod") return factKey(f);
+  const side = (x: string) => x.split(/\s*·\s*/).map((t) => t.replace(/^([A-Z]'*)([A-Z]'*)/, (_, a: string, b: string) => [a, b].sort().join(""))).sort().join("·");
+  const [l, r] = factText(f).split(" = ") as [string, string];
+  return `prod:${[side(l), side(r)].sort().join("=")}`;
+}
+
+/** A fact as a student writes it: a cyclic quadrilateral by its name. */
+function show(f: Fact): string {
+  if (f.t === "cyclic") return `tứ giác ${quad([...f.p])} nội tiếp`;
+  return factText(f);
+}
+
+/** Premises a reader needs: a point lying on a line by its construction ("E ∈ AB") goes without saying. */
+const needed = (p: Derivation) =>
+  !(p.premises.length === 0 && p.method === "CONSTRUCTION" && (p.fact.t === "col" || p.fact.t === "midp")) &&
+  // …and so does a collinearity that only restates the construction ("E, J, K thẳng hàng": J is the midpoint of EF and K is on EF).
+  !(p.fact.t === "col" && (p.method === "SAME_LINE" || p.method === "ANGLE_CHASE") && p.premises.length <= 2 && p.note === "construction-only");
+
+const bullet = (x: string) => `• ${x}`;
+
+/** The lines of a derivation, given the words for each of its premises (same order as `d.premises`). */
+function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => string): string[] {
   const f = d.fact;
-  const because = premises.length ? premises.join(", ") : "";
-  const P = d.premises.map((p) => byId.get(p)!.fact);
+  const P = premises.map((p) => p.fact);
+  const shown = premises.filter(needed).map(words);
   switch (d.method) {
-    case "ISOSCELES": {
-      const c = P[0] as Fact & { t: "cong" };
+    case "ISOSCELES_CONVERSE": {
+      const c = f as Fact & { t: "cong" };
       const v = c.a.find((x) => c.b.includes(x))!;
-      const [x, y] = [c.a.find((p) => p !== v)!, c.b.find((p) => p !== v)!];
-      return `Tam giác ${v}${x}${y} có ${because} nên cân tại ${v}, suy ra ${factText(f)}.`;
+      return [...shown.map(bullet), `⇒ tam giác cân tại ${v} (hai góc ở đáy bằng nhau)`, `⇒ ${show(f)}.`];
     }
-    case "ISOSCELES_CONVERSE":
-      return `Tam giác có hai góc ở đáy bằng nhau (${because}) là tam giác cân, nên ${factText(f)}.`;
-    case "PERPENDICULAR_BISECTOR":
-      return `Vì ${because}, hai điểm này cùng cách đều hai đầu đoạn thẳng nên cùng nằm trên đường trung trực của nó; vậy ${factText(f)}.`;
-    case "CONGRUENT_RIGHT":
-      return `Hai tam giác vuông có chung cạnh huyền và ${because.split(", ").pop()} nên bằng nhau (cạnh huyền – cạnh góc vuông); vì vậy ${factText(f)}.`;
+    case "PERPENDICULAR_BISECTOR": {
+      const p = f as Fact & { t: "perp" };
+      return [...shown.map(bullet), `⇒ ${p.a.join("")} là đường trung trực của ${p.b.join("")} (hai điểm cách đều hai đầu đoạn thẳng)`, `⇒ ${show(f)}.`];
+    }
+    case "CONGRUENT_RIGHT": {
+      const c = f as Fact & { t: "cong" };
+      const a = c.a.find((x) => c.b.includes(x))!;
+      const [e, ff] = [c.a.find((x) => x !== a)!, c.b.find((x) => x !== a)!];
+      const leg = P.find((x): x is Fact & { t: "cong" } => x.t === "cong");
+      const i0 = leg ? leg.a.find((x) => leg.b.includes(x))! : "";
+      return [
+        `Xét △${a}${e}${i0} vuông tại ${e} và △${a}${ff}${i0} vuông tại ${ff} có:`,
+        bullet(`${a}${i0} là cạnh huyền chung`),
+        ...shown.filter((w) => !w.includes("⊥")).map(bullet),
+        `⇒ △${a}${e}${i0} = △${a}${ff}${i0} (cạnh huyền – cạnh góc vuông)`,
+        `⇒ ${show(f)}.`,
+      ];
+    }
     case "CYCLIC_QUADRILATERAL": {
       const r = P[0]!;
       const q = f.t === "cyclic" ? quad([...f.p]) : "";
-      return r.t === "eqangle"
-        ? `Tứ giác ${q} có hai đỉnh cùng nhìn một cạnh dưới hai góc bằng nhau (${because}) nên là tứ giác nội tiếp: ${factText(f)}.`
-        : `Tứ giác ${q} có tổng hai góc đối bằng 180° (${because}) nên là tứ giác nội tiếp: ${factText(f)}.`;
+      if (r.t === "eqangle") {
+        const [x, , y] = r.a;
+        return [...shown.map(bullet), `⇒ hai đỉnh ${r.a[1]}, ${r.b[1]} cùng nhìn cạnh ${x}${y} dưới hai góc bằng nhau`, `⇒ tứ giác ${q} nội tiếp.`];
+      }
+      return [...shown.map(bullet), `⇒ tứ giác ${q} có tổng hai góc đối bằng 180°`, `⇒ tứ giác ${q} nội tiếp.`];
     }
-    case "SIMILAR_AA": {
-      const s = f as Fact & { t: "simtri" };
-      return `Xét △${s.a.join("")} và △${s.b.join("")} có: ${premises.join("; ")}. Do đó ${factText(f)} (g.g).`;
-    }
+    case "SIMILAR_AA":
     case "SIMILAR_SAS": {
-      const s = f as Fact & { t: "simtri" };
-      return `Xét △${s.a.join("")} và △${s.b.join("")} có: ${premises.join("; ")}. Do đó ${factText(f)} (c.g.c).`;
+      const t = f as Fact & { t: "simtri" };
+      return [`Xét △${t.a.join("")} và △${t.b.join("")} có:`, ...shown.map(bullet), `⇒ ${show(f)} (${d.method === "SIMILAR_AA" ? "g.g" : "c.g.c"}).`];
     }
-    case "POWER_OF_POINT":
-      return `Từ ${because}, theo hệ thức giữa các cát tuyến của một đường tròn (hai tam giác đồng dạng tạo bởi hai cát tuyến), ta có ${factText(f)}.`;
+    case "POWER_OF_POINT": {
+      const cyc = P.find((x) => x.t === "cyclic");
+      return [cyc ? bullet(words(premises[P.indexOf(cyc)]!)) : "", `⇒ ${show(f)} (hệ thức giữa hai cát tuyến cắt nhau của một đường tròn).`].filter(Boolean);
+    }
     case "POWER_OF_POINT_CONVERSE":
-      return `Ta có ${because}; theo định lí đảo (từ hai tam giác đồng dạng suy ra góc bằng nhau), ${factText(f)}.`;
+      return [...shown.map(bullet), `⇒ ${show(f)} (đảo của hệ thức hai cát tuyến).`];
     case "SAME_LINE":
-      return `Vì ${because}, các đường thẳng này trùng nhau, nên ${factText(f)}.`;
+      return [...shown.map(bullet), `⇒ ${show(f)} (qua một điểm chỉ có một đường thẳng như vậy).`];
     case "LENGTH_ALGEBRA":
-      return `Từ ${because}, biến đổi các đẳng thức về độ dài ta được ${factText(f)}.`;
-    case "ANGLE_CHASE": {
-      if (!because) return `${factText(f)}.`;
-      // Group the premises by the angle property each one contributes.
-      const groups: [string, string[]][] = [
-        ["góc nội tiếp cùng chắn một cung (hoặc bù nhau)", []],
-        ["hai góc kề bù / đối đỉnh", []],
-        ["góc so le trong, đồng vị", []],
-        ["góc vuông", []],
-        ["các góc bằng nhau đã có", []],
-      ];
-      P.forEach((p, i) => {
-        const k = p.t === "cyclic" ? 0 : p.t === "col" || p.t === "midp" ? 1 : p.t === "para" ? 2 : p.t === "perp" ? 3 : 4;
-        groups[k]![1].push(premises[i]!);
-      });
-      const parts = groups.filter(([, xs]) => xs.length).map(([name, xs]) => `${name}: ${xs.join("; ")}`);
-      return `Ta dùng ${parts.join(" — ")}. Cộng, trừ các góc đó ta được ${factText(f)}.`;
-    }
+      return shown.length ? [...shown.map(bullet), `⇒ ${show(f)}.`] : [`${show(f)}.`];
+    case "ANGLE_CHASE":
+      return shown.length ? ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`] : [`${show(f)}.`];
     default:
-      return `${because ? `Từ ${because}, ` : ""}${factText(f)}.`;
+      return [...shown.map(bullet), `⇒ ${show(f)}.`];
   }
 }
 
@@ -142,73 +164,119 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   const hints: Hint[] = [];
   const concepts = new Set<string>();
 
+  // Collinearities that follow from constructions alone are not worth citing (tagged for `needed`).
+  for (const g of plan.goals) {
+    const byId = new Map(g.proof.map((d) => [d.id, d]));
+    for (const d of g.proof)
+      if (d.fact.t === "col" && d.premises.length > 0 && d.premises.every((p) => { const q = byId.get(p)!; return q.premises.length === 0 && q.method === "CONSTRUCTION"; })) d.note = "construction-only";
+  }
+
   // Per goal, its proof's derivations in order; shared derivations (same fact) are stated once.
   const stated = new Set<string>();
   for (const g of plan.goals) {
     if (!g.proved) continue;
     const byId = new Map(g.proof.map((d) => [d.id, d]));
     for (const d of g.proof) {
-      const key = factText(d.fact);
+      const key = sameKey(d.fact);
       const isGoal = factKey(d.fact) === factKey(g.fact);
       if (stated.has(key) || (inline(d, byId) && !isGoal)) continue;
       stated.add(key);
-      items.push({ part: g.part, d, goal: factKey(g.fact) === factKey(d.fact) ? g : null });
+      // A derivation is a goal's step when it proves any goal of the problem (it may first appear in another's proof).
+      items.push({ part: g.part, d, goal: plan.goals.find((x) => x.proved && factKey(x.fact) === factKey(d.fact)) ?? null });
     }
   }
 
-  // Words for a premise: a fact proved in an earlier step is cited by its text; an inline one with its reason.
+  // Words for a premise: a fact proved in an earlier step is cited as such; a given or a one-line consequence with its
+  // reason in brackets.
   const words = (p: Derivation, byId: Map<number, Derivation>): string => {
-    const text = factText(p.fact);
-    if (p.premises.length === 0) return `${text} (${givenReason(p)})`;
-    if (stepOf.has(text)) return text;
+    const text = show(p.fact);
+    if (p.premises.length === 0) {
+      if (p.method === "CONCYCLIC_GIVEN") {
+        const circle = givenReason(p).replace(/^cùng thuộc /, "");
+        return /^\(.*\)$/.test(circle) ? `${text} ${circle}` : `${text} (${circle})`;
+      }
+      return `${text} (${givenReason(p)})`;
+    }
+    if (stepOf.has(sameKey(p.fact))) return `${text} (chứng minh trên)`;
+    if (p.method === "ISOSCELES") {
+      const c = byId.get(p.premises[0]!)!.fact as Fact & { t: "cong" };
+      const v = c.a.find((x) => c.b.includes(x))!;
+      const [x, y] = [c.a.find((q) => q !== v)!, c.b.find((q) => q !== v)!];
+      return `${text} (△${v}${x}${y} cân tại ${v})`;
+    }
     if (inline(p, byId)) {
-      const why = p.premises.map((q) => byId.get(q)!).map((q) => (q.premises.length === 0 ? `${factText(q.fact)} (${givenReason(q)})` : factText(q.fact)));
-      return `${text} (vì ${why.join(", ")})`;
+      const qs = p.premises.map((q) => byId.get(q)!).filter(needed);
+      const radii = qs.length > 0 && qs.every((q) => q.method === "CIRCLE_RADIUS");
+      if (radii) return `${text} (bán kính)`;
+      const why = qs.map((q) => (q.premises.length === 0 ? `${show(q.fact)} (${givenReason(q)})` : show(q.fact)));
+      return why.length ? `${text} (vì ${why.join("; ")})` : text;
     }
     return text;
   };
 
   // Steps (merged when too many).
-  type Draft = { part: string; facts: Fact[]; texts: string[]; reasons: string[]; uses: Set<string>; goal: PlanGoal | null };
+  type Draft = { part: string; facts: Fact[]; texts: string[]; reasons: string[]; uses: Set<string>; goal: PlanGoal | null; goals: PlanGoal[] };
   const drafts: Draft[] = [];
   for (const it of items) {
     const g = plan.goals.find((x) => x.proof.some((d) => d.id === it.d.id) && x.part === it.part)!;
     const byId = new Map(g.proof.map((d) => [d.id, d]));
     const premises = it.d.premises.map((p) => byId.get(p)!);
-    let text = sentence(it.d, premises.map((p) => words(p, byId)), byId);
+    const ls = lines(it.d, premises, (p) => words(p, byId));
     // "đường tròn này đi qua O": the circle through three of the points is unique, so it is the same circle.
     if (it.goal?.label.startsWith("đường tròn qua") && it.d.fact.t === "cyclic") {
       const three = it.d.fact.p.filter((x) => it.goal!.label.includes(x) && !it.goal!.label.endsWith(`đi qua ${x}`));
-      text += ` Qua ba điểm ${three.join(", ")} chỉ có một đường tròn, nên ${it.goal.label.replace(/^đường tròn qua/, "đường tròn đi qua")}.`;
+      ls.push(`Qua ba điểm ${three.join(", ")} chỉ có một đường tròn ⇒ ${it.goal.label.replace(/^đường tròn qua/, "đường tròn đi qua")}.`);
     }
+    const text = ls.join("\n");
     const m = method(it.d.method);
     if (m && m.category !== "given") concepts.add(m.vi.split(" (")[0]!);
-    const uses = new Set(premises.map((p) => stepOf.get(factText(p.fact))).filter((x): x is string => !!x));
-    drafts.push({ part: it.part, facts: [it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal });
-    stepOf.set(factText(it.d.fact), `s${drafts.length}`);
+    const uses = new Set(premises.map((p) => stepOf.get(sameKey(p.fact))).filter((x): x is string => !!x));
+    // "∠AED = ∠AFD … ⇒ tứ giác nội tiếp": a step that only draws a conclusion from the step just before it continues
+    // that step instead of starting a new one.
+    const prev = drafts[drafts.length - 1];
+    const shownPremises = premises.filter(needed);
+    const prevFact = prev?.facts[prev.facts.length - 1];
+    if (prev && !prev.goal && prev.part === it.part && shownPremises.length === 1 && prevFact && factKey(shownPremises[0]!.fact) === factKey(prevFact)) {
+      prev.facts.push(it.d.fact);
+      prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ")).join("\n");
+      if (m) prev.reasons = [...new Set([...prev.reasons, m.vi.split(" (")[0]!])];
+      prev.goal = it.goal;
+      if (it.goal) prev.goals.push(it.goal);
+      stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
+      continue;
+    }
+    drafts.push({ part: it.part, facts: [it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal, goals: it.goal ? [it.goal] : [] });
+    stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
   }
   // Merge while too long: the first pair of adjacent non-goal steps in the same part.
   while (drafts.length > MAX_STEPS) {
-    let i = drafts.findIndex((x, k) => k + 1 < drafts.length && !x.goal && drafts[k + 1]!.part === x.part);
+    // The adjacent pair (same part, the first not a goal) with the least text, so merged steps stay short.
+    const size = (x: Draft) => x.texts.join("").length;
+    let i = -1;
+    for (let k = 0; k + 1 < drafts.length; k++) {
+      const [a, b] = [drafts[k]!, drafts[k + 1]!];
+      if (a.goal || a.part !== b.part) continue;
+      if (i < 0 || size(a) + size(b) < size(drafts[i]!) + size(drafts[i + 1]!)) i = k;
+    }
     if (i < 0) i = drafts.findIndex((x, k) => k + 1 < drafts.length && drafts[k + 1]!.part === x.part);
     if (i < 0) break;
     const [a, b] = [drafts[i]!, drafts[i + 1]!];
-    drafts.splice(i, 2, { part: a.part, facts: [...a.facts, ...b.facts], texts: [...a.texts, ...b.texts], reasons: [...new Set([...a.reasons, ...b.reasons])], uses: new Set([...a.uses, ...b.uses]), goal: b.goal ?? a.goal });
+    drafts.splice(i, 2, { part: a.part, facts: [...a.facts, ...b.facts], texts: [...a.texts, ...b.texts], reasons: [...new Set([...a.reasons, ...b.reasons])], uses: new Set([...a.uses, ...b.uses]), goal: b.goal ?? a.goal, goals: [...a.goals, ...b.goals] });
   }
   // Ids after merging: map each fact to its final step.
   const finalId = new Map<string, string>();
-  drafts.forEach((dr, i) => dr.facts.forEach((f) => finalId.set(factText(f), `s${i + 1}`)));
+  drafts.forEach((dr, i) => dr.facts.forEach((f) => finalId.set(sameKey(f), `s${i + 1}`)));
   const oldToFact = new Map([...stepOf].map(([fact, id]) => [id, fact]));
   drafts.forEach((dr, i) => {
     const id = `s${i + 1}`;
     const uses = [...new Set([...dr.uses].map((u) => finalId.get(oldToFact.get(u)!)!).filter((u) => u && u !== id))].slice(0, 4);
     const pts = [...new Set(dr.facts.flatMap(factPoints))].slice(0, 10);
     const label = dr.part ? `Câu ${dr.part}: ` : "";
-    const head = dr.goal ? `${label}${dr.goal.label}` : `${label}${factText(dr.facts[dr.facts.length - 1]!)}`;
+    const head = dr.goals.length ? `${label}${dr.goals.map((g) => g.label).join("; ")}` : `${label}${factText(dr.facts[dr.facts.length - 1]!)}`;
     steps.push({
       id,
       title: head.slice(0, 300),
-      explanation: dr.texts.join(" ").slice(0, 1500),
+      explanation: dr.texts.join("\n\n").slice(0, 1500),
       math: dr.facts.map(factLatex).join(" \\\\ ").slice(0, 800),
       reason: dr.reasons.join("; ").slice(0, 300) || null,
       uses,
@@ -216,22 +284,25 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     });
   });
 
-  // One hint per goal: the idea of its last step, as a question.
+  // One hint per goal: a question pointing at the idea, and (hidden until asked) the idea itself in words — which
+  // angles, triangles or segments, and the facts that give them.
   for (const g of plan.goals.filter((x) => x.proved)) {
     if (hints.length >= 8) break;
-    const sid = finalId.get(factText(g.proof.find((d) => factKey(d.fact) === factKey(g.fact))?.fact ?? g.fact));
+    const d = g.proof.find((x) => factKey(x.fact) === factKey(g.fact));
+    if (!d) continue;
+    const sid = finalId.get(sameKey(d.fact));
     if (!sid) continue;
-    const last = g.proof[g.proof.length - 1]!;
-    const q = hintQuestion(g.fact, last.method);
+    const byId = new Map(g.proof.map((x) => [x.id, x]));
+    const h = hintFor(d, byId, (p) => words(p, byId));
     hints.push({
       id: `h${hints.length + 1}`,
       level: 2,
-      question: q.question,
-      cue: q.cue,
-      explanation: `Ý chính: ${method(last.method)?.vi ?? last.method}. Xem bước ${sid.slice(1)}.`,
+      question: h.question.slice(0, 300),
+      cue: h.cue,
+      explanation: h.explanation.slice(0, 1500),
       math: factLatex(g.fact),
       stepId: sid,
-      focus: factPoints(g.fact).slice(0, 10),
+      focus: [...new Set([...factPoints(g.fact), ...h.focus])].slice(0, 10),
     });
   }
 
@@ -267,25 +338,79 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   };
 }
 
-function hintQuestion(goal: Fact, lastMethod: string): { question: string; cue: string | null } {
-  switch (lastMethod) {
-    case "CYCLIC_QUADRILATERAL":
-      return { question: "Tứ giác này có hai đỉnh nào cùng nhìn một cạnh dưới các góc bằng nhau, hoặc có hai góc đối bù nhau không?", cue: "Dấu hiệu nhận biết tứ giác nội tiếp" };
-    case "POWER_OF_POINT_CONVERSE":
-      return { question: "Có đẳng thức tích các đoạn thẳng nào cho ta hai tam giác đồng dạng không?", cue: "MA·MB = MC·MD" };
+/** The hint for a goal's final derivation. */
+function hintFor(d: Derivation, byId: Map<number, Derivation>, words: (p: Derivation) => string): { question: string; cue: string | null; explanation: string; focus: string[] } {
+  const premises = d.premises.map((p) => byId.get(p)!);
+  const shown = premises.filter(needed);
+  const list = shown.map((p) => bullet(words(p)));
+  const f = d.fact;
+  /** How a key premise was obtained, in one line (its own needed premises). */
+  const how = (p: Derivation) => {
+    const qs = p.premises.map((q) => byId.get(q)!).filter(needed);
+    return qs.length ? [`Để có ${show(p.fact)}, dùng:`, ...qs.map((q) => bullet(words(q)))].join("\n") : "";
+  };
+  switch (d.method) {
+    case "CYCLIC_QUADRILATERAL": {
+      const r = premises[0]!;
+      const q = f.t === "cyclic" ? quad([...f.p]) : "";
+      if (r.fact.t === "eqangle") {
+        const [x, v, y] = r.fact.a;
+        const w = r.fact.b[1];
+        return {
+          question: `Trong tứ giác ${q}, hai đỉnh nào cùng nhìn một cạnh dưới hai góc bằng nhau?`,
+          cue: "Tứ giác có hai đỉnh kề nhau cùng nhìn một cạnh dưới hai góc bằng nhau thì nội tiếp",
+          explanation: [`Hướng: chứng minh ${show(r.fact)}.`, `Khi đó ${v} và ${w} cùng nhìn cạnh ${x}${y} dưới hai góc bằng nhau ⇒ tứ giác ${q} nội tiếp.`, how(r)].filter(Boolean).join("\n"),
+          focus: [...r.fact.a, ...r.fact.b],
+        };
+      }
+      return {
+        question: `Tứ giác ${q} có hai góc đối nào có tổng bằng 180°?`,
+        cue: "Tứ giác có tổng hai góc đối bằng 180° thì nội tiếp",
+        explanation: [`Hướng: chứng minh ${show(r.fact)}.`, `Đó là hai góc đối của tứ giác ${q} ⇒ tứ giác nội tiếp.`, how(r)].filter(Boolean).join("\n"),
+        focus: factPoints(r.fact),
+      };
+    }
     case "SIMILAR_AA":
-    case "SIMILAR_SAS":
-      return { question: "Hai tam giác này có những cặp góc (hoặc cặp cạnh tỉ lệ) nào bằng nhau?", cue: "Các trường hợp đồng dạng của tam giác" };
-    case "LENGTH_ALGEBRA":
-      return goal.t === "prod"
-        ? { question: "Các đoạn thẳng trong đẳng thức là cạnh của hai tam giác đồng dạng nào?", cue: "Tỉ số cạnh tương ứng" }
-        : { question: "Những đoạn thẳng nào đã biết là bằng nhau hoặc tỉ lệ?", cue: null };
+    case "SIMILAR_SAS": {
+      const t = f as Fact & { t: "simtri" };
+      return {
+        question: `△${t.a.join("")} và △${t.b.join("")} có những cặp góc (hoặc cặp cạnh tỉ lệ) nào bằng nhau?`,
+        cue: d.method === "SIMILAR_AA" ? "Trường hợp đồng dạng góc – góc" : "Trường hợp đồng dạng cạnh – góc – cạnh",
+        explanation: [`Hướng: xét △${t.a.join("")} và △${t.b.join("")}:`, ...list, `⇒ hai tam giác đồng dạng (${d.method === "SIMILAR_AA" ? "g.g" : "c.g.c"}).`].join("\n"),
+        focus: [...t.a, ...t.b],
+      };
+    }
+    case "LENGTH_ALGEBRA": {
+      const sim = premises.find((p) => p.fact.t === "simtri");
+      if (sim && sim.fact.t === "simtri") {
+        const t = sim.fact;
+        return {
+          question: "Các đoạn thẳng trong đẳng thức là cạnh của hai tam giác đồng dạng nào?",
+          cue: "Tỉ số các cạnh tương ứng của hai tam giác đồng dạng",
+          explanation: [`Hướng: chứng minh △${t.a.join("")} ∽ △${t.b.join("")}, rồi viết tỉ số các cạnh tương ứng.`, ...list.filter((l) => !l.includes("∽")), `⇒ ${show(f)}.`].join("\n"),
+          focus: [...t.a, ...t.b],
+        };
+      }
+      return { question: "Những đoạn thẳng nào đã biết là bằng nhau hoặc tỉ lệ?", cue: null, explanation: ["Hướng: từ", ...list, `⇒ ${show(f)}.`].join("\n"), focus: shown.flatMap((p) => factPoints(p.fact)) };
+    }
     case "SAME_LINE":
-      return { question: "Hai đường thẳng qua cùng một điểm này có cùng vuông góc (hoặc cùng song song) với một đường thẳng nào không?", cue: "Tiên đề Ơ-clit / tính duy nhất của đường vuông góc" };
+      return {
+        question: "Hai đường thẳng nào đi qua cùng một điểm và cùng vuông góc (hoặc cùng song song) với một đường thẳng?",
+        cue: "Qua một điểm chỉ có một đường thẳng vuông góc (song song) với một đường thẳng cho trước",
+        explanation: ["Hướng:", ...list, `⇒ hai đường thẳng trùng nhau, nên ${show(f)}.`].join("\n"),
+        focus: shown.flatMap((p) => factPoints(p.fact)),
+      };
     case "ANGLE_CHASE":
-      return { question: "Những góc nào bằng nhau đã biết, và có thể cộng hoặc trừ chúng để được góc cần tìm không?", cue: "Góc nội tiếp, góc tạo bởi tiếp tuyến và dây, góc trong tam giác" };
+      return {
+        question: "Những góc nào đã biết là bằng nhau (góc nội tiếp, tam giác cân, góc vuông) liên quan đến các góc cần chứng minh?",
+        cue: "Cộng, trừ các góc đã biết",
+        explanation: ["Hướng: dùng", ...list, `rồi cộng, trừ góc ⇒ ${show(f)}.`].join("\n"),
+        focus: shown.flatMap((p) => factPoints(p.fact)),
+      };
+    case "POWER_OF_POINT_CONVERSE":
+      return { question: "Có đẳng thức tích các đoạn thẳng nào trên hai đường thẳng cắt nhau không?", cue: "MA·MB = MC·MD thì A, B, C, D cùng thuộc một đường tròn", explanation: ["Hướng:", ...list, `⇒ ${show(f)}.`].join("\n"), focus: shown.flatMap((p) => factPoints(p.fact)) };
     default:
-      return { question: `Dùng tính chất nào để chứng minh ${factText(goal)}?`, cue: method(lastMethod)?.vi ?? null };
+      return { question: `Dùng tính chất nào để chứng minh ${show(f)}?`, cue: method(d.method)?.vi ?? null, explanation: ["Hướng:", ...list, `⇒ ${show(f)} (${method(d.method)?.vi.split(" (")[0] ?? ""}).`].join("\n"), focus: shown.flatMap((p) => factPoints(p.fact)) };
   }
 }
 
