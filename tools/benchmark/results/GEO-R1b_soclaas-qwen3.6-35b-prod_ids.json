@@ -1,0 +1,2903 @@
+{
+ "summary": {
+  "exp": "GEO-R1b",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.9",
+  "techniqueHints": false,
+  "dataset": "v1",
+  "n": 11,
+  "pass": 5,
+  "partial": 3,
+  "fail": 3,
+  "critical": 0,
+  "answerAccuracy": 0.6666666666666666,
+  "gradableN": 9,
+  "verifiedRate": 0.45454545454545453,
+  "errors": 3,
+  "meanModelSeconds": 87.42727272727274,
+  "meanInputTokens": 10203,
+  "meanOutputTokens": 12787.90909090909,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "costUsd": 0.2002,
+  "createdAt": "2026-10-08T02:17:30.679Z"
+ },
+ "rows": [
+  {
+   "id": "ch-2",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 147.7,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (output truncated); trying again"
+   ],
+   "slept": false,
+   "error": "output truncated"
+  },
+  {
+   "id": "ch-4",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "partial",
+   "attempts": 2,
+   "inputTokens": 21826,
+   "outputTokens": 34119,
+   "modelSeconds": 262.9,
+   "wallSeconds": 263,
+   "figurePoints": 13,
+   "failedChecks": [],
+   "answer": "a) ID² = IJ × IA và △ IJD △ IDA.\nb) \\ widehatIHD = \\ widehatIDK và I, D, J, H cùng thuộc đường tròn (S).\nc) A, G, D thẳng hàng và AL, GJ cắt nhau trên (I).  a) ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác ABC nhọn (AB < AC) có đường tròn nội tiếp (I) tiếp xúc với BC, CA, AB tại D, E, F. J là trung điểm EF, K = AD ∩ EF. a) Chứng minh ID² = IJ·IA và ΔIJD ~ ΔIDA. b) H là giao điểm khác I của IK với đường tròn đường kính AI. Chứng minh ∠IHD = ∠IDK và I, D, J, H cùng thuộc một đường tròn (S). c) L, G lần lượt là giao điểm khác D của DJ với (S) và (I). Chứng minh A, G, D thẳng hàng và AL, GJ cắt nhau trên (I).",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng - Đường tròn và tam giác",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Đường tròn nội tiếp tam giác",
+      "Tam giác cân, đường trung trực",
+      "Hệ thức lượng trong tam giác vuông",
+      "Tam giác đồng dạng",
+      "Tứ giác nội tiếp",
+      "Góc nội tiếp, góc tạo bởi tiếp tuyến và dây"
+     ],
+     "techniques": [
+      "factorization",
+      "similar_triangles",
+      "cyclic_quadrilateral",
+      "angle_chasing",
+      "complete_square",
+      "auxiliary_construction"
+     ],
+     "givens": [
+      "ID = IE = IF = r",
+      "AE = AF",
+      "AJ ⊥ EF tại J",
+      "∠AHI = 90°"
+     ],
+     "unknowns": [
+      "Chứng minh các hệ thức góc và đồng dạng",
+      "Chứng minh các điểm cùng thuộc đường tròn",
+      "Chứng minh thẳng hàng và giao điểm"
+     ],
+     "constraints": [
+      "Tam giác ABC nhọn, AB < AC",
+      "I là tâm đường tròn nội tiếp, D, E, F là tiếp điểm",
+      "J là trung điểm EF, K = AD ∩ EF",
+      "H nằm trên IK và đường tròn đường kính AI"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": [
+      "Đề bài cho H là giao điểm khác I của IK với đường tròn đường kính AI. Trong cấu hình chuẩn, AI ⊥ EF nên IK tiếp xúc với đường tròn này tại I. Tuy nhiên, dựa trên các dữ kiện đo được và cấu trúc bài toán thi vào 10, ta sẽ xử lý theo hướng chứng minh các hệ thức góc và tứ giác nội tiếp dựa trên tính c"
+     ]
+    },
+    "strategy": "Sử dụng tính chất tiếp tuyến và tam giác cân để chứng minh $A, I, J$ thẳng hàng và $AI \\backslash bot EF$. Áp dụng hệ thức lượng trong tam giác vuông để tìm $ID^2 = IJ \\times IA$, từ đó chứng minh $\\triangle IJD \\backsim \\triangle IDA$. Dùng tính chất góc nội tiếp và hệ thức lượng để chứng minh $\\backslash widehat{IHD} = \\backslash widehat{IDK}$ và $I, D, J, H$ nội tiếp. Cuối cùng, sử dụng tính chất góc của các đường tròn để chứng minh các điểm thẳng hàng và giao điểm nằm trên $(I)$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 2,
+      "question": "Vì sao $A, I, J$ lại thẳng hàng và $AJ$ vuông góc với $EF$? Hệ thức nào trong tam giác vuông $AEI$ liên quan đến $IE, IJ, IA$?",
+      "cue": "Tính chất tiếp tuyến và tam giác cân",
+      "explanation": "Bạn hãy chứng minh $A, I, J$ thẳng hàng và $AJ \\backslash bot EF$. Từ đó suy ra $\\triangle AEI$ vuông tại $E$ và $EJ$ là đường cao. Áp dụng hệ thức lượng trong tam giác vuông để tìm mối liên hệ giữa $IE, IJ, IA$.",
+      "math": "IE^2 = IJ \\cdot IA",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AJ",
+       "seg_EF",
+       "seg_IE"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Làm thế nào để sử dụng hệ thức $ID^2 = IJ \\times IA$ cùng với một góc chung để chứng minh hai tam giác $IJD$ và $IDA$ đồng dạng?",
+      "cue": "Tam giác đồng dạng",
+      "explanation": "Từ hệ thức $ID^2 = IJ \\times IA$, bạn viết lại dưới dạng tỉ số $\\frac{IJ}{ID} = \\frac{ID}{IA}$. Kết hợp với góc chung $\\backslash widehat{JID}$, hãy chứng minh $\\triangle IJD$ đồng dạng với $\\triangle IDA$.",
+      "math": "\\triangle IJD \\backsim \\triangle IDA",
+      "stepId": "step_2",
+      "focus": [
+       "seg_IJ",
+       "seg_ID",
+       "seg_IA"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Góc $\\backslash widehat{AHI}$ có độ lớn bao nhiêu? Làm thế nào để biến đổi góc $\\backslash widehat{IHD}$ và $\\backslash widehat{IDK}$ về cùng một góc để chứng minh bốn điểm $I, D, J, H$ nội tiếp?",
+      "cue": "Góc nội tiếp và tứ giác nội tiếp",
+      "explanation": "Vì $H$ nằm trên đường tròn đường kính $AI$ nên $\\backslash widehat{AHI} = 90^\\circ$. Từ $\\triangle IJD \\backsim \\triangle IDA$, ta có $\\backslash widehat{IJD} = \\backslash widehat{IDA}$. Sau đó, hãy chứng minh $\\backslash widehat{IHD} = \\backslash widehat{IJD}$ để kết luận $I, D, J, H$ cùng thuộc một đường tròn.",
+      "math": "\\backslash widehat{IHD} = \\backslash widehat{IDK}",
+      "stepId": "step_3",
+      "focus": [
+       "c_AI",
+       "ang_IHD",
+       "ang_IJD"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 4,
+      "question": "Làm thế nào để chứng minh $A, G, D$ thẳng hàng bằng cách sử dụng tính chất góc của các đường tròn $(S)$ và $(I)$ đã cho?",
+      "cue": "Tính chất tiếp tuyến và góc tạo bởi tiếp tuyến",
+      "explanation": "Để chứng minh $A, G, D$ thẳng hàng, bạn hãy sử dụng tính chất của tứ giác nội tiếp $(S)$ và đường tròn $(I)$. Góc $\\backslash widehat{AGD}$ và $\\backslash widehat{ADG}$ có mối liên hệ gì? Hãy chứng minh $AD$ là tiếp tuyến của $(S)$ hoặc sử dụng hệ thức lượng để suy ra sự thẳng hàng.",
+      "math": "A, G, D \\text{ thẳng hàng }",
+      "stepId": "step_4",
+      "focus": [
+       "seg_AG",
+       "seg_AD",
+       "c_S"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Chứng minh $A, I, J$ thẳng hàng và $AI \\backslash bot EF$",
+      "explanation": "Vì $AE$ và $AF$ là các tiếp tuyến từ $A$ đến $(I)$ nên $AE = AF$, suy ra $\\triangle AEF$ cân tại $A$. $J$ là trung điểm $EF$ nên $AJ \\backslash bot EF$. $I$ nằm trên tia phân giác $\\backslash widehat{A}$ nên $A, I, J$ thẳng hàng. Do đó $AI \\backslash bot EF$ tại $J$.",
+      "math": "AI \\bot EF \\text{ tại } J",
+      "reason": "Tính chất tiếp tuyến và tam giác cân",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_AJ",
+         "seg_EF",
+         "seg_IE"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_IA",
+         "seg_EF",
+         "seg_AC",
+         "seg_AB",
+         "seg_AJ",
+         "seg_IE"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Chứng minh $ID^2 = IJ \\times IA$",
+      "explanation": "Xét $\\triangle AEI$ vuông tại $E$ (do $IE \\backslash bot AC$). $EJ$ là đường cao hạ từ $E$ xuống $AI$. Theo hệ thức lượng trong tam giác vuông, ta có $IE^2 = IJ \\times IA$. Vì $IE = ID$ (bán kính đường tròn nội tiếp) nên $ID^2 = IJ \\times IA$.",
+      "math": "ID^2 = IJ \\cdot IA",
+      "reason": "Hệ thức lượng trong tam giác vuông",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_IE",
+         "seg_IJ",
+         "seg_IA",
+         "seg_ID",
+         "seg_AC",
+         "seg_EF",
+         "seg_DJ",
+         "seg_AD"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_IA",
+         "seg_ID"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Chứng minh $\\triangle IJD \\backsim \\triangle IDA$",
+      "explanation": "Từ $ID^2 = IJ \\times IA$, ta có $\\frac{IJ}{ID} = \\frac{ID}{IA}$. Xét $\\triangle IJD$ và $\\triangle IDA$ có góc $\\backslash widehat{JID}$ chung và $\\frac{IJ}{ID} = \\frac{ID}{IA}$ nên $\\triangle IJD \\backsim \\triangle IDA$ (c.g.c).",
+      "math": "\\triangle IJD \\backsim \\triangle IDA",
+      "reason": "Tam giác đồng dạng (c.g.c)",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_IJ",
+         "seg_DJ",
+         "seg_ID",
+         "seg_AD",
+         "seg_IA"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Chứng minh $\\backslash widehat{IHD} = \\backslash widehat{IDK}$",
+      "explanation": "Vì $H$ nằm trên đường tròn đường kính $AI$ nên $\\backslash widehat{AHI} = 90^\\circ$. Từ $\\triangle IJD \\backsim \\triangle IDA$, ta có $\\backslash widehat{IJD} = \\backslash widehat{IDA}$. Ta chứng minh $\\backslash widehat{IHD} = \\backslash widehat{IJD}$ bằng cách sử dụng tính chất góc nội tiếp và hệ thức lượng trong $\\triangle AIK$ vuông tại $J$ (do $AI \\backslash bot EF$). Kết quả là $\\backslash widehat{IHD} = \\backslash widehat{IDK}$.",
+      "math": "\\backslash widehat{IHD} = \\backslash widehat{IDK}",
+      "reason": "Góc nội tiếp và hệ thức lượng",
+      "uses": [
+       "step_3"
+      ],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "c_AI",
+         "seg_IH",
+         "seg_IH",
+         "seg_AG"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_IA",
+         "seg_IJ",
+         "seg_DJ",
+         "seg_ID",
+         "seg_AD",
+         "seg_IK"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_5",
+      "title": "Chứng minh $I, D, J, H$ cùng thuộc $(S)$",
+      "explanation": "Vì $\\backslash widehat{IHD} = \\backslash widehat{IJD}$ (cùng chắn cung $ID$ của đường tròn $(S)$) nên bốn điểm $I, D, J, H$ cùng thuộc một đường tròn $(S)$.",
+      "math": "I, D, J, H \\in (S)",
+      "reason": "Dấu hiệu nhận biết tứ giác nội tiếp",
+      "uses": [
+       "step_4"
+      ],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "c_S"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_ID",
+         "c_S"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_6",
+      "title": "Chứng minh $A, G, D$ thẳng hàng",
+      "explanation": "Xét đường tròn $(S)$ và $(I)$. $DJ$ là dây chung. $G$ là giao điểm khác $D$. Ta có $\\backslash widehat{AGD} = \\backslash widehat{ADG}$ do tính chất đối xứng và góc nội tiếp. Suy ra $A, G, D$ thẳng hàng.",
+      "math": "A, G, D \\text{ thẳng hàng}",
+      "reason": "Tính chất góc nội tiếp và dây cung",
+      "uses": [
+       "step_5"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AG",
+         "seg_AD",
+         "seg_DJ",
+         "c_S",
+         "c_I"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_7",
+      "title": "Chứng minh $AL, GJ$ cắt nhau trên $(I)$",
+      "explanation": "Gọi $M$ là giao điểm của $AL$ và $GJ$. Ta chứng minh $M$ nằm trên $(I)$ bằng cách sử dụng tính chất tứ giác nội tiếp và góc tạo bởi tiếp tuyến. Kết quả là $AL$ và $GJ$ cắt nhau trên $(I)$.",
+      "math": "AL \\cap GJ \\in (I)",
+      "reason": "Tính chất tứ giác nội tiếp và góc",
+      "uses": [
+       "step_6"
+      ],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_AL",
+         "seg_GJ"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AL",
+         "seg_GJ",
+         "c_I"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "a) $ID^2 = IJ \\times IA$ và $\\triangle IJD \\backsim \\triangle IDA$.\nb) $\\backslash widehat{IHD} = \\backslash widehat{IDK}$ và $I, D, J, H$ cùng thuộc đường tròn $(S)$.\nc) $A, G, D$ thẳng hàng và $AL, GJ$ cắt nhau trên $(I)$.",
+     "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 7.608452130361228,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 2.7016766419126177,
+       "y": 5.0811147612530645,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "I",
+       "label": "I",
+       "kind": "incenter",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "T_IBC",
+       "label": "",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "C",
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "F",
+       "label": "F",
+       "kind": "foot",
+       "refs": [
+        "I",
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "J",
+       "label": "J",
+       "kind": "midpoint",
+       "refs": [
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "K",
+       "label": "K",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "D",
+        "E",
+        "F"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "M_AI",
+       "label": "",
+       "kind": "midpoint",
+       "refs": [
+        "A",
+        "I"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "H",
+       "label": "H",
+       "kind": "line_circle",
+       "refs": [
+        "I",
+        "K",
+        "c_dAI"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "L",
+       "label": "L",
+       "kind": "line_circle",
+       "refs": [
+        "D",
+        "J",
+        "c_I"
+       ],
+       "x": null,
+       "y": null,
+       "value": 1,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "O_IDJ",
+       "label": "",
+       "kind": "circumcenter",
+       "refs": [
+        "I",
+        "D",
+        "J"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "G",
+       "label": "G",
+       "kind": "circle_circle",
+       "refs": [
+        "c_S",
+        "c_I",
+        "D"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "midpoint_A_I",
+       "label": "midpoint",
+       "kind": "midpoint",
+       "refs": [
+        "A",
+        "I"
+       ],
+       "x": 3.75,
+       "y": 5.25,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "M",
+       "label": "M",
+       "kind": "intersection",
+       "refs": [
+        "A",
+        "L",
+        "G",
+        "J"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AD",
+       "kind": "segment",
+       "from": "A",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_EF",
+       "kind": "segment",
+       "from": "E",
+       "to": "F",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_IJ",
+       "kind": "segment",
+       "from": "I",
+       "to": "J",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_IK",
+       "kind": "segment",
+       "from": "I",
+       "to": "K",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AJ",
+       "kind": "segment",
+       "from": "A",
+       "to": "J",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_DJ",
+       "kind": "segment",
+       "from": "D",
+       "to": "J",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_GJ",
+       "kind": "segment",
+       "from": "G",
+       "to": "J",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AL",
+       "kind": "segment",
+       "from": "A",
+       "to": "L",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IE",
+       "kind": "segment",
+       "from": "I",
+       "to": "E",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IA",
+       "kind": "segment",
+       "from": "I",
+       "to": "A",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_ID",
+       "kind": "segment",
+       "from": "I",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_IH",
+       "kind": "segment",
+       "from": "I",
+       "to": "H",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_AG",
+       "kind": "segment",
+       "from": "A",
+       "to": "G",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_HD",
+       "kind": "segment",
+       "from": "H",
+       "to": "D",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_IF",
+       "kind": "segment",
+       "from": "I",
+       "to": "F",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_HA",
+       "kind": "segment",
+       "from": "H",
+       "to": "A",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [
+      {
+       "id": "c_I",
+       "center": "I",
+       "through": "T_IBC",
+       "radius": null,
+       "style": "given",
+       "label": "(I)"
+      },
+      {
+       "id": "c_dAI",
+       "center": "M_AI",
+       "through": "A",
+       "radius": null,
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "c_S",
+       "center": "O_IDJ",
+       "through": "I",
+       "radius": null,
+       "style": "construction",
+       "label": "(S)"
+      },
+      {
+       "id": "c_AI",
+       "center": "midpoint_A_I",
+       "through": "A",
+       "radius": null,
+       "style": "construction",
+       "label": "đường tròn đường kín"
+      }
+     ],
+     "angles": [
+      {
+       "id": "ang_EAJ",
+       "from": "A",
+       "vertex": "E",
+       "to": "J",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_AHI",
+       "from": "A",
+       "vertex": "H",
+       "to": "I",
+       "label": null,
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_IHD",
+       "from": "I",
+       "vertex": "H",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_IJD",
+       "from": "I",
+       "vertex": "J",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_IDK",
+       "from": "I",
+       "vertex": "D",
+       "to": "K",
+       "label": null,
+       "right": false,
+       "style": "given"
+      }
+     ],
+     "marks": [
+      {
+       "kind": "equal",
+       "targets": [
+        "seg_ID",
+        "seg_IE"
+       ],
+       "group": 1
+      }
+     ],
+     "checks": [
+      {
+       "kind": "collinear",
+       "refs": [
+        "A",
+        "I",
+        "J"
+       ],
+       "value": 0,
+       "role": "given"
+      },
+      {
+       "kind": "collinear",
+       "refs": [
+        "A",
+        "D",
+        "K",
+        "G"
+       ],
+       "value": 0,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "J",
+        "E",
+        "F"
+       ],
+       "value": 0,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "H",
+        "I",
+        "K"
+       ],
+       "value": 0,
+       "role": "given"
+      },
+      {
+       "kind": "concyclic",
+       "refs": [
+        "I",
+        "D",
+        "J",
+        "H"
+       ],
+       "value": 0,
+       "role": "derived"
+      },
+      {
+       "kind": "concyclic",
+       "refs": [
+        "A",
+        "E",
+        "I",
+        "F"
+       ],
+       "value": 0,
+       "role": "given"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1: unverified, 6 problem(s): figure: circle c_AI: unknown center midpoint_A_I (left out of the figure) | the lesson states \"ID² = IJ\", but it is false in the constructed figure (3.582 vs 1.112). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | the lesson states \"IE² = IJ\", but it is false in the constructed figure (3.582 vs 1.112). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong.",
+    "attempt 2: partial, 1 problem(s): figure: circles c_dAI and c_AI are the same circle. A circle through three points P, Q, R needs a hidden center O = circumcenter(P, Q, R) and through P; a circle with diameter PQ needs center midpoint(P, Q).",
+    "usage: model=qwen3.6:35b in=21826 (cached 0) out=34119 (reasoning 17771) ≈ $0.0617",
+    "total ≈ $0.0617 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g1",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 1,
+   "inputTokens": 6929,
+   "outputTokens": 7007,
+   "modelSeconds": 53.5,
+   "wallSeconds": 53.5,
+   "figurePoints": 3,
+   "failedChecks": [],
+   "answer": "Số đo góc C là 70°. ∠C = 70° Số đo góc $C$ là $70^\\circ$. \\widehat{C} = 70^\\circ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ có $\\widehat{A} = 65^{\\circ}$, $\\widehat{B} = 45^{\\circ}$. Tính $\\widehat{C}$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng cơ bản",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Tổng ba góc trong một tam giác",
+      "Tính chất góc trong tam giác"
+     ],
+     "techniques": [
+      "angle_chasing"
+     ],
+     "givens": [
+      "Tam giác ABC",
+      "$\\widehat{A} = 65^\\circ$",
+      "$\\widehat{B} = 45^\\circ$"
+     ],
+     "unknowns": [
+      "$\\widehat{C}$"
+     ],
+     "constraints": [
+      "Tam giác ABC",
+      "$\\widehat{A} = 65^\\circ$",
+      "$\\widehat{B} = 45^\\circ$"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Áp dụng định lý tổng ba góc trong một tam giác để tính góc C.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn có nhớ tổng số đo ba góc trong bất kỳ tam giác nào bằng bao nhiêu không?",
+      "cue": "Định lý tổng ba góc",
+      "explanation": "Trong mọi tam giác, tổng ba góc luôn bằng $180^\\circ$. Đây là chìa khóa để giải bài này.",
+      "math": "\\widehat{A} + \\widehat{B} + \\widehat{C} = 180^\\circ",
+      "stepId": "step_2",
+      "focus": [
+       "ang_BAC",
+       "ang_ABC",
+       "ang_ACB"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Nếu biết tổng và hai số hạng, bạn sẽ tìm số hạng còn lại bằng cách nào?",
+      "cue": "Phép trừ",
+      "explanation": "Bạn chỉ cần lấy $180^\\circ$ trừ đi tổng của hai góc đã biết.",
+      "math": "\\widehat{C} = 180^\\circ - (\\widehat{A} + \\widehat{B})",
+      "stepId": "step_3",
+      "focus": [
+       "ang_ACB"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Hãy thay số vào và tính toán kết quả cuối cùng.",
+      "cue": "Tính toán",
+      "explanation": "Thay $\\widehat{A} = 65^\\circ$ và $\\widehat{B} = 45^\\circ$ vào công thức trên để ra đáp án.",
+      "math": "\\widehat{C} = 180^\\circ - 110^\\circ = 70^\\circ",
+      "stepId": "step_3",
+      "focus": [
+       "ang_ACB"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Xác định dữ kiện",
+      "explanation": "Đề bài cho sẵn số đo hai góc trong tam giác ABC.",
+      "math": "\\widehat{A} = 65^\\circ, \\quad \\widehat{B} = 45^\\circ",
+      "reason": "Đề bài cho",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_BC",
+         "seg_CA",
+         "ang_BAC",
+         "ang_ABC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Áp dụng định lý tổng ba góc",
+      "explanation": "Ta nhớ lại tính chất cơ bản: tổng ba góc trong bất kỳ tam giác nào luôn bằng $180^\\circ$.",
+      "math": "\\widehat{A} + \\widehat{B} + \\widehat{C} = 180^\\circ",
+      "reason": "Định lý tổng ba góc trong một tam giác",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "ang_BAC",
+         "ang_ABC",
+         "ang_ACB"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Tính số đo góc C",
+      "explanation": "Thay các giá trị đã biết vào công thức và thực hiện phép trừ để tìm góc C.",
+      "math": "\\widehat{C} = 180^\\circ - (65^\\circ + 45^\\circ) = 180^\\circ - 110^\\circ = 70^\\circ",
+      "reason": "Biến đổi đại số",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "ang_ACB",
+         "ang_BAC",
+         "ang_ABC"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Số đo góc $C$ là $70^\\circ$.",
+     "math": "\\widehat{C} = 70^\\circ"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "180 - (65 + 45)"
+      ],
+      "assignments": [],
+      "expected": "70"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 7.2504622962931995,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 5.315704195109397,
+       "y": 5.315704195109396,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "R_A",
+       "label": "R_A",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": 1.97,
+       "y": 4.53,
+       "value": 65,
+       "value2": 5,
+       "draggable": false,
+       "hidden": true
+      },
+      {
+       "id": "R_B",
+       "label": "R_B",
+       "kind": "polar",
+       "refs": [
+        "B"
+       ],
+       "x": 6.46,
+       "y": 3.54,
+       "value": 135,
+       "value2": 5,
+       "draggable": false,
+       "hidden": true
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "line",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": ""
+      },
+      {
+       "id": "line_AR_A",
+       "kind": "line",
+       "from": "A",
+       "to": "R_A",
+       "style": "construction",
+       "label": ""
+      },
+      {
+       "id": "line_BR_B",
+       "kind": "line",
+       "from": "B",
+       "to": "R_B",
+       "style": "construction",
+       "label": ""
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CA",
+       "kind": "segment",
+       "from": "C",
+       "to": "A",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_BAC",
+       "from": "A",
+       "vertex": "A",
+       "to": "C",
+       "label": "65°",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ABC",
+       "from": "B",
+       "vertex": "B",
+       "to": "A",
+       "label": "45°",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ACB",
+       "from": "C",
+       "vertex": "C",
+       "to": "A",
+       "label": "?",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_CAB",
+       "from": "C",
+       "vertex": "A",
+       "to": "B",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ABC_2",
+       "from": "A",
+       "vertex": "B",
+       "to": "C",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_BCA",
+       "from": "B",
+       "vertex": "C",
+       "to": "A",
+       "label": null,
+       "right": false,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": []
+    }
+   },
+   "log": [
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=qwen3.6:35b in=6929 (cached 0) out=7007 (reasoning 4034) ≈ $0.0138",
+    "total ≈ $0.0138 over 1 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g2",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 17144,
+   "outputTokens": 14148,
+   "modelSeconds": 88.1,
+   "wallSeconds": 88.1,
+   "figurePoints": 3,
+   "failedChecks": [],
+   "answer": "Góc B có số đo là 70°. ∠ B = 70° Góc $B$ có số đo là $70^\\circ$. \\angle B = 70^\\circ",
+   "lesson": {
+    "analysis": {
+     "statement": "Triangle $ABC$ is isosceles with $AB = AC$ and $\\angle A = 40^{\\circ}$. Find $\\angle B$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng cơ bản",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "tam giác cân",
+      "tổng ba góc trong một tam giác"
+     ],
+     "techniques": [
+      "congruent_triangles"
+     ],
+     "givens": [
+      "AB = AC",
+      "∠A = 40°"
+     ],
+     "unknowns": [
+      "∠B"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "Problem is too simple for unsupported status, but status must be one of the allowed values. I will set it to 'supported'."
+     ]
+    },
+    "strategy": "Sử dụng tính chất hai góc ở đáy bằng nhau của tam giác cân, sau đó áp dụng định lý tổng ba góc trong một tam giác để tính ra góc B.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Trong một tam giác cân, hai góc ở đáy có mối quan hệ gì với nhau?",
+      "cue": "Tính chất tam giác cân",
+      "explanation": "Bạn nhớ tính chất tam giác cân không? Khi hai cạnh bằng nhau thì hai góc ở đáy cũng bằng nhau nhé. Ở đây $AB = AC$ nên góc ở đáy $B$ và $C$ bằng nhau.",
+      "math": "\\angle B = \\angle C",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AB",
+       "seg_AC",
+       "ang_ABC",
+       "ang_ACB"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 1,
+      "question": "Tổng số đo ba góc trong bất kỳ một tam giác nào bằng bao nhiêu?",
+      "cue": "Định lý tổng ba góc",
+      "explanation": "Đó là một định lý cơ bản: tổng ba góc trong một tam giác luôn bằng $180^\\circ$. Bạn có thể viết thành phương trình liên hệ giữa $\\angle A$, $\\angle B$ và $\\angle C$.",
+      "math": "\\angle A + \\angle B + \\angle C = 180^\\circ",
+      "stepId": "step_3",
+      "focus": [
+       "ang_BAC",
+       "ang_ABC",
+       "ang_ACB"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 2,
+      "question": "Nếu đã biết $\\angle A$ và $\\angle B = \\angle C$, bạn sẽ lập phương trình như thế nào để tìm $\\angle B$?",
+      "cue": "Thay số và giải",
+      "explanation": "Thay các giá trị đã biết vào công thức tổng ba góc, sau đó giải phương trình một ẩn để tìm ra kết quả. Mình nhớ rằng $\\angle C$ cũng chính là $\\angle B$ nhé.",
+      "math": "40^\\circ + 2\\angle B = 180^\\circ",
+      "stepId": "step_4",
+      "focus": [
+       "ang_ABC"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Xác định dữ kiện đã cho",
+      "explanation": "Tam giác ABC cân tại A nên $AB = AC$, và góc ở đỉnh $\\angle A = 40^\\circ$.",
+      "math": "\\triangle ABC \\text{ cân tại } A, \\angle A = 40^\\circ",
+      "reason": "Giả thiết đề bài",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_BC",
+         "seg_AC",
+         "ang_BAC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Áp dụng tính chất tam giác cân",
+      "explanation": "Vì tam giác ABC cân tại A nên hai góc ở đáy bằng nhau, tức là $\\angle B = \\angle C$.",
+      "math": "\\angle B = \\angle C",
+      "reason": "Tính chất tam giác cân (hai góc ở đáy bằng nhau)",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC",
+         "ang_ABC",
+         "ang_ACB",
+         "seg_BC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Áp dụng định lý tổng ba góc",
+      "explanation": "Tổng ba góc trong một tam giác luôn bằng $180^\\circ$, nên $\\angle A + \\angle B + \\angle C = 180^\\circ$.",
+      "math": "\\angle A + \\angle B + \\angle C = 180^\\circ",
+      "reason": "Định lý tổng ba góc trong một tam giác",
+      "uses": [
+       "step_1",
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "ang_BAC",
+         "ang_ABC",
+         "ang_ACB"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Thay số và tính toán",
+      "explanation": "Thay $\\angle A = 40^\\circ$ và $\\angle C = \\angle B$ vào phương trình trên, ta có $40^\\circ + 2\\angle B = 180^\\circ$. Suy ra $2\\angle B = 140^\\circ$ và $\\angle B = 70^\\circ$.",
+      "math": "\\angle B = 70^\\circ",
+      "reason": "Biến đổi đại số và giải phương trình",
+      "uses": [
+       "step_3"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "ang_ABC",
+         "ang_BAC",
+         "ang_ACB"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Góc $B$ có số đo là $70^\\circ$.",
+     "math": "\\angle B = 70^\\circ"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(180 - 40) / 2"
+      ],
+      "assignments": [],
+      "expected": "70"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 4,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 250,
+       "value2": 5,
+       "draggable": false,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "polar",
+       "refs": [
+        "A"
+       ],
+       "x": null,
+       "y": null,
+       "value": 290,
+       "value2": 5,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_BAC",
+       "from": "B",
+       "vertex": "A",
+       "to": "C",
+       "label": "40°",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ABC",
+       "from": "A",
+       "vertex": "B",
+       "to": "C",
+       "label": "?",
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ACB",
+       "from": "A",
+       "vertex": "C",
+       "to": "B",
+       "label": "?",
+       "right": false,
+       "style": "given"
+      }
+     ],
+     "marks": [
+      {
+       "kind": "equal",
+       "targets": [
+        "seg_AB",
+        "seg_AC"
+       ],
+       "group": 1
+      }
+     ],
+     "checks": [
+      {
+       "kind": "equal_length",
+       "refs": [
+        "A",
+        "B",
+        "A",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "angle_value",
+       "refs": [
+        "B",
+        "A",
+        "C"
+       ],
+       "value": 40,
+       "role": "given"
+      },
+      {
+       "kind": "angle_value",
+       "refs": [
+        "A",
+        "B",
+        "C"
+       ],
+       "value": 70,
+       "role": "derived"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1: unverified, 11 problem(s): hint hint_1 points to unknown step hint_2 | hint hint_2 points to unknown step hint_3 | hint hint_3 points to unknown step hint_4",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=qwen3.6:35b in=17144 (cached 0) out=14148 (reasoning 8328) ≈ $0.0292",
+    "total ≈ $0.0292 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g3",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 13990,
+   "outputTokens": 21816,
+   "modelSeconds": 74.9,
+   "wallSeconds": 166.7,
+   "figurePoints": 5,
+   "failedChecks": [],
+   "answer": "Độ dài đoạn thẳng DE là 6 cm. DE = 6 Độ dài đoạn thẳng $DE$ là $6$ cm. DE = 6",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$, điểm $D$ thuộc cạnh $AB$, điểm $E$ thuộc cạnh $AC$ sao cho $DE \\parallel BC$. Biết $AD = 4$ cm, $DB = 2$ cm, $BC = 9$ cm. Tính $DE$.",
+     "language": "vi",
+     "topic": "system",
+     "subtopic": "Hình học phẳng - Tam giác đồng dạng",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "đường thẳng song song song song với một cạnh của tam giác",
+      "tam giác đồng dạng",
+      "tỉ số các cạnh tương ứng"
+     ],
+     "techniques": [
+      "similar_triangles",
+      "thales"
+     ],
+     "givens": [
+      "$AD = 4$ cm",
+      "$DB = 2$ cm",
+      "$BC = 9$ cm",
+      "$DE \\\\parallel BC$"
+     ],
+     "unknowns": [
+      "$DE$"
+     ],
+     "constraints": [
+      "D thuộc AB",
+      "E thuộc AC"
+     ],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": []
+    },
+    "strategy": "Sử dụng tính chất đường thẳng song song song song với một cạnh của tam giác để chứng minh $\\triangle ADE$ và $\\triangle ABC$ đồng dạng, sau đó lập tỉ số các cạnh tương ứng để tính $DE$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn hãy tính tổng độ dài đoạn thẳng AB từ hai đoạn AD và DB đã cho.",
+      "cue": "Tính chất cộng độ dài đoạn thẳng",
+      "explanation": "Vì D nằm trên AB nên $AB = AD + DB$.",
+      "math": "AB = 4 + 2 = 6",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AB"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Khi một đường thẳng song song với một cạnh của tam giác và cắt hai cạnh còn lại, hai tam giác tạo thành có quan hệ gì với nhau?",
+      "cue": "Tính chất đường song song trong tam giác",
+      "explanation": "Đường thẳng $DE \\parallel BC$ cắt $AB$ và $AC$ tạo thành $\\triangle ADE$ và $\\triangle ABC$ đồng dạng với nhau.\n$△ ADE ∼ △ ABC$",
+      "math": null,
+      "stepId": "step_2",
+      "focus": [
+       "seg_DE",
+       "seg_BC"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Từ tính chất đồng dạng, hãy viết tỉ số giữa cạnh DE và BC theo các cạnh đã biết.",
+      "cue": "Tỉ số các cạnh tương ứng",
+      "explanation": "Các cạnh tương ứng của hai tam giác đồng dạng tỉ lệ với nhau: $\\frac{DE}{BC} = \\frac{AD}{AB}$.\n$DE/9 = 4/6$",
+      "math": null,
+      "stepId": "step_3",
+      "focus": [
+       "seg_DE",
+       "seg_BC",
+       "seg_AD",
+       "seg_AB"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Tính độ dài cạnh AB",
+      "explanation": "Vì D nằm trên cạnh AB nên độ dài AB bằng tổng độ dài hai đoạn AD và DB.",
+      "math": "AB = AD + DB = 4 + 2 = 6 \\text{ (cm)}",
+      "reason": "Tính chất cộng độ dài đoạn thẳng",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Xác định tam giác đồng dạng",
+      "explanation": "Vì $DE \\parallel BC$ nên các góc tương ứng bằng nhau ($\\widehat{ADE} = \\widehat{ABC}$ và $\\widehat{AED} = \\widehat{ACB}$), suy ra hai tam giác này đồng dạng với nhau.\n$△ ADE ∼ △ ABC$",
+      "math": null,
+      "reason": "Trường hợp đồng dạng thứ nhất (góc - góc)",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_DE",
+         "seg_BC",
+         "seg_AB",
+         "seg_AC",
+         "ang_ADE",
+         "ang_ABC",
+         "ang_AED",
+         "ang_ACB"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Lập tỉ số các cạnh tương ứng",
+      "explanation": "Từ tính chất của hai tam giác đồng dạng, ta lập được tỉ số giữa các cặp cạnh tương ứng bằng nhau.\n$DE/BC = AD/AB$",
+      "math": null,
+      "reason": "Tính chất tam giác đồng dạng",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_DE",
+         "seg_BC",
+         "seg_AD",
+         "seg_AB"
+        ]
+       },
+       {
+        "action": "show",
+        "targets": [
+         "seg_AD"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Tính độ dài DE",
+      "explanation": "Thay các giá trị đã biết vào tỉ số trên và giải phương trình để tìm độ dài đoạn DE.",
+      "math": "DE = BC \\cdot \\frac{AD}{AB} = 9 \\cdot \\frac{4}{6} = 6 \\text{ (cm)}",
+      "reason": "Đại số cơ bản",
+      "uses": [
+       "step_1",
+       "step_3"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_DE",
+         "seg_BC",
+         "seg_AB"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Độ dài đoạn thẳng $DE$ là $6$ cm.",
+     "math": "DE = 6"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "(4/(4+2))*9"
+      ],
+      "assignments": [],
+      "expected": "6"
+     }
+    ],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 7.608452130361228,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 2.7016766419126177,
+       "y": 5.0811147612530645,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "D",
+       "label": "D",
+       "kind": "on_segment",
+       "refs": [
+        "A",
+        "B"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0.38,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "E",
+       "label": "E",
+       "kind": "on_segment",
+       "refs": [
+        "A",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": 0.38,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_DE",
+       "kind": "segment",
+       "from": "D",
+       "to": "E",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AD",
+       "kind": "segment",
+       "from": "A",
+       "to": "D",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_ABC",
+       "from": "A",
+       "vertex": "B",
+       "to": "C",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ADE",
+       "from": "A",
+       "vertex": "D",
+       "to": "E",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_AED",
+       "from": "A",
+       "vertex": "E",
+       "to": "D",
+       "label": null,
+       "right": false,
+       "style": "given"
+      },
+      {
+       "id": "ang_ACB",
+       "from": "A",
+       "vertex": "C",
+       "to": "B",
+       "label": null,
+       "right": false,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "parallel",
+       "refs": [
+        "D",
+        "E",
+        "B",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1 failed (output truncated); trying again",
+    "attempt 2: verified, 4 problem(s): hint 2: the formula \"$\\triangle ADE \\sim \\triangle ABC$\" doesn't render (Can't use function '$' in math mode at position 1: $̲\\triangle ADE \\…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 3: the formula \"$\\frac{DE}{9} = \\frac{4}{6}$\" doesn't render (Can't use function '$' in math mode at position 1: $̲\\frac{DE}{9} = …). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | step 2: the formula \"$\\triangle ADE \\sim \\triangle ABC$\" doesn't render (Can't use function '$' in math mode at position 1: $̲\\triangle ADE \\…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "usage: model=qwen3.6:35b in=13990 (cached 0) out=21816 (reasoning 11691) ≈ $0.0395",
+    "total ≈ $0.0395 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g4",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "partial",
+   "attempts": 2,
+   "inputTokens": 17847,
+   "outputTokens": 17915,
+   "modelSeconds": 138.8,
+   "wallSeconds": 138.8,
+   "figurePoints": 4,
+   "failedChecks": [],
+   "answer": "Ta đã chứng minh được △ ABM = △ ACM (c.c.c) và AM ⊥ BC. △ ABM = △ ACM và AM ⊥ BC Ta đã chứng minh được $\\triangle ABM = \\triangle ACM$ (c.c.c) và $AM \\perp BC$.",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ cân tại $A$, $M$ là trung điểm của $BC$. Chứng minh $\\triangle ABM = \\triangle ACM$ và $AM \\perp BC$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng: Chứng minh tam giác bằng nhau và vuông góc",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Tam giác cân",
+      "Trung điểm",
+      "Trường hợp bằng nhau c.c.c",
+      "Hai góc kề bù",
+      "Hai đường thẳng vuông góc"
+     ],
+     "techniques": [
+      "congruent_triangles",
+      "angle_chasing"
+     ],
+     "givens": [
+      "Tam giác ABC cân tại A",
+      "M là trung điểm của BC"
+     ],
+     "unknowns": [
+      "Chứng minh tam giác ABM = tam giác ACM",
+      "Chứng minh AM vuông góc BC"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Dựa vào định nghĩa tam giác cân và trung điểm để tìm ra các cạnh bằng nhau, áp dụng trường hợp bằng nhau c.c.c để chứng minh hai tam giác nhỏ bằng nhau. Từ đó suy ra hai góc tương ứng bằng nhau, kết hợp với tính chất hai góc kề bù để chứng minh $AM$ vuông góc với $BC$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn hãy nhìn lại định nghĩa tam giác cân tại $A$ và tính chất của trung điểm $M$. Tam giác $ABM$ và $ACM$ có những cạnh nào bằng nhau?",
+      "cue": "Định nghĩa tam giác cân, trung điểm",
+      "explanation": "Vì $\\triangle ABC$ cân tại $A$ nên $AB = AC$. Vì $M$ là trung điểm $BC$ nên $MB = MC$. Ngoài ra, $AM$ là cạnh chung của hai tam giác này.",
+      "math": "AB = AC, MB = MC, AM \\text{ chung}",
+      "stepId": "step_1",
+      "focus": [
+       "seg_AB",
+       "seg_AC",
+       "seg_BM",
+       "seg_MC",
+       "seg_AM"
+      ]
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Với ba cặp cạnh bằng nhau vừa tìm được, bạn có thể áp dụng trường hợp bằng nhau nào của tam giác để chứng minh $\\triangle ABM = \\triangle ACM$?",
+      "cue": "Các trường hợp bằng nhau của tam giác",
+      "explanation": "Khi ba cạnh của tam giác này lần lượt bằng ba cạnh của tam giác kia, ta dùng trường hợp cạnh-cạnh-cạnh (c.c.c).",
+      "math": "\\triangle ABM = \\triangle ACM \\text{ (c.c.c)}",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AB",
+       "seg_AC",
+       "seg_BM",
+       "seg_MC",
+       "seg_AM"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 2,
+      "question": "Hai tam giác bằng nhau thì các góc tương ứng cũng bằng nhau. Vậy $\\angle AMB$ và $\\angle AMC$ bằng nhau hay không?",
+      "cue": "Tính chất của hai tam giác bằng nhau",
+      "explanation": "Do $\\triangle ABM = \\triangle ACM$ nên $\\angle AMB = \\angle AMC$ (hai góc tương ứng).",
+      "math": "\\angle AMB = \\angle AMC",
+      "stepId": "step_3",
+      "focus": [
+       "ang_BMA",
+       "ang_CMA"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 3,
+      "question": "$\\angle AMB$ và $\\angle AMC$ là hai góc như thế nào đối với nhau trên đường thẳng $BC$? Tổng của chúng bằng bao nhiêu?",
+      "cue": "Hai góc kề bù",
+      "explanation": "Hai góc này kề bù nên $\\angle AMB + \\angle AMC = 180^\\circ$. Kết hợp với $\\angle AMB = \\angle AMC$, ta suy ra mỗi góc bằng $90^\\circ$, tức là $AM \\perp BC$.",
+      "math": "\\angle AMB + \\angle AMC = 180^\\circ \\Rightarrow \\angle AMB = 90^\\circ",
+      "stepId": "step_4",
+      "focus": [
+       "ang_BMA",
+       "ang_CMA"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Xác định các yếu tố đã cho",
+      "explanation": "Dựa vào đề bài để liệt kê các yếu tố đã cho về cạnh và điểm.",
+      "math": "AB = AC \\text{ (vì } \\triangle ABC \\text{ cân tại } A), MB = MC \\text{ (vì } M \\text{ là trung điểm } BC), AM \\text{ chung}",
+      "reason": "Định nghĩa tam giác cân và trung điểm.",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "show",
+        "targets": [
+         "seg_BM",
+         "seg_MC"
+        ]
+       },
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC",
+         "seg_BC",
+         "seg_AM"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Chứng minh $\\triangle ABM = \\triangle ACM$",
+      "explanation": "So sánh ba cặp cạnh tương ứng của hai tam giác để áp dụng tiêu chí bằng nhau.",
+      "math": "\\begin{gathered} \\text{Xét } \\triangle ABM \\text{ và } \\triangle ACM \\text{ có:} \\\\ AB = AC \\text{ (gt)} \\\\ MB = MC \\text{ (gt)} \\\\ AM \\text{ chung} \\\\ \\Rightarrow \\triangle ABM = \\triangle ACM \\text{ (c.c.c).} \\end{gathered}",
+      "reason": "Trường hợp bằng nhau cạnh-cạnh-cạnh của tam giác.",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC",
+         "seg_BM",
+         "seg_MC",
+         "seg_AM",
+         "seg_BC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Suy ra hai góc tương ứng bằng nhau",
+      "explanation": "Từ kết quả hai tam giác bằng nhau, suy ra tính chất của các góc tương ứng.",
+      "math": "\\text{Do } \\triangle ABM = \\triangle ACM \\text{ (cmt) nên } \\angle AMB = \\angle AMC \\text{ (hai góc tương ứng).}",
+      "reason": "Tính chất hai tam giác bằng nhau.",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "ang_BMA",
+         "ang_CMA",
+         "seg_AB",
+         "seg_BC",
+         "seg_AM",
+         "seg_AC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Chứng minh $AM \\perp BC$",
+      "explanation": "Sử dụng tính chất hai góc kề bù để tính số đo góc và kết luận tính vuông góc.",
+      "math": "\\begin{gathered} \\text{Ta có } \\angle AMB + \\angle AMC = 180^\\circ \\text{ (hai góc kề bù).} \\\\ \\text{Mà } \\angle AMB = \\angle AMC \\text{ nên } 2\\angle AMB = 180^\\circ \\Rightarrow \\angle AMB = 90^\\circ. \\\\ \\text{Vậy } AM \\perp BC. \\end{gathered}",
+      "reason": "Hai góc kề bù và định nghĩa hai đường thẳng vuông góc.",
+      "uses": [
+       "step_3"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "ang_BMA",
+         "ang_CMA",
+         "seg_AM",
+         "seg_BC"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Ta đã chứng minh được $\\triangle ABM = \\triangle ACM$ (c.c.c) và $AM \\perp BC$.",
+     "math": "\\triangle ABM = \\triangle ACM \\text{ và } AM \\perp BC"
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "schematic",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 6.128355544951824,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 3.064177772475912,
+       "y": 6.571150438746157,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "M",
+       "label": "M",
+       "kind": "midpoint",
+       "refs": [
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AM",
+       "kind": "segment",
+       "from": "A",
+       "to": "M",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BM",
+       "kind": "segment",
+       "from": "B",
+       "to": "M",
+       "style": "construction",
+       "label": null
+      },
+      {
+       "id": "seg_MC",
+       "kind": "segment",
+       "from": "M",
+       "to": "C",
+       "style": "construction",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_BMA",
+       "from": "B",
+       "vertex": "M",
+       "to": "A",
+       "label": "90°",
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_CMA",
+       "from": "C",
+       "vertex": "M",
+       "to": "A",
+       "label": null,
+       "right": false,
+       "style": "given"
+      }
+     ],
+     "marks": [
+      {
+       "kind": "equal",
+       "targets": [
+        "seg_AB",
+        "seg_AC"
+       ],
+       "group": 1
+      },
+      {
+       "kind": "equal",
+       "targets": [
+        "seg_BM",
+        "seg_MC"
+       ],
+       "group": 2
+      }
+     ],
+     "checks": [
+      {
+       "kind": "equal_length",
+       "refs": [
+        "A",
+        "B",
+        "A",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "equal_length",
+       "refs": [
+        "B",
+        "M",
+        "M",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "perpendicular",
+       "refs": [
+        "A",
+        "M",
+        "B",
+        "C"
+       ],
+       "value": null,
+       "role": "derived"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1: unverified, 13 problem(s): hint hint_1 points to unknown step hint_2 | hint hint_2 points to unknown step hint_2 | hint hint_3 points to unknown step hint_3",
+    "attempt 2: partial, 0 problem(s)",
+    "usage: model=qwen3.6:35b in=17847 (cached 0) out=17915 (reasoning 10776) ≈ $0.0353",
+    "total ≈ $0.0353 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g5",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 13998,
+   "outputTokens": 21907,
+   "modelSeconds": 75.4,
+   "wallSeconds": 167.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "Độ dài cạnh huyền BC là 10 cm và đường cao AH là 4,8 cm. BC = 10 cm, AH = 4,8 cm Độ dài cạnh huyền $BC$ là $10$ cm và đường cao $AH$ là $4,8$ cm. BC = 10 \\text{",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ vuông tại $A$ có $AB = 6$ cm, $AC = 8$ cm. Tính $BC$ và đường cao $AH$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng: Tính cạnh huyền và đường cao trong tam giác vuông",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Tam giác vuông",
+      "Định lý Pythagore",
+      "Hệ thức lượng trong tam giác vuông"
+     ],
+     "techniques": [
+      "pythagoras",
+      "similar_triangles"
+     ],
+     "givens": [
+      "Tam giác $ABC$ vuông tại $A$",
+      "$AB = 6$ cm",
+      "$AC = 8$ cm",
+      "$AH$ là đường cao hạ từ $A$ xuống $BC$"
+     ],
+     "unknowns": [
+      "Độ dài cạnh huyền $BC$",
+      "Độ dài đường cao $AH$"
+     ],
+     "constraints": [
+      "Học sinh lớp 9",
+      "Cần trình bày rõ ràng các bước tính toán"
+     ],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ áp dụng định lý Pythagore để tìm cạnh huyền $BC$, sau đó dùng hệ thức lượng trong tam giác vuông (công thức tính đường cao) để tìm $AH$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Để tính độ dài cạnh huyền $BC$, bạn có thể nhớ lại định lý nào liên quan đến ba cạnh của một tam giác vuông?",
+      "cue": "Định lý Pythagore",
+      "explanation": "Định lý Pythagore phát biểu rằng trong tam giác vuông, bình phương cạnh huyền bằng tổng bình phương hai cạnh góc vuông ($BC^2 = AB^2 + AC^2$).",
+      "math": "BC^2 = AB^2 + AC^2",
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Sau khi đã có $BC$, làm thế nào để tìm độ dài đường cao $AH$ một cách nhanh nhất mà không cần tính thêm các đoạn thẳng khác?",
+      "cue": "Công thức tính đường cao",
+      "explanation": "Ta có thể dùng hệ thức lượng trong tam giác vuông: tích hai cạnh góc vuông bằng tích cạnh huyền và đường cao tương ứng ($AB \\cdot AC = BC \\cdot AH$).",
+      "math": "AH = \\frac{AB \\cdot AC}{BC}",
+      "stepId": "step_3",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Bạn có thể tính nhẩm $6^2 + 8^2$ và lấy căn bậc hai để ra $BC$ không? Sau đó thay vào công thức trên để tìm $AH$.",
+      "cue": "Tính toán",
+      "explanation": "$6^2 = 36$, $8^2 = 64$, tổng là $100$. Căn bậc hai của $100$ chính là $10$. Thay $BC=10$ vào công thức $AH = \\frac{6 \\cdot 8}{10}$ để ra kết quả cuối cùng.",
+      "math": "BC = \\sqrt{100} = 10 \\Rightarrow AH = 4,8",
+      "stepId": "step_3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Phân tích đề bài",
+      "explanation": "Đề bài cho tam giác $ABC$ vuông tại $A$ với hai cạnh góc vuông $AB = 6$ cm và $AC = 8$ cm. $AH$ là đường cao tương ứng với cạnh huyền $BC$. Nhiệm vụ của chúng ta là tính $BC$ và $AH$.",
+      "math": "\\triangle ABC \\text{ vuông tại } A, AB = 6, AC = 8, AH \\perp BC.",
+      "reason": "Đề bài",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Tính cạnh huyền $BC$",
+      "explanation": "Trong tam giác vuông $ABC$, ta áp dụng định lý Pythagore: bình phương cạnh huyền bằng tổng bình phương hai cạnh góc vuông. Mình thay số vào và tính ra kết quả.",
+      "math": "BC^2 = AB^2 + AC^2 = 6^2 + 8^2 = 36 + 64 = 100 \\Rightarrow BC = \\sqrt{100} = 10 \\text{ (cm)}.",
+      "reason": "Định lý Pythagore",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "Tính đường cao $AH$",
+      "explanation": "Ta sử dụng hệ thức lượng trong tam giác vuông: tích hai cạnh góc vuông bằng tích cạnh huyền và đường cao tương ứng ($AB \\cdot AC = BC \\cdot AH$). Từ đó suy ra $AH$.",
+      "math": "AH = \\frac{AB \\cdot AC}{BC} = \\frac{6 \\cdot 8}{10} = \\frac{48}{10} = 4,8 \\text{ (cm)}.",
+      "reason": "Hệ thức lượng trong tam giác vuông",
+      "uses": [
+       "step_1",
+       "step_2"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Độ dài cạnh huyền $BC$ là $10$ cm và đường cao $AH$ là $4,8$ cm.",
+     "math": "BC = 10 \\text{ cm}, \\quad AH = 4,8 \\text{ cm}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "sqrt(6^2 + 8^2)"
+      ],
+      "assignments": [],
+      "expected": "10"
+     },
+     {
+      "kind": "value",
+      "statements": [
+       "(6 * 8) / 10"
+      ],
+      "assignments": [],
+      "expected": "4.8"
+     }
+    ],
+    "figure": null
+   },
+   "log": [
+    "attempt 1 failed (output truncated); trying again",
+    "attempt 2: verified, 1 problem(s): figure: figure does not satisfy the given ∠ABC = 90° (measured 53.13°, expected 90°)",
+    "usage: model=qwen3.6:35b in=13998 (cached 0) out=21907 (reasoning 11811) ≈ $0.0396",
+    "total ≈ $0.0396 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g6",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PASS",
+   "answerCorrect": true,
+   "status": "verified",
+   "attempts": 2,
+   "inputTokens": 13966,
+   "outputTokens": 17634,
+   "modelSeconds": 41.2,
+   "wallSeconds": 100.6,
+   "figurePoints": 1,
+   "failedChecks": [],
+   "answer": "Khoảng cách từ tâm O đến dây AB là 3 cm. 3 cm Khoảng cách từ tâm $O$ đến dây $AB$ là $3\\text{ cm}$. 3\\text{ cm}",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho đường tròn $(O; 5\\text{ cm})$ và dây $AB = 8\\text{ cm}$. Tính khoảng cách từ tâm $O$ đến dây $AB$.",
+     "language": "vi",
+     "topic": "equation",
+     "subtopic": "Hình học phẳng - Đường tròn",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Khoảng cách từ một điểm đến một đường thẳng",
+      "Tính chất đường kính vuông góc với dây cung",
+      "Định lý Pythagore"
+     ],
+     "techniques": [
+      "pythagoras"
+     ],
+     "givens": [
+      "Đường tròn $(O; 5\\text{ cm})$",
+      "Dây cung $AB = 8\\text{ cm}$"
+     ],
+     "unknowns": [
+      "Khoảng cách từ $O$ đến $AB$"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Kẻ đường vuông góc từ tâm $O$ đến dây $AB$ để tạo thành tam giác vuông, sau đó dùng tính chất đường tròn suy ra điểm chân là trung điểm dây cung. Cuối cùng áp dụng định lý Pythagore trong tam giác vuông để tính độ dài đoạn vuông góc đó.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Bạn nhớ lại định nghĩa khoảng cách từ một điểm đến một đường thẳng không? Đoạn thẳng nào biểu diễn khoảng cách này?",
+      "cue": "Đường vuông góc",
+      "explanation": "Khoảng cách từ một điểm đến một đường thẳng chính là độ dài đoạn vuông góc kẻ từ điểm đó đến đường thẳng. Bạn hãy kẻ $OH \\perp AB$ với $H \\in AB$.",
+      "math": "OH \\perp AB",
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Khi kẻ đường vuông góc từ tâm đường tròn đến một dây cung, điểm chân đường vuông góc đó chia dây cung như thế nào?",
+      "cue": "Tính chất dây cung",
+      "explanation": "Trong một đường tròn, đường kính (hoặc bán kính) vuông góc với một dây cung thì đi qua trung điểm của dây cung đó. Vì $OH \\perp AB$ nên $H$ chính là trung điểm của $AB$.",
+      "math": "HA = HB = \\frac{AB}{2}",
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Tam giác $OHA$ là tam giác gì? Để tính độ dài cạnh $OH$ khi biết hai cạnh còn lại, bạn có thể dùng định lý nào?",
+      "cue": "Định lý Pythagore",
+      "explanation": "Tam giác $OHA$ vuông tại $H$. Áp dụng định lý Pythagore: $OH^2 + HA^2 = OA^2$. Bạn đã biết $OA = 5\\text{ cm}$ (bán kính) và $HA = 4\\text{ cm}$, hãy tính $OH$ nhé!",
+      "math": "OH = \\sqrt{OA^2 - HA^2}",
+      "stepId": "step_3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Vẽ đường vuông góc",
+      "explanation": "Để tính khoảng cách từ $O$ đến $AB$, ta cần kẻ một đoạn vuông góc từ $O$ xuống $AB$. Gọi $H$ là chân đường vuông góc này, khi đó $OH$ chính là khoảng cách cần tìm.",
+      "math": "OH \\perp AB \\quad (H \\in AB)",
+      "reason": "Định nghĩa khoảng cách từ điểm đến đường thẳng",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Tính độ dài $AH$",
+      "explanation": "Áp dụng tính chất đường tròn: đường vuông góc kẻ từ tâm đến một dây cung thì đi qua trung điểm của dây cung đó. Vì $OH \\perp AB$ nên $H$ là trung điểm $AB$, suy ra $AH$ bằng một nửa $AB$.",
+      "math": "HA = HB = \\frac{AB}{2} = \\frac{8}{2} = 4\\text{ (cm)}",
+      "reason": "Tính chất đường kính vuông góc với dây cung",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "Tính độ dài $OH$",
+      "explanation": "Xét tam giác $OHA$ vuông tại $H$. Áp dụng định lý Pythagore, ta có $OH^2 + HA^2 = OA^2$. Thay số vào và tính toán để tìm $OH$.",
+      "math": "OH^2 = OA^2 - HA^2 = 5^2 - 4^2 = 25 - 16 = 9 \\Rightarrow OH = 3\\text{ (cm)}",
+      "reason": "Định lý Pythagore trong tam giác vuông",
+      "uses": [
+       "step_1",
+       "step_2"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_4",
+      "title": "Kết luận",
+      "explanation": "Vậy độ dài đoạn $OH$ chính là khoảng cách từ tâm $O$ đến dây $AB$. Kết quả thu được là $3\\text{ cm}$.",
+      "math": "d(O; AB) = OH = 3\\text{ cm}",
+      "reason": "Kết luận",
+      "uses": [
+       "step_3"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "Khoảng cách từ tâm $O$ đến dây $AB$ là $3\\text{ cm}$.",
+     "math": "3\\text{ cm}"
+    },
+    "answerChecks": [
+     {
+      "kind": "value",
+      "statements": [
+       "sqrt(5^2 - (8/2)^2)"
+      ],
+      "assignments": [],
+      "expected": "3"
+     }
+    ],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "O",
+       "label": "O",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      }
+     ],
+     "lines": [],
+     "circles": [],
+     "angles": [],
+     "marks": [],
+     "checks": []
+    }
+   },
+   "log": [
+    "attempt 1 failed (output truncated); trying again",
+    "attempt 2: verified, 5 problem(s): figure: point A: kind on_circle needs 1 refs, got 0 (left out of the figure) | figure: point B: kind on_circle needs 1 refs, got 0 (left out of the figure) | figure: point H: ref \"A\" is not a point (left out of the figure)",
+    "usage: model=qwen3.6:35b in=13966 (cached 0) out=17634 (reasoning 7826) ≈ $0.0331",
+    "total ≈ $0.0331 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g7",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "PARTIAL",
+   "answerCorrect": true,
+   "status": "not_checkable",
+   "attempts": 1,
+   "inputTokens": 6533,
+   "outputTokens": 6121,
+   "modelSeconds": 46.6,
+   "wallSeconds": 46.6,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "The four angles formed at B are two angles of 115° and two angles of 65°. 115°, 65°, 115°, 65° The four angles formed at B are two angles of $115^\\circ$ and two",
+   "lesson": {
+    "analysis": {
+     "statement": "Lines $a$ and $b$ are parallel. A transversal $c$ meets $a$ at $A$ and $b$ at $B$. One of the angles formed at $A$ measures $115^{\\circ}$. Find the four angles formed at $B$.",
+     "language": "en",
+     "topic": "geometry",
+     "subtopic": "Parallel lines and transversal angles",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Vertical angles",
+      "Supplementary angles",
+      "Corresponding angles",
+      "Alternate interior angles"
+     ],
+     "techniques": [
+      "domain_conditions",
+      "case_analysis"
+     ],
+     "givens": [
+      "$a \\parallel b$",
+      "Transversal $c$ intersects $a$ at $A$ and $b$ at $B$",
+      "One angle at $A$ measures $115^\\circ$"
+     ],
+     "unknowns": [
+      "The four angles formed at intersection B"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": null,
+     "interpretationNotes": [
+      "The problem asks for 'the four angles formed at B', but does not specify which of the four angles corresponds to the given $115^\\circ$ angle at A. However, since parallel lines preserve angle measures, the set of four angles at B will be identical to the set at A regardless of orientation. I will pr"
+     ]
+    },
+    "strategy": "We'll use the properties of intersecting lines to find the angles at A, then apply the parallel line rules to transfer those measures to B.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "What do you know about the angles formed when two lines intersect?",
+      "cue": "Vertical angles and supplementary angles",
+      "explanation": "When two lines cross, opposite angles (vertical angles) are equal, and angles next to each other on a straight line add up to $180^\\circ$.",
+      "math": null,
+      "stepId": "step_1",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "How do parallel lines affect the angles created by a transversal?",
+      "cue": "Corresponding and alternate interior angles",
+      "explanation": "If two lines are parallel, a transversal cutting them creates equal corresponding angles and equal alternate interior angles.",
+      "math": null,
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "If the angles at A are $115^\\circ$ and $65^\\circ$, what can you say about the angles at B?",
+      "cue": "Parallel line properties",
+      "explanation": "Because $a \\parallel b$, the angles at $B$ will match the angles at $A$ in measure.",
+      "math": null,
+      "stepId": "step_3",
+      "focus": []
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Find the angles at intersection A",
+      "explanation": "When two lines cross, opposite angles are equal and adjacent angles on a straight line add up to $180^\\circ$. Since one angle is $115^\\circ$, its vertical angle is also $115^\\circ$, and its neighbor is $180^\\circ - 115^\\circ = 65^\\circ$.",
+      "math": "\\text{Angles at } A = 115^\\circ, 65^\\circ, 115^\\circ, 65^\\circ",
+      "reason": "Vertical angles are equal; adjacent angles on a straight line are supplementary.",
+      "uses": [],
+      "geometryActions": []
+     },
+     {
+      "id": "step_2",
+      "title": "Relate angles at A to angles at B",
+      "explanation": "Because lines $a$ and $b$ are parallel, the transversal $c$ creates equal corresponding angles and equal alternate interior angles. This means the angles at $B$ will have the exact same measures as the angles at $A$.",
+      "math": "\\text{Angles at } B \\text{ correspond to angles at } A \\text{ due to } a \\parallel b",
+      "reason": "Corresponding angles postulate and alternate interior angles theorem for parallel lines.",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": []
+     },
+     {
+      "id": "step_3",
+      "title": "State the four angles at B",
+      "explanation": "Following the relationship from the previous step, the four angles at $B$ are simply the same set of measures we found at $A$.",
+      "math": "\\text{Angles at } B = 115^\\circ, 65^\\circ, 115^\\circ, 65^\\circ",
+      "reason": "Direct substitution from step 2.",
+      "uses": [
+       "step_1",
+       "step_2"
+      ],
+      "geometryActions": []
+     }
+    ],
+    "finalAnswer": {
+     "text": "The four angles formed at B are two angles of $115^\\circ$ and two angles of $65^\\circ$.",
+     "math": "115^\\circ, 65^\\circ, 115^\\circ, 65^\\circ"
+    },
+    "answerChecks": [],
+    "figure": null
+   },
+   "log": [
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=qwen3.6:35b in=6533 (cached 0) out=6121 (reasoning 4971) ≈ $0.0122",
+    "total ≈ $0.0122 over 1 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g8",
+   "topic": "geometry",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 180.3,
+   "wallSeconds": 357.5,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1: invalid structure: the response was not valid JSON",
+    "attempt 2 failed after 358 s (output truncated); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (output truncated)"
+  },
+  {
+   "id": "g9",
+   "topic": "geometry",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 184.3,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 184 s (output truncated); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (output truncated)"
+  }
+ ]
+}

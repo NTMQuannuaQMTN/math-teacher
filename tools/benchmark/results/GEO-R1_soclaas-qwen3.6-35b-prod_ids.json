@@ -1,0 +1,649 @@
+{
+ "summary": {
+  "exp": "GEO-R1",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.9",
+  "techniqueHints": false,
+  "dataset": "v1",
+  "n": 11,
+  "pass": 0,
+  "partial": 1,
+  "fail": 10,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 10,
+  "verifiedRate": 0,
+  "errors": 10,
+  "meanModelSeconds": 6.5,
+  "meanInputTokens": 625.7272727272727,
+  "meanOutputTokens": 731.1818181818181,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "costUsd": 0.0153,
+  "createdAt": "2026-10-07T19:05:02.247Z"
+ },
+ "rows": [
+  {
+   "id": "ch-2",
+   "topic": "geometry",
+   "difficulty": 3,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 220.1,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (output truncated); trying again",
+    "attempt 2 failed after 220 s (output truncated); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (output truncated)"
+  },
+  {
+   "id": "ch-4",
+   "topic": "geometry",
+   "difficulty": 4,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 596.4,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 596 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g1",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 1065.8,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 1066 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g2",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 916,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 916 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g3",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 947,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 947 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g4",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "proof",
+   "grade": "PARTIAL",
+   "answerCorrect": null,
+   "status": "partial",
+   "attempts": 2,
+   "inputTokens": 6883,
+   "outputTokens": 8043,
+   "modelSeconds": 71.5,
+   "wallSeconds": 1132,
+   "figurePoints": 4,
+   "failedChecks": [],
+   "answer": "Ta đã chứng minh được riangle ABM = riangle ACM theo trường hợp cạnh-cạnh-cạnh, từ đó suy ra riangle ABM = riangle ACM ext (c.c.c) ext và AM ot BC.\nriangle ABM ",
+   "lesson": {
+    "analysis": {
+     "statement": "Cho tam giác $ABC$ cân tại $A$, $M$ là trung điểm của $BC$. Chứng minh $ riangle ABM =  riangle ACM$ và $AM ot BC$.",
+     "language": "vi",
+     "topic": "geometry",
+     "subtopic": "Hình học phẳng: Tam giác bằng nhau, tính chất tam giác cân",
+     "gradeLevel": 9,
+     "withinCurriculum": true,
+     "concepts": [
+      "Trường hợp bằng nhau c.c.c của tam giác",
+      "Tính chất hai tam giác bằng nhau (các phần tương ứng bằng nhau)",
+      "Hai góc kề bù",
+      "Định nghĩa hai đường thẳng vuông góc"
+     ],
+     "techniques": [
+      "congruent_triangles",
+      "angle_chasing"
+     ],
+     "givens": [
+      "Tam giác $ABC$ cân tại $A$ ($AB = AC$)",
+      "$M$ là trung điểm của $BC$ ($MB = MC$)"
+     ],
+     "unknowns": [
+      "Chứng minh $\triangle ABM = \triangle ACM$",
+      "Chứng minh $AM \bot BC$"
+     ],
+     "constraints": [],
+     "status": "solvable",
+     "statusReason": "",
+     "interpretationNotes": []
+    },
+    "strategy": "Mình sẽ hướng dẫn bạn liệt kê ba cặp cạnh bằng nhau để chứng minh hai tam giác bằng nhau theo trường hợp c.c.c, sau đó dùng tính chất hai tam giác bằng nhau để suy ra hai góc tương ứng bằng nhau. Cuối cùng, kết hợp với tính chất hai góc kề bù, bạn sẽ dễ dàng chứng minh được $AM$ vuông góc với $BC$.",
+    "hints": [
+     {
+      "id": "hint_1",
+      "level": 1,
+      "question": "Để chứng minh hai tam giác bằng nhau, bạn nhớ lại các trường hợp bằng nhau cơ bản của tam giác?",
+      "cue": "c.c.c, c.g.c, g.c.g",
+      "explanation": "Bạn cần tìm 3 yếu tố tương ứng bằng nhau (3 cạnh, 2 cạnh-góc xen giữa, hoặc 1 cạnh-2 góc) để áp dụng một trong ba trường hợp bằng nhau cơ bản.",
+      "math": null,
+      "stepId": "step_2",
+      "focus": []
+     },
+     {
+      "id": "hint_2",
+      "level": 2,
+      "question": "Từ giả thiết tam giác $ABC$ cân tại $A$ và $M$ là trung điểm $BC$, bạn đã có những cặp cạnh nào bằng nhau chưa?",
+      "cue": "tam giác cân, trung điểm",
+      "explanation": "Tam giác cân tại $A$ cho $AB = AC$. $M$ là trung điểm $BC$ cho $MB = MC$. Ngoài ra, $AM$ là cạnh chung của hai tam giác.",
+      "math": "AB = AC, \text{ \\text{ và } } MB = MC",
+      "stepId": "step_2",
+      "focus": [
+       "seg_AB",
+       "seg_BC",
+       "seg_AC",
+       "seg_AM"
+      ]
+     },
+     {
+      "id": "hint_3",
+      "level": 3,
+      "question": "Khi đã chứng minh được $ riangle ABM =  riangle ACM$, điều gì xảy ra với các góc tương ứng của chúng?",
+      "cue": "các phần tương ứng bằng nhau",
+      "explanation": "Hai tam giác bằng nhau thì các góc tương ứng cũng bằng nhau, cụ thể là $ riangle ABM =  riangle ACM  ext{ (c.c.c)}  ext{ và } AM ot BC$.\nriangle ABM = riangle ACM ext (c.c.c) ext và AM \bot BC",
+      "math": null,
+      "stepId": "step_3",
+      "focus": [
+       "seg_AM",
+       "seg_BC"
+      ]
+     },
+     {
+      "id": "hint_4",
+      "level": 4,
+      "question": "Hai góc $ riangle ABM =  riangle ACM  ext{ (c.c.c)}  ext{ và } AM ot BC$.",
+      "cue": "hai góc kề bù",
+      "explanation": "Chúng là hai góc kề bù nên tổng bằng $180^ riangle ABM =  riangle ACM  ext{ (c.c.c)}  ext{ và } AM ot BC$.\nriangle ABM = riangle ACM ext (c.c.c) ext và AM \bot BC",
+      "math": null,
+      "stepId": "step_4",
+      "focus": [
+       "seg_AM",
+       "seg_BC"
+      ]
+     }
+    ],
+    "steps": [
+     {
+      "id": "step_1",
+      "title": "Nhắc lại giả thiết",
+      "explanation": "Bạn hãy viết ra những gì đề bài cho biết: tam giác $ABC$ cân tại $A$ nghĩa là hai cạnh bên bằng nhau, còn $M$ là trung điểm $BC$ nghĩa là $M$ chia $BC$ thành hai đoạn bằng nhau.",
+      "math": "AB = AC \text{ \\text{ và } } MB = MC",
+      "reason": "Định nghĩa tam giác cân và trung điểm",
+      "uses": [],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_BC",
+         "seg_AC"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_2",
+      "title": "Chứng minh hai tam giác bằng nhau",
+      "explanation": "Xét $ riangle ABM$ và $ riangle ACM$, bạn thấy chúng có ba cặp cạnh tương ứng bằng nhau: $AB = AC$, $MB = MC$ và cạnh $AM$ là cạnh chung. Vậy hai tam giác này bằng nhau theo trường hợp nào?",
+      "math": "riangle ABM = \triangle ACM \text{ (c.c.c)}",
+      "reason": "Trường hợp bằng nhau thứ nhất của tam giác (cạnh - cạnh - cạnh)",
+      "uses": [
+       "step_1"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC",
+         "seg_BC",
+         "seg_AM"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_3",
+      "title": "Suy ra góc tương ứng bằng nhau",
+      "explanation": "Khi hai tam giác bằng nhau, các góc tương ứng của chúng cũng bằng nhau. Bạn hãy viết ra đẳng thức góc tương ứng với hai cạnh $AB$ và $AC$ (hoặc hai cạnh $MB$ và $MC$).",
+      "math": "riangle ABM = \triangle ACM \text{ (c.c.c)}",
+      "reason": "Tính chất: hai tam giác bằng nhau thì các góc tương ứng bằng nhau",
+      "uses": [
+       "step_2"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AB",
+         "seg_AC",
+         "seg_BC",
+         "seg_AM"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_4",
+      "title": "Sử dụng hai góc kề bù",
+      "explanation": "Vì $M$ nằm trên đoạn thẳng $BC$ nên $riangle ABM =  riangle ACM  ext{ (c.c.c)}$ và $riangle ABM =  riangle ACM  ext{ (c.c.c)}$ là hai góc kề bù, tổng bằng $180^ riangle ABM =  riangle ACM  ext{ (c.c.c)}$.",
+      "math": "riangle ABM = \triangle ACM \text{ (c.c.c)}",
+      "reason": "Định nghĩa hai góc kề bù và phép tính đại số",
+      "uses": [
+       "step_3"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_BC",
+         "seg_AM"
+        ]
+       }
+      ]
+     },
+     {
+      "id": "step_5",
+      "title": "Kết luận vuông góc",
+      "explanation": "Góc $ riangle ABM =  riangle ACM  ext{ (c.c.c)}$ chính là định nghĩa của hai đường thẳng vuông góc. Vậy bạn đã hoàn thành cả hai yêu cầu của đề bài rồi!\nAM \bot BC",
+      "math": null,
+      "reason": "Định nghĩa hai đường thẳng vuông góc",
+      "uses": [
+       "step_4"
+      ],
+      "geometryActions": [
+       {
+        "action": "highlight",
+        "targets": [
+         "seg_AM",
+         "seg_BC"
+        ]
+       }
+      ]
+     }
+    ],
+    "finalAnswer": {
+     "text": "Ta đã chứng minh được $ riangle ABM =  riangle ACM$ theo trường hợp cạnh-cạnh-cạnh, từ đó suy ra $ riangle ABM =  riangle ACM  ext{ (c.c.c)}  ext{ và } AM ot BC$.\nriangle ABM = riangle ACM ext (c.c.c) ext và AM \bot BC",
+     "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+     "scale": "exact",
+     "points": [
+      {
+       "id": "B",
+       "label": "B",
+       "kind": "free",
+       "refs": [],
+       "x": 0,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "C",
+       "label": "C",
+       "kind": "free",
+       "refs": [],
+       "x": 6.128355544951824,
+       "y": 0,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "A",
+       "label": "A",
+       "kind": "free",
+       "refs": [],
+       "x": 3.064177772475912,
+       "y": 6.571150438746157,
+       "value": null,
+       "value2": null,
+       "draggable": true,
+       "hidden": false
+      },
+      {
+       "id": "M",
+       "label": "M",
+       "kind": "midpoint",
+       "refs": [
+        "B",
+        "C"
+       ],
+       "x": null,
+       "y": null,
+       "value": null,
+       "value2": null,
+       "draggable": false,
+       "hidden": false
+      }
+     ],
+     "lines": [
+      {
+       "id": "seg_AB",
+       "kind": "segment",
+       "from": "A",
+       "to": "B",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AC",
+       "kind": "segment",
+       "from": "A",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BC",
+       "kind": "segment",
+       "from": "B",
+       "to": "C",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_AM",
+       "kind": "segment",
+       "from": "A",
+       "to": "M",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_BM",
+       "kind": "segment",
+       "from": "B",
+       "to": "M",
+       "style": "given",
+       "label": null
+      },
+      {
+       "id": "seg_CM",
+       "kind": "segment",
+       "from": "C",
+       "to": "M",
+       "style": "given",
+       "label": null
+      }
+     ],
+     "circles": [],
+     "angles": [
+      {
+       "id": "ang_BMA",
+       "from": "B",
+       "vertex": "M",
+       "to": "A",
+       "label": "90°",
+       "right": true,
+       "style": "given"
+      },
+      {
+       "id": "ang_AMC",
+       "from": "A",
+       "vertex": "M",
+       "to": "C",
+       "label": "90°",
+       "right": true,
+       "style": "given"
+      }
+     ],
+     "marks": [],
+     "checks": [
+      {
+       "kind": "equal_length",
+       "refs": [
+        "A",
+        "B",
+        "A",
+        "C"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "equal_length",
+       "refs": [
+        "B",
+        "M",
+        "C",
+        "M"
+       ],
+       "value": null,
+       "role": "given"
+      },
+      {
+       "kind": "angle_value",
+       "refs": [
+        "B",
+        "M",
+        "A"
+       ],
+       "value": 90,
+       "role": "derived"
+      },
+      {
+       "kind": "angle_value",
+       "refs": [
+        "A",
+        "M",
+        "C"
+       ],
+       "value": 90,
+       "role": "derived"
+      }
+     ]
+    }
+   },
+   "log": [
+    "attempt 1: partial, 5 problem(s): the claim of the proof can't be checked on the figure: draw every point that claim names, constructed exactly from its definition. | hint 3: the formula \"riangle ABM = \triangle ACM \text{ (c.c.c)} \text{ \\text{ và } } AM \bot BC\" doesn't render (Unexpected character: '\b' at position 66: …ext{ và } } AM \b̲ot BC). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 4: the formula \"riangle ABM = \triangle ACM \text{ (c.c.c)} \text{ \\text{ và } } AM \bot BC\" doesn't render (Unexpected character: '\b' at position 66: …ext{ và } } AM \b̲ot BC). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "attempt 2 failed (local model request timed out); keeping attempt 1",
+    "usage: model=qwen3.6:35b in=6883 (cached 0) out=8043 (reasoning 4451) ≈ $0.0153",
+    "total ≈ $0.0153 over 2 attempt(s); lesson by qwen3.6:35b"
+   ],
+   "slept": false
+  },
+  {
+   "id": "g5",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 987,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 987 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g6",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 932,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 932 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g7",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 680,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 680 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g8",
+   "topic": "geometry",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 1019,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 1019 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  },
+  {
+   "id": "g9",
+   "topic": "geometry",
+   "difficulty": 2,
+   "format": "proof",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 1056,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed after 1056 s (local model request timed out); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (local model request timed out)"
+  }
+ ]
+}

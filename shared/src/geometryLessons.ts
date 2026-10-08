@@ -86,6 +86,20 @@ export const GEOMETRY_LESSONS: GeometryLesson[] = [
     evidence: ["ch-2 (EXP-010, Nemotron): \"(bằng bất đẳng thức Cauchy hoặc bằng đạo hàm)\"."],
     added: "2026-10-08",
   },
+  {
+    id: "no-unstated-special-case",
+    check: "steps",
+    rule: "Never assume a special case the problem doesn't state (an isosceles or right triangle, equal sides, a point being a midpoint): prove it from the givens or don't use it.",
+    evidence: ["PTNK 2024 4b (GEO-R1b, qwen3.6): \"Vì △ABD cân tại A\" — not given; the right angles derived from it (∠DAI = 90°, ∠HBD = 90°) were false on the figure."],
+    added: "2026-10-08",
+  },
+  {
+    id: "synthetic-not-vectors",
+    check: "grade",
+    rule: "Solve geometry synthetically (similar triangles, angle chasing, Thales, power of a point, areas) — never with vectors or coordinates unless the problem gives coordinates.",
+    evidence: ["hcm-2025 3b (GEO-R1b, qwen3.6): \"Đặt gốc vectơ tại A …\" to get EN/NF."],
+    added: "2026-10-08",
+  },
 ];
 
 /** The rules as a prompt block for a geometry problem. */

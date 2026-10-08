@@ -29,6 +29,8 @@ function clean(text: string): string {
     .replace(/\\(?:widehat|hat|angle)\s*\{?\s*((?:[A-Z]'*){1,3})\s*\}?/g, "∠$1")
     .replace(/\\(?:neq|ne)(?![a-zA-Z])/g, "≠")
     .replace(/\\cap(?![a-zA-Z])/g, "∩")
+    .replace(/\\perp(?![a-zA-Z])/g, "⊥")
+    .replace(/\\triangle\s*/g, "tam giác ")
     .replace(/[{}]/g, "")
     .replace(/\s+/g, " ");
 }
@@ -329,6 +331,24 @@ function defineConstructions(b: Builder, sentenceText: string): void {
     // "có H là trực tâm" with no triangle named: the main triangle.
     for (const m of text.matchAll(new RegExp(`(${PT}) là trực tâm(?!\\s+(?:của\\s+)?(?:các\\s+)?(?:tam giác\\s+)?${PT}${PT}${PT})`, "g"))) b.define(m[1]!, "orthocenter", tri);
   }
+  // "AH là đường cao của tam giác ABC (H trên BC)", "DK là đường cao của tam giác DEF": the foot on the opposite side.
+  for (const m of text.matchAll(new RegExp(`(${PT})(${PT}) là (?:một )?đường cao (?:của |trong )?tam giác (${PT})(${PT})(${PT})`, "g"))) {
+    const [v, foot, ...tri3] = [m[1]!, m[2]!, m[3]!, m[4]!, m[5]!];
+    if (!tri3.includes(v) || tri3.includes(foot)) continue;
+    const [p, q] = tri3.filter((x) => x !== v) as [string, string];
+    b.define(foot, "foot", [v, p, q]);
+  }
+  // "Kẻ EH ⊥ BC", "kẻ EH ⊥ BC và FG ⊥ BC tại H, G": the new endpoint is the foot of the perpendicular.
+  for (const m of text.matchAll(new RegExp(`(?:kẻ|hạ|vẽ)\\s+(${PT})(${PT})\\s*⊥\\s*(${PT})(${PT})((?:\\s*(?:,|và)\\s*${PT}${PT}\\s*⊥\\s*${PT}${PT})*)`, "gi"))) {
+    const pairs = [[m[1]!, m[2]!, m[3]!, m[4]!], ...[...(m[5] ?? "").matchAll(new RegExp(`(${PT})(${PT})\\s*⊥\\s*(${PT})(${PT})`, "g"))].map((x) => [x[1]!, x[2]!, x[3]!, x[4]!])];
+    for (const [x, y, p, q] of pairs) if (b.has(x!) && !b.has(y!)) b.define(y!, "foot", [x!, p!, q!]);
+  }
+  // "M là giao điểm của đường phân giác (trong) góc BAD với cạnh BD": the bisector from A passes through the incenter.
+  for (const m of text.matchAll(new RegExp(`(${PT}) là giao điểm (?:của )?(?:đường )?phân giác (?:trong )?(?:của )?(?:góc )?∠?\\s*(${PT})(${PT})(${PT}) (?:với|và) (?:cạnh |đoạn (?:thẳng )?|đường thẳng )?(${PT})(${PT})`, "g"))) {
+    const [name, p, v, q, x, y] = [m[1]!, m[2]!, m[3]!, m[4]!, m[5]!, m[6]!];
+    if (![p, v, q, x, y].every((z) => b.has(z))) continue;
+    b.define(name, "intersection", [v, b.helper(`I_${p}${v}${q}`, "incenter", [p, v, q]), x, y]);
+  }
   // "Kẻ ND vuông góc với BC tại D"
   for (const m of text.matchAll(new RegExp(`(${PT})(${PT}) vuông góc (?:với )?(?:đường thẳng |cạnh )?(${PT})(${PT}) tại (?:điểm )?(${PT})`, "g"))) {
     if (m[2] === m[5] && b.has(m[1]!)) b.define(m[5]!, "foot", [m[1]!, m[3]!, m[4]!]);
@@ -401,6 +421,11 @@ function defineConstructions(b: Builder, sentenceText: string): void {
     const t1 = tangentAt(m[2]!, (m[1] ?? m[3])!);
     const t2 = tangentAt(m[5]!, (m[4] ?? m[6])!);
     if (t1 && t2) b.define(m[7]!, "intersection", [...t1, ...t2]);
+  }
+  // "Tiếp tuyến tại A của đường tròn (O) cắt đường thẳng BC tại Q": the tangent is ⊥ OA at A — not the line AO.
+  for (const m of text.matchAll(new RegExp(`tiếp tuyến (?:tại (${PT}) của (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\)|của (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\) tại (${PT})) cắt (?:đường thẳng |cạnh |tia |đoạn (?:thẳng )?)?(${PT})(${PT}) (?:tại|ở) (?:điểm )?(${PT})`, "g"))) {
+    const t = tangentAt((m[1] ?? m[4])!, (m[2] ?? m[3])!);
+    if (t && b.has(m[5]!) && b.has(m[6]!)) b.define(m[7]!, "intersection", [...t, m[5]!, m[6]!]);
   }
   // "D, E, F là các tiếp điểm của đường tròn (I) nội tiếp tam giác ABC với BC, CA, AB"
   for (const m of text.matchAll(new RegExp(`${NAMES}\\s+(?:lần lượt\\s+)?là (?:các )?tiếp điểm của (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\)(?:\\s+nội tiếp tam giác (${PT})(${PT})(${PT}))?\\s+với (?:các cạnh\\s+)?${SEGMENTS}`, "g"))) {

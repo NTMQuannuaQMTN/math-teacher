@@ -203,7 +203,13 @@ export function checkLessonStructure(lesson: ModelLesson): { lesson: ModelLesson
   const num = (id: string) => Number(/(\d+)$/.exec(id)?.[1] ?? 0);
   const extraHint = (h: ModelLesson["hints"][number]) => num(h.stepId) > lesson.steps.length && num(h.id) > lesson.steps.length;
   const repairable = (h: ModelLesson["hints"][number], i: number) => !knownSteps.has(h.stepId) && (i > lastValid || extraHint(h));
-  if (lastStep && lastValid >= 0 && lesson.hints.some(repairable)) {
+  // Most hints point at steps that don't exist ("hint_1 → hint_2", "h1 → h1"): the model numbered them by the hints.
+  // Hint k leads to step k (the last step for any extra hints) — a repair, not a paid retry.
+  const unknownRefs = lesson.hints.filter((h) => !knownSteps.has(h.stepId)).length;
+  if (lesson.steps.length > 0 && lesson.hints.length > 0 && unknownRefs * 2 > lesson.hints.length) {
+    report.warnings.push("hints pointing to unknown steps were matched to the steps in order");
+    lesson = { ...lesson, hints: lesson.hints.map((h, i) => (knownSteps.has(h.stepId) ? h : { ...h, stepId: lesson.steps[Math.min(i, lesson.steps.length - 1)]!.id })) };
+  } else if (lastStep && lastValid >= 0 && lesson.hints.some(repairable)) {
     report.warnings.push("hints pointing past the last step were attached to it");
     lesson = { ...lesson, hints: lesson.hints.map((h, i) => (repairable(h, i) ? { ...h, stepId: lastStep } : h)) };
   }

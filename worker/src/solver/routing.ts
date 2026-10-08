@@ -128,3 +128,17 @@ export function hostedModelOptions(problemText: string, s: HostedSettings = {}) 
     ...(tier === "complex" ? { maxTokens: s.complexMaxTokens ?? 24_000, requestTimeoutMs: s.complexRequestTimeoutMs ?? 240_000 } : {}),
   };
 }
+
+/**
+ * SOCLAAS (qwen3.6:35b, ~120–330 tokens/s): more room than the free model's defaults — 12K truncated ordinary geometry
+ * lessons (GEO-R1b: g3, g5, g6, g9), and a truncated request is paid for and wasted. The gateway ends a request at
+ * ~240 s, so every tier stops at 230 s.
+ */
+export function soclaasModelOptions(problemText: string) {
+  const tier = problemTier(problemText);
+  return {
+    ...hostedModelOptions(problemText),
+    maxTokens: tier === "complex" ? 40_000 : tier === "standard" ? 24_000 : 16_000,
+    requestTimeoutMs: 230_000,
+  };
+}

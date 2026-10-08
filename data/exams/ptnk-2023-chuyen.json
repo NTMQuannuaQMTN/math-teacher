@@ -274,7 +274,7 @@
    "topic": "geometry",
    "kind": "prove",
    "stem": "Cho tam giác $ABC$. Gọi $D,E,F$ là các tiếp điểm của đường tròn $(I)$ nội tiếp tam giác $ABC$ với $BC,CA,AB$. Từ chân đường phân giác ngoài $L$ của góc $\\widehat{BAC}$ ($L$ thuộc $BC$), kẻ tiếp tuyến $LH$ đến đường tròn $(I)$ ($H$ thuộc $(I)$, $H\\ne D$).",
-   "question": "Gọi $S$ là trung điểm $BC$, $KJ$ cắt lại $(I)$ tại $R$. Chứng minh rằng $EF$, $IR$ và $AS$ đồng quy.",
+   "question": "$AH$ cắt lại $(I)$ tại $K$. Gọi $G$ là trọng tâm tam giác $KEF$ và $J$ là giao điểm của $DG$ với $EF$. Gọi $S$ là trung điểm $BC$, $KJ$ cắt lại $(I)$ tại $R$. Chứng minh rằng $EF$, $IR$ và $AS$ đồng quy.",
    "problem_text": "Cho tam giác $ABC$. Gọi $D,E,F$ là các tiếp điểm của đường tròn $(I)$ nội tiếp tam giác $ABC$ với $BC,CA,AB$. Từ chân đường phân giác ngoài $L$ của góc $\\widehat{BAC}$ ($L$ thuộc $BC$), kẻ tiếp tuyến $LH$ đến đường tròn $(I)$ ($H$ thuộc $(I)$, $H\\ne D$). Gọi $S$ là trung điểm $BC$, $KJ$ cắt lại $(I)$ tại $R$. Chứng minh rằng $EF$, $IR$ và $AS$ đồng quy.",
    "diagram": "described in text (incircle configuration)",
    "official_answer": "proof",

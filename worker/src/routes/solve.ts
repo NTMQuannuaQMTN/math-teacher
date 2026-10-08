@@ -17,7 +17,7 @@ import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { solveProblem } from "../solver/pipeline";
-import { hostedModelOptions, problemTier, selectSolverModelIds } from "../solver/routing";
+import { hostedModelOptions, problemTier, selectSolverModelIds, soclaasModelOptions } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import type { RouteContext } from "./scans";
 
@@ -133,8 +133,7 @@ function createModels(env: Env, request: Request, problemText: string): { model:
   // SOCLAAS (NUS, OpenAI-compatible, paid per token): qwen3.6:35b ("default") solved 13/13 PTNK 2025 parts at
   // ≈ $0.03 each (PTNK25-S2). Daily spending cap; on an outright failure the free OpenRouter model gets a turn.
   if (provider === "soclaas" && env.SOCLAAS_API_KEY) {
-    // ~330 tokens/s; the gateway ends a request at ~240 s, so stop just before it.
-    const o = hostedModelOptions(problemText, { complexMaxTokens: 40_000, complexRequestTimeoutMs: 230_000 });
+    const o = soclaasModelOptions(problemText);
     const soclaas = new LocalJsonModel(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1", env.SOCLAAS_MODEL || "qwen3.6:35b", {
       apiKey: env.SOCLAAS_API_KEY,
       thinking: false,

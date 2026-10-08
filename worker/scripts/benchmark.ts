@@ -19,7 +19,7 @@ import { verifyLesson } from "../../shared/src/verify";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { LocalJsonModel } from "../src/solver/localModel";
 import { solveProblem } from "../src/solver/pipeline";
-import { hostedModelOptions } from "../src/solver/routing";
+import { hostedModelOptions, soclaasModelOptions } from "../src/solver/routing";
 import { PROMPT_VERSION } from "../src/solver/prompts";
 import { grade, answerText, type BenchItem, type Grade } from "./lib/grade";
 import { CachedModel, OfflineMiss, SPEND } from "./lib/modelCache";
@@ -137,7 +137,7 @@ const production = !!hosted?.prod;
 const solveLimitMs = production ? Number(devVar("SOLVE_TIMEOUT_MS") ?? 170_000) : 40 * 60_000;
 const modelFor = (problemText: string) => {
   if (!production) return cached!;
-  const o = hostedModelOptions(problemText);
+  const o = hosted!.keyVar === "SOCLAAS_API_KEY" ? soclaasModelOptions(problemText) : hostedModelOptions(problemText);
   return new CachedModel(
     new LocalJsonModel(hosted!.url, hosted!.model, { apiKey: devVar(hosted!.keyVar ?? "LOCAL_LLM_API_KEY"), ...o }),
     `hosted;prompt=${PROMPT_VERSION};effort=${o.reasoningEffort};max=${o.maxTokens ?? 12_000}`,

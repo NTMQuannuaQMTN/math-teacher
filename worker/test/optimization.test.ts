@@ -883,3 +883,13 @@ describe("a congested provider is abandoned early (SOCLAAS, 2026-10-08)", () => 
     vi.unstubAllGlobals();
   });
 });
+
+describe("hints numbered by the hints are matched to the steps (GEO-R1b: g2, g4, 4b, 4c)", () => {
+  it("repairs instead of retrying", () => {
+    const l = inequalityLesson();
+    l.hints = l.hints.map((h, i) => ({ ...h, stepId: `hint_${i + 2}` }));
+    const v = verifyLesson(l);
+    expect(v.lesson.hints.map((h) => h.stepId)).toEqual(["s1", "s2"]);
+    expect(v.feedback.join(" ")).not.toMatch(/points to unknown step/);
+  });
+});

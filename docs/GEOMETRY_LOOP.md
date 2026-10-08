@@ -49,3 +49,19 @@ prompt/rule changes justify re-solving, and only the items that failed.
 Audit after the fixes: 40/61 clean (was 35); false-claim steps 59 (was 68) — every removed flag was a false alarm of ours.
 Round 1 (24 dev problems, qwen3.6) did not run: the SOCLAAS gateway was congested (< 8 tokens/s; a 1,500-token request
 got no answer in 200 s). Spent $0.015. Added a streaming watchdog so a congested provider is abandoned after 45 s.
+
+## Round 1 — 24 development problems solved by qwen3.6 (GEO-R1b, $0.55)
+
+Results: 13 lessons, 11 failed to produce one (truncated at 12K/24K tokens — the benchmark had not used the SOCLAAS
+settings — or the gateway slowed). Audit of the 15 lessons: 7 clean (incl. Câu 4 and g1–g6).
+
+| Finding | Classification | Action |
+|---|---|---|
+| Truncation on ordinary problems (g3, g5, g6, g9) — paid and wasted | **ours**: the benchmark used the free model's limits; 12K is too small for this model | `soclaasModelOptions` shared by the route and the benchmark (16K/24K/40K, 230 s) |
+| "hint_1 points to unknown step hint_2" (g2, g4, 4b, 4c) → a paid retry | **ours**: a structural slip treated as a failure | hints with unknown steps are matched to the steps in order |
+| 2023 5d: "KJ" used but K, J undefined (the model said so) | **our dataset**: 5d omitted the definitions from 5c | 5d text now includes them (source + dataset) |
+| Points the solution introduces not drawn (10) | **our parser** | "AH là đường cao của △ABC", "Kẻ EH ⊥ BC", "giao điểm của đường phân giác góc BAD với cạnh BD": 10 → 3 |
+| hcm 3b: "∠QAB = ∠ACB", "QB·DC = QC·DB" false | **our parser**: Q (tangent at A ∩ BC) was the model's AO ∩ BC | "tiếp tuyến tại A của (O) cắt BC tại Q" — with the right Q every claim of the lesson is true |
+| hcm 3b: "Đặt gốc vectơ tại A" | model error (grade) | rule `synthetic-not-vectors` |
+| 2024 4b: "Vì △ABD cân tại A" (not given) → false right angles | model error | rule `no-unstated-special-case` |
+| 2025 4c: "I, O, D, S concyclic" (S on the tangent at D to (O)) | model error, covered by `tangent-radius` | — |

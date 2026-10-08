@@ -144,7 +144,7 @@ for sub, text, tech, diff, ins in [
     ("5a", r"Chứng minh rằng đường tròn ngoại tiếp tam giác $ALH$ đi qua tâm nội tiếp $I$.", ["tech.right_angle_concyclic"], 2, r"$\widehat{LAI}=\widehat{LHI}=90^\circ$."),
     ("5b", r"Chứng minh $\widehat{BAD}=\widehat{CAH}$.", ["tech.angle_chasing", "tech.right_angle_concyclic"], 3, r"$A,H,D,I,L$ are concyclic (diameter $IL$); equal chords $ID=IH$ give equal angles at $A$."),
     ("5c", r"$AH$ cắt lại $(I)$ tại $K$. Gọi $G$ là trọng tâm tam giác $KEF$ và $J$ là giao điểm của $DG$ với $EF$. Chứng minh $KJ\perp EF$.", ["tech.angle_chasing", "tech.midline_symmetry"], 4, r"$EFDK$ is an isosceles trapezoid; $J$ divides the midline so that $NKJT$ is a rectangle."),
-    ("5d", r"Gọi $S$ là trung điểm $BC$, $KJ$ cắt lại $(I)$ tại $R$. Chứng minh rằng $EF$, $IR$ và $AS$ đồng quy.", ["tech.known_lemma", "tech.auxiliary_parallel"], 5, r"Lemma: $AS$, $DI$, $EF$ are concurrent; $D,I,R$ are collinear because $\widehat{DER}=90^\circ$."),
+    ("5d", r"$AH$ cắt lại $(I)$ tại $K$. Gọi $G$ là trọng tâm tam giác $KEF$ và $J$ là giao điểm của $DG$ với $EF$. Gọi $S$ là trung điểm $BC$, $KJ$ cắt lại $(I)$ tại $R$. Chứng minh rằng $EF$, $IR$ và $AS$ đồng quy.", ["tech.known_lemma", "tech.auxiliary_parallel"], 5, r"Lemma: $AS$, $DI$, $EF$ are concurrent; $D,I,R$ are collinear because $\widehat{DER}=90^\circ$."),
 ]:
     q(E, sub, "geometry", text, "proof", "official", None, ["geo.incircle_tangents", "geo.cyclic_quad", "geo.angle_bisector_external"] + (["geo.isosceles_trapezoid", "geo.centroid"] if sub in ("5c",) else []) + (["geo.midpoint_parallel"] if sub == "5d" else []),
       tech, "specialized_grade9" if diff <= 3 else "olympiad_style", diff, ins, "prove", stem=STEM5, diagram="described in text (incircle configuration)")
