@@ -268,6 +268,23 @@ describe("pipeline: planner first", () => {
     expect(result.verification.checks.some((c) => c.label.startsWith("Chứng minh được kiểm tra từng bước"))).toBe(true);
   });
 
+  it("serves a long verified proof (Câu 4) instead of calling the model", async () => {
+    const model = new NoModel();
+    const result = await solveProblem(model, VN_GRADE_9, datasetProblem("ch-4"), { signal: new AbortController().signal });
+    expect(model.calls).toBe(0);
+    expect(result.model).toBe("proof-planner");
+    expect(result.lesson.steps.length).toBeLessThanOrEqual(14);
+  });
+
+  it("falls back to the proved claims when the model fails, and says what is missing", async () => {
+    const model = new NoModel();
+    const result = await solveProblem(model, VN_GRADE_9, datasetProblem("ptnk-2025-chuyen_4b"), { signal: new AbortController().signal, maxAttempts: 1 });
+    expect(model.calls).toBe(1);
+    expect(result.model).toBe("proof-planner");
+    expect(result.verification.status).toBe("partial");
+    expect(result.lesson.finalAnswer.text).toMatch(/chưa được giải/);
+  });
+
   it("calls the model when the planner is turned off", async () => {
     const model = new NoModel();
     await expect(solveProblem(model, VN_GRADE_9, TANGENTS, { signal: new AbortController().signal, proofPlanner: false, maxAttempts: 1 })).rejects.toThrow();

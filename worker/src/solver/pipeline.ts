@@ -83,33 +83,59 @@ export interface SolveOptions {
 }
 
 /** The planner's lesson, when it can stand alone: every claim proved and verified, and short enough to read. */
-export function plannerLesson(problemText: string, log: (m: string) => void = () => undefined, onPlan?: (plan: ProofPlan) => void): { plan: ProofPlan; result: { lesson: ModelLesson; verification: Verification } | null } {
+type PlannerResult = { lesson: ModelLesson; verification: Verification };
+
+/** The lesson for a plan's proved goals, through the schema and the lesson checks (null if it fails them). */
+function plannerResult(plan: ProofPlan, statement: string, log: (m: string) => void): PlannerResult | null {
+  const lesson = explainPlan(plan, { statement });
+  const unproved = plan.goals.filter((g) => !g.proved).map((g) => `${g.part ? `(${g.part}) ` : ""}${g.label}`);
+  const notUnderstood = plan.unparsed.map((u) => u.replace(/^[a-f]?:\s*/, ""));
+  const missing = [...unproved, ...notUnderstood, ...plan.computeParts.map((c) => c.slice(0, 120))];
+  if (missing.length) {
+    // A partial lesson says plainly what it does not cover.
+    lesson.finalAnswer.text = `${lesson.finalAnswer.text} Phần chưa được giải trong bài này: ${missing.map((m) => m.trim().replace(/[.;:]+$/, "")).join("; ")}.`.slice(0, 1500);
+  }
+  const parsed = ModelLessonSchema.safeParse(lesson);
+  if (!parsed.success) {
+    log(`proof planner lesson failed the schema: ${parsed.error.issues.slice(0, 2).map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
+    return null;
+  }
+  const checked = verifyLesson(tidy(parsed.data), { problemText: statement });
+  if (checked.verification.status === "unverified") {
+    log(`proof planner lesson failed the lesson checks: ${checked.feedback.slice(0, 3).join(" | ")}`);
+    return null;
+  }
+  const proofChecks = plan.goals.filter((g) => g.proved).map((g) => ({ label: `Chứng minh được kiểm tra từng bước: ${g.label}`.slice(0, 200), passed: true }));
+  const status = missing.length && checked.verification.status === "verified" ? "partial" : checked.verification.status;
+  const verification: Verification = { ...checked.verification, status, checks: [...proofChecks, ...checked.verification.checks].slice(0, 40) };
+  return { lesson: checked.lesson, verification };
+}
+
+/**
+ * The planner's lesson, when it can stand alone: every claim proved and verified (a long proof is shown with merged
+ * steps — a verified proof is better than a model attempt that may time out). `partial` is the lesson for the claims
+ * that were proved, used when the model fails.
+ */
+export function plannerLesson(
+  problemText: string,
+  log: (m: string) => void = () => undefined,
+  onPlan?: (plan: ProofPlan) => void,
+): { plan: ProofPlan; result: PlannerResult | null; partial: () => PlannerResult | null } {
   const statement = normalizeProblemText(problemText);
   let plan: ProofPlan;
   try {
     plan = planProof(statement);
   } catch (err) {
     log(`proof planner failed: ${(err as Error).message.slice(0, 200)}`);
-    return { plan: { status: "PARSING_UNCERTAIN", reason: "planner error", figure: null, goals: [], unparsed: [], auxiliary: [], computeParts: [], stats: { givens: 0, facts: 0, rounds: 0, elapsedMs: 0 }, log: [] }, result: null };
+    const empty: ProofPlan = { status: "PARSING_UNCERTAIN", reason: "planner error", figure: null, goals: [], unparsed: [], auxiliary: [], computeParts: [], stats: { givens: 0, facts: 0, rounds: 0, elapsedMs: 0 }, log: [] };
+    return { plan: empty, result: null, partial: () => null };
   }
   onPlan?.(plan);
   const readability = planReadability(plan);
   log(`proof planner: ${plan.status} — ${plan.reason} (${plan.stats.elapsedMs} ms, ${plan.stats.facts} facts; ${readability.steps} steps, ≤${readability.maxCited} cited)`);
-  if (plan.status !== "VERIFIED" || !readability.readable) return { plan, result: null };
-  const lesson = explainPlan(plan, { statement });
-  const parsed = ModelLessonSchema.safeParse(lesson);
-  if (!parsed.success) {
-    log(`proof planner lesson failed the schema: ${parsed.error.issues.slice(0, 2).map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
-    return { plan, result: null };
-  }
-  const checked = verifyLesson(tidy(parsed.data), { problemText: statement });
-  if (checked.verification.status === "unverified") {
-    log(`proof planner lesson failed the lesson checks: ${checked.feedback.slice(0, 3).join(" | ")}`);
-    return { plan, result: null };
-  }
-  const proofChecks = plan.goals.map((g) => ({ label: `Chứng minh được kiểm tra từng bước: ${g.label}`.slice(0, 200), passed: g.proved }));
-  const verification: Verification = { ...checked.verification, checks: [...proofChecks, ...checked.verification.checks].slice(0, 40) };
-  return { plan, result: { lesson: checked.lesson, verification } };
+  const partial = () => (plan.goals.some((g) => g.proved) && plan.figure ? plannerResult(plan, statement, log) : null);
+  if (plan.status !== "VERIFIED") return { plan, result: null, partial };
+  return { plan, result: plannerResult(plan, statement, log), partial };
 }
 
 export function parseLesson(text: string): { lesson: ModelLesson } | { problems: string[] } {
@@ -425,21 +451,36 @@ export async function solveProblem(
   // …and the general rules learned from auditing earlier geometry solutions (shared/src/geometryLessons.ts).
   // Geometry proofs: the deterministic planner first. A complete verified plan is the lesson (no model call).
   let plannerNote: string | null = null;
+  let plannerPartial: (() => PlannerResult | null) | null = null;
+  const usage: Record<string, Usage> = {};
   if (withFigure && proofPlanner) {
-    const { plan, result } = plannerLesson(problemText, log, onPlan);
+    const { plan, result, partial } = plannerLesson(problemText, log, onPlan);
     if (result) {
       log(`lesson by the proof planner; no model call`);
       return { ...result, attempts: 0, durationMs: Date.now() - started, usage: {}, costUsd: 0, model: "proof-planner" };
     }
     plannerNote = verifiedFactsNote(plan);
+    plannerPartial = partial;
   }
+  try {
+    return await solveWithModel();
+  } catch (err) {
+    // The model failed (timeout, gateway, gave up): the claims the planner proved are still worth showing.
+    const fallback = plannerPartial?.();
+    if (!fallback) throw err;
+    log(`model failed (${(err as Error).message.slice(0, 120)}); serving the proof planner's partial lesson`);
+    let costUsd = 0;
+    for (const [name, u] of Object.entries(usage)) costUsd += estimateCost(name, u) ?? 0;
+    return { ...fallback, attempts: 0, durationMs: Date.now() - started, usage, costUsd, model: "proof-planner" };
+  }
+
+  async function solveWithModel(): Promise<SolveResult> {
   const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", plannerNote ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
   ];
   let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number; gaveUp: boolean } | null = null;
-  const usage: Record<string, Usage> = {};
   const finish = (attempts: number, producedBy: string) => {
     let costUsd = 0;
     for (const [name, u] of Object.entries(usage)) {
@@ -572,4 +613,5 @@ export async function solveProblem(
     throw new OcrFailure("incomplete", "the model could not finish a problem that is within the curriculum", true);
   }
   return { lesson: best.lesson, verification: best.verification, ...finish(maxAttempts, best.model) };
+  }
 }
