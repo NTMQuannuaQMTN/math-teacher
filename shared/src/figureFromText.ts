@@ -15,7 +15,8 @@
 import { checkClaims, statementGivens, statementParts } from "./claims";
 import { constructNamedPoints } from "./pointDefinitions";
 import { evaluateFigureCheck, resolveFigure, dist, type ResolvedFigure } from "./geometry";
-import type { CircleDef, Figure, LineDef, ModelLesson, PointDef } from "./solution";
+import type { CircleDef, Figure, FigureCheck, LineDef, ModelLesson, PointDef } from "./solution";
+import { normalizeFigureChecks } from "./verify";
 
 const PT = "[A-Z]'*";
 const deg = (d: number) => (d * Math.PI) / 180;
@@ -423,10 +424,17 @@ function adoptFrom(lesson: ModelLesson, statement: string): { lesson: ModelLesso
   if (claims.some((c) => !c.passed)) return { lesson, adopted: false, reason: "a claim is false on the built figure" };
 
   const model = lesson.figure;
-  // The model's own givens must hold too: a fact the parser missed ("góc A bằng 40 độ" read wrongly) shows up here.
+  // The model's own givens must hold too: a fact the parser missed ("góc A bằng 40 độ" read wrongly) shows up here —
+  // unless the statement fixes the shape exactly: then a contradicting "given" is the model's error (g1: ∠ABC = 65°
+  // for "Â = 65°"), and it is dropped instead of discarding the correct figure (which cost a paid retry).
+  const contradicts = (c: FigureCheck) => {
+    if (c.role !== "given") return false;
+    const n = normalizeFigureChecks([c]).checks[0];
+    return !!n && n.refs.every((r) => ids.has(r) || built.figure.circles.some((x) => x.id === r)) && !evaluateFigureCheck(n, built.resolved).passed;
+  };
   if (model) {
-    const missed = model.checks.filter((c) => c.role === "given" && c.refs.every((r) => ids.has(r) || built.figure.circles.some((x) => x.id === r)) && !evaluateFigureCheck(c, built.resolved).passed);
-    if (missed.length > 0) return { lesson, adopted: false, reason: `a given of the model fails on the built figure (${missed[0]!.kind})` };
+    const missed = model.checks.filter(contradicts);
+    if (missed.length > 0 && built.figure.scale !== "exact") return { lesson, adopted: false, reason: `a given of the model fails on the built figure (${missed[0]!.kind})` };
   }
   const base = built.figure;
   if (!model) return { lesson: { ...lesson, figure: base }, adopted: true, reason: "statement figure (the model drew none)" };
@@ -448,7 +456,7 @@ function adoptFrom(lesson: ModelLesson, statement: string): { lesson: ModelLesso
   const lines = [...model.lines, ...base.lines.filter((l) => !lineIds.has(l.id) && !model.lines.some((m) => same(m, l)))].slice(0, 40);
   return {
     // Whether the givens fix the shape is a property of the problem, not of the model's drawing.
-    lesson: { ...lesson, figure: { ...model, scale: base.scale, points: points.slice(0, 30), circles: circles.slice(0, 6), lines } },
+    lesson: { ...lesson, figure: { ...model, scale: base.scale, points: points.slice(0, 30), circles: circles.slice(0, 6), lines, checks: model.checks.filter((c) => !contradicts(c)) } },
     adopted: true,
     reason: "statement figure as the base",
   };

@@ -478,7 +478,11 @@ export async function solveProblem(
       }
       problems = result.feedback;
       log(`attempt ${attempt}: ${result.verification.status}, ${problems.length} problem(s)${problems.length ? `: ${problems.slice(0, 3).join(" | ")}` : ""}`);
-      const worthRetry = retryPolicy === "any" ? problems : problems.filter((p) => !MINOR_FEEDBACK.some((re) => re.test(p)));
+      // A verified answer with a usable figure and only minor drawing remarks left: a paid retry isn't worth it. A geometry
+      // lesson that would end up without any figure still gets its retry (figures matter to the student).
+      const onlyFigure =
+        result.verification.status === "verified" && !!result.lesson.figure && problems.every((p) => /^figure: .*(left out of the figure|has \d+ points)|figure is missing/.test(p));
+      const worthRetry = onlyFigure ? [] : retryPolicy === "any" ? problems : problems.filter((p) => !MINOR_FEEDBACK.some((re) => re.test(p)));
       if (worthRetry.length === 0) {
         if (problems.length) log(`attempt ${attempt}: only minor feedback; not retrying`);
         return { lesson: result.lesson, verification: result.verification, ...finish(attempt, current.model) };

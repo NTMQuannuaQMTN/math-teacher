@@ -545,7 +545,10 @@ const CHECK_ARITY: Record<FigureCheck["kind"], number> = {
 export function normalizeFigureChecks(checks: FigureCheck[]): { checks: FigureCheck[]; dropped: string[] } {
   const out: FigureCheck[] = [];
   const dropped: string[] = [];
-  for (const c of checks) {
+  for (const raw of checks) {
+    // A number written as the last ref ("equal_length A, D, 4", "angle_value A, B, C, 65") is the value.
+    const last = raw.refs.at(-1) ?? "";
+    const c = /^-?\d+(?:[.,]\d+)?$/.test(last) ? { ...raw, refs: raw.refs.slice(0, -1), value: raw.value ?? Number(last.replace(",", ".")) } : raw;
     const n = CHECK_ARITY[c.kind];
     const fits = c.kind === "collinear" || c.kind === "concyclic" ? c.refs.length >= n : c.refs.length === n;
     if (fits) out.push(c);
@@ -553,6 +556,8 @@ export function normalizeFigureChecks(checks: FigureCheck[]): { checks: FigureCh
     else if (c.kind === "on_circle" && c.refs.length >= 4) out.push({ ...c, kind: "concyclic" });
     else if ((c.kind === "equal_length" || c.kind === "length_ratio") && c.refs.length === 2 && c.value !== null) out.push({ ...c, kind: "length_value" });
     else if (c.kind === "equal_angle" && c.refs.length === 3 && c.value !== null) out.push({ ...c, kind: "angle_value" });
+    // "perpendicular B, M, A": the angle at the middle point is right — BM ⊥ MA.
+    else if (c.kind === "perpendicular" && c.refs.length === 3) out.push({ ...c, refs: [c.refs[0]!, c.refs[1]!, c.refs[1]!, c.refs[2]!] });
     else dropped.push(`${c.kind} check on ${c.refs.join(", ")} has ${c.refs.length} points (needs ${n}); it was left out of the figure`);
   }
   return { checks: out, dropped };
@@ -759,6 +764,8 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
   // The statement's own construction is the base of the figure whenever it can be built and checked: every point the
   // statement defines is drawn exactly from its definition, not where the model put it.
   input = adoptStatementFigure(input, problemText).lesson;
+  // Repairable check slips ("equal_length A, D, 4", "perpendicular B, M, A") before the structure check would reject them.
+  if (input.figure) input = { ...input, figure: { ...input.figure, checks: normalizeFigureChecks(input.figure.checks).checks } };
   // A max/min problem's steps describe the optimal configuration ("at the maximum AB = CD = 5"): the drawn figure is one
   // admissible example, so the steps' claims are not measured on it.
   const extremal = /lớn nhất|nhỏ nhất|giá trị (?:lớn|nhỏ)|\b(?:maximum|minimum|maximi[sz]e|minimi[sz]e|largest|smallest)\b/iu.test(problemText ?? input.analysis.statement);
