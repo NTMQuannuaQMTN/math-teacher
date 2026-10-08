@@ -77,3 +77,16 @@ Round 2 was lost to the gateway ("fetch failed", stalls); g8 became clean. Round
 | "(B, C là các tiếp điểm)" read as a circle (B) → "missing circle" retry | **our parser** | circle names only "(O)", "(O; R)", "(O, R)" |
 | Second attempts caused by the model's own figure checks: swapped givens (g1 "∠ABC = 65°" for Â = 65°; g5 "∠ABC = 90°" for "vuông tại A"), "equal_length A, D, 4", "perpendicular B, M, A", a cyclic definition (g6) | **ours**: repairable slips rejected the correct statement figure / the model figure | checks normalised before the structure check; an exact statement figure wins over a contradicting model "given" (dropped, no retry); replayed offline: g1, g5, g6 now verified at the first attempt |
 | A verified answer with only minor drawing remarks still retried | cost policy | no retry when the answer is verified, a figure remains, and only minor drawing remarks are left |
+
+## Round 4 — remaining failures (GEO-R4, $0.20)
+
+The gateway was slow again (7–95 chars/s on half the requests: no lesson for 2023 5b–5d, 2024 4a/4b, hcm 3a/3b).
+Newly clean: g9, 2023 5a. The three flagged lessons are model errors, each confirmed by the measured numbers:
+
+| Claim | Measured | Truth | Rule |
+|---|---|---|---|
+| 2025 4a "∠AED = ∠EBD" | 14.88° vs 7.44° | ∠AED is exterior to the isosceles △EBD: 2·∠EBD | `exterior-angle` |
+| 2025 4c "∠IKR = ∠IOR" | 172.56° vs 7.44° | opposite sides of the chord: they sum to 180° | `same-side-or-opposite` |
+| 2024 4d "∠ACE = 90°" | 86.6° | the right angle is ∠AEC (AC is a diameter) | `angle-vertex-in-the-middle` |
+
+Also: problems that keep hidden thinking get 40K tokens (ch-2 truncated at 24K with thinking).

@@ -138,13 +138,14 @@ const NEEDS_REASONING = /lớn nhất|nhỏ nhất|giá trị (?:lớn|nhỏ)|ch
 
 export function soclaasModelOptions(problemText: string) {
   const tier = problemTier(problemText);
+  // Thinking only where it pays off. Off for plain computations (g1–g6: same verified answers at ~¼ of the tokens);
+  // on for hard problems and for anything that needs an argument — an extremum, a proof, an inequality (ch-2 "find the
+  // largest perimeter" answered 16 instead of 18 without it). Thinking needs room: ch-2 with it truncated at 24K.
+  const thinking = tier === "complex" || NEEDS_REASONING.test(problemText.normalize("NFC"));
   return {
     ...hostedModelOptions(problemText),
-    maxTokens: tier === "complex" ? 40_000 : tier === "standard" ? 24_000 : 16_000,
+    maxTokens: thinking ? 40_000 : tier === "standard" ? 24_000 : 16_000,
     requestTimeoutMs: 230_000,
-    // Thinking only where it pays off. Off for plain computations (g1–g6: same verified answers at ~¼ of the tokens);
-    // on for hard problems and for anything that needs an argument — an extremum, a proof, an inequality (ch-2 "find the
-    // largest perimeter" answered 16 instead of 18 without it).
-    gatewayThinking: tier === "complex" || NEEDS_REASONING.test(problemText.normalize("NFC")),
+    gatewayThinking: thinking,
   };
 }

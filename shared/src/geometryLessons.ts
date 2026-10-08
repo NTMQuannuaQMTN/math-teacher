@@ -100,6 +100,27 @@ export const GEOMETRY_LESSONS: GeometryLesson[] = [
     evidence: ["hcm-2025 3b (GEO-R1b, qwen3.6): \"Đặt gốc vectơ tại A …\" to get EN/NF."],
     added: "2026-10-08",
   },
+  {
+    id: "angle-vertex-in-the-middle",
+    check: "steps",
+    rule: "In ∠XYZ the vertex is the middle letter Y. The right angle inscribed in a semicircle on diameter AC at E is ∠AEC (vertex E), not ∠ACE.",
+    evidence: ["PTNK 2024 4d (GEO-R4, qwen3.6): \"∠ACE = 90°\" (measured 86.6°) for the angle at E subtending the diameter AC."],
+    added: "2026-10-08",
+  },
+  {
+    id: "exterior-angle",
+    check: "steps",
+    rule: "An exterior angle of a triangle equals the SUM of the two remote interior angles (in an isosceles triangle, twice a base angle) — not one of them.",
+    evidence: ["PTNK 2025 4a (GEO-R4): \"∠AED = ∠EBD\" — measured 14.88° vs 7.44°: ∠AED is exterior to the isosceles triangle EBD (EB = ED), so it is 2·∠EBD."],
+    added: "2026-10-08",
+  },
+  {
+    id: "same-side-or-opposite",
+    check: "steps",
+    rule: "Two angles subtending the same chord of a circle are equal only if their vertices are on the same side of the chord; on opposite sides they add up to 180°. Check the side before writing \"=\".",
+    evidence: ["PTNK 2025 4c (GEO-R4): \"∠IKR = ∠IOR\" — measured 172.56° vs 7.44° (they sum to 180°)."],
+    added: "2026-10-08",
+  },
 ];
 
 /** The rules as a prompt block for a geometry problem. */
