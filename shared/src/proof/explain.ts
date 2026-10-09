@@ -409,7 +409,23 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       .replace(/ \(⟦([^⟧]+)⟧\)/g, (all, k: string) => (finalId.get(k) === own ? "" : all)) // a fact of this same step: no citation
       .replace(/⟦([^⟧]+)⟧/g, (_, k: string) => (finalId.get(k) ? `bước ${finalId.get(k)!.slice(1)}` : "chứng minh trên"));
   for (const st of steps) st.explanation = cite(st.explanation, st.id);
-  for (const h of hints) h.explanation = cite(h.explanation);
+  // Hints are read before the solution: they never point at solution steps. A fact another hint leads to is cited as
+  // that hint ("gợi ý 1"); anything else is stated without a reference.
+  // In proof order (a hint may build on an earlier one), renumbered.
+  hints.sort((a, b) => Number(a.stepId.slice(1)) - Number(b.stepId.slice(1)));
+  hints.forEach((h, i) => (h.id = `h${i + 1}`));
+  const hintOfFact = new Map<string, number>();
+  hints.forEach((h, i) => {
+    for (const [k, sid] of finalId) if (sid === h.stepId && !hintOfFact.has(k)) hintOfFact.set(k, i + 1);
+  });
+  hints.forEach((h, i) => {
+    h.explanation = h.explanation
+      .replace(/ \(⟦([^⟧]+)⟧\)/g, (_, k: string) => {
+        const n = hintOfFact.get(k);
+        return n !== undefined && n < i + 1 ? ` (gợi ý ${n})` : "";
+      })
+      .replace(/⟦([^⟧]+)⟧/g, "");
+  });
 
   const goalsText = plan.goals.filter((g) => g.proved).map((g) => `${g.part ? `(${g.part}) ` : ""}${g.label}`);
   const givens = plan.goals
