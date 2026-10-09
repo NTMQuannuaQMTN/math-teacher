@@ -258,6 +258,9 @@ describe("explanation", () => {
     expect(at("∠IHD = ∠IDK")).toBeLessThan(at("I, D, J, H cùng thuộc"));
     // c) "A, G, D thẳng hàng và AL, GJ cắt nhau trên (I)".
     expect(at("A, G, D thẳng hàng")).toBeLessThan(at("AL, GJ cắt nhau"));
+    // The auxiliary point P is defined in the first step that mentions it.
+    const firstP = lesson.steps.findIndex((s) => /P/.test(s.title + s.explanation));
+    expect(lesson.steps[firstP]!.explanation.startsWith("Gọi P là")).toBe(true);
     // No step leaps with "cộng, trừ các góc" without the chain of equalities.
     for (const s of lesson.steps) expect(s.explanation).not.toMatch(/\(cộng, trừ các góc\)\.$/m);
   });

@@ -411,7 +411,8 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     const aux = it.goal ? plan.auxiliary.find((a) => it.goal!.fact.t === "col" && it.goal!.fact.p.includes(a.id)) : undefined;
     if (aux && it.goal && it.goal.fact.t === "col") {
       const others = it.goal.fact.p.filter((x) => x !== aux.id).join("");
-      ls.unshift(`${aux.text}. Ta chứng minh ${it.goal.fact.p.join(", ")} thẳng hàng.`);
+      // (The point itself is defined where it is first mentioned — see "Auxiliary points" below.)
+      ls.unshift(`Ta chứng minh ${it.goal.fact.p.join(", ")} thẳng hàng.`);
       const meet = /^(\S+), (\S+) cắt nhau trên (.+)$/.exec(it.goal.label);
       ls.push(
         meet
@@ -511,6 +512,19 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       stepId: sid,
       focus: [...new Set([...factPoints(g.fact), ...h.focus])].slice(0, 10),
     });
+  }
+
+  // Auxiliary points: defined in the first step (and the first hint) that mentions them, never used before.
+  const mentions = (t: string | null | undefined, id: string) => !!t && new RegExp(`(?<![\\p{L}])[A-Z']*${id}(?!')[A-Z']*(?![\\p{Ll}])`, "u").test(t.replace(/\\[a-zA-Z]+/g, " "));
+  for (const a of plan.auxiliary) {
+    const st = steps.find((x) => mentions(x.title, a.id) || mentions(x.explanation, a.id) || mentions(x.math, a.id));
+    if (st) {
+      st.explanation = `${a.text}.\n${st.explanation}`.slice(0, 1500);
+      // …and the figure shows it from that step on.
+      if (!st.geometryActions.some((g) => g.action === "show" && g.targets.includes(a.id)) && st.geometryActions.length < 4) st.geometryActions.push({ action: "show", targets: [a.id] });
+    }
+    const h = hints.find((x) => mentions(x.question, a.id) || mentions(x.explanation, a.id) || mentions(x.math, a.id));
+    if (h) h.explanation = `${a.text}.\n${h.explanation}`.slice(0, 1500);
   }
 
   // Step numbers for "(bước N)" citations.
