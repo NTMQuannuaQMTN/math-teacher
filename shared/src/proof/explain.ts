@@ -16,6 +16,7 @@ import type { Derivation } from "./engine";
 import { factKey, factLatex, factPoints, factText, type Fact } from "./facts";
 import { resolveFigure } from "../geometry";
 import { method } from "./methods";
+import { angleChain, lengthChain, type Premise } from "./chain";
 import type { PlanGoal, ProofPlan } from "./planner";
 
 const MAX_STEPS = 14;
@@ -58,6 +59,41 @@ function givenReason(d: Derivation): string {
 
 /** Point positions of the plan's figure (for naming a quadrilateral in order around its circle). */
 let positions: Record<string, { x: number; y: number }> = {};
+/** Visible points of the plan's figure (for the chains of equalities). */
+let visiblePoints: string[] = [];
+/** Collinear triples established by the plan (givens, constructions and proved facts), as sorted keys. */
+const colKey = (a: string, b: string, c: string) => [a, b, c].sort().join(",");
+/** The proof the step being written belongs to (set while writing it). */
+let currentProof: Derivation[] = [];
+/** Collinearities that are givens of the problem or its construction (always known). */
+let givenCols = new Set<string>();
+/** Chain context for a step: only collinearities established before it (givens, earlier parts, earlier facts of its
+ *  proof) — never its own conclusion or anything proved later. */
+const chainCtx = (own: Fact) => {
+  const at = currentProof.findIndex((x) => factKey(x.fact) === factKey(own));
+  const before = new Set(
+    currentProof
+      .slice(0, at < 0 ? currentProof.length : at)
+      .flatMap((d) => (d.fact.t === "col" ? [colKey(...d.fact.p)] : d.fact.t === "midp" ? [colKey(d.fact.a, d.fact.m, d.fact.b)] : [])),
+  );
+  return {
+    positions,
+    points: visiblePoints,
+    collinear: (a: string, b: string, c: string) => {
+      const k = colKey(a, b, c);
+      return (before.has(k) || givenCols.has(k)) && !(own.t === "col" && colKey(...own.p) === k);
+    },
+  };
+};
+
+/** The reason printed next to an "=" a premise justifies: its own reason, or the fact with where it comes from. */
+function chainReason(p: Derivation, word: string): string {
+  const m = /^(.*?) \((.*)\)$/.exec(word);
+  if (!m) return word;
+  const [, text, why] = m as unknown as [string, string, string];
+  if (p.fact.t === "cyclic" && !/bước|câu|⟦|chứng minh/.test(why)) return word; // "tứ giác DGJI nội tiếp (S)"
+  return /bước|câu|⟦|chứng minh|giả thiết|cách dựng/.test(why) || p.fact.t === "cyclic" ? `${text}, ${why}` : why;
+}
 const quad = (pts: string[]) => {
   const P = pts.map((p) => positions[p]);
   if (P.some((p) => !p)) return pts.join("");
@@ -101,7 +137,13 @@ function proportion(f: Fact & { t: "simtri" }): string {
  * For "X, V, Y collinear": an angle relation at V with a reference point R that a student would write —
  * "∠RVX = ∠RVY" (X, Y on the same ray) or "∠RVX + ∠RVY = 180°".
  */
-function collinearAngle(f: Fact & { t: "col" }, candidates: string[]): { text: string; then: string } | null {
+type AngleRel = { text: string; then: string; fact: Fact };
+function collinearAngle(f: Fact & { t: "col" }, candidates: string[]): AngleRel | null {
+  return collinearAngles(f, candidates)[0] ?? null;
+}
+/** Every such relation (each vertex of the three, each reference point). */
+function collinearAngles(f: Fact & { t: "col" }, candidates: string[]): AngleRel[] {
+  const out: AngleRel[] = [];
   for (let k = 0; k < 3; k++) {
     const [v, x, y] = [f.p[k]!, f.p[(k + 1) % 3]!, f.p[(k + 2) % 3]!];
     const [V, X, Y] = [positions[v], positions[x], positions[y]];
@@ -112,12 +154,14 @@ function collinearAngle(f: Fact & { t: "col" }, candidates: string[]): { text: s
       const cross = (P: { x: number; y: number }) => (R.x - V.x) * (P.y - V.y) - (R.y - V.y) * (P.x - V.x);
       if (Math.abs(cross(X)) < 1e-6 || Math.abs(cross(Y)) < 1e-6) continue;
       const sameRay = (X.x - V.x) * (Y.x - V.x) + (X.y - V.y) * (Y.y - V.y) > 0;
-      return sameRay
-        ? { text: `∠${r}${v}${x} = ∠${r}${v}${y}`, then: `hai tia ${v}${x}, ${v}${y} trùng nhau` }
-        : { text: `∠${r}${v}${x} + ∠${r}${v}${y} = 180°`, then: `hai tia ${v}${x}, ${v}${y} đối nhau` };
+      out.push(
+        sameRay
+          ? { text: `∠${r}${v}${x} = ∠${r}${v}${y}`, then: `hai tia ${v}${x}, ${v}${y} trùng nhau`, fact: { t: "eqangle", a: [r, v, x], b: [r, v, y] } }
+          : { text: `∠${r}${v}${x} + ∠${r}${v}${y} = 180°`, then: `hai tia ${v}${x}, ${v}${y} đối nhau`, fact: { t: "suppl", a: [r, v, x], b: [r, v, y] } },
+      );
     }
   }
-  return null;
+  return out;
 }
 
 /** A fact as a student writes it: a cyclic quadrilateral by its name. */
@@ -184,7 +228,15 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
     }
     case "POWER_OF_POINT": {
       const cyc = P.find((x) => x.t === "cyclic");
-      return [cyc ? bullet(words(premises[P.indexOf(cyc)]!)) : "", `⇒ ${show(f)} (hệ thức giữa hai cát tuyến cắt nhau của một đường tròn).`].filter(Boolean);
+      const cols = P.filter((x): x is Fact & { t: "col" } => x.t === "col");
+      const pr = f as Fact & { t: "prod" };
+      const x = pr.lhs[0] && "seg" in pr.lhs[0] ? pr.lhs[0].seg.find((q) => cols.every((c) => c.p.includes(q))) : undefined;
+      const lines2 = x ? cols.map((c) => c.p.filter((q) => q !== x).join("")) : [];
+      return [
+        cyc ? bullet(words(premises[P.indexOf(cyc)]!)) : "",
+        x && lines2.length === 2 ? bullet(`${x} là giao điểm của ${lines2[0]} và ${lines2[1]}`) : "",
+        `⇒ ${show(f)} (hệ thức giữa hai dây (cát tuyến) cắt nhau của một đường tròn).`,
+      ].filter(Boolean);
     }
     case "POWER_OF_POINT_CONVERSE":
       return [...shown.map(bullet), `⇒ ${show(f)} (đảo của hệ thức hai cát tuyến).`];
@@ -198,8 +250,21 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       if (f.t !== "col" || premises.filter(needed).every((p) => p.fact.t === "perp" || p.fact.t === "para")) return [...shown.map(bullet), `⇒ ${show(f)} (qua một điểm chỉ có một đường thẳng như vậy).`];
       // Collinearity from angles: show the angle relation it rests on (two rays from one point making the same angle
       // with a third line).
-      const rel = collinearAngle(f, premises.flatMap((p) => factPoints(p.fact)));
-      return rel ? ["Ta có:", ...shown.map(bullet), `⇒ ${rel.text} (cộng, trừ các góc)`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`] : [...shown.map(bullet), `⇒ ${show(f)}.`];
+      const cands = [...new Set(premises.flatMap((p) => factPoints(p.fact)))];
+      const rels = collinearAngles(f, cands);
+      if (!rels.length) return [...shown.map(bullet), `⇒ ${show(f)}.`];
+      // The angle relation as a chain of equalities from the premises (the first vertex/reference that gives one).
+      const ps = premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) }));
+      // The shortest chain over the vertex/reference choices.
+      let rel = rels[0]!;
+      let chain: string[] | null = null;
+      for (const r of rels.slice(0, 30)) {
+        const c = angleChain(r.fact, ps, chainCtx(d.fact));
+        if (c && (!chain || c.length < chain.length)) [chain, rel] = [c, r];
+      }
+      return chain
+        ? ["Ta có:", ...chain, `⇒ ${rel.text}`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`]
+        : ["Ta có:", ...shown.map(bullet), `⇒ ${rel.text} (cộng, trừ các góc)`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`];
     }
     case "RIGHT_TRIANGLE_RELATIONS": {
       const right = P.find((x): x is Fact & { t: "perp" } => x.t === "perp" && x.a.some((q) => x.b.includes(q)));
@@ -216,12 +281,20 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
     }
     case "LENGTH_ALGEBRA": {
       if (!shown.length) return [`${show(f)}.`];
+      // As a chain of equalities when one exists: each "=" substitutes one segment or ratio.
+      const chain = lengthChain(f, premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) })), positions);
+      if (chain) return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
       // Similar triangles are written with their proportion, so the algebra can be followed.
       const body = premises.filter(needed).map((p) => (p.fact.t === "simtri" ? bullet(`${proportion(p.fact)} (${words(p).replace(/^.*?\((.*)\)$/, "$1")})`) : bullet(words(p))));
       return [...body, `⇒ ${show(f)}.`];
     }
-    case "ANGLE_CHASE":
-      return shown.length ? ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`] : [`${show(f)}.`];
+    case "ANGLE_CHASE": {
+      if (!shown.length) return [`${show(f)}.`];
+      // As a chain of equalities when one exists: each "=" uses one fact (no "cộng, trừ các góc" leap).
+      const chain = angleChain(f, premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) })), chainCtx(d.fact));
+      if (chain) return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
+      return ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`];
+    }
     default:
       return [...shown.map(bullet), `⇒ ${show(f)}.`];
   }
@@ -235,6 +308,22 @@ export interface ExplainOptions {
 export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson {
   if (!plan.figure) throw new Error("plan without a figure");
   positions = resolveFigure(plan.figure).points;
+  visiblePoints = plan.figure.points.filter((p) => !p.hidden && positions[p.id]).map((p) => p.id);
+  givenCols = new Set(
+    plan.goals
+      .flatMap((g) => g.proof)
+      .filter((d) => d.premises.length === 0 && d.method !== "PREVIOUS_PART")
+      .flatMap((d) => (d.fact.t === "col" ? [colKey(...d.fact.p)] : d.fact.t === "midp" ? [colKey(d.fact.a, d.fact.m, d.fact.b)] : [])),
+  );
+  // …and every point defined on a line by the construction.
+  for (const pt of plan.figure.points) {
+    if (pt.hidden) continue;
+    const r = pt.refs;
+    if (pt.kind === "midpoint" || pt.kind === "on_segment") givenCols.add(colKey(pt.id, r[0]!, r[1]!));
+    if (pt.kind === "foot") givenCols.add(colKey(pt.id, r[1]!, r[2]!));
+    if (pt.kind === "line_circle" && positions[r[0]!] && positions[r[1]!]) givenCols.add(colKey(pt.id, r[0]!, r[1]!));
+    if (pt.kind === "intersection") for (const [a, b] of [[r[0]!, r[1]!], [r[2]!, r[3]!]]) if (positions[a!] && positions[b!] && !plan.figure.points.find((q) => q.id === a || q.id === b)?.hidden) givenCols.add(colKey(pt.id, a!, b!));
+  }
   type Item = { part: string; d: Derivation; goal: PlanGoal | null };
   const items: Item[] = [];
   const stepOf = new Map<string, string>(); // fact key text → step id
@@ -303,11 +392,25 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     const g = plan.goals.find((x) => x.proof.some((d) => d.id === it.d.id) && x.part === it.part)!;
     const byId = new Map(g.proof.map((d) => [d.id, d]));
     const premises = it.d.premises.map((p) => byId.get(p)!);
-    const ls = lines(it.d, premises, (p) => words(p, byId));
+    currentProof = g.proof;
+    // A goal is written as the statement writes it (the same fact, possibly in another order).
+    const ls = lines(it.goal ? { ...it.d, fact: it.goal.fact } : it.d, premises, (p) => words(p, byId));
     // "đường tròn này đi qua O": the circle through three of the points is unique, so it is the same circle.
     if (it.goal?.label.startsWith("đường tròn qua") && it.d.fact.t === "cyclic" && it.d.method !== "CYCLIC_SAME_CIRCLE") {
       const three = it.d.fact.p.filter((x) => it.goal!.label.includes(x) && !it.goal!.label.endsWith(`đi qua ${x}`));
       ls.push(`Qua ba điểm ${three.join(", ")} chỉ có một đường tròn ⇒ ${it.goal.label.replace(/^đường tròn qua/, "đường tròn đi qua")}.`);
+    }
+    // A goal stated through an auxiliary point: say what the point is, and what the collinearity means for the claim.
+    const aux = it.goal ? plan.auxiliary.find((a) => it.goal!.fact.t === "col" && it.goal!.fact.p.includes(a.id)) : undefined;
+    if (aux && it.goal && it.goal.fact.t === "col") {
+      const others = it.goal.fact.p.filter((x) => x !== aux.id).join("");
+      ls.unshift(`${aux.text}. Ta chứng minh ${it.goal.fact.p.join(", ")} thẳng hàng.`);
+      const meet = /^(\S+), (\S+) cắt nhau trên (.+)$/.exec(it.goal.label);
+      ls.push(
+        meet
+          ? `Vậy đường thẳng ${others} đi qua ${aux.id}; ${aux.id} thuộc đường thẳng ${meet[1]} và thuộc ${meet[3]} ⇒ ${meet[1]}, ${meet[2]} cắt nhau tại ${aux.id} trên ${meet[3]}.`
+          : `Vậy ${others} đi qua ${aux.id} ⇒ ${it.goal.label}.`,
+      );
     }
     const text = ls.join("\n");
     const m = method(it.d.method);
@@ -324,7 +427,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       it.d.premises.filter((x) => byId.get(x)?.fact.t === "cong").every((x) => prevD.premises.includes(x));
     if (prev && sameBisector && prev.part === it.part) {
       // "AI là đường trung trực của EF" gives both AI ⊥ EF and "AI đi qua trung điểm J": one step.
-      prev.facts.push(it.d.fact);
+      prev.facts.push(it.goal ? it.goal.fact : it.d.fact);
       prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ") && !l.includes("là đường trung trực")).join("\n");
       prev.goal = it.goal ?? prev.goal;
       if (it.goal) prev.goals.push(it.goal);
@@ -332,7 +435,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       continue;
     }
     if (prev && !prev.goal && prev.part === it.part && shownPremises.length === 1 && prevFact && factKey(shownPremises[0]!.fact) === factKey(prevFact)) {
-      prev.facts.push(it.d.fact);
+      prev.facts.push(it.goal ? it.goal.fact : it.d.fact);
       prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ")).join("\n");
       if (m) prev.reasons = [...new Set([...prev.reasons, m.vi.split(" (")[0]!])];
       prev.goal = it.goal;
@@ -341,7 +444,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
       continue;
     }
-    drafts.push({ part: it.part, facts: [it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal, goals: it.goal ? [it.goal] : [] });
+    drafts.push({ part: it.part, facts: [it.goal ? it.goal.fact : it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal, goals: it.goal ? [it.goal] : [] });
     lastDerivation.set(drafts[drafts.length - 1]!, it.d);
     stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
   }
@@ -428,10 +531,15 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   });
 
   const goalsText = plan.goals.filter((g) => g.proved).map((g) => `${g.part ? `(${g.part}) ` : ""}${g.label}`);
-  const givens = plan.goals
-    .flatMap((g) => g.proof.filter((d) => d.premises.length === 0 && d.method !== "PREVIOUS_PART"))
-    .map((d) => factText(d.fact))
-    .filter((x, i, a) => a.indexOf(x) === i)
+  // What the problem gives, in its own words: the sentences of the statement before the first question.
+  const opening = opts.statement
+    .replace(/^\s*(Câu|Bài)\s*\d+[.:]?\s*/i, "")
+    .split(/(?:^|\s)[a-f]\)\s|chứng minh|Chứng minh/)[0]!;
+  const givens = opening
+    .split(/(?<=[.;])\s+/)
+    .map((x) => x.trim().replace(/[.;]$/, ""))
+    .filter((x) => x.length > 3)
+    .map((x) => x.slice(0, 300))
     .slice(0, 12);
   return {
     analysis: {

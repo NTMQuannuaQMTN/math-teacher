@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { PanResponder, Platform, Pressable, StyleSheet, Text, View, type GestureResponderEvent, type GestureResponderHandlers } from "react-native";
-import Svg, { Circle, G, Line, Path, Text as SvgText } from "react-native-svg";
+import Svg, { Circle, ClipPath, Defs, G, Line, Path, Rect, Text as SvgText } from "react-native-svg";
 import {
   angleDeg,
   dist,
@@ -232,7 +232,7 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
     <View style={[styles.wrap, { height, backgroundColor: colors.surface, borderColor: colors.border }]}>
       <View
         ref={container}
-        style={[StyleSheet.absoluteFill, styles.noSelect]}
+        style={[StyleSheet.absoluteFill, styles.noSelect, styles.clip]}
         onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
         {...handlers}
         accessible
@@ -242,6 +242,13 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
       >
         {width > 0 ? (
           <Svg width={width} height={height} pointerEvents="none" style={styles.clip}>
+            {/* Clip inside the drawing too: web browsers draw SVG overflow outside the card otherwise. */}
+            <Defs>
+              <ClipPath id="figure-clip">
+                <Rect x={0} y={0} width={width} height={height} />
+              </ClipPath>
+            </Defs>
+            <G clipPath="url(#figure-clip)">
             {scene.polygons.map((p) => (
               <Path key={p.id} d={p.path} fill={accent} fillOpacity={0.12} stroke="none" />
             ))}
@@ -326,6 +333,7 @@ export function GeometryView({ figure, highlight, shownConstructions, height, on
                 ) : null}
               </G>
             ))}
+            </G>
           </Svg>
         ) : null}
       </View>

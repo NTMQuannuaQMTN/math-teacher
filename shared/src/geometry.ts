@@ -481,8 +481,11 @@ export function figureBounds(resolved: ResolvedFigure, visiblePointIds?: Set<str
   // Circles count too, unless one is far bigger than the rest of the figure (e.g. a circle through
   // nearly collinear points): then it runs off the edge instead of shrinking everything else.
   const span = xs.length ? Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) : 0;
+  const box = xs.length ? { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) } : null;
   for (const c of Object.values(resolved.circles)) {
     if (span > 0 && c.r > 1.5 * span) continue;
+    // A large circle centred outside the points (through nearly collinear points): framing it would shrink the rest.
+    if (box && c.r > 0.9 * span && (c.cx < box.x0 || c.cx > box.x1 || c.cy < box.y0 || c.cy > box.y1)) continue;
     xs.push(c.cx - c.r, c.cx + c.r);
     ys.push(c.cy - c.r, c.cy + c.r);
   }

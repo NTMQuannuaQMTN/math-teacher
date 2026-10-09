@@ -36,13 +36,17 @@ interface Props {
 export function LessonView({ solution, progress, setProgress, onRegenerate }: Props) {
   const s = useStrings();
   const { colors } = useTheme();
-  const { height: screenHeight } = useWindowDimensions();
+  const { height: screenHeight, width: screenWidth } = useWindowDimensions();
+  // Wide screens: problem and figure in a fixed left column, the lesson scrolls on the right. Phones: both pinned on top.
+  const wide = screenWidth >= 960;
+  const [problemOpen, setProblemOpen] = useState(true);
   const [focus, setFocus] = useState<Focus>(null);
   const [figureOpen, setFigureOpen] = useState(true);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const scroll = useRef<ScrollView>(null);
   const layout = useRef({ steps: 0, step: new Map<string, number>() });
-  const figureHeight = Math.round(Math.min(Math.max(screenHeight * 0.36, 220), 380));
+  // Phones: problem + figure stay pinned but leave most of the screen to the lesson.
+  const figureHeight = wide ? Math.round(Math.min(Math.max(screenHeight * 0.5, 280), 560)) : Math.round(Math.min(Math.max(screenHeight * 0.26, 180), 300));
   const lesson = solution.lesson!;
   const { analysis, hints, steps, figure } = lesson;
 
@@ -128,35 +132,57 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
     if (next) setFocus({ kind: "hint", id: next.id });
   };
 
-  return (
-    <SafeAreaView style={styles.flex} edges={["bottom"]}>
-      {figure ? (
-        <View style={[styles.figurePane, { borderBottomColor: colors.border, backgroundColor: colors.background }]}>
-          <Pressable onPress={() => setFigureOpen(!figureOpen)} style={styles.figureToggle} accessibilityRole="button" accessibilityState={{ expanded: figureOpen }}>
-            <Ionicons name="shapes-outline" size={16} color={colors.textMuted} />
-            <Text style={[typography.label, styles.flex, { color: colors.textMuted }]}>{s.solve.figure.toUpperCase()}</Text>
-            <Ionicons name={figureOpen ? "chevron-up" : "chevron-down"} size={18} color={colors.textMuted} />
-          </Pressable>
-          {figureOpen ? (
-            <GeometryView
-              figure={figure}
-              highlight={highlight}
-              shownConstructions={shownConstructions}
-              height={figureHeight}
-              onSelect={selectObject}
-            />
-          ) : null}
-          {figureOpen && progress.showSolution ? <Text style={[typography.caption, { color: colors.textMuted }]}>{s.solve.figureTapHint}</Text> : null}
-        </View>
+  const problemPane = (
+    <View style={[styles.problemPane, { borderBottomColor: colors.border, backgroundColor: colors.background }]}>
+      <Pressable onPress={() => setProblemOpen(!problemOpen)} style={styles.figureToggle} accessibilityRole="button" accessibilityState={{ expanded: problemOpen }}>
+        <Ionicons name="document-text-outline" size={16} color={colors.textMuted} />
+        <Text style={[typography.label, styles.flex, { color: colors.textMuted }]}>{s.solve.problem.toUpperCase()}</Text>
+        <Ionicons name={problemOpen ? "chevron-up" : "chevron-down"} size={18} color={colors.textMuted} />
+      </Pressable>
+      {problemOpen ? (
+        <ScrollView style={wide ? undefined : { maxHeight: Math.round(screenHeight * 0.16) }} nestedScrollEnabled>
+          <MathText testID="lesson-problem" text={analysis.statement} fontSize={wide ? 17 : 15} />
+        </ScrollView>
       ) : null}
+    </View>
+  );
+  const figurePane = figure ? (
+    <View style={[styles.figurePane, { borderBottomColor: colors.border, backgroundColor: colors.background }]}>
+      <Pressable onPress={() => setFigureOpen(!figureOpen)} style={styles.figureToggle} accessibilityRole="button" accessibilityState={{ expanded: figureOpen }}>
+        <Ionicons name="shapes-outline" size={16} color={colors.textMuted} />
+        <Text style={[typography.label, styles.flex, { color: colors.textMuted }]}>{s.solve.figure.toUpperCase()}</Text>
+        <Ionicons name={figureOpen ? "chevron-up" : "chevron-down"} size={18} color={colors.textMuted} />
+      </Pressable>
+      {figureOpen ? (
+        <GeometryView
+          figure={figure}
+          highlight={highlight}
+          shownConstructions={shownConstructions}
+          height={figureHeight}
+          onSelect={selectObject}
+        />
+      ) : null}
+      {figureOpen && progress.showSolution ? <Text style={[typography.caption, { color: colors.textMuted }]}>{s.solve.figureTapHint}</Text> : null}
+    </View>
+  ) : null;
+
+  return (
+    <SafeAreaView style={[styles.flex, wide && styles.row]} edges={["bottom"]}>
+      {/* The problem (and figure) stay in view while the student reads hints and the solution. */}
+      {wide ? (
+        <ScrollView style={[styles.side, { borderRightColor: colors.border }]} contentContainerStyle={styles.sideContent}>
+          {problemPane}
+          {figurePane}
+        </ScrollView>
+      ) : (
+        <>
+          {problemPane}
+          {figurePane}
+        </>
+      )}
 
       <ScrollView ref={scroll} style={styles.flex} contentContainerStyle={styles.content}>
         {solution.verification?.figureIssue ? <Banner tone="info" message={s.solve.figureUnavailable} /> : null}
-
-        <Card>
-          <Text style={[typography.label, { color: colors.textMuted }]}>{s.solve.problem.toUpperCase()}</Text>
-          <MathText testID="lesson-problem" text={analysis.statement} fontSize={17} />
-        </Card>
 
         <SectionTitle>{s.solve.understand}</SectionTitle>
         <UnderstandCard
@@ -242,6 +268,10 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: spacing.lg, gap: spacing.md, maxWidth: 720, width: "100%", alignSelf: "center", paddingBottom: spacing.xxl },
   figurePane: { paddingHorizontal: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: StyleSheet.hairlineWidth },
+  problemPane: { paddingHorizontal: spacing.md, paddingBottom: spacing.sm, borderBottomWidth: StyleSheet.hairlineWidth },
+  row: { flexDirection: "row" },
+  side: { flexGrow: 0, flexBasis: "42%", maxWidth: 620, borderRightWidth: StyleSheet.hairlineWidth },
+  sideContent: { paddingBottom: spacing.lg },
   figureToggle: { flexDirection: "row", alignItems: "center", gap: spacing.xs, minHeight: 36 },
   steps: { gap: spacing.sm },
 });
