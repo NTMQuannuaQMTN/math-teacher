@@ -275,7 +275,10 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
       const frags = r.replace(/^(chứng minh|chứng tỏ|prove)\s*(rằng|that)?/i, "").split(/\s+(?:và|and)\s+/);
       if (frags.length < 2) continue;
       frags.forEach((fr, i) => {
-        if (!RELATION.test(fr) || parseClaims(fr).length > 0 || shapeClaims(fr).length > 0 || also?.[0]?.includes(fr.trim().slice(0, 20))) return;
+        // A fragment that names points (or states a relation) must give a claim: "A, G, D thắng hàng" (an OCR slip)
+        // is reported, never silently dropped.
+        const namesPoints = /(?<![\p{L}])[A-Z]'*(?:[A-Z]'*)+(?![\p{L}])|(?<![\p{L}])[A-Z]'*\s*,\s*[A-Z]'*(?![\p{L}])/u.test(fr.replace(/\$/g, " "));
+        if (!(RELATION.test(fr) || namesPoints) || parseClaims(fr).length > 0 || shapeClaims(fr).length > 0 || also?.[0]?.includes(fr.trim().slice(0, 20))) return;
         // "△DBE và △DCF đồng dạng", "A, B, C và D cùng thuộc…": the claim spans the "và".
         if (i > 0 && parseClaims(`${frags[i - 1]} và ${fr}`).length > parseClaims(frags[i - 1]!).length) return;
         if ((i > 0 && tryAux(`${frags[i - 1]} và ${fr}`, claims, part.letter)) || tryAux(fr, claims, part.letter)) return;

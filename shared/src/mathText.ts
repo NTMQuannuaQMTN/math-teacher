@@ -337,9 +337,28 @@ const INVISIBLE_CHARS = new RegExp("[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001
  * can arrive decomposed, which breaks search and rendering), strips control
  * characters, normalizes newlines, and collapses runs of blank lines.
  */
+/**
+ * OCR diacritic slips in fixed geometry phrases that are never meant as written ("A, G, D thắng hàng" is always
+ * "thẳng hàng"). Only whole phrases, so ordinary words are untouched.
+ */
+const B = "(?<![\\p{L}])";
+const E = "(?![\\p{L}])";
+const OCR_PHRASES: [RegExp, string][] = [
+  [new RegExp(`${B}th(?:ắ|ằ|ả|ạ|a|ấ|ầ|ẩ)ng\\s+h(?:à|a|á|ả|ạ)ng${E}`, "giu"), "thẳng hàng"],
+  [new RegExp(`${B}nội\\s+ti(?:ê|ế|ề|ể|ệ|e|é)p${E}`, "giu"), "nội tiếp"],
+  [new RegExp(`${B}đồng\\s+d(?:ang|ảng|ãng|áng|àng)${E}`, "giu"), "đồng dạng"],
+  [new RegExp(`${B}ti(?:ê|ể|ề|e)p\\s+tuy(?:ê|ế|ề|e)n${E}`, "giu"), "tiếp tuyến"],
+  [new RegExp(`${B}vu(?:ô|o)ng\\s+g(?:o|ó|ò|ỏ)c${E}`, "giu"), "vuông góc"],
+];
+
+function fixOcrPhrases(text: string): string {
+  let out = text;
+  for (const [re, to] of OCR_PHRASES) out = out.replace(re, (m) => (m[0] !== m[0]!.toLowerCase() ? to[0]!.toUpperCase() + to.slice(1) : to));
+  return out;
+}
+
 export function normalizeProblemText(input: string): string {
-  return input
-    .normalize("NFC")
+  return fixOcrPhrases(input.normalize("NFC"))
     .replace(/\r\n?/g, "\n")
     .replace(INVISIBLE_CHARS, "")
     .replace(/\t/g, " ")

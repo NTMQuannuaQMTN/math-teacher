@@ -16,7 +16,7 @@ import type { Derivation } from "./engine";
 import { factKey, factLatex, factPoints, factText, type Fact } from "./facts";
 import { resolveFigure } from "../geometry";
 import { method } from "./methods";
-import { angleChain, lengthChain, type Premise } from "./chain";
+import { angleChain, angleCombination, lengthChain, type Premise } from "./chain";
 import type { PlanGoal, ProofPlan } from "./planner";
 
 const MAX_STEPS = 14;
@@ -97,6 +97,17 @@ function chainLatex(lines: string[]): string[] {
     const t = tex(dropReason(l));
     return i === 0 ? t.replace(" = ", " &= ") : `&${t}`;
   });
+}
+
+/** No chain: the claim as an explicit sum of numbered equations (each with its reason) — never a bare "⇒". */
+function combinationLines(goal: Fact, ps: Premise[], ctx: ReturnType<typeof chainCtx>): string[] | null {
+  const c = angleCombination(goal, ps, ctx);
+  if (!c) return null;
+  const eqs = c.equations.map((e, i) => `&(${i + 1})\\ ${chainLatex([e])[0]!.replace(" &= ", " = ")}`);
+  const take = `&\\text{Lấy } ${c.combination.replace(/·/g, "\\cdot ").replace(/−/g, "-")}:`;
+  // The equations in the formula when they fit; otherwise the text lists them and the formula shows the combination.
+  lastChainMath = eqs.join("").length + take.length < 650 ? [...eqs, take] : [take];
+  return ["Ta có:", ...c.lines, `Lấy ${c.combination} (cộng, trừ vế theo vế):`];
 }
 
 /** The proof the step being written belongs to (set while writing it). */
@@ -301,10 +312,17 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       if (chain) {
         lastChainMath = chainLatex(chain);
         lastChainFact = rel.fact;
+        return ["Ta có:", ...chain, `⇒ ${rel.text}`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`];
       }
-      return chain
-        ? ["Ta có:", ...chain, `⇒ ${rel.text}`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`]
-        : ["Ta có:", ...shown.map(bullet), `⇒ ${rel.text} (cộng, trừ các góc)`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`];
+      // No chain: the explicit combination for the simplest angle relation that has one.
+      for (const r of rels.slice(0, 30)) {
+        const comb = combinationLines(r.fact, ps, chainCtx(d.fact));
+        if (comb) {
+          lastChainFact = r.fact;
+          return [...comb, `⇒ ${r.text}`, `⇒ ${r.then}`, `⇒ ${show(f)}.`];
+        }
+      }
+      return ["Ta có:", ...shown.map(bullet), `⇒ ${rel.text} (cộng, trừ các góc)`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`];
     }
     case "RIGHT_TRIANGLE_RELATIONS": {
       const right = P.find((x): x is Fact & { t: "perp" } => x.t === "perp" && x.a.some((q) => x.b.includes(q)));
@@ -344,6 +362,9 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
         lastChainMath = chainLatex(chain);
         return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
       }
+      const ps0 = premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) }));
+      const comb = combinationLines(f, ps0, chainCtx(d.fact));
+      if (comb) return [...comb, `⇒ ${show(f)}.`];
       return ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`];
     }
     default:

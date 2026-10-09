@@ -13,7 +13,7 @@
  * The chain is found by a bounded breadth-first search over substitutions; null when none is found (the caller then
  * keeps the plain list of facts). It only re-expresses a step the verifier already accepted.
  */
-import type { Fact, Factor, Seg, Tri } from "./facts";
+import { factPoints as factPointsOf, type Fact, type Factor, type Seg, type Tri } from "./facts";
 
 type Pt = { x: number; y: number };
 interface Expr {
@@ -355,7 +355,7 @@ export function angleChain(goal: Fact, premises: Premise[], ctx: ChainContext): 
   const all = [...rules, ...figureRules(A, vertices, ctx, triangles)];
   const start: Expr = { terms: new Map([[g1, 1]]), c: 0 };
   const target: Expr = goal.t === "aval" ? { terms: new Map(), c: goal.v } : goal.t === "suppl" ? { terms: new Map([[g2!, -1]]), c: 180 } : { terms: new Map([[g2!, 1]]), c: 0 };
-  const path = search(start, target, all, true);
+  const path = search(start, target, all, true, 6, 150000);
   if (!path || path.length === 0) return null;
   // Safety: every expression of the chain has the same value on the figure (else a rule was wrong: show no chain).
   const value = (e: Expr) => e.c + [...e.terms].reduce((acc, [id, k]) => acc + k * A.value(id), 0);
@@ -466,4 +466,106 @@ export function lengthChain(goal: Fact, premises: Premise[], positions?: Record<
   const written = (fs: Factor[]) => fs.map((x) => ("seg" in x ? `${x.seg.join("")}${x.power === 2 ? "²" : ""}` : String(x.number))).join(" · ");
   const head = goal.t === "prod" && goal.lhs.every((x) => !x.divide) ? written(goal.lhs) : goal.t === "cong" ? goal.a.join("") : showLengths(start);
   return path.map((s, i) => `${i === 0 ? `${head} = ` : "= "}${showLengths(s.expr)} (${s.reason})`);
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// When no chain exists: the claim as a sum of numbered equations
+// ---------------------------------------------------------------------------------------------------------------
+
+/** Solves Σ λ_i·rule_i = target (over the rules' variables and constants); null when no combination exists. */
+function combine(rules: Rule[], target: Expr): number[] | null {
+  const vars = [...new Set([...rules.flatMap((r) => [...r.coef.keys()]), ...target.terms.keys()])];
+  const rows = vars.length + 1; // one row per variable, one for the constant
+  const n = rules.length;
+  const M: number[][] = [];
+  for (let i = 0; i < rows; i++) {
+    const row = new Array(n + 1).fill(0);
+    for (let j = 0; j < n; j++) row[j] = i < vars.length ? rules[j]!.coef.get(vars[i]!) ?? 0 : rules[j]!.c;
+    row[n] = i < vars.length ? target.terms.get(vars[i]!) ?? 0 : target.c;
+    M.push(row);
+  }
+  const pivotCol: number[] = [];
+  let r = 0;
+  for (let c = 0; c < n && r < rows; c++) {
+    let best = r;
+    for (let i = r + 1; i < rows; i++) if (Math.abs(M[i]![c]!) > Math.abs(M[best]![c]!)) best = i;
+    if (Math.abs(M[best]![c]!) < 1e-9) continue;
+    [M[r], M[best]] = [M[best]!, M[r]!];
+    const pv = M[r]![c]!;
+    for (let k = c; k <= n; k++) M[r]![k]! /= pv;
+    for (let i = 0; i < rows; i++) {
+      if (i === r) continue;
+      const f = M[i]![c]!;
+      if (Math.abs(f) < 1e-12) continue;
+      for (let k = c; k <= n; k++) M[i]![k] = M[i]![k]! - f * M[r]![k]!;
+    }
+    pivotCol.push(c);
+    r++;
+  }
+  for (let i = r; i < rows; i++) if (Math.abs(M[i]![n]!) > 1e-6) return null; // inconsistent: not a combination
+  const lambda = new Array(n).fill(0);
+  pivotCol.forEach((c, i) => (lambda[c] = M[i]![n]!));
+  return lambda;
+}
+
+function showRule(r: Rule, A: Angles): string {
+  const pos = [...r.coef].filter(([, v]) => v > 0);
+  const neg = [...r.coef].filter(([, v]) => v < 0);
+  const side = (xs: [string, number][]) => xs.map(([id, v]) => `${Math.abs(v) === 1 ? "" : Math.abs(v)}${A.name(id)}`).join(" + ");
+  const left = side(pos) || "0°";
+  const rightTerms = side(neg);
+  const c = Math.round(r.c * 100) / 100;
+  const right = rightTerms ? (Math.abs(c) > 1e-9 ? `${rightTerms} ${c > 0 ? "+" : "−"} ${Math.abs(c)}°` : rightTerms) : `${c}°`;
+  return `${left} = ${right}`;
+}
+
+/**
+ * The claim as an explicit combination of numbered angle equations (each with its reason), for steps where no chain
+ * of equalities exists: "(1) ∠X = ∠Y (…) (2) … ⇒ (1) + (2) − (3): ∠A = ∠B". Uses as few equations as possible.
+ */
+export function angleCombination(goal: Fact, premises: Premise[], ctx: ChainContext): { lines: string[]; equations: string[]; combination: string } | null {
+  if (goal.t !== "eqangle" && goal.t !== "aval" && goal.t !== "suppl") return null;
+  const A = new Angles(ctx);
+  const g1 = A.id(goal.a);
+  const g2 = goal.t === "aval" ? null : A.id(goal.b);
+  if (!g1 || (goal.t !== "aval" && !g2)) return null;
+  const rules = premises.flatMap((p) => angleRules(p.fact, p.reason, A, ctx));
+  // Every triangle on the points involved (angle sums, exterior angles): a combination may need any of them.
+  const involved = [...new Set([...goal.t === "aval" ? goal.a : [...goal.a, ...goal.b], ...premises.flatMap((p) => factPointsOf(p.fact))])].filter((x) => ctx.positions[x]);
+  const triangles: Tri[] = [];
+  for (let i = 0; i < involved.length; i++)
+    for (let j = i + 1; j < involved.length; j++)
+      for (let k = j + 1; k < involved.length; k++) triangles.push([involved[i]!, involved[j]!, involved[k]!]);
+  for (const t of triangles) for (let i = 0; i < 3; i++) A.id([t[(i + 2) % 3]!, t[i]!, t[(i + 1) % 3]!]);
+  const all = [...rules, ...figureRules(A, new Set(A.vertices()), ctx, triangles)];
+  // goal as Σ coef = c: eqangle g1 − g2 = 0; suppl g1 + g2 = 180; aval g1 = v.
+  const target: Expr =
+    goal.t === "eqangle" ? { terms: new Map([[g1, 1], [g2!, -1]]), c: 0 } : goal.t === "suppl" ? { terms: new Map([[g1, 1], [g2!, 1]]), c: 180 } : { terms: new Map([[g1, 1]]), c: goal.v };
+  let lambda = combine(all, target);
+  if (!lambda) return null;
+  // As few equations as possible: drop unused ones, then any whose removal still leaves a combination.
+  let used = all.map((_, i) => i).filter((i) => Math.abs(lambda![i]!) > 1e-9);
+  for (const i of [...used].reverse()) {
+    const without = used.filter((x) => x !== i);
+    const l = combine(without.map((x) => all[x]!), target);
+    if (l) used = without;
+  }
+  const chosen = used.map((i) => all[i]!);
+  lambda = combine(chosen, target);
+  if (!lambda) return null;
+  // Safety: each equation holds on the figure.
+  const value = (r: Rule) => [...r.coef].reduce((acc, [id, k]) => acc + k * A.value(id), 0) - r.c;
+  if (chosen.some((r) => Math.abs(value(r)) > 1e-4)) return null;
+  const equations = chosen.map((r) => showRule(r, A));
+  const lines = chosen.map((r, i) => `(${i + 1}) ${equations[i]} (${r.reason})`);
+  const fmt = (x: number) => {
+    const n = Math.round(x * 1000) / 1000;
+    return Math.abs(n - Math.round(n)) < 1e-9 ? String(Math.round(Math.abs(n))) : String(Math.abs(n));
+  };
+  const combination = lambda
+    .map((l, i) => ({ l, i }))
+    .filter(({ l }) => Math.abs(l) > 1e-9)
+    .map(({ l, i }, k) => `${k === 0 ? (l < 0 ? "−" : "") : l < 0 ? " − " : " + "}${fmt(l) === "1" ? "" : `${fmt(l)}·`}(${i + 1})`)
+    .join("");
+  return { lines, equations, combination };
 }

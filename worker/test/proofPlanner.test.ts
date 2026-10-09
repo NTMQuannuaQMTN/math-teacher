@@ -11,6 +11,7 @@ import { equation, LinearSystem } from "../../shared/src/proof/linear";
 import { METHODS, method } from "../../shared/src/proof/methods";
 import { planProof, splitChains } from "../../shared/src/proof/planner";
 import { verifyProof } from "../../shared/src/proof/verify";
+import { angleCombination } from "../../shared/src/proof/chain";
 import type { ChatMessage, JsonModel } from "../src/solver/llm";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { solveProblem } from "../src/solver/pipeline";
@@ -115,6 +116,35 @@ describe("proof planner", () => {
     const b = planProof(datasetProblem("ptnk-2025-chuyen_4b"));
     expect(b.unparsed.length).toBeGreaterThan(0);
     expect(b.status).toBe("NEEDS_REVIEW");
+  });
+
+  it("reads OCR slips of fixed phrases, and never drops a claim it can't read", () => {
+    expect(normalizeProblemText("Chứng minh A, G, D thắng hàng")).toBe("Chứng minh A, G, D thẳng hàng");
+    expect(normalizeProblemText("tứ giác nội tiêp, đồng dang, người thắng cuộc")).toBe("tứ giác nội tiếp, đồng dạng, người thắng cuộc");
+    // An unreadable claim next to a readable one: reported, so the problem is not VERIFIED.
+    const text = datasetProblem("ch-4").replace(/thẳng hàng và các đường thẳng/, "thXng hàng và các đường thẳng");
+    expect(text).toContain("thXng hàng");
+    const plan = planProof(text);
+    expect(plan.status).toBe("NEEDS_REVIEW");
+    expect(plan.unparsed.join()).toMatch(/A, G, D/);
+  });
+
+  it("writes an angle step with no chain as an explicit sum of numbered equations", () => {
+    // ∠AED = ∠AFD in PTNK 2025 4a from its premises, without the chain search.
+    const plan = planProof(datasetProblem("ptnk-2025-chuyen_4a"));
+    const g = plan.goals[0]!;
+    const d = g.proof.find((x) => x.method === "ANGLE_CHASE" && x.fact.t === "eqangle")!;
+    const prem = d.premises.map((id) => g.proof.find((x) => x.id === id)!);
+    const P = resolveFigure(plan.figure!).points;
+    const known = new Set(prem.filter((x) => x.fact.t === "col").map((x) => [...(x.fact as Fact & { t: "col" }).p].sort().join()));
+    const c = angleCombination(d.fact, prem.map((x) => ({ fact: x.fact, reason: x.method })), {
+      positions: P,
+      points: plan.figure!.points.filter((x) => !x.hidden).map((x) => x.id),
+      collinear: (a, b, cc) => known.has([a, b, cc].sort().join()),
+    });
+    expect(c).not.toBeNull();
+    expect(c!.lines[0]).toMatch(/^\(1\) ∠/);
+    expect(c!.combination).toMatch(/\(1\)/);
   });
 
   it("splits a chain of equalities into its links", () => {
