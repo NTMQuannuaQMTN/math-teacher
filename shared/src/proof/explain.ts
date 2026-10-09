@@ -63,6 +63,42 @@ let positions: Record<string, { x: number; y: number }> = {};
 let visiblePoints: string[] = [];
 /** Collinear triples established by the plan (givens, constructions and proved facts), as sorted keys. */
 const colKey = (a: string, b: string, c: string) => [a, b, c].sort().join(",");
+/** The chain of equalities of the last step written (LaTeX lines), or null when it had none. */
+let lastChainMath: string[] | null = null;
+/** The equality the chain proves when it is not the step's fact (a collinearity proved through an angle relation). */
+let lastChainFact: Fact | null = null;
+
+/** "∠AED = ∠EBD + ∠EDB (góc ngoài…)" → "\\widehat{AED} = \\widehat{EBD} + \\widehat{EDB}" (reason dropped). */
+function chainLatex(lines: string[]): string[] {
+  const dropReason = (l: string) => {
+    if (!l.endsWith(")")) return l;
+    let depth = 0;
+    for (let i = l.length - 1; i >= 0; i--) {
+      if (l[i] === ")") depth++;
+      else if (l[i] === "(") {
+        depth--;
+        if (depth === 0) return l.slice(0, i).trimEnd();
+      }
+    }
+    return l;
+  };
+  const tex = (t: string) =>
+    t
+      .replace(/∠([A-Z]'*[A-Z]'*[A-Z]'*)/g, "\\widehat{$1}")
+      .replace(/△/g, "\\triangle ")
+      .replace(/∽/g, "\\backsim ")
+      .replace(/°/g, "^\\circ")
+      .replace(/−/g, "-")
+      .replace(/·/g, "\\cdot ")
+      .replace(/²/g, "^2")
+      .replace(/⊥/g, "\\perp ");
+  // Aligned on "=": the first line "X &= Y", the next ones "&= Z".
+  return lines.map((l, i) => {
+    const t = tex(dropReason(l));
+    return i === 0 ? t.replace(" = ", " &= ") : `&${t}`;
+  });
+}
+
 /** The proof the step being written belongs to (set while writing it). */
 let currentProof: Derivation[] = [];
 /** Collinearities that are givens of the problem or its construction (always known). */
@@ -262,6 +298,10 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
         const c = angleChain(r.fact, ps, chainCtx(d.fact));
         if (c && (!chain || c.length < chain.length)) [chain, rel] = [c, r];
       }
+      if (chain) {
+        lastChainMath = chainLatex(chain);
+        lastChainFact = rel.fact;
+      }
       return chain
         ? ["Ta có:", ...chain, `⇒ ${rel.text}`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`]
         : ["Ta có:", ...shown.map(bullet), `⇒ ${rel.text} (cộng, trừ các góc)`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`];
@@ -283,7 +323,10 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       if (!shown.length) return [`${show(f)}.`];
       // As a chain of equalities when one exists: each "=" substitutes one segment or ratio.
       const chain = lengthChain(f, premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) })), positions);
-      if (chain) return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
+      if (chain) {
+        lastChainMath = chainLatex(chain);
+        return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
+      }
       // Similar triangles are written with their proportion, so the algebra can be followed.
       const body = premises.filter(needed).map((p) => (p.fact.t === "simtri" ? bullet(`${proportion(p.fact)} (${words(p).replace(/^.*?\((.*)\)$/, "$1")})`) : bullet(words(p))));
       return [...body, `⇒ ${show(f)}.`];
@@ -297,12 +340,33 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
         const why = /\(([^()]*(?:\([^()]*\))?[^()]*)\)$/.exec(chain[0]!)?.[1] ?? "";
         return [`⇒ ${show(f)} (${why.includes("∽") ? `hai góc tương ứng của ${why}` : why}).`];
       }
-      if (chain) return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
+      if (chain) {
+        lastChainMath = chainLatex(chain);
+        return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
+      }
       return ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`];
     }
     default:
       return [...shown.map(bullet), `⇒ ${show(f)}.`];
   }
+}
+
+/** Formula lines within the schema's 800 characters (the last lines — the conclusion — are kept first). */
+function mathLines(ls: string[]): string {
+  // A chain is an aligned block (lines lined up on "="); the other lines join it in the right-hand column.
+  const aligned = ls.some((l) => l.includes("&"));
+  const lines = aligned ? ls.map((l) => (l.includes("&") ? l : `&${l}`)) : ls;
+  const budget = aligned ? 800 - 32 : 800;
+  const out: string[] = [];
+  let len = 0;
+  for (const l of [...lines].reverse()) {
+    if (len + l.length + 4 > budget) break;
+    out.unshift(l);
+    len += l.length + 4;
+  }
+  // Cut at the top: the block must start at a line that has its left side.
+  if (aligned && out.length && out[0]!.startsWith("&=")) out[0] = out[0]!.replace(/^&=/, "&\\cdots =");
+  return aligned ? `\\begin{aligned}${out.join(" \\\\ ")}\\end{aligned}` : out.join(" \\\\ ");
 }
 
 export interface ExplainOptions {
@@ -391,7 +455,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   };
 
   // Steps (merged when too many).
-  type Draft = { part: string; facts: Fact[]; texts: string[]; reasons: string[]; uses: Set<string>; goal: PlanGoal | null; goals: PlanGoal[] };
+  type Draft = { part: string; facts: Fact[]; texts: string[]; reasons: string[]; uses: Set<string>; goal: PlanGoal | null; goals: PlanGoal[]; maths: string[] };
   const drafts: Draft[] = [];
   const lastDerivation = new Map<Draft, Derivation>();
   for (const it of items) {
@@ -401,7 +465,15 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     const premises = it.d.premises.map((p) => byId.get(p)!);
     currentProof = g.proof;
     // A goal is written as the statement writes it (the same fact, possibly in another order).
+    lastChainMath = null;
+    lastChainFact = null;
     const ls = lines(it.goal ? { ...it.d, fact: it.goal.fact } : it.d, premises, (p) => words(p, byId));
+    // The step's formula: its chain of equalities when it has one (the equality proved is its first and last side),
+    // otherwise the fact.
+    const displayFact = it.goal ? it.goal.fact : it.d.fact;
+    const stepMath = lastChainMath
+      ? [...lastChainMath, `&\\Rightarrow ${factLatex(lastChainFact ?? displayFact)}`, ...(lastChainFact ? [`&\\Rightarrow ${factLatex(displayFact)}`] : [])]
+      : [factLatex(displayFact)];
     // "đường tròn này đi qua O": the circle through three of the points is unique, so it is the same circle.
     if (it.goal?.label.startsWith("đường tròn qua") && it.d.fact.t === "cyclic" && it.d.method !== "CYCLIC_SAME_CIRCLE") {
       const three = it.d.fact.p.filter((x) => it.goal!.label.includes(x) && !it.goal!.label.endsWith(`đi qua ${x}`));
@@ -436,6 +508,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     if (prev && sameBisector && prev.part === it.part) {
       // "AI là đường trung trực của EF" gives both AI ⊥ EF and "AI đi qua trung điểm J": one step.
       prev.facts.push(it.goal ? it.goal.fact : it.d.fact);
+      prev.maths.push(...stepMath.map((m, k) => (k === 0 && !/^&?\\Rightarrow/.test(m) ? `&\\Rightarrow ${m.replace(/^&/, "")}` : m)));
       prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ") && !l.includes("là đường trung trực")).join("\n");
       prev.goal = it.goal ?? prev.goal;
       if (it.goal) prev.goals.push(it.goal);
@@ -444,6 +517,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     }
     if (prev && !prev.goal && prev.part === it.part && shownPremises.length === 1 && prevFact && factKey(shownPremises[0]!.fact) === factKey(prevFact)) {
       prev.facts.push(it.goal ? it.goal.fact : it.d.fact);
+      prev.maths.push(...stepMath.map((m, k) => (k === 0 && !/^&?\\Rightarrow/.test(m) ? `&\\Rightarrow ${m.replace(/^&/, "")}` : m)));
       prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ")).join("\n");
       if (m) prev.reasons = [...new Set([...prev.reasons, m.vi.split(" (")[0]!])];
       prev.goal = it.goal;
@@ -452,7 +526,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
       continue;
     }
-    drafts.push({ part: it.part, facts: [it.goal ? it.goal.fact : it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal, goals: it.goal ? [it.goal] : [] });
+    drafts.push({ part: it.part, facts: [it.goal ? it.goal.fact : it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal, goals: it.goal ? [it.goal] : [], maths: stepMath });
     lastDerivation.set(drafts[drafts.length - 1]!, it.d);
     stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
   }
@@ -469,7 +543,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     if (i < 0) i = drafts.findIndex((x, k) => k + 1 < drafts.length && drafts[k + 1]!.part === x.part);
     if (i < 0) break;
     const [a, b] = [drafts[i]!, drafts[i + 1]!];
-    drafts.splice(i, 2, { part: a.part, facts: [...a.facts, ...b.facts], texts: [...a.texts, ...b.texts], reasons: [...new Set([...a.reasons, ...b.reasons])], uses: new Set([...a.uses, ...b.uses]), goal: b.goal ?? a.goal, goals: [...a.goals, ...b.goals] });
+    drafts.splice(i, 2, { part: a.part, facts: [...a.facts, ...b.facts], texts: [...a.texts, ...b.texts], reasons: [...new Set([...a.reasons, ...b.reasons])], uses: new Set([...a.uses, ...b.uses]), goal: b.goal ?? a.goal, goals: [...a.goals, ...b.goals], maths: [...a.maths, ...b.maths] });
   }
   // Ids after merging: map each fact to its final step.
   const finalId = new Map<string, string>();
@@ -485,7 +559,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       id,
       title: head.slice(0, 300),
       explanation: dr.texts.join("\n\n").slice(0, 1500),
-      math: dr.facts.map(factLatex).join(" \\\\ ").slice(0, 800),
+      math: mathLines(dr.maths),
       reason: dr.reasons.join("; ").slice(0, 300) || null,
       uses,
       geometryActions: pts.length ? [{ action: "highlight", targets: pts }] : [],

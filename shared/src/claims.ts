@@ -161,14 +161,19 @@ function claimsIn(sentence: string): Claim[] {
   while ((m = par.exec(sentence))) out.push(fromCheck(`${m[1]} ∥ ${m[2]}`, { kind: "parallel", refs: [...pts(m[1]!), ...pts(m[2]!)] }));
 
   // Angle chains: ∠A = ∠B (= ∠C …), or ∠ABC = 90°.
-  const angleChain = new RegExp(`∠(${TRI})((?:\\s*=\\s*∠${TRI})+)`, "g");
+  // Nothing arithmetic may touch the chain: "∠AED = ∠EBD + ∠EDB" or "2∠EBD = …" is not "∠AED = ∠EBD".
+  const angleChain = new RegExp(`(?<![+\\-−·*/\\d]\\s*)∠(${TRI})((?:\\s*=\\s*∠${TRI})+)`, "g");
   while ((m = angleChain.exec(sentence))) {
-    const names = [m[1]!, ...[...m[2]!.matchAll(new RegExp(`∠(${TRI})`, "g"))].map((x) => x[1]!)];
+    // Keep only the links not followed by arithmetic ("= ∠EBD + ∠EDB" ends the chain before ∠EBD).
+    const tail = sentence.slice(m.index + m[0].length);
+    let body = m[2]!;
+    if (/^\s*[+\-−·*/]/.test(tail)) body = body.replace(new RegExp(`\\s*=\\s*∠${TRI}$`), "");
+    const names = [m[1]!, ...[...body.matchAll(new RegExp(`∠(${TRI})`, "g"))].map((x) => x[1]!)];
     for (let i = 0; i + 1 < names.length; i++) {
       out.push(fromCheck(`∠${names[i]} = ∠${names[i + 1]}`, { kind: "equal_angle", refs: [...pts(names[i]!), ...pts(names[i + 1]!)] }));
     }
   }
-  const angleValue = new RegExp(`∠(${TRI})\\s*=\\s*(\\d+(?:[.,]\\d+)?)\\s*°`, "g");
+  const angleValue = new RegExp(`(?<![+\\-−·*/\\d]\\s*)∠(${TRI})\\s*=\\s*(\\d+(?:[.,]\\d+)?)\\s*°(?!\\s*[+\\-−·*/])`, "g");
   while ((m = angleValue.exec(sentence))) {
     out.push(fromCheck(`∠${m[1]} = ${m[2]}°`, { kind: "angle_value", refs: pts(m[1]!), value: Number(m[2]!.replace(",", ".")) }));
   }
