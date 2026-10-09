@@ -98,6 +98,15 @@ describe("proof planner", () => {
     expect(plan.auxiliary.length).toBe(1);
   });
 
+  it("proves ID² = IJ·IA the textbook way: right triangle AEI with altitude EJ, no detour", () => {
+    const g = planProof(datasetProblem("ch-4")).goals.find((x) => x.label.startsWith("ID²"))!;
+    const methods = g.proof.map((d) => d.method);
+    expect(methods).toContain("RIGHT_TRIANGLE_RELATIONS");
+    expect(methods).not.toContain("SIMILAR_AA");
+    expect(methods).not.toContain("POWER_OF_POINT");
+    expect(g.proof.filter((d) => d.premises.length > 0).length).toBeLessThanOrEqual(10);
+  });
+
   it("never calls a problem verified when one of its claims was not understood", () => {
     // "IB² = ID² = IA·IK" is a chain and "CEHK là hình bình hành" a shape claim: both are goals, not silently dropped.
     const plan = planProof(datasetProblem("ptnk-2024-chuyen_4a"));
