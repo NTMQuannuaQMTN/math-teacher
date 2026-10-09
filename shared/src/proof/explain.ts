@@ -292,6 +292,11 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       if (!shown.length) return [`${show(f)}.`];
       // As a chain of equalities when one exists: each "=" uses one fact (no "cộng, trừ các góc" leap).
       const chain = angleChain(f, premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) })), chainCtx(d.fact));
+      // One equality straight from similar triangles: "⇒ ∠IHD = ∠IDK (hai góc tương ứng)".
+      if (chain && chain.length === 1) {
+        const why = /\(([^()]*(?:\([^()]*\))?[^()]*)\)$/.exec(chain[0]!)?.[1] ?? "";
+        return [`⇒ ${show(f)} (${why.includes("∽") ? `hai góc tương ứng của ${why}` : why}).`];
+      }
       if (chain) return ["Ta có:", ...chain, `⇒ ${show(f)}.`];
       return ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`];
     }
@@ -324,7 +329,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     if (pt.kind === "line_circle" && positions[r[0]!] && positions[r[1]!]) givenCols.add(colKey(pt.id, r[0]!, r[1]!));
     if (pt.kind === "intersection") for (const [a, b] of [[r[0]!, r[1]!], [r[2]!, r[3]!]]) if (positions[a!] && positions[b!] && !plan.figure.points.find((q) => q.id === a || q.id === b)?.hidden) givenCols.add(colKey(pt.id, a!, b!));
   }
-  type Item = { part: string; d: Derivation; goal: PlanGoal | null };
+  type Item = { part: string; d: Derivation; goal: PlanGoal | null; owner: PlanGoal };
   const items: Item[] = [];
   const stepOf = new Map<string, string>(); // fact key text → step id
   const steps: Step[] = [];
@@ -349,7 +354,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       if (stated.has(key) || (inline(d, byId) && !isGoal)) continue;
       stated.add(key);
       // A derivation is a goal's step when it proves any goal of the problem (it may first appear in another's proof).
-      items.push({ part: g.part, d, goal: plan.goals.find((x) => x.proved && factKey(x.fact) === factKey(d.fact)) ?? null });
+      items.push({ part: g.part, d, goal: plan.goals.find((x) => x.proved && factKey(x.fact) === factKey(d.fact)) ?? null, owner: g });
     }
   }
 
@@ -359,6 +364,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     const text = show(p.fact);
     // ∠EAI and ∠JAE are one angle when J lies on ray AI: say so instead of citing a proof.
     if (p.fact.t === "eqangle" && sameAngle(p.fact)) return `∠${p.fact.a.join("")} là góc chung`;
+    if (p.method === "PREVIOUS_PART" && stepOf.has(sameKey(p.fact))) return `${text} (⟦${sameKey(p.fact)}⟧)`;
     if (p.premises.length === 0) {
       if (p.method === "CONCYCLIC_GIVEN") {
         const circle = givenReason(p).replace(/^cùng thuộc /, "");
@@ -389,7 +395,8 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   const drafts: Draft[] = [];
   const lastDerivation = new Map<Draft, Derivation>();
   for (const it of items) {
-    const g = plan.goals.find((x) => x.proof.some((d) => d.id === it.d.id) && x.part === it.part)!;
+    // The proof this step belongs to (each claim has its own search, so ids are per proof).
+    const g = it.owner;
     const byId = new Map(g.proof.map((d) => [d.id, d]));
     const premises = it.d.premises.map((p) => byId.get(p)!);
     currentProof = g.proof;
@@ -510,6 +517,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   const cite = (t: string, own?: string) =>
     t
       .replace(/ \(⟦([^⟧]+)⟧\)/g, (all, k: string) => (finalId.get(k) === own ? "" : all)) // a fact of this same step: no citation
+      .replace(/, ⟦([^⟧]+)⟧/g, (all, k: string) => (finalId.get(k) === own ? "" : all))
       .replace(/⟦([^⟧]+)⟧/g, (_, k: string) => (finalId.get(k) ? `bước ${finalId.get(k)!.slice(1)}` : "chứng minh trên"));
   for (const st of steps) st.explanation = cite(st.explanation, st.id);
   // Hints are read before the solution: they never point at solution steps. A fact another hint leads to is cited as

@@ -5,6 +5,7 @@ import { useMemo, useRef, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mentionedTargets } from "@shared/figureComplete";
+import { statementParts } from "@shared/claims";
 import { resolveFigure } from "@shared/geometry";
 import { techniqueName } from "@shared/knowledgeBase";
 import type { Solution } from "@shared/solution";
@@ -46,7 +47,11 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
   const scroll = useRef<ScrollView>(null);
   const layout = useRef({ steps: 0, step: new Map<string, number>() });
   // Phones: problem + figure stay pinned but leave most of the screen to the lesson.
-  const figureHeight = wide ? Math.round(Math.min(Math.max(screenHeight * 0.5, 280), 560)) : Math.round(Math.min(Math.max(screenHeight * 0.26, 180), 300));
+  // Desktop: the figure takes the height left under the problem, so the left column never needs scrolling.
+  const [problemHeight, setProblemHeight] = useState(0);
+  const figureHeight = wide
+    ? Math.round(Math.min(Math.max(screenHeight - problemHeight - 170, 240), 560))
+    : Math.round(Math.min(Math.max(screenHeight * 0.26, 180), 300));
   const lesson = solution.lesson!;
   const { analysis, hints, steps, figure } = lesson;
 
@@ -132,17 +137,33 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
     if (next) setFocus({ kind: "hint", id: next.id });
   };
 
+  // The part being read ("Câu b: …" steps, or the step a hint leads to): on a phone the pinned pane shows that part,
+  // so the question is always in view without scrolling; "Cả đề" shows the whole statement.
+  const parts = useMemo(() => statementParts(analysis.statement).filter((p) => p.letter), [analysis.statement]);
+  const focusedStep = focus ? (focus.kind === "step" ? steps.find((x) => x.id === focus.id) : steps.find((x) => x.id === hints.find((h) => h.id === focus.id)?.stepId)) : undefined;
+  const focusLetter = focusedStep ? /^Câu ([a-f])\b/i.exec(focusedStep.title)?.[1]?.toLowerCase() : undefined;
+  const focusPart = parts.find((p) => p.letter === focusLetter);
+  const [wholeProblem, setWholeProblem] = useState(false);
+  const pinnedText = !wide && focusPart && !wholeProblem ? focusPart.text.trim() : analysis.statement;
+
   const problemPane = (
-    <View style={[styles.problemPane, { borderBottomColor: colors.border, backgroundColor: colors.background }]}>
+    <View style={[styles.problemPane, { borderBottomColor: colors.border, backgroundColor: colors.background }]} onLayout={(e) => setProblemHeight(e.nativeEvent.layout.height)}>
       <Pressable onPress={() => setProblemOpen(!problemOpen)} style={styles.figureToggle} accessibilityRole="button" accessibilityState={{ expanded: problemOpen }}>
         <Ionicons name="document-text-outline" size={16} color={colors.textMuted} />
         <Text style={[typography.label, styles.flex, { color: colors.textMuted }]}>{s.solve.problem.toUpperCase()}</Text>
         <Ionicons name={problemOpen ? "chevron-up" : "chevron-down"} size={18} color={colors.textMuted} />
       </Pressable>
       {problemOpen ? (
-        <ScrollView style={wide ? undefined : { maxHeight: Math.round(screenHeight * 0.16) }} nestedScrollEnabled>
-          <MathText testID="lesson-problem" text={analysis.statement} fontSize={wide ? 17 : 15} />
-        </ScrollView>
+        <>
+          <ScrollView style={wide ? undefined : { maxHeight: Math.round(screenHeight * (focusPart && !wholeProblem ? 0.2 : 0.16)) }} nestedScrollEnabled>
+            <MathText testID="lesson-problem" text={pinnedText} fontSize={wide ? 17 : 15} />
+          </ScrollView>
+          {!wide && focusPart ? (
+            <Pressable onPress={() => setWholeProblem(!wholeProblem)} accessibilityRole="button" style={styles.wholeToggle}>
+              <Text style={[typography.caption, { color: colors.primary }]}>{wholeProblem ? s.solve.problemPart(focusPart.letter) : s.solve.problemWhole}</Text>
+            </Pressable>
+          ) : null}
+        </>
       ) : null}
     </View>
   );
@@ -170,7 +191,7 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
     <SafeAreaView style={[styles.flex, wide && styles.row]} edges={["bottom"]}>
       {/* The problem (and figure) stay in view while the student reads hints and the solution. */}
       {wide ? (
-        <ScrollView style={[styles.side, { borderRightColor: colors.border }]} contentContainerStyle={styles.sideContent}>
+        <ScrollView style={[styles.side, { borderRightColor: colors.border }]} contentContainerStyle={styles.sideContent} stickyHeaderIndices={[0]}>
           {problemPane}
           {figurePane}
         </ScrollView>
@@ -272,6 +293,7 @@ const styles = StyleSheet.create({
   row: { flexDirection: "row" },
   side: { flexGrow: 0, flexBasis: "42%", maxWidth: 620, borderRightWidth: StyleSheet.hairlineWidth },
   sideContent: { paddingBottom: spacing.lg },
+  wholeToggle: { paddingTop: spacing.xs, alignSelf: "flex-start" },
   figureToggle: { flexDirection: "row", alignItems: "center", gap: spacing.xs, minHeight: 36 },
   steps: { gap: spacing.sm },
 });

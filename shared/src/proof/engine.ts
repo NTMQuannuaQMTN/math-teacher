@@ -142,9 +142,14 @@ export class ProofState {
   }
 
   /** Adds a fact established by `method` from `premises`. Returns its derivation (the existing one if known). */
+  /** Facts the search may not establish (a later claim of the same part, while an earlier one is being proved). */
+  readonly banned = new Set<string>();
+
   add(fact: Fact, method: string, premises: number[], note?: string): Derivation {
     const existing = this.known(fact);
     if (existing) return existing;
+    // A banned fact is discarded: not registered, not in the algebra (callers of forward rules ignore the result).
+    if (this.banned.has(factKey(fact))) return { id: -1, fact, method, premises, note };
     const d: Derivation = { id: this.facts.length, fact, method, premises, note };
     this.facts.push(d);
     this.byKey.set(factKey(fact), d.id);
@@ -348,6 +353,7 @@ const seg1 = (a: string, b: string) => ({ seg: [a, b] as Seg, power: 1 as const,
 function tryProve(s: ProofState, f: Fact): Derivation | null {
   const known = s.known(f);
   if (known) return known;
+  if (s.banned.has(factKey(f))) return null;
   if (!s.oracle.holds(f)) return null;
   const o = s.oracle;
   switch (f.t) {
@@ -471,12 +477,19 @@ export function goalMethods(f: Fact): string[] {
 /** Is ∠AEI a right angle in the figure? */
 const o90 = (o: Oracle, a: string, e: string, i: string) => Math.abs(o.angle(a, e, i) - 90) < 1e-6;
 
-export function search(figure: Figure, givens: { fact: Fact; method: string; note?: string }[], goals: Fact[], limits: Partial<SearchLimits> = {}): SearchResult {
+export function search(
+  figure: Figure,
+  givens: { fact: Fact; method: string; note?: string }[],
+  goals: Fact[],
+  limits: Partial<SearchLimits> = {},
+  banned: Fact[] = [],
+): SearchResult {
   const lim = { ...DEFAULT_LIMITS, ...limits };
   const started = Date.now();
   const resolved: ResolvedFigure = resolveFigure(figure);
   const oracle = new Oracle(resolved.points);
   const s = new ProofState(oracle);
+  for (const b of banned) s.banned.add(factKey(b));
   const log: string[] = [];
   for (const g of givens) s.add(g.fact, g.method, [], g.note);
   log.push(`givens: ${s.facts.length}`);

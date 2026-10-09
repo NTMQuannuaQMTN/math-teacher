@@ -249,6 +249,19 @@ describe("explanation", () => {
     lesson.steps.forEach((s, i) => s.uses.forEach((u) => expect(lesson.steps.findIndex((x) => x.id === u)).toBeLessThan(i)));
   });
 
+  it("proves the claims of a part in the order the statement asks them", () => {
+    const text = datasetProblem("ch-4");
+    const lesson = explainPlan(planProof(text), { statement: text });
+    const at = (label: string) => lesson.steps.findIndex((s) => s.title.includes(label));
+    // b) "Chứng minh ∠IHD = ∠IDK và I, D, J, H cùng thuộc một đường tròn": the angle first.
+    expect(at("∠IHD = ∠IDK")).toBeGreaterThanOrEqual(0);
+    expect(at("∠IHD = ∠IDK")).toBeLessThan(at("I, D, J, H cùng thuộc"));
+    // c) "A, G, D thẳng hàng và AL, GJ cắt nhau trên (I)".
+    expect(at("A, G, D thẳng hàng")).toBeLessThan(at("AL, GJ cắt nhau"));
+    // No step leaps with "cộng, trừ các góc" without the chain of equalities.
+    for (const s of lesson.steps) expect(s.explanation).not.toMatch(/\(cộng, trừ các góc\)\.$/m);
+  });
+
   it("reports a long proof as not readable rather than showing it", () => {
     const r = planReadability(planProof(datasetProblem("ch-4")));
     expect(r.readable).toBe(false);

@@ -80,7 +80,8 @@ function search(start: Expr, goal: Expr, rules: Rule[], integral: boolean, maxDe
         for (const r of rules)
           for (const v of e.terms.keys()) {
             const n = substitute(e, r, v, integral);
-            if (!n || n.terms.size > 4) continue;
+            // Whole exponents and coefficients only ("IJ^0.5" is not something a student writes).
+            if (!n || n.terms.size > (integral ? 4 : 6) || [...n.terms.values()].some((x) => Math.abs(x - Math.round(x)) > 1e-9)) continue;
             const k = key(n);
             if (mine.has(k)) continue;
             mine.set(k, { prev: key(e), expr: n, reason: r.reason });
@@ -449,7 +450,7 @@ export function lengthChain(goal: Fact, premises: Premise[], positions?: Record<
     goal.t === "cong"
       ? [{ terms: new Map([[seg(goal.a), 1]]), c: 0 }, { terms: new Map([[seg(goal.b), 1]]), c: 0 }]
       : [sides(goal, "lhs"), sides(goal, "rhs")];
-  const path = search(start, target, rules, false);
+  const path = search(start, target, rules, false, 6, 200000);
   if (!path || path.length === 0) return null;
   if (positions) {
     // Safety: every expression has the same value on the figure (log-lengths).

@@ -327,13 +327,34 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
     }
     for (const p of previous) if (factPoints(p.fact).every((x) => ids.has(x))) givens.push({ fact: p.fact, method: "PREVIOUS_PART", note: `${p.part ? `câu ${p.part}` : "chứng minh trên"}: ${p.label}` });
     // Iterative deepening: the shallowest search that proves a goal gives its proof (shorter, more textbook-like).
+    // Claims in the order the statement asks them ("chứng minh A và B": A first): each is proved without the later
+    // ones (banned), unless it has no other proof.
     const maxDepth = limits.depth ?? 5;
-    let res = search(sub, givens, partGoals.map((g) => g.fact), { ...limits, depth: 1 });
-    const best = [...res.proved].map((d) => (d ? { d, state: res.state } : null));
-    for (let depth = 2; depth <= maxDepth && best.some((b) => !b); depth++) {
-      res = search(sub, givens, partGoals.map((g) => g.fact), { ...limits, depth });
-      res.proved.forEach((d, i) => (best[i] ??= d ? { d, state: res.state } : null));
-    }
+    let res = search(sub, givens, [], { ...limits, depth: 1 });
+    const deepen = (goal: Fact, banned: Fact[]) => {
+      for (let depth = 1; depth <= maxDepth; depth++) {
+        res = search(sub, givens, [goal], { ...limits, depth }, banned);
+        if (res.proved[0]) return { d: res.proved[0], state: res.state };
+      }
+      return null;
+    };
+    const best: ({ d: Derivation; state: ProofState } | null)[] = [];
+    const baseGivens = givens.length;
+    partGoals.forEach((g, i) => {
+      const later = partGoals.slice(i + 1).map((x) => x.fact).filter((f) => factKey(f) !== factKey(g.fact));
+      const found = (later.length ? deepen(g.fact, later) : null) ?? deepen(g.fact, []);
+      best.push(found);
+      // What this claim's proof established is available to the next claims of the part (cited by its step) — only once
+      // the verifier has accepted it.
+      const ok =
+        found &&
+        verifyProof(sub, extractProof(found.state, found.d), [g.fact], {
+          statementGivens: givens.filter((q) => q.method === "GIVEN").map((q) => q.fact),
+          previous: givens.filter((q) => q.method === "PREVIOUS_PART").map((q) => q.fact),
+        }).ok;
+      if (found && ok && !givens.some((q) => factKey(q.fact) === factKey(g.fact))) givens.push({ fact: g.fact, method: "PREVIOUS_PART", note: "chứng minh trên" });
+    });
+    void baseGivens;
     log.push(`part ${letter || "-"}: ${sub.points.filter((p) => !p.hidden).length} points, ${givens.length} givens`, ...res.log);
     totalFacts += res.state.facts.length;
     totalGivens += givens.length;
