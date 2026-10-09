@@ -17,7 +17,7 @@ import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { parseLesson, solveProblem } from "../solver/pipeline";
-import { hostedModelOptions, problemTier, selectSolverModelIds, soclaasModelOptions } from "../solver/routing";
+import { hostedModelOptions, looksLikeGeometry, problemTier, selectSolverModelIds, soclaasModelOptions } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import type { RouteContext } from "./scans";
 
@@ -56,7 +56,7 @@ function solveTimeoutMs(env: Env): number {
 // Opt-in (it cost ≈ $1.5 in one evening of testing): SOLVER_GEMINI_FALLBACK=on.
 const geminiFallbackOn = (env: Env) => !!env.GEMINI_API_KEY && (env.SOLVER_GEMINI_FALLBACK || "off").toLowerCase() === "on";
 
-function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean } {
+function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean; outlineModel?: JsonModel } {
   const provider = (env.SOLVER_PROVIDER || "gemini").toLowerCase();
 
   if (provider === "gemini" && env.GEMINI_API_KEY) {
@@ -134,18 +134,23 @@ function createModels(env: Env, request: Request, problemText: string): { model:
   // ≈ $0.03 each (PTNK25-S2). Daily spending cap; on an outright failure the free OpenRouter model gets a turn.
   if (provider === "soclaas" && env.SOCLAAS_API_KEY) {
     const o = soclaasModelOptions(problemText);
-    const soclaas = new LocalJsonModel(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1", env.SOCLAAS_MODEL || "qwen3.6:35b", {
-      apiKey: env.SOCLAAS_API_KEY,
-      thinking: false,
-      ...o,
-    });
+    const url = env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1";
+    const name = env.SOCLAAS_MODEL || "qwen3.6:35b";
     const budget = Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
-    const model = new BudgetedJsonModel(soclaas, env.DB, Number.isFinite(budget) ? budget : 1, (m) => console.log(`[solve] ${m}`), o.maxTokens ?? 12_000);
+    const capped = (m: LocalJsonModel, maxTokens: number) => new BudgetedJsonModel(m, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), maxTokens);
+    // A hard non-geometry problem needs more than one request's window (reasoning + a long lesson ≈ 40K tokens at
+    // ~130 tokens/s > the gateway's 240 s): an outline request thinks, then the lesson is written without long thinking.
+    const twoStage = o.gatewayThinking && !looksLikeGeometry(problemText) && env.SOLVER_TWO_STAGE !== "off";
+    const soclaas = new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...o, ...(twoStage ? { gatewayThinking: false, maxTokens: 20_000 } : {}) });
+    const model = capped(soclaas, twoStage ? 20_000 : (o.maxTokens ?? 12_000));
+    const outlineModel = twoStage
+      ? capped(new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...o, gatewayThinking: true, maxTokens: 28_000, requestTimeoutMs: 230_000 }), 28_000)
+      : undefined;
     if (env.LOCAL_LLM_URL && env.LOCAL_LLM_API_KEY) {
       const free = new LocalJsonModel(env.LOCAL_LLM_URL, env.LOCAL_SOLVER_MODEL || "local", { apiKey: env.LOCAL_LLM_API_KEY, thinking: false, ...hostedModelOptions(problemText) });
-      return { model, fallback: free, fallbackOnlyOnFailure: true };
+      return { model, fallback: free, fallbackOnlyOnFailure: true, outlineModel };
     }
-    return { model };
+    return { model, outlineModel };
   }
 
   if (provider === "mock" && isDevelopment(env)) {
@@ -279,7 +284,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
     if (row) return json({ solution: toApiSolution(row) } satisfies SolutionResponse);
   }
 
-  const { model, fallback, fallbackOnlyOnFailure } = createModels(env, request, problemText);
+  const { model, fallback, fallbackOnlyOnFailure, outlineModel } = createModels(env, request, problemText);
   await consumeRateLimit(env.DB, `solve:device:${ownerId}`, intVar(env.SOLVE_LIMIT_PER_DEVICE_PER_HOUR, 30), HOUR);
   await consumeRateLimit(env.DB, `solve:ip:${getClientIp(request)}`, intVar(env.SOLVE_LIMIT_PER_IP_PER_HOUR, 90), HOUR);
 
@@ -338,6 +343,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
       const result = await solveProblem(model, VN_GRADE_9, problemText, {
         fallback,
         fallbackOnlyOnFailure,
+        outlineModel,
         signal: AbortSignal.timeout(solveTimeoutMs(env)),
         log: (m) => console.log(`[solve ${scanId}/${questionId}] ${m}`),
         onProgress,

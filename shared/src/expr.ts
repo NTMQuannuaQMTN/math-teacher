@@ -47,6 +47,8 @@ function delatex(input: string): string {
     const next = s
       .replace(/\\d?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "(($1)/($2))")
       .replace(/\\sqrt\s*\[\s*3\s*\]\s*\{([^{}]*)\}/g, "cbrt($1)")
+      // Other n-th roots of a non-negative radicand: \sqrt[4]{a} → (a)^(1/4).
+      .replace(/\\sqrt\s*\[\s*(\d+)\s*\]\s*\{([^{}]*)\}/g, "(($2)^(1/$1))")
       .replace(/\\sqrt\s*\{([^{}]*)\}/g, "sqrt($1)")
       .replace(/\^\s*\{([^{}]*)\}/g, "^($1)");
     if (next === s) break;
@@ -346,4 +348,32 @@ export function evalCondition(src: string, env: Env = {}): boolean | null {
     if (all) return true;
   }
   return anyNull ? null : false;
+}
+
+/** Parses once; the returned function evaluates fast (NaN when undefined). For searches over many points. */
+export function compileExpression(src: string): (env: Env) => number {
+  const node = parseExpression(src);
+  return (env) => {
+    try {
+      const v = evaluate(node, env);
+      return Number.isFinite(v) ? v : NaN;
+    } catch {
+      return NaN;
+    }
+  };
+}
+
+/** Variables of an expression (no relation). */
+export function expressionVariables(src: string): Set<string> {
+  const out = new Set<string>();
+  const walk = (n: Node): void => {
+    if (n.t === "var") out.add(n.name);
+    else if (n.t === "neg" || n.t === "call") walk(n.a);
+    else if (n.t === "bin") {
+      walk(n.a);
+      walk(n.b);
+    }
+  };
+  walk(parseExpression(src));
+  return out;
 }

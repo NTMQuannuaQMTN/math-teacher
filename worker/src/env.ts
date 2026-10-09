@@ -44,6 +44,8 @@ export interface Env {
   SOLVER_GEOMETRY_MODEL?: string;
   SOLVER_GEOMETRY_REASONING_EFFORT?: string;
   SOLVE_TIMEOUT_MS: string;
+  /** "off" disables the two-stage solve (outline request, then lesson) for hard non-geometry problems. */
+  SOLVER_TWO_STAGE?: string;
   SOLVE_LIMIT_PER_DEVICE_PER_HOUR: string;
   SOLVE_LIMIT_PER_IP_PER_HOUR: string;
   ALLOWED_ORIGINS: string;

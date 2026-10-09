@@ -5,6 +5,7 @@ import { unsupportedFeedback } from "../../../shared/src/gradeLevel";
 import { describeStatementFigure } from "../../../shared/src/figureFromText";
 import { geometryLessonsPrompt } from "../../../shared/src/geometryLessons";
 import { planProof, type ProofPlan } from "../../../shared/src/proof/planner";
+import { answerMismatch, computeAnswers, type OracleResult } from "../../../shared/src/oracle";
 import { explainPlan, planReadability, verifiedFactsNote } from "../../../shared/src/proof/explain";
 import { latexFeedback, plainUnrenderable } from "./latexCheck";
 import { containsVietnamese, normalizeProblemText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
@@ -80,7 +81,26 @@ export interface SolveOptions {
   proofPlanner?: boolean;
   /** Receives the planner's result (developer observability). */
   onPlan?: (plan: ProofPlan) => void;
+  /**
+   * Hard problems in two requests (each gets the provider's full time window): this model thinks and returns only a
+   * short outline (steps, answers); `model` then writes the lesson from it without long reasoning.
+   */
+  outlineModel?: JsonModel;
+  /** Compute what can be computed (shared/src/oracle.ts) and give it to the model. Default on. */
+  computeFirst?: boolean;
 }
+
+/** Stage 1 of a two-stage solve: the solution's outline only. */
+const OutlineSchema = z.strictObject({
+  outline: z.string().max(6000),
+  answers: z.array(z.strictObject({ part: z.string().max(10), answer: z.string().max(400) })).max(8),
+});
+const OUTLINE_JSON_SCHEMA = toStrictJsonSchema(OutlineSchema);
+
+const OUTLINE_SYSTEM = `Bạn là giáo viên Toán THCS (lớp 9, Việt Nam). Hãy giải bài toán thật cẩn thận rồi CHỈ viết dàn ý lời giải ngắn gọn bằng tiếng Việt:
+các bước chính theo thứ tự, mỗi bước một dòng (công thức, lí do), và đáp số của từng câu. Chỉ dùng kiến thức THCS. Không viết bài giảng, không giải thích dài.
+Nếu đề có "KẾT QUẢ TÍNH BẰNG MÁY", đáp số phải khớp với kết quả đó; lời giải phải chứng minh được đáp số (không chỉ thử).
+Trả về JSON: {"outline": "...", "answers": [{"part": "a", "answer": "..."}]}.`;
 
 /** The planner's lesson, when it can stand alone: every claim proved and verified, and short enough to read. */
 type PlannerResult = { lesson: ModelLesson; verification: Verification };
@@ -436,6 +456,8 @@ export async function solveProblem(
     fallbackOnlyOnFailure = false,
     proofPlanner = true,
     onPlan,
+    outlineModel,
+    computeFirst = true,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
@@ -475,7 +497,50 @@ export async function solveProblem(
   }
 
   async function solveWithModel(): Promise<SolveResult> {
-  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", plannerNote ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
+  // Compute first: what a deterministic search can establish (integer solutions, roots, extrema, constant values,
+  // inequality checks) goes to the model as checked results, so it explains instead of searching.
+  let computedNote: string | null = null;
+  let computed: { part: string; result: OracleResult }[] = [];
+  if (computeFirst) {
+    computed = computeAnswers(normalizeProblemText(problemText), 2500);
+    if (computed.length) {
+      computedNote =
+        "KẾT QUẢ TÍNH BẰNG MÁY (kiểm tra số trên máy, đáng tin; không phải chứng minh): đáp số trong bài giảng phải khớp với các kết quả này; lời giải vẫn phải chứng minh đầy đủ (vì sao đúng, vì sao không còn trường hợp khác).\n" +
+        computed.map(({ part, result }) => `- ${part ? `Câu ${part}: ` : ""}${result.summary}`).join("\n");
+      log(`computed: ${computed.map(({ part, result }) => `${part || "-"} ${result.formal.kind} (${result.ms} ms)`).join(", ")}`);
+    }
+  }
+  // Two stages for a hard problem: an outline from a thinking request, then the lesson from the outline.
+  let outlineNote: string | null = null;
+  if (outlineModel) {
+    const t0 = Date.now();
+    try {
+      onProgress?.({ stage: "thinking", attempt: 1, elapsedMs: Date.now() - started, stepsWritten: 0, problemKind: null, strategy: null });
+      const text = await outlineModel.complete({
+        messages: [
+          { role: "system", content: OUTLINE_SYSTEM },
+          { role: "user", content: `${normalizeProblemText(problemText)}${computedNote ? `\n\n${computedNote}` : ""}` },
+        ],
+        schema: OUTLINE_JSON_SCHEMA,
+        schemaName: "outline",
+        signal,
+        onUsage: (u) => (usage[outlineModel.model] = addUsage(usage[outlineModel.model] ?? emptyUsage(), u)),
+      });
+      const parsed = OutlineSchema.safeParse(JSON.parse(text));
+      if (parsed.success && parsed.data.outline.trim()) {
+        outlineNote =
+          "DÀN Ý LỜI GIẢI (đã được suy nghĩ kỹ ở bước trước — hãy viết bài giảng theo đúng dàn ý này, kiểm tra lại từng phép tính):\n" +
+          parsed.data.outline.trim() +
+          (parsed.data.answers.length ? `\nĐáp số: ${parsed.data.answers.map((a) => `${a.part ? `(${a.part}) ` : ""}${a.answer}`).join("; ")}` : "");
+        log(`outline in ${Math.round((Date.now() - t0) / 1000)} s (${parsed.data.outline.length} chars)`);
+      } else log(`outline unusable after ${Math.round((Date.now() - t0) / 1000)} s; writing the lesson without it`);
+    } catch (err) {
+      // The outline timed out or failed: the lesson request still runs (with the computed results), so the student
+      // gets an answer instead of a second long wait.
+      log(`outline failed after ${Math.round((Date.now() - t0) / 1000)} s (${(err as Error).message.slice(0, 100)}); writing the lesson without it`);
+    }
+  }
+  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", plannerNote ?? "", computedNote ?? "", outlineNote ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
@@ -551,7 +616,15 @@ export async function solveProblem(
       const checked = verifyLesson(tidy(parsed.lesson), { problemText: normalizeProblemText(problemText) });
       // Formulas the app can't render go back to the model; whatever is left is shown as plain text.
       const latex = latexFeedback(checked.lesson);
-      const result = { ...checked, lesson: latex.length ? plainUnrenderable(checked.lesson) : checked.lesson, feedback: [...checked.feedback, ...latex] };
+      // The final answer must agree with what was computed (a wrong answer is a failed check, worth a retry).
+      const mismatch = computed.length ? answerMismatch(`${checked.lesson.finalAnswer.text} ${checked.lesson.finalAnswer.math ?? ""}`, computed) : [];
+      if (mismatch.length) log(`answer differs from the computation: ${mismatch.join(" | ").slice(0, 200)}`);
+      const result = {
+        ...checked,
+        verification: mismatch.length ? { ...checked.verification, status: "unverified" as const, checks: [...checked.verification.checks, ...mismatch.map((m) => ({ label: m.slice(0, 200), passed: false }))].slice(0, 40) } : checked.verification,
+        lesson: latex.length ? plainUnrenderable(checked.lesson) : checked.lesson,
+        feedback: [...checked.feedback, ...latex, ...mismatch],
+      };
       // "unsupported" for a problem that needs no outside method is the model giving up (e.g. after running out
       // of reasoning on a hard chuyên problem), not a property of the problem: it never wins over a real lesson.
       const gaveUp = unsupportedFeedback(result.lesson).length > 0;

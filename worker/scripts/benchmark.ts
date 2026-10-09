@@ -19,7 +19,7 @@ import { verifyLesson } from "../../shared/src/verify";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { LocalJsonModel } from "../src/solver/localModel";
 import { solveProblem } from "../src/solver/pipeline";
-import { hostedModelOptions, soclaasModelOptions } from "../src/solver/routing";
+import { hostedModelOptions, looksLikeGeometry, soclaasModelOptions } from "../src/solver/routing";
 import { PROMPT_VERSION } from "../src/solver/prompts";
 import { grade, answerText, type BenchItem, type Grade } from "./lib/grade";
 import { CachedModel, OfflineMiss, SPEND } from "./lib/modelCache";
@@ -135,12 +135,26 @@ const hosted = HOSTED[system];
 // solve time limit (SOLVE_TIMEOUT_MS in .dev.vars, 420 s).
 const production = !!hosted?.prod;
 const solveLimitMs = production ? Number(devVar("SOLVE_TIMEOUT_MS") ?? 170_000) : 40 * 60_000;
+/** As the solve route: SOCLAAS hard non-geometry problems in two stages (outline with thinking, then the lesson). */
+const twoStageFor = (problemText: string) =>
+  production && hosted!.keyVar === "SOCLAAS_API_KEY" && soclaasModelOptions(problemText).gatewayThinking && !looksLikeGeometry(problemText) && process.env.SOLVER_TWO_STAGE !== "off";
 const modelFor = (problemText: string) => {
   if (!production) return cached!;
   const o = hosted!.keyVar === "SOCLAAS_API_KEY" ? soclaasModelOptions(problemText) : hostedModelOptions(problemText);
+  const two = twoStageFor(problemText);
+  const opts = two ? { ...o, gatewayThinking: false, maxTokens: 20_000 } : o;
   return new CachedModel(
-    new LocalJsonModel(hosted!.url, hosted!.model, { apiKey: devVar(hosted!.keyVar ?? "LOCAL_LLM_API_KEY"), ...o }),
-    `hosted;prompt=${PROMPT_VERSION};effort=${o.reasoningEffort};max=${o.maxTokens ?? 12_000}${"gatewayThinking" in o && o.gatewayThinking === false ? ";think=off" : ""}`,
+    new LocalJsonModel(hosted!.url, hosted!.model, { apiKey: devVar(hosted!.keyVar ?? "LOCAL_LLM_API_KEY"), ...opts }),
+    `hosted;prompt=${PROMPT_VERSION};effort=${opts.reasoningEffort};max=${opts.maxTokens ?? 12_000}${"gatewayThinking" in opts && opts.gatewayThinking === false ? ";think=off" : ""}`,
+    offline,
+  );
+};
+const outlineFor = (problemText: string) => {
+  if (!twoStageFor(problemText)) return undefined;
+  const o = soclaasModelOptions(problemText);
+  return new CachedModel(
+    new LocalJsonModel(hosted!.url, hosted!.model, { apiKey: devVar(hosted!.keyVar ?? "LOCAL_LLM_API_KEY"), ...o, gatewayThinking: true, maxTokens: 28_000, requestTimeoutMs: 230_000 }),
+    `hosted;outline;prompt=${PROMPT_VERSION};max=28000`,
     offline,
   );
 };
@@ -178,7 +192,8 @@ for (const item of items) {
       verification = v.verification;
       attempts = 1;
     } else {
-      const r = await solveProblem(itemModel!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(solveLimitMs), ...(production ? { onProgress: () => undefined } : {}), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques });
+      const outlineModel = production ? outlineFor(item.problem_text) : undefined;
+      const r = await solveProblem(itemModel!, VN_GRADE_9, item.problem_text, { signal: AbortSignal.timeout(solveLimitMs), ...(production ? { onProgress: () => undefined } : {}), maxAttempts: 2, log: (m) => log.push(m), techniqueHints: withTechniques, outlineModel });
       lesson = r.lesson;
       verification = r.verification;
       attempts = r.attempts;
