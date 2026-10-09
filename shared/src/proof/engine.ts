@@ -220,10 +220,14 @@ export function constructionFacts(figure: Figure, oracle: Oracle): { fact: Fact;
       case "on_segment":
         add({ t: "col", p: [r[0]!, p.id, r[1]!] });
         break;
-      case "foot":
+      case "foot": {
         add({ t: "col", p: [p.id, r[1]!, r[2]!] });
-        if (r[0] !== p.id) add({ t: "perp", a: [r[0]!, p.id], b: [r[1]!, r[2]!] });
+        // A foot from a circle's center to a line through it touching the circle is the tangent point.
+        const tangentCircle = figure.circles.find((c) => c.center === r[0] && (c.through === p.id || (c.through && byId.get(c.through)?.kind === "foot" && byId.get(c.through)?.refs[0] === r[0])));
+        const note = tangentCircle ? `${r[1]}${r[2]} tiếp xúc ${tangentCircle.label ?? `(${r[0]})`} tại ${p.id}` : `${p.id} là hình chiếu của ${r[0]} trên ${r[1]}${r[2]}`;
+        if (r[0] !== p.id) add({ t: "perp", a: [r[0]!, p.id], b: [r[1]!, r[2]!] }, "CONSTRUCTION", note);
         break;
+      }
       case "intersection": {
         for (const [a, b] of [[r[0]!, r[1]!], [r[2]!, r[3]!]] as Seg[]) {
           if (!hidden(b) && !hidden(a)) {
@@ -390,6 +394,17 @@ function tryProve(s: ProofState, f: Fact): Derivation | null {
       return p ? s.add(f, "LENGTH_ALGEBRA", p) : null;
     }
     case "cyclic": {
+      // Two known circles through three common points are one circle: any four of their points are concyclic.
+      for (const c1 of s.facts) {
+        if (c1.fact.t !== "cyclic") continue;
+        const p1 = c1.fact.p;
+        for (const c2 of s.facts) {
+          if (c2.id <= c1.id || c2.fact.t !== "cyclic") continue;
+          const shared = c2.fact.p.filter((x) => p1.includes(x));
+          const all = new Set([...p1, ...c2.fact.p]);
+          if (shared.length >= 3 && f.p.every((x) => all.has(x))) return s.add(f, "CYCLIC_SAME_CIRCLE", [c1.id, c2.id]);
+        }
+      }
       // Two vertices see one side under equal angles (same side) or supplementary angles (opposite sides).
       const [a, b, c, d] = f.p;
       for (const [x, y, p, q] of [[a, b, c, d], [a, c, b, d], [a, d, b, c], [b, c, a, d], [b, d, a, c], [c, d, a, b]] as [string, string, string, string][]) {
@@ -515,6 +530,28 @@ export function search(figure: Figure, givens: { fact: Fact; method: string; not
           }
       }
     mark("midpoint + HL");
+    // Right triangle XEY (right angle at E) with the altitude EH: EX² = XH·XY, EY² = YH·YX, EH² = HX·HY.
+    for (const e of visible) {
+      if (Date.now() - started > lim.timeMs) break;
+      for (let i = 0; i < visible.length; i++)
+        for (let j = i + 1; j < visible.length; j++) {
+          const [x, y] = [visible[i]!, visible[j]!];
+          if (x === e || y === e || !o90(oracle, x, e, y)) continue;
+          for (const h of visible) {
+            if ([x, y, e].includes(h) || oracle.orient(x, h, y) !== 0 || !o90(oracle, e, h, x)) continue;
+            const targets: Fact[] = [
+              { t: "prod", lhs: [{ seg: [e, x], power: 2, divide: false }], rhs: [seg1(x, h), seg1(x, y)] },
+              { t: "prod", lhs: [{ seg: [e, y], power: 2, divide: false }], rhs: [seg1(y, h), seg1(y, x)] },
+              { t: "prod", lhs: [{ seg: [e, h], power: 2, divide: false }], rhs: [seg1(h, x), seg1(h, y)] },
+            ];
+            if (targets.every((t) => s.known(t))) continue;
+            const right = tryProve(s, { t: "perp", a: [e, x], b: [e, y] });
+            const onLine = right && tryProve(s, { t: "col", p: [x, h, y] });
+            const alt = onLine && tryProve(s, { t: "perp", a: [e, h], b: [x, y] });
+            if (right && onLine && alt) for (const t of targets) s.add(t, "RIGHT_TRIANGLE_RELATIONS", [right.id, onLine.id, alt.id]);
+          }
+        }
+    }
     // Power of a point: chords AB, CD of one circle meeting at X give XA·XB = XC·XD.
     for (const d of [...s.facts]) {
       if (d.fact.t !== "cyclic" || Date.now() - started > lim.timeMs) continue;
@@ -590,6 +627,12 @@ export function search(figure: Figure, givens: { fact: Fact; method: string; not
         const [x, y] = e1.e.split("|") as Seg;
         const f: Fact = { t: "perp", a: [e1.c, e2.c], b: [x, y] };
         if (!s.known(f) && oracle.holds(f)) s.add(f, "PERPENDICULAR_BISECTOR", [d1.id, d2.id]);
+        // …and that perpendicular bisector passes through the midpoint of XY.
+        const mid = s.facts.find((m) => m.fact.t === "midp" && [m.fact.a, m.fact.b].sort().join("|") === [x, y].sort().join("|"));
+        if (mid && mid.fact.t === "midp" && ![e1.c, e2.c].includes(mid.fact.m)) {
+          const c: Fact = { t: "col", p: [e1.c, e2.c, mid.fact.m] };
+          if (!s.known(c) && oracle.holds(c)) s.add(c, "PERPENDICULAR_BISECTOR", [d1.id, d2.id, mid.id]);
+        }
       }
     }
     log.push(`round ${rounds + 1}: ${s.facts.length} facts (+${s.facts.length - before}), ${candidates.length} candidates, ${Date.now() - started} ms`);
@@ -619,24 +662,56 @@ function algebraFollowsRaw(s: ProofState, f: Fact, premises: number[], kind: "an
   return eqs.length > 0 && eqs.every((eq) => sys.implies(eq) !== null);
 }
 
-/** Drops premises an algebraic step doesn't need (greedy, one at a time), so every cited fact is necessary. */
-export function minimize(s: ProofState, d: Derivation): void {
+/**
+ * Chooses the premises of an algebraic step (angle chase, same line, length algebra) the way a student would: reuse
+ * facts the rest of the proof states anyway, and drop the premises that would add the most new facts, while the
+ * step still follows. A premise never rests on the step itself, so the proof stays acyclic.
+ *
+ * `goal`: the fact the proof is for (to know what the rest of the proof states without this step).
+ */
+export function minimize(s: ProofState, d: Derivation, goal?: number): void {
   const kind = d.method === "ANGLE_CHASE" || d.method === "SAME_LINE" ? "angle" : d.method === "LENGTH_ALGEBRA" ? "length" : null;
   if (!kind) return;
-  // Try dropping the premises with the largest sub-proofs first, so the chase keeps the cheap ones.
+  // What the proof states without this step's premises.
+  const reach = new Set<number>();
+  const visit = (x: number) => {
+    if (reach.has(x)) return;
+    reach.add(x);
+    if (x !== d.id) for (const p of s.facts[x]!.premises) visit(p);
+  };
+  if (goal !== undefined) visit(goal);
+  reach.delete(d.id);
+  /** How many facts citing `id` adds to the proof. */
   const cost = (id: number) => {
     const seen = new Set<number>();
     const walk = (x: number) => {
-      if (seen.has(x)) return;
+      if (seen.has(x) || reach.has(x)) return;
       seen.add(x);
       for (const p of s.facts[x]!.premises) walk(p);
     };
     walk(id);
     return seen.size;
   };
-  const costs = new Map(d.premises.map((p) => [p, cost(p)]));
-  for (const p of [...d.premises].sort((a, b) => costs.get(b)! - costs.get(a)! || b - a)) {
-    const without = d.premises.filter((x) => x !== p);
-    if (algebraFollows(s, d.fact, without, kind)) d.premises = without;
+  const restsOnD = new Map<number, boolean>();
+  const dependsOnD = (id: number): boolean => {
+    if (id === d.id) return true;
+    if (restsOnD.has(id)) return restsOnD.get(id)!;
+    restsOnD.set(id, false);
+    const r = s.facts[id]!.premises.some(dependsOnD);
+    restsOnD.set(id, r);
+    return r;
+  };
+  const contributes = (x: Derivation) => (kind === "angle" ? angleEquations(x.fact, s.oracle.orient).length : lengthEquations(x.fact).length) > 0;
+  // Candidates: facts the proof states anyway, and one-step consequences of them ("AI ⊥ EF" from AE = AF and IE = IF).
+  const reuse = s.facts
+    .filter((x) => x.id !== d.id && contributes(x) && (reach.has(x.id) || (x.premises.length > 0 && x.premises.every((p) => reach.has(p)))) && !dependsOnD(x.id))
+    .map((x) => x.id);
+  let ps = [...new Set([...d.premises, ...reuse])];
+  if (!algebraFollows(s, d.fact, ps, kind)) ps = [...d.premises];
+  const costs = new Map(ps.map((p) => [p, cost(p)]));
+  for (const p of [...ps].sort((a, b) => costs.get(b)! - costs.get(a)! || b - a)) {
+    const without = ps.filter((x) => x !== p);
+    if (algebraFollows(s, d.fact, without, kind)) ps = without;
   }
+  d.premises = ps;
 }

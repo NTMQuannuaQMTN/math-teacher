@@ -26,9 +26,12 @@ function inline(d: Derivation, byId: Map<number, Derivation>): boolean {
   if (d.method === "MIDPOINT") return true;
   // Base angles of an isosceles triangle: "∠EDB = ∠EBD (△EDB cân tại E)".
   if (d.method === "ISOSCELES") return true;
-  // A one-line consequence of givens only ("AE ⊥ IE" from E on AC and IE ⊥ AC; "IE = IF" from two radii).
-  if ((d.method === "ANGLE_CHASE" || d.method === "SAME_LINE" || d.method === "LENGTH_ALGEBRA") && d.premises.length <= 2)
-    return d.premises.every((p) => byId.get(p)!.premises.length === 0);
+  // The same angle named twice (J on ray AI: ∠DIJ = ∠DIA).
+  if (d.fact.t === "eqangle" && sameAngle(d.fact)) return true;
+  // A one-line consequence of givens only ("AE ⊥ IE" from E on AC and IE ⊥ AC; "IE = IF" from two radii)…
+  if ((d.method === "ANGLE_CHASE" || d.method === "SAME_LINE" || d.method === "LENGTH_ALGEBRA") && d.premises.length <= 2 && d.premises.every((p) => byId.get(p)!.premises.length === 0)) return true;
+  // …or of one earlier fact and the construction ("EJ ⊥ AI" from AI ⊥ EF and J on EF).
+  if ((d.method === "ANGLE_CHASE" || d.method === "SAME_LINE") && d.premises.map((p) => byId.get(p)!).filter(needed).length <= 1) return true;
   return false;
 }
 
@@ -75,6 +78,48 @@ function sameKey(f: Fact): string {
   return `prod:${[side(l), side(r)].sort().join("=")}`;
 }
 
+/** Do the two angles share their vertex and both rays (J on ray AI: ∠EAI is ∠EAJ)? */
+function sameAngle(f: Fact): boolean {
+  if (f.t !== "eqangle" || f.a[1] !== f.b[1]) return false;
+  const v = positions[f.a[1]];
+  const dir = (p: string) => {
+    const P = positions[p];
+    return v && P ? Math.atan2(P.y - v.y, P.x - v.x) : NaN;
+  };
+  const close = (x: number, y: number) => Math.abs(Math.atan2(Math.sin(x - y), Math.cos(x - y))) < 1e-6;
+  const [a0, a2, b0, b2] = [dir(f.a[0]), dir(f.a[2]), dir(f.b[0]), dir(f.b[2])];
+  return (close(a0, b0) && close(a2, b2)) || (close(a0, b2) && close(a2, b0));
+}
+
+/** "△AIE ∽ △AEJ ⇒ AI/AE = IE/EJ = AE/AJ" (corresponding sides in proportion). */
+function proportion(f: Fact & { t: "simtri" }): string {
+  const side = (t: string[], i: number) => `${t[i]}${t[(i + 1) % 3]}`;
+  return `△${f.a.join("")} ∽ △${f.b.join("")} ⇒ ${[0, 1, 2].map((i) => `${side(f.a, i)}/${side(f.b, i)}`).join(" = ")}`;
+}
+
+/**
+ * For "X, V, Y collinear": an angle relation at V with a reference point R that a student would write —
+ * "∠RVX = ∠RVY" (X, Y on the same ray) or "∠RVX + ∠RVY = 180°".
+ */
+function collinearAngle(f: Fact & { t: "col" }, candidates: string[]): { text: string; then: string } | null {
+  for (let k = 0; k < 3; k++) {
+    const [v, x, y] = [f.p[k]!, f.p[(k + 1) % 3]!, f.p[(k + 2) % 3]!];
+    const [V, X, Y] = [positions[v], positions[x], positions[y]];
+    if (!V || !X || !Y) continue;
+    for (const r of candidates) {
+      const R = positions[r];
+      if (!R || f.p.includes(r)) continue;
+      const cross = (P: { x: number; y: number }) => (R.x - V.x) * (P.y - V.y) - (R.y - V.y) * (P.x - V.x);
+      if (Math.abs(cross(X)) < 1e-6 || Math.abs(cross(Y)) < 1e-6) continue;
+      const sameRay = (X.x - V.x) * (Y.x - V.x) + (X.y - V.y) * (Y.y - V.y) > 0;
+      return sameRay
+        ? { text: `∠${r}${v}${x} = ∠${r}${v}${y}`, then: `hai tia ${v}${x}, ${v}${y} trùng nhau` }
+        : { text: `∠${r}${v}${x} + ∠${r}${v}${y} = 180°`, then: `hai tia ${v}${x}, ${v}${y} đối nhau` };
+    }
+  }
+  return null;
+}
+
 /** A fact as a student writes it: a cyclic quadrilateral by its name. */
 function show(f: Fact): string {
   if (f.t === "cyclic") return `tứ giác ${quad([...f.p])} nội tiếp`;
@@ -101,6 +146,11 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       return [...shown.map(bullet), `⇒ tam giác cân tại ${v} (hai góc ở đáy bằng nhau)`, `⇒ ${show(f)}.`];
     }
     case "PERPENDICULAR_BISECTOR": {
+      if (f.t === "col") {
+        const mid = P.find((x): x is Fact & { t: "midp" } => x.t === "midp")!;
+        const ends = f.p.filter((x) => x !== mid.m);
+        return [...premises.filter((p) => p.fact.t === "cong").map(words).map(bullet), `⇒ ${ends.join("")} là đường trung trực của ${mid.a}${mid.b}, nên đi qua trung điểm ${mid.m} của ${mid.a}${mid.b}`, `⇒ ${show(f)}.`];
+      }
       const p = f as Fact & { t: "perp" };
       return [...shown.map(bullet), `⇒ ${p.a.join("")} là đường trung trực của ${p.b.join("")} (hai điểm cách đều hai đầu đoạn thẳng)`, `⇒ ${show(f)}.`];
     }
@@ -138,10 +188,38 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
     }
     case "POWER_OF_POINT_CONVERSE":
       return [...shown.map(bullet), `⇒ ${show(f)} (đảo của hệ thức hai cát tuyến).`];
-    case "SAME_LINE":
-      return [...shown.map(bullet), `⇒ ${show(f)} (qua một điểm chỉ có một đường thẳng như vậy).`];
-    case "LENGTH_ALGEBRA":
-      return shown.length ? [...shown.map(bullet), `⇒ ${show(f)}.`] : [`${show(f)}.`];
+    case "CYCLIC_SAME_CIRCLE": {
+      const cs = P.filter((x): x is Fact & { t: "cyclic" } => x.t === "cyclic");
+      const shared = cs.length === 2 ? cs[1]!.p.filter((x) => cs[0]!.p.includes(x)) : [];
+      const all = [...new Set(cs.flatMap((c) => c.p))].sort();
+      return [...shown.map(bullet), `⇒ hai đường tròn cùng đi qua ${shared.join(", ")} nên trùng nhau (qua ba điểm chỉ có một đường tròn)`, `⇒ ${all.join(", ")} cùng thuộc một đường tròn.`];
+    }
+    case "SAME_LINE": {
+      if (f.t !== "col" || premises.filter(needed).every((p) => p.fact.t === "perp" || p.fact.t === "para")) return [...shown.map(bullet), `⇒ ${show(f)} (qua một điểm chỉ có một đường thẳng như vậy).`];
+      // Collinearity from angles: show the angle relation it rests on (two rays from one point making the same angle
+      // with a third line).
+      const rel = collinearAngle(f, premises.flatMap((p) => factPoints(p.fact)));
+      return rel ? ["Ta có:", ...shown.map(bullet), `⇒ ${rel.text} (cộng, trừ các góc)`, `⇒ ${rel.then}`, `⇒ ${show(f)}.`] : [...shown.map(bullet), `⇒ ${show(f)}.`];
+    }
+    case "RIGHT_TRIANGLE_RELATIONS": {
+      const right = P.find((x): x is Fact & { t: "perp" } => x.t === "perp" && x.a.some((q) => x.b.includes(q)));
+      const alt = P.find((x): x is Fact & { t: "perp" } => x.t === "perp" && x !== right);
+      if (!right || !alt) return [...shown.map(bullet), `⇒ ${show(f)} (hệ thức lượng trong tam giác vuông).`];
+      const e = right.a.find((q) => right.b.includes(q))!;
+      const [x, y] = [right.a.find((q) => q !== e)!, right.b.find((q) => q !== e)!];
+      const h = alt.a.includes(e) ? alt.a.find((q) => q !== e)! : alt.b.find((q) => q !== e)!;
+      return [
+        `△${x}${e}${y} vuông tại ${e} có đường cao ${e}${h}:`,
+        ...premises.filter((p) => p.fact.t === "perp").map((p) => bullet(words(p))),
+        `⇒ ${show(f)} (hệ thức lượng trong tam giác vuông).`,
+      ];
+    }
+    case "LENGTH_ALGEBRA": {
+      if (!shown.length) return [`${show(f)}.`];
+      // Similar triangles are written with their proportion, so the algebra can be followed.
+      const body = premises.filter(needed).map((p) => (p.fact.t === "simtri" ? bullet(`${proportion(p.fact)} (${words(p).replace(/^.*?\((.*)\)$/, "$1")})`) : bullet(words(p))));
+      return [...body, `⇒ ${show(f)}.`];
+    }
     case "ANGLE_CHASE":
       return shown.length ? ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`] : [`${show(f)}.`];
     default:
@@ -190,6 +268,8 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   // reason in brackets.
   const words = (p: Derivation, byId: Map<number, Derivation>): string => {
     const text = show(p.fact);
+    // ∠EAI and ∠JAE are one angle when J lies on ray AI: say so instead of citing a proof.
+    if (p.fact.t === "eqangle" && sameAngle(p.fact)) return `∠${p.fact.a.join("")} là góc chung`;
     if (p.premises.length === 0) {
       if (p.method === "CONCYCLIC_GIVEN") {
         const circle = givenReason(p).replace(/^cùng thuộc /, "");
@@ -197,7 +277,8 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       }
       return `${text} (${givenReason(p)})`;
     }
-    if (stepOf.has(sameKey(p.fact))) return `${text} (chứng minh trên)`;
+    // An earlier step is cited by its number (filled in once steps are final).
+    if (stepOf.has(sameKey(p.fact))) return `${text} (⟦${sameKey(p.fact)}⟧)`;
     if (p.method === "ISOSCELES") {
       const c = byId.get(p.premises[0]!)!.fact as Fact & { t: "cong" };
       const v = c.a.find((x) => c.b.includes(x))!;
@@ -208,7 +289,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       const qs = p.premises.map((q) => byId.get(q)!).filter(needed);
       const radii = qs.length > 0 && qs.every((q) => q.method === "CIRCLE_RADIUS");
       if (radii) return `${text} (bán kính)`;
-      const why = qs.map((q) => (q.premises.length === 0 ? `${show(q.fact)} (${givenReason(q)})` : show(q.fact)));
+      const why = qs.map((q) => (q.premises.length === 0 ? `${show(q.fact)}, ${givenReason(q)}` : show(q.fact)));
       return why.length ? `${text} (vì ${why.join("; ")})` : text;
     }
     return text;
@@ -217,13 +298,14 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   // Steps (merged when too many).
   type Draft = { part: string; facts: Fact[]; texts: string[]; reasons: string[]; uses: Set<string>; goal: PlanGoal | null; goals: PlanGoal[] };
   const drafts: Draft[] = [];
+  const lastDerivation = new Map<Draft, Derivation>();
   for (const it of items) {
     const g = plan.goals.find((x) => x.proof.some((d) => d.id === it.d.id) && x.part === it.part)!;
     const byId = new Map(g.proof.map((d) => [d.id, d]));
     const premises = it.d.premises.map((p) => byId.get(p)!);
     const ls = lines(it.d, premises, (p) => words(p, byId));
     // "đường tròn này đi qua O": the circle through three of the points is unique, so it is the same circle.
-    if (it.goal?.label.startsWith("đường tròn qua") && it.d.fact.t === "cyclic") {
+    if (it.goal?.label.startsWith("đường tròn qua") && it.d.fact.t === "cyclic" && it.d.method !== "CYCLIC_SAME_CIRCLE") {
       const three = it.d.fact.p.filter((x) => it.goal!.label.includes(x) && !it.goal!.label.endsWith(`đi qua ${x}`));
       ls.push(`Qua ba điểm ${three.join(", ")} chỉ có một đường tròn ⇒ ${it.goal.label.replace(/^đường tròn qua/, "đường tròn đi qua")}.`);
     }
@@ -236,16 +318,31 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     const prev = drafts[drafts.length - 1];
     const shownPremises = premises.filter(needed);
     const prevFact = prev?.facts[prev.facts.length - 1];
+    const prevD = prev ? lastDerivation.get(prev) : undefined;
+    const sameBisector =
+      it.d.method === "PERPENDICULAR_BISECTOR" && prevD?.method === "PERPENDICULAR_BISECTOR" &&
+      it.d.premises.filter((x) => byId.get(x)?.fact.t === "cong").every((x) => prevD.premises.includes(x));
+    if (prev && sameBisector && prev.part === it.part) {
+      // "AI là đường trung trực của EF" gives both AI ⊥ EF and "AI đi qua trung điểm J": one step.
+      prev.facts.push(it.d.fact);
+      prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ") && !l.includes("là đường trung trực")).join("\n");
+      prev.goal = it.goal ?? prev.goal;
+      if (it.goal) prev.goals.push(it.goal);
+      stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
+      continue;
+    }
     if (prev && !prev.goal && prev.part === it.part && shownPremises.length === 1 && prevFact && factKey(shownPremises[0]!.fact) === factKey(prevFact)) {
       prev.facts.push(it.d.fact);
       prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ")).join("\n");
       if (m) prev.reasons = [...new Set([...prev.reasons, m.vi.split(" (")[0]!])];
       prev.goal = it.goal;
       if (it.goal) prev.goals.push(it.goal);
+      lastDerivation.set(prev, it.d);
       stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
       continue;
     }
     drafts.push({ part: it.part, facts: [it.d.fact], texts: [text], reasons: m ? [m.vi.split(" (")[0]!] : [], uses, goal: it.goal, goals: it.goal ? [it.goal] : [] });
+    lastDerivation.set(drafts[drafts.length - 1]!, it.d);
     stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
   }
   // Merge while too long: the first pair of adjacent non-goal steps in the same part.
@@ -305,6 +402,14 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       focus: [...new Set([...factPoints(g.fact), ...h.focus])].slice(0, 10),
     });
   }
+
+  // Step numbers for "(bước N)" citations.
+  const cite = (t: string, own?: string) =>
+    t
+      .replace(/ \(⟦([^⟧]+)⟧\)/g, (all, k: string) => (finalId.get(k) === own ? "" : all)) // a fact of this same step: no citation
+      .replace(/⟦([^⟧]+)⟧/g, (_, k: string) => (finalId.get(k) ? `bước ${finalId.get(k)!.slice(1)}` : "chứng minh trên"));
+  for (const st of steps) st.explanation = cite(st.explanation, st.id);
+  for (const h of hints) h.explanation = cite(h.explanation);
 
   const goalsText = plan.goals.filter((g) => g.proved).map((g) => `${g.part ? `(${g.part}) ` : ""}${g.label}`);
   const givens = plan.goals
@@ -381,6 +486,25 @@ function hintFor(d: Derivation, byId: Map<number, Derivation>, words: (p: Deriva
       };
     }
     case "LENGTH_ALGEBRA": {
+      const rt = premises.find((p) => p.method === "RIGHT_TRIANGLE_RELATIONS");
+      if (rt) {
+        const right = rt.premises.map((q) => byId.get(q)!.fact).find((x): x is Fact & { t: "perp" } => x.t === "perp" && x.a.some((q) => x.b.includes(q)));
+        const alt = rt.premises.map((q) => byId.get(q)!.fact).find((x): x is Fact & { t: "perp" } => x.t === "perp" && x !== right);
+        const e = right?.a.find((q) => right.b.includes(q));
+        const tri = right && e ? `${right.a.find((q) => q !== e)}${e}${right.b.find((q) => q !== e)}` : "";
+        const h = alt && e ? (alt.a.includes(e) ? alt.a.find((q) => q !== e) : alt.b.find((q) => q !== e)) : "";
+        const rest = shown.filter((p) => p !== rt).map((p) => words(p));
+        return {
+          question: tri ? `Tam giác vuông nào có đường cao liên quan đến các đoạn thẳng trong đẳng thức?` : "Có tam giác vuông nào với đường cao không?",
+          cue: "Hệ thức lượng trong tam giác vuông: bình phương cạnh góc vuông bằng tích hình chiếu và cạnh huyền",
+          explanation: [
+            tri ? `Hướng: △${tri} vuông tại ${e} có đường cao ${e}${h} ⇒ ${show(rt.fact)}.` : `Hướng: ${show(rt.fact)} (hệ thức lượng).`,
+            ...(rest.length ? [`Rồi dùng ${rest.join("; ")}`] : []),
+            `⇒ ${show(f)}.`,
+          ].join("\n"),
+          focus: tri ? [...tri, h ?? ""].filter(Boolean) : factPoints(f),
+        };
+      }
       const sim = premises.find((p) => p.fact.t === "simtri");
       if (sim && sim.fact.t === "simtri") {
         const t = sim.fact;
@@ -394,6 +518,15 @@ function hintFor(d: Derivation, byId: Map<number, Derivation>, words: (p: Deriva
       return { question: "Những đoạn thẳng nào đã biết là bằng nhau hoặc tỉ lệ?", cue: null, explanation: ["Hướng: từ", ...list, `⇒ ${show(f)}.`].join("\n"), focus: shown.flatMap((p) => factPoints(p.fact)) };
     }
     case "SAME_LINE":
+      if (f.t === "col" && !shown.every((p) => p.fact.t === "perp" || p.fact.t === "para")) {
+        const rel = collinearAngle(f, premises.flatMap((p) => factPoints(p.fact)));
+        return {
+          question: `Để chứng minh ${show(f)}, có thể chứng minh hai góc nào bằng nhau?`,
+          cue: "Hai tia cùng tạo với một tia góc bằng nhau (cùng phía) thì trùng nhau",
+          explanation: [rel ? `Hướng: chứng minh ${rel.text}, khi đó ${rel.then}.` : "Hướng:", "Dùng:", ...list].join("\n"),
+          focus: [...f.p],
+        };
+      }
       return {
         question: "Hai đường thẳng nào đi qua cùng một điểm và cùng vuông góc (hoặc cùng song song) với một đường thẳng?",
         cue: "Qua một điểm chỉ có một đường thẳng vuông góc (song song) với một đường thẳng cho trước",
@@ -420,6 +553,7 @@ function hintFor(d: Derivation, byId: Map<number, Derivation>, words: (p: Deriva
  * the solver as verified facts instead of being shown as is.)
  */
 export function planReadability(plan: ProofPlan, maxPremises = 8): { readable: boolean; steps: number; maxCited: number } {
+  if (plan.figure) positions = resolveFigure(plan.figure).points;
   const stated = new Set<string>();
   let maxCited = 0;
   for (const g of plan.goals) {

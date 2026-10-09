@@ -72,15 +72,37 @@ const checkFact = (g: FigureCheck): Fact | null => claimFact({ kind: g.kind as n
 /** Only the derivations a goal depends on, premises before conclusions. */
 export function extractProof(state: ProofState, goal: Derivation): Derivation[] {
   const facts = state.facts;
-  const need = new Set<number>();
-  const visit = (id: number) => {
-    if (need.has(id)) return;
-    need.add(id);
-    minimize(state, facts[id]!);
-    for (const p of facts[id]!.premises) visit(p);
+  const collect = (withGoal: boolean) => {
+    const need = new Set<number>();
+    const visit = (id: number) => {
+      if (need.has(id)) return;
+      need.add(id);
+      minimize(state, facts[id]!, withGoal ? goal.id : undefined);
+      for (const p of facts[id]!.premises) visit(p);
+    };
+    visit(goal.id);
+    return need;
   };
-  visit(goal.id);
-  return [...need].sort((a, b) => a - b).map((id) => facts[id]!);
+  // Then again, so each algebraic step can reuse facts the rest of the proof states anyway (until nothing changes).
+  let need = collect(false);
+  const signature = (n: Set<number>) => [...n].sort((a, b) => a - b).map((id) => `${id}<${facts[id]!.premises.join(",")}>`).join(" ");
+  for (let pass = 0, last = signature(need); pass < 6; pass++) {
+    need = collect(true);
+    const now = signature(need);
+    if (now === last) break;
+    last = now;
+  }
+  // Premises before conclusions (a step may now cite a fact the search found later, so order by dependency).
+  const order: number[] = [];
+  const done = new Set<number>();
+  const place = (id: number) => {
+    if (done.has(id)) return;
+    done.add(id);
+    for (const p of [...facts[id]!.premises].sort((a, b) => a - b)) place(p);
+    order.push(id);
+  };
+  for (const id of [...need].sort((a, b) => a - b)) place(id);
+  return order.map((id) => facts[id]!);
 }
 
 const fresh = (taken: Set<string>) => ["P", "Q", "X", "Y", "Z", "T", "U", "V", "W", "N", "M", "S", "R"].find((x) => !taken.has(x)) ?? "X'";

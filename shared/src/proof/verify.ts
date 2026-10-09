@@ -185,6 +185,18 @@ export function verifyProof(figure: Figure, proof: Derivation[], goals: Fact[], 
           break;
         }
         case "PERPENDICULAR_BISECTOR": {
+          const congs = P.filter((x): x is Fact & { t: "cong" } => x.t === "cong");
+          const midp = P.find((x): x is Fact & { t: "midp" } => x.t === "midp");
+          if (f.t === "col" && congs.length === 2 && midp && P.length === 3) {
+            // The perpendicular bisector through two equidistant points passes through the midpoint.
+            const ends = (c: Fact & { t: "cong" }) => {
+              const v = common(c.a, c.b);
+              return v ? { v, seg: [other(c.a, v), other(c.b, v)] as Seg } : null;
+            };
+            const [e1, e2] = [ends(congs[0]!), ends(congs[1]!)];
+            need(!!e1 && !!e2 && e1.v !== e2.v && sameSeg(e1.seg, e2.seg) && sameSeg(e1.seg, [midp.a, midp.b]) && [e1.v, e2.v, midp.m].sort().join() === [...f.p].sort().join(), "not the two equidistant points and the midpoint");
+            break;
+          }
           if (P.length !== 2 || P.some((x) => x.t !== "cong") || f.t !== "perp") { need(false, "needs two equalities of distances"); break; }
           const ends = (c: Fact & { t: "cong" }) => {
             const v = common(c.a, c.b);
@@ -237,6 +249,34 @@ export function verifyProof(figure: Figure, proof: Derivation[], goals: Fact[], 
             const want: Fact = { t: "prod", lhs: [seg(v, p), seg(v2, q2)], rhs: [seg(v2, p2), seg(v, q)] };
             need(algebra(want, [d.premises.find((id) => byId.get(id)!.fact.t === "prod")!], "length"), "the proportion is not of the sides around the equal angle");
           }
+          break;
+        }
+        case "CYCLIC_SAME_CIRCLE": {
+          const cs = P.filter((x): x is Fact & { t: "cyclic" } => x.t === "cyclic");
+          if (cs.length !== 2 || f.t !== "cyclic") { need(false, "needs two concyclic quadruples"); break; }
+          const shared = cs[1]!.p.filter((x) => cs[0]!.p.includes(x));
+          const all = new Set([...cs[0]!.p, ...cs[1]!.p]);
+          need(shared.length >= 3 && f.p.every((x) => all.has(x)), "the two circles don't share three points, or the conclusion uses another point");
+          break;
+        }
+        case "RIGHT_TRIANGLE_RELATIONS": {
+          // perp(EX, EY), col(X, H, Y), perp(EH, XY) ⊢ EX² = XH·XY | EY² = YH·YX | EH² = HX·HY.
+          const right = P.find((x): x is Fact & { t: "perp" } => x.t === "perp" && !!common(x.a, x.b));
+          const col = P.find((x): x is Fact & { t: "col" } => x.t === "col");
+          const alt = P.find((x): x is Fact & { t: "perp" } => x.t === "perp" && x !== right);
+          if (!right || !col || !alt || f.t !== "prod") { need(false, "needs a right angle, the foot on the hypotenuse and the altitude"); break; }
+          const e = common(right.a, right.b)!;
+          const [x, y] = [other(right.a, e), other(right.b, e)];
+          const h = col.p.find((q) => q !== x && q !== y);
+          const altOk = !!h && col.p.includes(x) && col.p.includes(y) && ((sameSeg(alt.a, [e, h]) && [x, y].every((q) => alt.b.includes(q))) || (sameSeg(alt.b, [e, h]) && [x, y].every((q) => alt.a.includes(q))));
+          const forms: Fact[] = h
+            ? [
+                { t: "prod", lhs: [{ seg: [e, x], power: 2, divide: false }], rhs: [seg(x, h), seg(x, y)] },
+                { t: "prod", lhs: [{ seg: [e, y], power: 2, divide: false }], rhs: [seg(y, h), seg(y, x)] },
+                { t: "prod", lhs: [{ seg: [e, h], power: 2, divide: false }], rhs: [seg(h, x), seg(h, y)] },
+              ]
+            : [];
+          need(altOk && forms.some((g) => factKey(g) === factKey(f)), "not a relation of this right triangle and its altitude");
           break;
         }
         case "POWER_OF_POINT":
