@@ -1,0 +1,1 @@
+{"model":"qwen3.6:35b","variant":"hosted;prompt=solver-v2.9;effort=low;max=24000","text":"{\n  \"analysis\": {\n    \"concepts\": [\"tam giác vuông\", \"đường cao\", \"hình chiếu\", \"hệ thức lượng\", \"tam giác đồng dạng\"],\n    \"constraints\":","usage":{"input":0,"cachedInput":0,"output":0,"reasoning":7763},"latencyMs":180326,"createdAt":"2026-10-08T02:11:29.179Z"}

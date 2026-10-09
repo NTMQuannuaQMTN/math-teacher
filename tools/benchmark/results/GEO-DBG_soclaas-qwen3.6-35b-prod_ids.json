@@ -1,0 +1,55 @@
+{
+ "summary": {
+  "exp": "GEO-DBG",
+  "system": "soclaas-qwen3.6-35b-prod",
+  "split": "validation",
+  "promptVersion": "solver-v2.9",
+  "techniqueHints": false,
+  "dataset": "v1",
+  "n": 1,
+  "pass": 0,
+  "partial": 0,
+  "fail": 1,
+  "critical": 0,
+  "answerAccuracy": 0,
+  "gradableN": 1,
+  "verifiedRate": 0,
+  "errors": 1,
+  "meanModelSeconds": 0,
+  "meanInputTokens": 0,
+  "meanOutputTokens": 0,
+  "cache": {
+   "hits": 0,
+   "misses": 0,
+   "modelMs": 0
+  },
+  "costUsd": 0,
+  "createdAt": "2026-10-08T00:09:58.616Z"
+ },
+ "rows": [
+  {
+   "id": "g1",
+   "topic": "geometry",
+   "difficulty": 1,
+   "format": "calculation",
+   "grade": "FAIL",
+   "answerCorrect": false,
+   "status": null,
+   "attempts": 0,
+   "inputTokens": 0,
+   "outputTokens": 0,
+   "modelSeconds": 0,
+   "wallSeconds": 182.8,
+   "figurePoints": null,
+   "failedChecks": [],
+   "answer": "",
+   "lesson": null,
+   "log": [
+    "attempt 1 failed (output truncated); trying again",
+    "attempt 2 failed after 183 s (output truncated); not retrying"
+   ],
+   "slept": false,
+   "error": "the model could not finish this problem in time (output truncated)"
+  }
+ ]
+}
