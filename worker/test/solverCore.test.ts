@@ -465,6 +465,7 @@ describe("language hygiene", () => {
     ["Chúng ta sẽ chứng minh hai cặp tam giác semelhante", "Chúng ta sẽ chứng minh hai cặp tam giác đồng dạng"],
     ["Thay giá trịKnown vào phương trình", "Thay giá trị đã biết vào phương trình"],
     ["hủy factors chung, giữ $factor$", "hủy nhân tử chung, giữ $factor$"],
+    ["Tính Δ cho phương trình đã given và thấy nó luôn positive.", "Tính Δ cho phương trình đã cho và thấy nó luôn dương."],
   ])("patchVietnamese(%s)", (input, expected) => {
     expect(patchVietnamese(input)).toBe(expected);
   });
@@ -487,6 +488,20 @@ describe("language hygiene", () => {
     lesson.hints[1]!.question = "Nếu mở rộng các bình phương, 我们可以看到 điều gì?";
     expect(cleanLanguage(lesson).feedback.join(" ")).toMatch(/hint h2 .*Chinese/);
     expect(verifyLesson(lesson).feedback.join(" ")).toMatch(/Chinese/);
+  });
+
+  it("asks for a retry when a Vietnamese lesson contains Cyrillic leakage", () => {
+    const lesson = isoscelesLesson();
+    lesson.steps[0]!.explanation = "Vì hai nghiệm phân biệt, тогда ta xét tiếp.";
+    const { feedback } = cleanLanguage(lesson);
+    expect(feedback.join(" ")).toMatch(/Cyrillic\/Russian/);
+  });
+
+  it("rejects an invalid unordered-set equality in a hint", () => {
+    const lesson = isoscelesLesson();
+    lesson.hints[0]!.explanation = "Ba tổng có dạng {$b+c,c+d,d+a$} = {1,2,3}.";
+    const { feedback } = cleanLanguage(lesson);
+    expect(feedback.join(" ")).toMatch(/invalid unordered-set equality/);
   });
 
   it("asks for a retry when a step is Vietnamese without diacritics", () => {

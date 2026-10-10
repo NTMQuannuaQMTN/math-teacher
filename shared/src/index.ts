@@ -1,5 +1,6 @@
 export * from "./contract";
 export * from "./mathText";
+export * from "./specialists";
 export * from "./expr";
 export * from "./geometry";
 export * from "./solution";

@@ -450,7 +450,9 @@ export async function solveProblem(
     log = () => undefined,
     onRaw,
     retryPolicy = model.name === "local" ? "serious" : "any",
-    retryBudgetMs = 150_000,
+    // The route supplies the hard 30s AbortSignal. Keep the retry budget below it so a
+    // corrective attempt is never started with too little time to finish.
+    retryBudgetMs = 25_000,
     onProgress,
     techniqueHints: withTechniques = false,
     fallbackOnlyOnFailure = false,

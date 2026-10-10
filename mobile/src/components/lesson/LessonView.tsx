@@ -261,7 +261,6 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
                 </View>
               ))}
             </View>
-            <FinalAnswerCard text={lesson.finalAnswer.text} math={lesson.finalAnswer.math} verification={solution.verification} hasFigure={!!figure} />
             <Button label={s.solve.regenerate} icon="refresh" variant="ghost" size="md" onPress={onRegenerate} />
           </>
         ) : null}

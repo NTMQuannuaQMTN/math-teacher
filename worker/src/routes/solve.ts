@@ -44,9 +44,12 @@ interface SolutionRow {
 }
 
 const HOUR = 3600;
+/** Product latency contract: one question may never spend longer than 30 seconds in solving. */
+export const MAX_SOLVE_WALL_CLOCK_MS = 30_000;
 
 function solveTimeoutMs(env: Env): number {
-  return intVar(env.SOLVE_TIMEOUT_MS, 170_000);
+  // Keep the cap absolute even if an old deployment or secret still contains a larger value.
+  return Math.min(MAX_SOLVE_WALL_CLOCK_MS, Math.max(1_000, intVar(env.SOLVE_TIMEOUT_MS, MAX_SOLVE_WALL_CLOCK_MS)));
 }
 
 /**
@@ -202,7 +205,7 @@ async function findSolution(db: D1Database, ownerId: string, scanId: string, que
 }
 
 function isFresh(row: SolutionRow, env: Env): boolean {
-  return row.status === "pending" && row.started_at !== null && Date.parse(row.started_at) > Date.now() - solveTimeoutMs(env) - 30_000;
+  return row.status === "pending" && row.started_at !== null && Date.parse(row.started_at) > Date.now() - solveTimeoutMs(env) - 5_000;
 }
 
 /** GET /v1/scans/:id/questions/:qid/solution — 202 while pending, so clients know to keep polling. */
@@ -291,7 +294,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
   // Take the lock atomically: insert, or reclaim a row that isn't being generated right now.
   const id = existing?.id ?? crypto.randomUUID();
   const ts = nowIso();
-  const staleBefore = new Date(Date.now() - solveTimeoutMs(env) - 30_000).toISOString();
+  const staleBefore = new Date(Date.now() - solveTimeoutMs(env) - 5_000).toISOString();
   const lock = await env.DB.prepare(
     `INSERT INTO solutions (id, scan_id, question_id, owner_id, status, problem_hash, model, prompt_version, attempts, started_at, created_at, updated_at)
      VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, 0, ?, ?, ?)

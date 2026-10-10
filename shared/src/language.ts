@@ -7,6 +7,7 @@ import type { ModelLesson } from "./solution";
  */
 
 const CJK = /[぀-ヿ㐀-鿿豈-﫿＀-￯]/u;
+const CYRILLIC = /[А-Яа-яЁёЪъЫыЭэЮю]/u;
 /** Letters that only appear in Vietnamese written with its diacritics. */
 const VI_MARKED = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/iu;
 /** Common Vietnamese syllables as they look with their diacritics stripped. */
@@ -53,6 +54,18 @@ const CJK_GLOSSARY: [RegExp, string][] = [
 
 /** English / Portuguese words Nemotron drops into Vietnamese prose (EXP-010 review). Maths stays untouched. */
 const WORD_GLOSSARY: [RegExp, string][] = [
+  [/đã\s+given\b/giu, "đã cho"],
+  [/\bgiven\b/giu, "đã cho"],
+  [/\bfor\b/giu, "cho"],
+  [/\band\b/giu, "và"],
+  [/\btherefore\b/giu, "suy ra"],
+  [/\bso\b/giu, "do đó"],
+  [/\bwe\s+have\b/giu, "ta có"],
+  [/\bhas\b/giu, "có"],
+  [/\bfind\b/giu, "tìm"],
+  [/\bcalculate\b/giu, "tính"],
+  [/\bpositive\b/giu, "dương"],
+  [/\bnegative\b/giu, "âm"],
   [/\bsemelhantes?\b/giu, "đồng dạng"],
   [/\bquais\b/giu, "những"],
   [/\bfactors?\b/giu, "nhân tử"],
@@ -76,6 +89,10 @@ const WORD_GLOSSARY: [RegExp, string][] = [
 /** English (or other foreign) words left in Vietnamese prose after the glossary: sent back to the model. */
 const FOREIGN_WORDS =
   /(?<![\p{L}\\])(?:injective|surjective|bijective|strict(?:ly)?|with|where|therefore|hence|such that|increasing|decreasing|function|feit|diferen\p{L}*|vše)(?!\p{L})|\p{Ll}[A-Z][a-z]{2,}/u;
+
+/** A common but invalid shortcut: treating three expressions as exactly the set {1,2,3}
+ * when the statement only says the three values are 1, 2, 3 in some order. */
+const INVALID_UNORDERED_SET_EQUALITY = /\{[^{}$]{1,160},[^{}$]{1,160}(?:,[^{}$]{1,160})?\}\s*=\s*\{\s*[-+]?\d+(?:\s*[,;]\s*[-+]?\d+){1,8}\s*\}/u;
 
 /**
  * School notation: two residues that form one class modulo half the modulus are one condition
@@ -171,6 +188,10 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   if (foreign.length > 0) {
     feedback.push(`${foreign.join(", ")} contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language`);
   }
+  const russian = [...new Set(body.filter(([, t]) => t && CYRILLIC.test(t)).map(([where]) => where))];
+  if (russian.length > 0) {
+    feedback.push(`${russian.join(", ")} contain(s) Cyrillic/Russian text: rewrite every student-facing text in Vietnamese with full diacritics`);
+  }
   // Prose outside $…$, plus the words inside \text{…} of the maths fields.
   const prose = (t: string) => t.replace(/\$[^$]*\$/g, " ");
   const texts = (m: string | null) => [...(m ?? "").matchAll(/\\text\{([^{}]*)\}/g)].map((x) => x[1]).join(" ");
@@ -182,6 +203,16 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const english = vi ? [...new Set(withMath.flatMap(([where, t]) => { const m = t ? FOREIGN_WORDS.exec(prose(t)) : null; return m ? [`${where} ("${m[0]}")`] : []; }))] : [];
   if (english.length > 0) {
     feedback.push(`${english.join(", ")}: English or other foreign words in a Vietnamese lesson — write them in Vietnamese ("đồng biến", "tương ứng", "với"), using only terms a Grade 9 student knows`);
+  }
+  const invalidSet = vi
+    ? [...new Set(withMath.filter(([, t]) => {
+        if (!t) return false;
+        const plainNotation = t.replace(/\$/g, "").replace(/\\/g, "");
+        return INVALID_UNORDERED_SET_EQUALITY.test(plainNotation);
+      }).map(([where]) => where))]
+    : [];
+  if (invalidSet.length > 0) {
+    feedback.push(`${invalidSet.join(", ")}: invalid unordered-set equality; state that the expressions take the listed values in some order, or split into explicit cases`);
   }
   const stripped = vi ? [...new Set(body.filter(([, t]) => t && isStrippedVietnamese(t)).map(([where]) => where))] : [];
   if (stripped.length > 0) {

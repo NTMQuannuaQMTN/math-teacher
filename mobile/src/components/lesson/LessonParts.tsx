@@ -22,6 +22,16 @@ export function SectionTitle({ children, right }: { children: string; right?: Re
   );
 }
 
+/** Keeps multi-part answers readable: each exam subquestion starts on its own line. */
+export function separateSubquestions(text: string): string {
+  return text
+    .split(/(\$\$[\s\S]*?\$\$|\$[^$]*\$)/g)
+    .map((part, i) => (i % 2 === 0 ? part.replace(/[ \t]+(?=[a-e]\)\s)/giu, "\n") : part))
+    .join("")
+    .replace(/\n[ \t]+/g, "\n")
+    .trim();
+}
+
 export function Card({ children, accent }: { children: ReactNode; accent?: "primary" | "success" | "warning" }) {
   const { colors } = useTheme();
   const border = accent === "primary" ? colors.primary : accent === "success" ? colors.success : accent === "warning" ? colors.warning : colors.border;
@@ -127,7 +137,7 @@ export function StepCard({
           <View style={[styles.stepNumber, { backgroundColor: active ? colors.primary : colors.surfaceMuted }]}>
             <Text style={[typography.label, { color: active ? colors.onPrimary : colors.text }]}>{index + 1}</Text>
           </View>
-          <RichText text={step.title} style={[typography.bodyStrong, styles.flex, { color: colors.text }]} />
+          <RichText text={separateSubquestions(step.title)} style={[typography.bodyStrong, styles.flex, { color: colors.text }]} />
         </View>
         {uses.length > 0 ? (
           <View style={styles.reasonRow}>
@@ -135,12 +145,12 @@ export function StepCard({
             <Text style={[typography.caption, { color: colors.textMuted }]}>{s.solve.usesSteps(uses)}</Text>
           </View>
         ) : null}
-        <RichText text={step.explanation} style={[typography.body, { color: colors.text }]} />
+        <RichText text={separateSubquestions(step.explanation)} style={[typography.body, { color: colors.text }]} />
         {step.math ? <MathText text={displayMath(step.math)} fontSize={17} /> : null}
         {step.reason ? (
           <View style={styles.reasonRow}>
             <Ionicons name="book-outline" size={15} color={colors.textMuted} />
-            <RichText text={step.reason} style={[typography.caption, styles.flex, { color: colors.textMuted }]} />
+            <RichText text={separateSubquestions(step.reason)} style={[typography.caption, styles.flex, { color: colors.textMuted }]} />
           </View>
         ) : null}
         {check ? (
@@ -177,7 +187,7 @@ export function FinalAnswerCard({ text, math, verification, hasFigure }: { text:
         <Ionicons name="flag" size={18} color={tone.fg} />
         <Text style={[typography.label, { color: tone.fg }]}>{s.solve.finalAnswer.toUpperCase()}</Text>
       </View>
-      <RichText text={text} style={[typography.subtitle, { color: colors.text }]} />
+      <RichText text={separateSubquestions(text)} style={[typography.subtitle, { color: colors.text }]} />
       {math ? <MathText text={displayMath(math)} fontSize={18} /> : null}
       <View style={[styles.verify, { borderTopColor: colors.border }]} accessibilityRole="summary">
         <Ionicons name={info.icon} size={20} color={info.color} />
