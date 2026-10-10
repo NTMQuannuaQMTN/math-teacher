@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "created_at": "2026-10-10",
+  "purpose": "Leakage-controlled evaluation index; scoring data remains in data/exams and benchmark result files.",
+  "splits": {
+    "development": ["ptnk-2025-chuyen"],
+    "validation": ["hcm-2025-chuyen", "khtn-2025-vong2"],
+    "held_out_test": ["ptnk-2026-chuyen", "hanoi-2025-chuyen", "ptnk-2024-chuyen", "ptnk-2023-chuyen"]
+  },
+  "grouping_rule": "All subquestions and near-duplicate variants from one exam stay together.",
+  "held_out_policy": [
+    "Do not include reference answers or retrieved solutions in prompts.",
+    "Freeze prompt, model, schema, and solver configuration before scoring.",
+    "Report missing source images, uncertain OCR, and not_checkable proofs explicitly."
+  ],
+  "limitations": [
+    "Some exam JSON records are transcribed_needs_review rather than independently proofread.",
+    "The repository does not contain a gold image transcription for every question.",
+    "The split is exam-level but small; it is not a population estimate of generalization."
+  ]
+}

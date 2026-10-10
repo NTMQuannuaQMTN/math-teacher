@@ -24,6 +24,8 @@ const Latex = z.string().max(800);
 export const TopicSchema = z.enum([
   "arithmetic",
   "algebra",
+  "number_theory",
+  "combinatorics",
   "equation",
   "inequality",
   "system",
@@ -212,6 +214,17 @@ export const StepSchema = z.strictObject({
   /** Ids of the earlier steps this step relies on (its dependencies); later or unknown ids are dropped. */
   uses: z.array(Id).max(4).default([]),
   geometryActions: z.array(GeometryActionSchema).max(4),
+  /** Structured audit trail used by the independent verifier and UI diagnostics. */
+  factsUsed: z.array(ShortText).max(8).optional(),
+  operation: ShortText.nullable().optional(),
+  result: Latex.nullable().optional(),
+  verification: z
+    .strictObject({
+      status: z.enum(["verified", "failed", "not_checked"]),
+      method: ShortText.nullable(),
+      reason: ShortText.nullable(),
+    })
+    .optional(),
 });
 export type Step = z.infer<typeof StepSchema>;
 

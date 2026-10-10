@@ -25,8 +25,8 @@ export function canCaptureScreen(): boolean {
   return typeof navigator !== "undefined" && typeof navigator.mediaDevices?.getDisplayMedia === "function";
 }
 
-async function toImage(blob: Blob): Promise<SourceOutcome> {
-  const url = URL.createObjectURL(blob);
+async function toImage(source: Blob | string): Promise<SourceOutcome> {
+  const url = typeof source === "string" ? source : URL.createObjectURL(source);
   try {
     const image = await normalizeSource(url);
     if (Math.min(image.width, image.height) < MIN_SIDE) return { kind: "error", reason: "too_small" };
@@ -34,12 +34,21 @@ async function toImage(blob: Blob): Promise<SourceOutcome> {
   } catch {
     return { kind: "error", reason: "corrupted" };
   } finally {
-    URL.revokeObjectURL(url);
+    if (typeof source !== "string") URL.revokeObjectURL(url);
   }
 }
 
 function canvasBlob(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("canvas is empty"))), "image/png"));
+}
+
+function blobDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(reader.error ?? new Error("could not read rendered PDF page"));
+    reader.readAsDataURL(blob);
+  });
 }
 
 export async function captureScreen(): Promise<SourceOutcome> {
@@ -111,7 +120,7 @@ interface PdfLoadingTask {
   destroy(): Promise<void>;
 }
 interface PdfJs {
-  getDocument(o: { data: ArrayBuffer }): PdfLoadingTask;
+  getDocument(o: { data: ArrayBuffer; wasmUrl?: string; useWasm?: boolean }): PdfLoadingTask;
 }
 
 let pdfjs: Promise<PdfJs> | null = null;
@@ -132,12 +141,17 @@ function loadPdfJs(): Promise<PdfJs> {
       },
       { once: true },
     );
+    // Load a real module file instead of using an inline module. Inline module
+    // code is rejected by the CSP used by production hosts, which previously
+    // left the app on a blank screen after a PDF was selected.
     const script = document.createElement("script");
     script.type = "module";
-    script.textContent = `import * as lib from "${base}/pdf.min.mjs";
-lib.GlobalWorkerOptions.workerSrc = "${base}/pdf.worker.min.mjs";
-window.__pdfjsLib = lib;
-window.dispatchEvent(new Event("pdfjs-ready"));`;
+    script.src = `${base}/pdf-loader.js`;
+    script.onerror = () => {
+      clearTimeout(timer);
+      pdfjs = null;
+      reject(new Error("pdf.js did not load"));
+    };
     document.head.appendChild(script);
   }).catch((err) => {
     pdfjs = null;
@@ -174,7 +188,10 @@ export async function pdfThumbnail(n: number, width = 360): Promise<string> {
 /** Renders page `n` at reading resolution and normalizes it like a photo. */
 export async function pdfPageImage(n: number): Promise<SourceOutcome> {
   try {
-    return await toImage(await renderPage(n, PDF_PAGE_WIDTH));
+    // Use a data URL here. On web, expo-image-manipulator can silently produce
+    // a white image when its input is a canvas object URL, which then makes OCR
+    // appear broken even though pdf.js rendered the page correctly.
+    return await toImage(await blobDataUrl(await renderPage(n, PDF_PAGE_WIDTH)));
   } catch {
     return { kind: "error", reason: "corrupted" };
   }
@@ -198,7 +215,13 @@ export async function pickDocument(): Promise<SourceOutcome> {
   try {
     const lib = await loadPdfJs();
     await closePdf();
-    const task = lib.getDocument({ data: await file.arrayBuffer() });
+    const task = lib.getDocument({
+      data: await file.arrayBuffer(),
+      // Scanned PDFs often use JBIG2 images. pdf.js 6 loads the decoder from
+      // this directory; without it the worker renders the page as blank.
+      wasmUrl: `${location.origin}/pdfjs/wasm/`,
+      useWasm: true,
+    });
     current = { doc: await task.promise, task, name: file.name };
   } catch {
     return { kind: "error", reason: "corrupted" };
