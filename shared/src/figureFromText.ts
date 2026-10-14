@@ -271,8 +271,10 @@ function baseTangents(t: string): Figure | null {
   const m = new RegExp(`(?:từ\\s+)?(?:điểm\\s+)?(${PT}) (?:nằm )?(?:ở )?ngoài (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*(?:;\\s*([^)]*))?\\)`, "i").exec(t);
   const tan = new RegExp(`tiếp tuyến\\s+(${PT})(${PT})\\s*,\\s*(${PT})(${PT})`).exec(t);
   const mcq = new RegExp(`(${PT})(${PT})\\s*,\\s*(${PT})(${PT}) là các tiếp tuyến của (?:đường tròn\\s*)?\\(\\s*(${PT})\\s*\\)`).exec(t);
-  const A = m?.[1] ?? mcq?.[1];
-  const O = m?.[2] ?? mcq?.[5];
+  const namedCenter = new RegExp(`đường tròn (?:có )?tâm (${PT})`).exec(t)?.[1];
+  const outside = new RegExp(`(?:điểm )?(${PT}) (?:nằm )?(?:ở )?ngoài đường tròn`).exec(t)?.[1];
+  const A = m?.[1] ?? mcq?.[1] ?? (namedCenter ? outside : undefined);
+  const O = m?.[2] ?? mcq?.[5] ?? namedCenter;
   const t1 = tan ?? mcq;
   if (!A || !O || !t1 || t1[1] !== A || t1[3] !== A) return null;
   const R = Number(/bán kính[^0-9]*(\d+(?:[.,]\d+)?)/.exec(t)?.[1]?.replace(",", ".") ?? m?.[3]?.replace(/[^\d.,]/g, "").replace(",", ".") ?? "") || 3;
@@ -296,8 +298,27 @@ function baseTangents(t: string): Figure | null {
   };
 }
 
+/** A named diameter with dependent midpoint center and antipodal endpoints. */
+function baseDiameter(t:string):Figure|null {
+ const m=new RegExp(`đường tròn(?:\\s*\\(\\s*(${PT})\\s*\\))? (?:có )?đường kính (${PT})(${PT})`).exec(t);
+ if(!m)return null;
+ const a=m[2]!,b=m[3]!;if(a===b)return null;
+ const o=m[1] ?? `O_${a}${b}`, hidden=!m[1];
+ const points:PointDef[]=[free(a,-4,0),free(b,4,0),{id:o,label:hidden?"":o,kind:"midpoint",refs:[a,b],x:null,y:null,value:null,value2:null,draggable:false,hidden}];
+ const c=circle(`c_${o}`,o,a,null,m[1]?`(${o})`:"đường tròn");
+ const member=new RegExp(`(${PT}) (?:là (?:một )?điểm )?(?:trên|thuộc|nằm trên) (?:đường tròn|\\(\\s*${o}\\s*\\))`).exec(t);
+ if(member && ![a,b,o].includes(member[1]!))points.push(onCircle(member[1]!,c.id,65));
+ return {scale:"schematic",points,lines:[segment(a,b)],circles:[c],angles:[],marks:[],checks:[]};
+}
+
 /** "Cho đường tròn (O; 5 cm) và dây AB = 8 cm": the circle with a chord of that length. */
 function baseChord(t: string): Figure | null {
+  const pair=new RegExp(`đường tròn\\s*\\(\\s*(${PT})\\s*\\)[^.]{0,35}?hai dây\\s+(${PT})(${PT})\\s*(?:và|,)\\s*(${PT})(${PT})\\s+cắt nhau`).exec(t);
+  if(pair && new Set(pair.slice(1)).size===5) {
+    const [o,a,b,c,d]=pair.slice(1) as [string,string,string,string,string];
+    const center=free(o,0,0);center.draggable=false;
+    return {scale:"schematic",points:[center,onCircle(a,`c_${o}`,210),onCircle(b,`c_${o}`,20),onCircle(c,`c_${o}`,120),onCircle(d,`c_${o}`,310)],lines:[segment(a,b),segment(c,d)],circles:[circle(`c_${o}`,o,null,5,`(${o})`)],angles:[],marks:[],checks:[]};
+  }
   const m = new RegExp(`đường tròn\\s*\\(\\s*(${PT})\\s*(?:;\\s*(\\d+(?:[.,]\\d+)?)[^)]*)?\\)[^.]{0,30}?dây (?:cung\\s+)?(${PT})(${PT})(?:\\s*=\\s*(\\d+(?:[.,]\\d+)?))?`).exec(t);
   if (!m) return null;
   const [O, A, B] = [m[1]!, m[3]!, m[4]!];
@@ -402,7 +423,7 @@ export function figureFromStatement(statement: string): StatementFigure | null {
   const t = clean(statement);
   const spec = triangleSpec(t);
   let figure =
-    baseCyclicQuadrilateral(t) ?? basePerpendicularDiagonals(t) ?? baseParallelogram(t) ?? baseTangents(t) ?? (spec ? baseTriangle(t, spec) : null) ?? baseChord(t);
+    baseCyclicQuadrilateral(t) ?? basePerpendicularDiagonals(t) ?? baseParallelogram(t) ?? baseTangents(t) ?? (spec ? baseTriangle(t, spec) : null) ?? baseDiameter(t) ?? baseChord(t);
   if (!figure) return null;
   figure = placeArcPoints(t, placeSidePoints(t, figure));
   // Every other point from its definition (two passes inside; run twice so arc/side points defined later get used).

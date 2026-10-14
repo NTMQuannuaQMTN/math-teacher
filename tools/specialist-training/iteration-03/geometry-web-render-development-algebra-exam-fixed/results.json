@@ -1,0 +1,102 @@
+[
+  {
+    "id": "alg3-dev-exam-ptnk-2025-chuyen-1b",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 1061.915708,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 27,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho phương trình \n𝑥\n2\n−\n2\n(\n𝑚\n+\n1\n)\n𝑥\n+\n2\n𝑚\n=\n0\nx\n2\n−2(m+1)x+2m=0 (\n𝑚\nm là tham số). Chứng minh \n𝑥\n1\n4\n+\n𝑥\n2\n4\n>\n9\n2\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n>\n2\n9\n\t​\n\n.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChặn tổng lũy thừa bậc bốn của hai nghiệm\n\nCẦN TÌM\nKết luận kèm điều kiện xảy ra\n\nKIẾN THỨC SỬ DỤNG\nChặn tổng lũy thừa bậc bốn của hai nghiệm\n\nHƯỚNG GIẢI\nDùng Vi-ét và hằng đẳng thức, khử bậc ba rồi hoàn thành bình phương để chứng minh cận cho mọi tham số.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTổng và tích hai nghiệm phụ thuộc tham số như thế nào?\nBiệt thức; bình phương không âm; Vi-ét\nHệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là \n𝑥\n1\n,\n𝑥\n2\nx\n1\n\t​\n\n,x\n2\n\t​\n\n, và đặt tổng là \n𝑆\nS, tích là \n𝑃\nP. Vi-ét cho hai biểu thức này theo tham số.\nΔ\n=\n4\n𝑚\n2\n+\n4\n=\n(\n4\n)\n(\n𝑚\n−\n(\n0\n)\n)\n2\n+\n(\n4\n)\n≥\n4\n>\n0\n\n\n𝑆\n=\n𝑥\n1\n+\n𝑥\n2\n=\n2\n𝑚\n+\n2\n,\n𝑃\n=\n𝑥\n1\n𝑥\n2\n=\n2\n𝑚\nΔ=4m\n2\n+4=(4)(m−(0))\n2\n+(4)≥4>0\nS=x\n1\n\t​\n\n+x\n2\n\t​\n\n=2m+2,P=x\n1\n\t​\n\nx\n2\n\t​\n\n=2m\n\t​\n\n\nGợi ý 2\nBình phương tổng hai bình phương chứa hạng tử tích nào cần trừ đi?\nHằng đẳng thức; khai triển và thu gọn\nKhai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.\n𝑥\n1\n2\n+\n𝑥\n2\n2\n=\n𝑆\n2\n−\n2\n𝑃\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n𝑥\n1\n2\n+\n𝑥\n2\n2\n)\n2\n−\n2\n(\n𝑥\n1\n𝑥\n2\n)\n2\n\n\n=\n(\n𝑆\n2\n−\n2\n𝑃\n)\n2\n−\n2\n𝑃\n2\n=\n𝑆\n4\n−\n4\n𝑃\n𝑆\n2\n+\n2\n𝑃\n2\nx\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n=S\n2\n−2P\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(x\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n)\n2\n−2(x\n1\n\t​\n\nx\n2\n\t​\n\n)\n2\n=(S\n2\n−2P)\n2\n−2P\n2\n=S\n4\n−4PS\n2\n+2P\n2\n\t​\n\n\nGợi ý 3\nSau khi thu gọn, hệ số của từng bậc tham số là gì?\nThay Vi-ét; khai triển chính xác\nThay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n2\n𝑚\n+\n2\n)\n4\n−\n4\n(\n2\n𝑚\n)\n(\n2\n𝑚\n+\n2\n)\n2\n+\n2\n(\n2\n𝑚\n)\n2\n=\n16\n𝑚\n4\n+\n32\n𝑚\n3\n+\n40\n𝑚\n2\n+\n32\n𝑚\n+\n16\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(2m+2)\n4\n−4(2m)(2m+2)\n2\n+2(2m)\n2\n=16m\n4\n+32m\n3\n+40m\n2\n+32m+16\n\nGợi ý 4\nCó thể nhóm đa thức thành một lũy thừa bậc bốn không âm, một bình phương và hằng số nào?\nĐổi biến; khai triển; hoàn thành bình phương; tổng số không âm\nĐặt \n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\nt=m−(−\n2\n1\n\t​\n\n), tức \n𝑚\n=\n𝑡\n+\n(\n−\n1\n2\n)\nm=t+(−\n2\n1\n\t​\n\n). Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.\n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n16\n𝑡\n4\n+\n16\n𝑡\n2\n+\n8\n𝑡\n+\n7\n\n\n=\n(\n16\n)\n𝑡\n4\n+\n(\n16\n)\n(\n𝑡\n−\n(\n−\n1\n4\n)\n)\n2\n+\n(\n6\n)\n≥\n6\n>\n9\n2\nt=m−(−\n2\n1\n\t​\n\n)\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=16t\n4\n+16t\n2\n+8t+7\n=(16)t\n4\n+(16)(t−(−\n4\n1\n\t​\n\n))\n2\n+(6)≥6>\n2\n9\n\t​\n\n\t​\n\n\nGợi ý 5\nCận dưới tìm được có lớn hơn cận trong đề không? Có cần thử riêng từng tham số nữa không?\nBiến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt\nMỗi số thực \n𝑚\nm cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy \n𝑥\n1\n4\n+\n𝑥\n2\n4\n>\n9\n2\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n>\n2\n9\n\t​\n\n đúng với mọi số thực \n𝑚\nm.\n\nẨn lời giải\nLời giải\n1\nChứng minh hai nghiệm thực tồn tại và ghi tổng, tích\nHệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là \n𝑥\n1\n,\n𝑥\n2\nx\n1\n\t​\n\n,x\n2\n\t​\n\n, và đặt tổng là \n𝑆\nS, tích là \n𝑃\nP. Vi-ét cho hai biểu thức này theo tham số.\nΔ\n=\n4\n𝑚\n2\n+\n4\n=\n(\n4\n)\n(\n𝑚\n−\n(\n0\n)\n)\n2\n+\n(\n4\n)\n≥\n4\n>\n0\n\n\n𝑆\n=\n𝑥\n1\n+\n𝑥\n2\n=\n2\n𝑚\n+\n2\n,\n𝑃\n=\n𝑥\n1\n𝑥\n2\n=\n2\n𝑚\nΔ=4m\n2\n+4=(4)(m−(0))\n2\n+(4)≥4>0\nS=x\n1\n\t​\n\n+x\n2\n\t​\n\n=2m+2,P=x\n1\n\t​\n\nx\n2\n\t​\n\n=2m\n\t​\n\n\nBiệt thức; bình phương không âm; Vi-ét\n2\nBiểu diễn tổng lũy thừa bậc bốn qua tổng và tích\n\nDựa vào bước 1\nKhai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.\n𝑥\n1\n2\n+\n𝑥\n2\n2\n=\n𝑆\n2\n−\n2\n𝑃\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n𝑥\n1\n2\n+\n𝑥\n2\n2\n)\n2\n−\n2\n(\n𝑥\n1\n𝑥\n2\n)\n2\n\n\n=\n(\n𝑆\n2\n−\n2\n𝑃\n)\n2\n−\n2\n𝑃\n2\n=\n𝑆\n4\n−\n4\n𝑃\n𝑆\n2\n+\n2\n𝑃\n2\nx\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n=S\n2\n−2P\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(x\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n)\n2\n−2(x\n1\n\t​\n\nx\n2\n\t​\n\n)\n2\n=(S\n2\n−2P)\n2\n−2P\n2\n=S\n4\n−4PS\n2\n+2P\n2\n\t​\n\n\nHằng đẳng thức; khai triển và thu gọn\n3\nThay Vi-ét và khai triển theo tham số\n\nDựa vào bước 2\nThay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n2\n𝑚\n+\n2\n)\n4\n−\n4\n(\n2\n𝑚\n)\n(\n2\n𝑚\n+\n2\n)\n2\n+\n2\n(\n2\n𝑚\n)\n2\n=\n16\n𝑚\n4\n+\n32\n𝑚\n3\n+\n40\n𝑚\n2\n+\n32\n𝑚\n+\n16\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(2m+2)\n4\n−4(2m)(2m+2)\n2\n+2(2m)\n2\n=16m\n4\n+32m\n3\n+40m\n2\n+32m+16\n\nThay Vi-ét; khai triển chính xác\n4\nĐổi biến để khử bậc ba và hoàn thành bình phương\n\nDựa vào bước 3\nĐặt \n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\nt=m−(−\n2\n1\n\t​\n\n), tức \n𝑚\n=\n𝑡\n+\n(\n−\n1\n2\n)\nm=t+(−\n2\n1\n\t​\n\n). Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.\n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n16\n𝑡\n4\n+\n16\n𝑡\n2\n+\n8\n𝑡\n+\n7\n\n\n=\n(\n16\n)\n𝑡\n4\n+\n(\n16\n)\n(\n𝑡\n−\n(\n−\n1\n4\n)\n)\n2\n+\n(\n6\n)\n≥\n6\n>\n9\n2\nt=m−(−\n2\n1\n\t​\n\n)\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=16t\n4\n+16t\n2\n+8t+7\n=(16)t\n4\n+(16)(t−(−\n4\n1\n\t​\n\n))\n2\n+(6)≥6>\n2\n9\n\t​\n\n\t​\n\n\nĐổi biến; khai triển; hoàn thành bình phương; tổng số không âm\n5\nKết luận cho mọi tham số\n\nDựa vào bước 4\nMỗi số thực \n𝑚\nm cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy \n𝑥\n1\n4\n+\n𝑥\n2\n4\n>\n9\n2\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n>\n2\n9\n\t​\n\n đúng với mọi số thực \n𝑚\nm.\n\nBiến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "alg3-dev-exam-ptnk-2025-chuyen-1b",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 1096.515958,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 27,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho phương trình \n𝑥\n2\n−\n2\n(\n𝑚\n+\n1\n)\n𝑥\n+\n2\n𝑚\n=\n0\nx\n2\n−2(m+1)x+2m=0 (\n𝑚\nm là tham số). Chứng minh \n𝑥\n1\n4\n+\n𝑥\n2\n4\n>\n9\n2\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n>\n2\n9\n\t​\n\n.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChặn tổng lũy thừa bậc bốn của hai nghiệm\n\nCẦN TÌM\nKết luận kèm điều kiện xảy ra\n\nKIẾN THỨC SỬ DỤNG\nChặn tổng lũy thừa bậc bốn của hai nghiệm\n\nHƯỚNG GIẢI\nDùng Vi-ét và hằng đẳng thức, khử bậc ba rồi hoàn thành bình phương để chứng minh cận cho mọi tham số.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTổng và tích hai nghiệm phụ thuộc tham số như thế nào?\nBiệt thức; bình phương không âm; Vi-ét\nHệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là \n𝑥\n1\n,\n𝑥\n2\nx\n1\n\t​\n\n,x\n2\n\t​\n\n, và đặt tổng là \n𝑆\nS, tích là \n𝑃\nP. Vi-ét cho hai biểu thức này theo tham số.\nΔ\n=\n4\n𝑚\n2\n+\n4\n=\n(\n4\n)\n(\n𝑚\n−\n(\n0\n)\n)\n2\n+\n(\n4\n)\n≥\n4\n>\n0\n\n\n𝑆\n=\n𝑥\n1\n+\n𝑥\n2\n=\n2\n𝑚\n+\n2\n,\n𝑃\n=\n𝑥\n1\n𝑥\n2\n=\n2\n𝑚\nΔ=4m\n2\n+4=(4)(m−(0))\n2\n+(4)≥4>0\nS=x\n1\n\t​\n\n+x\n2\n\t​\n\n=2m+2,P=x\n1\n\t​\n\nx\n2\n\t​\n\n=2m\n\t​\n\n\nGợi ý 2\nBình phương tổng hai bình phương chứa hạng tử tích nào cần trừ đi?\nHằng đẳng thức; khai triển và thu gọn\nKhai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.\n𝑥\n1\n2\n+\n𝑥\n2\n2\n=\n𝑆\n2\n−\n2\n𝑃\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n𝑥\n1\n2\n+\n𝑥\n2\n2\n)\n2\n−\n2\n(\n𝑥\n1\n𝑥\n2\n)\n2\n\n\n=\n(\n𝑆\n2\n−\n2\n𝑃\n)\n2\n−\n2\n𝑃\n2\n=\n𝑆\n4\n−\n4\n𝑃\n𝑆\n2\n+\n2\n𝑃\n2\nx\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n=S\n2\n−2P\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(x\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n)\n2\n−2(x\n1\n\t​\n\nx\n2\n\t​\n\n)\n2\n=(S\n2\n−2P)\n2\n−2P\n2\n=S\n4\n−4PS\n2\n+2P\n2\n\t​\n\n\nGợi ý 3\nSau khi thu gọn, hệ số của từng bậc tham số là gì?\nThay Vi-ét; khai triển chính xác\nThay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n2\n𝑚\n+\n2\n)\n4\n−\n4\n(\n2\n𝑚\n)\n(\n2\n𝑚\n+\n2\n)\n2\n+\n2\n(\n2\n𝑚\n)\n2\n=\n16\n𝑚\n4\n+\n32\n𝑚\n3\n+\n40\n𝑚\n2\n+\n32\n𝑚\n+\n16\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(2m+2)\n4\n−4(2m)(2m+2)\n2\n+2(2m)\n2\n=16m\n4\n+32m\n3\n+40m\n2\n+32m+16\n\nGợi ý 4\nCó thể nhóm đa thức thành một lũy thừa bậc bốn không âm, một bình phương và hằng số nào?\nĐổi biến; khai triển; hoàn thành bình phương; tổng số không âm\nĐặt \n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\nt=m−(−\n2\n1\n\t​\n\n), tức \n𝑚\n=\n𝑡\n+\n(\n−\n1\n2\n)\nm=t+(−\n2\n1\n\t​\n\n). Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.\n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n16\n𝑡\n4\n+\n16\n𝑡\n2\n+\n8\n𝑡\n+\n7\n\n\n=\n(\n16\n)\n𝑡\n4\n+\n(\n16\n)\n(\n𝑡\n−\n(\n−\n1\n4\n)\n)\n2\n+\n(\n6\n)\n≥\n6\n>\n9\n2\nt=m−(−\n2\n1\n\t​\n\n)\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=16t\n4\n+16t\n2\n+8t+7\n=(16)t\n4\n+(16)(t−(−\n4\n1\n\t​\n\n))\n2\n+(6)≥6>\n2\n9\n\t​\n\n\t​\n\n\nGợi ý 5\nCận dưới tìm được có lớn hơn cận trong đề không? Có cần thử riêng từng tham số nữa không?\nBiến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt\nMỗi số thực \n𝑚\nm cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy \n𝑥\n1\n4\n+\n𝑥\n2\n4\n>\n9\n2\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n>\n2\n9\n\t​\n\n đúng với mọi số thực \n𝑚\nm.\n\nẨn lời giải\nLời giải\n1\nChứng minh hai nghiệm thực tồn tại và ghi tổng, tích\nHệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là \n𝑥\n1\n,\n𝑥\n2\nx\n1\n\t​\n\n,x\n2\n\t​\n\n, và đặt tổng là \n𝑆\nS, tích là \n𝑃\nP. Vi-ét cho hai biểu thức này theo tham số.\nΔ\n=\n4\n𝑚\n2\n+\n4\n=\n(\n4\n)\n(\n𝑚\n−\n(\n0\n)\n)\n2\n+\n(\n4\n)\n≥\n4\n>\n0\n\n\n𝑆\n=\n𝑥\n1\n+\n𝑥\n2\n=\n2\n𝑚\n+\n2\n,\n𝑃\n=\n𝑥\n1\n𝑥\n2\n=\n2\n𝑚\nΔ=4m\n2\n+4=(4)(m−(0))\n2\n+(4)≥4>0\nS=x\n1\n\t​\n\n+x\n2\n\t​\n\n=2m+2,P=x\n1\n\t​\n\nx\n2\n\t​\n\n=2m\n\t​\n\n\nBiệt thức; bình phương không âm; Vi-ét\n2\nBiểu diễn tổng lũy thừa bậc bốn qua tổng và tích\n\nDựa vào bước 1\nKhai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.\n𝑥\n1\n2\n+\n𝑥\n2\n2\n=\n𝑆\n2\n−\n2\n𝑃\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n𝑥\n1\n2\n+\n𝑥\n2\n2\n)\n2\n−\n2\n(\n𝑥\n1\n𝑥\n2\n)\n2\n\n\n=\n(\n𝑆\n2\n−\n2\n𝑃\n)\n2\n−\n2\n𝑃\n2\n=\n𝑆\n4\n−\n4\n𝑃\n𝑆\n2\n+\n2\n𝑃\n2\nx\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n=S\n2\n−2P\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(x\n1\n2\n\t​\n\n+x\n2\n2\n\t​\n\n)\n2\n−2(x\n1\n\t​\n\nx\n2\n\t​\n\n)\n2\n=(S\n2\n−2P)\n2\n−2P\n2\n=S\n4\n−4PS\n2\n+2P\n2\n\t​\n\n\nHằng đẳng thức; khai triển và thu gọn\n3\nThay Vi-ét và khai triển theo tham số\n\nDựa vào bước 2\nThay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n(\n2\n𝑚\n+\n2\n)\n4\n−\n4\n(\n2\n𝑚\n)\n(\n2\n𝑚\n+\n2\n)\n2\n+\n2\n(\n2\n𝑚\n)\n2\n=\n16\n𝑚\n4\n+\n32\n𝑚\n3\n+\n40\n𝑚\n2\n+\n32\n𝑚\n+\n16\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=(2m+2)\n4\n−4(2m)(2m+2)\n2\n+2(2m)\n2\n=16m\n4\n+32m\n3\n+40m\n2\n+32m+16\n\nThay Vi-ét; khai triển chính xác\n4\nĐổi biến để khử bậc ba và hoàn thành bình phương\n\nDựa vào bước 3\nĐặt \n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\nt=m−(−\n2\n1\n\t​\n\n), tức \n𝑚\n=\n𝑡\n+\n(\n−\n1\n2\n)\nm=t+(−\n2\n1\n\t​\n\n). Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.\n𝑡\n=\n𝑚\n−\n(\n−\n1\n2\n)\n\n\n𝑥\n1\n4\n+\n𝑥\n2\n4\n=\n16\n𝑡\n4\n+\n16\n𝑡\n2\n+\n8\n𝑡\n+\n7\n\n\n=\n(\n16\n)\n𝑡\n4\n+\n(\n16\n)\n(\n𝑡\n−\n(\n−\n1\n4\n)\n)\n2\n+\n(\n6\n)\n≥\n6\n>\n9\n2\nt=m−(−\n2\n1\n\t​\n\n)\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n=16t\n4\n+16t\n2\n+8t+7\n=(16)t\n4\n+(16)(t−(−\n4\n1\n\t​\n\n))\n2\n+(6)≥6>\n2\n9\n\t​\n\n\t​\n\n\nĐổi biến; khai triển; hoàn thành bình phương; tổng số không âm\n5\nKết luận cho mọi tham số\n\nDựa vào bước 4\nMỗi số thực \n𝑚\nm cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy \n𝑥\n1\n4\n+\n𝑥\n2\n4\n>\n9\n2\nx\n1\n4\n\t​\n\n+x\n2\n4\n\t​\n\n>\n2\n9\n\t​\n\n đúng với mọi số thực \n𝑚\nm.\n\nBiến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  }
+]

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { separateSubquestions } from "../src/components/lesson/LessonParts";
+import { separateSubquestions } from "../src/components/lesson/subquestions";
 
 describe("separateSubquestions", () => {
   it("puts each exam subquestion on its own line", () => {

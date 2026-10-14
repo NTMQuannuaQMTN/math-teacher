@@ -1,0 +1,3050 @@
+{
+  "scope": "Source-level generator/certificate preflight only. Not actual app execution or independent mathematics.",
+  "result": [
+    {
+      "id": "nt3-divisibility",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-prime",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-factors",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-cube-divisibility",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-fifth-divisibility",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-false-divisibility",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy khẳng định trong đề không đúng với mọi số nguyên; $n=1$ là một phản ví dụ cụ\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-residue",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là các số nguyên có dạng $n=6q+r$, với $r\\in\\{1,2,4,5\\}$ và $q\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-residue-none",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-square-gap",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-square-factor",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-infinite-factors",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là: $x=4$, $y$ là số nguyên tùy ý; hoặc $y=3$, $x$ là số nguyê\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-positive-factors",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-factor-extra-condition",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-gcd-affine",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-gcd-lcm",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-divisor-count",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-prime-shift",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-cube-gap",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-ptnk-2024-chuyen_3b",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả chỉ số cần tìm là $n=1+2k,\\ k\\in\\mathbb Z,\\ k\\ge0$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-ptnk-2024-chuyen_3c",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả chỉ số cần tìm là $n=2+8k,\\ k\\in\\mathbb Z,\\ k\\ge0$ hoặc $n=6+8k,\\ k\\i\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-ptnk-2025-chuyen_3a",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy không tồn tại cặp số nguyên dương thỏa điều kiện khi $n=3$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-ptnk-2025-chuyen_3b",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-ptnk-2025-chuyen_3c",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-hcm-2025-chuyen_4a",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-exam-ch-3",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s9",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s10",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s11",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s12",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the problem has 2 parts that ask for a result (b, c) but only 0 answer check(s) pass: add one answerCheck per part that independently re-derives that part's result (kind \"integers\" for \"find all integers n such that…\", \"substitute\" for equations, \"value\" for computed quantities)",
+        "the final answer states a value (\"a) Mọi giá trị $n$ thuộc miền đề đều thỏa mãn.\nb) $n=3k+1$, $k\\in\\mathbb Z$, $k\\\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-linear-integer",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là $x=-3+11t,\\quad y=2-7t$, với $t\\in\\mathbb Z$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-linear-positive",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là $x=-10+3t,\\quad y=10-2t$, với $t\\in\\mathbb Z$ và $t\\ge4,\\ t\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-linear-none",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-linear-zero",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là $x=t,\\quad y=3$, với $t\\in\\mathbb Z$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-seventh",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-false-positive",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy khẳng định trong đề không đúng với mọi số nguyên dương; $n=1$ là một phản ví\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-odd-residues",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là các số nguyên có dạng $k=8q+r$, với $r\\in\\{1,3,5,7\\}$ và $q\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-square-negative",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-square-positive",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-negative-product",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-zero-positive",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là: $a=4$, $b$ là số nguyên dương tùy ý.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-extra-second",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-prime-offset",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-gcd-positive",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-gcd-lcm",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-sequence-prefix",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả chỉ số cần tìm là $n=2+1k,\\ k\\in\\mathbb Z,\\ k\\ge0$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-sequence-rename",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả chỉ số cần tìm là $k=2+8t,\\ t\\in\\mathbb Z,\\ t\\ge0$ hoặc $k=6+8t,\\ t\\i\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-norm-witness",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-beautiful-three",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-divisors-small",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-equation-square",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-linear-sign",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là $a=15+14t,\\quad b=10+9t$, với $t\\in\\mathbb Z$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-linear-positive-infinite",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là $x=2-5t,\\quad y=1-3t$, với $t\\in\\mathbb Z$ và $t\\le0$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-linear-positive-empty",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-linear-zero-negative",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là $x=-3,\\quad y=t$, với $t\\in\\mathbb Z$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-linear-both-zero",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-sequence-index-p",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả chỉ số cần tìm là $p=2+8k,\\ k\\in\\mathbb Z,\\ k\\ge0$ hoặc $p=6+8k,\\ k\\i\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-linear-fixed-negative",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-residue-input-q",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy tất cả nghiệm là các số nguyên có dạng $q=8k+r$, với $r\\in\\{1,3,5,7\\}$ và $k\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-factorial-zeros",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-factorial-prime-power",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy số nguyên không âm lớn nhất cần tìm là $k=22$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-factorial-quotient",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy số nguyên không âm lớn nhất cần tìm là $k=2$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-factorial-boundary",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-factorial-many-levels",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-factorial-rename",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy số nguyên không âm lớn nhất cần tìm là $j=22$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-factorial-small-quotient",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy số nguyên không âm lớn nhất cần tìm là $t=2$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-factorial-empty-power",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy số nguyên không âm lớn nhất cần tìm là $k=0$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-cube-difference",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-cube-difference-positive",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-cube-difference-zero",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-cube-negative",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-cube-double-root",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-cube-impossible",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-cube-positive-zero",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-factorial-max-bound",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Vậy số nguyên không âm lớn nhất cần tìm là $k=9995$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "nt3-val-cube-max-bound",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "arithmetic": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s9",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s10",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s11",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    }
+  ]
+}

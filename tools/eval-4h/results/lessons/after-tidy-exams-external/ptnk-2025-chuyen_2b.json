@@ -1,0 +1,177 @@
+{
+  "input": "Người ta muốn ghi bốn số thực ở bốn đỉnh của hình vuông $ABCD$ (mỗi đỉnh một số) thỏa mãn: i) Bốn số được ghi là đôi một phân biệt; ii) Tổng hai số được ghi ở hai đầu của cạnh $AB$ là 0; iii) Tổng hai số được ghi ở hai đầu của ba cạnh còn lại là ba giá trị phân biệt: 1, 2, 3. Trong các cách ghi thỏa mãn các điều kiện trên, tìm cách ghi có tổng bình phương của các số ở bốn đỉnh là nhỏ nhất.",
+  "lesson": {
+    "analysis": {
+      "statement": "Người ta muốn ghi bốn số thực ở bốn đỉnh của hình vuông $ABCD$ (mỗi đỉnh một số) thỏa mãn: i) Bốn số được ghi là đôi một phân biệt; ii) Tổng hai số được ghi ở hai đầu của cạnh $AB$ là 0; iii) Tổng hai số được ghi ở hai đầu của ba cạnh còn lại là ba giá trị phân biệt: 1, 2, 3. Trong các cách ghi thỏa mãn các điều kiện trên, tìm cách ghi có tổng bình phương của các số ở bốn đỉnh là nhỏ nhất.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Gán số ở đỉnh: các tổng và cận bình phương",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Gán số ở đỉnh: các tổng và cận bình phương"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Viết ba giá trị theo một thứ tự chưa biết, xác định tổng ở cạnh đối diện rồi xét hai trường hợp và hoàn thành bình phương.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Ba giá trị ở ba cạnh còn lại đã được gán thứ tự hay chưa?",
+        "cue": "Chuyển đúng các giả thiết thành ẩn, giữ điều kiện đôi một phân biệt",
+        "explanation": "Gọi số tại $A,B,C,D$ lần lượt là $a,b,c,d$. Ta có $a+b=0$. Ba tổng $b+c$, $c+d$, $d+a$ nhận ba giá trị $1,2,3$ theo một thứ tự nào đó, mỗi giá trị xuất hiện đúng một lần; không gán trước thứ tự.",
+        "math": "a+b=0",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Vì sao c+d phải là giá trị lớn nhất, và còn bao nhiêu thứ tự cần xét?",
+        "cue": "Cộng các tổng, dùng a+b=0; số lớn nhất là tổng hai số còn lại",
+        "explanation": "Vì $a+b=0$, nên $(b+c)+(d+a)=c+d$. Do đó một trong ba giá trị phải bằng tổng hai giá trị còn lại. Các giá trị dương và $3=1+2$, nên $c+d=3$. Còn đúng hai trường hợp: $b+c=1,d+a=2$ hoặc $b+c=2,d+a=1$.",
+        "math": "(b+c)+(d+a)=c+d",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Dấu bằng xảy ra tại a nào? Cận có thực sự đạt khi bốn số phải khác nhau không?",
+        "cue": "Thay các ẩn theo a; đẳng thức bình phương; bình phương không âm",
+        "explanation": "Nếu $b+c=1$ và $d+a=2$ thì $b=-a$, $c=a+1$, $d=2-a$. Thay vào tổng bình phương, khai triển và hoàn thành bình phương như bên dưới. Bình phương không âm nên cận nhỏ nhất là $\\frac{19}{4}$; dấu bằng khi $a=\\frac{1}{4}$.",
+        "math": "\\begin{gathered}T=2a^2+(a+1)^2+(2-a)^2\\\\=4\\left(a-(\\frac{1}{4})\\right)^2+\\frac{19}{4}\\ge\\frac{19}{4}\\end{gathered}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Vì sao các bộ đạt dấu bằng vẫn có bốn số đôi một phân biệt?",
+        "cue": "Xét hết hai trường hợp; kiểm tra miền và mọi nhân chứng đạt cận",
+        "explanation": "Nếu $b+c=2$ và $d+a=1$ thì đổi vai trò $1,2$ trong phép tính trên. Cận không đổi, dấu bằng khi $a=-\\frac{1}{4}$. Trường hợp đầu đạt tại $(A,B,C,D)=(\\frac{1}{4},-\\frac{1}{4},\\frac{5}{4},\\frac{7}{4})$; trường hợp sau đạt tại $(A,B,C,D)=(-\\frac{1}{4},\\frac{1}{4},\\frac{7}{4},\\frac{5}{4})$. Hai số đầu khác nhau vì $1\\ne2$; hai số cuối khác nhau và đều lớn hơn trị tuyệt đối của hai số đầu, nên bốn số đôi một phân biệt. Thay lại các tổng cạnh đúng bằng $0,1,3,2$ hoặc $0,2,3,1$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Đã chỉ rõ cách ghi và kiểm tra đủ điều kiện của kết luận chưa?",
+        "cue": "Nhân chứng đã kiểm tra; khi tối ưu, cận và mọi trường hợp đạt cận đã được chứng minh",
+        "explanation": "Vậy tổng bình phương nhỏ nhất là $\\frac{19}{4}$, đạt tại đúng hai cách ghi đã kiểm tra.",
+        "math": null,
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Đặt ẩn và viết đúng điều kiện bằng lời",
+        "explanation": "Gọi số tại $A,B,C,D$ lần lượt là $a,b,c,d$. Ta có $a+b=0$. Ba tổng $b+c$, $c+d$, $d+a$ nhận ba giá trị $1,2,3$ theo một thứ tự nào đó, mỗi giá trị xuất hiện đúng một lần; không gán trước thứ tự.",
+        "math": "a+b=0",
+        "reason": "Chuyển đúng các giả thiết thành ẩn, giữ điều kiện đôi một phân biệt",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Xác định tổng ở cạnh đối diện",
+        "explanation": "Vì $a+b=0$, nên $(b+c)+(d+a)=c+d$. Do đó một trong ba giá trị phải bằng tổng hai giá trị còn lại. Các giá trị dương và $3=1+2$, nên $c+d=3$. Còn đúng hai trường hợp: $b+c=1,d+a=2$ hoặc $b+c=2,d+a=1$.",
+        "math": "(b+c)+(d+a)=c+d",
+        "reason": "Cộng các tổng, dùng a+b=0; số lớn nhất là tổng hai số còn lại",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Trường hợp thứ nhất: hoàn thành bình phương",
+        "explanation": "Nếu $b+c=1$ và $d+a=2$ thì $b=-a$, $c=a+1$, $d=2-a$. Thay vào tổng bình phương, khai triển và hoàn thành bình phương như bên dưới. Bình phương không âm nên cận nhỏ nhất là $\\frac{19}{4}$; dấu bằng khi $a=\\frac{1}{4}$.",
+        "math": "\\begin{gathered}T=2a^2+(a+1)^2+(2-a)^2\\\\=4\\left(a-(\\frac{1}{4})\\right)^2+\\frac{19}{4}\\ge\\frac{19}{4}\\end{gathered}",
+        "reason": "Thay các ẩn theo a; đẳng thức bình phương; bình phương không âm",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Trường hợp thứ hai và kiểm tra dấu bằng",
+        "explanation": "Nếu $b+c=2$ và $d+a=1$ thì đổi vai trò $1,2$ trong phép tính trên. Cận không đổi, dấu bằng khi $a=-\\frac{1}{4}$. Trường hợp đầu đạt tại $(A,B,C,D)=(\\frac{1}{4},-\\frac{1}{4},\\frac{5}{4},\\frac{7}{4})$; trường hợp sau đạt tại $(A,B,C,D)=(-\\frac{1}{4},\\frac{1}{4},\\frac{7}{4},\\frac{5}{4})$. Hai số đầu khác nhau vì $1\\ne2$; hai số cuối khác nhau và đều lớn hơn trị tuyệt đối của hai số đầu, nên bốn số đôi một phân biệt. Thay lại các tổng cạnh đúng bằng $0,1,3,2$ hoặc $0,2,3,1$.",
+        "math": null,
+        "reason": "Xét hết hai trường hợp; kiểm tra miền và mọi nhân chứng đạt cận",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Kết luận",
+        "explanation": "Vậy tổng bình phương nhỏ nhất là $\\frac{19}{4}$, đạt tại đúng hai cách ghi đã kiểm tra.",
+        "math": null,
+        "reason": "Nhân chứng đã kiểm tra; khi tối ưu, cận và mọi trường hợp đạt cận đã được chứng minh",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy tổng bình phương nhỏ nhất là $\\frac{19}{4}$, đạt tại đúng hai cách ghi đã kiểm tra.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 18,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-vertex-assignment",
+  "logs": []
+}

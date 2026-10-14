@@ -1,0 +1,5560 @@
+{
+  "seed": 42,
+  "k": 4,
+  "episode": 30000,
+  "updates": 240000,
+  "successes": 0,
+  "frames": 16513,
+  "elapsedSeconds": 10.36350225,
+  "greedy": {
+    "queries": [
+      [
+        1,
+        8,
+        9,
+        16
+      ],
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        0,
+        2,
+        10,
+        12
+      ],
+      [
+        0,
+        2,
+        3,
+        4
+      ],
+      [
+        4,
+        8,
+        12,
+        16
+      ],
+      [
+        6,
+        7,
+        8,
+        16
+      ],
+      [
+        1,
+        3,
+        5,
+        12
+      ],
+      [
+        5,
+        6,
+        12,
+        15
+      ]
+    ],
+    "turns": 8,
+    "caughtEveryLegalPath": false,
+    "survivors": [
+      14,
+      12,
+      14,
+      11,
+      11,
+      9,
+      8,
+      10
+    ],
+    "possibleCellsAfterEachMiss": [
+      [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ]
+      ],
+      [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ]
+    ],
+    "escapingPath": [
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ]
+  },
+  "bestVerified": null,
+  "history": [
+    {
+      "episode": 0,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        12,
+        13,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        13,
+        12,
+        13,
+        12
+      ]
+    },
+    {
+      "episode": 400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        13,
+        12
+      ]
+    },
+    {
+      "episode": 500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        13,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 1500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 1900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 2000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 2100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        12
+      ]
+    },
+    {
+      "episode": 2200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 2300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 2400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 2500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        14,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 2600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 2700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 2800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 2900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 3000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 3100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        13,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 3200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 3300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 3400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        13,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 3500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 3600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        13,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 3700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 3800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 3900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        13,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 4000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 4100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 4200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        13,
+        14,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 4300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 4400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 4500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 4600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 4700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 4800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 4900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        13
+      ]
+    },
+    {
+      "episode": 5800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        13,
+        14,
+        14
+      ]
+    },
+    {
+      "episode": 5900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        12
+      ]
+    },
+    {
+      "episode": 6000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        14,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 6600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 6700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 6900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 7000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 7100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 7200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 7300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 7400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 7500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 7600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        13,
+        14,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 7700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 7800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 7900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 8000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 8100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 8200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        12,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 8300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        11,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 8400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        11,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 8500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        11,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 8600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        12,
+        13,
+        13
+      ]
+    },
+    {
+      "episode": 8700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        11,
+        13,
+        14
+      ]
+    },
+    {
+      "episode": 8800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 8900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 9000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 9100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 9200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 9300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 9400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 9500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 9600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 9700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 9800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 9900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 10000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 10100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 10200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 10300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 10400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 10500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 10600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 10700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 10800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        9
+      ]
+    },
+    {
+      "episode": 10900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 11000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 11100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 11200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 11300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 11400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        9
+      ]
+    },
+    {
+      "episode": 11500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 11600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 11700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 11800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 11900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 12000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 12100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 12200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 12300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 12400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 12500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 12600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 12700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 12800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 12900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 13000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 13100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 13200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 13300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 13400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 13500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 13600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 13700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 13800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 13900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 14000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 14100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 14200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 14300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 14400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 14500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 14600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 14700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 14800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 14900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 15000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 15100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 15200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 15300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 15400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 15500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 15600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 15700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 15800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 15900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 16500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 16600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        9
+      ]
+    },
+    {
+      "episode": 16800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 16900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 17000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 17100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 17200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 17300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 17400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 17500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        9
+      ]
+    },
+    {
+      "episode": 17600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 17700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 17800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 17900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 18000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 18100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 18200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 18300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 18400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 18500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 18600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 18700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 18800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 18900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 19000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        10
+      ]
+    },
+    {
+      "episode": 19100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 19200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 19300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 19400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 19500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "episode": 19600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 19700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 19800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        11,
+        11
+      ]
+    },
+    {
+      "episode": 19900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 20900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        11
+      ]
+    },
+    {
+      "episode": 21600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 21700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 21800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 21900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 22800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 22900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 23000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 23100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 23200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 23300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 23400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 23500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 23600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 23700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 23800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 23900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 24900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 25900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        8
+      ]
+    },
+    {
+      "episode": 26600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 26700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 26800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 26900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 27900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 28900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29000,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29100,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29200,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29300,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29400,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29500,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29600,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29700,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29800,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    },
+    {
+      "episode": 29900,
+      "verified": false,
+      "turns": 8,
+      "survivors": [
+        14,
+        12,
+        14,
+        11,
+        11,
+        9,
+        8,
+        10
+      ]
+    }
+  ],
+  "epsilon": 0.03,
+  "curriculum": 0.0,
+  "initialization": "zero",
+  "initialGreedy": {
+    "queries": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1,
+        2,
+        3
+      ]
+    ],
+    "turns": 8,
+    "caughtEveryLegalPath": false,
+    "survivors": [
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14,
+      14
+    ],
+    "possibleCellsAfterEachMiss": [
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ],
+      [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          2,
+          9
+        ]
+      ]
+    ],
+    "escapingPath": [
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        1,
+        6
+      ],
+      [
+        1,
+        5
+      ]
+    ]
+  },
+  "trainingSource": "self-generated belief states; no exact-search demonstrations; no hosted inference"
+}

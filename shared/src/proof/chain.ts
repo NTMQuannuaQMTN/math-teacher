@@ -50,9 +50,19 @@ function substitute(e: Expr, r: Rule, v: string, integral: boolean): Expr | null
   return { terms, c: e.c + k * r.c };
 }
 
+// Formatting searches are synchronous. A shared scoped deadline caps all searches
+// in one lesson, rather than allocating a fresh budget to every candidate chain.
+let formattingDeadline = Infinity;
+export function withChainBudget<T>(milliseconds: number, render: () => T): T {
+  const previous = formattingDeadline;
+  formattingDeadline = Math.min(previous, Date.now() + milliseconds);
+  try { return render(); } finally { formattingDeadline = previous; }
+}
+
 /** Breadth-first search from both ends; each move rewrites one variable with one rule. The two halves meet at a common
  *  expression (e.g. "90°"), and the path is start → meet → goal. */
 function search(start: Expr, goal: Expr, rules: Rule[], integral: boolean, maxDepth = 6, maxNodes = 150000): { expr: Expr; reason: string }[] | null {
+  const deadline = Math.min(formattingDeadline, Date.now() + 100);
   type Node = { prev: string | null; expr: Expr; reason: string };
   const grow = (from: Expr) => new Map<string, Node>([[key(from), { prev: null, expr: from, reason: "" }]]);
   const A = grow(start);
@@ -79,6 +89,7 @@ function search(start: Expr, goal: Expr, rules: Rule[], integral: boolean, maxDe
       for (const e of side === "a" ? fa : fb)
         for (const r of rules)
           for (const v of e.terms.keys()) {
+            if (Date.now() >= deadline) return null;
             const n = substitute(e, r, v, integral);
             // Whole exponents and coefficients only ("IJ^0.5" is not something a student writes).
             if (!n || n.terms.size > (integral ? 4 : 6) || [...n.terms.values()].some((x) => Math.abs(x - Math.round(x)) > 1e-9)) continue;

@@ -1,0 +1,55 @@
+{
+  "iteration": "math-ai-4h-03",
+  "budgetSeconds": 14400,
+  "activeSeconds": 3208.0,
+  "remainingSeconds": 11192.0,
+  "status": "complete",
+  "phase": "report_and_reproducibility",
+  "startedAt": "2026-10-13T16:32:24.819456+00:00",
+  "updatedAt": "2026-10-14T01:56:32.504012+00:00",
+  "phases": [
+    {
+      "name": "audit_and_independent_baseline",
+      "startedAt": "2026-10-13T16:32:24.819456+00:00",
+      "endedAt": "2026-10-14T01:52:09.956728+00:00"
+    },
+    {
+      "name": "freeze_and_final",
+      "startedAt": "2026-10-14T01:52:09.956728+00:00",
+      "endedAt": "2026-10-14T01:56:24.480843+00:00"
+    },
+    {
+      "name": "report_and_reproducibility",
+      "startedAt": "2026-10-14T01:56:24.480843+00:00",
+      "endedAt": "2026-10-14T01:56:24.560007+00:00"
+    }
+  ],
+  "checkpoints": [
+    {
+      "at": "2026-10-13T16:32:24.819456+00:00",
+      "phase": "audit_and_independent_baseline",
+      "note": "Started clean anti-overfitting iteration; preserved dirty working tree; initial test command corrected from unsupported Jest flag to Vitest maxWorkers."
+    },
+    {
+      "at": "2026-10-14T01:52:10.024389+00:00",
+      "phase": "freeze_and_final",
+      "note": "Development 32/32; validation 8/8; Worker 1093/1093; shared/worker/mobile typechecks and mobile 21/21 passed. Configuration frozen before first final run."
+    },
+    {
+      "at": "2026-10-14T01:56:24.519332+00:00",
+      "phase": "report_and_reproducibility",
+      "note": "Frozen final 6/8 verified, 8/8 controlled under 1.005s; 18/18 page-only renders passed; two final failures preserved without post-final source changes."
+    },
+    {
+      "at": "2026-10-14T01:56:32.504012+00:00",
+      "phase": "report_and_reproducibility",
+      "note": "Final reproducibility checks passed; Python bytecode cache redirected to /tmp because the system cache directory is outside the workspace sandbox."
+    }
+  ],
+  "notes": [
+    "Active time is synchronized from the long-running-goal tracker; idle and host sleep are excluded.",
+    "UTC timestamps are stored and reported to the user in Asia/Singapore time.",
+    "The math-ai-4h-02 final split is frozen historical evidence and is not used for development.",
+    "External and paid inference are disabled during evaluation."
+  ]
+}

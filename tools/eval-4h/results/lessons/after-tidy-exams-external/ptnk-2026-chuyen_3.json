@@ -1,0 +1,308 @@
+{
+  "input": "Câu 3. Với mỗi số nguyên dương $n$, đặt $f(n)=(n+4)^{4}-n^{4}$.\na) Chứng minh $f(n)$ chia hết cho $16$ với mọi $n$.\nb) Tìm $n$ để $f(n)$ chia hết cho $3$.\nc) Tìm $n$ để $f(n)$ chia hết cho $24^{2}$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Câu 3. Với mỗi số nguyên dương $n$, đặt $f(n)=(n+4)^{4}-n^{4}$.\na) Chứng minh $f(n)$ chia hết cho $16$ với mọi $n$.\nb) Tìm $n$ để $f(n)$ chia hết cho $3$.\nc) Tìm $n$ để $f(n)$ chia hết cho $24^{2}$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chia hết đa thức nhiều phần: nhân tử chung và lũy thừa nguyên tố",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chia hết đa thức nhiều phần: nhân tử chung và lũy thừa nguyên tố"
+      ],
+      "techniques": [],
+      "givens": [
+        "$f(n)=(n+4)^{4}-n^{4}$"
+      ],
+      "unknowns": [
+        "Chứng minh câu a; tất cả giá trị của n trong câu b và c."
+      ],
+      "constraints": [
+        "Miền của chỉ số là số nguyên dương."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Khai triển chung, giảm đúng môđun, chứng minh tính đầy đủ của số dư và kết hợp từng câu.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Sau khai triển, hệ số nào có thể đặt chung để xét chia hết?",
+        "cue": "Hằng đẳng thức và phép khai triển; thu gọn hệ số chính xác",
+        "explanation": "Khai triển các lũy thừa và tích trong định nghĩa, gộp các hạng tử cùng bậc; các hạng tử đối nhau triệt tiêu. Ta được đa thức hệ số nguyên bên dưới. Các câu sau dùng cùng biểu thức này và giữ miền của $n$ như đề.",
+        "math": "f(n)=(n+4)^{4}-n^{4}=16n^{3}+96n^{2}+256n+256",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Sau tách nhân tử, cần xét chia hết cho môđun nào để điều kiện tương đương?",
+        "cue": "Đặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết",
+        "explanation": "Từ khai triển, đặt $16$ làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì $16=16\\cdot1$ và nhân tử chung khác0, $f(n)$ chia hết cho $16$ khi và chỉ khi đa thức còn lại chia hết cho $1$. Mọi số nguyên đều chia hết cho1, nên điều kiện này đúng với mọi giá trị.",
+        "math": "f(n)=16(n^{3}+6n^{2}+16n+16),\\qquad 16=16\\cdot1",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Sau tách nhân tử, cần xét chia hết cho môđun nào để điều kiện tương đương?",
+        "cue": "Đặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết",
+        "explanation": "Không cần tách thêm nhân tử; dùng trực tiếp đa thức đã khai triển. Đa thức còn lại có hệ số nguyên. Vì $3=1\\cdot3$ và nhân tử chung khác0, $f(n)$ chia hết cho $3$ khi và chỉ khi đa thức còn lại chia hết cho $3$.",
+        "math": "f(n)=1(16n^{3}+96n^{2}+256n+256),\\qquad 3=1\\cdot3",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Có lớp nào không thỏa một bảng nhưng bị nhận nhầm khi kết hợp không?",
+        "cue": "Kết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc",
+        "explanation": "Xét tất cả lớp số dư khi chia $3$, các bảng đồng thời có số dư0 đúng tại $r\\in\\{1\\}$.  Các biến đổi đều tương đương và đã giữ miền ban đầu. b) $n=3k+1$, $k\\in\\mathbb Z$, $k\\ge0$.",
+        "math": "n\\equiv 1\\pmod{3}",
+        "stepId": "s6",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Có lớp nào không thỏa một bảng nhưng bị nhận nhầm khi kết hợp không?",
+        "cue": "Kết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc",
+        "explanation": "Xét tất cả lớp số dư khi chia $36$, các bảng đồng thời có số dư0 đúng tại $r\\in\\{16,34\\}$. Các lớp này đúng bằng các lớp $16$ khi chia $18$, vì danh sách bao gồm trọn các số dư cách nhau $18$ trong mỗi lớp đó. Các biến đổi đều tương đương và đã giữ miền ban đầu. c) $n=18k+16$, $k\\in\\mathbb Z$, $k\\ge0$.",
+        "math": "n\\equiv 16\\pmod{18}",
+        "stepId": "s11",
+        "focus": []
+      },
+      {
+        "id": "h6",
+        "level": 4,
+        "question": "Mỗi câu đã có kết luận riêng và mọi điều kiện miền đều được giữ chưa?",
+        "cue": "Mỗi câu có điều kiện cần và đủ hoặc phản ví dụ rõ ràng; các kết luận trên từng dòng",
+        "explanation": "Các phép khai triển, tách nhân tử và xét số dư đã được chứng minh đầy đủ.\na) Mọi giá trị $n$ thuộc miền đề đều thỏa mãn.\nb) $n=3k+1$, $k\\in\\mathbb Z$, $k\\ge0$.\nc) $n=18k+16$, $k\\in\\mathbb Z$, $k\\ge0$.",
+        "math": null,
+        "stepId": "s12",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Khai triển biểu thức chung cho cả ba câu",
+        "explanation": "Khai triển các lũy thừa và tích trong định nghĩa, gộp các hạng tử cùng bậc; các hạng tử đối nhau triệt tiêu. Ta được đa thức hệ số nguyên bên dưới. Các câu sau dùng cùng biểu thức này và giữ miền của $n$ như đề.",
+        "math": "f(n)=(n+4)^{4}-n^{4}=16n^{3}+96n^{2}+256n+256",
+        "reason": "Hằng đẳng thức và phép khai triển; thu gọn hệ số chính xác",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "a) Tách nhân tử và giảm đúng điều kiện chia hết",
+        "explanation": "Từ khai triển, đặt $16$ làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì $16=16\\cdot1$ và nhân tử chung khác0, $f(n)$ chia hết cho $16$ khi và chỉ khi đa thức còn lại chia hết cho $1$. Mọi số nguyên đều chia hết cho1, nên điều kiện này đúng với mọi giá trị.",
+        "math": "f(n)=16(n^{3}+6n^{2}+16n+16),\\qquad 16=16\\cdot1",
+        "reason": "Đặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "b) Tách nhân tử và giảm đúng điều kiện chia hết",
+        "explanation": "Không cần tách thêm nhân tử; dùng trực tiếp đa thức đã khai triển. Đa thức còn lại có hệ số nguyên. Vì $3=1\\cdot3$ và nhân tử chung khác0, $f(n)$ chia hết cho $3$ khi và chỉ khi đa thức còn lại chia hết cho $3$.",
+        "math": "f(n)=1(16n^{3}+96n^{2}+256n+256),\\qquad 3=1\\cdot3",
+        "reason": "Đặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "b) Chứng minh các bảng số dư bao quát mọi giá trị",
+        "explanation": "Gọi đa thức còn lại là $Q(n)=16n^{3}+96n^{2}+256n+256$. Nếu $n$ và $r$ có cùng số dư khi chia một số $m$, hiệu từng lũy thừa của chúng chia hết cho $m$ nhờ hằng đẳng thức hiệu lũy thừa. Vì hệ số đều nguyên, $Q(n)-Q(r)$ cũng chia hết cho $m$. Do đó xét đủ các số dư là xét mọi giá trị. Môđun còn lại có phân tích $3=3$; các thừa số là lũy thừa của các nguyên tố khác nhau, nên đôi một nguyên tố cùng nhau. Điều kiện chia hết cho tích tương đương chia hết cho từng thừa số.",
+        "math": "Q(n)\\equiv Q(r)\\pmod{m}",
+        "reason": "Đa thức nguyên giữ đồng dư; tính chất chia hết với các ước nguyên tố cùng nhau",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "b) Số dư khi chia 3: trường hợp 0 đến 2",
+        "explanation": "Thay từng $r$ vào $Q(r)$, tính rồi chia $3$. Chẳng hạn $Q(0)=256$ có số dư $1$. Chỉ cột có số dư0 được nhận.",
+        "math": "\\begin{array}{c|ccc}r&0&1&2\\\\\\hline Q(r)\\bmod 3&1&0&2\\end{array}",
+        "reason": "Tính chính xác tất cả lớp số dư trong bảng",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s6",
+        "title": "b) Kết hợp điều kiện và nêu toàn bộ nghiệm",
+        "explanation": "Xét tất cả lớp số dư khi chia $3$, các bảng đồng thời có số dư0 đúng tại $r\\in\\{1\\}$.  Các biến đổi đều tương đương và đã giữ miền ban đầu. b) $n=3k+1$, $k\\in\\mathbb Z$, $k\\ge0$.",
+        "math": "n\\equiv 1\\pmod{3}",
+        "reason": "Kết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc",
+        "uses": [
+          "s5"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s7",
+        "title": "c) Tách nhân tử và giảm đúng điều kiện chia hết",
+        "explanation": "Từ khai triển, đặt $16$ làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì $576=16\\cdot36$ và nhân tử chung khác0, $f(n)$ chia hết cho $576$ khi và chỉ khi đa thức còn lại chia hết cho $36$.",
+        "math": "f(n)=16(n^{3}+6n^{2}+16n+16),\\qquad 576=16\\cdot36",
+        "reason": "Đặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết",
+        "uses": [
+          "s6"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s8",
+        "title": "c) Chứng minh các bảng số dư bao quát mọi giá trị",
+        "explanation": "Gọi đa thức còn lại là $Q(n)=n^{3}+6n^{2}+16n+16$. Nếu $n$ và $r$ có cùng số dư khi chia một số $m$, hiệu từng lũy thừa của chúng chia hết cho $m$ nhờ hằng đẳng thức hiệu lũy thừa. Vì hệ số đều nguyên, $Q(n)-Q(r)$ cũng chia hết cho $m$. Do đó xét đủ các số dư là xét mọi giá trị. Môđun còn lại có phân tích $36=4\\cdot 9$; các thừa số là lũy thừa của các nguyên tố khác nhau, nên đôi một nguyên tố cùng nhau. Điều kiện chia hết cho tích tương đương chia hết cho từng thừa số.",
+        "math": "Q(n)\\equiv Q(r)\\pmod{m}",
+        "reason": "Đa thức nguyên giữ đồng dư; tính chất chia hết với các ước nguyên tố cùng nhau",
+        "uses": [
+          "s7"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s9",
+        "title": "c) Số dư khi chia 4: trường hợp 0 đến 3",
+        "explanation": "Thay từng $r$ vào $Q(r)$, tính rồi chia $4$. Chẳng hạn $Q(0)=16$ có số dư $0$. Chỉ cột có số dư0 được nhận.",
+        "math": "\\begin{array}{c|cccc}r&0&1&2&3\\\\\\hline Q(r)\\bmod 4&0&3&0&1\\end{array}",
+        "reason": "Tính chính xác tất cả lớp số dư trong bảng",
+        "uses": [
+          "s8"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s10",
+        "title": "c) Số dư khi chia 9: trường hợp 0 đến 8",
+        "explanation": "Thay từng $r$ vào $Q(r)$, tính rồi chia $9$. Chẳng hạn $Q(0)=16$ có số dư $7$. Chỉ cột có số dư0 được nhận.",
+        "math": "\\begin{array}{c|ccccccccc}r&0&1&2&3&4&5&6&7&8\\\\\\hline Q(r)\\bmod 9&7&3&8&1&6&2&4&0&5\\end{array}",
+        "reason": "Tính chính xác tất cả lớp số dư trong bảng",
+        "uses": [
+          "s9"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s11",
+        "title": "c) Kết hợp điều kiện và nêu toàn bộ nghiệm",
+        "explanation": "Xét tất cả lớp số dư khi chia $36$, các bảng đồng thời có số dư0 đúng tại $r\\in\\{16,34\\}$. Các lớp này đúng bằng các lớp $16$ khi chia $18$, vì danh sách bao gồm trọn các số dư cách nhau $18$ trong mỗi lớp đó. Các biến đổi đều tương đương và đã giữ miền ban đầu. c) $n=18k+16$, $k\\in\\mathbb Z$, $k\\ge0$.",
+        "math": "n\\equiv 16\\pmod{18}",
+        "reason": "Kết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc",
+        "uses": [
+          "s10"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s12",
+        "title": "Kết luận riêng từng câu theo miền đề",
+        "explanation": "Các phép khai triển, tách nhân tử và xét số dư đã được chứng minh đầy đủ.\na) Mọi giá trị $n$ thuộc miền đề đều thỏa mãn.\nb) $n=3k+1$, $k\\in\\mathbb Z$, $k\\ge0$.\nc) $n=18k+16$, $k\\in\\mathbb Z$, $k\\ge0$.",
+        "math": null,
+        "reason": "Mỗi câu có điều kiện cần và đủ hoặc phản ví dụ rõ ràng; các kết luận trên từng dòng",
+        "uses": [
+          "s11"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "a) Mọi giá trị $n$ thuộc miền đề đều thỏa mãn.\nb) $n=3k+1$, $k\\in\\mathbb Z$, $k\\ge0$.\nc) $n=18k+16$, $k\\in\\mathbb Z$, $k\\ge0$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra khai triển, giảm môđun, các lũy thừa nguyên tố và toàn bộ lớp nghiệm từng câu",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s6",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s7",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s8",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s9",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s10",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s11",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s12",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 23,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

@@ -25,13 +25,13 @@ export const SPECIALIST_PROFILES: Record<Domain, SpecialistProfile> = {
     id: "number_theory-bot",
     name: "Number Theory Bot",
     responsibility: "divisibility, congruences, integer equations, bounds, and perfect powers",
-    rules: ["state the integer domain", "distinguish implication from equivalence modulo a composite", "justify finite bounds before enumeration and prove completeness"],
+    rules: ["state the integer domain", "distinguish implication from equivalence modulo a composite", "justify finite bounds before enumeration and prove completeness", "in prime problems explicitly check exceptional small primes (especially 2 and divisors of a chosen modulus) before assuming p exceeds them"],
   },
   combinatorics: {
     id: "combinatorics-bot",
     name: "Combinatorics Bot",
     responsibility: "counting, cases, inclusion-exclusion, pigeonhole, invariants, and elementary probability",
-    rules: ["define the objects and whether order/repetition matters", "make cases disjoint and exhaustive or correct overlaps", "compare small instances with independent enumeration when feasible"],
+    rules: ["define the objects and whether order/repetition matters", "make cases disjoint and exhaustive or correct overlaps", "when counting unordered selections explain why each group was counted k! times before dividing; do not cite only the combination formula", "compare small instances with independent enumeration when feasible", "for existence claims identify a witness or give an explicit construction/selection rule from unspecified inputs", "for games state the first action and an executable response rule or query table; establish move/query order and prove coverage of every legal opponent reply within the turn bound"],
   },
 };
 

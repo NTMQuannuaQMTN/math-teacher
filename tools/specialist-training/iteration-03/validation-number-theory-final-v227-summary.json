@@ -1,0 +1,21 @@
+{
+  "phase": "validation-number-theory-final-v227",
+  "questionsExecuted": 34,
+  "ready": 34,
+  "independentlyReviewed": 34,
+  "correctConclusionCount": 34,
+  "mathematicalPasses": 34,
+  "qualityPasses": 34,
+  "diagnosticVariantCount": 34,
+  "latencyMs": {
+    "p50": 21.898832999999286,
+    "p95": 50.629749999999945,
+    "max": 57.34008299999914
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 34,
+  "rubricMeanForReviewedOnly": 98.94117647058823,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": true
+}

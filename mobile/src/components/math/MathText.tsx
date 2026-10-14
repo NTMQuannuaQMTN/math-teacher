@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View, type TextStyle } from "react-native";
 import { WebView, type WebViewMessageEvent } from "react-native-webview";
 import type { ShouldStartLoadRequest } from "react-native-webview/lib/WebViewTypes";
 import { mathTextToPlain } from "@shared/mathText";
@@ -10,6 +10,7 @@ import { BASE_CSS, RENDER_SCRIPT, toPayload } from "./mathHtml";
 export interface MathTextProps {
   text: string;
   fontSize?: number;
+  fontWeight?: TextStyle["fontWeight"];
   color?: string;
   align?: "left" | "center";
   /** Shown when `text` is empty. */
@@ -33,7 +34,7 @@ function allowOnlyInitialPage(request: ShouldStartLoadRequest): boolean {
  * Renders problem text (prose + $LaTeX$) as typeset maths.
  * Falls back to readable Unicode text if the WebView fails.
  */
-export function MathText({ text, fontSize = 18, color, align = "left", placeholder, testID }: MathTextProps) {
+export function MathText({ text, fontSize = 18, fontWeight = "normal", color, align = "left", placeholder, testID }: MathTextProps) {
   const { colors } = useTheme();
   const webview = useRef<WebView>(null);
   const [ready, setReady] = useState(false);
@@ -42,8 +43,8 @@ export function MathText({ text, fontSize = 18, color, align = "left", placehold
 
   const plain = useMemo(() => mathTextToPlain(text), [text]);
   const payload = useMemo(
-    () => JSON.stringify(toPayload(text, fontSize, color ?? colors.text, align)),
-    [text, fontSize, color, colors.text, align],
+    () => JSON.stringify(toPayload(text, fontSize, color ?? colors.text, align, String(fontWeight))),
+    [text, fontSize, fontWeight, color, colors.text, align],
   );
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export function MathText({ text, fontSize = 18, color, align = "left", placehold
 
   if (failed) {
     return (
-      <Text style={{ color: color ?? colors.text, fontSize, lineHeight: fontSize * 1.5 }} selectable>
+      <Text style={{ color: color ?? colors.text, fontSize, fontWeight, lineHeight: fontSize * 1.5 }} selectable>
         {plain}
       </Text>
     );

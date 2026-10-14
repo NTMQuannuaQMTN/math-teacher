@@ -1,0 +1,134 @@
+{
+  "input": "Chứng minh rằng trong $6$ số nguyên bất kì luôn có hai số mà hiệu của chúng chia hết cho $5$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Chứng minh rằng trong $6$ số nguyên bất kì luôn có hai số mà hiệu của chúng chia hết cho $5$.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Nguyên lí Dirichlet",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Nguyên lí Dirichlet"
+      ],
+      "techniques": [],
+      "givens": [
+        "$6$ đối tượng, $5$ loại"
+      ],
+      "unknowns": [
+        "Chứng minh có hai đối tượng cùng loại"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn lồng và thỏ thích hợp; số thỏ nhiều hơn số lồng.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Có bao nhiêu số dư khi chia cho $5$?",
+        "cue": "Phép chia có dư",
+        "explanation": "Khi chia một số nguyên cho $5$, số dư là một trong $5$ giá trị $0,1,\\ldots,4$. Coi mỗi số dư là một lồng: có $5$ lồng; $6$ số đã cho là $6$ con thỏ.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Hiệu của hai số cùng số dư bằng bao nhiêu?",
+        "cue": "Nguyên lí Dirichlet; hiệu hai số cùng số dư",
+        "explanation": "Vì $6>5$, theo nguyên lí Dirichlet có hai số $a\\ne b$ (trong các số đã cho) có cùng số dư $r$ khi chia cho $5$: $a=5q_1+r$, $b=5q_2+r$. Khi đó hiệu của chúng chia hết cho $5$.",
+        "math": "a-b=5(q_1-q_2)\\ \\vdots\\ 5",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Điều cần chứng minh là gì?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy trong $6$ số nguyên bất kì luôn có hai số có hiệu chia hết cho $5$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chia theo số dư",
+        "explanation": "Khi chia một số nguyên cho $5$, số dư là một trong $5$ giá trị $0,1,\\ldots,4$. Coi mỗi số dư là một lồng: có $5$ lồng; $6$ số đã cho là $6$ con thỏ.",
+        "math": null,
+        "reason": "Phép chia có dư",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Hai số cùng số dư",
+        "explanation": "Vì $6>5$, theo nguyên lí Dirichlet có hai số $a\\ne b$ (trong các số đã cho) có cùng số dư $r$ khi chia cho $5$: $a=5q_1+r$, $b=5q_2+r$. Khi đó hiệu của chúng chia hết cho $5$.",
+        "math": "a-b=5(q_1-q_2)\\ \\vdots\\ 5",
+        "reason": "Nguyên lí Dirichlet; hiệu hai số cùng số dư",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy trong $6$ số nguyên bất kì luôn có hai số có hiệu chia hết cho $5$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy trong $6$ số nguyên bất kì luôn có hai số có hiệu chia hết cho $5$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra số đối tượng 6 lớn hơn số lồng 5",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 19,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-pigeonhole-residue",
+  "logs": [
+    "lesson by the routine solver (pigeonhole-residue); no model call"
+  ]
+}

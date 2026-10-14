@@ -7,7 +7,8 @@ const WORST_CASE_OUTPUT = 65_536;
 
 /**
  * A daily spending cap for a paid model (SOCLAAS, or the Gemini fallback). Spend is kept per UTC day in micro-dollars
- * in the rate_limits table. Before each call the worst case (full output budget) is reserved, so a truncated or
+ * in the rate_limits table. Aggregate mode sums every existing spending counter for the UTC day,
+ * preserving costs when the selected model changes. Before each call the worst case (full output budget) is reserved, so a truncated or
  * failed call can never overshoot; after a call that reports usage, the reservation is corrected to the actual cost.
  * Over the cap, the call is refused as quota_exhausted (the lesson fails like any other unavailable model).
  */
@@ -22,6 +23,8 @@ export class BudgetedJsonModel implements JsonModel {
     private readonly log: (message: string) => void = () => undefined,
     /** The most output one call can produce (its max_tokens). */
     private readonly worstCaseOutput = WORST_CASE_OUTPUT,
+    /** Opt-in paid-provider policy: model switches share the same UTC-day allowance. */
+    private readonly aggregateDailySpend = false,
   ) {
     this.name = inner.name;
     this.grammarConstrained = inner.grammarConstrained;
@@ -32,16 +35,27 @@ export class BudgetedJsonModel implements JsonModel {
   }
 
   async complete(input: Parameters<JsonModel["complete"]>[0]): Promise<string> {
-    const inputTokens = Math.ceil(input.messages.reduce((n, m) => n + m.content.length, 0) / 3);
+    const inputTokens = input.messages.reduce((n, m) => n + new TextEncoder().encode(m.content).byteLength, 2048);
     const reserve = toMicro(estimateCost(this.model, { input: inputTokens, cachedInput: 0, output: this.worstCaseOutput, reasoning: 0 }) ?? 1);
     const day = Math.floor(Date.now() / 86_400_000) * 86_400;
     const bucket = `spend:${this.model}`;
-    const spent = await add(this.db, bucket, day, 0);
-    if (spent + reserve > toMicro(this.dailyBudgetUsd)) {
-      this.log(`${this.model}: daily budget $${this.dailyBudgetUsd} reached ($${(spent / 1e6).toFixed(2)} spent today); not calling it`);
+    const cap = toMicro(this.dailyBudgetUsd);
+    const reservationSql=this.aggregateDailySpend
+      ? `INSERT INTO rate_limits (bucket, window_start, count) SELECT ?, ?, ? WHERE ? <= ?
+         AND (SELECT COALESCE(SUM(count),0) FROM rate_limits WHERE window_start=? AND bucket LIKE 'spend:%') + ? <= ?
+         ON CONFLICT (bucket, window_start) DO UPDATE SET count = count + excluded.count
+         WHERE (SELECT COALESCE(SUM(count),0) FROM rate_limits WHERE window_start=? AND bucket LIKE 'spend:%') + ? <= ? RETURNING count`
+      : `INSERT INTO rate_limits (bucket, window_start, count) SELECT ?, ?, ? WHERE ? <= ?
+       ON CONFLICT (bucket, window_start) DO UPDATE SET count = count + excluded.count
+       WHERE rate_limits.count + excluded.count <= ? RETURNING count`;
+    const bindings=this.aggregateDailySpend
+      ? [bucket,day,reserve,reserve,cap,day,reserve,cap,day,reserve,cap]
+      : [bucket,day,reserve,reserve,cap,cap];
+    const reservation = await this.db.prepare(reservationSql).bind(...bindings).first<{count:number}>();
+    if (!reservation) {
+      this.log(`${this.model}: daily budget $${this.dailyBudgetUsd} cannot reserve this call; not calling it`);
       throw new OcrFailure("quota_exhausted", `${this.model} daily budget reached`, false);
     }
-    await add(this.db, bucket, day, reserve);
     let actual: Usage | null = null;
     try {
       return await this.inner.complete({ ...input, onUsage: (u) => ((actual = u), input.onUsage?.(u)) });

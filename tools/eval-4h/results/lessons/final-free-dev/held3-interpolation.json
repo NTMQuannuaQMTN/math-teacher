@@ -1,0 +1,155 @@
+{
+  "input": "Cho đa thức $P(x)$ có bậc không quá hai, biết $P(0)=1$, $P(1)=3$, $P(2)=9$. Tính $P(3)$ và giải thích các bước.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đa thức $P(x)$ có bậc không quá hai, biết $P(0)=1$, $P(1)=3$, $P(2)=9$. Tính $P(3)$ và giải thích các bước.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Nội suy đa thức bậc không quá hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Nội suy đa thức bậc không quá hai"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Đặt đủ ba hệ số, dùng lần lượt ba dữ kiện để xác định duy nhất đa thức rồi mới thay giá trị cần tính.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Cần bao nhiêu hệ số để mô tả mọi đa thức bậc không quá hai?",
+        "cue": "Dạng tổng quát của đa thức bậc không quá hai",
+        "explanation": "Vì bậc của $P$ không quá hai, tồn tại các số thực $a,b,c$ sao cho $P(x)=ax^2+bx+c$. Dạng này cũng bao gồm trường hợp bậc thấp hơn khi hệ số đầu bằng $0$.",
+        "math": "P(x)=ax^2+bx+c",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Giá trị tại 0 cho ngay hệ số nào?",
+        "cue": "Thay trực tiếp dữ kiện thứ nhất",
+        "explanation": "Thay $x=0$ vào dạng tổng quát, ta có $P(0)=c=1$.",
+        "math": "c=1",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Hai dữ kiện còn lại tạo hệ phương trình nào?",
+        "cue": "Thay hai dữ kiện còn lại và chuyển hạng đã biết",
+        "explanation": "Thay $x=1$ và $x=2$, rồi dùng $c=1$.",
+        "math": "\\begin{cases}a+b=2\\\\4a+2b=8\\end{cases}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Phép trừ nào loại được b?",
+        "cue": "Phương pháp khử trong hệ hai phương trình bậc nhất",
+        "explanation": "Lấy phương trình thứ hai trừ hai lần phương trình thứ nhất, ta được $2a=4$, nên $a=2$. Thay lại cho $b=0$. Vậy cả ba hệ số đã được xác định.",
+        "math": "a=2,\\quad b=0,\\quad c=1",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Giá trị cuối cùng bằng bao nhiêu?",
+        "cue": "Thay vào đa thức đã được xác định duy nhất",
+        "explanation": "Thay $x=3$ vào đa thức vừa tìm: $P(3)=2\\cdot3^2+0\\cdot3+1=19$. Vậy $P(3)=19$.",
+        "math": "P(3)=19",
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Đặt dạng tổng quát đúng với giới hạn bậc",
+        "explanation": "Vì bậc của $P$ không quá hai, tồn tại các số thực $a,b,c$ sao cho $P(x)=ax^2+bx+c$. Dạng này cũng bao gồm trường hợp bậc thấp hơn khi hệ số đầu bằng $0$.",
+        "math": "P(x)=ax^2+bx+c",
+        "reason": "Dạng tổng quát của đa thức bậc không quá hai",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Dùng giá trị tại 0 để tìm hệ số tự do",
+        "explanation": "Thay $x=0$ vào dạng tổng quát, ta có $P(0)=c=1$.",
+        "math": "c=1",
+        "reason": "Thay trực tiếp dữ kiện thứ nhất",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Lập hai phương trình còn lại",
+        "explanation": "Thay $x=1$ và $x=2$, rồi dùng $c=1$.",
+        "math": "\\begin{cases}a+b=2\\\\4a+2b=8\\end{cases}",
+        "reason": "Thay hai dữ kiện còn lại và chuyển hạng đã biết",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Khử từng ẩn và xác định duy nhất đa thức",
+        "explanation": "Lấy phương trình thứ hai trừ hai lần phương trình thứ nhất, ta được $2a=4$, nên $a=2$. Thay lại cho $b=0$. Vậy cả ba hệ số đã được xác định.",
+        "math": "a=2,\\quad b=0,\\quad c=1",
+        "reason": "Phương pháp khử trong hệ hai phương trình bậc nhất",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Thay giá trị cần tính và kết luận",
+        "explanation": "Thay $x=3$ vào đa thức vừa tìm: $P(3)=2\\cdot3^2+0\\cdot3+1=19$. Vậy $P(3)=19$.",
+        "math": "P(3)=19",
+        "reason": "Thay vào đa thức đã được xác định duy nhất",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $P(3)=19$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Đối chiếu độc lập hệ số, điều kiện dấu bằng, khai triển đa thức hoặc từng tổng hữu hạn",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 514,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-algebra-family",
+  "logs": []
+}

@@ -1,0 +1,323 @@
+{
+  "input": "Cho tứ giác $ABCD$ nội tiếp đường tròn $(O)$ có tam giác $ABD$ là tam giác nhọn và đường chéo $AC$ đi qua tâm $O$ của đường tròn $(O)$. Gọi $I$ là trung điểm $BD$, $H$ là trực tâm của tam giác $ABD$, $E$ là giao điểm khác $A$ của $AI$ với $(O)$ và $K$ là hình chiếu vuông góc của $H$ lên $AI$. Chứng minh $CEHK$ là hình bình hành và $IB^2=ID^2=IA\\cdot IK$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tứ giác $ABCD$ nội tiếp đường tròn $(O)$ có tam giác $ABD$ là tam giác nhọn và đường chéo $AC$ đi qua tâm $O$ của đường tròn $(O)$. Gọi $I$ là trung điểm $BD$, $H$ là trực tâm của tam giác $ABD$, $E$ là giao điểm khác $A$ của $AI$ với $(O)$ và $K$ là hình chiếu vuông góc của $H$ lên $AI$. Chứng minh $CEHK$ là hình bình hành và $IB^2=ID^2=IA\\cdot IK$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Kiểm tra trường hợp suy biến",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Kiểm tra trường hợp suy biến"
+      ],
+      "techniques": [],
+      "givens": [
+        "Giữ nguyên giả thiết của đề; tam giác đều là một trường hợp tam giác nhọn"
+      ],
+      "unknowns": [
+        "Kiểm tra tính không suy biến của hình bình hành"
+      ],
+      "constraints": [
+        "Không tự thêm giả thiết hai cạnh khác nhau"
+      ],
+      "status": "solvable",
+      "statusReason": "Giả thiết hiện tại cho phép hai cặp đỉnh trùng nhau.",
+      "interpretationNotes": [
+        "Hình minh họa là phản ví dụ tam giác đều, không phải chứng minh cho mọi cấu hình."
+      ]
+    },
+    "strategy": "Chọn một cấu hình hợp lệ theo đúng giả thiết để kiểm tra bốn đỉnh có luôn phân biệt hay không.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Giả thiết có loại tam giác đều hay không?",
+        "cue": "Tam giác đều có ba góc bằng 60 độ; dựng đường kính",
+        "explanation": "Lấy tam giác $ABD$ đều, nội tiếp đường tròn $(O)$ bán kính $2$. Đây là tam giác nhọn nên thỏa giả thiết. Lấy $C$ đối diện $A$ qua tâm: $AC$ là đường kính. Bốn điểm $A,B,C,D$ đều phân biệt và nằm trên đường tròn.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Trong tam giác đều, trực tâm nằm ở đâu?",
+        "cue": "Các tâm của tam giác đều trùng nhau; tính chất trọng tâm",
+        "explanation": "Vì tam giác đều, trung tuyến từ $A$ đồng thời là đường cao, đường trung trực và đường phân giác. Tâm đường tròn ngoại tiếp cũng là trực tâm và trọng tâm, nên $H=O$; các điểm $A,O,I,C$ thẳng hàng. Trọng tâm chia trung tuyến theo tỉ số $2:1$, nên từ $AO=2$ suy ra $AI=3$ và $OI=1$.",
+        "math": null,
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Bốn đỉnh được yêu cầu có còn phân biệt không?",
+        "cue": "Giao điểm của đường kính với đường tròn; hình chiếu của điểm đã nằm trên đường thẳng",
+        "explanation": "Đường thẳng $AI$ chính là đường thẳng chứa đường kính $AC$, nên giao điểm thứ hai với đường tròn là $E=C$. Điểm $H=O$ đã nằm trên đường thẳng này, vì vậy hình chiếu của $H$ lên nó là chính $H$: $K=H$. Do đó $CEHK$ chỉ có hai điểm phân biệt, không phải một tứ giác.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Ví dụ này bác bỏ phần nào và chưa giải quyết phần nào?",
+        "cue": "Pythagore; phản ví dụ đối với kết luận không suy biến",
+        "explanation": "Tam giác $OIB$ vuông tại $I$ vì trung tuyến của tam giác đều vuông góc với đáy. Theo Pythagore, $IB^2=2^2-1^2=3$, và $ID^2=3$ do $I$ là trung điểm. Mặt khác $IA\\cdot IK=3\\cdot1=3$. Vậy Với đề hiện tại, $E=C$ và $K=H$ có thể xảy ra; vì vậy $CEHK$ không nhất thiết là một hình bình hành không suy biến. Cần xác nhận giả thiết loại trường hợp này trước khi chứng minh kết luận ấy. Ví dụ trên vẫn thỏa đẳng thức tích, nhưng chưa phải chứng minh đẳng thức trong mọi trường hợp.",
+        "math": "IB^2=ID^2=IA\\cdot IK=3",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chọn một trường hợp được giả thiết cho phép",
+        "explanation": "Lấy tam giác $ABD$ đều, nội tiếp đường tròn $(O)$ bán kính $2$. Đây là tam giác nhọn nên thỏa giả thiết. Lấy $C$ đối diện $A$ qua tâm: $AC$ là đường kính. Bốn điểm $A,B,C,D$ đều phân biệt và nằm trên đường tròn.",
+        "math": null,
+        "reason": "Tam giác đều có ba góc bằng 60 độ; dựng đường kính",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Xác định trung điểm và trực tâm",
+        "explanation": "Vì tam giác đều, trung tuyến từ $A$ đồng thời là đường cao, đường trung trực và đường phân giác. Tâm đường tròn ngoại tiếp cũng là trực tâm và trọng tâm, nên $H=O$; các điểm $A,O,I,C$ thẳng hàng. Trọng tâm chia trung tuyến theo tỉ số $2:1$, nên từ $AO=2$ suy ra $AI=3$ và $OI=1$.",
+        "math": null,
+        "reason": "Các tâm của tam giác đều trùng nhau; tính chất trọng tâm",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Hai cặp đỉnh của tứ giác trùng nhau",
+        "explanation": "Đường thẳng $AI$ chính là đường thẳng chứa đường kính $AC$, nên giao điểm thứ hai với đường tròn là $E=C$. Điểm $H=O$ đã nằm trên đường thẳng này, vì vậy hình chiếu của $H$ lên nó là chính $H$: $K=H$. Do đó $CEHK$ chỉ có hai điểm phân biệt, không phải một tứ giác.",
+        "math": null,
+        "reason": "Giao điểm của đường kính với đường tròn; hình chiếu của điểm đã nằm trên đường thẳng",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kiểm tra phần đẳng thức và nêu giới hạn",
+        "explanation": "Tam giác $OIB$ vuông tại $I$ vì trung tuyến của tam giác đều vuông góc với đáy. Theo Pythagore, $IB^2=2^2-1^2=3$, và $ID^2=3$ do $I$ là trung điểm. Mặt khác $IA\\cdot IK=3\\cdot1=3$. Vậy Với đề hiện tại, $E=C$ và $K=H$ có thể xảy ra; vì vậy $CEHK$ không nhất thiết là một hình bình hành không suy biến. Cần xác nhận giả thiết loại trường hợp này trước khi chứng minh kết luận ấy. Ví dụ trên vẫn thỏa đẳng thức tích, nhưng chưa phải chứng minh đẳng thức trong mọi trường hợp.",
+        "math": "IB^2=ID^2=IA\\cdot IK=3",
+        "reason": "Pythagore; phản ví dụ đối với kết luận không suy biến",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Với đề hiện tại, $E=C$ và $K=H$ có thể xảy ra; vì vậy $CEHK$ không nhất thiết là một hình bình hành không suy biến. Cần xác nhận giả thiết loại trường hợp này trước khi chứng minh kết luận ấy. Ví dụ trên vẫn thỏa đẳng thức tích, nhưng chưa phải chứng minh đẳng thức trong mọi trường hợp.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+      "scale": "schematic",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "on_circle",
+          "refs": [
+            "c_O"
+          ],
+          "x": null,
+          "y": null,
+          "value": 90,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "on_circle",
+          "refs": [
+            "c_O"
+          ],
+          "x": null,
+          "y": null,
+          "value": 210,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "reflect",
+          "refs": [
+            "A",
+            "O"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "kind": "on_circle",
+          "refs": [
+            "c_O"
+          ],
+          "x": null,
+          "y": null,
+          "value": 330,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "I",
+          "label": "I",
+          "kind": "midpoint",
+          "refs": [
+            "B",
+            "D"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "H",
+          "label": "H",
+          "kind": "orthocenter",
+          "refs": [
+            "A",
+            "B",
+            "D"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "kind": "line_circle",
+          "refs": [
+            "A",
+            "I",
+            "c_O"
+          ],
+          "x": null,
+          "y": null,
+          "value": 1,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "K",
+          "label": "K",
+          "kind": "foot",
+          "refs": [
+            "H",
+            "A",
+            "I"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_CD",
+          "kind": "segment",
+          "from": "C",
+          "to": "D",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_DA",
+          "kind": "segment",
+          "from": "D",
+          "to": "A",
+          "style": "given",
+          "label": null
+        }
+      ],
+      "circles": [
+        {
+          "id": "c_O",
+          "center": "O",
+          "through": null,
+          "radius": 2,
+          "style": "given",
+          "label": "(O)"
+        }
+      ],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "partial",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Phản ví dụ tam giác đều: hai cặp đỉnh trùng nhau; chưa chứng minh kết luận tổng quát",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 20,
+  "usage": {},
+  "costUsd": 0,
+  "model": "geometry-degeneracy-diagnosis",
+  "logs": []
+}

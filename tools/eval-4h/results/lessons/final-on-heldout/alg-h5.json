@@ -1,0 +1,160 @@
+{
+  "input": "Tìm giá trị lớn nhất của biểu thức $B=-x^2+4x+1$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm giá trị lớn nhất của biểu thức $B=-x^2+4x+1$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Giá trị lớn nhất, nhỏ nhất của tam thức bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Giá trị lớn nhất, nhỏ nhất của tam thức bậc hai"
+      ],
+      "techniques": [],
+      "givens": [
+        "$B=-x^2+4x+1$"
+      ],
+      "unknowns": [
+        "Giá trị lớn nhất"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Hoàn thành bình phương, dùng bình phương không âm, chỉ ra dấu bằng.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Thêm bớt số nào để được một bình phương?",
+        "cue": "Hằng đẳng thức bình phương của một tổng/hiệu",
+        "explanation": "Ta thêm bớt để xuất hiện hằng đẳng thức $(x+u)^2=x^2+2ux+u^2$ (hoàn thành bình phương). Khai triển vế phải để kiểm tra lại.",
+        "math": "B=-x^2+4x+1=-\\left(x-2\\right)^2+5",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Bình phương nhỏ nhất bằng bao nhiêu?",
+        "cue": "Bình phương của một số thực không âm",
+        "explanation": "Vì $\\left(x-2\\right)^2\\ge 0$ với mọi $x$ và hệ số $-1<0$ nên $-\\left(x-2\\right)^2\\le 0$, do đó $B\\le5$ với mọi số thực $x$.",
+        "math": "B\\le 5",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Khi nào bình phương bằng 0?",
+        "cue": "Điều kiện dấu bằng",
+        "explanation": "Dấu bằng xảy ra khi và chỉ khi bình phương bằng $0$, tức $x=2$. Thay lại: $B=5$. Một giá trị chỉ là lớn nhất khi vừa là cận vừa đạt được.",
+        "math": "x=2\\ \\Rightarrow\\ B=5",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy giá trị lớn nhất của $B$ là $5$, đạt được khi $x=2$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Biến đổi về dạng bình phương",
+        "explanation": "Ta thêm bớt để xuất hiện hằng đẳng thức $(x+u)^2=x^2+2ux+u^2$ (hoàn thành bình phương). Khai triển vế phải để kiểm tra lại.",
+        "math": "B=-x^2+4x+1=-\\left(x-2\\right)^2+5",
+        "reason": "Hằng đẳng thức bình phương của một tổng/hiệu",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Đánh giá từ trên",
+        "explanation": "Vì $\\left(x-2\\right)^2\\ge 0$ với mọi $x$ và hệ số $-1<0$ nên $-\\left(x-2\\right)^2\\le 0$, do đó $B\\le5$ với mọi số thực $x$.",
+        "math": "B\\le 5",
+        "reason": "Bình phương của một số thực không âm",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Chỉ ra dấu bằng xảy ra",
+        "explanation": "Dấu bằng xảy ra khi và chỉ khi bình phương bằng $0$, tức $x=2$. Thay lại: $B=5$. Một giá trị chỉ là lớn nhất khi vừa là cận vừa đạt được.",
+        "math": "x=2\\ \\Rightarrow\\ B=5",
+        "reason": "Điều kiện dấu bằng",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Vậy giá trị lớn nhất của $B$ là $5$, đạt được khi $x=2$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy giá trị lớn nhất của $B$ là $5$, đạt được khi $x=2$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra đẳng thức bình phương tại nhiều điểm, giá trị tại điểm đạt và cận trên lưới",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 278,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-quadratic-extremum",
+  "logs": [
+    "lesson by the routine solver (quadratic-extremum); no model call"
+  ]
+}

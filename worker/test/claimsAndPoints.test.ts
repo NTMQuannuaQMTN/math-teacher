@@ -75,3 +75,12 @@ describe("geometric claims measured on the figure", () => {
     expect(results).toEqual([]);
   });
 });
+
+it('checks abbreviated vertex angles only when there are exactly three vertices',()=>{
+ const f=resolveFigure({...triangle,points:[P('A','free',{x:0,y:1}),P('B','free',{x:-1,y:0}),P('C','free',{x:1,y:0})]});
+ const result=checkClaims([String.raw`\widehat{B}=45^{\circ}`],f);
+ expect(result).toHaveLength(1);expect(result[0]!.passed).toBe(true);
+ expect(checkClaims([String.raw`\widehat{B}=60^{\circ}`],f)[0]!.passed).toBe(false);
+ const extra=resolveFigure({...triangle,points:[...triangle.points,P('D','free',{x:2,y:2})]});
+ expect(checkClaims([String.raw`\widehat{B}=45^{\circ}`],extra)).toEqual([]);
+});

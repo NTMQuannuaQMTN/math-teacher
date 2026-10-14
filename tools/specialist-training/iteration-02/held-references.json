@@ -1,0 +1,23 @@
+[
+  {
+    "id": "held-two-piles",
+    "text": "Có hai đống sỏi, một đống có 2 viên và một đống có 3 viên. Hai người luân phiên chơi; mỗi lượt chọn đúng một đống và lấy một số nguyên dương viên sỏi từ đống đó. Người lấy viên cuối cùng thắng. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+    "reference": "Người đi trước lấy 1 viên ở đống 3, tạo hai đống 2,2. Sau mỗi nước đối phương, lấy cùng số ở đống kia để khôi phục hai đống bằng nhau. Hai đống giảm; người đi sau trong mỗi cặp lượt (tức người đi trước ban đầu) lấy viên cuối cùng.",
+    "split": "held_out",
+    "source": "Fresh generated structural transfer family, reserved only after development/validation; not a numeric variant of the developed algorithms."
+  },
+  {
+    "id": "held-sign-game",
+    "text": "An và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 10 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của mười số chia hết cho 3, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+    "reference": "Bình đặt dấu cuối cùng trước 10. Hai lựa chọn cho tổng cuối có dư khác nhau vì 20 không chia hết cho 3. Ít nhất một lựa chọn không chia hết cho 3. Bình chọn lựa chọn đó, bất kể chín dấu trước.",
+    "split": "held_out",
+    "source": "Fresh generated structural transfer family, reserved only after development/validation; not a numeric variant of the developed algorithms."
+  },
+  {
+    "id": "held-monotone-board",
+    "text": "Một quân cờ bắt đầu ở ô (1,1) trên bàn cờ 4 hàng, 4 cột. Hai người luân phiên di chuyển quân sang ô chung cạnh ở bên phải hoặc ở phía trên, nếu còn ô trong bàn. Người không còn nước đi thua. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+    "reference": "Mỗi bước tăng tổng hai tọa độ đúng 1. Chỉ ô (4,4) không còn nước đi. Từ tổng 2 đến tổng 8 luôn đúng 6 lượt. Người đi sau thực hiện lượt 6; người đi trước không còn nước và thua, không phụ thuộc chiến lược.",
+    "split": "held_out",
+    "source": "Fresh generated structural transfer family, reserved only after development/validation; not a numeric variant of the developed algorithms."
+  }
+]

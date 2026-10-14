@@ -1,0 +1,21 @@
+{
+  "phase": "development-number-theory-prime-exponents-v223",
+  "questionsExecuted": 3,
+  "ready": 2,
+  "independentlyReviewed": 3,
+  "correctConclusionCount": 2,
+  "mathematicalPasses": 2,
+  "qualityPasses": 2,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 53.42095799999879,
+    "p95": 11201.722667,
+    "max": 11201.722667
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 0,
+  "rubricMeanForReviewedOnly": null,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "scenario": "actual-cyclic",
+    "startedAt": "2026-10-11T19:09:52.454Z",
+    "durationMs": 1747.173292,
+    "pass": true,
+    "errors": [],
+    "latexErrors": 0,
+    "text": "Bài học\n\nĐỀ BÀI\n\nCho tam giác \n𝐴\n𝐵\n𝐶\nABC nhọn. Gọi \n𝐸\n,\n𝐹\nE,F lần lượt là chân đường cao từ \n𝐵\n,\n𝐶\nB,C. Chứng minh tứ giác \n𝐵\n𝐶\n𝐸\n𝐹\nBCEF nội tiếp.\n\nHÌNH VẼ\n\nB\nC\nA\nE\nF\nHình minh họa — không đúng tỉ lệ\nKéo các điểm màu xanh để khám phá\n\n\n\nĐã kiểm tra một phần\nMột số phần đã được kiểm tra tự động. Bạn đọc kỹ lập luận nhé.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChứng minh hình học\n\nCHO BIẾT\nCho tam giác \n𝐴\n𝐵\n𝐶\nABC nhọn\nGọi \n𝐸\n,\n𝐹\nE,F lần lượt là chân đường cao từ \n𝐵\n,\n𝐶\nB,C\n\nKIẾN THỨC SỬ DỤNG\ncộng, trừ góc\ndấu hiệu tứ giác nội tiếp\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTrong tứ giác BCEF, hai đỉnh nào cùng nhìn một cạnh dưới hai góc bằng nhau?\nTứ giác có hai đỉnh kề nhau cùng nhìn một cạnh dưới hai góc bằng nhau thì nội tiếp\nBạn thử nghĩ trước đã, rồi bấm để kiểm tra nhé.\n\nXem lời giải thích\n\nXem lời giải đầy đủ\n\nBáo lỗi\n\nLỗi đã báo",
+    "scope": "Current text confirmation + page navigation + actual client authentication/HTTP solve or explicit stalled transport/body scenario + full response parsing + schema/LaTeX/font/browser paint; fixture upload OCR excluded"
+  },
+  {
+    "scenario": "actual-degeneracy-original-harness-attempt",
+    "durationMs": null,
+    "measurementInvalid": true,
+    "waitLimitMs": 31000,
+    "pass": false,
+    "reason": "API returned an ambiguous-status diagnosis; LessonView displayed a clarification card and hid the constructive solution steps. Harness incorrectly waited for lesson-problem. No measured end-to-end latency can be inferred from the 31s selector timeout. Diagnosis status changed to solvable so its explicit counterexample steps render.",
+    "scope": "Harness/presentation failure, not a measured inference timeout"
+  }
+]

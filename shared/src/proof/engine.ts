@@ -13,7 +13,7 @@
  */
 import { resolveFigure, type ResolvedFigure, type Vec } from "../geometry";
 import type { Figure } from "../solution";
-import { angleEquations, factKey, factPoints, lengthEquations, type Fact, type Orient, type Seg, type Tri } from "./facts";
+import { angleEquations, factKey, factPoints, factText, lengthEquations, type Fact, type Orient, type Seg, type Tri } from "./facts";
 import { LinearSystem } from "./linear";
 
 export interface Derivation {
@@ -134,7 +134,7 @@ export class ProofState {
   readonly angles = new LinearSystem(180);
   readonly lengths = new LinearSystem(null);
 
-  constructor(readonly oracle: Oracle) {}
+  constructor(readonly oracle: Oracle, readonly figure?:Figure) {}
 
   known(f: Fact): Derivation | undefined {
     const id = this.byKey.get(factKey(f));
@@ -305,17 +305,19 @@ export function constructionFacts(figure: Figure, oracle: Oracle): { fact: Fact;
     const center = byId.get(c.center);
     // Circle with a (hidden) circumcenter of three points: those points are on it; with diameter XY: both ends.
     if (center?.hidden && center.kind === "circumcenter") center.refs.forEach((x) => on.add(x));
-    if (center?.hidden && center.kind === "midpoint") center.refs.forEach((x) => on.add(x));
+    if (center?.kind === "midpoint" && c.through && center.refs.includes(c.through)) center.refs.forEach((x) => on.add(x));
     // Tangent points of an incircle / feet from its center to tangent lines are on it.
     for (const p of figure.points) if (!p.hidden && p.kind === "foot" && p.refs[0] === c.center && c.through && byId.get(c.through)?.kind === "foot") on.add(p.id);
+    // Reflection through a circle's center gives the opposite endpoint of a diameter.
+    for(const p of figure.points)if(p.kind==="reflect" && p.refs.length===2 && p.refs[1]===c.center && on.has(p.refs[0]!))on.add(p.id);
     const members = [...on].filter((x) => !byId.get(x)?.hidden && oracle.has(x));
     if (!center?.hidden && oracle.has(c.center)) {
       for (let i = 1; i < members.length; i++) add({ t: "cong", a: [c.center, members[0]!], b: [c.center, members[i]!] }, "CIRCLE_RADIUS", `cùng là bán kính của ${label(c.id)}`);
     }
-    if (center?.hidden && center.kind === "midpoint") {
-      const [x, y] = center.refs as Seg;
-      for (const m of members) if (m !== x && m !== y) add({ t: "perp", a: [m, x], b: [m, y] }, "THALES_CIRCLE", `${m} thuộc đường tròn đường kính ${x}${y}`);
-    }
+    const diameters:Seg[]=[];
+    if(center?.kind==="midpoint" && c.through && center.refs.includes(c.through))diameters.push(center.refs as Seg);
+    for(const p of figure.points)if(p.kind==="reflect" && p.refs.length===2 && p.refs[1]===c.center && on.has(p.refs[0]!) && on.has(p.id))diameters.push([p.refs[0]!,p.id]);
+    for(const [x,y] of diameters)for(const m of members)if(m!==x&&m!==y)add({t:"perp",a:[m,x],b:[m,y]},"THALES_CIRCLE",`${m} thuộc đường tròn đường kính ${x}${y}`);
     if (members.length >= 4) {
       const ms = members.slice(0, 8);
       for (let i = 0; i < ms.length; i++)
@@ -372,9 +374,47 @@ function tryProve(s: ProofState, f: Fact): Derivation | null {
       }
       return null;
     }
+    case "perp": {
+      if (new Set([...f.a, ...f.b]).size === 4) {
+        for (const [centers, ends] of [[f.a,f.b],[f.b,f.a]] as [Seg,Seg][]) {
+          const u = tryProve(s,{t:"cong",a:[centers[0],ends[0]],b:[centers[0],ends[1]]});
+          const v = u && tryProve(s,{t:"cong",a:[centers[1],ends[0]],b:[centers[1],ends[1]]});
+          if (u && v) return s.add(f,"PERPENDICULAR_BISECTOR",[u.id,v.id]);
+        }
+      }
+      if (new Set([...f.a,...f.b]).size === 4) {
+        for (const [height, side] of [[f.a,f.b],[f.b,f.a]] as [Seg,Seg][]) for (const [c,h] of [height,[height[1],height[0]]] as Seg[]) {
+          const [a,b]=side;
+          if (o.orient(a,b,c) === 0) continue;
+          const first:Fact={t:"perp",a:[a,h],b:[b,c]}, second:Fact={t:"perp",a:[b,h],b:[a,c]};
+          const q1=s.known(first) ?? (()=>{const ps=s.angleQuery(first);return ps?s.add(first,"ANGLE_CHASE",ps):null;})();
+          const q2=q1 && (s.known(second) ?? (()=>{const ps=s.angleQuery(second);return ps?s.add(second,"ANGLE_CHASE",ps):null;})());
+          if(q1 && q2)return s.add(f,"ALTITUDE_ORTHOCENTER",[q1.id,q2.id]);
+        }
+      }
+      const p=s.angleQuery(f);
+      return p ? s.add(f,"ANGLE_CHASE",p) : null;
+    }
+    case "eqangle": {
+      // A projection lies on a hypotenuse only after its right angle is known.
+      // Do not replace this positional proof with orientation in the diagram.
+      if(f.a[1]===f.b[1])for(const a of [f.a,[f.a[2],f.a[1],f.a[0]]] as Tri[])for(const b of [f.b,[f.b[2],f.b[1],f.b[0]]] as Tri[]) {
+        if(a[0]!==b[0]||a[2]===b[2])continue;
+        for(const [footId,end] of [[a[2],b[2]],[b[2],a[2]]]) {
+          const col=s.known({t:'col',p:[a[1],footId!,end!]});
+          if(!col)continue;
+          for(const source of s.figure?.points ?? []) {
+            const p=source.id;if([a[1],footId,end].includes(p))continue;
+            const right=s.known({t:'perp',a:[p,a[1]],b:[p,end!]});if(!right)continue;
+            const altitude:Fact={t:'perp',a:[p,footId!],b:[a[1],end!]};
+            const height=s.known(altitude)??tryProve(s,altitude);if(!height)continue;
+            return s.add(f,'SAME_RAY_ANGLE',[right.id,col.id,height.id],`${p}${footId} ⊥ ${a[1]}${end} và ${footId} thuộc ${a[1]}${end}, nên ${p}${footId} là đường cao của tam giác ${a[1]}${p}${end} vuông tại ${p}. Vì chân đường cao nằm trong cạnh huyền, ${footId} nằm trong đoạn ${a[1]}${end}. Hai tia ${a[1]}${footId}, ${a[1]}${end} trùng nhau; do đó ${factText(f)}.`);
+          }
+        }
+      }
+      const p=s.angleQuery(f);return p?s.add(f,'ANGLE_CHASE',p):null;
+    }
     case "para":
-    case "perp":
-    case "eqangle":
     case "aval":
     case "suppl":
     case "bisector": {
@@ -387,6 +427,14 @@ function tryProve(s: ProofState, f: Fact): Derivation | null {
       // Isosceles converse: AB = AC from ∠ABC = ∠ACB.
       const common = f.a.find((x) => f.b.includes(x));
       if (common) {
+        const ends = [f.a.find(x=>x!==common)!,f.b.find(x=>x!==common)!] as Seg;
+        for (const i of Object.keys(o.P)) {
+          if ([common,...ends].includes(i)) continue;
+          const p1=s.known({t:"perp",a:[common,ends[0]],b:[i,ends[0]]});
+          const p2=s.known({t:"perp",a:[common,ends[1]],b:[i,ends[1]]});
+          const leg=s.known({t:"cong",a:[i,ends[0]],b:[i,ends[1]]});
+          if (p1 && p2 && leg) return s.add(f,"CONGRUENT_RIGHT",[p1.id,p2.id,leg.id]);
+        }
         const [b, c] = [f.a.find((x) => x !== common)!, f.b.find((x) => x !== common)!];
         if (b !== c && o.orient(common, b, c) !== 0) {
           const base = tryProve(s, { t: "eqangle", a: [common, b, c], b: [common, c, b] });
@@ -488,7 +536,7 @@ export function search(
   const started = Date.now();
   const resolved: ResolvedFigure = resolveFigure(figure);
   const oracle = new Oracle(resolved.points);
-  const s = new ProofState(oracle);
+  const s = new ProofState(oracle,figure);
   for (const b of banned) s.banned.add(factKey(b));
   const log: string[] = [];
   for (const g of givens) s.add(g.fact, g.method, [], g.note);
@@ -526,6 +574,20 @@ export function search(
     mark("isosceles");
     // A midpoint is equidistant from the ends (feeds the perpendicular-bisector rule).
     for (const d of [...s.facts]) if (d.fact.t === "midp") s.add({ t: "cong", a: [d.fact.m, d.fact.a], b: [d.fact.m, d.fact.b] }, "MIDPOINT", [d.id]);
+    // The segment joining two side midpoints is parallel to and half the third side.
+    const mids = s.facts.filter((d) => d.fact.t === "midp");
+    for (let i = 0; i < mids.length; i++) for (let j = i + 1; j < mids.length; j++) {
+      const u = mids[i]!, v = mids[j]!;
+      if (u.fact.t !== "midp" || v.fact.t !== "midp" || u.fact.m === v.fact.m) continue;
+      const uf = u.fact, vf = v.fact;
+      const common = [uf.a, uf.b].find((p) => p === vf.a || p === vf.b);
+      if (!common) continue;
+      const b = u.fact.a === common ? u.fact.b : u.fact.a;
+      const c = v.fact.a === common ? v.fact.b : v.fact.a;
+      if (b === c || oracle.orient(common, b, c) === 0) continue;
+      s.add({ t: "para", a: [u.fact.m, v.fact.m], b: [b, c] }, "MIDLINE", [u.id, v.id]);
+      s.add({ t: "prod", lhs: [{ seg: [u.fact.m, v.fact.m], power: 1, divide: false }], rhs: [{ seg: [b, c], power: 1, divide: false }, { number: 2, divide: true }] }, "MIDLINE", [u.id, v.id]);
+    }
     // Two right triangles on a common hypotenuse AI with equal legs IE = IF (tangent lengths from A; HL congruence).
     for (const a of visible)
       for (const i of visible) {
@@ -683,6 +745,23 @@ function algebraFollowsRaw(s: ProofState, f: Fact, premises: number[], kind: "an
  * `goal`: the fact the proof is for (to know what the rest of the proof states without this step).
  */
 export function minimize(s: ProofState, d: Derivation, goal?: number): void {
+  if (d.fact.t === "perp" && d.method === "ANGLE_CHASE" && new Set([...d.fact.a, ...d.fact.b]).size === 4) {
+    const depends = (id: number, seen = new Set<number>()): boolean => {
+      if (id === d.id) return true;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return s.facts[id]!.premises.some(p => depends(p, seen));
+    };
+    for (const [centers, ends] of [[d.fact.a, d.fact.b], [d.fact.b, d.fact.a]] as [Seg, Seg][]) {
+      const u = s.known({t:"cong", a:[centers[0],ends[0]], b:[centers[0],ends[1]]});
+      const v = s.known({t:"cong", a:[centers[1],ends[0]], b:[centers[1],ends[1]]});
+      if (u && v && !depends(u.id) && !depends(v.id)) {
+        d.method = "PERPENDICULAR_BISECTOR";
+        d.premises = [u.id, v.id];
+        break;
+      }
+    }
+  }
   const kind = d.method === "ANGLE_CHASE" || d.method === "SAME_LINE" ? "angle" : d.method === "LENGTH_ALGEBRA" ? "length" : null;
   if (!kind) return;
   // What the proof states without this step's premises.

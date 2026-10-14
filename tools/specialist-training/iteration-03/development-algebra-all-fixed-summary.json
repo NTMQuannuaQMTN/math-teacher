@@ -1,0 +1,21 @@
+{
+  "phase": "development-algebra-all-fixed",
+  "questionsExecuted": 19,
+  "ready": 19,
+  "independentlyReviewed": 19,
+  "correctConclusionCount": 19,
+  "mathematicalPasses": 19,
+  "qualityPasses": 19,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 74.52316599999995,
+    "p95": 219.34400000000005,
+    "max": 219.34400000000005
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 19,
+  "rubricMeanForReviewedOnly": 95.6842105263158,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": true
+}

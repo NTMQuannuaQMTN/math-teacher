@@ -1,0 +1,21 @@
+{
+  "phase": "baseline-number-theory-prime-exponents",
+  "questionsExecuted": 3,
+  "ready": 0,
+  "independentlyReviewed": 3,
+  "correctConclusionCount": 0,
+  "mathematicalPasses": 0,
+  "qualityPasses": 0,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 3438.2016250000006,
+    "p95": 20069.911041,
+    "max": 20069.911041
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 0,
+  "rubricMeanForReviewedOnly": null,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

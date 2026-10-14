@@ -412,14 +412,21 @@ function realRoots(f: Formal, deadline: number): Env[] {
     f.vars.forEach((v, i) => (env[v] = x[i]!));
     if (!f.vars.every((v, i) => inDomain({ ...f.domain[v]!, integer: false }, x[i]!))) return;
     if (F(x).some((r) => !Number.isFinite(r) || Math.abs(r) > 1e-9)) return;
-    if (conds.some((c) => relationHolds(c.rel, c.f, env, 1e-9) === false)) return;
+    if (conds.some((c) => relationHolds(c.rel, c.f, env, 1e-9) !== true)) return;
     // Snap to recognisable values when that is still a root.
     const snapped = x.map((xi) => {
       const r = recognise(xi);
       const v = Number.isFinite(Number(r)) ? Number(r) : /^-?\d+\/\d+$/.test(r) ? Number(r.split("/")[0]) / Number(r.split("/")[1]) : xi;
       return v;
     });
-    const use = F(snapped).every((r) => Number.isFinite(r) && Math.abs(r) < 1e-10) ? snapped : x;
+    // A near-root at a removable singularity can have zero floating-point residual.
+    // Never print its rounded value as a root if the ORIGINAL expression is undefined there.
+    // For example (x²-1)/(x-1)=2 approaches x=1, which is excluded from the domain.
+    if (F(snapped).some((r) => !Number.isFinite(r))) return;
+    const snappedEnv = Object.fromEntries(f.vars.map((v, i) => [v, snapped[i]!]));
+    const snapValid = f.vars.every((v, i) => inDomain({ ...f.domain[v]!, integer: false }, snapped[i]!)) &&
+      conds.every((c) => relationHolds(c.rel, c.f, snappedEnv, 1e-9) === true);
+    const use = snapValid && F(snapped).every((r) => Math.abs(r) < 1e-10) ? snapped : x;
     const res = (y: number[]) => Math.hypot(...F(y));
     // One root per cluster (a flat function gives near-duplicates): keep the exact-looking one, else the best.
     const near = found.findIndex((y) => y.every((yi, i) => Math.abs(yi - use[i]!) < 1e-3 * Math.max(1, Math.abs(yi))));

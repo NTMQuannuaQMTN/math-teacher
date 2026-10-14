@@ -1,0 +1,108 @@
+{
+  "input": "Cho số thực $x\\ne0$ thỏa mãn $x+\\frac{1}{x}=3$. Tính $x^2+\\frac{1}{x^2}$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho số thực $x\\ne0$ thỏa mãn $x+\\frac{1}{x}=3$. Tính $x^2+\\frac{1}{x^2}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hằng đẳng thức với tổng nghịch đảo",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hằng đẳng thức với tổng nghịch đảo"
+      ],
+      "techniques": [],
+      "givens": [
+        "$x+\\frac1x=3$"
+      ],
+      "unknowns": [
+        "$x^2+\\frac1{x^2}$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Bình phương (hoặc lập phương) tổng đã biết để tạo biểu thức cần tính.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Bình phương $x+\\frac1x$ xuất hiện thêm hạng tử nào?",
+        "cue": "Hằng đẳng thức $(u+v)^2=u^2+2uv+v^2$",
+        "explanation": "Bình phương tổng: $\\left(x+\\frac1x\\right)^2=x^2+2\\cdot x\\cdot\\frac1x+\\frac1{x^2}=x^2+\\frac1{x^2}+2$ (vì $x\\cdot\\frac1x=1$ khi $x\\ne0$).",
+        "math": "x^2+\\frac{1}{x^2}=\\left(x+\\frac1x\\right)^2-2=3^2-2=7",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy $x^2+\\frac{1}{x^2}=7$.",
+        "math": null,
+        "stepId": "s2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Bình phương hai vế",
+        "explanation": "Bình phương tổng: $\\left(x+\\frac1x\\right)^2=x^2+2\\cdot x\\cdot\\frac1x+\\frac1{x^2}=x^2+\\frac1{x^2}+2$ (vì $x\\cdot\\frac1x=1$ khi $x\\ne0$).",
+        "math": "x^2+\\frac{1}{x^2}=\\left(x+\\frac1x\\right)^2-2=3^2-2=7",
+        "reason": "Hằng đẳng thức $(u+v)^2=u^2+2uv+v^2$",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Kết luận",
+        "explanation": "Vậy $x^2+\\frac{1}{x^2}=7$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $x^2+\\frac{1}{x^2}=7$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tính lại bằng nghiệm thực cụ thể của x + 1/x = a",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 203,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-reciprocal-sum",
+  "logs": [
+    "lesson by the routine solver (reciprocal-sum); no model call"
+  ]
+}

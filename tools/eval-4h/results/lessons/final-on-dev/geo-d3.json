@@ -1,0 +1,295 @@
+{
+  "input": "Cho đường tròn $(O;5\\text{ cm})$ và dây $AB=8$ cm. Tính khoảng cách từ $O$ đến dây $AB$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn $(O;5\\text{ cm})$ và dây $AB=8$ cm. Tính khoảng cách từ $O$ đến dây $AB$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Dây và tiếp tuyến của đường tròn",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Dây và tiếp tuyến của đường tròn"
+      ],
+      "techniques": [],
+      "givens": [
+        "$R=5$",
+        "$AB=8$"
+      ],
+      "unknowns": [
+        "Khoảng cách từ tâm đến dây"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Đưa về tam giác vuông có cạnh huyền là bán kính (hoặc đoạn nối tâm), rồi dùng định lí Pythagore.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Chân đường vuông góc từ tâm đến dây là điểm đặc biệt nào?",
+        "cue": "Đường kính (bán kính) vuông góc với dây thì đi qua trung điểm của dây",
+        "explanation": "Kẻ $OH\\perp AB$ tại $H$. Khoảng cách từ $O$ đến dây $AB$ là $OH$. Vì $OA=OB$ (bán kính) nên tam giác $OAB$ cân tại $O$, đường cao $OH$ cũng là đường trung tuyến: $H$ là trung điểm của $AB$.",
+        "math": "AH=\\frac{AB}{2}=4",
+        "stepId": "s1",
+        "focus": [
+          "seg_OH",
+          "seg_AB",
+          "seg_OA",
+          "seg_OB"
+        ]
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Tam giác nào vuông để áp dụng Pythagore?",
+        "cue": "Định lí Pythagore",
+        "explanation": "Tam giác $OHA$ vuông tại $H$, áp dụng định lí Pythagore:",
+        "math": "OH^2=OA^2-AH^2=25-16=9\\ \\Rightarrow\\ OH=3\\text{ cm}",
+        "stepId": "s2",
+        "focus": [
+          "seg_OH",
+          "seg_AB",
+          "seg_OA"
+        ]
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy khoảng cách từ $O$ đến dây $AB$ là $3\\text{ cm}$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": [
+          "seg_AB"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Kẻ đường vuông góc từ tâm đến dây",
+        "explanation": "Kẻ $OH\\perp AB$ tại $H$. Khoảng cách từ $O$ đến dây $AB$ là $OH$. Vì $OA=OB$ (bán kính) nên tam giác $OAB$ cân tại $O$, đường cao $OH$ cũng là đường trung tuyến: $H$ là trung điểm của $AB$.",
+        "math": "AH=\\frac{AB}{2}=4",
+        "reason": "Đường kính (bán kính) vuông góc với dây thì đi qua trung điểm của dây",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "seg_OH",
+              "seg_OA",
+              "seg_OB"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_OH",
+              "seg_AB",
+              "seg_OA",
+              "seg_OB"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "Tính OH",
+        "explanation": "Tam giác $OHA$ vuông tại $H$, áp dụng định lí Pythagore:",
+        "math": "OH^2=OA^2-AH^2=25-16=9\\ \\Rightarrow\\ OH=3\\text{ cm}",
+        "reason": "Định lí Pythagore",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_OH",
+              "seg_AB",
+              "seg_OA"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy khoảng cách từ $O$ đến dây $AB$ là $3\\text{ cm}$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB"
+            ]
+          }
+        ]
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy khoảng cách từ $O$ đến dây $AB$ là $3\\text{ cm}$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "on_circle",
+          "refs": [
+            "c_O"
+          ],
+          "x": null,
+          "y": null,
+          "value": 216.86989764584402,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "on_circle",
+          "refs": [
+            "c_O"
+          ],
+          "x": null,
+          "y": null,
+          "value": 323.13010235415595,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "H",
+          "label": "H",
+          "kind": "foot",
+          "refs": [
+            "O",
+            "A",
+            "B"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_OH",
+          "kind": "segment",
+          "from": "O",
+          "to": "H",
+          "style": "construction",
+          "label": null
+        },
+        {
+          "id": "seg_OA",
+          "kind": "segment",
+          "from": "O",
+          "to": "A",
+          "style": "construction",
+          "label": null
+        },
+        {
+          "id": "seg_OB",
+          "kind": "segment",
+          "from": "O",
+          "to": "B",
+          "style": "construction",
+          "label": null
+        }
+      ],
+      "circles": [
+        {
+          "id": "c_O",
+          "center": "O",
+          "through": null,
+          "radius": 5,
+          "style": "given",
+          "label": "(O)"
+        }
+      ],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "OH ⊥ AB",
+        "passed": true
+      },
+      {
+        "label": "AH = AB/2",
+        "passed": true
+      },
+      {
+        "label": "Dựng lại tam giác vuông bằng số và kiểm tra cạnh huyền",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "checked",
+        "claims": 2
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 5,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-chord-distance",
+  "logs": [
+    "lesson by the routine solver (chord-distance); no model call"
+  ]
+}

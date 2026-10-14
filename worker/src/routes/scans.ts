@@ -165,36 +165,10 @@ export async function createScan(rc: RouteContext): Promise<Response> {
   return respondWithScan(rc, repo, id, 201);
 }
 
-/** POST /v1/scans/:id/ocr — run OCR again on the stored image. */
-export async function retryOcr(rc: RouteContext, id: string): Promise<Response> {
-  const { env, ownerId, request } = rc;
-  const repo = new ScanRepository(env.DB);
-  const row = await repo.findOwned(ownerId, id);
-  if (!row) throw new ApiError(404, "not_found", "Scan not found.");
-  if (row.status !== "draft") {
-    throw new ApiError(400, "bad_request", "This problem is already saved.");
-  }
-
-  const provider = createOcrProvider(env, request);
-  await enforceOcrRateLimits(env, request, ownerId);
-  if (!(await repo.tryLockOcr(ownerId, id, ocrLockTimeoutMs(env)))) throw inProgressError();
-
-  let object: R2ObjectBody | null;
-  try {
-    object = await env.IMAGES.get(row.image_key);
-  } catch (err) {
-    console.error("R2 get failed", err);
-    await repo.saveOcrFailure(id, "storage_error");
-    throw new ApiError(503, "storage_error", "We couldn't load your image. Please try again.", true);
-  }
-  if (!object) {
-    await repo.saveOcrFailure(id, "storage_error");
-    throw new ApiError(410, "storage_error", "The original image is no longer available. Please scan it again.");
-  }
-
-  const bytes = await object.arrayBuffer();
-  await performOcr(rc, repo, provider, id, { bytes, contentType: row.image_content_type as AllowedImageType });
-  return respondWithScan(rc, repo, id);
+/** Legacy POST /v1/scans/:id/ocr: no longer rereads saved images. */
+/** OCR is performed only while uploading a new image. Saved/current text is authoritative. */
+export async function retryOcr(_rc: RouteContext, _id: string): Promise<Response> {
+  throw new ApiError(400, "bad_request", "Chỉ đọc ảnh khi tải ảnh mới lên. Hãy sửa đề bài hiện tại hoặc tải ảnh mới.");
 }
 
 /** POST /v1/scans/:id/confirm — save the student-verified problem text. */

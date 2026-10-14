@@ -1,0 +1,14 @@
+[
+  {
+    "id": "comb3-explicit-witness",
+    "independentAnswer": "(-8, 4)",
+    "actualReady": false,
+    "mathPass": false
+  },
+  {
+    "id": "comb3-no-witness",
+    "independentAnswer": "Không có cặp",
+    "actualReady": false,
+    "mathPass": false
+  }
+]

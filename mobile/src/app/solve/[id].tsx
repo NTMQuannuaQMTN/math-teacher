@@ -4,6 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { Solution, SolveProgress } from "@shared/solution";
 import { api } from "@/api/client";
+import {withinRequestDeadline,SOLVE_VIEW_DEADLINE_MS} from "@/api/deadline";
 import { AppError, errorMessage, isAbort } from "@/api/errors";
 import { Banner } from "@/components/Banner";
 import { Button } from "@/components/Button";
@@ -20,7 +21,12 @@ type Phase = { kind: "loading" } | { kind: "ready"; solution: Solution } | { kin
 
 const POLL_MS = 2500;
 /** How long to keep checking for a lesson the worker is still generating (it continues without the app). */
-const POLL_DEADLINE_MS = 12 * 60_000;
+const POLL_DEADLINE_MS = SOLVE_VIEW_DEADLINE_MS;
+/**
+ * The server answers within 30 s, but a hard problem keeps being solved and checked in the background (up to 5 min
+ * in development): after a "pending" reply, keep polling this long for the verified lesson.
+ */
+const BACKGROUND_WAIT_MS = 6 * 60_000;
 const STAGE_MS = 7000;
 /** While the solve request is open, read the server's live progress this often. */
 const PROGRESS_MS = 2500;
@@ -29,8 +35,8 @@ const PROGRESS_MS = 2500;
  * Polls the stored solution until it is no longer pending. Brief network failures are retried (the device
  * may still be offline); if the worker never received the solve (404), the request is sent once more.
  */
-async function waitForSolution(id: string, questionId: string, signal: AbortSignal, resend: () => Promise<Solution>): Promise<Solution> {
-  const deadline = Date.now() + POLL_DEADLINE_MS;
+async function waitForSolution(id: string, questionId: string, signal: AbortSignal, resend: () => Promise<Solution>, waitMs = POLL_DEADLINE_MS): Promise<Solution> {
+  const deadline = Date.now() + waitMs;
   let resent = false;
   for (;;) {
     if (signal.aborted) throw new AppError("aborted", false);
@@ -73,6 +79,8 @@ export default function SolveScreen() {
   const [live, setLive] = useState<SolveProgress | null>(null);
   /** A regenerate failed and the server kept the previous lesson: shown above that lesson. */
   const [keptNotice, setKeptNotice] = useState<string | null>(null);
+  /** A regenerate is running in the background; the current lesson stays readable meanwhile. */
+  const [regenerating, setRegenerating] = useState(false);
   const [progress, setProgressState] = useState<LessonProgress>(() => (id ? lessonStore.getProgress(key) : { revealed: [], unlocked: 1, showSolution: false }));
   const controller = useRef<AbortController | null>(null);
 
@@ -111,25 +119,45 @@ export default function SolveScreen() {
         }
       })();
       try {
-        let solution: Solution;
+        const first = await withinRequestDeadline(abort.signal,SOLVE_VIEW_DEADLINE_MS,async (signal) => {
         try {
-          solution = await api.solve(id, { questionId, regenerate, signal: abort.signal });
+          return await api.solve(id, { questionId, regenerate, signal });
         } catch (err) {
           // The worker keeps generating after the connection drops (a backgrounded tab, a sleeping laptop,
           // ERR_NETWORK_IO_SUSPENDED, a mobile network switch): wait for that result instead of failing.
           // "solve_in_progress": another request (e.g. before the student came back) is generating it.
           const lostConnection = err instanceof AppError && (err.kind === "network" || err.kind === "timeout");
           if (!(err instanceof AppError && (err.code === "solve_in_progress" || lostConnection))) throw err;
-          solution = await waitForSolution(id, questionId, abort.signal, () => api.solve(id, { questionId, regenerate, signal: abort.signal }));
+          // Its current state (usually "pending"): the long wait below takes over from here.
+          return await api.getSolution(id, questionId, signal).catch(() => waitForSolution(id, questionId, signal, () => api.solve(id, { questionId, regenerate, signal })));
         }
+        });
         if (abort.signal.aborted) return;
+        // Still being worked out and checked on the server: wait for the verified result (accuracy before speed).
+        const solution =
+          first.status === "pending"
+            ? await waitForSolution(id, questionId, abort.signal, () => api.solve(id, { questionId, regenerate, signal: abort.signal }), BACKGROUND_WAIT_MS)
+            : first;
+        if (abort.signal.aborted) return;
+        // A ready lesson that carries an error is the previous lesson, kept because the regenerate failed.
+        if (regenerate && solution.status === "ready" && solution.error) {
+          lessonStore.putSolution(key, solution);
+          setKeptNotice(s.solve.regenerateKept(errorMessage(new AppError("api", solution.error.retryable, solution.error.code as never))));
+          setPhase({ kind: "ready", solution });
+          return;
+        }
+        if (regenerate && solution.status === "ready") {
+          // The new lesson replaces the old one: start its hints from the beginning.
+          lessonStore.reset(key);
+          setProgressState({ revealed: [], unlocked: 1, showSolution: false });
+        }
         if (solution.status === "ready") lessonStore.putSolution(key, solution);
         setPhase(solution.status === "ready" ? { kind: "ready", solution } : { kind: "error", error: new AppError("api", solution.error?.retryable ?? true, (solution.error?.code as never) ?? "internal_error") });
       } catch (err) {
         if (isAbort(err) || abort.signal.aborted) return;
         // A failed regenerate keeps the previous lesson on the server: show it again rather than an error screen.
         if (regenerate) {
-          const kept = await api.getSolution(id, questionId, abort.signal).catch(() => null);
+          const kept = await withinRequestDeadline(abort.signal,500,(signal)=>api.getSolution(id, questionId, signal)).catch(() => null);
           if (kept?.status === "ready" && kept.lesson && !abort.signal.aborted) {
             lessonStore.putSolution(key, kept);
             setKeptNotice(s.solve.regenerateKept(errorMessage(err)));
@@ -140,6 +168,7 @@ export default function SolveScreen() {
         setPhase({ kind: "error", error: err });
       } finally {
         open = false;
+        setRegenerating(false);
       }
     },
     [id, key, questionId, s.solve],
@@ -162,9 +191,10 @@ export default function SolveScreen() {
   async function regenerate() {
     const ok = await confirmAsync({ title: s.solve.regenerate, message: s.solve.leaveNote, confirmLabel: s.solve.regenerate, cancelLabel: s.common.cancel });
     if (!ok || !id) return;
-    lessonStore.reset(key);
-    setProgressState({ revealed: [], unlocked: 1, showSolution: false });
-    setPhase({ kind: "loading" });
+    // Keep the current lesson readable while the new one is solved and checked; it is replaced only by a lesson
+    // that is ready (progress is reset then).
+    if (phase.kind === "ready") setRegenerating(true);
+    else setPhase({ kind: "loading" });
     void load(true);
   }
 
@@ -223,7 +253,11 @@ export default function SolveScreen() {
   return (
     <>
       {header}
-      {keptNotice ? (
+      {regenerating ? (
+        <View style={styles.notice}>
+          <Banner tone="info" message={s.solve.regenerating} />
+        </View>
+      ) : keptNotice ? (
         <View style={styles.notice}>
           <Banner tone="warning" message={keptNotice} />
         </View>

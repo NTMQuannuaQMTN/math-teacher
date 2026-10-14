@@ -1,0 +1,860 @@
+{
+  "frozenAt": "2026-10-13T05:44:37.028Z",
+  "gitHead": "e2640a2da23e212b83913232b2c772cdbccdb226",
+  "sourceAndConfigSha256": "f08e5c4b3b424d7b4b20427fb8fce62807ee94f1b8c9dc25ccbd51d505552c9d",
+  "benchmarkSha256": "1c27fabec7d49120093fcb9d3977331f8133287cb5fb96cf92780b1dc82cd09c",
+  "evaluatorSha256": "10861419124ef79f53f159188839afb1357679f45b012fa9d48a330b14147a25",
+  "serverBundleSha256": "162617b5c6d545e7ada3b3e617316f7e8102a34acb172ffb024fcccf2a8c40d8",
+  "evaluationMode": {
+    "ocrProvider": "mock",
+    "externalInference": "disabled",
+    "solveInput": "confirmed benchmark text; OCR output excluded"
+  },
+  "splitCounts": {
+    "development": 40,
+    "validation": 12,
+    "final": 12
+  },
+  "files": [
+    {
+      "path": "mobile/app.json",
+      "sha256": "347804c28cc8f7c453008275ec9fc3c3751c5db89eb3d7f8a96998aae70aee81"
+    },
+    {
+      "path": "mobile/package.json",
+      "sha256": "507310ee0e01d6df2cd0cb82589d7bf851c5e0c5b0fd1b6e9fd8c3bce59672ac"
+    },
+    {
+      "path": "mobile/src/api/client.ts",
+      "sha256": "c1d7999db61dde821568313d77e977733008a36d0b42f8b33b8b9b17e44af045"
+    },
+    {
+      "path": "mobile/src/api/deadline.ts",
+      "sha256": "2c7b10ce0eac65db3a7a9be960954c918c5db51161dde0a0ee6f9c54b9278fd1"
+    },
+    {
+      "path": "mobile/src/api/errors.ts",
+      "sha256": "38eaaf02f019eff1b071bf8ed79d97dabae36a6693a64c4fc379a10046ec91a3"
+    },
+    {
+      "path": "mobile/src/app/_layout.tsx",
+      "sha256": "6b8b7c738e20dc4ab30843c7deb74b1ee89520b682ed7ece66aa90bb1bc9a8ef"
+    },
+    {
+      "path": "mobile/src/app/camera.tsx",
+      "sha256": "e8f92ea179e2c294ab5bb86d79d67bcc50a05a83363b3739fd8161963a19f67d"
+    },
+    {
+      "path": "mobile/src/app/dev/lesson.tsx",
+      "sha256": "4d21051cf23b4a6c49b3e2ecff926f449a0fb497dd6d344eb5b1e098af71d522"
+    },
+    {
+      "path": "mobile/src/app/dev/math.tsx",
+      "sha256": "bd3d18cf9f344edf7c5d1a9fcaf801af4c24401906bc44d3e03650a4576405ab"
+    },
+    {
+      "path": "mobile/src/app/dev/upload.tsx",
+      "sha256": "a5a383f47e3e85fa9923174ded38c1ee424cc5213e01e67dafdadbef07e27be3"
+    },
+    {
+      "path": "mobile/src/app/feedback.tsx",
+      "sha256": "7eaa842a1425ec78c4b9b881b4cf466b2a791c2ea4c3a0d6de5451aff9a19666"
+    },
+    {
+      "path": "mobile/src/app/history.tsx",
+      "sha256": "a20524889c4c7c1e3634c235b36bebda83f3f6b98aa9e16d3aeca15aa375b5e1"
+    },
+    {
+      "path": "mobile/src/app/index.tsx",
+      "sha256": "e8ee1dc25a2ab4bf873a310af89fdf3fe3be7e44799a36646e09d9f6e2013a6f"
+    },
+    {
+      "path": "mobile/src/app/pdf-pages.tsx",
+      "sha256": "112fa8f0ec4e51b68ee51da97346619a76e0c1a3fc82b959a1c7fbec7fcd6886"
+    },
+    {
+      "path": "mobile/src/app/problem/[id].tsx",
+      "sha256": "8002f3c44cae5574989c9dd3acafcfae91018f9a09b7e623b04e1a9b089b98e1"
+    },
+    {
+      "path": "mobile/src/app/process.tsx",
+      "sha256": "12d44226b3d8b3f97b6910e02d2eec4d40a7fc224a68d81ac5fd2954d4ffd28e"
+    },
+    {
+      "path": "mobile/src/app/review.tsx",
+      "sha256": "d7dd65898e5652949eeb25ac7c837552c2879f4ffd981856c8a24601cbc4821b"
+    },
+    {
+      "path": "mobile/src/app/scan/[id].tsx",
+      "sha256": "a9a2455670d66ae3d5273e9502ec26c78594a1a95b7c7dc8f4ad25518041124d"
+    },
+    {
+      "path": "mobile/src/app/solve/[id].tsx",
+      "sha256": "9e961522e06f7d3469320a113c3a550fb03a052809e7daed5c3e18cdd142e219"
+    },
+    {
+      "path": "mobile/src/components/Banner.tsx",
+      "sha256": "fa5ece3ed73c7a7aebcb4f9fdc60c5d86ef8a293a51a4d6673d08831758d5067"
+    },
+    {
+      "path": "mobile/src/components/Button.tsx",
+      "sha256": "3d391869074aa783ceb1fc6ed22f641dab83a1908c9c2fece6fbd6228c76056d"
+    },
+    {
+      "path": "mobile/src/components/CropBox.tsx",
+      "sha256": "b0e996d30dee9f6518c0b3082ee22ef3b460c7654433ca7120a86c49d8587106"
+    },
+    {
+      "path": "mobile/src/components/ProblemCard.tsx",
+      "sha256": "85df6b39964cffaa6cc556d8817f40d03b2cadb104a4f6f9574579f559a16966"
+    },
+    {
+      "path": "mobile/src/components/ProblemEditor.tsx",
+      "sha256": "3d22560243f776f9eeca3de2e5715ad7bb4dd81507e28b9c1987bc7c1bd00936"
+    },
+    {
+      "path": "mobile/src/components/QuestionCard.tsx",
+      "sha256": "d83db0e1ac8a9fcb41ff71c490d0aaa9d50d6dbc40456db7fe65cb08dde0197c"
+    },
+    {
+      "path": "mobile/src/components/StateView.tsx",
+      "sha256": "bb8e5d6232cc9597a430bc4b638c8d567aa805207654340c301faee37c5ad467"
+    },
+    {
+      "path": "mobile/src/components/SymbolBar.tsx",
+      "sha256": "67bbf63d3f25970bd95fe53c8d5019f3893d99da24a48bcf0995ef1ac75e7f38"
+    },
+    {
+      "path": "mobile/src/components/geometry/GeometryView.tsx",
+      "sha256": "4cd5e4a9f2f99893dba8117a41feb14fffdb682c9ed8eb6c6ec522ef6ee04939"
+    },
+    {
+      "path": "mobile/src/components/lesson/FeedbackSheet.tsx",
+      "sha256": "5f3532aeff70a4999566bea6aef318d3ea63bd5b452a73fbcd4b0cbf13cd4b72"
+    },
+    {
+      "path": "mobile/src/components/lesson/LessonParts.tsx",
+      "sha256": "02ca8c6d298c198453418b274d51657f577829b00d0caf010bf3ff1d9ca8feb0"
+    },
+    {
+      "path": "mobile/src/components/lesson/LessonView.tsx",
+      "sha256": "3e56d3b4c8dd3302b91bcc6c396a90022308d997d13aa2018523e757a97bc9ff"
+    },
+    {
+      "path": "mobile/src/components/lesson/RichText.tsx",
+      "sha256": "e392a544a98ec0f2a10caaf19e3477257e3e477d270e9bbaea5bff19fd22ed1b"
+    },
+    {
+      "path": "mobile/src/components/lesson/RichText.web.tsx",
+      "sha256": "709576dac6e7acd4935680c81a914abffd84c439947a18e1af7dcedf907a29b0"
+    },
+    {
+      "path": "mobile/src/components/lesson/subquestions.ts",
+      "sha256": "66dec21b1b5f0c2ffd9fe8e054f0c502d2f035d9d7a31f149dfd55257d436896"
+    },
+    {
+      "path": "mobile/src/components/math/MathText.tsx",
+      "sha256": "d172eb7152491796eaa9dae07154b6eb81d38f43b852e329c45fe4f30a87e53b"
+    },
+    {
+      "path": "mobile/src/components/math/MathText.web.tsx",
+      "sha256": "282636de529afe6cb97872f8f19f96caadd715e52c571d9171f2ba2b8de1e0b6"
+    },
+    {
+      "path": "mobile/src/components/math/katexAssets.generated.ts",
+      "sha256": "b1e608fea792691c4daa6202ca4050658931202673bc9d43c6dd342f660f464d"
+    },
+    {
+      "path": "mobile/src/components/math/mathHtml.ts",
+      "sha256": "7dc99b54b83cc372c2a6bc3156c4ae96eb6c9cbee52190f2e7fc3c8b1ade8efe"
+    },
+    {
+      "path": "mobile/src/hooks/useDebounced.ts",
+      "sha256": "738afb9994fa47d01ce6ce52a1ff09cc169a16a9fbaee4a5823ae41d6d70d58c"
+    },
+    {
+      "path": "mobile/src/hooks/useStartUpload.ts",
+      "sha256": "3e7375225344474bcb397f23cc63c5fbc8f6f3d5aecb91664256db7f81e1ace5"
+    },
+    {
+      "path": "mobile/src/hooks/useWebSources.ts",
+      "sha256": "17223f7347087a3af3c380f6df799a318242f960dd4db8346d7b99cef90790d3"
+    },
+    {
+      "path": "mobile/src/i18n/index.ts",
+      "sha256": "0319f99a72988d6be69be17803051c1add253548dc074a64f8d3f35873b42fa0"
+    },
+    {
+      "path": "mobile/src/i18n/strings.ts",
+      "sha256": "a77f0768fc6fc778b6a4d57270fb88ee5c7110e06ebd8d677e23a3a06b8bb2bf"
+    },
+    {
+      "path": "mobile/src/lib/config.ts",
+      "sha256": "1a0893e1dc9f13989d4af4bc3482a7cb4956eb8d4e7bb1c8a0687e06e1a93dcf"
+    },
+    {
+      "path": "mobile/src/lib/confirm.ts",
+      "sha256": "d9223b658a2fab5fba93e74af3ec5657ea9c2ba2f3ce6731e34f0c36210e2b90"
+    },
+    {
+      "path": "mobile/src/lib/deviceToken.ts",
+      "sha256": "35619b7b9d004068fc4fcc79303963cf32043dfa361c759bd32cbb7b1ac2d58b"
+    },
+    {
+      "path": "mobile/src/lib/imagePrep.ts",
+      "sha256": "26a63748c74b7c6b05c2510ba0f8855dc08fd4213ff0a61036e5ba907777e56b"
+    },
+    {
+      "path": "mobile/src/lib/picker.ts",
+      "sha256": "4ca9b0f35974f58e3fd4314a58e1e4c3e16fd7a82734934f8a406d7b52fc5507"
+    },
+    {
+      "path": "mobile/src/lib/random.ts",
+      "sha256": "86af6acf68742f5af1443a6af2836de96a09a38d2e0791c67d5e086cdc57ba60"
+    },
+    {
+      "path": "mobile/src/lib/webSources.ts",
+      "sha256": "d60da1ba730f51b178c933e722fa9a9ed4cd227fd77fa76887e418e110555d7d"
+    },
+    {
+      "path": "mobile/src/lib/webSources.web.ts",
+      "sha256": "476d2c91800271ade583ba5997b197ca0a88518bbded415040b927f6e5cf9e62"
+    },
+    {
+      "path": "mobile/src/state/lessonProgress.ts",
+      "sha256": "de9f4869f88f1f19fb22b7812b3db530d610e649fa2d6810d2d74bf79dcaa8c3"
+    },
+    {
+      "path": "mobile/src/state/scanDraft.ts",
+      "sha256": "350601c7cdc66b44531fde3d0cb21cf9e43b4403cf3d69318ac8734f0de043bc"
+    },
+    {
+      "path": "mobile/src/state/scanStore.ts",
+      "sha256": "329beacd62e3830a74bb7f5b90fa047cf7b6d05690b291978667f1ca6a14eeef"
+    },
+    {
+      "path": "mobile/src/theme/index.ts",
+      "sha256": "12cb77476ecda507638ac2f73d8cc34e2fe8965c057601a6d1805aa95405fbae"
+    },
+    {
+      "path": "shared/package.json",
+      "sha256": "9c431cd0b0b2728e0654df6797e43ad40dfc4530c1e09c6bfbadba2e3142ce74"
+    },
+    {
+      "path": "shared/src/algebraAudit.ts",
+      "sha256": "fccaf690b5fd58bf154fb1b768265ecff925c786d63ace871d35394b8fe57de4"
+    },
+    {
+      "path": "shared/src/claims.ts",
+      "sha256": "3a75ab837caa0748f86c2d8836b2cba56f598c4ba6c835d0aad3bc3fa653ca41"
+    },
+    {
+      "path": "shared/src/conclusionConsistency.ts",
+      "sha256": "e0df477b3d13e12dafc9d60e8872fe3c00b3ad516004ce042ad27196a45ec62a"
+    },
+    {
+      "path": "shared/src/constraints.ts",
+      "sha256": "3e51d033c8e0c02f1d1bbe5129306bae698a85c7fc0dc0a1b7516ba0ff5ad3f2"
+    },
+    {
+      "path": "shared/src/contract.ts",
+      "sha256": "b2d4b8c117a5443e55b9625fda55c14c3df1d9670fead56b0b376ed2202bfe74"
+    },
+    {
+      "path": "shared/src/derivations.ts",
+      "sha256": "f34da5b93f4d2bfbcd1bfa284c33b9b271736f22b510504d67c45c0c8c237e8a"
+    },
+    {
+      "path": "shared/src/divisibility.ts",
+      "sha256": "9c8b720580f2fa2fd73c7bd3961fa9c851645b46b91a791b458ea4e517c5cde7"
+    },
+    {
+      "path": "shared/src/expr.ts",
+      "sha256": "a709e706112d142097855cb901f6d0506e42edbd85815bc027263338cf7f3299"
+    },
+    {
+      "path": "shared/src/expressionSource.ts",
+      "sha256": "84c3dd64c7cc3b0baafb4e68b475cf802e1988aeeb85ca81c34485420a9fb734"
+    },
+    {
+      "path": "shared/src/figureComplete.ts",
+      "sha256": "409f7d6181c3d1bdb0ed1a7aa273f2bc1e35de821a3788b7da61aa384a4598ec"
+    },
+    {
+      "path": "shared/src/figureFromText.ts",
+      "sha256": "a72748c91c0cf71ee31333e6ea761fd50a62f9153a0b8b65902e44098a2c470b"
+    },
+    {
+      "path": "shared/src/figureScene.ts",
+      "sha256": "4a2fc48af52713fa03d9ac06fae3a150dde1ae8c514efd86dd92dd7ec4895c6d"
+    },
+    {
+      "path": "shared/src/figureShape.ts",
+      "sha256": "81e8564798832f52685cc9620e4eb0b5784bc46d2f1e09f092bd6c32a340d2c3"
+    },
+    {
+      "path": "shared/src/geometry.ts",
+      "sha256": "e60e0536df7d242bf9c4bd602f9e798fd1bb081d47626ce5cbae5dc1b1fadb18"
+    },
+    {
+      "path": "shared/src/geometryLessons.ts",
+      "sha256": "bd59d1dbf0db6bda4f073a680d4e27769d21091721f66a7d5d6804fd469895d6"
+    },
+    {
+      "path": "shared/src/gradeLevel.ts",
+      "sha256": "0e6e3f8762db1cd172658d1ddd77fb3dad78f3b96670d5030c8f8ed8496cdddf"
+    },
+    {
+      "path": "shared/src/hiddenBoardQuestion.ts",
+      "sha256": "aed1982b5b390e9ffc56e6672af647b8d877de2b269dcb78c7f000e444893afe"
+    },
+    {
+      "path": "shared/src/hiddenSearch.ts",
+      "sha256": "9e5109fb373eda8422861356892d12ef3d6ceaf751401e26b299448a30f2ca55"
+    },
+    {
+      "path": "shared/src/index.ts",
+      "sha256": "150ee72454152012ebd737088121a9299b5a40cec4e68e2e04db1c614d00bf14"
+    },
+    {
+      "path": "shared/src/integerPolynomial.ts",
+      "sha256": "e42946fca05a53835c787db2c1f3a4e9870d17ebed80f2eca04389851b029309"
+    },
+    {
+      "path": "shared/src/knowledgeBase.ts",
+      "sha256": "4ba67d3800830ca27b1235105f4d97267ec850b892dd88716d6a8faf27a908d7"
+    },
+    {
+      "path": "shared/src/language.ts",
+      "sha256": "d7532941dbbe788f5ee4287c59312ea8f3c76d8e2f8547a7c47246a6fa1e83bc"
+    },
+    {
+      "path": "shared/src/lessonQuality.ts",
+      "sha256": "a4ef8f7e022e9d0bdb3854a170112e6fca87edd26b91ec63331edcc84dd3c124"
+    },
+    {
+      "path": "shared/src/mathText.ts",
+      "sha256": "5a38ae03261873afb50ec2b46bd9c2fd6d2cc0c723fe518374f36c7fed836bbe"
+    },
+    {
+      "path": "shared/src/numericDivisibility.ts",
+      "sha256": "4d8e3a429fdb6d35e14027873d0a486cb5e9a0840361ab14c6dd3d10fac352e6"
+    },
+    {
+      "path": "shared/src/oracle.ts",
+      "sha256": "012f0473e5593dee1b883563f2137ad8c9685581332d587c130e7d93049218fe"
+    },
+    {
+      "path": "shared/src/pointDefinitions.ts",
+      "sha256": "6aec1b80064de2e578124ab4128de8e3eeaf1ea3ca912c2639de1c8005435d5f"
+    },
+    {
+      "path": "shared/src/polynomialIdentity.ts",
+      "sha256": "46ecabe0e3f8f39617b7a6d5d767097996758152237a987c00d9006e556ec595"
+    },
+    {
+      "path": "shared/src/progressPreview.ts",
+      "sha256": "054d7679ff573ee46331fd1fad5f7da039b877e152fbae5f7aed7bfd2a3c3eeb"
+    },
+    {
+      "path": "shared/src/proof/chain.ts",
+      "sha256": "983d7f62b23c3abc8c6da152e37a96be9c098a8c4c03daeb2092ddd3c39b97ba"
+    },
+    {
+      "path": "shared/src/proof/engine.ts",
+      "sha256": "a16ba0c8b24d5a2d0b927fc1dd31e765e6876239b57ff7027f61c9f0511efd48"
+    },
+    {
+      "path": "shared/src/proof/explain.ts",
+      "sha256": "22fa47c3a8c7b453e63ade2f0aa50e23bfa6e4cad9f90c0f6454fd4608a8940f"
+    },
+    {
+      "path": "shared/src/proof/facts.ts",
+      "sha256": "a42308016a09dd037a23447268ecd0b6b167a7dc0382841cc1e9b02107feae13"
+    },
+    {
+      "path": "shared/src/proof/linear.ts",
+      "sha256": "0203dcf37c4c9ffe636fc91d5e0ab5c34d7a58c1ae54b7e4ba2483ef9106d08c"
+    },
+    {
+      "path": "shared/src/proof/methods.ts",
+      "sha256": "c277797e4b0d82aa5a661ff522ff93cf12f4bd1c777568d3b0d5f1e0c90b92a1"
+    },
+    {
+      "path": "shared/src/proof/planner.ts",
+      "sha256": "60e105b452ccbeb82948774217cd41c2fab4905232edfd9c0c9ff01f624fdaf6"
+    },
+    {
+      "path": "shared/src/proof/verify.ts",
+      "sha256": "92bced19d3eb3a2cbb1b517872cc71e5a8768c0c36393f12a559d492c791dc6d"
+    },
+    {
+      "path": "shared/src/proofDependencies.ts",
+      "sha256": "4322cda52114a02541fa9df8f5e9a0162358a286223a4163d46f1a2f344a07b0"
+    },
+    {
+      "path": "shared/src/rationalPolynomial.ts",
+      "sha256": "81a4063a29629673e6ba9e547e40f831e4af528c5f8b823516f107a43f4d0fcd"
+    },
+    {
+      "path": "shared/src/solution.ts",
+      "sha256": "3471831728e622ccda65493cfc940e9f6af542b882165672b7a7d29a71eefa74"
+    },
+    {
+      "path": "shared/src/specialists.ts",
+      "sha256": "761abfb49a9de2b9a031b1a6333ddb5e9081cf23fc2f2d584b14080efa247bcb"
+    },
+    {
+      "path": "shared/src/verify.ts",
+      "sha256": "af56c03460a70c004884adc52f7c63de959505168859fafa1a207f0c0d2581fe"
+    },
+    {
+      "path": "shared/src/zodRuntime.ts",
+      "sha256": "7076527dc8692c824a9af55ba99cd35502616db412fe1395bc22abe817e0ef7a"
+    },
+    {
+      "path": "tools/math-ai-4h-02/benchmark-v1.jsonl",
+      "sha256": "1c27fabec7d49120093fcb9d3977331f8133287cb5fb96cf92780b1dc82cd09c"
+    },
+    {
+      "path": "tools/math-ai-4h-02/evaluate.mjs",
+      "sha256": "10861419124ef79f53f159188839afb1357679f45b012fa9d48a330b14147a25"
+    },
+    {
+      "path": "tools/math-ai-4h-02/server.mjs",
+      "sha256": "d099529f5b21c136e7f603443411c3fa0cb979db5cb5acaa5fea3b3c29399885"
+    },
+    {
+      "path": "worker/package.json",
+      "sha256": "aeb7449c57da6083d0e5347c182fbd65d497021a8139c53130ed8df121a1f379"
+    },
+    {
+      "path": "worker/src/auth.ts",
+      "sha256": "a621db1a0da185d7d59c2e0202bba2fcb7879160242f2d22a6f9ea23bf5d79a2"
+    },
+    {
+      "path": "worker/src/cleanup.ts",
+      "sha256": "cdf35c3b6c0f60c8ac255807438a2cac44ba12851b47cc4eaa741cd688647001"
+    },
+    {
+      "path": "worker/src/crypto.ts",
+      "sha256": "e2435752f076bffed12870732822c8bae9d07a37b0b57f99ccfb6f3428b8aa91"
+    },
+    {
+      "path": "worker/src/db.ts",
+      "sha256": "43a4d3a58ebb16d95a864fcc8018340d82dec611a754d27d45f47fa590552455"
+    },
+    {
+      "path": "worker/src/env.ts",
+      "sha256": "69f977f4943821b6628eba24cc6923a05d83f2c46bc16e1a8d495c9b297d38df"
+    },
+    {
+      "path": "worker/src/gemini.ts",
+      "sha256": "e17c76da202ef3ad5b2f588912f160c203149f0255bef212c5a8665b900f36ec"
+    },
+    {
+      "path": "worker/src/http.ts",
+      "sha256": "b511361aad724189240bd2b96b86b758ba83e8b30ff48b4902382eb496e413f4"
+    },
+    {
+      "path": "worker/src/imageUrls.ts",
+      "sha256": "6b57497006445aef4fabc908a693405291d6ded3bc36fab1a3ecc8c6a5adaa44"
+    },
+    {
+      "path": "worker/src/images.ts",
+      "sha256": "c5491e298dc10bc399ff2c4c5acc475fd747f9c22e6364ae8bb19b2217c25e2e"
+    },
+    {
+      "path": "worker/src/index.ts",
+      "sha256": "63ab046de0bab668f949ea9db1a329bed50f079227f0e882ce0bf94a31d7586a"
+    },
+    {
+      "path": "worker/src/linearIntegerTask.ts",
+      "sha256": "4dc702f075b5b504cd9736df5bca37a3f7fb774e5e7bc4f5438b8935f38f6735"
+    },
+    {
+      "path": "worker/src/ocr/anthropic.ts",
+      "sha256": "f3a7a26deaf26f0a14f5579084a1d13cbf8fd5e35984e68163bedf90673cf01d"
+    },
+    {
+      "path": "worker/src/ocr/gemini.ts",
+      "sha256": "b0e5651f8b1ec8fbb80aad23dd8e8f76018ad5dc688b1a0d474e825e1b6716ad"
+    },
+    {
+      "path": "worker/src/ocr/httpErrors.ts",
+      "sha256": "65a2f34c3caa180a45eb83f35db29ca6a27770c2f517592fc1f4ec3bb39adf48"
+    },
+    {
+      "path": "worker/src/ocr/local.ts",
+      "sha256": "1449ffad96575ac70c21b9e0b5f1bfeff01b47360e5ecbbfee3f4b0d8e7fb00e"
+    },
+    {
+      "path": "worker/src/ocr/mock.ts",
+      "sha256": "ba14331d844b7ac1947dd7437df058803964bfc2e4fba8de98d49c18c6ed971a"
+    },
+    {
+      "path": "worker/src/ocr/normalize.ts",
+      "sha256": "8b673591b8882981dac51400ee0dfc869b7f8bf1b99e3ed23e5d1791c616d391"
+    },
+    {
+      "path": "worker/src/ocr/openai.ts",
+      "sha256": "796f0d6e7544181dfa1b8b828b1537ea532db31ffbc7882d841c3a3f7dc36c67"
+    },
+    {
+      "path": "worker/src/ocr/prompt.ts",
+      "sha256": "31edde978572c8e18efc1ec9a93a3e0f46f4236e921279eb1f8a4037630dfe92"
+    },
+    {
+      "path": "worker/src/ocr/provider.ts",
+      "sha256": "ff94b8926d62e8e038315d3ca5ce82f2c9eea00bcee002ddfeeb0805e6ba26e4"
+    },
+    {
+      "path": "worker/src/ocr/service.ts",
+      "sha256": "289023903adb07d97bda2d250e7b4675a6791c7f88fe5f351a629c0cdd40703b"
+    },
+    {
+      "path": "worker/src/ocr/textFormat.ts",
+      "sha256": "40919700804929d5fbc15caff0a1a06796a4806d0ca4e50ecbbdd7d2c3071a65"
+    },
+    {
+      "path": "worker/src/rateLimits.ts",
+      "sha256": "39345d2681eaec4d64a0a04c4bf02a358ad5f6f33fb5e3d15da185351a4db6ff"
+    },
+    {
+      "path": "worker/src/requestDeadline.ts",
+      "sha256": "50d03f5e015ef5d85442dac7d329aebc48872f5a1e31cca085ac24d12d3c5657"
+    },
+    {
+      "path": "worker/src/routes/feedback.ts",
+      "sha256": "464b3295c09f080aa962755381a812a49ae1e5ff62dff8d0661a22df254f1820"
+    },
+    {
+      "path": "worker/src/routes/images.ts",
+      "sha256": "25b44675e0b4ee1012d67bb95013c02ff4ce2d3cf501d5ebe7109cb684b19218"
+    },
+    {
+      "path": "worker/src/routes/scans.ts",
+      "sha256": "2963eb68698db7274ece6e8f1f089e35567b107ff7d4a604e1c7f066be1fc0f2"
+    },
+    {
+      "path": "worker/src/routes/solve.ts",
+      "sha256": "bbb299702158dc4d498825b6fc0effd1c1b68f7fec0404a436ec4a9eb7812b46"
+    },
+    {
+      "path": "worker/src/solver/algebraProofLesson.ts",
+      "sha256": "eab821b147682b5bf475ecde19006ad5d004351dc33a5e84439ddf37068c24d9"
+    },
+    {
+      "path": "worker/src/solver/algebraTask.ts",
+      "sha256": "7d94e4df9b60102d3abcb12bad52e6ed78753eabc7957b6eedd0cb7c3d795739"
+    },
+    {
+      "path": "worker/src/solver/attemptBudget.ts",
+      "sha256": "2407c88fb1e24d9c0bcf0c6002c3382a579cf5660fe7ff15654e470e55440d63"
+    },
+    {
+      "path": "worker/src/solver/biquadraticEquation.ts",
+      "sha256": "98224723c99c9725b24fa5d786feb238076683a4eb7839ba44df1bd42b892489"
+    },
+    {
+      "path": "worker/src/solver/boardSearchGame.ts",
+      "sha256": "3e800c4b9dd06cd7835a84bd6def95ffc8ff1f21cf78569f61de49504ff56b2c"
+    },
+    {
+      "path": "worker/src/solver/budget.ts",
+      "sha256": "ecab951e236ebf3d05c27fe71c2e86756db229faab0f44ad6e4aa37b1d247c53"
+    },
+    {
+      "path": "worker/src/solver/certifiedAlgebraFamilies.ts",
+      "sha256": "c717e717c7d2ee2e73afa207ad7b5be578e71a256b619b5c47ffed66752c6115"
+    },
+    {
+      "path": "worker/src/solver/certifiedCombinatorics.ts",
+      "sha256": "ffb4699629ffe246971ec301a16e0941eb1a3ee8c78fd706f7359fd67dc9c347"
+    },
+    {
+      "path": "worker/src/solver/certifiedGeometryFamilies.ts",
+      "sha256": "a9a8e56918d0f6a2ebd6a0b265a271a6440c71f61b2827bc5086c535023a934b"
+    },
+    {
+      "path": "worker/src/solver/certifiedNumberTheory.ts",
+      "sha256": "87a9a4945f5958799b14a66893ff439ee4782a34d3263f0fa108dfbea5e9d807"
+    },
+    {
+      "path": "worker/src/solver/certifiedNumberTheoryFamilies.ts",
+      "sha256": "b123e5b11c0055695a29f4e8b60993e6c77790cd6747c91714a2f8f461756598"
+    },
+    {
+      "path": "worker/src/solver/circleBisectorLesson.ts",
+      "sha256": "21d9be917993c0ea13ce9fecc9efbf7514c07ad8a37db99d3fd3f51534ab772a"
+    },
+    {
+      "path": "worker/src/solver/combinatoricsProofLesson.ts",
+      "sha256": "34013c3f7f3e2e91d2f3af499a5c1311d55cc265e6c3d6fd4ee5495cc5579358"
+    },
+    {
+      "path": "worker/src/solver/constantRadical.ts",
+      "sha256": "808e61fd2afb1c613c5906f850cf6dd03d45f7b0899ac85c052ed4bd121578c4"
+    },
+    {
+      "path": "worker/src/solver/constructiveCombinatoricsLesson.ts",
+      "sha256": "70219e03567e9eca18e5e3c92fd1aef2bf9a5af25cdee01e33a72bc550212224"
+    },
+    {
+      "path": "worker/src/solver/countingLesson.ts",
+      "sha256": "460deb3712881e705566760d7757f0df089f7f8ca8cadd515ca63aa566c8b44a"
+    },
+    {
+      "path": "worker/src/solver/cubeDifferenceLesson.ts",
+      "sha256": "f2c2267e1f7913e805f4399e500cf5bc0aaa0aa625f995339be0b3d60956daf4"
+    },
+    {
+      "path": "worker/src/solver/curriculum.ts",
+      "sha256": "07b92cb4aa74cab7f3eb37c1b1d6bb1c1fc0d4748f32e40dd7fa7d144c190704"
+    },
+    {
+      "path": "worker/src/solver/deadline.ts",
+      "sha256": "7f7d2cd861a00fc0be117fdb27065be47d382863ef5b35cd9894407b07989328"
+    },
+    {
+      "path": "worker/src/solver/diameterOrthocenterDiagnosis.ts",
+      "sha256": "6d4b5a72a2ab25187d69b851e42448bb15f332dd8bece2087d97a5d41c3e63cd"
+    },
+    {
+      "path": "worker/src/solver/divisorCountLesson.ts",
+      "sha256": "aa24c34bead211914f4f413da4600ce4de2f6f3dd073256b14ea1c330335c768"
+    },
+    {
+      "path": "worker/src/solver/explicitWitnessLesson.ts",
+      "sha256": "9bcaa6b75acfd14da3f1410ffe5d1e560e45d62a1c80bb6c13db1d83ec25628d"
+    },
+    {
+      "path": "worker/src/solver/factorialExponentLesson.ts",
+      "sha256": "5b896bb6c6a48eb788b54363d98a37034cdbb45a6f1bf1749f3cf41f52835fde"
+    },
+    {
+      "path": "worker/src/solver/failover.ts",
+      "sha256": "50c3cf64dc07697f3c01d9113a09dc22cf991879ed5e68c1bdf9d45cd8b90ace"
+    },
+    {
+      "path": "worker/src/solver/finiteStrategyLesson.ts",
+      "sha256": "6c5a3c2534e52b9aed8005a1e55ee9ee06bc1e717f0f32f4f5f965280d578d2c"
+    },
+    {
+      "path": "worker/src/solver/gcdLesson.ts",
+      "sha256": "502e95e9237d5a4431ae8ca496a7db763dc6b04024c85e690dbbb35659f81562"
+    },
+    {
+      "path": "worker/src/solver/gemini.ts",
+      "sha256": "23df2b1dd535487b6a309d80188fb7fb6fd65f151170945ad7bb5b4d4b62f5cf"
+    },
+    {
+      "path": "worker/src/solver/geminiModel.ts",
+      "sha256": "ecad864de6071523ef667541a2878c4c9a9a7a8c6c60d703c61fe3d3ef4be836"
+    },
+    {
+      "path": "worker/src/solver/geometryHypothesisDiagnosis.ts",
+      "sha256": "dc791129274515d8cee5bfe1996df556ceae07bfc1731229143c7e59697b951c"
+    },
+    {
+      "path": "worker/src/solver/incircleCaseLesson.ts",
+      "sha256": "6d0840fb1deb680b16d8d42ee26a0d9bdee8eb475bf948387dbf1e865566d6cf"
+    },
+    {
+      "path": "worker/src/solver/integerEquationObstruction.ts",
+      "sha256": "c3bedd394ea7008f86f63c284d14e9e392568174e6b9226c114f812eb82a1154"
+    },
+    {
+      "path": "worker/src/solver/integerFactorLesson.ts",
+      "sha256": "73d9a088a30102862c64a0d70d7daf8eb67575a29ac8156ff52a520f0e8db534"
+    },
+    {
+      "path": "worker/src/solver/integerResidueLesson.ts",
+      "sha256": "5830a739f37b67a01fd7c12bf06e4f8116dbd51e62923adfbdd4d04fa42a7629"
+    },
+    {
+      "path": "worker/src/solver/integerSquareLesson.ts",
+      "sha256": "551d1b1dce39e97775afc98ef01145571b997579f4d3c2a2d8f42fa462d3eae3"
+    },
+    {
+      "path": "worker/src/solver/invariantPairingGame.ts",
+      "sha256": "b795b7b99d41f1bdc02c199c82e5faeec87e07cd58fba830e2c275ce5b063a81"
+    },
+    {
+      "path": "worker/src/solver/jsonSchema.ts",
+      "sha256": "7b2a95831e02b4c82c0576381f5888e8512078bd87dbd28c87a034daa3bff49c"
+    },
+    {
+      "path": "worker/src/solver/latexCheck.ts",
+      "sha256": "7e4c918bc079bbdc4d522b426f22263e4b7eb19db9600b4a849c3a40c592c285"
+    },
+    {
+      "path": "worker/src/solver/learnedBoardPolicy.ts",
+      "sha256": "6114b3bf3158873634b30d136f4466f0aaa42e34e3b6983d509c1a593c35ab10"
+    },
+    {
+      "path": "worker/src/solver/linearIntegerLesson.ts",
+      "sha256": "43ced85ef4339be0203f09a49e695a69ad27e3273822de051771d47addc4f994"
+    },
+    {
+      "path": "worker/src/solver/llm.ts",
+      "sha256": "73336147b2c3f0b60f90531f422e3618ee9cf877dc6ea60b7947f2cbf41db720"
+    },
+    {
+      "path": "worker/src/solver/localModel.ts",
+      "sha256": "c2addd4289b4f742f9e0da4ee2c9c420397e0bff230b69a95019ff2e6c2121f5"
+    },
+    {
+      "path": "worker/src/solver/mock.ts",
+      "sha256": "b02a2b0a0ba74dd33d6ca35159089867264df94685939d7fdbd76a0b08398569"
+    },
+    {
+      "path": "worker/src/solver/multipartLesson.ts",
+      "sha256": "c2336bd980902e470f3c3bd3ef7be57d8c0d73f6f39afb7d982ce94f071313d6"
+    },
+    {
+      "path": "worker/src/solver/numberTheory.ts",
+      "sha256": "d9a6c942c83070f9b9952997321bd70093184c645943700c8a38cf62f18c72f7"
+    },
+    {
+      "path": "worker/src/solver/parameterEquation.ts",
+      "sha256": "d2420886c26096d8811a39f22387658ade227c3eb5749ce9fafc2dbb5e2b90c2"
+    },
+    {
+      "path": "worker/src/solver/pipeline.ts",
+      "sha256": "b0d6cf19797c0272edec3af8b542d735d656446217a244d441c262c2cb2b2e77"
+    },
+    {
+      "path": "worker/src/solver/polynomialDivisibilityLesson.ts",
+      "sha256": "98c8e1ae0402e74734df4be810bcac2f852ffdfe159ed91f03bda04fa4af4472"
+    },
+    {
+      "path": "worker/src/solver/positiveInequality.ts",
+      "sha256": "dbd3847772e25c3ae9d8a84a40b9e6a976f282036bf4de096ea17df92d31efac"
+    },
+    {
+      "path": "worker/src/solver/positiveParameters.ts",
+      "sha256": "31d6148f8d986c69937d58dbf0194904d91c77d369964d4f7e1bf57c44f589d2"
+    },
+    {
+      "path": "worker/src/solver/pricing.ts",
+      "sha256": "e3566f2bdb9b61fe222471de40f93d479be52c603037d05e5bb572e622d3ff96"
+    },
+    {
+      "path": "worker/src/solver/primeOffsetLesson.ts",
+      "sha256": "7579f0df9926d1ac77e624c0ec915cae45fcb81a49a4468c4ca0cfe3918e3fdd"
+    },
+    {
+      "path": "worker/src/solver/problemKey.ts",
+      "sha256": "9ee3d8edd422950da256ba1c55460a988928b45c491234493c185e9d5e97442b"
+    },
+    {
+      "path": "worker/src/solver/prompts.ts",
+      "sha256": "2c7ad3af226ca1bcf9f803bb465a4eef58ff080a3e599e3890bccc898b54ac99"
+    },
+    {
+      "path": "worker/src/solver/quadraticNormLesson.ts",
+      "sha256": "2568d5b852c50e13ec18cf5cf83477990556a64b67d963976b51f64979bdd298"
+    },
+    {
+      "path": "worker/src/solver/quadraticRange.ts",
+      "sha256": "6b723ced492b38bdafb4a009526149bd94f72ea4bada38bc2530488c1533880f"
+    },
+    {
+      "path": "worker/src/solver/quadraticWitnessLesson.ts",
+      "sha256": "4e484a9b35146766bbc88352593295ddd3ad1bfc7a547ceb9818ae3445ffad8f"
+    },
+    {
+      "path": "worker/src/solver/radicalSequence.ts",
+      "sha256": "850c2f85e5c229ea184102baaefd6e89633e801e152ae6a40fc690906c5b4b3c"
+    },
+    {
+      "path": "worker/src/solver/radicalSequenceDivisibility.ts",
+      "sha256": "37f99bf36f13702274e80401c4a4c77a095e046227b8ff128a6b9c3a6c9fa721"
+    },
+    {
+      "path": "worker/src/solver/rationalEquation.ts",
+      "sha256": "99d9b0f1c780406e6f99ae7c7e1aa410a147c12b6ac68fbb73614c58bafeec96"
+    },
+    {
+      "path": "worker/src/solver/rationalInequality.ts",
+      "sha256": "79e438ebd1fd0120266c19c995df0ae0af910df744dec59fb6fdd4b4e1598469"
+    },
+    {
+      "path": "worker/src/solver/remainderParameter.ts",
+      "sha256": "70aa767b3daffcd0b8b142802eebb8008a625772a26bc9a21819da4e69842b57"
+    },
+    {
+      "path": "worker/src/solver/rootFourthPower.ts",
+      "sha256": "d347b55462eb5365cf8958b8361edea1e964bd411d3d220119036fd8b276ce58"
+    },
+    {
+      "path": "worker/src/solver/rootRadicalProduct.ts",
+      "sha256": "2ab78f64a437485e8198b5ad8c01ca09dc4639873d7934bf09f92c09d3b45e9b"
+    },
+    {
+      "path": "worker/src/solver/routine/algebra.ts",
+      "sha256": "0c34c73ba473184abc9fd863944dbcebfcd484e875109fea1906fc08141dbbd5"
+    },
+    {
+      "path": "worker/src/solver/routine/combinatorics.ts",
+      "sha256": "adf7b89ce6acb6b9786767fb464830af46e684fc6ed7c2d51b7dbe21cc772f83"
+    },
+    {
+      "path": "worker/src/solver/routine/geometry.ts",
+      "sha256": "f4b26f2d44997a4a288591f059bc2b65b33a60a721ebaa7b622ad74ce540f281"
+    },
+    {
+      "path": "worker/src/solver/routine/index.ts",
+      "sha256": "56aba0f78cc9ba0f3efbca3da9db3d329c21f06d3087976a5bee30603929911a"
+    },
+    {
+      "path": "worker/src/solver/routine/numberTheory.ts",
+      "sha256": "275112710b38907ca5b40629aac2c0e7af94a9ea464ec50e7de43651077fe2ed"
+    },
+    {
+      "path": "worker/src/solver/routine/text.ts",
+      "sha256": "9608978c373bb13e5c66c92b306b4a180f3b946af9940a8968f80e8aa7afa191"
+    },
+    {
+      "path": "worker/src/solver/routing.ts",
+      "sha256": "9f16c96a975b6018b7e15cefff20a1dbe2e9115ec64453237dd3d3f579bf4e45"
+    },
+    {
+      "path": "worker/src/solver/symmetricSystem.ts",
+      "sha256": "09efc845cfdc0fb57325bae4bab54d65b0accb9a63ed2b0082d44130d79af473"
+    },
+    {
+      "path": "worker/src/solver/systemEquation.ts",
+      "sha256": "b84246bad33f8fe6d4fc52506ca3713d7f5af988a29ffeebd17914c53f84e1ed"
+    },
+    {
+      "path": "worker/src/solver/takeAwayGame.ts",
+      "sha256": "e0d65b6558990e8d22b928c7d6a3eec005a56b9750f2b6b96fdcb65aabdaafc7"
+    },
+    {
+      "path": "worker/src/solver/techniques.ts",
+      "sha256": "6e8209ca8dd3fc71535d84451124754131613f198ec578272bc1cc49a198f9cb"
+    },
+    {
+      "path": "worker/src/solver/triangleCalculation.ts",
+      "sha256": "805e45ce51493269c0177778c765ce4afcbed4c15a5b8643c8f578a492ac9018"
+    },
+    {
+      "path": "worker/src/solver/twoRadicalEquation.ts",
+      "sha256": "a1725c2ace0652b55977225de45d88475169d89ec4356f1f1d566ef62033a2f2"
+    },
+    {
+      "path": "worker/src/solver/unaryEquation.ts",
+      "sha256": "ce14386e39ef1a371850ed4541669c99dbe17aca8d6cb78a4dd274bc991cbdcd"
+    },
+    {
+      "path": "worker/src/solver/vertexAssignmentLesson.ts",
+      "sha256": "c98b479834e8f0568b3b806aaf4d2ac90fe4c05874385eea499b9e1258d3fd48"
+    },
+    {
+      "path": "worker/wrangler.toml",
+      "sha256": "4b3a83e34f0d3786cc398aad118ec342acd83d9a959f4d893241b543f2860591"
+    }
+  ]
+}

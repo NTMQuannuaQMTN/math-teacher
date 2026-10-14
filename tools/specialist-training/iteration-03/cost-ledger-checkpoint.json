@@ -1,0 +1,14 @@
+{
+  "readAt": "2026-10-12T01:23:27.314274+00:00",
+  "scope": "Existing stable isolated D1 estimated cost reservations; not a provider billing statement. No counter reset.",
+  "days": {
+    "2026-10-11": {
+      "spend:default": 0.895324,
+      "spend:qwen3.6:35b": 0.035783
+    },
+    "2026-10-12": {
+      "spend:default": 0.166205
+    }
+  },
+  "todayEstimatedUsd": 0.166205
+}

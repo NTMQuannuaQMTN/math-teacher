@@ -44,6 +44,8 @@ export interface Env {
   SOLVER_GEOMETRY_MODEL?: string;
   SOLVER_GEOMETRY_REASONING_EFFORT?: string;
   SOLVE_TIMEOUT_MS: string;
+  /** How long a solve may keep working in the background after the ≤ 26 s reply (ms). Dev default 300 000, prod 26 000. */
+  SOLVE_BACKGROUND_MS?: string;
   /** "off" disables the two-stage solve (outline request, then lesson) for hard non-geometry problems. */
   SOLVER_TWO_STAGE?: string;
   SOLVE_LIMIT_PER_DEVICE_PER_HOUR: string;
@@ -57,6 +59,8 @@ export interface Env {
   GEMINI_API_KEY?: string;
   /** With SOLVER_PROVIDER=local: "on" enables the Gemini fallback for failed solves (default off). */
   SOLVER_GEMINI_FALLBACK?: string;
+  /** Explicit opt-in: free/local primary, budgeted SocLaas fallback. */
+  SOLVER_SOCLAAS_FALLBACK?: string;
   /** SOLVER_PROVIDER=soclaas: NUS SOCLAAS gateway (OpenAI-compatible). */
   SOCLAAS_BASE_URL?: string;
   SOCLAAS_API_KEY?: string;

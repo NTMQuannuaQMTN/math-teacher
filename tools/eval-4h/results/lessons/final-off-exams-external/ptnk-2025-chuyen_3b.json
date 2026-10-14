@@ -1,0 +1,161 @@
+{
+  "input": "Cho các số nguyên dương $m,n$ thỏa mãn: $m^2+m+n^2$ chia hết cho tích $mn$ (1). Tìm $m,n$ thỏa mãn (1) biết $m$ chia hết cho $n$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho các số nguyên dương $m,n$ thỏa mãn: $m^2+m+n^2$ chia hết cho tích $mn$ (1). Tìm $m,n$ thỏa mãn (1) biết $m$ chia hết cho $n$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chia hết biểu thức bậc hai và ước chung",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chia hết biểu thức bậc hai và ước chung"
+      ],
+      "techniques": [],
+      "givens": [
+        "$m,n$ nguyên dương.",
+        "$m^2+m+n^2\\vdots mn$"
+      ],
+      "unknowns": [
+        "Kết luận đúng theo đúng phần hỏi của đề."
+      ],
+      "constraints": [
+        "Các ẩn và thương chia hết đều là số nguyên; chỉ triệt tiêu nhân tử khác0."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Giữ miền nguyên dương, dùng các ước bắt buộc của tích và trừ bội để suy ra điều kiện hai chiều.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Sau đặt m là bội của n, điều kiện chia hết buộc k là ước của số nào?",
+        "cue": "Tách bội nguyên dương; trừ các bội của m; triệt tiêu nhân tử khác0",
+        "explanation": "Vì $m$ chia hết cho $n$ và cả hai nguyên dương, đặt $m=kn$ với $k$ nguyên dương. Từ điều kiện chia hết cho tích, $m$ là ước của $n^2$, nên $kn$ là ước của $n^2$; triệt tiêu $n\\ne0$ cho $n$ chia hết cho $k$.",
+        "math": "m=kn,\\quad n^2\\vdots kn\\Rightarrow n\\vdots k",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Vì sao hai điều kiện chia hết ngược chiều buộc k=n?",
+        "cue": "Trừ các bội của n²; hai số nguyên dương là ước của nhau thì bằng nhau",
+        "explanation": "Tích $mn=kn^2$ là ước của biểu thức, nên $n^2$ cũng là ước của biểu thức. Sau thay $m=kn$, trừ các hạng tử $k^2n^2+n^2$, suy ra $n^2$ là ước của $kn$, hay $k$ chia hết cho $n$. Hai số nguyên dương chia hết cho nhau phải bằng nhau, nên $k=n$ và $m=n^2$.",
+        "math": "kn\\vdots n^2\\Rightarrow k\\vdots n,\\quad k=n,\\quad m=n^2",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Khi m=n², vì sao n chỉ có thể là1 hoặc2?",
+        "cue": "Triệt tiêu nhân tử khác0; trừ bội; xét hết các ước dương của2 và kiểm tra lại",
+        "explanation": "Thay $m=n^2$, biểu thức là $n^4+2n^2$, tích là $n^3$. Chia hết tương đương $n^2+2$ chia hết cho $n$, hay $2$ chia hết cho $n$. Vì $n$ nguyên dương nên $n=1$ hoặc $2$, cho các cặp $(1,1)$ và $(4,2)$. Thử lại: cặp đầu cho tử3, tích1; cặp sau cho tử24, tích8, đều chia hết.",
+        "math": "n^4+2n^2\\vdots n^3\\Longleftrightarrow 2\\vdots n\\Longleftrightarrow n\\in\\{1,2\\}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Đã thử lại cả hai điều kiện trên từng cặp và loại hết khả năng khác chưa?",
+        "cue": "Điều kiện cần và đủ; đối chiếu mọi giả thiết",
+        "explanation": "Mọi nghiệm đều buộc phải thuộc hai cặp vừa suy ra; cả hai cặp đã được kiểm tra với điều kiện gốc và giả thiết chia hết bổ sung. Vậy tất cả các cặp cần tìm là $(m,n)=(1,1)$ hoặc $(4,2)$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Dùng giả thiết một ẩn chia hết cho ẩn kia",
+        "explanation": "Vì $m$ chia hết cho $n$ và cả hai nguyên dương, đặt $m=kn$ với $k$ nguyên dương. Từ điều kiện chia hết cho tích, $m$ là ước của $n^2$, nên $kn$ là ước của $n^2$; triệt tiêu $n\\ne0$ cho $n$ chia hết cho $k$.",
+        "math": "m=kn,\\quad n^2\\vdots kn\\Rightarrow n\\vdots k",
+        "reason": "Tách bội nguyên dương; trừ các bội của m; triệt tiêu nhân tử khác0",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Suy ra điều kiện chia hết ngược lại",
+        "explanation": "Tích $mn=kn^2$ là ước của biểu thức, nên $n^2$ cũng là ước của biểu thức. Sau thay $m=kn$, trừ các hạng tử $k^2n^2+n^2$, suy ra $n^2$ là ước của $kn$, hay $k$ chia hết cho $n$. Hai số nguyên dương chia hết cho nhau phải bằng nhau, nên $k=n$ và $m=n^2$.",
+        "math": "kn\\vdots n^2\\Rightarrow k\\vdots n,\\quad k=n,\\quad m=n^2",
+        "reason": "Trừ các bội của n²; hai số nguyên dương là ước của nhau thì bằng nhau",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Giảm điều kiện ban đầu và thử lại từng cặp",
+        "explanation": "Thay $m=n^2$, biểu thức là $n^4+2n^2$, tích là $n^3$. Chia hết tương đương $n^2+2$ chia hết cho $n$, hay $2$ chia hết cho $n$. Vì $n$ nguyên dương nên $n=1$ hoặc $2$, cho các cặp $(1,1)$ và $(4,2)$. Thử lại: cặp đầu cho tử3, tích1; cặp sau cho tử24, tích8, đều chia hết.",
+        "math": "n^4+2n^2\\vdots n^3\\Longleftrightarrow 2\\vdots n\\Longleftrightarrow n\\in\\{1,2\\}",
+        "reason": "Triệt tiêu nhân tử khác0; trừ bội; xét hết các ước dương của2 và kiểm tra lại",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận đầy đủ",
+        "explanation": "Mọi nghiệm đều buộc phải thuộc hai cặp vừa suy ra; cả hai cặp đã được kiểm tra với điều kiện gốc và giả thiết chia hết bổ sung. Vậy tất cả các cặp cần tìm là $(m,n)=(1,1)$ hoặc $(4,2)$.",
+        "math": null,
+        "reason": "Điều kiện cần và đủ; đối chiếu mọi giả thiết",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy tất cả các cặp cần tìm là $(m,n)=(1,1)$ hoặc $(4,2)$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "partial",
+    "checks": [
+      {
+        "label": "Kiểm tra cấu trúc giả thiết và các cặp; chứng minh chia hết bằng lời chưa được chứng nhận toàn bộ bằng máy",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 13,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

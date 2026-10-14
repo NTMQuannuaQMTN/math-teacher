@@ -6,9 +6,11 @@ import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } fr
 import { SafeAreaView } from "react-native-safe-area-context";
 import { mentionedTargets } from "@shared/figureComplete";
 import { statementParts } from "@shared/claims";
+import { separateSubquestions } from "./subquestions";
 import { resolveFigure } from "@shared/geometry";
 import { techniqueName } from "@shared/knowledgeBase";
 import type { Solution } from "@shared/solution";
+import {lessonDisplayFeedback} from '@shared/lessonQuality';
 import { Banner } from "@/components/Banner";
 import { Button } from "@/components/Button";
 import { GeometryView } from "@/components/geometry/GeometryView";
@@ -17,7 +19,7 @@ import { StateView } from "@/components/StateView";
 import { useStrings } from "@/i18n";
 import type { LessonProgress } from "@/state/lessonProgress";
 import { spacing, typography, useTheme } from "@/theme";
-import { Card, FinalAnswerCard, HintCard, SectionTitle, StepCard, UnderstandCard } from "./LessonParts";
+import { Card, HintCard, SectionTitle, StepCard, UnderstandCard } from "./LessonParts";
 
 type Focus = { kind: "hint" | "step"; id: string } | null;
 
@@ -34,7 +36,14 @@ interface Props {
  * hint/step drives what the figure highlights and which construction lines
  * are visible. Platform-independent (renders on native and Expo web).
  */
-export function LessonView({ solution, progress, setProgress, onRegenerate }: Props) {
+export function LessonView(props:Props) {
+  const s=useStrings();
+  const unsafe=useMemo(()=>lessonDisplayFeedback(props.solution).length>0,[props.solution]);
+  if(unsafe)return <View testID="lesson-quality-failure" style={styles.flex}><StateView icon="warning-outline" title="Lời giải cần được kiểm tra lại" body="Lời giải này có ký hiệu hoặc lập luận chưa đúng. Hãy giải lại từ đề hiện tại."><Button label={s.solve.regenerate} onPress={props.onRegenerate}/></StateView></View>;
+  return <LessonContents {...props}/>;
+}
+
+function LessonContents({ solution, progress, setProgress, onRegenerate }: Props) {
   const s = useStrings();
   const { colors } = useTheme();
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
@@ -104,13 +113,17 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
     if (hint) setFocus({ kind: "hint", id: hint.id });
   };
 
+  // Hooks must run for ambiguous/unsupported lessons too, including after regeneration.
+  const parts = useMemo(() => statementParts(analysis.statement).filter((p) => p.letter), [analysis.statement]);
+  const [wholeProblem, setWholeProblem] = useState(false);
+
   if (analysis.status !== "solvable") {
     const title = analysis.status === "ambiguous" ? s.solve.ambiguousTitle : analysis.status === "unsupported" ? s.solve.unsupportedTitle : s.solve.notProblemTitle;
     return (
       <SafeAreaView style={styles.flex} edges={["bottom"]}>
         <ScrollView contentContainerStyle={styles.content}>
           <Card>
-            <MathText text={analysis.statement} fontSize={17} />
+            <MathText text={separateSubquestions(analysis.statement)} fontSize={17} />
           </Card>
           <StateView icon="help-buoy-outline" title={title} body={analysis.statusReason ?? undefined}>
             <Button label={s.common.back} variant="secondary" onPress={() => router.back()} />
@@ -139,11 +152,9 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
 
   // The part being read ("Câu b: …" steps, or the step a hint leads to): on a phone the pinned pane shows that part,
   // so the question is always in view without scrolling; "Cả đề" shows the whole statement.
-  const parts = useMemo(() => statementParts(analysis.statement).filter((p) => p.letter), [analysis.statement]);
   const focusedStep = focus ? (focus.kind === "step" ? steps.find((x) => x.id === focus.id) : steps.find((x) => x.id === hints.find((h) => h.id === focus.id)?.stepId)) : undefined;
   const focusLetter = focusedStep ? /^Câu ([a-f])\b/i.exec(focusedStep.title)?.[1]?.toLowerCase() : undefined;
   const focusPart = parts.find((p) => p.letter === focusLetter);
-  const [wholeProblem, setWholeProblem] = useState(false);
   const pinnedText = !wide && focusPart && !wholeProblem ? focusPart.text.trim() : analysis.statement;
 
   const problemPane = (
@@ -156,7 +167,7 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
       {problemOpen ? (
         <>
           <ScrollView style={wide ? undefined : { maxHeight: Math.round(screenHeight * (focusPart && !wholeProblem ? 0.2 : 0.16)) }} nestedScrollEnabled>
-            <MathText testID="lesson-problem" text={pinnedText} fontSize={wide ? 17 : 15} />
+            <MathText testID="lesson-problem" text={separateSubquestions(pinnedText)} fontSize={wide ? 17 : 15} />
           </ScrollView>
           {!wide && focusPart ? (
             <Pressable onPress={() => setWholeProblem(!wholeProblem)} accessibilityRole="button" style={styles.wholeToggle}>
@@ -204,6 +215,9 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
 
       <ScrollView ref={scroll} style={styles.flex} contentContainerStyle={styles.content}>
         {solution.verification?.figureIssue ? <Banner tone="info" message={s.solve.figureUnavailable} /> : null}
+        {solution.verification?.status === "unverified" ? <Banner tone="warning" title={s.solve.unverified} message={s.solve.unverifiedBody} /> : null}
+        {solution.verification?.status === "partial" ? <Banner tone="info" title={s.solve.partial} message={s.solve.partialBody} /> : null}
+        {solution.verification?.status === "not_checkable" ? <Banner tone="info" title={s.solve.notCheckable} message={s.solve.notCheckableBody} /> : null}
 
         <SectionTitle>{s.solve.understand}</SectionTitle>
         <UnderstandCard
@@ -211,7 +225,7 @@ export function LessonView({ solution, progress, setProgress, onRegenerate }: Pr
           givens={analysis.givens}
           unknowns={analysis.unknowns}
           concepts={analysis.concepts}
-          techniques={analysis.techniques.map((t) => (analysis.language === "en" ? t.replace(/_/g, " ") : techniqueName(t) ?? t))}
+          techniques={analysis.techniques.map((t) => (techniqueName(t) ?? t))}
           notes={analysis.interpretationNotes}
           strategy={progress.revealed.length > 0 || progress.showSolution ? lesson.strategy : null}
         />

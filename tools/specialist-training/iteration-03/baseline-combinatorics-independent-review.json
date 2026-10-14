@@ -1,0 +1,38 @@
+[
+  {
+    "id": "comb3-selection",
+    "independentAnswer": "100",
+    "actualReady": false,
+    "mathPass": false
+  },
+  {
+    "id": "comb3-pigeonhole",
+    "independentAnswer": "Hai vị trí đầu tiên có số dư lặp",
+    "actualReady": false,
+    "mathPass": false
+  },
+  {
+    "id": "comb3-invariant",
+    "independentAnswer": "106",
+    "actualReady": false,
+    "mathPass": false
+  },
+  {
+    "id": "comb3-two-piles",
+    "independentAnswer": "Người đi trước",
+    "actualReady": false,
+    "mathPass": false
+  },
+  {
+    "id": "comb3-sign-game",
+    "independentAnswer": "Bình",
+    "actualReady": false,
+    "mathPass": false
+  },
+  {
+    "id": "comb3-board-user",
+    "independentAnswer": "k4:8 lượt; k2:16 lượt",
+    "actualReady": true,
+    "mathPass": true
+  }
+]

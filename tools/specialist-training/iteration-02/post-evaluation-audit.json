@@ -1,0 +1,40 @@
+[
+  {
+    "id": "held-two-piles",
+    "originalAudit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": []
+    },
+    "postEvaluationAudit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": [
+        "concept (\"Game\"), concept (\"Winning\"), concept (\"Strategy\"), given (\"Initial\"), given (\"Rules\"), unknown (\"the\"), constraint (\"piles\"), constraint (\"Players\"), constraint (\"Each\"), constraint (\"Last\"), interpretation note (\"The\"), step s1 (\"Logical\"), step s1 operation (\"analysis\"), step s1 verification method (\"manual\"), step s1 verification reason (\"Game\"), step s2 (\"Arithmetic\"), step s2 operation (\"deduction\"), step s2 verification method (\"manual\"), step s2 verification reason (\"Arithmetic\"), step s3 (\"Symmetry\"), step s3 operation (\"deduction\"), step s3 verification method (\"manual\"), step s3 verification reason (\"Logical\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows"
+      ]
+    },
+    "scope": "Archived outputs audited only; no held-out solver rerun."
+  },
+  {
+    "id": "held-sign-game",
+    "originalAudit": null,
+    "postEvaluationAudit": null,
+    "scope": "Archived outputs audited only; no held-out solver rerun."
+  },
+  {
+    "id": "held-monotone-board",
+    "originalAudit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": []
+    },
+    "postEvaluationAudit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": [
+        "concept (\"Game\"), concept (\"Strategy\"), concept (\"Parity\"), given (\"grid\"), given (\"piece\"), given (\"players\"), given (\"The\"), unknown (\"Winner\"), constraint (\"Board\"), constraint (\"Start\"), constraint (\"Moves\"), constraint (\"Losing\"), interpretation note (\"The\"), step s1 operation (\"analysis\"), step s1 verification method (\"manual\"), step s1 verification reason (\"Verified\"), step s1 fact (\"Definition\"), step s2 operation (\"deduction\"), step s2 verification method (\"manual\"), step s2 verification reason (\"Verified\"), step s2 fact (\"Parity\"), step s3 operation (\"deduction\"), step s3 verification method (\"manual\"), step s3 verification reason (\"Verified\"), step s3 fact (\"Game\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows"
+      ]
+    },
+    "scope": "Archived outputs audited only; no held-out solver rerun."
+  }
+]

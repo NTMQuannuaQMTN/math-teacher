@@ -1,0 +1,108 @@
+{
+  "input": "Có bao nhiêu cách xếp $5$ bạn thành một hàng ngang sao cho bạn Minh đứng ở một trong hai đầu hàng?",
+  "lesson": {
+    "analysis": {
+      "statement": "Có bao nhiêu cách xếp $5$ bạn thành một hàng ngang sao cho bạn Minh đứng ở một trong hai đầu hàng?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Hoán vị có điều kiện",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hoán vị có điều kiện"
+      ],
+      "techniques": [],
+      "givens": [
+        "$5$ người phân biệt xếp thành một hàng"
+      ],
+      "unknowns": [
+        "Số cách xếp"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Xử lí điều kiện trước (gộp khối hoặc đặt chỗ cho bạn có điều kiện), rồi xếp phần còn lại.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Minh có mấy chỗ có thể đứng?",
+        "cue": "Ưu tiên phần tử có điều kiện; quy tắc nhân",
+        "explanation": "Minh đứng ở đầu hàng hoặc cuối hàng: $2$ cách. Sau đó xếp $4$ bạn còn lại vào $4$ chỗ còn lại: $4!=24$ cách. Hai cách chọn chỗ cho Minh cho các cách xếp khác nhau nên không trùng.",
+        "math": "2\\cdot 4!=48",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy có $48$ cách xếp.",
+        "math": null,
+        "stepId": "s2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chọn chỗ cho Minh trước",
+        "explanation": "Minh đứng ở đầu hàng hoặc cuối hàng: $2$ cách. Sau đó xếp $4$ bạn còn lại vào $4$ chỗ còn lại: $4!=24$ cách. Hai cách chọn chỗ cho Minh cho các cách xếp khác nhau nên không trùng.",
+        "math": "2\\cdot 4!=48",
+        "reason": "Ưu tiên phần tử có điều kiện; quy tắc nhân",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Kết luận",
+        "explanation": "Vậy có $48$ cách xếp.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy có $48$ cách xếp.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Liệt kê độc lập mọi hoán vị và kiểm tra điều kiện",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 5,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-row-end",
+  "logs": [
+    "lesson by the routine solver (row-end); no model call"
+  ]
+}

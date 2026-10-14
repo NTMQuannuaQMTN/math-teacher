@@ -1,18 +1,12 @@
-import { getLocales } from "expo-localization";
 import { STRINGS, type Locale, type Strings } from "./strings";
-
-function detectLocale(): Locale {
-  try {
-    const code = getLocales()[0]?.languageCode ?? "vi";
-    return code === "en" ? "en" : "vi";
-  } catch {
-    return "vi";
-  }
-}
-
-// The device language rarely changes while the app is open; read it once.
-const locale: Locale = detectLocale();
+// The student interface is Vietnamese, including on English-language devices.
+const locale: Locale = "vi";
 const strings: Strings = STRINGS[locale];
+
+if (typeof document !== "undefined") {
+  document.documentElement.lang = "vi";
+  document.title = strings.appName;
+}
 
 export function useStrings(): Strings {
   return strings;
@@ -30,7 +24,7 @@ export function getLocale(): Locale {
 export function formatDateTime(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "";
-  const tag = locale === "vi" ? "vi-VN" : "en-GB";
+  const tag = "vi-VN";
   const sameYear = date.getFullYear() === new Date().getFullYear();
   return date.toLocaleString(tag, {
     day: "numeric",

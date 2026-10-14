@@ -4,7 +4,7 @@
  * on the last attempt it is shown as plain text instead, so the student never sees raw LaTeX in red.
  */
 import katex from "katex";
-import { latexToPlain, parseMathText } from "../../../shared/src/mathText";
+import { isWellFormedMathText, latexToPlain, parseMathText, repairLatex, wrapBareLatex, vietnameseMathText } from "../../../shared/src/mathText";
 import type { ModelLesson } from "../../../shared/src/solution";
 
 const OPTIONS = { throwOnError: true, strict: "ignore", trust: false, maxSize: 20, maxExpand: 300 } as const;
@@ -21,7 +21,7 @@ function renderError(tex: string, displayMode: boolean): string | null {
 /** Text with `$…$`: the formulas that don't render. */
 function textErrors(text: string | null): { tex: string; error: string }[] {
   if (!text) return [];
-  return parseMathText(text).flatMap((s) => {
+  return parseMathText(vietnameseMathText(wrapBareLatex(repairLatex(text)))).flatMap((s) => {
     if (s.kind !== "math") return [];
     const error = renderError(s.value, s.display);
     return error ? [{ tex: s.value, error }] : [];
@@ -33,12 +33,18 @@ export function latexFeedback(lesson: ModelLesson): string[] {
   const out: string[] = [];
   const add = (where: string, tex: string, error: string) =>
     out.push(`${where}: the formula "${tex.slice(0, 120)}" doesn't render (${error}). Write valid KaTeX: no "\\n" inside strings, no "\\[…\\]" delimiters or spacing arguments, prose only inside \\text{…}.`);
-  const text = (where: string, t: string | null) => textErrors(t).forEach((e) => add(where, e.tex, e.error));
+  const text = (where: string, t: string | null) => {
+    if (t && !isWellFormedMathText(t)) out.push(`${where}: broken mathematical delimiters or prose swallowed into math; write balanced $…$ with prose outside math.`);
+    textErrors(t).forEach((e) => add(where, e.tex, e.error));
+  };
   const math = (where: string, m: string | null) => {
     const error = m ? renderError(m, true) : null;
     if (error) add(where, m!, error);
   };
   text("statement", lesson.analysis.statement);
+  text("subtopic", lesson.analysis.subtopic);
+  text("status reason", lesson.analysis.statusReason);
+  for (const key of ["givens", "unknowns", "constraints", "concepts", "interpretationNotes"] as const) lesson.analysis[key].forEach(t=>text(key,t));
   text("strategy", lesson.strategy);
   lesson.hints.forEach((h, i) => {
     text(`hint ${i + 1}`, h.question);
@@ -60,10 +66,10 @@ export function latexFeedback(lesson: ModelLesson): string[] {
 /** Last resort: an unrenderable formula becomes readable plain text. */
 export function plainUnrenderable(lesson: ModelLesson): ModelLesson {
   const text = (t: string): string =>
-    textErrors(t).length === 0
+    textErrors(t).length === 0 && isWellFormedMathText(t)
       ? t
       : parseMathText(t)
-          .map((s) => (s.kind === "text" ? s.value : renderError(s.value, s.display) ? latexToPlain(s.value) : s.display ? `$$${s.value}$$` : `$${s.value}$`))
+          .map((s) => (s.kind === "text" ? s.value.replace(/(?<!\\)\$/g, "") : renderError(s.value, s.display) || !isWellFormedMathText(`$${s.value}$`) ? latexToPlain(s.value) : s.display ? `$$${s.value}$$` : `$${s.value}$`))
           .join("");
   const tn = (t: string | null) => (t === null ? null : text(t));
   // A display formula that fails moves into the explanation as plain text.
@@ -71,7 +77,7 @@ export function plainUnrenderable(lesson: ModelLesson): ModelLesson {
     m && renderError(m, true) ? { math: null, plain: latexToPlain(m) } : { math: m, plain: null };
   return {
     ...lesson,
-    analysis: { ...lesson.analysis, statement: text(lesson.analysis.statement) },
+    analysis: { ...lesson.analysis, statement: text(lesson.analysis.statement), subtopic: text(lesson.analysis.subtopic), statusReason: tn(lesson.analysis.statusReason), givens: lesson.analysis.givens.map(text), unknowns: lesson.analysis.unknowns.map(text), constraints: lesson.analysis.constraints.map(text), concepts: lesson.analysis.concepts.map(text), interpretationNotes: lesson.analysis.interpretationNotes.map(text) },
     strategy: text(lesson.strategy),
     hints: lesson.hints.map((h) => {
       const m = math(h.math);

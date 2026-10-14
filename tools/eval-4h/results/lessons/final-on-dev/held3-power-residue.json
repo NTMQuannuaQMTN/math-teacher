@@ -1,0 +1,156 @@
+{
+  "input": "Tìm số dư khi chia $2^{2026}$ cho $7$ và chứng minh.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm số dư khi chia $2^{2026}$ cho $7$ và chứng minh.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chu kỳ số dư của lũy thừa",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chu kỳ số dư của lũy thừa"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính một chu kỳ đầy đủ, chia số mũ theo độ dài chu kỳ rồi đối chiếu số dư; không thay số lớn trực tiếp.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Chu kỳ trở lại số dư 1 sau bao nhiêu bước?",
+        "cue": "Nếu hai số có cùng số dư thì nhân cùng một số vẫn cho cùng số dư",
+        "explanation": "Nhân lần lượt với $2$ và lấy số dư khi chia cho $7$. Lần đầu trở lại $1$ sau $3$ bước, nên phép nhân tiếp tục lặp lại đúng dãy này.",
+        "math": "2^{1}equiv2pmod{7},quad 2^{2}equiv4pmod{7},quad 2^{3}equiv1pmod{7}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Số mũ để lại vị trí nào trong chu kỳ?",
+        "cue": "Phép chia có dư của số mũ và quy tắc nhân lũy thừa",
+        "explanation": "Ta có $2026=3cdot675+1$. Mỗi khối $3$ lũy thừa đóng góp số dư $1$.",
+        "math": "2^{3}equiv1pmod{7}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Số dư ở vị trí cần tìm là bao nhiêu?",
+        "cue": "Tính chất đồng dư khi nhân và nâng lũy thừa",
+        "explanation": "Do đó $2^{2026}=(2^{3})^{675}cdot2^{1}$ có cùng số dư với vị trí $1$ của chu kỳ.",
+        "math": "2^{2026}equiv2pmod{7}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Số dư cuối cùng có nằm trong khoảng chuẩn không?",
+        "cue": "Định nghĩa số dư trong phép chia có dư",
+        "explanation": "Số $2$ nằm từ $0$ đến $6$, nên đây là số dư duy nhất khi chia cho $7$.",
+        "math": "0le2<7",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính các số dư cho đến khi chu kỳ khép lại",
+        "explanation": "Nhân lần lượt với $2$ và lấy số dư khi chia cho $7$. Lần đầu trở lại $1$ sau $3$ bước, nên phép nhân tiếp tục lặp lại đúng dãy này.",
+        "math": "2^{1}equiv2pmod{7},quad 2^{2}equiv4pmod{7},quad 2^{3}equiv1pmod{7}",
+        "reason": "Nếu hai số có cùng số dư thì nhân cùng một số vẫn cho cùng số dư",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chia số mũ theo độ dài chu kỳ",
+        "explanation": "Ta có $2026=3cdot675+1$. Mỗi khối $3$ lũy thừa đóng góp số dư $1$.",
+        "math": "2^{3}equiv1pmod{7}",
+        "reason": "Phép chia có dư của số mũ và quy tắc nhân lũy thừa",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Rút lũy thừa về vị trí trong chu kỳ",
+        "explanation": "Do đó $2^{2026}=(2^{3})^{675}cdot2^{1}$ có cùng số dư với vị trí $1$ của chu kỳ.",
+        "math": "2^{2026}equiv2pmod{7}",
+        "reason": "Tính chất đồng dư khi nhân và nâng lũy thừa",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận bằng số dư chuẩn",
+        "explanation": "Số $2$ nằm từ $0$ đến $6$, nên đây là số dư duy nhất khi chia cho $7$.",
+        "math": "0le2<7",
+        "reason": "Định nghĩa số dư trong phép chia có dư",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy số dư cần tìm là $2$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập số dư bằng lũy thừa nhanh, Euclid trên số nguyên lớn, liệt kê hữu hạn hoặc phân tích thập phân",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 3,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

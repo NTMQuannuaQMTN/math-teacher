@@ -174,6 +174,9 @@ export function normalizeOcrOutput(
       throw new OcrFailure("malformed_output", "OCR output looks degenerate (repeated content)", true);
     } else if (output.confidence === "low" || [...issues].some((issue) => QUALITY_ISSUES.has(issue))) {
       status = "low_quality";
+    } else if (radicalReadingConflict(rawText)) {
+      // "√x + 1" read as "√(x + 1)" changes the problem; the student checks it on the review screen.
+      status = "low_quality";
     }
   }
   if (status === "unreadable") {
@@ -214,4 +217,18 @@ export function normalizeOcrOutput(
     model: meta.model.slice(0, 80),
     durationMs: Math.max(0, Math.round(meta.durationMs)),
   };
+}
+
+/**
+ * The statement's own domain contradicts how the radicals were read: "x ≥ 0" (or "x > 0") is the domain of √x, while
+ * every radical in the text was read as √(x ± c). Typical misread of "√x + 1" / "√x − 1" (fixture 03). Flags only.
+ */
+export function radicalReadingConflict(text: string): boolean {
+  const t = text.normalize("NFC").replace(/\\sqrt\{([^{}]*)\}/g, "√($1)").replace(/−/g, "-");
+  const statesNonNegative = /(?<![\w.])([a-z])\s*(?:≥|>=|>|\\ge|\\geq)\s*0(?!\d|[.,]\d)/u.exec(t);
+  if (!statesNonNegative) return false;
+  const v = statesNonNegative[1]!;
+  const radicals = [...t.matchAll(/√\s*(\(([^()]*)\)|[a-z0-9]+)/gu)].map((m) => (m[2] ?? m[1]!).replace(/\s+/g, ""));
+  const shifted = new RegExp(`^${v}[+-]\\d+(?:[.,]\\d+)?$`);
+  return radicals.length > 0 && radicals.every((r) => shifted.test(r));
 }

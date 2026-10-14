@@ -1,0 +1,161 @@
+{
+  "input": "Tìm tất cả các số nguyên dương $n$ sao cho $n+3$ chia hết cho $n-1$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các số nguyên dương $n$ sao cho $n+3$ chia hết cho $n-1$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Tìm số nguyên để biểu thức chia hết",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tìm số nguyên để biểu thức chia hết"
+      ],
+      "techniques": [],
+      "givens": [
+        "$n+3\\ \\vdots\\ n-1$",
+        "$n$ là số nguyên dương"
+      ],
+      "unknowns": [
+        "Tất cả giá trị của $n$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tách phần chia hết để đưa về bài toán tìm ước của một số.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Sau khi bớt đi bội của $n-1$, còn lại số nào?",
+        "cue": "Phép chia đa thức cho đa thức bậc nhất",
+        "explanation": "Ta viết $n+3$ thành một bội của $n-1$ cộng với một số nguyên. Kiểm tra lại bằng cách khai triển vế phải.",
+        "math": "n+3=(n-1)+4",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "$4$ có những ước nguyên nào?",
+        "cue": "Tính chất chia hết của hiệu",
+        "explanation": "Vì $(n-1)$ là bội của $n-1$, nên $n+3$ chia hết cho $n-1$ khi và chỉ khi $4$ chia hết cho $n-1$, tức $n-1$ là ước của $4$. Ước của một số khác $0$ luôn khác $0$, nên mẫu $n-1\\ne0$.",
+        "math": "n-1\\in\\{\\pm1;\\pm2;\\pm4\\}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Giá trị nào thỏa cả miền của ẩn và điều kiện chia hết?",
+        "cue": "Thử lại trong đề gốc; điều kiện của ẩn",
+        "explanation": "Giải $n-1$ bằng từng ước, chỉ giữ giá trị nguyên dương của $n$, rồi thay lại vào đề để kiểm tra (bắt buộc). Loại $n\\in\\{-3;-1;0\\}$ (không phải số nguyên dương).",
+        "math": "\\begin{array}{c|cccccc}n&-3&-1&0&2&3&5\\\\\\hline \\text{thỏa?}&\\times&\\times&\\times&\\checkmark&\\checkmark&\\checkmark\\end{array}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Có bao nhiêu giá trị thỏa mãn?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy $n\\in\\{2;3;5\\}$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tách phần chia hết",
+        "explanation": "Ta viết $n+3$ thành một bội của $n-1$ cộng với một số nguyên. Kiểm tra lại bằng cách khai triển vế phải.",
+        "math": "n+3=(n-1)+4",
+        "reason": "Phép chia đa thức cho đa thức bậc nhất",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Suy ra $n-1$ là ước của $4$",
+        "explanation": "Vì $(n-1)$ là bội của $n-1$, nên $n+3$ chia hết cho $n-1$ khi và chỉ khi $4$ chia hết cho $n-1$, tức $n-1$ là ước của $4$. Ước của một số khác $0$ luôn khác $0$, nên mẫu $n-1\\ne0$.",
+        "math": "n-1\\in\\{\\pm1;\\pm2;\\pm4\\}",
+        "reason": "Tính chất chia hết của hiệu",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Tìm các giá trị và thử lại",
+        "explanation": "Giải $n-1$ bằng từng ước, chỉ giữ giá trị nguyên dương của $n$, rồi thay lại vào đề để kiểm tra (bắt buộc). Loại $n\\in\\{-3;-1;0\\}$ (không phải số nguyên dương).",
+        "math": "\\begin{array}{c|cccccc}n&-3&-1&0&2&3&5\\\\\\hline \\text{thỏa?}&\\times&\\times&\\times&\\checkmark&\\checkmark&\\checkmark\\end{array}",
+        "reason": "Thử lại trong đề gốc; điều kiện của ẩn",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Vậy $n\\in\\{2;3;5\\}$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $n\\in\\{2;3;5\\}$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra đẳng thức chia đa thức và tìm kiếm vét cạn trên toàn miền có thể (|B(n)| ≤ |K|)",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 6,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-linear-divisor",
+  "logs": [
+    "lesson by the routine solver (linear-divisor); no model call"
+  ]
+}

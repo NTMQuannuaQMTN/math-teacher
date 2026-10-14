@@ -1,0 +1,137 @@
+{
+  "input": "Với mỗi số tự nhiên $n$, đặt $a_n=\\left(2+\\sqrt3\\right)^n+\\left(2-\\sqrt3\\right)^n$. Chứng minh $a_{n+2}=4a_{n+1}-a_n$ với mọi $n=0,1,2,\\ldots$",
+  "lesson": {
+    "analysis": {
+      "statement": "Với mỗi số tự nhiên $n$, đặt $a_n=\\left(2+\\sqrt3\\right)^n+\\left(2-\\sqrt3\\right)^n$. Chứng minh $a_{n+2}=4a_{n+1}-a_n$ với mọi $n=0,1,2,\\ldots$",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Dãy tổng hai lũy thừa của các cơ số liên hợp",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Dãy tổng hai lũy thừa của các cơ số liên hợp"
+      ],
+      "techniques": [],
+      "givens": [
+        "$a_n=\\left(2+\\sqrt3\\right)^n+\\left(2-\\sqrt3\\right)^n$",
+        "$n\\in\\mathbb{N},\\ n\\ge0$"
+      ],
+      "unknowns": [
+        "Chứng minh $a_{n+2}=4a_{n+1}-a_n$ với mọi chỉ số đã cho"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng tổng và tích để dựng phương trình của hai cơ số, nhân với lũy thừa tùy ý rồi cộng.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Hai cơ số có tổng và tích là gì? Chúng có bằng không không?",
+        "cue": "Đặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa",
+        "explanation": "Đặt $p=2+\\sqrt{3}$, $q=2-\\sqrt{3}$. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích $pq=1\\ne0$ nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số $0$.",
+        "math": "p=2+\\sqrt{3},\\quad q=2-\\sqrt{3},\\quad p+q=(2+\\sqrt{3})+(2-\\sqrt{3})=4,\\quad pq=(2+\\sqrt{3})(2-\\sqrt{3})=1,\\quad a_n= p^{n}+q^{n}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Từ tổng và tích, mỗi cơ số thỏa mãn phương trình bậc hai nào?",
+        "cue": "Khai triển tích; Vi-ét đảo; chuyển vế",
+        "explanation": "Khai triển tích $(t-p)(t-q)$ rồi thay tổng và tích vừa tính. Cho $t=p$ hoặc $t=q$ làm tích bằng $0$, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.",
+        "math": "\\begin{gathered}(t-p)(t-q)=t^2-4t+1\\\\p^2=4p-1,\\quad q^2=4q-1\\end{gathered}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Nhân phương trình của từng cơ số với lũy thừa nào để xuất hiện chỉ số tăng thêm $2$?",
+        "cue": "Nhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy",
+        "explanation": "Với mọi số nguyên $n\\ge0$, nhân đẳng thức của $p$ với $p^{n}$ và của $q$ với $q^{n}$. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.",
+        "math": "\\begin{gathered}p^{n+2}=4p^{n+1}-p^{n}\\\\q^{n+2}=4q^{n+1}-q^{n}\\\\a_{n+2}=4(p^{n+1}+q^{n+1})-(p^{n}+q^{n})\\\\a_{n+2}=4a_{n+1}-a_n\\end{gathered}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Lập luận có áp dụng được tại chỉ số0 không?",
+        "cue": "Lũy thừa bậc $0$ của số khác0; lập luận cho chỉ số tùy ý",
+        "explanation": "Tại chỉ số $0$, hai cơ số khác không nên $p^0=q^0=1$; do đó $a_0=2$, $a_1=4$. Công thức vừa chứng minh áp dụng cả tại $0$ và mọi số tự nhiên tiếp theo. Vậy $a_{n+2}=4a_{n+1}-a_n$ đúng với mọi số tự nhiên $n\\ge0$.",
+        "math": "a_0=2,\\quad a_1=4",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Đặt tên cho hai cơ số và tính tổng, tích",
+        "explanation": "Đặt $p=2+\\sqrt{3}$, $q=2-\\sqrt{3}$. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích $pq=1\\ne0$ nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số $0$.",
+        "math": "p=2+\\sqrt{3},\\quad q=2-\\sqrt{3},\\quad p+q=(2+\\sqrt{3})+(2-\\sqrt{3})=4,\\quad pq=(2+\\sqrt{3})(2-\\sqrt{3})=1,\\quad a_n= p^{n}+q^{n}",
+        "reason": "Đặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Dựng phương trình bậc hai mà cả hai cơ số thỏa mãn",
+        "explanation": "Khai triển tích $(t-p)(t-q)$ rồi thay tổng và tích vừa tính. Cho $t=p$ hoặc $t=q$ làm tích bằng $0$, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.",
+        "math": "\\begin{gathered}(t-p)(t-q)=t^2-4t+1\\\\p^2=4p-1,\\quad q^2=4q-1\\end{gathered}",
+        "reason": "Khai triển tích; Vi-ét đảo; chuyển vế",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Nhân với lũy thừa rồi cộng hai đẳng thức",
+        "explanation": "Với mọi số nguyên $n\\ge0$, nhân đẳng thức của $p$ với $p^{n}$ và của $q$ với $q^{n}$. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.",
+        "math": "\\begin{gathered}p^{n+2}=4p^{n+1}-p^{n}\\\\q^{n+2}=4q^{n+1}-q^{n}\\\\a_{n+2}=4(p^{n+1}+q^{n+1})-(p^{n}+q^{n})\\\\a_{n+2}=4a_{n+1}-a_n\\end{gathered}",
+        "reason": "Nhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kiểm tra chỉ số đầu và kết luận tổng quát",
+        "explanation": "Tại chỉ số $0$, hai cơ số khác không nên $p^0=q^0=1$; do đó $a_0=2$, $a_1=4$. Công thức vừa chứng minh áp dụng cả tại $0$ và mọi số tự nhiên tiếp theo. Vậy $a_{n+2}=4a_{n+1}-a_n$ đúng với mọi số tự nhiên $n\\ge0$.",
+        "math": "a_0=2,\\quad a_1=4",
+        "reason": "Lũy thừa bậc $0$ của số khác0; lập luận cho chỉ số tùy ý",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $a_{n+2}=4a_{n+1}-a_n$ đúng với mọi số tự nhiên $n\\ge0$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Kiểm tra biến đổi đa thức, điều kiện xác định, toàn bộ nghiệm, bảng dấu hoặc biệt thức theo tham số bằng phép tính chính xác",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 93,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-algebra",
+  "logs": []
+}

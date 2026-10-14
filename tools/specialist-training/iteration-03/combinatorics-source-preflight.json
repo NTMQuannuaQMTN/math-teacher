@@ -1,0 +1,1615 @@
+{
+  "scope": "Normalized source lessons only; not app execution or independent mathematics",
+  "result": [
+    {
+      "id": "comb3-selection",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-pigeonhole",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-invariant",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-two-piles",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-sign-game",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-board-user",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Bình có chiến lược thắng sau không quá $8$ lượt với $k=4$ và $16$ lượt với $k=2$\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-takeaway-normal",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-takeaway-misere",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-takeaway-sparse",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-digits",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-inclusion",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-constructive-pair",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-double-count",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-probability",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-board-2",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Bình có chiến lược thắng sau không quá $1$ lượt với $k=4$ và $2$ lượt với $k=2$.\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-board-6",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Bình có chiến lược thắng sau không quá $5$ lượt với $k=4$ và $10$ lượt với $k=2$\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-board-10",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Bình có chiến lược thắng sau không quá $9$ lượt với $k=4$ và $18$ lượt với $k=2$\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-board-50",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s7",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s8",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [
+        "the final answer states a value (\"Bình có chiến lược thắng sau không quá $49$ lượt với $k=4$ và $98$ lượt với $k=2\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)"
+      ],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-piles-4-4-thắng",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-piles-4-4-thua",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-piles-1-1-thua",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-piles-1-5-thua",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-piles-3-7-thua",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-sign-9-3",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-sign-12-3",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-sign-8-4",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s6",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-sign-7-2",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s4",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s5",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-selection-5-3-4-2",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-selection-4-0-2-1",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-selection-2-3-0-0",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-digits-9-2-5",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-digits-7-4-2",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-digits-7-2-2",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-digits-15-6-10",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-probability-zero",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-probability-one",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-merge-6",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-merge-5",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-merge-7",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-remainders-negative",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-pair-large",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-inclusion-all",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-val-handshakes-one",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-explicit-witness",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    },
+    {
+      "id": "comb3-no-witness",
+      "implemented": true,
+      "certificate": true,
+      "latex": [],
+      "language": [],
+      "verification": {
+        "status": "not_checkable",
+        "checks": [],
+        "figureIssue": null,
+        "steps": [
+          {
+            "stepId": "s1",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s2",
+            "status": "not_checked",
+            "claims": 0
+          },
+          {
+            "stepId": "s3",
+            "status": "not_checked",
+            "claims": 0
+          }
+        ]
+      },
+      "feedback": [],
+      "rendererWarnings": []
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import { equation, LinearSystem } from "../../shared/src/proof/linear";
 import { METHODS, method } from "../../shared/src/proof/methods";
 import { planProof, splitChains } from "../../shared/src/proof/planner";
 import { verifyProof } from "../../shared/src/proof/verify";
-import { angleCombination } from "../../shared/src/proof/chain";
+import { angleChain, angleCombination, withChainBudget } from "../../shared/src/proof/chain";
 import type { ChatMessage, JsonModel } from "../src/solver/llm";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { solveProblem } from "../src/solver/pipeline";
@@ -82,17 +82,19 @@ describe("proof planner", () => {
     expect(plan.goals.map((g) => g.proved)).toEqual([true, true]);
   });
 
-  it("proves PTNK 2025 Bài 4a (concyclic, and the circle passes through O) with no model", () => {
+  it("rejects PTNK circle proof whose point order is not justified", () => {
     const plan = planProof(datasetProblem("ptnk-2025-chuyen_4a"));
-    expect(plan.status).toBe("VERIFIED");
+    expect(plan.status).toBe("UNSOLVED_WITHIN_BOUNDARY");
     expect(plan.goals).toHaveLength(2);
-    expect(plan.goals.every((g) => g.proved && g.verification?.ok)).toBe(true);
+    expect(plan.goals.every((g) => !g.proved)).toBe(true);
+    expect(plan.goals.flatMap(g=>g.verification?.steps.flatMap(s=>s.problems) ?? []).join()).toContain("unrestricted line intersections");
   });
 
-  it("proves every claim of Câu 4 (incircle), each part using only the points defined so far", () => {
+  it("preserves safe incircle claims and reports angle claims needing point order", () => {
     const plan = planProof(datasetProblem("ch-4"));
     expect(plan.goals.length).toBe(6);
-    expect(plan.goals.every((g) => g.proved)).toBe(true);
+    expect(plan.goals.map(g=>g.proved)).toEqual([true,true,false,false,false,false]);
+    expect(plan.status).toBe("NEEDS_REVIEW");
     // Part a never cites the points introduced in parts b and c.
     for (const g of plan.goals.filter((x) => x.part === "a")) for (const d of g.proof) expect(JSON.stringify(d.fact)).not.toMatch(/"[HLGP]"/);
     // "AL, GJ cắt nhau trên (I)" needs an auxiliary point, and it is declared.
@@ -112,10 +114,11 @@ describe("proof planner", () => {
     // "IB² = ID² = IA·IK" is a chain and "CEHK là hình bình hành" a shape claim: both are goals, not silently dropped.
     const plan = planProof(datasetProblem("ptnk-2024-chuyen_4a"));
     expect(plan.goals.length).toBe(4);
+    // Circle intersections also need positional proofs. The equilateral ABD case degenerates CEHK.
     expect(plan.status).not.toBe("VERIFIED");
     const b = planProof(datasetProblem("ptnk-2025-chuyen_4b"));
     expect(b.unparsed.length).toBeGreaterThan(0);
-    expect(b.status).toBe("NEEDS_REVIEW");
+    expect(b.status).toBe("UNSOLVED_WITHIN_BOUNDARY");
   });
 
   it("reads OCR slips of fixed phrases, and never drops a claim it can't read", () => {
@@ -130,18 +133,22 @@ describe("proof planner", () => {
   });
 
   it("writes an angle step with no chain as an explicit sum of numbered equations", () => {
-    // ∠AED = ∠AFD in PTNK 2025 4a from its premises, without the chain search.
+    // Algebraic formatting of a candidate chain on one drawing, not a universal proof.
+    // The independent verifier rejects its unproved point order.
     const plan = planProof(datasetProblem("ptnk-2025-chuyen_4a"));
     const g = plan.goals[0]!;
     const d = g.proof.find((x) => x.method === "ANGLE_CHASE" && x.fact.t === "eqangle")!;
     const prem = d.premises.map((id) => g.proof.find((x) => x.id === id)!);
     const P = resolveFigure(plan.figure!).points;
     const known = new Set(prem.filter((x) => x.fact.t === "col").map((x) => [...(x.fact as Fact & { t: "col" }).p].sort().join()));
-    const c = angleCombination(d.fact, prem.map((x) => ({ fact: x.fact, reason: x.method })), {
+    const premises = prem.map((x) => ({ fact: x.fact, reason: x.method }));
+    const context = {
       positions: P,
       points: plan.figure!.points.filter((x) => !x.hidden).map((x) => x.id),
-      collinear: (a, b, cc) => known.has([a, b, cc].sort().join()),
-    });
+      collinear: (a: string, b: string, cc: string) => known.has([a, b, cc].sort().join()),
+    };
+    expect(withChainBudget(0, () => angleChain(d.fact, premises, context))).toBeNull();
+    const c = angleCombination(d.fact, premises, context);
     expect(c).not.toBeNull();
     expect(c!.lines[0]).toMatch(/^\(1\) ∠/);
     expect(c!.combination).toMatch(/\(1\)/);
@@ -267,13 +274,13 @@ describe("independent verifier rejects invalid proofs", () => {
 
 describe("explanation", () => {
   it("turns a verified plan into a valid lesson whose steps highlight figure points", () => {
-    const plan = planProof(datasetProblem("ptnk-2025-chuyen_4a"));
-    const lesson = explainPlan(plan, { statement: datasetProblem("ptnk-2025-chuyen_4a") });
+    const plan = planProof(TANGENTS);
+    const lesson = explainPlan(plan, { statement: TANGENTS });
     expect(ModelLessonSchema.safeParse(lesson).success).toBe(true);
     const ids = new Set(lesson.figure!.points.map((p) => p.id));
     for (const s of lesson.steps) for (const a of s.geometryActions) for (const t of a.targets) expect(ids.has(t)).toBe(true);
     // Each goal is a step, and every hint points at a step.
-    expect(lesson.steps.filter((s) => s.title.includes("cùng thuộc một đường tròn") || s.title.includes("đi qua O")).length).toBeGreaterThanOrEqual(2);
+    expect(lesson.steps.length).toBeGreaterThanOrEqual(2);
     for (const h of lesson.hints) expect(lesson.steps.some((s) => s.id === h.stepId)).toBe(true);
     // Uses only cite earlier steps.
     lesson.steps.forEach((s, i) => s.uses.forEach((u) => expect(lesson.steps.findIndex((x) => x.id === u)).toBeLessThan(i)));
@@ -283,20 +290,21 @@ describe("explanation", () => {
     const text = datasetProblem("ch-4");
     const lesson = explainPlan(planProof(text), { statement: text });
     const at = (label: string) => lesson.steps.findIndex((s) => s.title.includes(label));
-    // b) "Chứng minh ∠IHD = ∠IDK và I, D, J, H cùng thuộc một đường tròn": the angle first.
-    expect(at("∠IHD = ∠IDK")).toBeGreaterThanOrEqual(0);
-    expect(at("∠IHD = ∠IDK")).toBeLessThan(at("I, D, J, H cùng thuộc"));
-    // c) "A, G, D thẳng hàng và AL, GJ cắt nhau trên (I)".
-    expect(at("A, G, D thẳng hàng")).toBeLessThan(at("AL, GJ cắt nhau"));
-    // The auxiliary point P is defined in the first step that mentions it.
-    const firstP = lesson.steps.findIndex((s) => /P/.test(s.title + s.explanation));
-    expect(lesson.steps[firstP]!.explanation.startsWith("Gọi P là")).toBe(true);
+    // Unsupported angle claims are not rendered as established facts.
+    expect(at("∠IHD = ∠IDK")).toBe(-1);
+    expect(at("I, D, J, H cùng thuộc")).toBe(-1);
+    expect(lesson.finalAnswer.text).not.toContain("∠IHD = ∠IDK");
+    // Part c depends on a circle whose part-b proof was withheld; it cannot be promoted to a given.
+    expect(at("A, G, D thẳng hàng")).toBe(-1);
+    expect(at("AL, GJ cắt nhau")).toBe(-1);
+    expect(at("ID²")).toBeLessThan(at("△IJD"));
+    expect(lesson.steps.map(s=>s.explanation).join('\n')).toContain('chân đường cao nằm trong cạnh huyền');
     // No step leaps with "cộng, trừ các góc" without the chain of equalities.
     for (const s of lesson.steps) expect(s.explanation).not.toMatch(/\(cộng, trừ các góc\)\.$/m);
-  });
+  }, 20000);
 
-  it("reports a long proof as not readable rather than showing it", () => {
-    const r = planReadability(planProof(datasetProblem("ch-4")));
+  it("withholds a proof whose cited prerequisites exceed the reading budget", () => {
+    const r = planReadability(planProof(datasetProblem("ch-4")), 0);
     expect(r.readable).toBe(false);
   });
 });
@@ -323,17 +331,21 @@ describe("pipeline: planner first", () => {
     expect(result.verification.checks.some((c) => c.label.startsWith("Chứng minh được kiểm tra từng bước"))).toBe(true);
   });
 
-  it("serves a long verified proof (Câu 4) instead of calling the model", async () => {
+  it("serves only checked incircle claims when model generation fails", async () => {
     const model = new NoModel();
-    const result = await solveProblem(model, VN_GRADE_9, datasetProblem("ch-4"), { signal: new AbortController().signal });
-    expect(model.calls).toBe(0);
+    // Exercise the formal planner fallback on wording outside the strict complete-case family.
+    const wording = "Bài toán. " + datasetProblem("ch-4").replace(/^Câu \d+\.\s*/, "");
+    const result = await solveProblem(model, VN_GRADE_9, wording, { signal: new AbortController().signal, maxAttempts: 1 });
+    expect(model.calls).toBe(1);
+    expect(result.verification.status).toBe("partial");
+    expect(result.lesson.finalAnswer.text).toMatch(/chưa được giải/);
     expect(result.model).toBe("proof-planner");
     expect(result.lesson.steps.length).toBeLessThanOrEqual(14);
-  });
+  }, 20000);
 
   it("falls back to the proved claims when the model fails, and says what is missing", async () => {
     const model = new NoModel();
-    const result = await solveProblem(model, VN_GRADE_9, datasetProblem("ptnk-2025-chuyen_4b"), { signal: new AbortController().signal, maxAttempts: 1 });
+    const result = await solveProblem(model, VN_GRADE_9, TANGENTS + " Chứng minh thêm một kết luận chưa đọc được.", { signal: new AbortController().signal, maxAttempts: 1 });
     expect(model.calls).toBe(1);
     expect(result.model).toBe("proof-planner");
     expect(result.verification.status).toBe("partial");

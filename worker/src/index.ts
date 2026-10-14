@@ -1,6 +1,8 @@
 import { requireOwner } from "./auth";
 import { cleanupExpiredDrafts } from "./cleanup";
 import type { Env } from "./env";
+import {CURRENT_LESSON_VERSION} from '../../shared/src/lessonQuality';
+import {questionRequestDeadline} from './requestDeadline';
 import { ApiError, corsHeaders, errorResponse, json, withHeaders } from "./http";
 import { serveImage } from "./routes/images";
 import { createFeedback, listFeedback } from "./routes/feedback";
@@ -28,7 +30,7 @@ async function route(request: Request, env: Env, ctx: ExecutionContext): Promise
   const method = request.method;
 
   if (pathname === "/health" && method === "GET") {
-    return json({ ok: true, api: "v1" });
+    return json({ ok: true, api: "v1", lessonVersion:CURRENT_LESSON_VERSION });
   }
 
   // Signed URL is the credential here; no auth header (image loaders can't send one everywhere).
@@ -88,7 +90,11 @@ export default {
     }
     let response: Response;
     try {
-      response = await route(request, env, ctx);
+      const path=new URL(request.url).pathname;
+      const questionPost=request.method==='POST'&&(path==='/v1/scans'||SCAN_ACTION_PATH.test(path)||QUESTION_PATH.test(path)&&path.endsWith('/solve'));
+      response = questionPost
+        ? await questionRequestDeadline(path==='/v1/scans'?'ocr':'solve',()=>route(request,env,ctx))
+        : await route(request, env, ctx);
     } catch (err) {
       response = toErrorResponse(err);
     }

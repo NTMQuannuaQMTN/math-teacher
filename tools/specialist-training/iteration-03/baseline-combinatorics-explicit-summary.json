@@ -1,0 +1,21 @@
+{
+  "phase": "baseline-combinatorics-explicit",
+  "questionsExecuted": 2,
+  "ready": 0,
+  "independentlyReviewed": 2,
+  "correctConclusionCount": 0,
+  "mathematicalPasses": 0,
+  "qualityPasses": 0,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 4252.193542000001,
+    "p95": 16820.725,
+    "max": 16820.725
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 2,
+  "rubricMeanForReviewedOnly": 5.0,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

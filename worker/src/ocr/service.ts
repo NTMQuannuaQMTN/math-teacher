@@ -9,6 +9,7 @@ import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
 import { OpenAiOcrProvider } from "./openai";
 import { OcrFailure, type OcrProvider } from "./provider";
+import {withinSignal} from '../solver/deadline';
 
 /**
  * Tries the primary provider; if it fails for a transient reason (overloaded,
@@ -102,13 +103,13 @@ export async function runOcr(
   env: Env,
   image: { bytes: ArrayBuffer; contentType: AllowedImageType },
 ): Promise<OcrResult> {
-  const timeoutMs = intVar(env.OCR_TIMEOUT_MS, 45_000);
+  const timeoutMs = Math.min(20_000,intVar(env.OCR_TIMEOUT_MS, 20_000));
   const signal = AbortSignal.timeout(timeoutMs);
   const started = Date.now();
 
   for (let attempt = 1; ; attempt++) {
     try {
-      const output = await provider.extract({ ...image, signal });
+      const output = await withinSignal(signal,()=>provider.extract({ ...image, signal }));
       return normalizeOcrOutput(output.text, {
         provider: provider.name,
         model: output.model,

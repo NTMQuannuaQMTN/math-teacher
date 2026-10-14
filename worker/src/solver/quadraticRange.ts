@@ -1,0 +1,20 @@
+import {exactQuadraticRange,verifyQuadraticRangeCertificate,fractionLatex,polynomialLatex,type QuadraticRangeCertificate} from '../../../shared/src/rationalPolynomial';
+import {algebraProofLesson,type AlgebraDeduction} from './algebraProofLesson';
+export function quadraticRangeLesson(text:string) {
+ try {
+ const match=/^Cho\s+\$([^$]+)\$\.\s*Tìm giá trị nhỏ nhất và lớn nhất của\s+\$([A-Z])=([^$]+)\$\.$/iu.exec(text.trim());if(!match)return null;
+ const bounds=/^(.+?)(?:\\le|≤|<=)\s*([a-z])\s*(?:\\le|≤|<=)(.+)$/u.exec(match[1]!);if(!bounds)return null;
+ const c=exactQuadraticRange(match[3]!,bounds[1]!,bounds[3]!);if(!c||c.variable!==bounds[2]||!verifyQuadraticRangeCertificate(c))return null;
+ const v=c.variable,n=match[2]!,f=fractionLatex;
+ const points=c.points.map(p=>`${v}=${f(p.x)}:\\quad ${n}=${f(p.value)}`).join('\\\\');
+ const locations=(values:QuadraticRangeCertificate['minimizers'])=>values.map(x=>`$${v}=${f(x)}$`).join(' hoặc ');
+ const final=c.allConstant?`Vậy giá trị nhỏ nhất và lớn nhất của $${n}$ đều bằng $${f(c.minimum)}$, đạt tại mọi $${v}$ thuộc đoạn đã cho.`:`Vậy giá trị nhỏ nhất của $${n}$ là $${f(c.minimum)}$, đạt khi ${locations(c.minimizers)}; giá trị lớn nhất là $${f(c.maximum)}$, đạt khi ${locations(c.maximizers)}.`;
+ const details:AlgebraDeduction[]=[
+ {title:'Giữ nguyên đoạn giá trị được phép',explanation:`Chỉ xét $${v}$ trong đoạn đóng đã cho. Thu gọn biểu thức thành đa thức bậc không quá hai. Giá trị nằm ngoài đoạn không được dùng làm điểm đạt cực trị.`,math:`${f(c.lower)}\\le ${v}\\le ${f(c.upper)},\\quad ${n}=${polynomialLatex(c.polynomial,v)}`,reason:'Điều kiện của đề; khai triển và thu gọn',question:'Điểm đạt cực trị có bắt buộc nằm trong đoạn đã cho không?'},
+ ];
+ if(c.vertex)details.push({title:'Hoàn thành bình phương và xét khoảng cách đến điểm giữa',explanation:`Viết biểu thức thành hệ số nhân với bình phương khoảng cách đến $${v}=${f(c.vertex)}$, cộng một hằng số. Trên đoạn, khoảng cách này nhỏ nhất tại điểm giữa nếu điểm đó thuộc đoạn; nếu không thì tại đầu mút gần hơn. Khoảng cách lớn nhất tại đầu mút xa hơn. Vì bình phương không âm, dấu của hệ số quyết định thứ tự giá trị nhỏ nhất và lớn nhất. Điều này xét toàn bộ đoạn, không dựa vào việc thử vài điểm.`,math:`${n}=(${f(c.polynomial[2]!)})(${v}-(${f(c.vertex)}))^2+(${f(c.constant!)})`,reason:'Hằng đẳng thức hoàn thành bình phương; so sánh khoảng cách trên đoạn',question:'Điểm làm bình phương bằng không có thuộc đoạn không? Đầu mút nào xa điểm ấy hơn?'});
+ else details.push({title:c.allConstant?'Nhận ra biểu thức không phụ thuộc ẩn':'So sánh mọi giá trị bằng hiệu',explanation:c.allConstant?'Hệ số chứa ẩn đều bằng không, nên mọi điểm trong đoạn cho cùng một giá trị.':`Với $u<v$, hiệu của hai giá trị là hệ số bậc nhất nhân với $v-u>0$. Vì thế biểu thức tăng nếu hệ số dương và giảm nếu hệ số âm; hai cực trị nằm tại hai đầu mút.`,math:c.allConstant?`${n}=${f(c.polynomial[0]!)}`:`${n}(v)-${n}(u)=(${f(c.polynomial[1]!)})\\cdot(v-u)`,reason:c.allConstant?'Biểu thức hằng':'Xét dấu hiệu hai giá trị; không dùng đạo hàm',question:'Dấu của hệ số bậc nhất cho biết thứ tự giá trị ở hai đầu mút như thế nào?'});
+ details.push({title:'Tính giá trị tại các điểm cần xét và chỉ ra điểm đạt',explanation:`Thay hai đầu mút${c.vertex&&c.points.some(p=>p.x.n*c.vertex!.d===c.vertex!.n*p.x.d)?' và điểm làm bình phương bằng không':''} vào biểu thức. Lập luận trước đã chứng minh không có điểm nào khác trong đoạn vượt ngoài các giá trị này. ${final}`,math:`\\begin{gathered}${points}\\end{gathered}`,reason:'Thay giá trị chính xác; điều kiện cần và đủ để đạt cực trị',question:'Những giá trị cực trị có được đạt tại điểm được phép cụ thể nào?'});
+ const lesson=algebraProofLesson(text,'Cực trị của tam thức trên đoạn','Hoàn thành bình phương, xét khoảng cách trên toàn đoạn rồi tính giá trị ở đúng các điểm có thể đạt cực trị.',details,final,{givens:[`$${n}=${match[3]}$`],unknowns:[`Giá trị nhỏ nhất, lớn nhất của $${n}$ và mọi điểm đạt`],constraints:[`$${f(c.lower)}\\le ${v}\\le ${f(c.upper)}$`]} );return lesson?{lesson,certificate:c}:null;
+ }catch{return null;}
+}

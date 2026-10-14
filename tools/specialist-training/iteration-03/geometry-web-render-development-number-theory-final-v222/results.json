@@ -1,0 +1,778 @@
+[
+  {
+    "id": "nt3-gcd-affine",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 984.712125,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 53,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho số nguyên \n𝑛\nn. Tìm tất cả các giá trị có thể của ước chung lớn nhất của \n𝑛\n+\n2\nn+2 và \n𝑛\n+\n8\nn+8.\nTìm hiểu đề bài\n\nDẠNG BÀI\nƯớc chung lớn nhất, bội chung nhỏ nhất và giá trị đạt\n\nCẦN TÌM\nTất cả khả năng theo đúng miền và thứ tự của đề.\n\nKIẾN THỨC SỬ DỤNG\nƯớc chung lớn nhất, bội chung nhỏ nhất và giá trị đạt\n\nHƯỚNG GIẢI\nDùng hiệu hoặc tách ước chung; chứng minh đầy đủ và nêu nhân chứng cho mọi khả năng.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nVì sao hiệu chia hết cho một ước chung của hai số?\nTập ước chung không đổi khi thay một số bằng hiệu; chứng minh cả hai chiều\nGọi \n𝑑\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\nd=gcd(n+2,n+8). Một số là ước chung của \n𝑛\n+\n2\nn+2 và \n𝑛\n+\n8\nn+8 khi và chỉ khi nó là ước chung của \n𝑛\n+\n2\nn+2 và hiệu \n6\n6: ước của hai số là ước của hiệu; ngược lại, ước của số thứ nhất và hiệu cũng là ước của tổng của chúng, tức số thứ hai. Vì thế hai cặp có cùng tập ước chung và cùng ước chung lớn nhất. Do hiệu khác \n0\n0, \n𝑑\nd dương và là một ước dương của \n6\n6.\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n6\n)\ngcd(n+2,n+8)=gcd(n+2,6)\n\nGợi ý 2\nTại sao danh sách ứng viên chưa đủ nếu chưa nêu giá trị n làm đạt?\nMột ước chung lớn nhất dương là ước của hiệu cố định\nCác ước dương của \n6\n6 là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6. Do đó không giá trị nào ngoài danh sách có thể là ước chung lớn nhất. Tuy nhiên cần chứng minh từng giá trị trong danh sách thật sự đạt được, chứ chưa thể kết luận chỉ từ điều kiện cần.\n𝑑\n∈\n{\n1\n,\n2\n,\n3\n,\n6\n}\nd∈{1,2,3,6}\n\nGợi ý 3\nLàm sao chọn n để ước chung lớn nhất bằng đúng giá trị mong muốn?\nChọn nhân chứng cụ thể; ước của hiệu và thuật toán Euclid\nVới mỗi ước \n𝑑\nd của \n6\n6, chọn \n𝑛\n=\n𝑑\n−\n2\nn=d−2. Giá trị này thuộc miền đề cho; khi đó \n𝑛\n+\n2\nn+2 bằng \n𝑑\nd cộng một bội của \n6\n6. Vì \n𝑑\nd là ước của \n6\n6, thuật toán Euclid cho ước chung lớn nhất với \n6\n6 đúng bằng \n𝑑\nd. Bảng ghi các lựa chọn cụ thể.\n𝑛\n=\n−\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n1\n\n\n𝑛\n=\n0\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n2\n\n\n𝑛\n=\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n3\n\n\n𝑛\n=\n4\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n6\nn=−1⇒gcd(n+2,n+8)=1\nn=0⇒gcd(n+2,n+8)=2\nn=1⇒gcd(n+2,n+8)=3\nn=4⇒gcd(n+2,n+8)=6\n\t​\n\n\nGợi ý 4\nDanh sách có vừa bao quát mọi trường hợp vừa đạt được từng giá trị không?\nHai chiều; mỗi khả năng có nhân chứng thỏa miền\nMọi giá trị đều phải thuộc danh sách ước của hiệu; ngược lại, từng ước đã có giá trị \n𝑛\nn cụ thể làm đạt. Vậy tất cả các giá trị có thể là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6.\n\nẨn lời giải\nLời giải\n1\nDùng hiệu để xác định mọi ước chung có thể\nGọi \n𝑑\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\nd=gcd(n+2,n+8). Một số là ước chung của \n𝑛\n+\n2\nn+2 và \n𝑛\n+\n8\nn+8 khi và chỉ khi nó là ước chung của \n𝑛\n+\n2\nn+2 và hiệu \n6\n6: ước của hai số là ước của hiệu; ngược lại, ước của số thứ nhất và hiệu cũng là ước của tổng của chúng, tức số thứ hai. Vì thế hai cặp có cùng tập ước chung và cùng ước chung lớn nhất. Do hiệu khác \n0\n0, \n𝑑\nd dương và là một ước dương của \n6\n6.\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n6\n)\ngcd(n+2,n+8)=gcd(n+2,6)\n\nTập ước chung không đổi khi thay một số bằng hiệu; chứng minh cả hai chiều\n\nChưa kiểm tra tự động\n2\nLiệt kê tất cả khả năng từ hiệu cố định\n\nDựa vào bước 1\nCác ước dương của \n6\n6 là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6. Do đó không giá trị nào ngoài danh sách có thể là ước chung lớn nhất. Tuy nhiên cần chứng minh từng giá trị trong danh sách thật sự đạt được, chứ chưa thể kết luận chỉ từ điều kiện cần.\n𝑑\n∈\n{\n1\n,\n2\n,\n3\n,\n6\n}\nd∈{1,2,3,6}\n\nMột ước chung lớn nhất dương là ước của hiệu cố định\n\nChưa kiểm tra tự động\n3\nNêu các giá trị n cụ thể làm đạt từng ước\n\nDựa vào bước 2\nVới mỗi ước \n𝑑\nd của \n6\n6, chọn \n𝑛\n=\n𝑑\n−\n2\nn=d−2. Giá trị này thuộc miền đề cho; khi đó \n𝑛\n+\n2\nn+2 bằng \n𝑑\nd cộng một bội của \n6\n6. Vì \n𝑑\nd là ước của \n6\n6, thuật toán Euclid cho ước chung lớn nhất với \n6\n6 đúng bằng \n𝑑\nd. Bảng ghi các lựa chọn cụ thể.\n𝑛\n=\n−\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n1\n\n\n𝑛\n=\n0\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n2\n\n\n𝑛\n=\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n3\n\n\n𝑛\n=\n4\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n6\nn=−1⇒gcd(n+2,n+8)=1\nn=0⇒gcd(n+2,n+8)=2\nn=1⇒gcd(n+2,n+8)=3\nn=4⇒gcd(n+2,n+8)=6\n\t​\n\n\nChọn nhân chứng cụ thể; ước của hiệu và thuật toán Euclid\n\nChưa kiểm tra tự động\n4\nKết luận cả điều kiện cần và khả năng đạt\n\nDựa vào bước 3\nMọi giá trị đều phải thuộc danh sách ước của hiệu; ngược lại, từng ước đã có giá trị \n𝑛\nn cụ thể làm đạt. Vậy tất cả các giá trị có thể là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6.\n\nHai chiều; mỗi khả năng có nhân chứng thỏa miền\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-prime",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 874.0405000000001,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 81,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các số nguyên tố \n𝑝\np sao cho \n𝑝\n+\n2\np+2 và \n𝑝\n+\n4\np+4 cũng là số nguyên tố.\nTìm hiểu đề bài\n\nDẠNG BÀI\nSố nguyên tố trong các biểu thức dịch chuyển\n\nCHO BIẾT\n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\np,p+2,p+4 đều phải là số nguyên tố.\n\nCẦN TÌM\nTất cả số nguyên tố \n𝑝\np\n\nKIẾN THỨC SỬ DỤNG\nSố nguyên tố trong các biểu thức dịch chuyển\n\nHƯỚNG GIẢI\nDùng một ước nguyên tố nhỏ bao phủ mọi lớp số dư để lập tập ứng viên hữu hạn, rồi thử lại.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTrong mỗi lớp số dư, số nào trong đề chắc chắn chia hết cho một số nguyên tố nhỏ?\nPhép chia có dư; tính số dư của tổng; xét hết các trường hợp\nMọi số nguyên \n𝑝\np có đúng một số dư \n𝑟\nr khi chia \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Các biểu thức có dạng \n𝑝\n+\nℎ\np+h, trong đó \nℎ\nh lần lượt là các hằng số \n0\n,\n2\n,\n4\n0,2,4. Nếu \n𝑝\np chia \n3\n3 dư \n𝑟\nr, thì \n𝑝\n+\nℎ\np+h chia \n3\n3 dư bằng số dư của \n𝑟\n+\nℎ\nr+h. Bảng chỉ rõ, trong mỗi trường hợp, ít nhất một số đề yêu cầu là số nguyên tố lại chia hết cho \n3\n3.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\n\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho \n3\n\t\n𝑝\n\t\n𝑝\n+\n2\n\t\n𝑝\n+\n4\nr\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho 3\n\t​\n\n0\np\n\t​\n\n1\np+2\n\t​\n\n2\np+4\n\t​\n\n\t​\n\n\nGợi ý 2\nMột số nguyên tố chia hết cho \n3\n3 có thể là bội lớn hơn \n3\n3 không?\nNếu một số nguyên tố có ước nguyên tố 3 thì số ấy bằng 3; tập ứng viên là đầy đủ\nSố \n3\n3 là số nguyên tố. Một số nguyên tố chia hết cho \n3\n3 phải bằng chính \n3\n3, vì nó chỉ có hai ước dương là 1 và chính nó. Vì thế ít nhất một biểu thức trong \n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\np,p+2,p+4 bằng \n3\n3. Giải từng phương trình \n𝑝\n=\n3\n,\n𝑝\n+\n2\n=\n3\n,\n𝑝\n+\n4\n=\n3\np=3,p+2=3,p+4=3, rồi loại giá trị \n𝑝\n<\n2\np<2, được tất cả ứng viên bên dưới.\n𝑝\n∈\n{\n3\n}\np∈{3}\n\nGợi ý 3\nỨng viên có làm tất cả các số yêu cầu đều nguyên tố không?\nThử lại tất cả yêu cầu; ước hữu hạn của một hợp số hoặc chứng minh nguyên tố\nThay \n𝑝\n=\n3\np=3 vào tất cả biểu thức của đề được \n3\n,\n5\n,\n7\n3,5,7. Nếu số \n𝑣\nv hợp số thì có một ước \n𝑑\nd thỏa \n2\n≤\n𝑑\n≤\n𝑣\n2≤d≤\nv\n\t​\n\n. Kiểm tra cụ thể: \n3\n3 chỉ có ước dương1 và chính nó; \n5\n5: chia \n2\n2 dư \n1\n1; \n7\n7: chia \n2\n2 dư \n1\n1. Không có ước trong giới hạn bắt buộc của một hợp số, nên tất cả đều nguyên tố; nhận ứng viên.\n𝑝\n=\n3\n⇒\n(\n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\n)\n=\n(\n3\n,\n5\n,\n7\n)\np=3⇒(p,p+2,p+4)=(3,5,7)\n\nGợi ý 4\nTại sao không cần tìm tiếp những số nguyên tố lớn hơn?\nĐiều kiện cần bao quát; kiểm tra điều kiện đủ cho từng ứng viên\nMọi nghiệm phải thuộc tập ứng viên vì bảng số dư bao quát tất cả trường hợp. Mọi ứng viên đã được đối chiếu với tất cả điều kiện, nên không còn nghiệm khác. Vậy tất cả số nguyên tố cần tìm là \n𝑝\n∈\n{\n3\n}\np∈{3}.\n\nẨn lời giải\nLời giải\n1\nXét đầy đủ số dư của số nguyên tố cần tìm\nMọi số nguyên \n𝑝\np có đúng một số dư \n𝑟\nr khi chia \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Các biểu thức có dạng \n𝑝\n+\nℎ\np+h, trong đó \nℎ\nh lần lượt là các hằng số \n0\n,\n2\n,\n4\n0,2,4. Nếu \n𝑝\np chia \n3\n3 dư \n𝑟\nr, thì \n𝑝\n+\nℎ\np+h chia \n3\n3 dư bằng số dư của \n𝑟\n+\nℎ\nr+h. Bảng chỉ rõ, trong mỗi trường hợp, ít nhất một số đề yêu cầu là số nguyên tố lại chia hết cho \n3\n3.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\n\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho \n3\n\t\n𝑝\n\t\n𝑝\n+\n2\n\t\n𝑝\n+\n4\nr\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho 3\n\t​\n\n0\np\n\t​\n\n1\np+2\n\t​\n\n2\np+4\n\t​\n\n\t​\n\n\nPhép chia có dư; tính số dư của tổng; xét hết các trường hợp\n\nChưa kiểm tra tự động\n2\nĐưa điều kiện nguyên tố về hữu hạn ứng viên\n\nDựa vào bước 1\nSố \n3\n3 là số nguyên tố. Một số nguyên tố chia hết cho \n3\n3 phải bằng chính \n3\n3, vì nó chỉ có hai ước dương là 1 và chính nó. Vì thế ít nhất một biểu thức trong \n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\np,p+2,p+4 bằng \n3\n3. Giải từng phương trình \n𝑝\n=\n3\n,\n𝑝\n+\n2\n=\n3\n,\n𝑝\n+\n4\n=\n3\np=3,p+2=3,p+4=3, rồi loại giá trị \n𝑝\n<\n2\np<2, được tất cả ứng viên bên dưới.\n𝑝\n∈\n{\n3\n}\np∈{3}\n\nNếu một số nguyên tố có ước nguyên tố 3 thì số ấy bằng 3; tập ứng viên là đầy đủ\n\nChưa kiểm tra tự động\n3\nKiểm tra ứng viên p=3\n\nDựa vào bước 2\nThay \n𝑝\n=\n3\np=3 vào tất cả biểu thức của đề được \n3\n,\n5\n,\n7\n3,5,7. Nếu số \n𝑣\nv hợp số thì có một ước \n𝑑\nd thỏa \n2\n≤\n𝑑\n≤\n𝑣\n2≤d≤\nv\n\t​\n\n. Kiểm tra cụ thể: \n3\n3 chỉ có ước dương1 và chính nó; \n5\n5: chia \n2\n2 dư \n1\n1; \n7\n7: chia \n2\n2 dư \n1\n1. Không có ước trong giới hạn bắt buộc của một hợp số, nên tất cả đều nguyên tố; nhận ứng viên.\n𝑝\n=\n3\n⇒\n(\n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\n)\n=\n(\n3\n,\n5\n,\n7\n)\np=3⇒(p,p+2,p+4)=(3,5,7)\n\nThử lại tất cả yêu cầu; ước hữu hạn của một hợp số hoặc chứng minh nguyên tố\n\nChưa kiểm tra tự động\n4\nKết luận và bảo đảm không bỏ sót\n\nDựa vào bước 3\nMọi nghiệm phải thuộc tập ứng viên vì bảng số dư bao quát tất cả trường hợp. Mọi ứng viên đã được đối chiếu với tất cả điều kiện, nên không còn nghiệm khác. Vậy tất cả số nguyên tố cần tìm là \n𝑝\n∈\n{\n3\n}\np∈{3}.\n\nĐiều kiện cần bao quát; kiểm tra điều kiện đủ cho từng ứng viên\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-divisor-count",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 923.6391250000001,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 90,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các số nguyên dương có đúng \n6\n6 ước dương và nhỏ hơn \n100\n100.\nTìm hiểu đề bài\n\nDẠNG BÀI\nSáu ước dương: phân loại rồi liệt kê đầy đủ\n\nCHO BIẾT\nSố cần tìm có đúng6 ước dương.\n𝑛\n<\n100\nn<100\n\nCẦN TÌM\nTất cả số nguyên dương \n𝑛\nn.\n\nKIẾN THỨC SỬ DỤNG\nSáu ước dương: phân loại rồi liệt kê đầy đủ\n\nHƯỚNG GIẢI\nDùng phân tích nguyên tố, suy ra hai dạng và giới hạn trước khi xét mọi trường hợp.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nVì sao mỗi lựa chọn số mũ cho đúng một ước và không bỏ sót ước nào?\nPhân tích nguyên tố duy nhất; đếm mỗi ước qua các số mũ\nGọi số nguyên dương cần tìm là \n𝑛\nn. Nếu \n𝑛\n=\n𝑝\n1\n𝑒\n1\n𝑝\n2\n𝑒\n2\n⋯\n𝑝\n𝑠\n𝑒\n𝑠\nn=p\n1\ne\n1\n\t​\n\n\t​\n\np\n2\ne\n2\n\t​\n\n\t​\n\n⋯p\ns\ne\ns\n\t​\n\n\t​\n\n, mỗi ước dương có đúng dạng \n𝑝\n1\n𝑓\n1\n𝑝\n2\n𝑓\n2\n⋯\n𝑝\n𝑠\n𝑓\n𝑠\np\n1\nf\n1\n\t​\n\n\t​\n\np\n2\nf\n2\n\t​\n\n\t​\n\n⋯p\ns\nf\ns\n\t​\n\n\t​\n\n với \n0\n≤\n𝑓\n𝑖\n≤\n𝑒\n𝑖\n0≤f\ni\n\t​\n\n≤e\ni\n\t​\n\n. Mỗi số mũ có \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 cách chọn; các lựa chọn độc lập nên số ước là tích bên dưới. Số1 chỉ có một ước, nên không được nhận.\n(\n𝑒\n1\n+\n1\n)\n(\n𝑒\n2\n+\n1\n)\n⋯\n(\n𝑒\n𝑠\n+\n1\n)\n=\n6\n(e\n1\n\t​\n\n+1)(e\n2\n\t​\n\n+1)⋯(e\ns\n\t​\n\n+1)=6\n\nGợi ý 2\nTại sao không có dạng thứ ba và tại sao phải yêu cầu hai số nguyên tố khác nhau?\nHai cách phân tích6 thành tích các số nguyên ít nhất2; điều kiện cần và đủ\nCác thừa số \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 đều ít nhất2. Số6 chỉ có hai cách phân tích thành tích các số nguyên ít nhất2: một thừa số6 hoặc hai thừa số3 và2; ba thừa số trở lên cho tích ít nhất8. Vậy số cần tìm có dạng \n𝑝\n5\np\n5\n hoặc \n𝑝\n2\n𝑞\np\n2\nq, trong đó \n𝑝\n,\n𝑞\np,q là hai số nguyên tố khác nhau. Ngược lại hai dạng này có lần lượt6 và \n3\n⋅\n2\n=\n6\n3⋅2=6 ước. Không được lấy \n𝑝\n=\n𝑞\np=q, vì khi đó thành \n𝑝\n3\np\n3\n chỉ có4 ước.\n𝑛\n∈\n{\n𝑝\n5\n,\n𝑝\n2\n𝑞\n}\n,\n𝑝\n≠\n𝑞\nn∈{p\n5\n,p\n2\nq},p\n\n=q\n\nGợi ý 3\nGiới hạn của đề cho phép những giá trị nguyên tố nào trong dạng thứ nhất?\nLũy thừa bậc5 tăng với số dương; kiểm tra tất cả số nguyên tố trong giới hạn\nĐiều kiện \n𝑝\n5\n≤\n99\np\n5\n≤99 giới hạn số nguyên tố \n𝑝\np. Các giá trị được nhận là \n𝑝\n=\n2\np=2 cho \n𝑛\n=\n32\nn=32. Mọi số nguyên tố lớn hơn giá trị cuối cùng đã xét có lũy thừa bậc5 lớn hơn giới hạn.\n𝑝\n5\n≤\n99\np\n5\n≤99\n\nGợi ý 4\nDanh sách \n𝑞\nq cho mỗi \n𝑝\np có giữ điều kiện nguyên tố và khác nhau không?\nLiệt kê toàn bộ số nguyên tố dưới từng giới hạn, loại \n𝑞\n=\n𝑝\nq=p\n𝑝\n=\n2\np=2: \n𝑞\n≤\n24\nq≤24; nhận \n𝑞\n∈\n{\n3\n,\n5\n,\n7\n,\n11\n,\n13\n,\n17\n,\n19\n,\n23\n}\nq∈{3,5,7,11,13,17,19,23}, cho \n𝑛\n∈\n{\n12\n,\n20\n,\n28\n,\n44\n,\n52\n,\n68\n,\n76\n,\n92\n}\nn∈{12,20,28,44,52,68,76,92}.\n\n𝑝\n=\n3\np=3: \n𝑞\n≤\n11\nq≤11; nhận \n𝑞\n∈\n{\n2\n,\n5\n,\n7\n,\n11\n}\nq∈{2,5,7,11}, cho \n𝑛\n∈\n{\n18\n,\n45\n,\n63\n,\n99\n}\nn∈{18,45,63,99}.\n\n𝑝\n=\n5\np=5: \n𝑞\n≤\n3\nq≤3; nhận \n𝑞\n∈\n{\n2\n,\n3\n}\nq∈{2,3}, cho \n𝑛\n∈\n{\n50\n,\n75\n}\nn∈{50,75}.\n\n𝑝\n=\n7\np=7: \n𝑞\n≤\n2\nq≤2; nhận \n𝑞\n∈\n{\n2\n}\nq∈{2}, cho \n𝑛\n∈\n{\n98\n}\nn∈{98}.\n\nGợi ý 5\nĐã kiểm tra mỗi số và chứng minh không còn số nào ngoài danh sách chưa?\nKiểm tra điều kiện đủ và chứng minh danh sách bao quát điều kiện cần\nMỗi số trong danh sách có một trong hai phân tích đã chứng minh, nên có đúng6 ước dương, và đều \n𝑛\n<\n100\nn<100. Mọi số thỏa mãn phải thuộc một trong hai dạng và đã được liệt kê theo giới hạn của đề. Vậy tất cả số nguyên dương cần tìm là \n𝑛\n∈\n{\n12\n,\n18\n,\n20\n,\n28\n,\n32\n,\n44\n,\n45\n,\n50\n,\n52\n,\n63\n,\n68\n,\n75\n,\n76\n,\n92\n,\n98\n,\n99\n}\nn∈{12,18,20,28,32,44,45,50,52,63,68,75,76,92,98,99}.\n\nẨn lời giải\nLời giải\n1\nĐếm ước từ phân tích thành thừa số nguyên tố\nGọi số nguyên dương cần tìm là \n𝑛\nn. Nếu \n𝑛\n=\n𝑝\n1\n𝑒\n1\n𝑝\n2\n𝑒\n2\n⋯\n𝑝\n𝑠\n𝑒\n𝑠\nn=p\n1\ne\n1\n\t​\n\n\t​\n\np\n2\ne\n2\n\t​\n\n\t​\n\n⋯p\ns\ne\ns\n\t​\n\n\t​\n\n, mỗi ước dương có đúng dạng \n𝑝\n1\n𝑓\n1\n𝑝\n2\n𝑓\n2\n⋯\n𝑝\n𝑠\n𝑓\n𝑠\np\n1\nf\n1\n\t​\n\n\t​\n\np\n2\nf\n2\n\t​\n\n\t​\n\n⋯p\ns\nf\ns\n\t​\n\n\t​\n\n với \n0\n≤\n𝑓\n𝑖\n≤\n𝑒\n𝑖\n0≤f\ni\n\t​\n\n≤e\ni\n\t​\n\n. Mỗi số mũ có \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 cách chọn; các lựa chọn độc lập nên số ước là tích bên dưới. Số1 chỉ có một ước, nên không được nhận.\n(\n𝑒\n1\n+\n1\n)\n(\n𝑒\n2\n+\n1\n)\n⋯\n(\n𝑒\n𝑠\n+\n1\n)\n=\n6\n(e\n1\n\t​\n\n+1)(e\n2\n\t​\n\n+1)⋯(e\ns\n\t​\n\n+1)=6\n\nPhân tích nguyên tố duy nhất; đếm mỗi ước qua các số mũ\n\nChưa kiểm tra tự động\n2\nPhân loại đầy đủ các số có đúng sáu ước\n\nDựa vào bước 1\nCác thừa số \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 đều ít nhất2. Số6 chỉ có hai cách phân tích thành tích các số nguyên ít nhất2: một thừa số6 hoặc hai thừa số3 và2; ba thừa số trở lên cho tích ít nhất8. Vậy số cần tìm có dạng \n𝑝\n5\np\n5\n hoặc \n𝑝\n2\n𝑞\np\n2\nq, trong đó \n𝑝\n,\n𝑞\np,q là hai số nguyên tố khác nhau. Ngược lại hai dạng này có lần lượt6 và \n3\n⋅\n2\n=\n6\n3⋅2=6 ước. Không được lấy \n𝑝\n=\n𝑞\np=q, vì khi đó thành \n𝑝\n3\np\n3\n chỉ có4 ước.\n𝑛\n∈\n{\n𝑝\n5\n,\n𝑝\n2\n𝑞\n}\n,\n𝑝\n≠\n𝑞\nn∈{p\n5\n,p\n2\nq},p\n\n=q\n\nHai cách phân tích6 thành tích các số nguyên ít nhất2; điều kiện cần và đủ\n\nChưa kiểm tra tự động\n3\nXét dạng một thừa số nguyên tố\n\nDựa vào bước 2\nĐiều kiện \n𝑝\n5\n≤\n99\np\n5\n≤99 giới hạn số nguyên tố \n𝑝\np. Các giá trị được nhận là \n𝑝\n=\n2\np=2 cho \n𝑛\n=\n32\nn=32. Mọi số nguyên tố lớn hơn giá trị cuối cùng đã xét có lũy thừa bậc5 lớn hơn giới hạn.\n𝑝\n5\n≤\n99\np\n5\n≤99\n\nLũy thừa bậc5 tăng với số dương; kiểm tra tất cả số nguyên tố trong giới hạn\n\nChưa kiểm tra tự động\n4\nGiới hạn từng số nguyên tố trong dạng hai thừa số\n\nDựa vào bước 3\nVì \n𝑞\n≥\n2\nq≥2, từ \n𝑝\n2\n𝑞\n≤\n99\np\n2\nq≤99 suy ra \n2\n𝑝\n2\n≤\n99\n2p\n2\n≤99. Do đó chỉ cần xét \n𝑝\n∈\n{\n2\n,\n3\n,\n5\n,\n7\n}\np∈{2,3,5,7}. Với mỗi \n𝑝\np, xét tất cả số nguyên tố \n𝑞\n≤\n⌊\n99\n/\n𝑝\n2\n⌋\nq≤⌊99/p\n2\n⌋ và bỏ \n𝑞\n=\n𝑝\nq=p. Các giới hạn này suy ra từ đề, nên không phải thử một số ứng viên rồi đoán đầy đủ.\n2\n𝑝\n2\n≤\n99\n,\n𝑞\n≤\n⌊\n99\n𝑝\n2\n⌋\n2p\n2\n≤99,q≤⌊\np\n2\n99\n\t​\n\n⌋\n\nCả hai thừa số đều nguyên tố ít nhất2; giới hạn hữu hạn bao quát mọi trường hợp\n\nChưa kiểm tra tự động\n5\nLiệt kê mọi lựa chọn nguyên tố trong giới hạn\n\nDựa vào bước 4\n𝑝\n=\n2\np=2: \n𝑞\n≤\n24\nq≤24; nhận \n𝑞\n∈\n{\n3\n,\n5\n,\n7\n,\n11\n,\n13\n,\n17\n,\n19\n,\n23\n}\nq∈{3,5,7,11,13,17,19,23}, cho \n𝑛\n∈\n{\n12\n,\n20\n,\n28\n,\n44\n,\n52\n,\n68\n,\n76\n,\n92\n}\nn∈{12,20,28,44,52,68,76,92}.\n\n𝑝\n=\n3\np=3: \n𝑞\n≤\n11\nq≤11; nhận \n𝑞\n∈\n{\n2\n,\n5\n,\n7\n,\n11\n}\nq∈{2,5,7,11}, cho \n𝑛\n∈\n{\n18\n,\n45\n,\n63\n,\n99\n}\nn∈{18,45,63,99}.\n\n𝑝\n=\n5\np=5: \n𝑞\n≤\n3\nq≤3; nhận \n𝑞\n∈\n{\n2\n,\n3\n}\nq∈{2,3}, cho \n𝑛\n∈\n{\n50\n,\n75\n}\nn∈{50,75}.\n\n𝑝\n=\n7\np=7: \n𝑞\n≤\n2\nq≤2; nhận \n𝑞\n∈\n{\n2\n}\nq∈{2}, cho \n𝑛\n∈\n{\n98\n}\nn∈{98}.\n\nLiệt kê toàn bộ số nguyên tố dưới từng giới hạn, loại \n𝑞\n=\n𝑝\nq=p\n\nChưa kiểm tra tự động\n6\nĐối chiếu cả số ước và giới hạn rồi kết luận\n\nDựa vào bước 5\nMỗi số trong danh sách có một trong hai phân tích đã chứng minh, nên có đúng6 ước dương, và đều \n𝑛\n<\n100\nn<100. Mọi số thỏa mãn phải thuộc một trong hai dạng và đã được liệt kê theo giới hạn của đề. Vậy tất cả số nguyên dương cần tìm là \n𝑛\n∈\n{\n12\n,\n18\n,\n20\n,\n28\n,\n32\n,\n44\n,\n45\n,\n50\n,\n52\n,\n63\n,\n68\n,\n75\n,\n76\n,\n92\n,\n98\n,\n99\n}\nn∈{12,18,20,28,32,44,45,50,52,63,68,75,76,92,98,99}.\n\nKiểm tra điều kiện đủ và chứng minh danh sách bao quát điều kiện cần\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-exam-ch-3",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 923.9300830000002,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 124,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCâu 3. Với mỗi số nguyên dương \n𝑛\nn, đặt \n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\nf(n)=(n+4)\n4\n−n\n4\n.\na) Chứng minh \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n16\n16 với mọi \n𝑛\nn.\nb) Tìm \n𝑛\nn để \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n3\n3.\nc) Tìm \n𝑛\nn để \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n24\n2\n24\n2\n.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChia hết đa thức nhiều phần: nhân tử chung và lũy thừa nguyên tố\n\nCHO BIẾT\n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\nf(n)=(n+4)\n4\n−n\n4\n\nCẦN TÌM\nChứng minh câu a; tất cả giá trị của n trong câu b và c.\n\nKIẾN THỨC SỬ DỤNG\nChia hết đa thức nhiều phần: nhân tử chung và lũy thừa nguyên tố\n\nHƯỚNG GIẢI\nKhai triển chung, giảm đúng môđun, chứng minh tính đầy đủ của số dư và kết hợp từng câu.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau khai triển, hệ số nào có thể đặt chung để xét chia hết?\nHằng đẳng thức và phép khai triển; thu gọn hệ số chính xác\nKhai triển các lũy thừa và tích trong định nghĩa, gộp các hạng tử cùng bậc; các hạng tử đối nhau triệt tiêu. Ta được đa thức hệ số nguyên bên dưới. Các câu sau dùng cùng biểu thức này và giữ miền của \n𝑛\nn như đề.\n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\n=\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\nf(n)=(n+4)\n4\n−n\n4\n=16n\n3\n+96n\n2\n+256n+256\n\nGợi ý 2\nSau tách nhân tử, cần xét chia hết cho môđun nào để điều kiện tương đương?\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\nTừ khai triển, đặt \n16\n16 làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì \n16\n=\n16\n⋅\n1\n16=16⋅1 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n16\n16 khi và chỉ khi đa thức còn lại chia hết cho \n1\n1. Mọi số nguyên đều chia hết cho1, nên điều kiện này đúng với mọi giá trị.\n𝑓\n(\n𝑛\n)\n=\n16\n(\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\n)\n,\n16\n=\n16\n⋅\n1\nf(n)=16(n\n3\n+6n\n2\n+16n+16),16=16⋅1\n\nGợi ý 3\nSau tách nhân tử, cần xét chia hết cho môđun nào để điều kiện tương đương?\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\nKhông cần tách thêm nhân tử; dùng trực tiếp đa thức đã khai triển. Đa thức còn lại có hệ số nguyên. Vì \n3\n=\n1\n⋅\n3\n3=1⋅3 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n3\n3 khi và chỉ khi đa thức còn lại chia hết cho \n3\n3.\n𝑓\n(\n𝑛\n)\n=\n1\n(\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\n)\n,\n3\n=\n1\n⋅\n3\nf(n)=1(16n\n3\n+96n\n2\n+256n+256),3=1⋅3\n\nGợi ý 4\nCó lớp nào không thỏa một bảng nhưng bị nhận nhầm khi kết hợp không?\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\nXét tất cả lớp số dư khi chia \n3\n3, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n1\n}\nr∈{1}. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n1\n(\nm\no\nd\n3\n)\nn≡1(mod3)\n\nGợi ý 5\nCó lớp nào không thỏa một bảng nhưng bị nhận nhầm khi kết hợp không?\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\nXét tất cả lớp số dư khi chia \n36\n36, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n16\n,\n34\n}\nr∈{16,34}. Các lớp này đúng bằng các lớp \n16\n16 khi chia \n18\n18, vì danh sách bao gồm trọn các số dư cách nhau \n18\n18 trong mỗi lớp đó. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n16\n(\nm\no\nd\n18\n)\nn≡16(mod18)\n\nGợi ý 6\nMỗi câu đã có kết luận riêng và mọi điều kiện miền đều được giữ chưa?\nMỗi câu có điều kiện cần và đủ hoặc phản ví dụ rõ ràng; các kết luận trên từng dòng\nCác phép khai triển, tách nhân tử và xét số dư đã được chứng minh đầy đủ.\na) Mọi giá trị \n𝑛\nn thuộc miền đề đều thỏa mãn.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n\nẨn lời giải\nLời giải\n1\nKhai triển biểu thức chung cho cả ba câu\nKhai triển các lũy thừa và tích trong định nghĩa, gộp các hạng tử cùng bậc; các hạng tử đối nhau triệt tiêu. Ta được đa thức hệ số nguyên bên dưới. Các câu sau dùng cùng biểu thức này và giữ miền của \n𝑛\nn như đề.\n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\n=\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\nf(n)=(n+4)\n4\n−n\n4\n=16n\n3\n+96n\n2\n+256n+256\n\nHằng đẳng thức và phép khai triển; thu gọn hệ số chính xác\n\nChưa kiểm tra tự động\n2\na) Tách nhân tử và giảm đúng điều kiện chia hết\n\nDựa vào bước 1\nTừ khai triển, đặt \n16\n16 làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì \n16\n=\n16\n⋅\n1\n16=16⋅1 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n16\n16 khi và chỉ khi đa thức còn lại chia hết cho \n1\n1. Mọi số nguyên đều chia hết cho1, nên điều kiện này đúng với mọi giá trị.\n𝑓\n(\n𝑛\n)\n=\n16\n(\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\n)\n,\n16\n=\n16\n⋅\n1\nf(n)=16(n\n3\n+6n\n2\n+16n+16),16=16⋅1\n\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\n\nChưa kiểm tra tự động\n3\nb) Tách nhân tử và giảm đúng điều kiện chia hết\n\nDựa vào bước 2\nKhông cần tách thêm nhân tử; dùng trực tiếp đa thức đã khai triển. Đa thức còn lại có hệ số nguyên. Vì \n3\n=\n1\n⋅\n3\n3=1⋅3 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n3\n3 khi và chỉ khi đa thức còn lại chia hết cho \n3\n3.\n𝑓\n(\n𝑛\n)\n=\n1\n(\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\n)\n,\n3\n=\n1\n⋅\n3\nf(n)=1(16n\n3\n+96n\n2\n+256n+256),3=1⋅3\n\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\n\nChưa kiểm tra tự động\n4\nb) Chứng minh các bảng số dư bao quát mọi giá trị\n\nDựa vào bước 3\nGọi đa thức còn lại là \n𝑄\n(\n𝑛\n)\n=\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\nQ(n)=16n\n3\n+96n\n2\n+256n+256. Nếu \n𝑛\nn và \n𝑟\nr có cùng số dư khi chia một số \n𝑚\nm, hiệu từng lũy thừa của chúng chia hết cho \n𝑚\nm nhờ hằng đẳng thức hiệu lũy thừa. Vì hệ số đều nguyên, \n𝑄\n(\n𝑛\n)\n−\n𝑄\n(\n𝑟\n)\nQ(n)−Q(r) cũng chia hết cho \n𝑚\nm. Do đó xét đủ các số dư là xét mọi giá trị. Môđun còn lại có phân tích \n3\n=\n3\n3=3; các thừa số là lũy thừa của các nguyên tố khác nhau, nên đôi một nguyên tố cùng nhau. Điều kiện chia hết cho tích tương đương chia hết cho từng thừa số.\n𝑄\n(\n𝑛\n)\n≡\n𝑄\n(\n𝑟\n)\n(\nm\no\nd\n𝑚\n)\nQ(n)≡Q(r)(modm)\n\nĐa thức nguyên giữ đồng dư; tính chất chia hết với các ước nguyên tố cùng nhau\n\nChưa kiểm tra tự động\n5\nb) Số dư khi chia 3: trường hợp 0 đến 2\n\nDựa vào bước 4\nThay từng \n𝑟\nr vào \n𝑄\n(\n𝑟\n)\nQ(r), tính rồi chia \n3\n3. Chẳng hạn \n𝑄\n(\n0\n)\n=\n256\nQ(0)=256 có số dư \n1\n1. Chỉ cột có số dư0 được nhận.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\n\n𝑄\n(\n𝑟\n)\n \nmod\n \n3\n\t\n1\n\t\n0\n\t\n2\nr\nQ(r)mod3\n\t​\n\n0\n1\n\t​\n\n1\n0\n\t​\n\n2\n2\n\t​\n\n\t​\n\n\nTính chính xác tất cả lớp số dư trong bảng\n\nChưa kiểm tra tự động\n6\nb) Kết hợp điều kiện và nêu toàn bộ nghiệm\n\nDựa vào bước 5\nXét tất cả lớp số dư khi chia \n3\n3, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n1\n}\nr∈{1}. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n1\n(\nm\no\nd\n3\n)\nn≡1(mod3)\n\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\n\nChưa kiểm tra tự động\n7\nc) Tách nhân tử và giảm đúng điều kiện chia hết\n\nDựa vào bước 6\nTừ khai triển, đặt \n16\n16 làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì \n576\n=\n16\n⋅\n36\n576=16⋅36 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n576\n576 khi và chỉ khi đa thức còn lại chia hết cho \n36\n36.\n𝑓\n(\n𝑛\n)\n=\n16\n(\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\n)\n,\n576\n=\n16\n⋅\n36\nf(n)=16(n\n3\n+6n\n2\n+16n+16),576=16⋅36\n\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\n\nChưa kiểm tra tự động\n8\nc) Chứng minh các bảng số dư bao quát mọi giá trị\n\nDựa vào bước 7\nGọi đa thức còn lại là \n𝑄\n(\n𝑛\n)\n=\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\nQ(n)=n\n3\n+6n\n2\n+16n+16. Nếu \n𝑛\nn và \n𝑟\nr có cùng số dư khi chia một số \n𝑚\nm, hiệu từng lũy thừa của chúng chia hết cho \n𝑚\nm nhờ hằng đẳng thức hiệu lũy thừa. Vì hệ số đều nguyên, \n𝑄\n(\n𝑛\n)\n−\n𝑄\n(\n𝑟\n)\nQ(n)−Q(r) cũng chia hết cho \n𝑚\nm. Do đó xét đủ các số dư là xét mọi giá trị. Môđun còn lại có phân tích \n36\n=\n4\n⋅\n9\n36=4⋅9; các thừa số là lũy thừa của các nguyên tố khác nhau, nên đôi một nguyên tố cùng nhau. Điều kiện chia hết cho tích tương đương chia hết cho từng thừa số.\n𝑄\n(\n𝑛\n)\n≡\n𝑄\n(\n𝑟\n)\n(\nm\no\nd\n𝑚\n)\nQ(n)≡Q(r)(modm)\n\nĐa thức nguyên giữ đồng dư; tính chất chia hết với các ước nguyên tố cùng nhau\n\nChưa kiểm tra tự động\n9\nc) Số dư khi chia 4: trường hợp 0 đến 3\n\nDựa vào bước 8\nThay từng \n𝑟\nr vào \n𝑄\n(\n𝑟\n)\nQ(r), tính rồi chia \n4\n4. Chẳng hạn \n𝑄\n(\n0\n)\n=\n16\nQ(0)=16 có số dư \n0\n0. Chỉ cột có số dư0 được nhận.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\t\n3\n\n\n𝑄\n(\n𝑟\n)\n \nmod\n \n4\n\t\n0\n\t\n3\n\t\n0\n\t\n1\nr\nQ(r)mod4\n\t​\n\n0\n0\n\t​\n\n1\n3\n\t​\n\n2\n0\n\t​\n\n3\n1\n\t​\n\n\t​\n\n\nTính chính xác tất cả lớp số dư trong bảng\n\nChưa kiểm tra tự động\n10\nc) Số dư khi chia 9: trường hợp 0 đến 8\n\nDựa vào bước 9\nThay từng \n𝑟\nr vào \n𝑄\n(\n𝑟\n)\nQ(r), tính rồi chia \n9\n9. Chẳng hạn \n𝑄\n(\n0\n)\n=\n16\nQ(0)=16 có số dư \n7\n7. Chỉ cột có số dư0 được nhận.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\t\n3\n\t\n4\n\t\n5\n\t\n6\n\t\n7\n\t\n8\n\n\n𝑄\n(\n𝑟\n)\n \nmod\n \n9\n\t\n7\n\t\n3\n\t\n8\n\t\n1\n\t\n6\n\t\n2\n\t\n4\n\t\n0\n\t\n5\nr\nQ(r)mod9\n\t​\n\n0\n7\n\t​\n\n1\n3\n\t​\n\n2\n8\n\t​\n\n3\n1\n\t​\n\n4\n6\n\t​\n\n5\n2\n\t​\n\n6\n4\n\t​\n\n7\n0\n\t​\n\n8\n5\n\t​\n\n\t​\n\n\nTính chính xác tất cả lớp số dư trong bảng\n\nChưa kiểm tra tự động\n11\nc) Kết hợp điều kiện và nêu toàn bộ nghiệm\n\nDựa vào bước 10\nXét tất cả lớp số dư khi chia \n36\n36, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n16\n,\n34\n}\nr∈{16,34}. Các lớp này đúng bằng các lớp \n16\n16 khi chia \n18\n18, vì danh sách bao gồm trọn các số dư cách nhau \n18\n18 trong mỗi lớp đó. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n16\n(\nm\no\nd\n18\n)\nn≡16(mod18)\n\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\n\nChưa kiểm tra tự động\n12\nKết luận riêng từng câu theo miền đề\n\nDựa vào bước 11\nCác phép khai triển, tách nhân tử và xét số dư đã được chứng minh đầy đủ.\na) Mọi giá trị \n𝑛\nn thuộc miền đề đều thỏa mãn.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n\nMỗi câu có điều kiện cần và đủ hoặc phản ví dụ rõ ràng; các kết luận trên từng dòng\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-exam-ptnk-2024-chuyen_3c",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 940.9517920000008,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 69,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nVới mỗi số tự nhiên \n𝑛\nn, đặt \n𝑎\n𝑛\n=\n(\n2\n+\n3\n)\n𝑛\n+\n(\n2\n−\n3\n)\n𝑛\na\nn\n\t​\n\n=(2+\n3\n\t​\n\n)\nn\n+(2−\n3\n\t​\n\n)\nn\n. Tìm \n𝑛\nn để \n𝑎\n𝑛\na\nn\n\t​\n\n chia hết cho 14.\nTìm hiểu đề bài\n\nDẠNG BÀI\nDãy liên hợp: tính nguyên và chu kỳ số dư\n\nCHO BIẾT\n𝑎\n𝑛\n=\n(\n2\n+\n3\n)\n𝑛\n+\n(\n2\n−\n3\n)\n𝑛\na\nn\n\t​\n\n=(2+\n3\n\t​\n\n)\nn\n+(2−\n3\n\t​\n\n)\nn\n\nCẦN TÌM\nTất cả số tự nhiên \n𝑛\nn sao cho \n𝑎\n𝑛\na\nn\n\t​\n\n chia hết cho \n14\n14.\n\nKIẾN THỨC SỬ DỤNG\nDãy liên hợp: tính nguyên và chu kỳ số dư\n\nHƯỚNG GIẢI\nChứng minh công thức truy hồi và tính nguyên, rồi theo dõi cặp số dư để chứng minh chu kỳ đầy đủ.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTừ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?\nĐặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa\nĐặt \n𝑝\n=\n2\n+\n3\np=2+\n3\n\t​\n\n, \n𝑞\n=\n2\n−\n3\nq=2−\n3\n\t​\n\n. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích \n𝑝\n𝑞\n=\n1\n≠\n0\npq=1\n\n=0 nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số \n0\n0.\n𝑝\n=\n2\n+\n3\n,\n𝑞\n=\n2\n−\n3\n,\n𝑝\n+\n𝑞\n=\n(\n2\n+\n3\n)\n+\n(\n2\n−\n3\n)\n=\n4\n,\n𝑝\n𝑞\n=\n(\n2\n+\n3\n)\n(\n2\n−\n3\n)\n=\n1\n,\n𝑎\n𝑛\n=\n𝑝\n𝑛\n+\n𝑞\n𝑛\np=2+\n3\n\t​\n\n,q=2−\n3\n\t​\n\n,p+q=(2+\n3\n\t​\n\n)+(2−\n3\n\t​\n\n)=4,pq=(2+\n3\n\t​\n\n)(2−\n3\n\t​\n\n)=1,a\nn\n\t​\n\n=p\nn\n+q\nn\n\nGợi ý 2\nTừ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?\nKhai triển tích; Vi-ét đảo; chuyển vế\nKhai triển tích \n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n(t−p)(t−q) rồi thay tổng và tích vừa tính. Cho \n𝑡\n=\n𝑝\nt=p hoặc \n𝑡\n=\n𝑞\nt=q làm tích bằng \n0\n0, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.\n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n=\n𝑡\n2\n−\n(\n4\n)\n𝑡\n+\n(\n1\n)\n\n\n𝑝\n2\n=\n(\n4\n)\n𝑝\n−\n(\n1\n)\n,\n𝑞\n2\n=\n(\n4\n)\n𝑞\n−\n(\n1\n)\n(t−p)(t−q)=t\n2\n−(4)t+(1)\np\n2\n=(4)p−(1),q\n2\n=(4)q−(1)\n\t​\n\n\nGợi ý 3\nTừ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?\nNhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy\nVới mọi số nguyên \n𝑛\n≥\n0\nn≥0, nhân đẳng thức của \n𝑝\np với \n𝑝\n𝑛\np\nn\n và của \n𝑞\nq với \n𝑞\n𝑛\nq\nn\n. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.\n𝑝\n𝑛\n+\n2\n=\n(\n4\n)\n𝑝\n𝑛\n+\n1\n−\n(\n1\n)\n𝑝\n𝑛\n\n\n𝑞\n𝑛\n+\n2\n=\n(\n4\n)\n𝑞\n𝑛\n+\n1\n−\n(\n1\n)\n𝑞\n𝑛\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n(\n𝑝\n𝑛\n+\n1\n+\n𝑞\n𝑛\n+\n1\n)\n−\n(\n1\n)\n(\n𝑝\n𝑛\n+\n𝑞\n𝑛\n)\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\np\nn+2\n=(4)p\nn+1\n−(1)p\nn\nq\nn+2\n=(4)q\nn+1\n−(1)q\nn\na\nn+2\n\t​\n\n=(4)(p\nn+1\n+q\nn+1\n)−(1)(p\nn\n+q\nn\n)\na\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\t​\n\n\nGợi ý 4\nVì sao biểu thức chứa căn vẫn cho số nguyên ở mọi chỉ số?\nHai số hạng đầu nguyên; công thức truy hồi giữ tính nguyên\nHai cơ số khác0 cho \n𝑎\n0\n=\n2\na\n0\n\t​\n\n=2; tổng của chúng cho \n𝑎\n1\n=\n4\na\n1\n\t​\n\n=4. Đây đều là số nguyên. Công thức vừa chứng minh chỉ nhân với các hệ số nguyên rồi trừ, nên từ hai số hạng nguyên suy ra số hạng tiếp theo nguyên. Bắt đầu từ chỉ số0, lập luận lần lượt chứng minh tất cả số hạng nguyên; vì vậy phép xét chia hết có nghĩa.\n𝑎\n0\n=\n2\n,\n𝑎\n1\n=\n4\n,\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\na\n0\n\t​\n\n=2,a\n1\n\t​\n\n=4,a\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\nGợi ý 5\nCặp nào lặp lại, từ đâu, và tại sao việc lặp kéo dài mãi?\nCùng cặp đầu vào cho cùng cặp đầu ra ở mọi lần tiếp theo; chứng minh chu kỳ đầy đủ\nCặp ở chỉ số \n8\n8 là \n(\n2\n,\n4\n)\n(2,4), đúng bằng cặp ở chỉ số \n0\n0. Không cặp nào trước đó lặp. Vì chuyển trạng thái là duy nhất, từ chỉ số \n0\n0 các cặp lặp theo chu kỳ \n8\n8. Chu kỳ bắt đầu ngay ở chỉ số0, nên mọi chỉ số đều nằm trong một chu kỳ đã kiểm tra.\n(\n𝑎\n8\n,\n𝑎\n9\n)\n≡\n(\n𝑎\n0\n,\n𝑎\n1\n)\n≡\n(\n2\n,\n4\n)\n(\nm\no\nd\n14\n)\n(a\n8\n\t​\n\n,a\n9\n\t​\n\n)≡(a\n0\n\t​\n\n,a\n1\n\t​\n\n)≡(2,4)(mod14)\n\nGợi ý 6\nCông thức chỉ số có bao gồm mọi lần lặp mà không thêm vị trí có số dư khác0 không?\nPhần đầu và chu kỳ bao quát mọi số tự nhiên; điều kiện cần và đủ\nChu kỳ bắt đầu từ chỉ số0; trong mỗi chu kỳ, nhận đúng các vị trí có số dư0 của bảng. Các vị trí khác đều có số dư khác0, nên không chia hết. Vậy tất cả chỉ số cần tìm là \n𝑛\n=\n2\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=2+8k, k∈Z, k≥0 hoặc \n𝑛\n=\n6\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=6+8k, k∈Z, k≥0.\n\nẨn lời giải\nLời giải\n1\nĐặt tên cho hai cơ số và tính tổng, tích\nĐặt \n𝑝\n=\n2\n+\n3\np=2+\n3\n\t​\n\n, \n𝑞\n=\n2\n−\n3\nq=2−\n3\n\t​\n\n. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích \n𝑝\n𝑞\n=\n1\n≠\n0\npq=1\n\n=0 nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số \n0\n0.\n𝑝\n=\n2\n+\n3\n,\n𝑞\n=\n2\n−\n3\n,\n𝑝\n+\n𝑞\n=\n(\n2\n+\n3\n)\n+\n(\n2\n−\n3\n)\n=\n4\n,\n𝑝\n𝑞\n=\n(\n2\n+\n3\n)\n(\n2\n−\n3\n)\n=\n1\n,\n𝑎\n𝑛\n=\n𝑝\n𝑛\n+\n𝑞\n𝑛\np=2+\n3\n\t​\n\n,q=2−\n3\n\t​\n\n,p+q=(2+\n3\n\t​\n\n)+(2−\n3\n\t​\n\n)=4,pq=(2+\n3\n\t​\n\n)(2−\n3\n\t​\n\n)=1,a\nn\n\t​\n\n=p\nn\n+q\nn\n\nĐặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa\n\nChưa kiểm tra tự động\n2\nDựng phương trình bậc hai mà cả hai cơ số thỏa mãn\n\nDựa vào bước 1\nKhai triển tích \n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n(t−p)(t−q) rồi thay tổng và tích vừa tính. Cho \n𝑡\n=\n𝑝\nt=p hoặc \n𝑡\n=\n𝑞\nt=q làm tích bằng \n0\n0, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.\n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n=\n𝑡\n2\n−\n(\n4\n)\n𝑡\n+\n(\n1\n)\n\n\n𝑝\n2\n=\n(\n4\n)\n𝑝\n−\n(\n1\n)\n,\n𝑞\n2\n=\n(\n4\n)\n𝑞\n−\n(\n1\n)\n(t−p)(t−q)=t\n2\n−(4)t+(1)\np\n2\n=(4)p−(1),q\n2\n=(4)q−(1)\n\t​\n\n\nKhai triển tích; Vi-ét đảo; chuyển vế\n\nChưa kiểm tra tự động\n3\nNhân với lũy thừa rồi cộng hai đẳng thức\n\nDựa vào bước 2\nVới mọi số nguyên \n𝑛\n≥\n0\nn≥0, nhân đẳng thức của \n𝑝\np với \n𝑝\n𝑛\np\nn\n và của \n𝑞\nq với \n𝑞\n𝑛\nq\nn\n. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.\n𝑝\n𝑛\n+\n2\n=\n(\n4\n)\n𝑝\n𝑛\n+\n1\n−\n(\n1\n)\n𝑝\n𝑛\n\n\n𝑞\n𝑛\n+\n2\n=\n(\n4\n)\n𝑞\n𝑛\n+\n1\n−\n(\n1\n)\n𝑞\n𝑛\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n(\n𝑝\n𝑛\n+\n1\n+\n𝑞\n𝑛\n+\n1\n)\n−\n(\n1\n)\n(\n𝑝\n𝑛\n+\n𝑞\n𝑛\n)\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\np\nn+2\n=(4)p\nn+1\n−(1)p\nn\nq\nn+2\n=(4)q\nn+1\n−(1)q\nn\na\nn+2\n\t​\n\n=(4)(p\nn+1\n+q\nn+1\n)−(1)(p\nn\n+q\nn\n)\na\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\t​\n\n\nNhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy\n\nChưa kiểm tra tự động\n4\nChứng minh mọi số hạng là số nguyên\n\nDựa vào bước 3\nHai cơ số khác0 cho \n𝑎\n0\n=\n2\na\n0\n\t​\n\n=2; tổng của chúng cho \n𝑎\n1\n=\n4\na\n1\n\t​\n\n=4. Đây đều là số nguyên. Công thức vừa chứng minh chỉ nhân với các hệ số nguyên rồi trừ, nên từ hai số hạng nguyên suy ra số hạng tiếp theo nguyên. Bắt đầu từ chỉ số0, lập luận lần lượt chứng minh tất cả số hạng nguyên; vì vậy phép xét chia hết có nghĩa.\n𝑎\n0\n=\n2\n,\n𝑎\n1\n=\n4\n,\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\na\n0\n\t​\n\n=2,a\n1\n\t​\n\n=4,a\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\nHai số hạng đầu nguyên; công thức truy hồi giữ tính nguyên\n\nChưa kiểm tra tự động\n5\nTheo dõi hai số hạng liên tiếp để bảo đảm chu kỳ\n\nDựa vào bước 4\nXét cặp số dư \n(\n𝑎\n𝑛\n,\n𝑎\n𝑛\n+\n1\n)\n(a\nn\n\t​\n\n,a\nn+1\n\t​\n\n) khi chia \n14\n14. Công thức truy hồi xác định duy nhất cặp kế tiếp từ cặp hiện tại. Có nhiều nhất \n196\n196 cặp; khi một cặp lặp lại, toàn bộ các cặp sau lặp theo cùng cách. Phải trùng cả hai số dư, không chỉ một số hạng.\n(\n𝑢\n,\n𝑣\n)\n⟼\n(\n𝑣\n,\n(\n4\n)\n𝑣\n−\n(\n1\n)\n𝑢\n)\n(\nm\no\nd\n14\n)\n(u,v)⟼(v,(4)v−(1)u)(mod14)\n\nTrạng thái gồm hai số hạng; chuyển trạng thái duy nhất trên tập hữu hạn\n\nChưa kiểm tra tự động\n6\nTính các cặp số dư từ chỉ số 0 đến 7\n\nDựa vào bước 5\nBắt đầu từ cặp số dư của \n(\n2\n,\n4\n)\n(2,4), dùng đúng công thức truy hồi để tính mỗi cặp kế tiếp. Bảng ghi cả hai số dư; những cột có số dư của \n𝑎\n𝑛\na\nn\n\t​\n\n bằng0 là chỉ số được nhận.\n𝑛\n\t\n0\n\t\n1\n\t\n2\n\t\n3\n\t\n4\n\t\n5\n\t\n6\n\t\n7\n\n\n𝑎\n𝑛\n \nmod\n \n14\n\t\n2\n\t\n4\n\t\n0\n\t\n10\n\t\n12\n\t\n10\n\t\n0\n\t\n4\n\n\n𝑎\n𝑛\n+\n1\n \nmod\n \n14\n\t\n4\n\t\n0\n\t\n10\n\t\n12\n\t\n10\n\t\n0\n\t\n4\n\t\n2\nn\na\nn\n\t​\n\nmod14\na\nn+1\n\t​\n\nmod14\n\t​\n\n0\n2\n4\n\t​\n\n1\n4\n0\n\t​\n\n2\n0\n10\n\t​\n\n3\n10\n12\n\t​\n\n4\n12\n10\n\t​\n\n5\n10\n0\n\t​\n\n6\n0\n4\n\t​\n\n7\n4\n2\n\t​\n\n\t​\n\n\nTính từng chuyển trạng thái; đối chiếu điều kiện chia hết\n\nChưa kiểm tra tự động\n7\nChứng minh phần trước chu kỳ và mọi chu kỳ tiếp theo\n\nDựa vào bước 6\nCặp ở chỉ số \n8\n8 là \n(\n2\n,\n4\n)\n(2,4), đúng bằng cặp ở chỉ số \n0\n0. Không cặp nào trước đó lặp. Vì chuyển trạng thái là duy nhất, từ chỉ số \n0\n0 các cặp lặp theo chu kỳ \n8\n8. Chu kỳ bắt đầu ngay ở chỉ số0, nên mọi chỉ số đều nằm trong một chu kỳ đã kiểm tra.\n(\n𝑎\n8\n,\n𝑎\n9\n)\n≡\n(\n𝑎\n0\n,\n𝑎\n1\n)\n≡\n(\n2\n,\n4\n)\n(\nm\no\nd\n14\n)\n(a\n8\n\t​\n\n,a\n9\n\t​\n\n)≡(a\n0\n\t​\n\n,a\n1\n\t​\n\n)≡(2,4)(mod14)\n\nCùng cặp đầu vào cho cùng cặp đầu ra ở mọi lần tiếp theo; chứng minh chu kỳ đầy đủ\n\nChưa kiểm tra tự động\n8\nKết luận mọi chỉ số thỏa mãn, không chỉ các số đầu\n\nDựa vào bước 7\nChu kỳ bắt đầu từ chỉ số0; trong mỗi chu kỳ, nhận đúng các vị trí có số dư0 của bảng. Các vị trí khác đều có số dư khác0, nên không chia hết. Vậy tất cả chỉ số cần tìm là \n𝑛\n=\n2\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=2+8k, k∈Z, k≥0 hoặc \n𝑛\n=\n6\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=6+8k, k∈Z, k≥0.\n\nPhần đầu và chu kỳ bao quát mọi số tự nhiên; điều kiện cần và đủ\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-square-factor",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 889.011125,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 59,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các số nguyên \n𝑛\nn sao cho \n𝑛\n2\n+\n15\nn\n2\n+15 là số chính phương.\nTìm hiểu đề bài\n\nDẠNG BÀI\nSố chính phương: số dư hoặc hiệu hai bình phương\n\nCHO BIẾT\n𝑛\nn là số nguyên.\n\nCẦN TÌM\nTất cả \n𝑛\nn để \n𝑛\n2\n+\n15\nn\n2\n+15 là số chính phương.\n\nKIẾN THỨC SỬ DỤNG\nSố chính phương: số dư hoặc hiệu hai bình phương\n\nHƯỚNG GIẢI\nChứng minh cản trở số dư nếu có; nếu không, phân tích hiệu hai bình phương và giữ điều kiện đổi biến.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nĐặt biểu thức bằng bình phương của số nguyên nào để phân tích thành tích?\nĐịnh nghĩa số chính phương; hiệu hai bình phương\nKhai triển và thu gọn biểu thức gốc được \n𝑛\n2\n+\n15\nn\n2\n+15. Đặt nó bằng \n𝑡\n2\nt\n2\n với \n𝑡\nt nguyên không âm; đây là điều kiện cần và đủ để là số chính phương. Chuyển vế và phân tích hiệu hai bình phương, đặt \n𝑢\n=\n𝑡\n−\n𝑛\nu=t−n, \n𝑣\n=\n𝑡\n+\n𝑛\nv=t+n.\n𝑡\n2\n−\n𝑛\n2\n=\n15\n,\n(\n𝑡\n−\n𝑛\n)\n(\n𝑡\n+\n𝑛\n)\n=\n15\nt\n2\n−n\n2\n=15,(t−n)(t+n)=15\n\nGợi ý 2\nHai thừa số phải thỏa tính chẵn lẻ và dấu nào để đổi lại thành số nguyên?\nƯớc của tích khác không; điều kiện nguyên, không âm và miền gốc\nVì \n𝑢\n𝑣\n=\n15\n≠\n0\nuv=15\n\n=0, \n𝑢\nu là ước nguyên khác 0 của \n15\n15, gồm cả hai dấu. Cả \n∣\n𝑢\n∣\n,\n∣\n𝑣\n∣\n∣u∣,∣v∣ đều không quá \n15\n15. Ngược lại, \n𝑡\n=\n(\n𝑢\n+\n𝑣\n)\n/\n2\nt=(u+v)/2, \n𝑛\n=\n(\n𝑣\n−\n𝑢\n)\n/\n2\nn=(v−u)/2: chỉ nhận khi \n𝑢\n,\n𝑣\nu,v cùng tính chẵn lẻ, \n𝑡\n≥\n0\nt≥0, và \n𝑛\nn thuộc đúng miền số nguyên.\n15\n⋮\n𝑢\n,\n𝑣\n=\n15\n/\n𝑢\n,\n𝑡\n=\n𝑢\n+\n𝑣\n2\n,\n𝑛\n=\n𝑣\n−\n𝑢\n2\n15⋮u,v=15/u,t=\n2\nu+v\n\t​\n\n,n=\n2\nv−u\n\t​\n\n\nGợi ý 3\nHàng nào cho số nguyên thuộc miền gốc và căn không âm?\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n15\n,\n−\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n5\n,\n−\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n3\n,\n−\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n−\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n1\n,\n−\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n−\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n1\n,\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n7\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n3\n,\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n1\n)\n✓\n(u,v)=(−15,−1)⇒(t,n)=(−8,7)×\n(u,v)=(−5,−3)⇒(t,n)=(−4,1)×\n(u,v)=(−3,−5)⇒(t,n)=(−4,−1)×\n(u,v)=(−1,−15)⇒(t,n)=(−8,−7)×\n(u,v)=(1,15)⇒(t,n)=(8,7)✓\n(u,v)=(3,5)⇒(t,n)=(4,1)✓\n\t​\n\n\nGợi ý 4\nHàng nào cho số nguyên thuộc miền gốc và căn không âm?\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n5\n,\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n−\n1\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n15\n,\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n−\n7\n)\n✓\n(u,v)=(5,3)⇒(t,n)=(4,−1)✓\n(u,v)=(15,1)⇒(t,n)=(8,−7)✓\n\t​\n\n\nGợi ý 5\nTại sao mọi nghiệm đều xuất hiện trong bảng thừa số?\nHai chiều của phân tích nhân tử và đối chiếu miền; kiểm tra biểu thức gốc\nVới mỗi giá trị được nhận, cặp thừa số cho \n𝑡\nt nguyên không âm và \n𝑛\n2\n+\n15\n=\n𝑡\n2\nn\n2\n+15=t\n2\n, nên thỏa yêu cầu. Mọi nghiệm ban đầu đều phải cho một cặp thừa số đã xét; vì thế không còn nghiệm khác. Vậy tất cả nghiệm là \n𝑛\n∈\n{\n−\n7\n,\n−\n1\n,\n1\n,\n7\n}\nn∈{−7,−1,1,7}.\n𝑛\n=\n−\n7\n:\n49\n+\n15\n=\n64\n\n\n𝑛\n=\n−\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n7\n:\n49\n+\n15\n=\n64\nn=−7:49+15=64\nn=−1:1+15=16\nn=1:1+15=16\nn=7:49+15=64\n\t​\n\n\nẨn lời giải\nLời giải\n1\nĐưa điều kiện chính phương về hiệu hai bình phương\nKhai triển và thu gọn biểu thức gốc được \n𝑛\n2\n+\n15\nn\n2\n+15. Đặt nó bằng \n𝑡\n2\nt\n2\n với \n𝑡\nt nguyên không âm; đây là điều kiện cần và đủ để là số chính phương. Chuyển vế và phân tích hiệu hai bình phương, đặt \n𝑢\n=\n𝑡\n−\n𝑛\nu=t−n, \n𝑣\n=\n𝑡\n+\n𝑛\nv=t+n.\n𝑡\n2\n−\n𝑛\n2\n=\n15\n,\n(\n𝑡\n−\n𝑛\n)\n(\n𝑡\n+\n𝑛\n)\n=\n15\nt\n2\n−n\n2\n=15,(t−n)(t+n)=15\n\nĐịnh nghĩa số chính phương; hiệu hai bình phương\n\nChưa kiểm tra tự động\n2\nGiới hạn hữu hạn và điều kiện của đổi biến ngược\n\nDựa vào bước 1\nVì \n𝑢\n𝑣\n=\n15\n≠\n0\nuv=15\n\n=0, \n𝑢\nu là ước nguyên khác 0 của \n15\n15, gồm cả hai dấu. Cả \n∣\n𝑢\n∣\n,\n∣\n𝑣\n∣\n∣u∣,∣v∣ đều không quá \n15\n15. Ngược lại, \n𝑡\n=\n(\n𝑢\n+\n𝑣\n)\n/\n2\nt=(u+v)/2, \n𝑛\n=\n(\n𝑣\n−\n𝑢\n)\n/\n2\nn=(v−u)/2: chỉ nhận khi \n𝑢\n,\n𝑣\nu,v cùng tính chẵn lẻ, \n𝑡\n≥\n0\nt≥0, và \n𝑛\nn thuộc đúng miền số nguyên.\n15\n⋮\n𝑢\n,\n𝑣\n=\n15\n/\n𝑢\n,\n𝑡\n=\n𝑢\n+\n𝑣\n2\n,\n𝑛\n=\n𝑣\n−\n𝑢\n2\n15⋮u,v=15/u,t=\n2\nu+v\n\t​\n\n,n=\n2\nv−u\n\t​\n\n\nƯớc của tích khác không; điều kiện nguyên, không âm và miền gốc\n\nChưa kiểm tra tự động\n3\nXét các cặp thừa số từ 1 đến 6\n\nDựa vào bước 2\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n15\n,\n−\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n5\n,\n−\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n3\n,\n−\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n−\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n1\n,\n−\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n−\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n1\n,\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n7\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n3\n,\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n1\n)\n✓\n(u,v)=(−15,−1)⇒(t,n)=(−8,7)×\n(u,v)=(−5,−3)⇒(t,n)=(−4,1)×\n(u,v)=(−3,−5)⇒(t,n)=(−4,−1)×\n(u,v)=(−1,−15)⇒(t,n)=(−8,−7)×\n(u,v)=(1,15)⇒(t,n)=(8,7)✓\n(u,v)=(3,5)⇒(t,n)=(4,1)✓\n\t​\n\n\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\n\nChưa kiểm tra tự động\n4\nXét các cặp thừa số từ 7 đến 8\n\nDựa vào bước 3\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n5\n,\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n−\n1\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n15\n,\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n−\n7\n)\n✓\n(u,v)=(5,3)⇒(t,n)=(4,−1)✓\n(u,v)=(15,1)⇒(t,n)=(8,−7)✓\n\t​\n\n\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\n\nChưa kiểm tra tự động\n5\nKiểm tra nghiệm và kết luận đầy đủ\n\nDựa vào bước 4\nVới mỗi giá trị được nhận, cặp thừa số cho \n𝑡\nt nguyên không âm và \n𝑛\n2\n+\n15\n=\n𝑡\n2\nn\n2\n+15=t\n2\n, nên thỏa yêu cầu. Mọi nghiệm ban đầu đều phải cho một cặp thừa số đã xét; vì thế không còn nghiệm khác. Vậy tất cả nghiệm là \n𝑛\n∈\n{\n−\n7\n,\n−\n1\n,\n1\n,\n7\n}\nn∈{−7,−1,1,7}.\n𝑛\n=\n−\n7\n:\n49\n+\n15\n=\n64\n\n\n𝑛\n=\n−\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n7\n:\n49\n+\n15\n=\n64\nn=−7:49+15=64\nn=−1:1+15=16\nn=1:1+15=16\nn=7:49+15=64\n\t​\n\n\nHai chiều của phân tích nhân tử và đối chiếu miền; kiểm tra biểu thức gốc\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-linear-positive",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 873.8134170000003,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 56,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các cặp số nguyên dương \n(\n𝑥\n,\n𝑦\n)\n(x,y) thỏa mãn \n6\n𝑥\n+\n9\n𝑦\n=\n30\n6x+9y=30.\nTìm hiểu đề bài\n\nDẠNG BÀI\nPhương trình nghiệm nguyên: ƯCLN và toàn bộ họ nghiệm\n\nCHO BIẾT\n6\n𝑥\n+\n9\n𝑦\n=\n30\n6x+9y=30\n\nCẦN TÌM\nTất cả cặp \n(\n𝑥\n,\n𝑦\n)\n(x,y) trong miền đề.\n\nKIẾN THỨC SỬ DỤNG\nPhương trình nghiệm nguyên: ƯCLN và toàn bộ họ nghiệm\n\nHƯỚNG GIẢI\nChứng minh điều kiện chia hết, nêu nghiệm riêng, chứng minh họ tham số và lọc miền.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau thu gọn, hệ số của mỗi ẩn và miền số cần giữ là gì?\nThu gọn đa thức đã kiểm tra chính xác; giữ miền của đề\nChuyển tất cả hạng tử về một vế, thu gọn hệ số và chuyển hằng số sang vế phải, được phương trình bên dưới tương đương đề. Cả hai ẩn phải là số nguyên dương, nên còn cần kiểm tra hai tọa độ lớn hơn0.\n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n=\n30\n(6)x+(9)y=30\n\nGợi ý 2\nVế phải có thỏa điều kiện chia hết bắt buộc cho ước chung lớn nhất không?\nThuật toán Euclid; một ước của cả hai hệ số là ước của mọi tổ hợp nguyên\nMọi tổ hợp nguyên \n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n(6)x+(9)y đều chia hết cho \n𝑔\n=\ngcd\n⁡\n(\n6\n,\n9\n)\n=\n3\ng=gcd(6,9)=3. Vì vậy vế phải phải chia hết cho \n𝑔\ng. Các phép chia liên tiếp bên dưới bảo toàn tập ước chung; số dư khác0 cuối cùng là ước chung lớn nhất.\n6\n=\n9\n⋅\n0\n+\n6\n\n\n9\n=\n6\n⋅\n1\n+\n3\n\n\n6\n=\n3\n⋅\n2\n+\n0\n6=9⋅0+6\n9=6⋅1+3\n6=3⋅2+0\n\t​\n\n\nGợi ý 3\nTừ hai biểu diễn trước, phép trừ cho những hệ số nguyên nào ở biểu diễn kế tiếp?\nSố dư bằng số bị chia trừ thương nhân số chia; thay đẳng thức đã biết và gộp hệ số\nBắt đầu với hai hệ số gốc. Ở mỗi phép chia, lấy số bị chia trừ thương nhân số chia; thay hai biểu diễn đã biết của chúng để thu được tổ hợp ở dòng sau. Vì vậy từng số dư, cuối cùng là \n3\n3, được biểu diễn chính xác bằng hai hệ số ban đầu. Các đẳng thức bên dưới ghi rõ phép trừ và các hệ số sau thu gọn.\n6\n=\n6\n−\n0\n⋅\n9\n=\n(\n1\n)\n(\n6\n)\n+\n(\n0\n)\n(\n9\n)\n\n\n3\n=\n9\n−\n1\n⋅\n6\n=\n(\n−\n1\n)\n(\n6\n)\n+\n(\n1\n)\n(\n9\n)\n6=6−0⋅9=(1)(6)+(0)(9)\n3=9−1⋅6=(−1)(6)+(1)(9)\n\t​\n\n\nGợi ý 4\nCặp nghiệm riêng có thỏa phương trình, và còn phải kiểm tra miền nào?\nTổ hợp Euclid được kiểm tra trực tiếp; nhân với thương nguyên của vế phải\nCác phép trừ số dư của thuật toán Euclid vừa biểu diễn \n3\n3 thành tổ hợp của hai hệ số. Kiểm tra trực tiếp \n(\n6\n)\n⋅\n(\n−\n1\n)\n+\n(\n9\n)\n⋅\n(\n1\n)\n=\n3\n(6)⋅(−1)+(9)⋅(1)=3. Nhân hai hệ số trong tổ hợp với \n10\n10 cho nghiệm riêng \n(\n𝑥\n0\n,\n𝑦\n0\n)\n=\n(\n−\n10\n,\n10\n)\n(x\n0\n\t​\n\n,y\n0\n\t​\n\n)=(−10,10). Đây là nghiệm nguyên của phương trình; nếu đề yêu cầu nguyên dương, chưa được kết luận nghiệm riêng này thỏa miền.\n(\n6\n)\n(\n−\n10\n)\n+\n(\n9\n)\n(\n10\n)\n=\n30\n(6)(−10)+(9)(10)=30\n\nGợi ý 5\nĐiều kiện dương của cả hai tọa độ cho giao những giới hạn tham số nào?\nGiải riêng từng bất đẳng thức, đổi chiều khi chia số âm; làm tròn đúng vì tham số nguyên\nTừ công thức nghiệm, yêu cầu riêng \n𝑥\n≥\n1\nx≥1 và \n𝑦\n≥\n1\ny≥1. Với hệ số tham số dương, chuyển vế rồi làm tròn lên cho cận dưới; với hệ số âm, đổi chiều bất đẳng thức rồi làm tròn xuống cho cận trên. Nếu hệ số bằng0 thì giá trị cố định phải dương. Kết hợp cho \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n−\n10\n+\n3\n𝑡\n≥\n1\n,\n10\n−\n2\n𝑡\n≥\n1\n−10+3t≥1,10−2t≥1\n\nGợi ý 6\nĐã nêu một nghiệm thực sự thuộc miền khi có nghiệm và chứng minh không bỏ sót chưa?\nKiểm tra cụ thể điều kiện gốc và miền; tính đầy đủ đã chứng minh bằng công thức\nChẳng hạn chọn \n(\n𝑥\n,\n𝑦\n)\n=\n(\n2\n,\n2\n)\n(x,y)=(2,2); cặp này thuộc miền đề và có \n(\n6\n)\n⋅\n(\n2\n)\n+\n(\n9\n)\n⋅\n(\n2\n)\n=\n30\n(6)⋅(2)+(9)⋅(2)=30. Công thức đã được chứng minh cho tất cả nghiệm nguyên; giới hạn tham số giữ đúng và đủ cả hai điều kiện dương. Vậy tất cả nghiệm là \n𝑥\n=\n−\n10\n+\n3\n𝑡\n,\n𝑦\n=\n10\n−\n2\n𝑡\nx=−10+3t,y=10−2t, với \n𝑡\n∈\n𝑍\nt∈Z và \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n\nẨn lời giải\nLời giải\n1\nThu gọn và giữ đúng miền của hai ẩn\nChuyển tất cả hạng tử về một vế, thu gọn hệ số và chuyển hằng số sang vế phải, được phương trình bên dưới tương đương đề. Cả hai ẩn phải là số nguyên dương, nên còn cần kiểm tra hai tọa độ lớn hơn0.\n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n=\n30\n(6)x+(9)y=30\n\nThu gọn đa thức đã kiểm tra chính xác; giữ miền của đề\n\nChưa kiểm tra tự động\n2\nTìm ước chung lớn nhất và điều kiện cần\n\nDựa vào bước 1\nMọi tổ hợp nguyên \n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n(6)x+(9)y đều chia hết cho \n𝑔\n=\ngcd\n⁡\n(\n6\n,\n9\n)\n=\n3\ng=gcd(6,9)=3. Vì vậy vế phải phải chia hết cho \n𝑔\ng. Các phép chia liên tiếp bên dưới bảo toàn tập ước chung; số dư khác0 cuối cùng là ước chung lớn nhất.\n6\n=\n9\n⋅\n0\n+\n6\n\n\n9\n=\n6\n⋅\n1\n+\n3\n\n\n6\n=\n3\n⋅\n2\n+\n0\n6=9⋅0+6\n9=6⋅1+3\n6=3⋅2+0\n\t​\n\n\nThuật toán Euclid; một ước của cả hai hệ số là ước của mọi tổ hợp nguyên\n\nChưa kiểm tra tự động\n3\nBiểu diễn từng số dư bằng hai hệ số gốc\n\nDựa vào bước 2\nBắt đầu với hai hệ số gốc. Ở mỗi phép chia, lấy số bị chia trừ thương nhân số chia; thay hai biểu diễn đã biết của chúng để thu được tổ hợp ở dòng sau. Vì vậy từng số dư, cuối cùng là \n3\n3, được biểu diễn chính xác bằng hai hệ số ban đầu. Các đẳng thức bên dưới ghi rõ phép trừ và các hệ số sau thu gọn.\n6\n=\n6\n−\n0\n⋅\n9\n=\n(\n1\n)\n(\n6\n)\n+\n(\n0\n)\n(\n9\n)\n\n\n3\n=\n9\n−\n1\n⋅\n6\n=\n(\n−\n1\n)\n(\n6\n)\n+\n(\n1\n)\n(\n9\n)\n6=6−0⋅9=(1)(6)+(0)(9)\n3=9−1⋅6=(−1)(6)+(1)(9)\n\t​\n\n\nSố dư bằng số bị chia trừ thương nhân số chia; thay đẳng thức đã biết và gộp hệ số\n\nChưa kiểm tra tự động\n4\nXây dựng và kiểm tra một nghiệm nguyên cụ thể\n\nDựa vào bước 3\nCác phép trừ số dư của thuật toán Euclid vừa biểu diễn \n3\n3 thành tổ hợp của hai hệ số. Kiểm tra trực tiếp \n(\n6\n)\n⋅\n(\n−\n1\n)\n+\n(\n9\n)\n⋅\n(\n1\n)\n=\n3\n(6)⋅(−1)+(9)⋅(1)=3. Nhân hai hệ số trong tổ hợp với \n10\n10 cho nghiệm riêng \n(\n𝑥\n0\n,\n𝑦\n0\n)\n=\n(\n−\n10\n,\n10\n)\n(x\n0\n\t​\n\n,y\n0\n\t​\n\n)=(−10,10). Đây là nghiệm nguyên của phương trình; nếu đề yêu cầu nguyên dương, chưa được kết luận nghiệm riêng này thỏa miền.\n(\n6\n)\n(\n−\n10\n)\n+\n(\n9\n)\n(\n10\n)\n=\n30\n(6)(−10)+(9)(10)=30\n\nTổ hợp Euclid được kiểm tra trực tiếp; nhân với thương nguyên của vế phải\n\nChưa kiểm tra tự động\n5\nChứng minh công thức bao gồm mọi nghiệm nguyên\n\nDựa vào bước 4\nLấy một nghiệm bất kỳ rồi trừ nghiệm riêng: \n(\n2\n)\n(\n𝑥\n−\n(\n−\n10\n)\n)\n=\n−\n(\n3\n)\n(\n𝑦\n−\n(\n10\n)\n)\n(2)(x−(−10))=−(3)(y−(10)). Hai hệ số \n2\n2 và \n3\n3 nguyên tố cùng nhau, nên \n𝑥\n−\n(\n−\n10\n)\nx−(−10) phải là bội của \n3\n3. Đặt \n𝑥\n−\n(\n−\n10\n)\n=\n(\n3\n)\n𝑡\nx−(−10)=(3)t với \n𝑡\nt nguyên; thế lại suy ra \n𝑦\n−\n(\n10\n)\n=\n−\n(\n2\n)\n𝑡\ny−(10)=−(2)t. Ngược lại thay công thức vào phương trình, các hạng tử theo \n𝑡\nt triệt tiêu, nên mọi tham số nguyên đều cho nghiệm.\n𝑥\n=\n−\n10\n+\n3\n𝑡\n,\n𝑦\n=\n10\n−\n2\n𝑡\n,\n𝑡\n∈\n𝑍\nx=−10+3t,y=10−2t,t∈Z\n\nTrừ nghiệm riêng; hai hệ số sau tách ƯCLN nguyên tố cùng nhau; chứng minh cả hai chiều\n\nChưa kiểm tra tự động\n6\nLọc toàn bộ tham số theo hai điều kiện nguyên dương\n\nDựa vào bước 5\nTừ công thức nghiệm, yêu cầu riêng \n𝑥\n≥\n1\nx≥1 và \n𝑦\n≥\n1\ny≥1. Với hệ số tham số dương, chuyển vế rồi làm tròn lên cho cận dưới; với hệ số âm, đổi chiều bất đẳng thức rồi làm tròn xuống cho cận trên. Nếu hệ số bằng0 thì giá trị cố định phải dương. Kết hợp cho \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n−\n10\n+\n3\n𝑡\n≥\n1\n,\n10\n−\n2\n𝑡\n≥\n1\n−10+3t≥1,10−2t≥1\n\nGiải riêng từng bất đẳng thức, đổi chiều khi chia số âm; làm tròn đúng vì tham số nguyên\n\nChưa kiểm tra tự động\n7\nKiểm tra nhân chứng thuộc miền và kết luận đầy đủ\n\nDựa vào bước 6\nChẳng hạn chọn \n(\n𝑥\n,\n𝑦\n)\n=\n(\n2\n,\n2\n)\n(x,y)=(2,2); cặp này thuộc miền đề và có \n(\n6\n)\n⋅\n(\n2\n)\n+\n(\n9\n)\n⋅\n(\n2\n)\n=\n30\n(6)⋅(2)+(9)⋅(2)=30. Công thức đã được chứng minh cho tất cả nghiệm nguyên; giới hạn tham số giữ đúng và đủ cả hai điều kiện dương. Vậy tất cả nghiệm là \n𝑥\n=\n−\n10\n+\n3\n𝑡\n,\n𝑦\n=\n10\n−\n2\n𝑡\nx=−10+3t,y=10−2t, với \n𝑡\n∈\n𝑍\nt∈Z và \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n\nKiểm tra cụ thể điều kiện gốc và miền; tính đầy đủ đã chứng minh bằng công thức\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-infinite-factors",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 840.7609589999993,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 32,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các cặp số nguyên \n(\n𝑥\n,\n𝑦\n)\n(x,y) thỏa mãn \n𝑥\n𝑦\n−\n3\n𝑥\n−\n4\n𝑦\n=\n−\n12\nxy−3x−4y=−12.\nTìm hiểu đề bài\n\nDẠNG BÀI\nNghiệm nguyên bằng phân tích thành nhân tử\n\nCHO BIẾT\n𝑥\n𝑦\n−\n3\n𝑥\n−\n4\n𝑦\n=\n−\n12\nxy−3x−4y=−12\n\nCẦN TÌM\nTất cả cặp số nguyên \n(\n𝑥\n,\n𝑦\n)\n(x,y)\n\nKIẾN THỨC SỬ DỤNG\nNghiệm nguyên bằng phân tích thành nhân tử\n\nHƯỚNG GIẢI\nĐưa về tích, phân biệt tích bằng không và khác không; xét toàn bộ ước với miền gốc.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau đổi biến, điều kiện của hai ẩn ban đầu còn phải kiểm tra thế nào?\nNhóm hạng tử; phép đổi biến ngược được; giữ nguyên miền của đề\nCộng \n12\n12 vào hai vế, dùng khai triển tích để được đẳng thức bên dưới. Đặt \n𝑢\n=\n𝑥\n−\n4\nu=x−4, \n𝑣\n=\n𝑦\n−\n3\nv=y−3; ngược lại \n𝑥\n=\n𝑢\n+\n4\nx=u+4, \n𝑦\n=\n𝑣\n+\n3\ny=v+3. Các ẩn ban đầu phải là số nguyên.\n(\n𝑥\n−\n4\n)\n(\n𝑦\n−\n3\n)\n=\n0\n(x−4)(y−3)=0\n\nGợi ý 2\nTích bằng không cho những họ nghiệm nào? Có được coi 0 là một ước để chia không?\nTính chất tích bằng không; hợp các họ nghiệm và điều kiện miền\nMột tích hai số nguyên bằng 0 khi và chỉ khi ít nhất một thừa số bằng 0. Vì vậy \n𝑢\n=\n0\nu=0 hoặc \n𝑣\n=\n0\nv=0, tương ứng \n𝑥\n=\n4\nx=4 hoặc \n𝑦\n=\n3\ny=3. Mỗi họ đều thỏa phương trình tích với ẩn còn lại tùy ý; hai họ có thể chung một cặp, nên dùng hợp, không cộng số nghiệm. Vậy tất cả nghiệm là: \n𝑥\n=\n4\nx=4, \n𝑦\ny là số nguyên tùy ý; hoặc \n𝑦\n=\n3\ny=3, \n𝑥\nx là số nguyên tùy ý.\n\nẨn lời giải\nLời giải\n1\nĐưa phương trình về tích, giữ miền của các ẩn\nCộng \n12\n12 vào hai vế, dùng khai triển tích để được đẳng thức bên dưới. Đặt \n𝑢\n=\n𝑥\n−\n4\nu=x−4, \n𝑣\n=\n𝑦\n−\n3\nv=y−3; ngược lại \n𝑥\n=\n𝑢\n+\n4\nx=u+4, \n𝑦\n=\n𝑣\n+\n3\ny=v+3. Các ẩn ban đầu phải là số nguyên.\n(\n𝑥\n−\n4\n)\n(\n𝑦\n−\n3\n)\n=\n0\n(x−4)(y−3)=0\n\nNhóm hạng tử; phép đổi biến ngược được; giữ nguyên miền của đề\n\nChưa kiểm tra tự động\n2\nXét tích bằng không thay vì liệt kê ước\n\nDựa vào bước 1\nMột tích hai số nguyên bằng 0 khi và chỉ khi ít nhất một thừa số bằng 0. Vì vậy \n𝑢\n=\n0\nu=0 hoặc \n𝑣\n=\n0\nv=0, tương ứng \n𝑥\n=\n4\nx=4 hoặc \n𝑦\n=\n3\ny=3. Mỗi họ đều thỏa phương trình tích với ẩn còn lại tùy ý; hai họ có thể chung một cặp, nên dùng hợp, không cộng số nghiệm. Vậy tất cả nghiệm là: \n𝑥\n=\n4\nx=4, \n𝑦\ny là số nguyên tùy ý; hoặc \n𝑦\n=\n3\ny=3, \n𝑥\nx là số nguyên tùy ý.\n\nTính chất tích bằng không; hợp các họ nghiệm và điều kiện miền\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-gcd-affine",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 839.895708,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 53,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho số nguyên \n𝑛\nn. Tìm tất cả các giá trị có thể của ước chung lớn nhất của \n𝑛\n+\n2\nn+2 và \n𝑛\n+\n8\nn+8.\nTìm hiểu đề bài\n\nDẠNG BÀI\nƯớc chung lớn nhất, bội chung nhỏ nhất và giá trị đạt\n\nCẦN TÌM\nTất cả khả năng theo đúng miền và thứ tự của đề.\n\nKIẾN THỨC SỬ DỤNG\nƯớc chung lớn nhất, bội chung nhỏ nhất và giá trị đạt\n\nHƯỚNG GIẢI\nDùng hiệu hoặc tách ước chung; chứng minh đầy đủ và nêu nhân chứng cho mọi khả năng.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nVì sao hiệu chia hết cho một ước chung của hai số?\nTập ước chung không đổi khi thay một số bằng hiệu; chứng minh cả hai chiều\nGọi \n𝑑\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\nd=gcd(n+2,n+8). Một số là ước chung của \n𝑛\n+\n2\nn+2 và \n𝑛\n+\n8\nn+8 khi và chỉ khi nó là ước chung của \n𝑛\n+\n2\nn+2 và hiệu \n6\n6: ước của hai số là ước của hiệu; ngược lại, ước của số thứ nhất và hiệu cũng là ước của tổng của chúng, tức số thứ hai. Vì thế hai cặp có cùng tập ước chung và cùng ước chung lớn nhất. Do hiệu khác \n0\n0, \n𝑑\nd dương và là một ước dương của \n6\n6.\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n6\n)\ngcd(n+2,n+8)=gcd(n+2,6)\n\nGợi ý 2\nTại sao danh sách ứng viên chưa đủ nếu chưa nêu giá trị n làm đạt?\nMột ước chung lớn nhất dương là ước của hiệu cố định\nCác ước dương của \n6\n6 là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6. Do đó không giá trị nào ngoài danh sách có thể là ước chung lớn nhất. Tuy nhiên cần chứng minh từng giá trị trong danh sách thật sự đạt được, chứ chưa thể kết luận chỉ từ điều kiện cần.\n𝑑\n∈\n{\n1\n,\n2\n,\n3\n,\n6\n}\nd∈{1,2,3,6}\n\nGợi ý 3\nLàm sao chọn n để ước chung lớn nhất bằng đúng giá trị mong muốn?\nChọn nhân chứng cụ thể; ước của hiệu và thuật toán Euclid\nVới mỗi ước \n𝑑\nd của \n6\n6, chọn \n𝑛\n=\n𝑑\n−\n2\nn=d−2. Giá trị này thuộc miền đề cho; khi đó \n𝑛\n+\n2\nn+2 bằng \n𝑑\nd cộng một bội của \n6\n6. Vì \n𝑑\nd là ước của \n6\n6, thuật toán Euclid cho ước chung lớn nhất với \n6\n6 đúng bằng \n𝑑\nd. Bảng ghi các lựa chọn cụ thể.\n𝑛\n=\n−\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n1\n\n\n𝑛\n=\n0\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n2\n\n\n𝑛\n=\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n3\n\n\n𝑛\n=\n4\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n6\nn=−1⇒gcd(n+2,n+8)=1\nn=0⇒gcd(n+2,n+8)=2\nn=1⇒gcd(n+2,n+8)=3\nn=4⇒gcd(n+2,n+8)=6\n\t​\n\n\nGợi ý 4\nDanh sách có vừa bao quát mọi trường hợp vừa đạt được từng giá trị không?\nHai chiều; mỗi khả năng có nhân chứng thỏa miền\nMọi giá trị đều phải thuộc danh sách ước của hiệu; ngược lại, từng ước đã có giá trị \n𝑛\nn cụ thể làm đạt. Vậy tất cả các giá trị có thể là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6.\n\nẨn lời giải\nLời giải\n1\nDùng hiệu để xác định mọi ước chung có thể\nGọi \n𝑑\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\nd=gcd(n+2,n+8). Một số là ước chung của \n𝑛\n+\n2\nn+2 và \n𝑛\n+\n8\nn+8 khi và chỉ khi nó là ước chung của \n𝑛\n+\n2\nn+2 và hiệu \n6\n6: ước của hai số là ước của hiệu; ngược lại, ước của số thứ nhất và hiệu cũng là ước của tổng của chúng, tức số thứ hai. Vì thế hai cặp có cùng tập ước chung và cùng ước chung lớn nhất. Do hiệu khác \n0\n0, \n𝑑\nd dương và là một ước dương của \n6\n6.\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n6\n)\ngcd(n+2,n+8)=gcd(n+2,6)\n\nTập ước chung không đổi khi thay một số bằng hiệu; chứng minh cả hai chiều\n\nChưa kiểm tra tự động\n2\nLiệt kê tất cả khả năng từ hiệu cố định\n\nDựa vào bước 1\nCác ước dương của \n6\n6 là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6. Do đó không giá trị nào ngoài danh sách có thể là ước chung lớn nhất. Tuy nhiên cần chứng minh từng giá trị trong danh sách thật sự đạt được, chứ chưa thể kết luận chỉ từ điều kiện cần.\n𝑑\n∈\n{\n1\n,\n2\n,\n3\n,\n6\n}\nd∈{1,2,3,6}\n\nMột ước chung lớn nhất dương là ước của hiệu cố định\n\nChưa kiểm tra tự động\n3\nNêu các giá trị n cụ thể làm đạt từng ước\n\nDựa vào bước 2\nVới mỗi ước \n𝑑\nd của \n6\n6, chọn \n𝑛\n=\n𝑑\n−\n2\nn=d−2. Giá trị này thuộc miền đề cho; khi đó \n𝑛\n+\n2\nn+2 bằng \n𝑑\nd cộng một bội của \n6\n6. Vì \n𝑑\nd là ước của \n6\n6, thuật toán Euclid cho ước chung lớn nhất với \n6\n6 đúng bằng \n𝑑\nd. Bảng ghi các lựa chọn cụ thể.\n𝑛\n=\n−\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n1\n\n\n𝑛\n=\n0\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n2\n\n\n𝑛\n=\n1\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n3\n\n\n𝑛\n=\n4\n⇒\ngcd\n⁡\n(\n𝑛\n+\n2\n,\n𝑛\n+\n8\n)\n=\n6\nn=−1⇒gcd(n+2,n+8)=1\nn=0⇒gcd(n+2,n+8)=2\nn=1⇒gcd(n+2,n+8)=3\nn=4⇒gcd(n+2,n+8)=6\n\t​\n\n\nChọn nhân chứng cụ thể; ước của hiệu và thuật toán Euclid\n\nChưa kiểm tra tự động\n4\nKết luận cả điều kiện cần và khả năng đạt\n\nDựa vào bước 3\nMọi giá trị đều phải thuộc danh sách ước của hiệu; ngược lại, từng ước đã có giá trị \n𝑛\nn cụ thể làm đạt. Vậy tất cả các giá trị có thể là \n1\n,\n2\n,\n3\n,\n6\n1,2,3,6.\n\nHai chiều; mỗi khả năng có nhân chứng thỏa miền\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-prime",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 838.0442079999993,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 81,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các số nguyên tố \n𝑝\np sao cho \n𝑝\n+\n2\np+2 và \n𝑝\n+\n4\np+4 cũng là số nguyên tố.\nTìm hiểu đề bài\n\nDẠNG BÀI\nSố nguyên tố trong các biểu thức dịch chuyển\n\nCHO BIẾT\n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\np,p+2,p+4 đều phải là số nguyên tố.\n\nCẦN TÌM\nTất cả số nguyên tố \n𝑝\np\n\nKIẾN THỨC SỬ DỤNG\nSố nguyên tố trong các biểu thức dịch chuyển\n\nHƯỚNG GIẢI\nDùng một ước nguyên tố nhỏ bao phủ mọi lớp số dư để lập tập ứng viên hữu hạn, rồi thử lại.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTrong mỗi lớp số dư, số nào trong đề chắc chắn chia hết cho một số nguyên tố nhỏ?\nPhép chia có dư; tính số dư của tổng; xét hết các trường hợp\nMọi số nguyên \n𝑝\np có đúng một số dư \n𝑟\nr khi chia \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Các biểu thức có dạng \n𝑝\n+\nℎ\np+h, trong đó \nℎ\nh lần lượt là các hằng số \n0\n,\n2\n,\n4\n0,2,4. Nếu \n𝑝\np chia \n3\n3 dư \n𝑟\nr, thì \n𝑝\n+\nℎ\np+h chia \n3\n3 dư bằng số dư của \n𝑟\n+\nℎ\nr+h. Bảng chỉ rõ, trong mỗi trường hợp, ít nhất một số đề yêu cầu là số nguyên tố lại chia hết cho \n3\n3.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\n\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho \n3\n\t\n𝑝\n\t\n𝑝\n+\n2\n\t\n𝑝\n+\n4\nr\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho 3\n\t​\n\n0\np\n\t​\n\n1\np+2\n\t​\n\n2\np+4\n\t​\n\n\t​\n\n\nGợi ý 2\nMột số nguyên tố chia hết cho \n3\n3 có thể là bội lớn hơn \n3\n3 không?\nNếu một số nguyên tố có ước nguyên tố 3 thì số ấy bằng 3; tập ứng viên là đầy đủ\nSố \n3\n3 là số nguyên tố. Một số nguyên tố chia hết cho \n3\n3 phải bằng chính \n3\n3, vì nó chỉ có hai ước dương là 1 và chính nó. Vì thế ít nhất một biểu thức trong \n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\np,p+2,p+4 bằng \n3\n3. Giải từng phương trình \n𝑝\n=\n3\n,\n𝑝\n+\n2\n=\n3\n,\n𝑝\n+\n4\n=\n3\np=3,p+2=3,p+4=3, rồi loại giá trị \n𝑝\n<\n2\np<2, được tất cả ứng viên bên dưới.\n𝑝\n∈\n{\n3\n}\np∈{3}\n\nGợi ý 3\nỨng viên có làm tất cả các số yêu cầu đều nguyên tố không?\nThử lại tất cả yêu cầu; ước hữu hạn của một hợp số hoặc chứng minh nguyên tố\nThay \n𝑝\n=\n3\np=3 vào tất cả biểu thức của đề được \n3\n,\n5\n,\n7\n3,5,7. Nếu số \n𝑣\nv hợp số thì có một ước \n𝑑\nd thỏa \n2\n≤\n𝑑\n≤\n𝑣\n2≤d≤\nv\n\t​\n\n. Kiểm tra cụ thể: \n3\n3 chỉ có ước dương1 và chính nó; \n5\n5: chia \n2\n2 dư \n1\n1; \n7\n7: chia \n2\n2 dư \n1\n1. Không có ước trong giới hạn bắt buộc của một hợp số, nên tất cả đều nguyên tố; nhận ứng viên.\n𝑝\n=\n3\n⇒\n(\n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\n)\n=\n(\n3\n,\n5\n,\n7\n)\np=3⇒(p,p+2,p+4)=(3,5,7)\n\nGợi ý 4\nTại sao không cần tìm tiếp những số nguyên tố lớn hơn?\nĐiều kiện cần bao quát; kiểm tra điều kiện đủ cho từng ứng viên\nMọi nghiệm phải thuộc tập ứng viên vì bảng số dư bao quát tất cả trường hợp. Mọi ứng viên đã được đối chiếu với tất cả điều kiện, nên không còn nghiệm khác. Vậy tất cả số nguyên tố cần tìm là \n𝑝\n∈\n{\n3\n}\np∈{3}.\n\nẨn lời giải\nLời giải\n1\nXét đầy đủ số dư của số nguyên tố cần tìm\nMọi số nguyên \n𝑝\np có đúng một số dư \n𝑟\nr khi chia \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Các biểu thức có dạng \n𝑝\n+\nℎ\np+h, trong đó \nℎ\nh lần lượt là các hằng số \n0\n,\n2\n,\n4\n0,2,4. Nếu \n𝑝\np chia \n3\n3 dư \n𝑟\nr, thì \n𝑝\n+\nℎ\np+h chia \n3\n3 dư bằng số dư của \n𝑟\n+\nℎ\nr+h. Bảng chỉ rõ, trong mỗi trường hợp, ít nhất một số đề yêu cầu là số nguyên tố lại chia hết cho \n3\n3.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\n\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho \n3\n\t\n𝑝\n\t\n𝑝\n+\n2\n\t\n𝑝\n+\n4\nr\ns\no\nˆ\nˊ\n chia h\ne\nˆ\nˊ\nt cho 3\n\t​\n\n0\np\n\t​\n\n1\np+2\n\t​\n\n2\np+4\n\t​\n\n\t​\n\n\nPhép chia có dư; tính số dư của tổng; xét hết các trường hợp\n\nChưa kiểm tra tự động\n2\nĐưa điều kiện nguyên tố về hữu hạn ứng viên\n\nDựa vào bước 1\nSố \n3\n3 là số nguyên tố. Một số nguyên tố chia hết cho \n3\n3 phải bằng chính \n3\n3, vì nó chỉ có hai ước dương là 1 và chính nó. Vì thế ít nhất một biểu thức trong \n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\np,p+2,p+4 bằng \n3\n3. Giải từng phương trình \n𝑝\n=\n3\n,\n𝑝\n+\n2\n=\n3\n,\n𝑝\n+\n4\n=\n3\np=3,p+2=3,p+4=3, rồi loại giá trị \n𝑝\n<\n2\np<2, được tất cả ứng viên bên dưới.\n𝑝\n∈\n{\n3\n}\np∈{3}\n\nNếu một số nguyên tố có ước nguyên tố 3 thì số ấy bằng 3; tập ứng viên là đầy đủ\n\nChưa kiểm tra tự động\n3\nKiểm tra ứng viên p=3\n\nDựa vào bước 2\nThay \n𝑝\n=\n3\np=3 vào tất cả biểu thức của đề được \n3\n,\n5\n,\n7\n3,5,7. Nếu số \n𝑣\nv hợp số thì có một ước \n𝑑\nd thỏa \n2\n≤\n𝑑\n≤\n𝑣\n2≤d≤\nv\n\t​\n\n. Kiểm tra cụ thể: \n3\n3 chỉ có ước dương1 và chính nó; \n5\n5: chia \n2\n2 dư \n1\n1; \n7\n7: chia \n2\n2 dư \n1\n1. Không có ước trong giới hạn bắt buộc của một hợp số, nên tất cả đều nguyên tố; nhận ứng viên.\n𝑝\n=\n3\n⇒\n(\n𝑝\n,\n𝑝\n+\n2\n,\n𝑝\n+\n4\n)\n=\n(\n3\n,\n5\n,\n7\n)\np=3⇒(p,p+2,p+4)=(3,5,7)\n\nThử lại tất cả yêu cầu; ước hữu hạn của một hợp số hoặc chứng minh nguyên tố\n\nChưa kiểm tra tự động\n4\nKết luận và bảo đảm không bỏ sót\n\nDựa vào bước 3\nMọi nghiệm phải thuộc tập ứng viên vì bảng số dư bao quát tất cả trường hợp. Mọi ứng viên đã được đối chiếu với tất cả điều kiện, nên không còn nghiệm khác. Vậy tất cả số nguyên tố cần tìm là \n𝑝\n∈\n{\n3\n}\np∈{3}.\n\nĐiều kiện cần bao quát; kiểm tra điều kiện đủ cho từng ứng viên\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-divisor-count",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 873.0780839999989,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 90,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các số nguyên dương có đúng \n6\n6 ước dương và nhỏ hơn \n100\n100.\nTìm hiểu đề bài\n\nDẠNG BÀI\nSáu ước dương: phân loại rồi liệt kê đầy đủ\n\nCHO BIẾT\nSố cần tìm có đúng6 ước dương.\n𝑛\n<\n100\nn<100\n\nCẦN TÌM\nTất cả số nguyên dương \n𝑛\nn.\n\nKIẾN THỨC SỬ DỤNG\nSáu ước dương: phân loại rồi liệt kê đầy đủ\n\nHƯỚNG GIẢI\nDùng phân tích nguyên tố, suy ra hai dạng và giới hạn trước khi xét mọi trường hợp.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nVì sao mỗi lựa chọn số mũ cho đúng một ước và không bỏ sót ước nào?\nPhân tích nguyên tố duy nhất; đếm mỗi ước qua các số mũ\nGọi số nguyên dương cần tìm là \n𝑛\nn. Nếu \n𝑛\n=\n𝑝\n1\n𝑒\n1\n𝑝\n2\n𝑒\n2\n⋯\n𝑝\n𝑠\n𝑒\n𝑠\nn=p\n1\ne\n1\n\t​\n\n\t​\n\np\n2\ne\n2\n\t​\n\n\t​\n\n⋯p\ns\ne\ns\n\t​\n\n\t​\n\n, mỗi ước dương có đúng dạng \n𝑝\n1\n𝑓\n1\n𝑝\n2\n𝑓\n2\n⋯\n𝑝\n𝑠\n𝑓\n𝑠\np\n1\nf\n1\n\t​\n\n\t​\n\np\n2\nf\n2\n\t​\n\n\t​\n\n⋯p\ns\nf\ns\n\t​\n\n\t​\n\n với \n0\n≤\n𝑓\n𝑖\n≤\n𝑒\n𝑖\n0≤f\ni\n\t​\n\n≤e\ni\n\t​\n\n. Mỗi số mũ có \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 cách chọn; các lựa chọn độc lập nên số ước là tích bên dưới. Số1 chỉ có một ước, nên không được nhận.\n(\n𝑒\n1\n+\n1\n)\n(\n𝑒\n2\n+\n1\n)\n⋯\n(\n𝑒\n𝑠\n+\n1\n)\n=\n6\n(e\n1\n\t​\n\n+1)(e\n2\n\t​\n\n+1)⋯(e\ns\n\t​\n\n+1)=6\n\nGợi ý 2\nTại sao không có dạng thứ ba và tại sao phải yêu cầu hai số nguyên tố khác nhau?\nHai cách phân tích6 thành tích các số nguyên ít nhất2; điều kiện cần và đủ\nCác thừa số \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 đều ít nhất2. Số6 chỉ có hai cách phân tích thành tích các số nguyên ít nhất2: một thừa số6 hoặc hai thừa số3 và2; ba thừa số trở lên cho tích ít nhất8. Vậy số cần tìm có dạng \n𝑝\n5\np\n5\n hoặc \n𝑝\n2\n𝑞\np\n2\nq, trong đó \n𝑝\n,\n𝑞\np,q là hai số nguyên tố khác nhau. Ngược lại hai dạng này có lần lượt6 và \n3\n⋅\n2\n=\n6\n3⋅2=6 ước. Không được lấy \n𝑝\n=\n𝑞\np=q, vì khi đó thành \n𝑝\n3\np\n3\n chỉ có4 ước.\n𝑛\n∈\n{\n𝑝\n5\n,\n𝑝\n2\n𝑞\n}\n,\n𝑝\n≠\n𝑞\nn∈{p\n5\n,p\n2\nq},p\n\n=q\n\nGợi ý 3\nGiới hạn của đề cho phép những giá trị nguyên tố nào trong dạng thứ nhất?\nLũy thừa bậc5 tăng với số dương; kiểm tra tất cả số nguyên tố trong giới hạn\nĐiều kiện \n𝑝\n5\n≤\n99\np\n5\n≤99 giới hạn số nguyên tố \n𝑝\np. Các giá trị được nhận là \n𝑝\n=\n2\np=2 cho \n𝑛\n=\n32\nn=32. Mọi số nguyên tố lớn hơn giá trị cuối cùng đã xét có lũy thừa bậc5 lớn hơn giới hạn.\n𝑝\n5\n≤\n99\np\n5\n≤99\n\nGợi ý 4\nDanh sách \n𝑞\nq cho mỗi \n𝑝\np có giữ điều kiện nguyên tố và khác nhau không?\nLiệt kê toàn bộ số nguyên tố dưới từng giới hạn, loại \n𝑞\n=\n𝑝\nq=p\n𝑝\n=\n2\np=2: \n𝑞\n≤\n24\nq≤24; nhận \n𝑞\n∈\n{\n3\n,\n5\n,\n7\n,\n11\n,\n13\n,\n17\n,\n19\n,\n23\n}\nq∈{3,5,7,11,13,17,19,23}, cho \n𝑛\n∈\n{\n12\n,\n20\n,\n28\n,\n44\n,\n52\n,\n68\n,\n76\n,\n92\n}\nn∈{12,20,28,44,52,68,76,92}.\n\n𝑝\n=\n3\np=3: \n𝑞\n≤\n11\nq≤11; nhận \n𝑞\n∈\n{\n2\n,\n5\n,\n7\n,\n11\n}\nq∈{2,5,7,11}, cho \n𝑛\n∈\n{\n18\n,\n45\n,\n63\n,\n99\n}\nn∈{18,45,63,99}.\n\n𝑝\n=\n5\np=5: \n𝑞\n≤\n3\nq≤3; nhận \n𝑞\n∈\n{\n2\n,\n3\n}\nq∈{2,3}, cho \n𝑛\n∈\n{\n50\n,\n75\n}\nn∈{50,75}.\n\n𝑝\n=\n7\np=7: \n𝑞\n≤\n2\nq≤2; nhận \n𝑞\n∈\n{\n2\n}\nq∈{2}, cho \n𝑛\n∈\n{\n98\n}\nn∈{98}.\n\nGợi ý 5\nĐã kiểm tra mỗi số và chứng minh không còn số nào ngoài danh sách chưa?\nKiểm tra điều kiện đủ và chứng minh danh sách bao quát điều kiện cần\nMỗi số trong danh sách có một trong hai phân tích đã chứng minh, nên có đúng6 ước dương, và đều \n𝑛\n<\n100\nn<100. Mọi số thỏa mãn phải thuộc một trong hai dạng và đã được liệt kê theo giới hạn của đề. Vậy tất cả số nguyên dương cần tìm là \n𝑛\n∈\n{\n12\n,\n18\n,\n20\n,\n28\n,\n32\n,\n44\n,\n45\n,\n50\n,\n52\n,\n63\n,\n68\n,\n75\n,\n76\n,\n92\n,\n98\n,\n99\n}\nn∈{12,18,20,28,32,44,45,50,52,63,68,75,76,92,98,99}.\n\nẨn lời giải\nLời giải\n1\nĐếm ước từ phân tích thành thừa số nguyên tố\nGọi số nguyên dương cần tìm là \n𝑛\nn. Nếu \n𝑛\n=\n𝑝\n1\n𝑒\n1\n𝑝\n2\n𝑒\n2\n⋯\n𝑝\n𝑠\n𝑒\n𝑠\nn=p\n1\ne\n1\n\t​\n\n\t​\n\np\n2\ne\n2\n\t​\n\n\t​\n\n⋯p\ns\ne\ns\n\t​\n\n\t​\n\n, mỗi ước dương có đúng dạng \n𝑝\n1\n𝑓\n1\n𝑝\n2\n𝑓\n2\n⋯\n𝑝\n𝑠\n𝑓\n𝑠\np\n1\nf\n1\n\t​\n\n\t​\n\np\n2\nf\n2\n\t​\n\n\t​\n\n⋯p\ns\nf\ns\n\t​\n\n\t​\n\n với \n0\n≤\n𝑓\n𝑖\n≤\n𝑒\n𝑖\n0≤f\ni\n\t​\n\n≤e\ni\n\t​\n\n. Mỗi số mũ có \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 cách chọn; các lựa chọn độc lập nên số ước là tích bên dưới. Số1 chỉ có một ước, nên không được nhận.\n(\n𝑒\n1\n+\n1\n)\n(\n𝑒\n2\n+\n1\n)\n⋯\n(\n𝑒\n𝑠\n+\n1\n)\n=\n6\n(e\n1\n\t​\n\n+1)(e\n2\n\t​\n\n+1)⋯(e\ns\n\t​\n\n+1)=6\n\nPhân tích nguyên tố duy nhất; đếm mỗi ước qua các số mũ\n\nChưa kiểm tra tự động\n2\nPhân loại đầy đủ các số có đúng sáu ước\n\nDựa vào bước 1\nCác thừa số \n𝑒\n𝑖\n+\n1\ne\ni\n\t​\n\n+1 đều ít nhất2. Số6 chỉ có hai cách phân tích thành tích các số nguyên ít nhất2: một thừa số6 hoặc hai thừa số3 và2; ba thừa số trở lên cho tích ít nhất8. Vậy số cần tìm có dạng \n𝑝\n5\np\n5\n hoặc \n𝑝\n2\n𝑞\np\n2\nq, trong đó \n𝑝\n,\n𝑞\np,q là hai số nguyên tố khác nhau. Ngược lại hai dạng này có lần lượt6 và \n3\n⋅\n2\n=\n6\n3⋅2=6 ước. Không được lấy \n𝑝\n=\n𝑞\np=q, vì khi đó thành \n𝑝\n3\np\n3\n chỉ có4 ước.\n𝑛\n∈\n{\n𝑝\n5\n,\n𝑝\n2\n𝑞\n}\n,\n𝑝\n≠\n𝑞\nn∈{p\n5\n,p\n2\nq},p\n\n=q\n\nHai cách phân tích6 thành tích các số nguyên ít nhất2; điều kiện cần và đủ\n\nChưa kiểm tra tự động\n3\nXét dạng một thừa số nguyên tố\n\nDựa vào bước 2\nĐiều kiện \n𝑝\n5\n≤\n99\np\n5\n≤99 giới hạn số nguyên tố \n𝑝\np. Các giá trị được nhận là \n𝑝\n=\n2\np=2 cho \n𝑛\n=\n32\nn=32. Mọi số nguyên tố lớn hơn giá trị cuối cùng đã xét có lũy thừa bậc5 lớn hơn giới hạn.\n𝑝\n5\n≤\n99\np\n5\n≤99\n\nLũy thừa bậc5 tăng với số dương; kiểm tra tất cả số nguyên tố trong giới hạn\n\nChưa kiểm tra tự động\n4\nGiới hạn từng số nguyên tố trong dạng hai thừa số\n\nDựa vào bước 3\nVì \n𝑞\n≥\n2\nq≥2, từ \n𝑝\n2\n𝑞\n≤\n99\np\n2\nq≤99 suy ra \n2\n𝑝\n2\n≤\n99\n2p\n2\n≤99. Do đó chỉ cần xét \n𝑝\n∈\n{\n2\n,\n3\n,\n5\n,\n7\n}\np∈{2,3,5,7}. Với mỗi \n𝑝\np, xét tất cả số nguyên tố \n𝑞\n≤\n⌊\n99\n/\n𝑝\n2\n⌋\nq≤⌊99/p\n2\n⌋ và bỏ \n𝑞\n=\n𝑝\nq=p. Các giới hạn này suy ra từ đề, nên không phải thử một số ứng viên rồi đoán đầy đủ.\n2\n𝑝\n2\n≤\n99\n,\n𝑞\n≤\n⌊\n99\n𝑝\n2\n⌋\n2p\n2\n≤99,q≤⌊\np\n2\n99\n\t​\n\n⌋\n\nCả hai thừa số đều nguyên tố ít nhất2; giới hạn hữu hạn bao quát mọi trường hợp\n\nChưa kiểm tra tự động\n5\nLiệt kê mọi lựa chọn nguyên tố trong giới hạn\n\nDựa vào bước 4\n𝑝\n=\n2\np=2: \n𝑞\n≤\n24\nq≤24; nhận \n𝑞\n∈\n{\n3\n,\n5\n,\n7\n,\n11\n,\n13\n,\n17\n,\n19\n,\n23\n}\nq∈{3,5,7,11,13,17,19,23}, cho \n𝑛\n∈\n{\n12\n,\n20\n,\n28\n,\n44\n,\n52\n,\n68\n,\n76\n,\n92\n}\nn∈{12,20,28,44,52,68,76,92}.\n\n𝑝\n=\n3\np=3: \n𝑞\n≤\n11\nq≤11; nhận \n𝑞\n∈\n{\n2\n,\n5\n,\n7\n,\n11\n}\nq∈{2,5,7,11}, cho \n𝑛\n∈\n{\n18\n,\n45\n,\n63\n,\n99\n}\nn∈{18,45,63,99}.\n\n𝑝\n=\n5\np=5: \n𝑞\n≤\n3\nq≤3; nhận \n𝑞\n∈\n{\n2\n,\n3\n}\nq∈{2,3}, cho \n𝑛\n∈\n{\n50\n,\n75\n}\nn∈{50,75}.\n\n𝑝\n=\n7\np=7: \n𝑞\n≤\n2\nq≤2; nhận \n𝑞\n∈\n{\n2\n}\nq∈{2}, cho \n𝑛\n∈\n{\n98\n}\nn∈{98}.\n\nLiệt kê toàn bộ số nguyên tố dưới từng giới hạn, loại \n𝑞\n=\n𝑝\nq=p\n\nChưa kiểm tra tự động\n6\nĐối chiếu cả số ước và giới hạn rồi kết luận\n\nDựa vào bước 5\nMỗi số trong danh sách có một trong hai phân tích đã chứng minh, nên có đúng6 ước dương, và đều \n𝑛\n<\n100\nn<100. Mọi số thỏa mãn phải thuộc một trong hai dạng và đã được liệt kê theo giới hạn của đề. Vậy tất cả số nguyên dương cần tìm là \n𝑛\n∈\n{\n12\n,\n18\n,\n20\n,\n28\n,\n32\n,\n44\n,\n45\n,\n50\n,\n52\n,\n63\n,\n68\n,\n75\n,\n76\n,\n92\n,\n98\n,\n99\n}\nn∈{12,18,20,28,32,44,45,50,52,63,68,75,76,92,98,99}.\n\nKiểm tra điều kiện đủ và chứng minh danh sách bao quát điều kiện cần\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-exam-ch-3",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 838.3885829999999,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 124,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCâu 3. Với mỗi số nguyên dương \n𝑛\nn, đặt \n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\nf(n)=(n+4)\n4\n−n\n4\n.\na) Chứng minh \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n16\n16 với mọi \n𝑛\nn.\nb) Tìm \n𝑛\nn để \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n3\n3.\nc) Tìm \n𝑛\nn để \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n24\n2\n24\n2\n.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChia hết đa thức nhiều phần: nhân tử chung và lũy thừa nguyên tố\n\nCHO BIẾT\n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\nf(n)=(n+4)\n4\n−n\n4\n\nCẦN TÌM\nChứng minh câu a; tất cả giá trị của n trong câu b và c.\n\nKIẾN THỨC SỬ DỤNG\nChia hết đa thức nhiều phần: nhân tử chung và lũy thừa nguyên tố\n\nHƯỚNG GIẢI\nKhai triển chung, giảm đúng môđun, chứng minh tính đầy đủ của số dư và kết hợp từng câu.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau khai triển, hệ số nào có thể đặt chung để xét chia hết?\nHằng đẳng thức và phép khai triển; thu gọn hệ số chính xác\nKhai triển các lũy thừa và tích trong định nghĩa, gộp các hạng tử cùng bậc; các hạng tử đối nhau triệt tiêu. Ta được đa thức hệ số nguyên bên dưới. Các câu sau dùng cùng biểu thức này và giữ miền của \n𝑛\nn như đề.\n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\n=\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\nf(n)=(n+4)\n4\n−n\n4\n=16n\n3\n+96n\n2\n+256n+256\n\nGợi ý 2\nSau tách nhân tử, cần xét chia hết cho môđun nào để điều kiện tương đương?\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\nTừ khai triển, đặt \n16\n16 làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì \n16\n=\n16\n⋅\n1\n16=16⋅1 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n16\n16 khi và chỉ khi đa thức còn lại chia hết cho \n1\n1. Mọi số nguyên đều chia hết cho1, nên điều kiện này đúng với mọi giá trị.\n𝑓\n(\n𝑛\n)\n=\n16\n(\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\n)\n,\n16\n=\n16\n⋅\n1\nf(n)=16(n\n3\n+6n\n2\n+16n+16),16=16⋅1\n\nGợi ý 3\nSau tách nhân tử, cần xét chia hết cho môđun nào để điều kiện tương đương?\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\nKhông cần tách thêm nhân tử; dùng trực tiếp đa thức đã khai triển. Đa thức còn lại có hệ số nguyên. Vì \n3\n=\n1\n⋅\n3\n3=1⋅3 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n3\n3 khi và chỉ khi đa thức còn lại chia hết cho \n3\n3.\n𝑓\n(\n𝑛\n)\n=\n1\n(\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\n)\n,\n3\n=\n1\n⋅\n3\nf(n)=1(16n\n3\n+96n\n2\n+256n+256),3=1⋅3\n\nGợi ý 4\nCó lớp nào không thỏa một bảng nhưng bị nhận nhầm khi kết hợp không?\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\nXét tất cả lớp số dư khi chia \n3\n3, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n1\n}\nr∈{1}. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n1\n(\nm\no\nd\n3\n)\nn≡1(mod3)\n\nGợi ý 5\nCó lớp nào không thỏa một bảng nhưng bị nhận nhầm khi kết hợp không?\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\nXét tất cả lớp số dư khi chia \n36\n36, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n16\n,\n34\n}\nr∈{16,34}. Các lớp này đúng bằng các lớp \n16\n16 khi chia \n18\n18, vì danh sách bao gồm trọn các số dư cách nhau \n18\n18 trong mỗi lớp đó. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n16\n(\nm\no\nd\n18\n)\nn≡16(mod18)\n\nGợi ý 6\nMỗi câu đã có kết luận riêng và mọi điều kiện miền đều được giữ chưa?\nMỗi câu có điều kiện cần và đủ hoặc phản ví dụ rõ ràng; các kết luận trên từng dòng\nCác phép khai triển, tách nhân tử và xét số dư đã được chứng minh đầy đủ.\na) Mọi giá trị \n𝑛\nn thuộc miền đề đều thỏa mãn.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n\nẨn lời giải\nLời giải\n1\nKhai triển biểu thức chung cho cả ba câu\nKhai triển các lũy thừa và tích trong định nghĩa, gộp các hạng tử cùng bậc; các hạng tử đối nhau triệt tiêu. Ta được đa thức hệ số nguyên bên dưới. Các câu sau dùng cùng biểu thức này và giữ miền của \n𝑛\nn như đề.\n𝑓\n(\n𝑛\n)\n=\n(\n𝑛\n+\n4\n)\n4\n−\n𝑛\n4\n=\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\nf(n)=(n+4)\n4\n−n\n4\n=16n\n3\n+96n\n2\n+256n+256\n\nHằng đẳng thức và phép khai triển; thu gọn hệ số chính xác\n\nChưa kiểm tra tự động\n2\na) Tách nhân tử và giảm đúng điều kiện chia hết\n\nDựa vào bước 1\nTừ khai triển, đặt \n16\n16 làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì \n16\n=\n16\n⋅\n1\n16=16⋅1 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n16\n16 khi và chỉ khi đa thức còn lại chia hết cho \n1\n1. Mọi số nguyên đều chia hết cho1, nên điều kiện này đúng với mọi giá trị.\n𝑓\n(\n𝑛\n)\n=\n16\n(\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\n)\n,\n16\n=\n16\n⋅\n1\nf(n)=16(n\n3\n+6n\n2\n+16n+16),16=16⋅1\n\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\n\nChưa kiểm tra tự động\n3\nb) Tách nhân tử và giảm đúng điều kiện chia hết\n\nDựa vào bước 2\nKhông cần tách thêm nhân tử; dùng trực tiếp đa thức đã khai triển. Đa thức còn lại có hệ số nguyên. Vì \n3\n=\n1\n⋅\n3\n3=1⋅3 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n3\n3 khi và chỉ khi đa thức còn lại chia hết cho \n3\n3.\n𝑓\n(\n𝑛\n)\n=\n1\n(\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\n)\n,\n3\n=\n1\n⋅\n3\nf(n)=1(16n\n3\n+96n\n2\n+256n+256),3=1⋅3\n\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\n\nChưa kiểm tra tự động\n4\nb) Chứng minh các bảng số dư bao quát mọi giá trị\n\nDựa vào bước 3\nGọi đa thức còn lại là \n𝑄\n(\n𝑛\n)\n=\n16\n𝑛\n3\n+\n96\n𝑛\n2\n+\n256\n𝑛\n+\n256\nQ(n)=16n\n3\n+96n\n2\n+256n+256. Nếu \n𝑛\nn và \n𝑟\nr có cùng số dư khi chia một số \n𝑚\nm, hiệu từng lũy thừa của chúng chia hết cho \n𝑚\nm nhờ hằng đẳng thức hiệu lũy thừa. Vì hệ số đều nguyên, \n𝑄\n(\n𝑛\n)\n−\n𝑄\n(\n𝑟\n)\nQ(n)−Q(r) cũng chia hết cho \n𝑚\nm. Do đó xét đủ các số dư là xét mọi giá trị. Môđun còn lại có phân tích \n3\n=\n3\n3=3; các thừa số là lũy thừa của các nguyên tố khác nhau, nên đôi một nguyên tố cùng nhau. Điều kiện chia hết cho tích tương đương chia hết cho từng thừa số.\n𝑄\n(\n𝑛\n)\n≡\n𝑄\n(\n𝑟\n)\n(\nm\no\nd\n𝑚\n)\nQ(n)≡Q(r)(modm)\n\nĐa thức nguyên giữ đồng dư; tính chất chia hết với các ước nguyên tố cùng nhau\n\nChưa kiểm tra tự động\n5\nb) Số dư khi chia 3: trường hợp 0 đến 2\n\nDựa vào bước 4\nThay từng \n𝑟\nr vào \n𝑄\n(\n𝑟\n)\nQ(r), tính rồi chia \n3\n3. Chẳng hạn \n𝑄\n(\n0\n)\n=\n256\nQ(0)=256 có số dư \n1\n1. Chỉ cột có số dư0 được nhận.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\n\n𝑄\n(\n𝑟\n)\n \nmod\n \n3\n\t\n1\n\t\n0\n\t\n2\nr\nQ(r)mod3\n\t​\n\n0\n1\n\t​\n\n1\n0\n\t​\n\n2\n2\n\t​\n\n\t​\n\n\nTính chính xác tất cả lớp số dư trong bảng\n\nChưa kiểm tra tự động\n6\nb) Kết hợp điều kiện và nêu toàn bộ nghiệm\n\nDựa vào bước 5\nXét tất cả lớp số dư khi chia \n3\n3, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n1\n}\nr∈{1}. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n1\n(\nm\no\nd\n3\n)\nn≡1(mod3)\n\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\n\nChưa kiểm tra tự động\n7\nc) Tách nhân tử và giảm đúng điều kiện chia hết\n\nDựa vào bước 6\nTừ khai triển, đặt \n16\n16 làm nhân tử chung để được đẳng thức bên dưới. Đa thức còn lại có hệ số nguyên. Vì \n576\n=\n16\n⋅\n36\n576=16⋅36 và nhân tử chung khác0, \n𝑓\n(\n𝑛\n)\nf(n) chia hết cho \n576\n576 khi và chỉ khi đa thức còn lại chia hết cho \n36\n36.\n𝑓\n(\n𝑛\n)\n=\n16\n(\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\n)\n,\n576\n=\n16\n⋅\n36\nf(n)=16(n\n3\n+6n\n2\n+16n+16),576=16⋅36\n\nĐặt nhân tử chung; triệt tiêu cùng nhân tử khác0 trong điều kiện chia hết\n\nChưa kiểm tra tự động\n8\nc) Chứng minh các bảng số dư bao quát mọi giá trị\n\nDựa vào bước 7\nGọi đa thức còn lại là \n𝑄\n(\n𝑛\n)\n=\n𝑛\n3\n+\n6\n𝑛\n2\n+\n16\n𝑛\n+\n16\nQ(n)=n\n3\n+6n\n2\n+16n+16. Nếu \n𝑛\nn và \n𝑟\nr có cùng số dư khi chia một số \n𝑚\nm, hiệu từng lũy thừa của chúng chia hết cho \n𝑚\nm nhờ hằng đẳng thức hiệu lũy thừa. Vì hệ số đều nguyên, \n𝑄\n(\n𝑛\n)\n−\n𝑄\n(\n𝑟\n)\nQ(n)−Q(r) cũng chia hết cho \n𝑚\nm. Do đó xét đủ các số dư là xét mọi giá trị. Môđun còn lại có phân tích \n36\n=\n4\n⋅\n9\n36=4⋅9; các thừa số là lũy thừa của các nguyên tố khác nhau, nên đôi một nguyên tố cùng nhau. Điều kiện chia hết cho tích tương đương chia hết cho từng thừa số.\n𝑄\n(\n𝑛\n)\n≡\n𝑄\n(\n𝑟\n)\n(\nm\no\nd\n𝑚\n)\nQ(n)≡Q(r)(modm)\n\nĐa thức nguyên giữ đồng dư; tính chất chia hết với các ước nguyên tố cùng nhau\n\nChưa kiểm tra tự động\n9\nc) Số dư khi chia 4: trường hợp 0 đến 3\n\nDựa vào bước 8\nThay từng \n𝑟\nr vào \n𝑄\n(\n𝑟\n)\nQ(r), tính rồi chia \n4\n4. Chẳng hạn \n𝑄\n(\n0\n)\n=\n16\nQ(0)=16 có số dư \n0\n0. Chỉ cột có số dư0 được nhận.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\t\n3\n\n\n𝑄\n(\n𝑟\n)\n \nmod\n \n4\n\t\n0\n\t\n3\n\t\n0\n\t\n1\nr\nQ(r)mod4\n\t​\n\n0\n0\n\t​\n\n1\n3\n\t​\n\n2\n0\n\t​\n\n3\n1\n\t​\n\n\t​\n\n\nTính chính xác tất cả lớp số dư trong bảng\n\nChưa kiểm tra tự động\n10\nc) Số dư khi chia 9: trường hợp 0 đến 8\n\nDựa vào bước 9\nThay từng \n𝑟\nr vào \n𝑄\n(\n𝑟\n)\nQ(r), tính rồi chia \n9\n9. Chẳng hạn \n𝑄\n(\n0\n)\n=\n16\nQ(0)=16 có số dư \n7\n7. Chỉ cột có số dư0 được nhận.\n𝑟\n\t\n0\n\t\n1\n\t\n2\n\t\n3\n\t\n4\n\t\n5\n\t\n6\n\t\n7\n\t\n8\n\n\n𝑄\n(\n𝑟\n)\n \nmod\n \n9\n\t\n7\n\t\n3\n\t\n8\n\t\n1\n\t\n6\n\t\n2\n\t\n4\n\t\n0\n\t\n5\nr\nQ(r)mod9\n\t​\n\n0\n7\n\t​\n\n1\n3\n\t​\n\n2\n8\n\t​\n\n3\n1\n\t​\n\n4\n6\n\t​\n\n5\n2\n\t​\n\n6\n4\n\t​\n\n7\n0\n\t​\n\n8\n5\n\t​\n\n\t​\n\n\nTính chính xác tất cả lớp số dư trong bảng\n\nChưa kiểm tra tự động\n11\nc) Kết hợp điều kiện và nêu toàn bộ nghiệm\n\nDựa vào bước 10\nXét tất cả lớp số dư khi chia \n36\n36, các bảng đồng thời có số dư0 đúng tại \n𝑟\n∈\n{\n16\n,\n34\n}\nr∈{16,34}. Các lớp này đúng bằng các lớp \n16\n16 khi chia \n18\n18, vì danh sách bao gồm trọn các số dư cách nhau \n18\n18 trong mỗi lớp đó. Các biến đổi đều tương đương và đã giữ miền ban đầu.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n𝑛\n≡\n16\n(\nm\no\nd\n18\n)\nn≡16(mod18)\n\nKết hợp toàn bộ điều kiện; ghép các lớp số dư đầy đủ; giữ miền gốc\n\nChưa kiểm tra tự động\n12\nKết luận riêng từng câu theo miền đề\n\nDựa vào bước 11\nCác phép khai triển, tách nhân tử và xét số dư đã được chứng minh đầy đủ.\na) Mọi giá trị \n𝑛\nn thuộc miền đề đều thỏa mãn.\nb) \n𝑛\n=\n3\n𝑘\n+\n1\nn=3k+1, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\nc) \n𝑛\n=\n18\n𝑘\n+\n16\nn=18k+16, \n𝑘\n∈\n𝑍\nk∈Z, \n𝑘\n≥\n0\nk≥0.\n\nMỗi câu có điều kiện cần và đủ hoặc phản ví dụ rõ ràng; các kết luận trên từng dòng\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-exam-ptnk-2024-chuyen_3c",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 838.0860420000008,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 69,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nVới mỗi số tự nhiên \n𝑛\nn, đặt \n𝑎\n𝑛\n=\n(\n2\n+\n3\n)\n𝑛\n+\n(\n2\n−\n3\n)\n𝑛\na\nn\n\t​\n\n=(2+\n3\n\t​\n\n)\nn\n+(2−\n3\n\t​\n\n)\nn\n. Tìm \n𝑛\nn để \n𝑎\n𝑛\na\nn\n\t​\n\n chia hết cho 14.\nTìm hiểu đề bài\n\nDẠNG BÀI\nDãy liên hợp: tính nguyên và chu kỳ số dư\n\nCHO BIẾT\n𝑎\n𝑛\n=\n(\n2\n+\n3\n)\n𝑛\n+\n(\n2\n−\n3\n)\n𝑛\na\nn\n\t​\n\n=(2+\n3\n\t​\n\n)\nn\n+(2−\n3\n\t​\n\n)\nn\n\nCẦN TÌM\nTất cả số tự nhiên \n𝑛\nn sao cho \n𝑎\n𝑛\na\nn\n\t​\n\n chia hết cho \n14\n14.\n\nKIẾN THỨC SỬ DỤNG\nDãy liên hợp: tính nguyên và chu kỳ số dư\n\nHƯỚNG GIẢI\nChứng minh công thức truy hồi và tính nguyên, rồi theo dõi cặp số dư để chứng minh chu kỳ đầy đủ.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTừ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?\nĐặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa\nĐặt \n𝑝\n=\n2\n+\n3\np=2+\n3\n\t​\n\n, \n𝑞\n=\n2\n−\n3\nq=2−\n3\n\t​\n\n. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích \n𝑝\n𝑞\n=\n1\n≠\n0\npq=1\n\n=0 nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số \n0\n0.\n𝑝\n=\n2\n+\n3\n,\n𝑞\n=\n2\n−\n3\n,\n𝑝\n+\n𝑞\n=\n(\n2\n+\n3\n)\n+\n(\n2\n−\n3\n)\n=\n4\n,\n𝑝\n𝑞\n=\n(\n2\n+\n3\n)\n(\n2\n−\n3\n)\n=\n1\n,\n𝑎\n𝑛\n=\n𝑝\n𝑛\n+\n𝑞\n𝑛\np=2+\n3\n\t​\n\n,q=2−\n3\n\t​\n\n,p+q=(2+\n3\n\t​\n\n)+(2−\n3\n\t​\n\n)=4,pq=(2+\n3\n\t​\n\n)(2−\n3\n\t​\n\n)=1,a\nn\n\t​\n\n=p\nn\n+q\nn\n\nGợi ý 2\nTừ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?\nKhai triển tích; Vi-ét đảo; chuyển vế\nKhai triển tích \n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n(t−p)(t−q) rồi thay tổng và tích vừa tính. Cho \n𝑡\n=\n𝑝\nt=p hoặc \n𝑡\n=\n𝑞\nt=q làm tích bằng \n0\n0, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.\n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n=\n𝑡\n2\n−\n(\n4\n)\n𝑡\n+\n(\n1\n)\n\n\n𝑝\n2\n=\n(\n4\n)\n𝑝\n−\n(\n1\n)\n,\n𝑞\n2\n=\n(\n4\n)\n𝑞\n−\n(\n1\n)\n(t−p)(t−q)=t\n2\n−(4)t+(1)\np\n2\n=(4)p−(1),q\n2\n=(4)q−(1)\n\t​\n\n\nGợi ý 3\nTừ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?\nNhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy\nVới mọi số nguyên \n𝑛\n≥\n0\nn≥0, nhân đẳng thức của \n𝑝\np với \n𝑝\n𝑛\np\nn\n và của \n𝑞\nq với \n𝑞\n𝑛\nq\nn\n. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.\n𝑝\n𝑛\n+\n2\n=\n(\n4\n)\n𝑝\n𝑛\n+\n1\n−\n(\n1\n)\n𝑝\n𝑛\n\n\n𝑞\n𝑛\n+\n2\n=\n(\n4\n)\n𝑞\n𝑛\n+\n1\n−\n(\n1\n)\n𝑞\n𝑛\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n(\n𝑝\n𝑛\n+\n1\n+\n𝑞\n𝑛\n+\n1\n)\n−\n(\n1\n)\n(\n𝑝\n𝑛\n+\n𝑞\n𝑛\n)\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\np\nn+2\n=(4)p\nn+1\n−(1)p\nn\nq\nn+2\n=(4)q\nn+1\n−(1)q\nn\na\nn+2\n\t​\n\n=(4)(p\nn+1\n+q\nn+1\n)−(1)(p\nn\n+q\nn\n)\na\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\t​\n\n\nGợi ý 4\nVì sao biểu thức chứa căn vẫn cho số nguyên ở mọi chỉ số?\nHai số hạng đầu nguyên; công thức truy hồi giữ tính nguyên\nHai cơ số khác0 cho \n𝑎\n0\n=\n2\na\n0\n\t​\n\n=2; tổng của chúng cho \n𝑎\n1\n=\n4\na\n1\n\t​\n\n=4. Đây đều là số nguyên. Công thức vừa chứng minh chỉ nhân với các hệ số nguyên rồi trừ, nên từ hai số hạng nguyên suy ra số hạng tiếp theo nguyên. Bắt đầu từ chỉ số0, lập luận lần lượt chứng minh tất cả số hạng nguyên; vì vậy phép xét chia hết có nghĩa.\n𝑎\n0\n=\n2\n,\n𝑎\n1\n=\n4\n,\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\na\n0\n\t​\n\n=2,a\n1\n\t​\n\n=4,a\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\nGợi ý 5\nCặp nào lặp lại, từ đâu, và tại sao việc lặp kéo dài mãi?\nCùng cặp đầu vào cho cùng cặp đầu ra ở mọi lần tiếp theo; chứng minh chu kỳ đầy đủ\nCặp ở chỉ số \n8\n8 là \n(\n2\n,\n4\n)\n(2,4), đúng bằng cặp ở chỉ số \n0\n0. Không cặp nào trước đó lặp. Vì chuyển trạng thái là duy nhất, từ chỉ số \n0\n0 các cặp lặp theo chu kỳ \n8\n8. Chu kỳ bắt đầu ngay ở chỉ số0, nên mọi chỉ số đều nằm trong một chu kỳ đã kiểm tra.\n(\n𝑎\n8\n,\n𝑎\n9\n)\n≡\n(\n𝑎\n0\n,\n𝑎\n1\n)\n≡\n(\n2\n,\n4\n)\n(\nm\no\nd\n14\n)\n(a\n8\n\t​\n\n,a\n9\n\t​\n\n)≡(a\n0\n\t​\n\n,a\n1\n\t​\n\n)≡(2,4)(mod14)\n\nGợi ý 6\nCông thức chỉ số có bao gồm mọi lần lặp mà không thêm vị trí có số dư khác0 không?\nPhần đầu và chu kỳ bao quát mọi số tự nhiên; điều kiện cần và đủ\nChu kỳ bắt đầu từ chỉ số0; trong mỗi chu kỳ, nhận đúng các vị trí có số dư0 của bảng. Các vị trí khác đều có số dư khác0, nên không chia hết. Vậy tất cả chỉ số cần tìm là \n𝑛\n=\n2\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=2+8k, k∈Z, k≥0 hoặc \n𝑛\n=\n6\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=6+8k, k∈Z, k≥0.\n\nẨn lời giải\nLời giải\n1\nĐặt tên cho hai cơ số và tính tổng, tích\nĐặt \n𝑝\n=\n2\n+\n3\np=2+\n3\n\t​\n\n, \n𝑞\n=\n2\n−\n3\nq=2−\n3\n\t​\n\n. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích \n𝑝\n𝑞\n=\n1\n≠\n0\npq=1\n\n=0 nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số \n0\n0.\n𝑝\n=\n2\n+\n3\n,\n𝑞\n=\n2\n−\n3\n,\n𝑝\n+\n𝑞\n=\n(\n2\n+\n3\n)\n+\n(\n2\n−\n3\n)\n=\n4\n,\n𝑝\n𝑞\n=\n(\n2\n+\n3\n)\n(\n2\n−\n3\n)\n=\n1\n,\n𝑎\n𝑛\n=\n𝑝\n𝑛\n+\n𝑞\n𝑛\np=2+\n3\n\t​\n\n,q=2−\n3\n\t​\n\n,p+q=(2+\n3\n\t​\n\n)+(2−\n3\n\t​\n\n)=4,pq=(2+\n3\n\t​\n\n)(2−\n3\n\t​\n\n)=1,a\nn\n\t​\n\n=p\nn\n+q\nn\n\nĐặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa\n\nChưa kiểm tra tự động\n2\nDựng phương trình bậc hai mà cả hai cơ số thỏa mãn\n\nDựa vào bước 1\nKhai triển tích \n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n(t−p)(t−q) rồi thay tổng và tích vừa tính. Cho \n𝑡\n=\n𝑝\nt=p hoặc \n𝑡\n=\n𝑞\nt=q làm tích bằng \n0\n0, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.\n(\n𝑡\n−\n𝑝\n)\n(\n𝑡\n−\n𝑞\n)\n=\n𝑡\n2\n−\n(\n4\n)\n𝑡\n+\n(\n1\n)\n\n\n𝑝\n2\n=\n(\n4\n)\n𝑝\n−\n(\n1\n)\n,\n𝑞\n2\n=\n(\n4\n)\n𝑞\n−\n(\n1\n)\n(t−p)(t−q)=t\n2\n−(4)t+(1)\np\n2\n=(4)p−(1),q\n2\n=(4)q−(1)\n\t​\n\n\nKhai triển tích; Vi-ét đảo; chuyển vế\n\nChưa kiểm tra tự động\n3\nNhân với lũy thừa rồi cộng hai đẳng thức\n\nDựa vào bước 2\nVới mọi số nguyên \n𝑛\n≥\n0\nn≥0, nhân đẳng thức của \n𝑝\np với \n𝑝\n𝑛\np\nn\n và của \n𝑞\nq với \n𝑞\n𝑛\nq\nn\n. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.\n𝑝\n𝑛\n+\n2\n=\n(\n4\n)\n𝑝\n𝑛\n+\n1\n−\n(\n1\n)\n𝑝\n𝑛\n\n\n𝑞\n𝑛\n+\n2\n=\n(\n4\n)\n𝑞\n𝑛\n+\n1\n−\n(\n1\n)\n𝑞\n𝑛\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n(\n𝑝\n𝑛\n+\n1\n+\n𝑞\n𝑛\n+\n1\n)\n−\n(\n1\n)\n(\n𝑝\n𝑛\n+\n𝑞\n𝑛\n)\n\n\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\np\nn+2\n=(4)p\nn+1\n−(1)p\nn\nq\nn+2\n=(4)q\nn+1\n−(1)q\nn\na\nn+2\n\t​\n\n=(4)(p\nn+1\n+q\nn+1\n)−(1)(p\nn\n+q\nn\n)\na\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\t​\n\n\nNhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy\n\nChưa kiểm tra tự động\n4\nChứng minh mọi số hạng là số nguyên\n\nDựa vào bước 3\nHai cơ số khác0 cho \n𝑎\n0\n=\n2\na\n0\n\t​\n\n=2; tổng của chúng cho \n𝑎\n1\n=\n4\na\n1\n\t​\n\n=4. Đây đều là số nguyên. Công thức vừa chứng minh chỉ nhân với các hệ số nguyên rồi trừ, nên từ hai số hạng nguyên suy ra số hạng tiếp theo nguyên. Bắt đầu từ chỉ số0, lập luận lần lượt chứng minh tất cả số hạng nguyên; vì vậy phép xét chia hết có nghĩa.\n𝑎\n0\n=\n2\n,\n𝑎\n1\n=\n4\n,\n𝑎\n𝑛\n+\n2\n=\n(\n4\n)\n𝑎\n𝑛\n+\n1\n−\n(\n1\n)\n𝑎\n𝑛\na\n0\n\t​\n\n=2,a\n1\n\t​\n\n=4,a\nn+2\n\t​\n\n=(4)a\nn+1\n\t​\n\n−(1)a\nn\n\t​\n\n\nHai số hạng đầu nguyên; công thức truy hồi giữ tính nguyên\n\nChưa kiểm tra tự động\n5\nTheo dõi hai số hạng liên tiếp để bảo đảm chu kỳ\n\nDựa vào bước 4\nXét cặp số dư \n(\n𝑎\n𝑛\n,\n𝑎\n𝑛\n+\n1\n)\n(a\nn\n\t​\n\n,a\nn+1\n\t​\n\n) khi chia \n14\n14. Công thức truy hồi xác định duy nhất cặp kế tiếp từ cặp hiện tại. Có nhiều nhất \n196\n196 cặp; khi một cặp lặp lại, toàn bộ các cặp sau lặp theo cùng cách. Phải trùng cả hai số dư, không chỉ một số hạng.\n(\n𝑢\n,\n𝑣\n)\n⟼\n(\n𝑣\n,\n(\n4\n)\n𝑣\n−\n(\n1\n)\n𝑢\n)\n(\nm\no\nd\n14\n)\n(u,v)⟼(v,(4)v−(1)u)(mod14)\n\nTrạng thái gồm hai số hạng; chuyển trạng thái duy nhất trên tập hữu hạn\n\nChưa kiểm tra tự động\n6\nTính các cặp số dư từ chỉ số 0 đến 7\n\nDựa vào bước 5\nBắt đầu từ cặp số dư của \n(\n2\n,\n4\n)\n(2,4), dùng đúng công thức truy hồi để tính mỗi cặp kế tiếp. Bảng ghi cả hai số dư; những cột có số dư của \n𝑎\n𝑛\na\nn\n\t​\n\n bằng0 là chỉ số được nhận.\n𝑛\n\t\n0\n\t\n1\n\t\n2\n\t\n3\n\t\n4\n\t\n5\n\t\n6\n\t\n7\n\n\n𝑎\n𝑛\n \nmod\n \n14\n\t\n2\n\t\n4\n\t\n0\n\t\n10\n\t\n12\n\t\n10\n\t\n0\n\t\n4\n\n\n𝑎\n𝑛\n+\n1\n \nmod\n \n14\n\t\n4\n\t\n0\n\t\n10\n\t\n12\n\t\n10\n\t\n0\n\t\n4\n\t\n2\nn\na\nn\n\t​\n\nmod14\na\nn+1\n\t​\n\nmod14\n\t​\n\n0\n2\n4\n\t​\n\n1\n4\n0\n\t​\n\n2\n0\n10\n\t​\n\n3\n10\n12\n\t​\n\n4\n12\n10\n\t​\n\n5\n10\n0\n\t​\n\n6\n0\n4\n\t​\n\n7\n4\n2\n\t​\n\n\t​\n\n\nTính từng chuyển trạng thái; đối chiếu điều kiện chia hết\n\nChưa kiểm tra tự động\n7\nChứng minh phần trước chu kỳ và mọi chu kỳ tiếp theo\n\nDựa vào bước 6\nCặp ở chỉ số \n8\n8 là \n(\n2\n,\n4\n)\n(2,4), đúng bằng cặp ở chỉ số \n0\n0. Không cặp nào trước đó lặp. Vì chuyển trạng thái là duy nhất, từ chỉ số \n0\n0 các cặp lặp theo chu kỳ \n8\n8. Chu kỳ bắt đầu ngay ở chỉ số0, nên mọi chỉ số đều nằm trong một chu kỳ đã kiểm tra.\n(\n𝑎\n8\n,\n𝑎\n9\n)\n≡\n(\n𝑎\n0\n,\n𝑎\n1\n)\n≡\n(\n2\n,\n4\n)\n(\nm\no\nd\n14\n)\n(a\n8\n\t​\n\n,a\n9\n\t​\n\n)≡(a\n0\n\t​\n\n,a\n1\n\t​\n\n)≡(2,4)(mod14)\n\nCùng cặp đầu vào cho cùng cặp đầu ra ở mọi lần tiếp theo; chứng minh chu kỳ đầy đủ\n\nChưa kiểm tra tự động\n8\nKết luận mọi chỉ số thỏa mãn, không chỉ các số đầu\n\nDựa vào bước 7\nChu kỳ bắt đầu từ chỉ số0; trong mỗi chu kỳ, nhận đúng các vị trí có số dư0 của bảng. Các vị trí khác đều có số dư khác0, nên không chia hết. Vậy tất cả chỉ số cần tìm là \n𝑛\n=\n2\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=2+8k, k∈Z, k≥0 hoặc \n𝑛\n=\n6\n+\n8\n𝑘\n,\n \n𝑘\n∈\n𝑍\n,\n \n𝑘\n≥\n0\nn=6+8k, k∈Z, k≥0.\n\nPhần đầu và chu kỳ bao quát mọi số tự nhiên; điều kiện cần và đủ\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-square-factor",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 821.5113330000004,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 59,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các số nguyên \n𝑛\nn sao cho \n𝑛\n2\n+\n15\nn\n2\n+15 là số chính phương.\nTìm hiểu đề bài\n\nDẠNG BÀI\nSố chính phương: số dư hoặc hiệu hai bình phương\n\nCHO BIẾT\n𝑛\nn là số nguyên.\n\nCẦN TÌM\nTất cả \n𝑛\nn để \n𝑛\n2\n+\n15\nn\n2\n+15 là số chính phương.\n\nKIẾN THỨC SỬ DỤNG\nSố chính phương: số dư hoặc hiệu hai bình phương\n\nHƯỚNG GIẢI\nChứng minh cản trở số dư nếu có; nếu không, phân tích hiệu hai bình phương và giữ điều kiện đổi biến.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nĐặt biểu thức bằng bình phương của số nguyên nào để phân tích thành tích?\nĐịnh nghĩa số chính phương; hiệu hai bình phương\nKhai triển và thu gọn biểu thức gốc được \n𝑛\n2\n+\n15\nn\n2\n+15. Đặt nó bằng \n𝑡\n2\nt\n2\n với \n𝑡\nt nguyên không âm; đây là điều kiện cần và đủ để là số chính phương. Chuyển vế và phân tích hiệu hai bình phương, đặt \n𝑢\n=\n𝑡\n−\n𝑛\nu=t−n, \n𝑣\n=\n𝑡\n+\n𝑛\nv=t+n.\n𝑡\n2\n−\n𝑛\n2\n=\n15\n,\n(\n𝑡\n−\n𝑛\n)\n(\n𝑡\n+\n𝑛\n)\n=\n15\nt\n2\n−n\n2\n=15,(t−n)(t+n)=15\n\nGợi ý 2\nHai thừa số phải thỏa tính chẵn lẻ và dấu nào để đổi lại thành số nguyên?\nƯớc của tích khác không; điều kiện nguyên, không âm và miền gốc\nVì \n𝑢\n𝑣\n=\n15\n≠\n0\nuv=15\n\n=0, \n𝑢\nu là ước nguyên khác 0 của \n15\n15, gồm cả hai dấu. Cả \n∣\n𝑢\n∣\n,\n∣\n𝑣\n∣\n∣u∣,∣v∣ đều không quá \n15\n15. Ngược lại, \n𝑡\n=\n(\n𝑢\n+\n𝑣\n)\n/\n2\nt=(u+v)/2, \n𝑛\n=\n(\n𝑣\n−\n𝑢\n)\n/\n2\nn=(v−u)/2: chỉ nhận khi \n𝑢\n,\n𝑣\nu,v cùng tính chẵn lẻ, \n𝑡\n≥\n0\nt≥0, và \n𝑛\nn thuộc đúng miền số nguyên.\n15\n⋮\n𝑢\n,\n𝑣\n=\n15\n/\n𝑢\n,\n𝑡\n=\n𝑢\n+\n𝑣\n2\n,\n𝑛\n=\n𝑣\n−\n𝑢\n2\n15⋮u,v=15/u,t=\n2\nu+v\n\t​\n\n,n=\n2\nv−u\n\t​\n\n\nGợi ý 3\nHàng nào cho số nguyên thuộc miền gốc và căn không âm?\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n15\n,\n−\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n5\n,\n−\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n3\n,\n−\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n−\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n1\n,\n−\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n−\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n1\n,\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n7\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n3\n,\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n1\n)\n✓\n(u,v)=(−15,−1)⇒(t,n)=(−8,7)×\n(u,v)=(−5,−3)⇒(t,n)=(−4,1)×\n(u,v)=(−3,−5)⇒(t,n)=(−4,−1)×\n(u,v)=(−1,−15)⇒(t,n)=(−8,−7)×\n(u,v)=(1,15)⇒(t,n)=(8,7)✓\n(u,v)=(3,5)⇒(t,n)=(4,1)✓\n\t​\n\n\nGợi ý 4\nHàng nào cho số nguyên thuộc miền gốc và căn không âm?\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n5\n,\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n−\n1\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n15\n,\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n−\n7\n)\n✓\n(u,v)=(5,3)⇒(t,n)=(4,−1)✓\n(u,v)=(15,1)⇒(t,n)=(8,−7)✓\n\t​\n\n\nGợi ý 5\nTại sao mọi nghiệm đều xuất hiện trong bảng thừa số?\nHai chiều của phân tích nhân tử và đối chiếu miền; kiểm tra biểu thức gốc\nVới mỗi giá trị được nhận, cặp thừa số cho \n𝑡\nt nguyên không âm và \n𝑛\n2\n+\n15\n=\n𝑡\n2\nn\n2\n+15=t\n2\n, nên thỏa yêu cầu. Mọi nghiệm ban đầu đều phải cho một cặp thừa số đã xét; vì thế không còn nghiệm khác. Vậy tất cả nghiệm là \n𝑛\n∈\n{\n−\n7\n,\n−\n1\n,\n1\n,\n7\n}\nn∈{−7,−1,1,7}.\n𝑛\n=\n−\n7\n:\n49\n+\n15\n=\n64\n\n\n𝑛\n=\n−\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n7\n:\n49\n+\n15\n=\n64\nn=−7:49+15=64\nn=−1:1+15=16\nn=1:1+15=16\nn=7:49+15=64\n\t​\n\n\nẨn lời giải\nLời giải\n1\nĐưa điều kiện chính phương về hiệu hai bình phương\nKhai triển và thu gọn biểu thức gốc được \n𝑛\n2\n+\n15\nn\n2\n+15. Đặt nó bằng \n𝑡\n2\nt\n2\n với \n𝑡\nt nguyên không âm; đây là điều kiện cần và đủ để là số chính phương. Chuyển vế và phân tích hiệu hai bình phương, đặt \n𝑢\n=\n𝑡\n−\n𝑛\nu=t−n, \n𝑣\n=\n𝑡\n+\n𝑛\nv=t+n.\n𝑡\n2\n−\n𝑛\n2\n=\n15\n,\n(\n𝑡\n−\n𝑛\n)\n(\n𝑡\n+\n𝑛\n)\n=\n15\nt\n2\n−n\n2\n=15,(t−n)(t+n)=15\n\nĐịnh nghĩa số chính phương; hiệu hai bình phương\n\nChưa kiểm tra tự động\n2\nGiới hạn hữu hạn và điều kiện của đổi biến ngược\n\nDựa vào bước 1\nVì \n𝑢\n𝑣\n=\n15\n≠\n0\nuv=15\n\n=0, \n𝑢\nu là ước nguyên khác 0 của \n15\n15, gồm cả hai dấu. Cả \n∣\n𝑢\n∣\n,\n∣\n𝑣\n∣\n∣u∣,∣v∣ đều không quá \n15\n15. Ngược lại, \n𝑡\n=\n(\n𝑢\n+\n𝑣\n)\n/\n2\nt=(u+v)/2, \n𝑛\n=\n(\n𝑣\n−\n𝑢\n)\n/\n2\nn=(v−u)/2: chỉ nhận khi \n𝑢\n,\n𝑣\nu,v cùng tính chẵn lẻ, \n𝑡\n≥\n0\nt≥0, và \n𝑛\nn thuộc đúng miền số nguyên.\n15\n⋮\n𝑢\n,\n𝑣\n=\n15\n/\n𝑢\n,\n𝑡\n=\n𝑢\n+\n𝑣\n2\n,\n𝑛\n=\n𝑣\n−\n𝑢\n2\n15⋮u,v=15/u,t=\n2\nu+v\n\t​\n\n,n=\n2\nv−u\n\t​\n\n\nƯớc của tích khác không; điều kiện nguyên, không âm và miền gốc\n\nChưa kiểm tra tự động\n3\nXét các cặp thừa số từ 1 đến 6\n\nDựa vào bước 2\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n15\n,\n−\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n5\n,\n−\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n3\n,\n−\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n4\n,\n−\n1\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n−\n1\n,\n−\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n−\n8\n,\n−\n7\n)\n×\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n1\n,\n15\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n7\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n3\n,\n5\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n1\n)\n✓\n(u,v)=(−15,−1)⇒(t,n)=(−8,7)×\n(u,v)=(−5,−3)⇒(t,n)=(−4,1)×\n(u,v)=(−3,−5)⇒(t,n)=(−4,−1)×\n(u,v)=(−1,−15)⇒(t,n)=(−8,−7)×\n(u,v)=(1,15)⇒(t,n)=(8,7)✓\n(u,v)=(3,5)⇒(t,n)=(4,1)✓\n\t​\n\n\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\n\nChưa kiểm tra tự động\n4\nXét các cặp thừa số từ 7 đến 8\n\nDựa vào bước 3\nTính các giá trị theo đổi biến ngược ở từng cặp thừa số. Cặp không cho hai số nguyên, căn không âm và miền yêu cầu bị loại; dấu \n✓\n✓ ghi hàng được nhận, còn dấu \n×\n× ghi hàng bị loại.\n(\n𝑢\n,\n𝑣\n)\n=\n(\n5\n,\n3\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n4\n,\n−\n1\n)\n✓\n\n\n(\n𝑢\n,\n𝑣\n)\n=\n(\n15\n,\n1\n)\n⇒\n(\n𝑡\n,\n𝑛\n)\n=\n(\n8\n,\n−\n7\n)\n✓\n(u,v)=(5,3)⇒(t,n)=(4,−1)✓\n(u,v)=(15,1)⇒(t,n)=(8,−7)✓\n\t​\n\n\nXét tất cả ước; kiểm tra mọi điều kiện của đổi biến\n\nChưa kiểm tra tự động\n5\nKiểm tra nghiệm và kết luận đầy đủ\n\nDựa vào bước 4\nVới mỗi giá trị được nhận, cặp thừa số cho \n𝑡\nt nguyên không âm và \n𝑛\n2\n+\n15\n=\n𝑡\n2\nn\n2\n+15=t\n2\n, nên thỏa yêu cầu. Mọi nghiệm ban đầu đều phải cho một cặp thừa số đã xét; vì thế không còn nghiệm khác. Vậy tất cả nghiệm là \n𝑛\n∈\n{\n−\n7\n,\n−\n1\n,\n1\n,\n7\n}\nn∈{−7,−1,1,7}.\n𝑛\n=\n−\n7\n:\n49\n+\n15\n=\n64\n\n\n𝑛\n=\n−\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n1\n:\n1\n+\n15\n=\n16\n\n\n𝑛\n=\n7\n:\n49\n+\n15\n=\n64\nn=−7:49+15=64\nn=−1:1+15=16\nn=1:1+15=16\nn=7:49+15=64\n\t​\n\n\nHai chiều của phân tích nhân tử và đối chiếu miền; kiểm tra biểu thức gốc\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-linear-positive",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 839.5915839999998,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 56,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các cặp số nguyên dương \n(\n𝑥\n,\n𝑦\n)\n(x,y) thỏa mãn \n6\n𝑥\n+\n9\n𝑦\n=\n30\n6x+9y=30.\nTìm hiểu đề bài\n\nDẠNG BÀI\nPhương trình nghiệm nguyên: ƯCLN và toàn bộ họ nghiệm\n\nCHO BIẾT\n6\n𝑥\n+\n9\n𝑦\n=\n30\n6x+9y=30\n\nCẦN TÌM\nTất cả cặp \n(\n𝑥\n,\n𝑦\n)\n(x,y) trong miền đề.\n\nKIẾN THỨC SỬ DỤNG\nPhương trình nghiệm nguyên: ƯCLN và toàn bộ họ nghiệm\n\nHƯỚNG GIẢI\nChứng minh điều kiện chia hết, nêu nghiệm riêng, chứng minh họ tham số và lọc miền.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau thu gọn, hệ số của mỗi ẩn và miền số cần giữ là gì?\nThu gọn đa thức đã kiểm tra chính xác; giữ miền của đề\nChuyển tất cả hạng tử về một vế, thu gọn hệ số và chuyển hằng số sang vế phải, được phương trình bên dưới tương đương đề. Cả hai ẩn phải là số nguyên dương, nên còn cần kiểm tra hai tọa độ lớn hơn0.\n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n=\n30\n(6)x+(9)y=30\n\nGợi ý 2\nVế phải có thỏa điều kiện chia hết bắt buộc cho ước chung lớn nhất không?\nThuật toán Euclid; một ước của cả hai hệ số là ước của mọi tổ hợp nguyên\nMọi tổ hợp nguyên \n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n(6)x+(9)y đều chia hết cho \n𝑔\n=\ngcd\n⁡\n(\n6\n,\n9\n)\n=\n3\ng=gcd(6,9)=3. Vì vậy vế phải phải chia hết cho \n𝑔\ng. Các phép chia liên tiếp bên dưới bảo toàn tập ước chung; số dư khác0 cuối cùng là ước chung lớn nhất.\n6\n=\n9\n⋅\n0\n+\n6\n\n\n9\n=\n6\n⋅\n1\n+\n3\n\n\n6\n=\n3\n⋅\n2\n+\n0\n6=9⋅0+6\n9=6⋅1+3\n6=3⋅2+0\n\t​\n\n\nGợi ý 3\nTừ hai biểu diễn trước, phép trừ cho những hệ số nguyên nào ở biểu diễn kế tiếp?\nSố dư bằng số bị chia trừ thương nhân số chia; thay đẳng thức đã biết và gộp hệ số\nBắt đầu với hai hệ số gốc. Ở mỗi phép chia, lấy số bị chia trừ thương nhân số chia; thay hai biểu diễn đã biết của chúng để thu được tổ hợp ở dòng sau. Vì vậy từng số dư, cuối cùng là \n3\n3, được biểu diễn chính xác bằng hai hệ số ban đầu. Các đẳng thức bên dưới ghi rõ phép trừ và các hệ số sau thu gọn.\n6\n=\n6\n−\n0\n⋅\n9\n=\n(\n1\n)\n(\n6\n)\n+\n(\n0\n)\n(\n9\n)\n\n\n3\n=\n9\n−\n1\n⋅\n6\n=\n(\n−\n1\n)\n(\n6\n)\n+\n(\n1\n)\n(\n9\n)\n6=6−0⋅9=(1)(6)+(0)(9)\n3=9−1⋅6=(−1)(6)+(1)(9)\n\t​\n\n\nGợi ý 4\nCặp nghiệm riêng có thỏa phương trình, và còn phải kiểm tra miền nào?\nTổ hợp Euclid được kiểm tra trực tiếp; nhân với thương nguyên của vế phải\nCác phép trừ số dư của thuật toán Euclid vừa biểu diễn \n3\n3 thành tổ hợp của hai hệ số. Kiểm tra trực tiếp \n(\n6\n)\n⋅\n(\n−\n1\n)\n+\n(\n9\n)\n⋅\n(\n1\n)\n=\n3\n(6)⋅(−1)+(9)⋅(1)=3. Nhân hai hệ số trong tổ hợp với \n10\n10 cho nghiệm riêng \n(\n𝑥\n0\n,\n𝑦\n0\n)\n=\n(\n−\n10\n,\n10\n)\n(x\n0\n\t​\n\n,y\n0\n\t​\n\n)=(−10,10). Đây là nghiệm nguyên của phương trình; nếu đề yêu cầu nguyên dương, chưa được kết luận nghiệm riêng này thỏa miền.\n(\n6\n)\n(\n−\n10\n)\n+\n(\n9\n)\n(\n10\n)\n=\n30\n(6)(−10)+(9)(10)=30\n\nGợi ý 5\nĐiều kiện dương của cả hai tọa độ cho giao những giới hạn tham số nào?\nGiải riêng từng bất đẳng thức, đổi chiều khi chia số âm; làm tròn đúng vì tham số nguyên\nTừ công thức nghiệm, yêu cầu riêng \n𝑥\n≥\n1\nx≥1 và \n𝑦\n≥\n1\ny≥1. Với hệ số tham số dương, chuyển vế rồi làm tròn lên cho cận dưới; với hệ số âm, đổi chiều bất đẳng thức rồi làm tròn xuống cho cận trên. Nếu hệ số bằng0 thì giá trị cố định phải dương. Kết hợp cho \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n−\n10\n+\n3\n𝑡\n≥\n1\n,\n10\n−\n2\n𝑡\n≥\n1\n−10+3t≥1,10−2t≥1\n\nGợi ý 6\nĐã nêu một nghiệm thực sự thuộc miền khi có nghiệm và chứng minh không bỏ sót chưa?\nKiểm tra cụ thể điều kiện gốc và miền; tính đầy đủ đã chứng minh bằng công thức\nChẳng hạn chọn \n(\n𝑥\n,\n𝑦\n)\n=\n(\n2\n,\n2\n)\n(x,y)=(2,2); cặp này thuộc miền đề và có \n(\n6\n)\n⋅\n(\n2\n)\n+\n(\n9\n)\n⋅\n(\n2\n)\n=\n30\n(6)⋅(2)+(9)⋅(2)=30. Công thức đã được chứng minh cho tất cả nghiệm nguyên; giới hạn tham số giữ đúng và đủ cả hai điều kiện dương. Vậy tất cả nghiệm là \n𝑥\n=\n−\n10\n+\n3\n𝑡\n,\n𝑦\n=\n10\n−\n2\n𝑡\nx=−10+3t,y=10−2t, với \n𝑡\n∈\n𝑍\nt∈Z và \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n\nẨn lời giải\nLời giải\n1\nThu gọn và giữ đúng miền của hai ẩn\nChuyển tất cả hạng tử về một vế, thu gọn hệ số và chuyển hằng số sang vế phải, được phương trình bên dưới tương đương đề. Cả hai ẩn phải là số nguyên dương, nên còn cần kiểm tra hai tọa độ lớn hơn0.\n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n=\n30\n(6)x+(9)y=30\n\nThu gọn đa thức đã kiểm tra chính xác; giữ miền của đề\n\nChưa kiểm tra tự động\n2\nTìm ước chung lớn nhất và điều kiện cần\n\nDựa vào bước 1\nMọi tổ hợp nguyên \n(\n6\n)\n𝑥\n+\n(\n9\n)\n𝑦\n(6)x+(9)y đều chia hết cho \n𝑔\n=\ngcd\n⁡\n(\n6\n,\n9\n)\n=\n3\ng=gcd(6,9)=3. Vì vậy vế phải phải chia hết cho \n𝑔\ng. Các phép chia liên tiếp bên dưới bảo toàn tập ước chung; số dư khác0 cuối cùng là ước chung lớn nhất.\n6\n=\n9\n⋅\n0\n+\n6\n\n\n9\n=\n6\n⋅\n1\n+\n3\n\n\n6\n=\n3\n⋅\n2\n+\n0\n6=9⋅0+6\n9=6⋅1+3\n6=3⋅2+0\n\t​\n\n\nThuật toán Euclid; một ước của cả hai hệ số là ước của mọi tổ hợp nguyên\n\nChưa kiểm tra tự động\n3\nBiểu diễn từng số dư bằng hai hệ số gốc\n\nDựa vào bước 2\nBắt đầu với hai hệ số gốc. Ở mỗi phép chia, lấy số bị chia trừ thương nhân số chia; thay hai biểu diễn đã biết của chúng để thu được tổ hợp ở dòng sau. Vì vậy từng số dư, cuối cùng là \n3\n3, được biểu diễn chính xác bằng hai hệ số ban đầu. Các đẳng thức bên dưới ghi rõ phép trừ và các hệ số sau thu gọn.\n6\n=\n6\n−\n0\n⋅\n9\n=\n(\n1\n)\n(\n6\n)\n+\n(\n0\n)\n(\n9\n)\n\n\n3\n=\n9\n−\n1\n⋅\n6\n=\n(\n−\n1\n)\n(\n6\n)\n+\n(\n1\n)\n(\n9\n)\n6=6−0⋅9=(1)(6)+(0)(9)\n3=9−1⋅6=(−1)(6)+(1)(9)\n\t​\n\n\nSố dư bằng số bị chia trừ thương nhân số chia; thay đẳng thức đã biết và gộp hệ số\n\nChưa kiểm tra tự động\n4\nXây dựng và kiểm tra một nghiệm nguyên cụ thể\n\nDựa vào bước 3\nCác phép trừ số dư của thuật toán Euclid vừa biểu diễn \n3\n3 thành tổ hợp của hai hệ số. Kiểm tra trực tiếp \n(\n6\n)\n⋅\n(\n−\n1\n)\n+\n(\n9\n)\n⋅\n(\n1\n)\n=\n3\n(6)⋅(−1)+(9)⋅(1)=3. Nhân hai hệ số trong tổ hợp với \n10\n10 cho nghiệm riêng \n(\n𝑥\n0\n,\n𝑦\n0\n)\n=\n(\n−\n10\n,\n10\n)\n(x\n0\n\t​\n\n,y\n0\n\t​\n\n)=(−10,10). Đây là nghiệm nguyên của phương trình; nếu đề yêu cầu nguyên dương, chưa được kết luận nghiệm riêng này thỏa miền.\n(\n6\n)\n(\n−\n10\n)\n+\n(\n9\n)\n(\n10\n)\n=\n30\n(6)(−10)+(9)(10)=30\n\nTổ hợp Euclid được kiểm tra trực tiếp; nhân với thương nguyên của vế phải\n\nChưa kiểm tra tự động\n5\nChứng minh công thức bao gồm mọi nghiệm nguyên\n\nDựa vào bước 4\nLấy một nghiệm bất kỳ rồi trừ nghiệm riêng: \n(\n2\n)\n(\n𝑥\n−\n(\n−\n10\n)\n)\n=\n−\n(\n3\n)\n(\n𝑦\n−\n(\n10\n)\n)\n(2)(x−(−10))=−(3)(y−(10)). Hai hệ số \n2\n2 và \n3\n3 nguyên tố cùng nhau, nên \n𝑥\n−\n(\n−\n10\n)\nx−(−10) phải là bội của \n3\n3. Đặt \n𝑥\n−\n(\n−\n10\n)\n=\n(\n3\n)\n𝑡\nx−(−10)=(3)t với \n𝑡\nt nguyên; thế lại suy ra \n𝑦\n−\n(\n10\n)\n=\n−\n(\n2\n)\n𝑡\ny−(10)=−(2)t. Ngược lại thay công thức vào phương trình, các hạng tử theo \n𝑡\nt triệt tiêu, nên mọi tham số nguyên đều cho nghiệm.\n𝑥\n=\n−\n10\n+\n3\n𝑡\n,\n𝑦\n=\n10\n−\n2\n𝑡\n,\n𝑡\n∈\n𝑍\nx=−10+3t,y=10−2t,t∈Z\n\nTrừ nghiệm riêng; hai hệ số sau tách ƯCLN nguyên tố cùng nhau; chứng minh cả hai chiều\n\nChưa kiểm tra tự động\n6\nLọc toàn bộ tham số theo hai điều kiện nguyên dương\n\nDựa vào bước 5\nTừ công thức nghiệm, yêu cầu riêng \n𝑥\n≥\n1\nx≥1 và \n𝑦\n≥\n1\ny≥1. Với hệ số tham số dương, chuyển vế rồi làm tròn lên cho cận dưới; với hệ số âm, đổi chiều bất đẳng thức rồi làm tròn xuống cho cận trên. Nếu hệ số bằng0 thì giá trị cố định phải dương. Kết hợp cho \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n−\n10\n+\n3\n𝑡\n≥\n1\n,\n10\n−\n2\n𝑡\n≥\n1\n−10+3t≥1,10−2t≥1\n\nGiải riêng từng bất đẳng thức, đổi chiều khi chia số âm; làm tròn đúng vì tham số nguyên\n\nChưa kiểm tra tự động\n7\nKiểm tra nhân chứng thuộc miền và kết luận đầy đủ\n\nDựa vào bước 6\nChẳng hạn chọn \n(\n𝑥\n,\n𝑦\n)\n=\n(\n2\n,\n2\n)\n(x,y)=(2,2); cặp này thuộc miền đề và có \n(\n6\n)\n⋅\n(\n2\n)\n+\n(\n9\n)\n⋅\n(\n2\n)\n=\n30\n(6)⋅(2)+(9)⋅(2)=30. Công thức đã được chứng minh cho tất cả nghiệm nguyên; giới hạn tham số giữ đúng và đủ cả hai điều kiện dương. Vậy tất cả nghiệm là \n𝑥\n=\n−\n10\n+\n3\n𝑡\n,\n𝑦\n=\n10\n−\n2\n𝑡\nx=−10+3t,y=10−2t, với \n𝑡\n∈\n𝑍\nt∈Z và \n𝑡\n≥\n4\n,\n \n𝑡\n≤\n4\nt≥4, t≤4.\n\nKiểm tra cụ thể điều kiện gốc và miền; tính đầy đủ đã chứng minh bằng công thức\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "nt3-infinite-factors",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 838.7233329999999,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 32,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTìm tất cả các cặp số nguyên \n(\n𝑥\n,\n𝑦\n)\n(x,y) thỏa mãn \n𝑥\n𝑦\n−\n3\n𝑥\n−\n4\n𝑦\n=\n−\n12\nxy−3x−4y=−12.\nTìm hiểu đề bài\n\nDẠNG BÀI\nNghiệm nguyên bằng phân tích thành nhân tử\n\nCHO BIẾT\n𝑥\n𝑦\n−\n3\n𝑥\n−\n4\n𝑦\n=\n−\n12\nxy−3x−4y=−12\n\nCẦN TÌM\nTất cả cặp số nguyên \n(\n𝑥\n,\n𝑦\n)\n(x,y)\n\nKIẾN THỨC SỬ DỤNG\nNghiệm nguyên bằng phân tích thành nhân tử\n\nHƯỚNG GIẢI\nĐưa về tích, phân biệt tích bằng không và khác không; xét toàn bộ ước với miền gốc.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau đổi biến, điều kiện của hai ẩn ban đầu còn phải kiểm tra thế nào?\nNhóm hạng tử; phép đổi biến ngược được; giữ nguyên miền của đề\nCộng \n12\n12 vào hai vế, dùng khai triển tích để được đẳng thức bên dưới. Đặt \n𝑢\n=\n𝑥\n−\n4\nu=x−4, \n𝑣\n=\n𝑦\n−\n3\nv=y−3; ngược lại \n𝑥\n=\n𝑢\n+\n4\nx=u+4, \n𝑦\n=\n𝑣\n+\n3\ny=v+3. Các ẩn ban đầu phải là số nguyên.\n(\n𝑥\n−\n4\n)\n(\n𝑦\n−\n3\n)\n=\n0\n(x−4)(y−3)=0\n\nGợi ý 2\nTích bằng không cho những họ nghiệm nào? Có được coi 0 là một ước để chia không?\nTính chất tích bằng không; hợp các họ nghiệm và điều kiện miền\nMột tích hai số nguyên bằng 0 khi và chỉ khi ít nhất một thừa số bằng 0. Vì vậy \n𝑢\n=\n0\nu=0 hoặc \n𝑣\n=\n0\nv=0, tương ứng \n𝑥\n=\n4\nx=4 hoặc \n𝑦\n=\n3\ny=3. Mỗi họ đều thỏa phương trình tích với ẩn còn lại tùy ý; hai họ có thể chung một cặp, nên dùng hợp, không cộng số nghiệm. Vậy tất cả nghiệm là: \n𝑥\n=\n4\nx=4, \n𝑦\ny là số nguyên tùy ý; hoặc \n𝑦\n=\n3\ny=3, \n𝑥\nx là số nguyên tùy ý.\n\nẨn lời giải\nLời giải\n1\nĐưa phương trình về tích, giữ miền của các ẩn\nCộng \n12\n12 vào hai vế, dùng khai triển tích để được đẳng thức bên dưới. Đặt \n𝑢\n=\n𝑥\n−\n4\nu=x−4, \n𝑣\n=\n𝑦\n−\n3\nv=y−3; ngược lại \n𝑥\n=\n𝑢\n+\n4\nx=u+4, \n𝑦\n=\n𝑣\n+\n3\ny=v+3. Các ẩn ban đầu phải là số nguyên.\n(\n𝑥\n−\n4\n)\n(\n𝑦\n−\n3\n)\n=\n0\n(x−4)(y−3)=0\n\nNhóm hạng tử; phép đổi biến ngược được; giữ nguyên miền của đề\n\nChưa kiểm tra tự động\n2\nXét tích bằng không thay vì liệt kê ước\n\nDựa vào bước 1\nMột tích hai số nguyên bằng 0 khi và chỉ khi ít nhất một thừa số bằng 0. Vì vậy \n𝑢\n=\n0\nu=0 hoặc \n𝑣\n=\n0\nv=0, tương ứng \n𝑥\n=\n4\nx=4 hoặc \n𝑦\n=\n3\ny=3. Mỗi họ đều thỏa phương trình tích với ẩn còn lại tùy ý; hai họ có thể chung một cặp, nên dùng hợp, không cộng số nghiệm. Vậy tất cả nghiệm là: \n𝑥\n=\n4\nx=4, \n𝑦\ny là số nguyên tùy ý; hoặc \n𝑦\n=\n3\ny=3, \n𝑥\nx là số nguyên tùy ý.\n\nTính chất tích bằng không; hợp các họ nghiệm và điều kiện miền\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  }
+]

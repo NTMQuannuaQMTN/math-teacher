@@ -1,0 +1,21 @@
+{
+  "phase": "baseline-number-theory-exams",
+  "questionsExecuted": 7,
+  "ready": 0,
+  "independentlyReviewed": 7,
+  "correctConclusionCount": 0,
+  "mathematicalPasses": 0,
+  "qualityPasses": 0,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 17943.787959,
+    "p95": 20080.8225,
+    "max": 20080.8225
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 7,
+  "rubricMeanForReviewedOnly": 0.0,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

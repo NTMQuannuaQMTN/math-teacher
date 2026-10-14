@@ -1,0 +1,21 @@
+{
+  "phase": "development-combinatorics-final-v234",
+  "questionsExecuted": 16,
+  "ready": 16,
+  "independentlyReviewed": 16,
+  "correctConclusionCount": 16,
+  "mathematicalPasses": 16,
+  "qualityPasses": 16,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 32.33966700000019,
+    "p95": 123.588166,
+    "max": 123.588166
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 16,
+  "rubricMeanForReviewedOnly": 99.0,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": true
+}

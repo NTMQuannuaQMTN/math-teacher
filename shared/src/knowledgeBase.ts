@@ -115,8 +115,8 @@ export const techniqueName = (id: string) => KB_TECHNIQUES.find((t) => t.id === 
 
 const CUES: Record<Exclude<Domain, "algebra">, RegExp> = {
   geometry: /tam giác|tứ giác|đường tròn|tiếp tuyến|góc|vuông góc|song song|trung điểm|đường cao|nội tiếp|đoạn thẳng|đường thẳng|cắt nhau|hình (vuông|chữ nhật|thang|thoi|bình hành)|\\widehat|\\triangle|triangle|circle/iu,
-  number_theory: /chia hết|số nguyên|số tự nhiên|nguyên tố|ước|bội|số dư|chia .* dư|chính phương|nghiệm nguyên|\\vdots|⋮|\bmod\b/iu,
-  combinatorics: /bảng|ô vuông|tô màu|số cách|có bao nhiêu|xác suất|tập hợp|chọn ra|sắp xếp|trò chơi|lượt|thẻ|dirichlet/iu,
+  number_theory: /chia hết|số nguyên|cặp[^.!?\n]{0,45}\bnguyên\b|số tự nhiên|nguyên tố|ước|bội|số dư|chia .* dư|chính phương|nghiệm nguyên|chữ số[^.!?\n]{0,40}tận cùng|\\vdots|⋮|\bmod\b|\\gcd|\bgcd\b|\blcm\b|ƯCLN|BCNN|Euclid/iu,
+  combinatorics: /bảng|ô vuông|tô màu|số cách|có (?:tất cả )?bao nhiêu|bao nhiêu (?:số|cách|trận|đoạn thẳng|đường chéo|hình chữ nhật|tam giác)|bắt tay|xác suất|tập hợp|chỉ ra hai số|chọn ra|chọn(?:\s+bất kỳ)?\s+\$?\d|sắp xếp|trò chơi|chiến lược|luân phiên|lượt|thẻ|dirichlet|số nguyên.*(?:luôn có|luôn tồn tại).*hai số|(?:luôn|chắc chắn) có (?:ít nhất )?(?:hai|2) (?:người|bạn|học sinh|số|điểm)|bất kì luôn có/iu,
 };
 
 /** The domains a problem draws on (deterministic cue match; algebra is always included). */

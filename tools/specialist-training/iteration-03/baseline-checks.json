@@ -1,0 +1,35 @@
+{
+  "baseline": {
+    "worker": {
+      "tests": 509,
+      "files": 34,
+      "durationSeconds": 17.78,
+      "status": "passed"
+    },
+    "mobile": {
+      "tests": 6,
+      "files": 2,
+      "durationSeconds": 1.34,
+      "status": "passed"
+    },
+    "typechecks": {
+      "shared": "passed",
+      "worker": "passed",
+      "mobile": "passed"
+    },
+    "mobileLint": "passed"
+  },
+  "developmentChecks": {
+    "rationalEquation": {
+      "unitTests": 28,
+      "constructedFactorCases": 289,
+      "status": "passed"
+    },
+    "unaryEquation": {
+      "unitTests": 15,
+      "radicandFamilies": 187,
+      "status": "passed"
+    }
+  },
+  "scope": "Current development evidence; held-out evaluation not started; native paint and real image OCR unmeasured"
+}

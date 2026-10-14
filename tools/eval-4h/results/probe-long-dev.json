@@ -1,0 +1,77 @@
+{
+  "label": "probe-long",
+  "split": "dev",
+  "mode": "free",
+  "createdAt": "2026-10-13T03:52:24.786Z",
+  "summary": {
+    "algebra": {
+      "n": 0,
+      "lesson": 0,
+      "verified": 0,
+      "answerGradable": 0,
+      "answerCorrect": 0,
+      "lessonWrongAnswer": 0,
+      "proofsDelivered": 0,
+      "proofs": 0
+    },
+    "geometry": {
+      "n": 0,
+      "lesson": 0,
+      "verified": 0,
+      "answerGradable": 0,
+      "answerCorrect": 0,
+      "lessonWrongAnswer": 0,
+      "proofsDelivered": 0,
+      "proofs": 0
+    },
+    "number_theory": {
+      "n": 1,
+      "lesson": 1,
+      "verified": 0,
+      "answerGradable": 1,
+      "answerCorrect": 1,
+      "lessonWrongAnswer": 0,
+      "proofsDelivered": 0,
+      "proofs": 0
+    },
+    "combinatorics": {
+      "n": 0,
+      "lesson": 0,
+      "verified": 0,
+      "answerGradable": 0,
+      "answerCorrect": 0,
+      "lessonWrongAnswer": 0,
+      "proofsDelivered": 0,
+      "proofs": 0
+    },
+    "all": {
+      "n": 1,
+      "lesson": 1,
+      "verified": 0,
+      "answerGradable": 1,
+      "answerCorrect": 1,
+      "lessonWrongAnswer": 0,
+      "proofsDelivered": 0,
+      "proofs": 0
+    }
+  },
+  "results": [
+    {
+      "id": "nt-d1",
+      "topic": "number_theory",
+      "kind": "values",
+      "ok": true,
+      "producedBy": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 29029,
+      "answer": "correct",
+      "missing": [],
+      "finalAnswer": "Số dư khi chia $3^{100}$ cho $5$ là $1$.",
+      "steps": 3,
+      "hints": 3,
+      "modelCalls": 2,
+      "cacheMisses": 2
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+import {exactRemainderParameter,verifyRemainderParameterCertificate,fractionLatex,rationalExpressionLatex,rootLatex} from '../../../shared/src/rationalPolynomial';
+import {rationalEquationLesson} from './rationalEquation';
+import {algebraProofLesson,type AlgebraDeduction} from './algebraProofLesson';
+export function remainderParameterLesson(text:string) {
+ try {
+ const match=/^Tìm\s+\$([a-z])\$\s+để đa thức\s+\$([A-Z])\(([a-z])\)=([^$]+)\$\s+chia hết cho\s+\$([^$]+)\$\.$/iu.exec(text.trim());if(!match)return null;
+ const c=exactRemainderParameter(match[4]!,match[3]!,match[1]!,match[5]!);if(!c||!verifyRemainderParameterCertificate(c))return null;
+ const core=rationalEquationLesson(`Giải phương trình $${c.equation.original}$.`);if(!core)return null;
+ const v=c.variable,m=c.parameter,n=match[2]!,r=fractionLatex(c.root),values=c.equation.solutions.map(rootLatex);
+ const final=c.equation.identity?`Vậy mọi số thực $${m}$ đều làm đa thức đã cho chia hết cho đa thức bậc nhất đã cho.`:values.length?`Vậy các tham số cần tìm là ${values.map(s=>`$${m}=${s}$`).join(' hoặc ')}.`:'Vậy không có tham số thực nào thỏa mãn yêu cầu chia hết.';
+ const details:AlgebraDeduction[]=[
+ {title:'Tìm nghiệm của đa thức bậc nhất dùng làm ước',explanation:`Giải đa thức bậc nhất bằng không được $${v}=${r}$. Đa thức này là một hằng số khác không nhân với $${v}-(${r})$; hằng số khác không không ảnh hưởng điều kiện chia hết.`,math:`${match[5]}=0\\quad\\Rightarrow\\quad ${v}=${r}`,reason:'Giải phương trình bậc nhất; chia hết không đổi khi nhân ước với hằng số khác không',question:'Ước bậc nhất bằng không ở giá trị nào? Nó liên hệ thế nào với ẩn trừ giá trị ấy?'},
+ {title:'Giải thích vì sao điều kiện chia hết tương đương giá trị bằng không',explanation:`Với số nguyên $k\\ge2$, hiệu $${v}^k-(${r})^k$ chia hết cho $${v}-(${r})$ nhờ hằng đẳng thức bên dưới. Với $k=1$, hiệu chính là ước; hạng tử hằng thì triệt tiêu. Do đó tổng các hạng tử cho thấy $${n}(${v})-${n}(${r})$ chia hết cho ước ấy. Phần dư là hằng số $${n}(${r})$; đa thức chia hết khi và chỉ khi hằng số này bằng không. Lập luận đúng với từng giá trị tham số, không cần thử đoán một giá trị.`,math:`${v}^k-(${r})^k=(${v}-(${r}))\\bigl(${v}^{k-1}+(${r})${v}^{k-2}+\\cdots+(${r})^{k-1}\\bigr)`,reason:'Hằng đẳng thức hiệu hai lũy thừa; phần dư khi chia đa thức',question:'Vì sao mọi hạng tử của đa thức trừ giá trị tại nghiệm của ước đều chia hết cho ước?'},
+ {title:'Thay đúng nghiệm của ước vào đa thức và thu gọn',explanation:`Thay $${v}=${r}$ vào từng hạng tử, thực hiện các lũy thừa và gộp hệ số của tham số. Điều kiện cần giải là $${n}(${r})=0$.`,math:`${n}(${r})=${c.substitution.replace(/\*/g,'\\cdot ')}=${rationalExpressionLatex(c.substitution,m)}\\quad\\Rightarrow\\quad ${c.equation.original.replace(/\*/g,'\\cdot ')}`,reason:'Thay giá trị; tính lũy thừa; thu gọn chính xác',question:'Hạng tử nào còn chứa tham số sau khi thay nghiệm của ước?'},
+ ...core.lesson.steps.slice(1,-1).map(s=>({title:s.title,explanation:s.explanation,math:s.math,reason:s.reason??'Biến đổi tương đương',question:'Sau khi thu gọn điều kiện phần dư bằng không, những giá trị tham số nào được nhận?'})),
+ {title:'Kiểm tra phần dư và kết luận đầy đủ',explanation:`Các phép giải đều tương đương, và điều kiện phần dư bằng không là cần và đủ. Vì vậy các tham số vừa tìm làm đa thức chia hết, còn các tham số khác thì không. ${final}`,math:c.equation.identity?`${n}(${r})=0`:values.length?values.map(value=>`${m}=${value}\\quad\\Rightarrow\\quad ${n}(${r})=0`).join(',\\quad '):null,reason:'Đối chiếu phần dư; tính cần và đủ',question:'Ngoài các tham số đã tìm còn giá trị nào làm phần dư bằng không không?'}
+ ];
+ const lesson=algebraProofLesson(text,'Tham số để đa thức chia hết cho đa thức bậc nhất','Chứng minh điều kiện phần dư bằng không, thay nghiệm của ước rồi giải đầy đủ theo tham số.',details,final,{givens:[`$${n}(${v})=${match[4]}$`],unknowns:[`Tất cả $${m}$ để đa thức chia hết cho $${match[5]}$`]} );return lesson?{lesson,certificate:c}:null;
+ }catch{return null;}
+}

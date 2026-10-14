@@ -35,7 +35,7 @@ function normalize(text: string): string {
     // Separators: line breaks, spacing, environments.
     .replace(/\\\\|\\q?quad|\\(?:begin|end)\{[a-z*]+\}/g, " ; ")
     // \frac{AD}{AB} → AD/AB (only simple products of segments, so "a/b" stays a ratio of lengths).
-    .replace(/\\d?frac\s*\{\s*([A-Z'·\s²^{}\\cdot]+?)\s*\}\s*\{\s*([A-Z'·\s²^{}\\cdot]+?)\s*\}/g, "$1/$2")
+    .replace(/\\d?frac\s*\{\s*([A-Z'·\s²^{}\\cdot]+?)\s*\}\s*\{\s*([A-Z'·\s²^{}\\cdot]+?|\d+(?:\.\d+)?)\s*\}/g, "$1/$2")
     .replace(/\\(?:widehat|hat|angle)\s*\{\s*([A-Z'\s]+?)\s*\}/g, (_, n: string) => `∠${n.replace(/\s/g, "")}`)
     .replace(/\\angle\s*/g, "∠")
     .replace(/góc\s+(?=[A-Z]'*[A-Z]'*[A-Z])/g, "∠")
@@ -250,9 +250,20 @@ export function checkClaims(
 ): ClaimResult[] {
   const seen = new Set<string>();
   const out: ClaimResult[] = [];
+  const vertices = Object.keys(resolved.points);
+  const expandAngle = (s: string) => vertices.length === 3
+    ? s.replace(/∠([A-Z]'*)(?![A-Z'])/g, (whole, vertex: string) => {
+        const others = vertices.filter((p) => p !== vertex);
+        return vertices.includes(vertex) ? `∠${others[0]}${vertex}${others[1]}` : whole;
+      })
+    : s;
   for (const text of texts) {
     if (!text) continue;
-    for (const sentence of normalize(text).split(/[.;!?\n]|,\s+(?=[a-zà-ỹ])/)) {
+    // A conditional paragraph is a proof branch, not an unconditional claim about this one drawing.
+    // Its assumptions are not evaluated here; leave it unmeasured rather than splitting away "Nếu".
+    // A following blank-line paragraph starts a fresh unconditional scope.
+    const measurable=text.split(/\n\s*\n/).filter(p=>!/^\s*(?:Nếu|Giả sử|Suppose|Assume)(?:\s|\$)/iu.test(p));
+    for (const sentence of measurable.flatMap(p=>expandAngle(normalize(p)).split(/[.;!?\n]|,\s+(?=[a-zà-ỹ])/))) {
       if (HYPOTHETICAL.test(sentence)) continue;
       for (const claim of claimsIn(sentence)) {
         if (seen.has(claim.label)) continue;

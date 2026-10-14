@@ -1,0 +1,156 @@
+[
+  {
+    "id": "geo3-cyclic",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 1060.515708,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 9,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho tam giác \n𝐴\n𝐵\n𝐶\nABC nhọn. Gọi \n𝐸\n,\n𝐹\nE,F lần lượt là chân đường cao từ \n𝐵\n,\n𝐶\nB,C. Chứng minh tứ giác \n𝐵\n𝐶\n𝐸\n𝐹\nBCEF nội tiếp.\n\nHÌNH VẼ\n\nB\nC\nA\nE\nF\nHình minh họa — không đúng tỉ lệ\nKéo các điểm màu xanh để khám phá\n\n\nChạm vào điểm, đoạn thẳng hoặc góc để xem bước dùng đến nó.\n\nĐã kiểm tra một phần\nMột số phần đã được kiểm tra tự động. Bạn đọc kỹ lập luận nhé.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChứng minh hình học\n\nCHO BIẾT\nCho tam giác \n𝐴\n𝐵\n𝐶\nABC nhọn\nGọi \n𝐸\n,\n𝐹\nE,F lần lượt là chân đường cao từ \n𝐵\n,\n𝐶\nB,C\n\nKIẾN THỨC SỬ DỤNG\ncộng, trừ góc\ndấu hiệu tứ giác nội tiếp\n\nHƯỚNG GIẢI\nChứng minh lần lượt: tứ giác BCEF nội tiếp. Mỗi bước chỉ dùng giả thiết, cách dựng hình và các kết quả đã chứng minh trước đó.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTrong tứ giác BCEF, hai đỉnh nào cùng nhìn một cạnh dưới hai góc bằng nhau?\nTứ giác có hai đỉnh kề nhau cùng nhìn một cạnh dưới hai góc bằng nhau thì nội tiếp\nHướng: chứng minh ∠BEC = ∠BFC.\nKhi đó E và F cùng nhìn cạnh BC dưới hai góc bằng nhau ⇒ tứ giác BCEF nội tiếp.\nĐể có ∠BEC = ∠BFC, dùng:\n• BE ⊥ AC (E là hình chiếu của B trên AC)\n• CF ⊥ AB (F là hình chiếu của C trên AB)\n𝐵\n,\n𝐶\n,\n𝐸\n,\n𝐹\n c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\nB,C,E,F c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\n\nẨn lời giải\nLời giải\n1\ntứ giác BCEF nội tiếp\nTa có:\n∠BEC = 90° (E là hình chiếu của B trên AC)\n= ∠BFC (F là hình chiếu của C trên AB)\n⇒ ∠BEC = ∠BFC\n∠BEC = 90° (vì BE ⊥ AC; các điểm thuộc các đường thẳng theo cách dựng hoặc kết quả trước đó).\n∠CFB = 90° (vì CF ⊥ AB; các điểm thuộc các đường thẳng theo cách dựng hoặc kết quả trước đó).\nHai góc vuông cùng chắn đoạn BC; vì vậy bốn điểm cùng thuộc đường tròn đường kính BC.\n⇒ tứ giác BCEF nội tiếp.\n𝐵\n𝐸\n𝐶\n^\n\t\n=\n90\n∘\n\n\n\t\n=\n𝐵\n𝐹\n𝐶\n^\n\n\n\t\n⇒\n𝐵\n𝐸\n𝐶\n^\n=\n𝐵\n𝐹\n𝐶\n^\n\n\n\t\n⇒\n𝐵\n𝐸\n𝐶\n^\n=\n90\n∘\n\n\n\t\n𝐶\n𝐹\n𝐵\n^\n=\n90\n∘\n\n\n\t\n⇒\n𝐵\n,\n𝐶\n,\n𝐸\n,\n𝐹\n c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\nBEC\n\t​\n\n=90\n∘\n=\nBFC\n⇒\nBEC\n=\nBFC\n⇒\nBEC\n=90\n∘\nCFB\n=90\n∘\n⇒B,C,E,F c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\n\t​\n\n\ncộng, trừ góc; dấu hiệu tứ giác nội tiếp\n\nĐã kiểm tra trên hình\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": {
+      "before": {
+        "B": {
+          "x": 117.13529205322266,
+          "y": 384.84375
+        },
+        "C": {
+          "x": 272.8647155761719,
+          "y": 384.84375
+        },
+        "A": {
+          "x": 172.43307495117188,
+          "y": 280.84375
+        },
+        "E": {
+          "x": 197.71743774414062,
+          "y": 307.0264892578125
+        },
+        "F": {
+          "x": 151.45860290527344,
+          "y": 320.2909851074219
+        }
+      },
+      "after": {
+        "B": {
+          "x": 117.13529205322266,
+          "y": 384.84375
+        },
+        "C": {
+          "x": 272.8647155761719,
+          "y": 384.84375
+        },
+        "A": {
+          "x": 190,
+          "y": 268
+        },
+        "E": {
+          "x": 220.7508544921875,
+          "y": 311.3603820800781
+        },
+        "F": {
+          "x": 160.7393798828125,
+          "y": 314.9215087890625
+        }
+      },
+      "moved": 21.761405509149565,
+      "rightAngleCosines": [
+        1.4560451261025748e-7,
+        2.9107809926671095e-7
+      ],
+      "pass": true
+    },
+    "pass": true
+  },
+  {
+    "id": "geo3-cyclic",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 1042.453917,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 9,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho tam giác \n𝐴\n𝐵\n𝐶\nABC nhọn. Gọi \n𝐸\n,\n𝐹\nE,F lần lượt là chân đường cao từ \n𝐵\n,\n𝐶\nB,C. Chứng minh tứ giác \n𝐵\n𝐶\n𝐸\n𝐹\nBCEF nội tiếp.\n\nHÌNH VẼ\n\nB\nC\nA\nE\nF\nHình minh họa — không đúng tỉ lệ\nKéo các điểm màu xanh để khám phá\n\n\nChạm vào điểm, đoạn thẳng hoặc góc để xem bước dùng đến nó.\n\nĐã kiểm tra một phần\nMột số phần đã được kiểm tra tự động. Bạn đọc kỹ lập luận nhé.\nTìm hiểu đề bài\n\nDẠNG BÀI\nChứng minh hình học\n\nCHO BIẾT\nCho tam giác \n𝐴\n𝐵\n𝐶\nABC nhọn\nGọi \n𝐸\n,\n𝐹\nE,F lần lượt là chân đường cao từ \n𝐵\n,\n𝐶\nB,C\n\nKIẾN THỨC SỬ DỤNG\ncộng, trừ góc\ndấu hiệu tứ giác nội tiếp\n\nHƯỚNG GIẢI\nChứng minh lần lượt: tứ giác BCEF nội tiếp. Mỗi bước chỉ dùng giả thiết, cách dựng hình và các kết quả đã chứng minh trước đó.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nTrong tứ giác BCEF, hai đỉnh nào cùng nhìn một cạnh dưới hai góc bằng nhau?\nTứ giác có hai đỉnh kề nhau cùng nhìn một cạnh dưới hai góc bằng nhau thì nội tiếp\nHướng: chứng minh ∠BEC = ∠BFC.\nKhi đó E và F cùng nhìn cạnh BC dưới hai góc bằng nhau ⇒ tứ giác BCEF nội tiếp.\nĐể có ∠BEC = ∠BFC, dùng:\n• BE ⊥ AC (E là hình chiếu của B trên AC)\n• CF ⊥ AB (F là hình chiếu của C trên AB)\n𝐵\n,\n𝐶\n,\n𝐸\n,\n𝐹\n c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\nB,C,E,F c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\n\nẨn lời giải\nLời giải\n1\ntứ giác BCEF nội tiếp\nTa có:\n∠BEC = 90° (E là hình chiếu của B trên AC)\n= ∠BFC (F là hình chiếu của C trên AB)\n⇒ ∠BEC = ∠BFC\n∠BEC = 90° (vì BE ⊥ AC; các điểm thuộc các đường thẳng theo cách dựng hoặc kết quả trước đó).\n∠CFB = 90° (vì CF ⊥ AB; các điểm thuộc các đường thẳng theo cách dựng hoặc kết quả trước đó).\nHai góc vuông cùng chắn đoạn BC; vì vậy bốn điểm cùng thuộc đường tròn đường kính BC.\n⇒ tứ giác BCEF nội tiếp.\n𝐵\n𝐸\n𝐶\n^\n\t\n=\n90\n∘\n\n\n\t\n=\n𝐵\n𝐹\n𝐶\n^\n\n\n\t\n⇒\n𝐵\n𝐸\n𝐶\n^\n=\n𝐵\n𝐹\n𝐶\n^\n\n\n\t\n⇒\n𝐵\n𝐸\n𝐶\n^\n=\n90\n∘\n\n\n\t\n𝐶\n𝐹\n𝐵\n^\n=\n90\n∘\n\n\n\t\n⇒\n𝐵\n,\n𝐶\n,\n𝐸\n,\n𝐹\n c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\nBEC\n\t​\n\n=90\n∘\n=\nBFC\n⇒\nBEC\n=\nBFC\n⇒\nBEC\n=90\n∘\nCFB\n=90\n∘\n⇒B,C,E,F c\nu\nˋ\nng thuộc một đường tr\no\nˋ\nn\n\t​\n\n\ncộng, trừ góc; dấu hiệu tứ giác nội tiếp\n\nĐã kiểm tra trên hình\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": {
+      "before": {
+        "B": {
+          "x": 43,
+          "y": 603.0921630859375
+        },
+        "C": {
+          "x": 418,
+          "y": 603.0921630859375
+        },
+        "A": {
+          "x": 176.1583251953125,
+          "y": 352.6578063964844
+        },
+        "E": {
+          "x": 237.0436553955078,
+          "y": 415.7064208984375
+        },
+        "F": {
+          "x": 125.65133285522461,
+          "y": 447.64764404296875
+        }
+      },
+      "after": {
+        "B": {
+          "x": 43,
+          "y": 603.0921630859375
+        },
+        "C": {
+          "x": 418,
+          "y": 603.0921630859375
+        },
+        "A": {
+          "x": 194,
+          "y": 340
+        },
+        "E": {
+          "x": 260.40350341796875,
+          "y": 417.99212646484375
+        },
+        "F": {
+          "x": 135.920166015625,
+          "y": 441.1943664550781
+        }
+      },
+      "moved": 21.875681077559655,
+      "rightAngleCosines": [
+        9.978317901845152e-8,
+        1.3917522681519097e-7
+      ],
+      "pass": true
+    },
+    "pass": true
+  }
+]

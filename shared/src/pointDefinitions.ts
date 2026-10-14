@@ -294,7 +294,7 @@ function mainTriangle(text: string): [string, string, string] | null {
 }
 
 const letters = (s: string) => s.match(/[A-Z]'*/g) ?? [];
-const NAMES = `((?:${PT}\\s*(?:,|và)\\s*)+${PT})`;
+const NAMES = `(?<![A-Z'])((?:${PT}\\s*(?:,|và)\\s*)+${PT})`;
 const SEGMENTS = `((?:${PT}${PT}\\s*(?:,|và)\\s*)*${PT}${PT})`;
 
 /**
@@ -306,6 +306,11 @@ function defineConstructions(b: Builder, sentenceText: string): void {
   // Sentence-initial capitals ("Tiếp tuyến …", "Tia MH …") read like any other occurrence.
   const text = sentenceText.replace(/(^|[.;:,]\s*|\)\s*)(Tiếp tuyến|Tia|Đường thẳng|Đường trung trực|Đường kính|Kẻ|Lấy|Gọi|Hai đường cao|Các đường cao|Đường cao)/g, (_m, p: string, w: string) => p + w[0]!.toLowerCase() + w.slice(1));
   const tri = mainTriangle(text);
+  // Two named chords/lines meeting at a named point, with both endpoints already constructed.
+  for(const m of text.matchAll(new RegExp(`(${PT})(${PT})\\s*(?:và|,)\\s*(${PT})(${PT})\\s+cắt nhau tại (?:điểm )?(${PT})`,"g"))) {
+    const [a,c,d,e,name]=m.slice(1) as [string,string,string,string,string];
+    if(new Set([a,c,d,e,name]).size===5 && [a,c,d,e].every(p=>b.has(p)))b.define(name,"intersection",[a,c,d,e]);
+  }
   // "Đường trung trực của DB cắt AB tại E": the perpendicular bisector is the line through the midpoint, turned 90°.
   for (const m of text.matchAll(new RegExp(`trung trực (?:của )?(?:đoạn (?:thẳng )?)?(${PT})(${PT}) cắt (?:đường thẳng |cạnh |đoạn (?:thẳng )?)?(${PT})(${PT}) tại (?:điểm )?(${PT})`, "g"))) {
     const [x, y, p, q, name] = [m[1]!, m[2]!, m[3]!, m[4]!, m[5]!];
@@ -325,8 +330,13 @@ function defineConstructions(b: Builder, sentenceText: string): void {
       ...text.matchAll(new RegExp(`${SEGMENTS}\\s+là (?:các|hai|ba) đường cao(?:\\s+(?:của )?tam giác ${PT}${PT}${PT})?(?:\\s*(?:,|và)?\\s*cắt nhau tại (?:điểm )?(${PT}))?`, "g")),
     ];
     for (const m of lists) {
-      m[1]!.split(/\s*(?:,|và)\s*/).forEach(altitude);
-      if (m[2]) b.define(m[2], "orthocenter", tri);
+      const segments=m[1]!.split(/\s*(?:,|và)\s*/);
+      segments.forEach(altitude);
+      if (m[2] && segments.length >= 2) {
+        const [u,v]=segments.slice(0,2).map(letters);
+        if (u!.length === 2 && v!.length === 2 && u![0] !== v![0] && [...u!,...v!].every(p=>b.has(p)))
+          b.define(m[2], "intersection", [...u!,...v!]);
+      }
     }
     // "có H là trực tâm" with no triangle named: the main triangle.
     for (const m of text.matchAll(new RegExp(`(${PT}) là trực tâm(?!\\s+(?:của\\s+)?(?:các\\s+)?(?:tam giác\\s+)?${PT}${PT}${PT})`, "g"))) b.define(m[1]!, "orthocenter", tri);

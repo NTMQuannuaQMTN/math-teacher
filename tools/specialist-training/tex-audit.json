@@ -1,0 +1,1970 @@
+{
+  "0": {
+    "normalized": "0",
+    "valid": true
+  },
+  "1": {
+    "normalized": "1",
+    "valid": true
+  },
+  "2": {
+    "normalized": "2",
+    "valid": true
+  },
+  "3": {
+    "normalized": "3",
+    "valid": true
+  },
+  "4": {
+    "normalized": "4",
+    "valid": true
+  },
+  "5": {
+    "normalized": "5",
+    "valid": true
+  },
+  "6": {
+    "normalized": "6",
+    "valid": true
+  },
+  "7": {
+    "normalized": "7",
+    "valid": true
+  },
+  "8": {
+    "normalized": "8",
+    "valid": true
+  },
+  "13": {
+    "normalized": "13",
+    "valid": true
+  },
+  "20": {
+    "normalized": "20",
+    "valid": true
+  },
+  "48": {
+    "normalized": "48",
+    "valid": true
+  },
+  "67": {
+    "normalized": "67",
+    "valid": true
+  },
+  "72": {
+    "normalized": "72",
+    "valid": true
+  },
+  "74": {
+    "normalized": "74",
+    "valid": true
+  },
+  "84": {
+    "normalized": "84",
+    "valid": true
+  },
+  "100": {
+    "normalized": "100",
+    "valid": true
+  },
+  "126": {
+    "normalized": "126",
+    "valid": true
+  },
+  "x^{2}-7x+12=0": {
+    "normalized": "x^{2}-7x+12=0",
+    "valid": true
+  },
+  "\\sqrt{x+2}=x": {
+    "normalized": "\\sqrt{x+2}=x",
+    "valid": true
+  },
+  "\\frac{x^{2}-1}{x-1}=2": {
+    "normalized": "\\frac{x^{2}-1}{x-1}=2",
+    "valid": true
+  },
+  "\\begin{cases}x+y=7\\\\xy=10\\end{cases}": {
+    "normalized": "\\begin{cases}x+y=7\\\\xy=10\\end{cases}",
+    "valid": true
+  },
+  "a,b": {
+    "normalized": "a,b",
+    "valid": true
+  },
+  "a+b=6": {
+    "normalized": "a+b=6",
+    "valid": true
+  },
+  "ab\\le9": {
+    "normalized": "ab\\le9",
+    "valid": true
+  },
+  "ABC": {
+    "normalized": "ABC",
+    "valid": true
+  },
+  "A": {
+    "normalized": "A",
+    "valid": true
+  },
+  "\\widehat{A}=36^{\\circ}": {
+    "normalized": "\\widehat{A}=36^{\\circ}",
+    "valid": true
+  },
+  "\\widehat{B}": {
+    "normalized": "\\widehat{B}",
+    "valid": true
+  },
+  "\\widehat{C}": {
+    "normalized": "\\widehat{C}",
+    "valid": true
+  },
+  "D": {
+    "normalized": "D",
+    "valid": true
+  },
+  "AB": {
+    "normalized": "AB",
+    "valid": true
+  },
+  "E": {
+    "normalized": "E",
+    "valid": true
+  },
+  "AC": {
+    "normalized": "AC",
+    "valid": true
+  },
+  "DE\\parallel BC": {
+    "normalized": "DE\\parallel BC",
+    "valid": true
+  },
+  "AD=3": {
+    "normalized": "AD=3",
+    "valid": true
+  },
+  "DB=2": {
+    "normalized": "DB=2",
+    "valid": true
+  },
+  "BC=10": {
+    "normalized": "BC=10",
+    "valid": true
+  },
+  "DE": {
+    "normalized": "DE",
+    "valid": true
+  },
+  "M": {
+    "normalized": "M",
+    "valid": true
+  },
+  "N": {
+    "normalized": "N",
+    "valid": true
+  },
+  "MN\\parallel BC": {
+    "normalized": "MN\\parallel BC",
+    "valid": true
+  },
+  "MN=\\frac{BC}{2}": {
+    "normalized": "MN=\\frac{BC}{2}",
+    "valid": true
+  },
+  "O": {
+    "normalized": "O",
+    "valid": true
+  },
+  "P": {
+    "normalized": "P",
+    "valid": true
+  },
+  "PA,PB": {
+    "normalized": "PA,PB",
+    "valid": true
+  },
+  "A,B": {
+    "normalized": "A,B",
+    "valid": true
+  },
+  "OP": {
+    "normalized": "OP",
+    "valid": true
+  },
+  "n": {
+    "normalized": "n",
+    "valid": true
+  },
+  "n(n+1)(n+2)": {
+    "normalized": "n(n+1)(n+2)",
+    "valid": true
+  },
+  "(x,y)": {
+    "normalized": "(x,y)",
+    "valid": true
+  },
+  "xy-2x-3y=7": {
+    "normalized": "xy-2x-3y=7",
+    "valid": true
+  },
+  "n^{2}+2": {
+    "normalized": "n^{2}+2",
+    "valid": true
+  },
+  "p": {
+    "normalized": "p",
+    "valid": true
+  },
+  "p+2": {
+    "normalized": "p+2",
+    "valid": true
+  },
+  "p+4": {
+    "normalized": "p+4",
+    "valid": true
+  },
+  "0,1,2,3,4": {
+    "normalized": "0,1,2,3,4",
+    "valid": true
+  },
+  "1,2,3,4,5,6": {
+    "normalized": "1,2,3,4,5,6",
+    "valid": true
+  },
+  "a+b": {
+    "normalized": "a+b",
+    "valid": true
+  },
+  "AB=9": {
+    "normalized": "AB=9",
+    "valid": true
+  },
+  "AC=12": {
+    "normalized": "AC=12",
+    "valid": true
+  },
+  "BC": {
+    "normalized": "BC",
+    "valid": true
+  },
+  "(O)": {
+    "normalized": "(O)",
+    "valid": true
+  },
+  "P,A,O,B": {
+    "normalized": "P,A,O,B",
+    "valid": true
+  },
+  "n^{2}+n+1": {
+    "normalized": "n^{2}+n+1",
+    "valid": true
+  },
+  "x^{4}-5x^{2}+4=0": {
+    "normalized": "x^{4}-5x^{2}+4=0",
+    "valid": true
+  },
+  "A=\\sqrt{7+4\\sqrt{3}}-\\sqrt{7-4\\sqrt{3}}": {
+    "normalized": "A=\\sqrt{7+4\\sqrt{3}}-\\sqrt{7-4\\sqrt{3}}",
+    "valid": true
+  },
+  "AD/DB=1/2": {
+    "normalized": "AD/DB=1/2",
+    "valid": true
+  },
+  "AE/EC=2": {
+    "normalized": "AE/EC=2",
+    "valid": true
+  },
+  "F": {
+    "normalized": "F",
+    "valid": true
+  },
+  "FB/FC": {
+    "normalized": "FB/FC",
+    "valid": true
+  },
+  "\\angle B=50^{\\circ}": {
+    "normalized": "\\angle B=50^{\\circ}",
+    "valid": true
+  },
+  "\\angle C=70^{\\circ}": {
+    "normalized": "\\angle C=70^{\\circ}",
+    "valid": true
+  },
+  "B,C": {
+    "normalized": "B,C",
+    "valid": true
+  },
+  "I": {
+    "normalized": "I",
+    "valid": true
+  },
+  "\\angle BIC": {
+    "normalized": "\\angle BIC",
+    "valid": true
+  },
+  "n^{5}-n": {
+    "normalized": "n^{5}-n",
+    "valid": true
+  },
+  "x^2-2(m+1)x+2m=0": {
+    "normalized": "x^2-2(m+1)x+2m=0",
+    "valid": true
+  },
+  "m": {
+    "normalized": "m",
+    "valid": true
+  },
+  "x_1,x_2": {
+    "normalized": "x_1,x_2",
+    "valid": true
+  },
+  "m,n": {
+    "normalized": "m,n",
+    "valid": true
+  },
+  "m^2+m+n^2": {
+    "normalized": "m^2+m+n^2",
+    "valid": true
+  },
+  "mn": {
+    "normalized": "mn",
+    "valid": true
+  },
+  "n=3": {
+    "normalized": "n=3",
+    "valid": true
+  },
+  "\\hat A>\\hat B>\\hat C": {
+    "normalized": "\\hat A>\\hat B>\\hat C",
+    "valid": true
+  },
+  "CD>AB": {
+    "normalized": "CD>AB",
+    "valid": true
+  },
+  "DB": {
+    "normalized": "DB",
+    "valid": true
+  },
+  "DC": {
+    "normalized": "DC",
+    "valid": true
+  },
+  "A,D,E,F": {
+    "normalized": "A,D,E,F",
+    "valid": true
+  },
+  "2\\times9": {
+    "normalized": "2\\times9",
+    "valid": true
+  },
+  "k\\le18": {
+    "normalized": "k\\le18",
+    "valid": true
+  },
+  "k": {
+    "normalized": "k",
+    "valid": true
+  },
+  "k=4": {
+    "normalized": "k=4",
+    "valid": true
+  },
+  "|2x-3|=5": {
+    "normalized": "|2x-3|=5",
+    "valid": true
+  },
+  "-1\\le x\\le4": {
+    "normalized": "-1\\le x\\le4",
+    "valid": true
+  },
+  "A=x^{2}-4x+1": {
+    "normalized": "A=x^{2}-4x+1",
+    "valid": true
+  },
+  "a": {
+    "normalized": "a",
+    "valid": true
+  },
+  "P(x)=x^{3}-2x^{2}+ax+4": {
+    "normalized": "P(x)=x^{3}-2x^{2}+ax+4",
+    "valid": true
+  },
+  "x-2": {
+    "normalized": "x-2",
+    "valid": true
+  },
+  "\\frac{x-1}{x+2}\\ge0": {
+    "normalized": "\\frac{x-1}{x+2}\\ge0",
+    "valid": true
+  },
+  "AB=6": {
+    "normalized": "AB=6",
+    "valid": true
+  },
+  "AC=8": {
+    "normalized": "AC=8",
+    "valid": true
+  },
+  "AH": {
+    "normalized": "AH",
+    "valid": true
+  },
+  "H\\in BC": {
+    "normalized": "H\\in BC",
+    "valid": true
+  },
+  "BH": {
+    "normalized": "BH",
+    "valid": true
+  },
+  "CH": {
+    "normalized": "CH",
+    "valid": true
+  },
+  "OM": {
+    "normalized": "OM",
+    "valid": true
+  },
+  "OM\\perp AB": {
+    "normalized": "OM\\perp AB",
+    "valid": true
+  },
+  "ABCD": {
+    "normalized": "ABCD",
+    "valid": true
+  },
+  "\\angle DAB=110^{\\circ}": {
+    "normalized": "\\angle DAB=110^{\\circ}",
+    "valid": true
+  },
+  "\\angle BCD": {
+    "normalized": "\\angle BCD",
+    "valid": true
+  },
+  "D,E,F": {
+    "normalized": "D,E,F",
+    "valid": true
+  },
+  "BC,CA,AB": {
+    "normalized": "BC,CA,AB",
+    "valid": true
+  },
+  "AD,BE,CF": {
+    "normalized": "AD,BE,CF",
+    "valid": true
+  },
+  "BD/DC=2": {
+    "normalized": "BD/DC=2",
+    "valid": true
+  },
+  "CE/EA=3": {
+    "normalized": "CE/EA=3",
+    "valid": true
+  },
+  "AF/FB": {
+    "normalized": "AF/FB",
+    "valid": true
+  },
+  "18n": {
+    "normalized": "18n",
+    "valid": true
+  },
+  "n(n+1)": {
+    "normalized": "n(n+1)",
+    "valid": true
+  },
+  "2n+1": {
+    "normalized": "2n+1",
+    "valid": true
+  },
+  "3n+2": {
+    "normalized": "3n+2",
+    "valid": true
+  },
+  "10^{2026}": {
+    "normalized": "10^{2026}",
+    "valid": true
+  },
+  "(0,0)": {
+    "normalized": "(0,0)",
+    "valid": true
+  },
+  "(3,2)": {
+    "normalized": "(3,2)",
+    "valid": true
+  },
+  "(1,1)": {
+    "normalized": "(1,1)",
+    "valid": true
+  },
+  "1,2,\\ldots,10": {
+    "normalized": "1,2,\\ldots,10",
+    "valid": true
+  },
+  "MN \\parallel BC": {
+    "normalized": "MN \\parallel BC",
+    "valid": true
+  },
+  "MN = BC / 2": {
+    "normalized": "MN = BC / 2",
+    "valid": true
+  },
+  "u=x-3": {
+    "normalized": "u=x-3",
+    "valid": true
+  },
+  "v=y-2": {
+    "normalized": "v=y-2",
+    "valid": true
+  },
+  "(x-3)(y-2)=13": {
+    "normalized": "(x-3)(y-2)=13",
+    "valid": true
+  },
+  "uv=13\\ne0": {
+    "normalized": "uv=13\\ne0",
+    "valid": true
+  },
+  "u": {
+    "normalized": "u",
+    "valid": true
+  },
+  "1\\le|u|\\le13": {
+    "normalized": "1\\le|u|\\le13",
+    "valid": true
+  },
+  "v=13/u": {
+    "normalized": "v=13/u",
+    "valid": true
+  },
+  "uv=13,\\quad u\\mid 13": {
+    "normalized": "uv=13,\\quad u\\mid 13",
+    "valid": true
+  },
+  "x=u+3": {
+    "normalized": "x=u+3",
+    "valid": true
+  },
+  "y=v+2": {
+    "normalized": "y=v+2",
+    "valid": true
+  },
+  "(-10,1), (2,-11), (4,15), (16,3)": {
+    "normalized": "(-10,1), (2,-11), (4,15), (16,3)",
+    "valid": true
+  },
+  "\\begin{gathered}u=-13,\\ v=-1\\Rightarrow (x,y)=(-10,1) \\\\ u=-1,\\ v=-13\\Rightarrow (x,y)=(2,-11) \\\\ u=1,\\ v=13\\Rightarrow (x,y)=(4,15) \\\\ u=13,\\ v=1\\Rightarrow (x,y)=(16,3)\\end{gathered}": {
+    "normalized": "\\begin{gathered}u=-13,\\ v=-1\\Rightarrow (x,y)=(-10,1) \\\\ u=-1,\\ v=-13\\Rightarrow (x,y)=(2,-11) \\\\ u=1,\\ v=13\\Rightarrow (x,y)=(4,15) \\\\ u=13,\\ v=1\\Rightarrow (x,y)=(16,3)\\end{gathered}",
+    "valid": true
+  },
+  "2k": {
+    "normalized": "2k",
+    "valid": true
+  },
+  "2k+1": {
+    "normalized": "2k+1",
+    "valid": true
+  },
+  "(2k)^2=4k^2,\\quad (2k+1)^2=4k(k+1)+1": {
+    "normalized": "(2k)^2=4k^2,\\quad (2k+1)^2=4k(k+1)+1",
+    "valid": true
+  },
+  "n^2+2": {
+    "normalized": "n^2+2",
+    "valid": true
+  },
+  "n^2+2\\equiv 2\\text{ hoặc }3\\pmod{4}": {
+    "normalized": "n^2+2\\equiv 2\\text{ hoặc }3\\pmod{4}",
+    "valid": true
+  },
+  "\\{1,2,3,4\\}": {
+    "normalized": "\\{1,2,3,4\\}",
+    "valid": true
+  },
+  "5-1 = 4": {
+    "normalized": "5-1 = 4",
+    "valid": true
+  },
+  "5-2 = 3": {
+    "normalized": "5-2 = 3",
+    "valid": true
+  },
+  "4\\times 4\\times 3 = 48": {
+    "normalized": "4\\times 4\\times 3 = 48",
+    "valid": true
+  },
+  "A, D, E, F\\text{ cùng thuộc một đường tròn}": {
+    "normalized": "A, D, E, F\\text{ cùng thuộc một đường tròn}",
+    "valid": true
+  },
+  "A, D, E, O\\text{ cùng thuộc một đường tròn}": {
+    "normalized": "A, D, E, O\\text{ cùng thuộc một đường tròn}",
+    "valid": true
+  },
+  "\\begin{aligned}\\widehat{AED} &= \\widehat{EBD} + \\widehat{EDB} \\\\ &= 2\\widehat{EBD} \\\\ &= 2\\widehat{ACD} \\\\ &= \\widehat{ACD} + \\widehat{FDC} \\\\ &= \\widehat{AFD} \\\\ &\\Rightarrow \\widehat{AED} = \\widehat{AFD} \\\\ &\\Rightarrow A, D, E, F\\text{ cùng thuộc một đường tròn}\\end{aligned}": {
+    "normalized": "\\begin{aligned}\\widehat{AED} &= \\widehat{EBD} + \\widehat{EDB} \\\\ &= 2\\widehat{EBD} \\\\ &= 2\\widehat{ACD} \\\\ &= \\widehat{ACD} + \\widehat{FDC} \\\\ &= \\widehat{AFD} \\\\ &\\Rightarrow \\widehat{AED} = \\widehat{AFD} \\\\ &\\Rightarrow A, D, E, F\\text{ cùng thuộc một đường tròn}\\end{aligned}",
+    "valid": true
+  },
+  "EO \\perp BD": {
+    "normalized": "EO \\perp BD",
+    "valid": true
+  },
+  "FO \\perp CD": {
+    "normalized": "FO \\perp CD",
+    "valid": true
+  },
+  "\\begin{aligned}\\widehat{OEA} &= 180^\\circ - \\widehat{OEB} \\\\ &= 90^\\circ + \\widehat{ABD} \\\\ &= 90^\\circ + \\widehat{ACD} \\\\ &= \\widehat{OFC} \\\\ &= 180^\\circ - \\widehat{OFA} \\\\ &\\Rightarrow \\widehat{OEA} + \\widehat{OFA} = 180^\\circ \\\\ &\\Rightarrow O, A, E, F\\text{ cùng thuộc một đường tròn}\\end{aligned}": {
+    "normalized": "\\begin{aligned}\\widehat{OEA} &= 180^\\circ - \\widehat{OEB} \\\\ &= 90^\\circ + \\widehat{ABD} \\\\ &= 90^\\circ + \\widehat{ACD} \\\\ &= \\widehat{OFC} \\\\ &= 180^\\circ - \\widehat{OFA} \\\\ &\\Rightarrow \\widehat{OEA} + \\widehat{OFA} = 180^\\circ \\\\ &\\Rightarrow O, A, E, F\\text{ cùng thuộc một đường tròn}\\end{aligned}",
+    "valid": true
+  },
+  "6 \\times 6": {
+    "normalized": "6 \\times 6",
+    "valid": true
+  },
+  "(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)": {
+    "normalized": "(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)",
+    "valid": true
+  },
+  "\\frac{6}{36}": {
+    "normalized": "\\frac{6}{36}",
+    "valid": true
+  },
+  "6 \\times 6 = 36": {
+    "normalized": "6 \\times 6 = 36",
+    "valid": true
+  },
+  "6  \\text{ kết quả thỏa mãn }": {
+    "normalized": "6  \\text{ kết quả thỏa mãn }",
+    "valid": true
+  },
+  "P = \\frac{6}{36} = \\frac{1}{6}": {
+    "normalized": "P = \\frac{6}{36} = \\frac{1}{6}",
+    "valid": true
+  },
+  "\\frac{1}{6}": {
+    "normalized": "\\frac{1}{6}",
+    "valid": true
+  },
+  "y = 7 - x": {
+    "normalized": "y = 7 - x",
+    "valid": true
+  },
+  "x(7 - x) = 10 \\\\ \\Rightarrow 7x - x^2 = 10 \\\\ \\Rightarrow x^2 - 7x + 10 = 0": {
+    "normalized": "x(7 - x) = 10 \\\\ \\Rightarrow 7x - x^2 = 10 \\\\ \\Rightarrow x^2 - 7x + 10 = 0",
+    "valid": true
+  },
+  "x^2 - 7x + 10 = 0": {
+    "normalized": "x^2 - 7x + 10 = 0",
+    "valid": true
+  },
+  "x = 2 \\\\ \\Rightarrow y = 5 \\\\ \\quad \\text{hoặc} \\\\ x = 5 \\\\ \\Rightarrow y = 2": {
+    "normalized": "x = 2 \\\\ \\Rightarrow y = 5 \\\\ \\quad \\text{hoặc} \\\\ x = 5 \\\\ \\Rightarrow y = 2",
+    "valid": true
+  },
+  "x^2 - 7x + 10 = 0 \\\\ \\Rightarrow (x - 2)(x - 5) = 0 \\\\ \\Rightarrow x = 2 \\text{ hoặc } x = 5 \\\\ \\text{Khi } x = 2, y = 7 - 2 = 5 \\\\ \\text{Khi } x = 5, y = 7 - 5 = 2": {
+    "normalized": "x^2 - 7x + 10 = 0 \\\\ \\Rightarrow (x - 2)(x - 5) = 0 \\\\ \\Rightarrow x = 2 \\text{ hoặc } x = 5 \\\\ \\text{Khi } x = 2, y = 7 - 2 = 5 \\\\ \\text{Khi } x = 5, y = 7 - 5 = 2",
+    "valid": true
+  },
+  "(x,y)=(2,5)\\text{ hoặc }(x,y)=(5,2)": {
+    "normalized": "(x,y)=(2,5)\\text{ hoặc }(x,y)=(5,2)",
+    "valid": true
+  },
+  "\\frac{x+y}{2} \\ge \\sqrt{xy}": {
+    "normalized": "\\frac{x+y}{2} \\ge \\sqrt{xy}",
+    "valid": true
+  },
+  "\\frac{a+b}{2} \\ge \\sqrt{ab}": {
+    "normalized": "\\frac{a+b}{2} \\ge \\sqrt{ab}",
+    "valid": true
+  },
+  "\\frac{6}{2} \\ge \\sqrt{ab} \\Rightarrow 3 \\ge \\sqrt{ab}": {
+    "normalized": "\\frac{6}{2} \\ge \\sqrt{ab} \\Rightarrow 3 \\ge \\sqrt{ab}",
+    "valid": true
+  },
+  "3^2 \\ge (\\sqrt{ab})^2 \\Rightarrow 9 \\ge ab": {
+    "normalized": "3^2 \\ge (\\sqrt{ab})^2 \\Rightarrow 9 \\ge ab",
+    "valid": true
+  },
+  "a = b \\quad \\text{và} \\quad a+b=6 \\Rightarrow a = b = 3": {
+    "normalized": "a = b \\quad \\text{và} \\quad a+b=6 \\Rightarrow a = b = 3",
+    "valid": true
+  },
+  "ab \\le 9 \\text{, dấu bằng khi } a = b = 3": {
+    "normalized": "ab \\le 9 \\text{, dấu bằng khi } a = b = 3",
+    "valid": true
+  },
+  "BC^2 = AB^2 + AC^2": {
+    "normalized": "BC^2 = AB^2 + AC^2",
+    "valid": true
+  },
+  "S = \\frac{1}{2} \\cdot AB \\cdot AC": {
+    "normalized": "S = \\frac{1}{2} \\cdot AB \\cdot AC",
+    "valid": true
+  },
+  "BC = \\sqrt{9^2 + 12^2} = \\sqrt{81 + 144} = \\sqrt{225} = 15": {
+    "normalized": "BC = \\sqrt{9^2 + 12^2} = \\sqrt{81 + 144} = \\sqrt{225} = 15",
+    "valid": true
+  },
+  "S = \\frac{1}{2} \\cdot 9 \\cdot 12 = 54": {
+    "normalized": "S = \\frac{1}{2} \\cdot 9 \\cdot 12 = 54",
+    "valid": true
+  },
+  "BC = 15\\quad\\text{vs}\\quad S = 54": {
+    "normalized": "BC = 15\\quad\\text{vs}\\quad S = 54",
+    "valid": true
+  },
+  "BC = 15, S = 54": {
+    "normalized": "BC = 15, S = 54",
+    "valid": true
+  },
+  "AB = 9": {
+    "normalized": "AB = 9",
+    "valid": true
+  },
+  "AC = 12": {
+    "normalized": "AC = 12",
+    "valid": true
+  },
+  "BC^2 = 9^2 + 12^2 = 81 + 144 = 225": {
+    "normalized": "BC^2 = 9^2 + 12^2 = 81 + 144 = 225",
+    "valid": true
+  },
+  "BC = \\sqrt{225} = 15": {
+    "normalized": "BC = \\sqrt{225} = 15",
+    "valid": true
+  },
+  "BC^2 = AB^2 + AC^2\\\\BC^2 = 9^2 + 12^2 = 81 + 144 = 225\\\\BC = \\sqrt{225} = 15": {
+    "normalized": "BC^2 = AB^2 + AC^2\\\\BC^2 = 9^2 + 12^2 = 81 + 144 = 225\\\\BC = \\sqrt{225} = 15",
+    "valid": true
+  },
+  "S = \\frac{1}{2} \\cdot 9 \\cdot 12 = \\frac{1}{2} \\cdot 108 = 54": {
+    "normalized": "S = \\frac{1}{2} \\cdot 9 \\cdot 12 = \\frac{1}{2} \\cdot 108 = 54",
+    "valid": true
+  },
+  "S = \\frac{1}{2} \\cdot AB \\cdot AC\\\\S = \\frac{1}{2} \\cdot 9 \\cdot 12 = 54": {
+    "normalized": "S = \\frac{1}{2} \\cdot AB \\cdot AC\\\\S = \\frac{1}{2} \\cdot 9 \\cdot 12 = 54",
+    "valid": true
+  },
+  "BC = 15\\\\S = 54": {
+    "normalized": "BC = 15\\\\S = 54",
+    "valid": true
+  },
+  "P, A, O, B\\text{ cùng thuộc một đường tròn}": {
+    "normalized": "P, A, O, B\\text{ cùng thuộc một đường tròn}",
+    "valid": true
+  },
+  "x+y=7": {
+    "normalized": "x+y=7",
+    "valid": true
+  },
+  "y": {
+    "normalized": "y",
+    "valid": true
+  },
+  "x": {
+    "normalized": "x",
+    "valid": true
+  },
+  "y=7-x": {
+    "normalized": "y=7-x",
+    "valid": true
+  },
+  "xy=10": {
+    "normalized": "xy=10",
+    "valid": true
+  },
+  "x(7-x)=10": {
+    "normalized": "x(7-x)=10",
+    "valid": true
+  },
+  "x(7-x)=10 \\Leftrightarrow -x^2+7x-10=0 \\Leftrightarrow x^2-7x+10=0": {
+    "normalized": "x(7-x)=10 \\Leftrightarrow -x^2+7x-10=0 \\Leftrightarrow x^2-7x+10=0",
+    "valid": true
+  },
+  "x^2-7x+10=0": {
+    "normalized": "x^2-7x+10=0",
+    "valid": true
+  },
+  "x^2-7x+10=0 \\Leftrightarrow (x-2)(x-5)=0": {
+    "normalized": "x^2-7x+10=0 \\Leftrightarrow (x-2)(x-5)=0",
+    "valid": true
+  },
+  "t^2-7t+10=0": {
+    "normalized": "t^2-7t+10=0",
+    "valid": true
+  },
+  "t=2": {
+    "normalized": "t=2",
+    "valid": true
+  },
+  "t=5": {
+    "normalized": "t=5",
+    "valid": true
+  },
+  "t=2  \\text{ hoặc }  t=5": {
+    "normalized": "t=2  \\text{ hoặc }  t=5",
+    "valid": true
+  },
+  "(x-2)(x-5)=0": {
+    "normalized": "(x-2)(x-5)=0",
+    "valid": true
+  },
+  "x=2": {
+    "normalized": "x=2",
+    "valid": true
+  },
+  "x=5": {
+    "normalized": "x=5",
+    "valid": true
+  },
+  "(x-a)(x-b)=x^2-(a+b)x+ab": {
+    "normalized": "(x-a)(x-b)=x^2-(a+b)x+ab",
+    "valid": true
+  },
+  "x=2 \\Rightarrow y=5;\\quad x=5 \\Rightarrow y=2": {
+    "normalized": "x=2 \\Rightarrow y=5;\\quad x=5 \\Rightarrow y=2",
+    "valid": true
+  },
+  "(x,y)=(2,5)": {
+    "normalized": "(x,y)=(2,5)",
+    "valid": true
+  },
+  "(5,2)": {
+    "normalized": "(5,2)",
+    "valid": true
+  },
+  "(x,y)=(5,2)": {
+    "normalized": "(x,y)=(5,2)",
+    "valid": true
+  },
+  "(x,y)=(2,5)\\text{ hoặc }(5,2)": {
+    "normalized": "(x,y)=(2,5)\\text{ hoặc }(5,2)",
+    "valid": true
+  },
+  "ab \\le 9": {
+    "normalized": "ab \\le 9",
+    "valid": true
+  },
+  "ab \\ge 9": {
+    "normalized": "ab \\ge 9",
+    "valid": true
+  },
+  "x = y": {
+    "normalized": "x = y",
+    "valid": true
+  },
+  "9 \\ge ab \\Rightarrow ab \\le 9": {
+    "normalized": "9 \\ge ab \\Rightarrow ab \\le 9",
+    "valid": true
+  },
+  "a = b \\quad \\text{và} \\quad a+b=6 \\Rightarrow 2a=6 \\Rightarrow a=b=3": {
+    "normalized": "a = b \\quad \\text{và} \\quad a+b=6 \\Rightarrow 2a=6 \\Rightarrow a=b=3",
+    "valid": true
+  },
+  "a = b = 3": {
+    "normalized": "a = b = 3",
+    "valid": true
+  },
+  "ab \\le 9; \\; a=b=3": {
+    "normalized": "ab \\le 9; \\; a=b=3",
+    "valid": true
+  },
+  "S = \\frac{1}{2} \\times AB \\times AC": {
+    "normalized": "S = \\frac{1}{2} \\times AB \\times AC",
+    "valid": true
+  },
+  "\\angle BAC = 90^\\circ,\\ AB\\perp AC": {
+    "normalized": "\\angle BAC = 90^\\circ,\\ AB\\perp AC",
+    "valid": true
+  },
+  "BC^2 = 9^2 + 12^2 = 81 + 144 = 225\\\\BC = \\sqrt{225} = 15": {
+    "normalized": "BC^2 = 9^2 + 12^2 = 81 + 144 = 225\\\\BC = \\sqrt{225} = 15",
+    "valid": true
+  },
+  "S = \\frac{1}{2} \\times AB \\times AC = \\frac{1}{2} \\times 9 \\times 12 = \\frac{1}{2} \\times 108 = 54": {
+    "normalized": "S = \\frac{1}{2} \\times AB \\times AC = \\frac{1}{2} \\times 9 \\times 12 = \\frac{1}{2} \\times 108 = 54",
+    "valid": true
+  },
+  "84 = 2^2 \\times 3 \\times 7\\\\126 = 2 \\times 3^2 \\times 7": {
+    "normalized": "84 = 2^2 \\times 3 \\times 7\\\\126 = 2 \\times 3^2 \\times 7",
+    "valid": true
+  },
+  "\\text{ƯCLN}(84, 126) = 2^{\\min(2,1)} \\times 3^{\\min(1,2)} \\times 7^{\\min(1,1)} = 2^1 \\times 3^1 \\times 7^1 = 42": {
+    "normalized": "\\text{ƯCLN}(84, 126) = 2^{\\min(2,1)} \\times 3^{\\min(1,2)} \\times 7^{\\min(1,1)} = 2^1 \\times 3^1 \\times 7^1 = 42",
+    "valid": true
+  },
+  "\\text{BCNN}(84, 126) = 2^{\\max(2,1)} \\times 3^{\\max(1,2)} \\times 7^{\\max(1,1)} = 2^2 \\times 3^2 \\times 7 = 4 \\times 9 \\times 7 = 252": {
+    "normalized": "\\text{BCNN}(84, 126) = 2^{\\max(2,1)} \\times 3^{\\max(1,2)} \\times 7^{\\max(1,1)} = 2^2 \\times 3^2 \\times 7 = 4 \\times 9 \\times 7 = 252",
+    "valid": true
+  },
+  "\\text{ƯCLN}(84, 126) = 42,\\ \\text{BCNN}(84, 126) = 252": {
+    "normalized": "\\text{ƯCLN}(84, 126) = 42,\\ \\text{BCNN}(84, 126) = 252",
+    "valid": true
+  },
+  "n^2+n+1": {
+    "normalized": "n^2+n+1",
+    "valid": true
+  },
+  "n \\equiv 0, 1, 2 \\pmod{3}": {
+    "normalized": "n \\equiv 0, 1, 2 \\pmod{3}",
+    "valid": true
+  },
+  "n = 3k": {
+    "normalized": "n = 3k",
+    "valid": true
+  },
+  "n = 3k \\Rightarrow n^2+n+1 = 9k^2+3k+1 \\equiv 1 \\pmod{3}": {
+    "normalized": "n = 3k \\Rightarrow n^2+n+1 = 9k^2+3k+1 \\equiv 1 \\pmod{3}",
+    "valid": true
+  },
+  "n = 3k+1": {
+    "normalized": "n = 3k+1",
+    "valid": true
+  },
+  "n = 3k+1 \\Rightarrow n^2+n+1 = (9k^2+6k+1)+(3k+1)+1 = 9k^2+9k+3 \\equiv 0 \\pmod{3}": {
+    "normalized": "n = 3k+1 \\Rightarrow n^2+n+1 = (9k^2+6k+1)+(3k+1)+1 = 9k^2+9k+3 \\equiv 0 \\pmod{3}",
+    "valid": true
+  },
+  "n = 3k+2": {
+    "normalized": "n = 3k+2",
+    "valid": true
+  },
+  "n = 3k+2 \\Rightarrow n^2+n+1 = (9k^2+12k+4)+(3k+2)+1 = 9k^2+15k+7 \\equiv 1 \\pmod{3}": {
+    "normalized": "n = 3k+2 \\Rightarrow n^2+n+1 = (9k^2+12k+4)+(3k+2)+1 = 9k^2+15k+7 \\equiv 1 \\pmod{3}",
+    "valid": true
+  },
+  "k \\in \\mathbb{Z}": {
+    "normalized": "k \\in \\mathbb{Z}",
+    "valid": true
+  },
+  "n \\equiv 1 \\pmod{3}": {
+    "normalized": "n \\equiv 1 \\pmod{3}",
+    "valid": true
+  },
+  "n = 3k + 1": {
+    "normalized": "n = 3k + 1",
+    "valid": true
+  },
+  "2 \\times 4! = 48": {
+    "normalized": "2 \\times 4! = 48",
+    "valid": true
+  },
+  "2 \\times 6! = 1440": {
+    "normalized": "2 \\times 6! = 1440",
+    "valid": true
+  },
+  "\\text{Xét An và Bình như một khối}": {
+    "normalized": "\\text{Xét An và Bình như một khối}",
+    "valid": true
+  },
+  "4! = 24": {
+    "normalized": "4! = 24",
+    "valid": true
+  },
+  "2 \\times 4! = 2 \\times 24 = 48": {
+    "normalized": "2 \\times 4! = 2 \\times 24 = 48",
+    "valid": true
+  },
+  "48 \\text{ hoặc } 1440": {
+    "normalized": "48 \\text{ hoặc } 1440",
+    "valid": true
+  },
+  "C(5,2)=\\frac{5!}{2!3!}=10": {
+    "normalized": "C(5,2)=\\frac{5!}{2!3!}=10",
+    "valid": true
+  },
+  "C(3,2)=3,\\ C(2,2)=1": {
+    "normalized": "C(3,2)=3,\\ C(2,2)=1",
+    "valid": true
+  },
+  "C(5,2)=\\frac{5\\times4}{2}=10": {
+    "normalized": "C(5,2)=\\frac{5\\times4}{2}=10",
+    "valid": true
+  },
+  "C(3,2)=\\frac{3\\times2}{2}=3\\quad\\text{(hai đỏ)}\\qquad C(2,2)=1\\quad\\text{(hai xanh)}": {
+    "normalized": "C(3,2)=\\frac{3\\times2}{2}=3\\quad\\text{(hai đỏ)}\\qquad C(2,2)=1\\quad\\text{(hai xanh)}",
+    "valid": true
+  },
+  "\\frac{3+1}{10}=\\frac{4}{10}=\\frac{2}{5}": {
+    "normalized": "\\frac{3+1}{10}=\\frac{4}{10}=\\frac{2}{5}",
+    "valid": true
+  },
+  "\\frac{2}{5}": {
+    "normalized": "\\frac{2}{5}",
+    "valid": true
+  },
+  "(a+b√3)² = a²+3b²+2ab√3": {
+    "normalized": "(a+b√3)² = a²+3b²+2ab√3",
+    "valid": true
+  },
+  "sqrt(7+4√3) - sqrt(7-4√3) = 2b√3": {
+    "normalized": "sqrt(7+4√3) - sqrt(7-4√3) = 2b√3",
+    "valid": true
+  },
+  "a=2, b=1": {
+    "normalized": "a=2, b=1",
+    "valid": true
+  },
+  "A = 2√3": {
+    "normalized": "A = 2√3",
+    "valid": true
+  },
+  "\\begin{aligned} (a+b\\sqrt{3})^2 &= a^2+3b^2+2ab\\sqrt{3} \\\\ (a-b\\sqrt{3})^2 &= a^2+3b^2-2ab\\sqrt{3} \\end{aligned}": {
+    "normalized": "\\begin{aligned} (a+b\\sqrt{3})^2 &= a^2+3b^2+2ab\\sqrt{3} \\\\ (a-b\\sqrt{3})^2 &= a^2+3b^2-2ab\\sqrt{3} \\end{aligned}",
+    "valid": true
+  },
+  "\\begin{cases} a^2+3b^2 = 7 \\\\ 2ab = 4 \\end{cases}": {
+    "normalized": "\\begin{cases} a^2+3b^2 = 7 \\\\ 2ab = 4 \\end{cases}",
+    "valid": true
+  },
+  "a=2,\\ b=1": {
+    "normalized": "a=2,\\ b=1",
+    "valid": true
+  },
+  "\\sqrt{7+4\\sqrt{3}} = 2+\\sqrt{3},\\quad \\sqrt{7-4\\sqrt{3}} = 2-\\sqrt{3}\\quad \\Rightarrow\\quad A = 2\\sqrt{3}": {
+    "normalized": "\\sqrt{7+4\\sqrt{3}} = 2+\\sqrt{3},\\quad \\sqrt{7-4\\sqrt{3}} = 2-\\sqrt{3}\\quad \\Rightarrow\\quad A = 2\\sqrt{3}",
+    "valid": true
+  },
+  "A=2\\sqrt{3}": {
+    "normalized": "A=2\\sqrt{3}",
+    "valid": true
+  },
+  "72 = 2^3 \\times 3^2": {
+    "normalized": "72 = 2^3 \\times 3^2",
+    "valid": true
+  },
+  "2^a \\times 3^b": {
+    "normalized": "2^a \\times 3^b",
+    "valid": true
+  },
+  "a \\in \\{0,1,2,3\\},\\ b \\in \\{0,1,2\\}": {
+    "normalized": "a \\in \\{0,1,2,3\\},\\ b \\in \\{0,1,2\\}",
+    "valid": true
+  },
+  "k^2": {
+    "normalized": "k^2",
+    "valid": true
+  },
+  "a \\text{ chẵn},\\ b \\text{ chẵn}": {
+    "normalized": "a \\text{ chẵn},\\ b \\text{ chẵn}",
+    "valid": true
+  },
+  "\\{1, 4, 9, 36\\}": {
+    "normalized": "\\{1, 4, 9, 36\\}",
+    "valid": true
+  },
+  "…": {
+    "normalized": "…",
+    "valid": true
+  },
+  "(a^(p-1)": {
+    "normalized": "(a^(p-1)",
+    "valid": true
+  },
+  "n^5 - n": {
+    "normalized": "n^5 - n",
+    "valid": true
+  },
+  "a^2 - b^2 = (a-b)(a+b)": {
+    "normalized": "a^2 - b^2 = (a-b)(a+b)",
+    "valid": true
+  },
+  "n^5 - n = n(n^4 - 1)": {
+    "normalized": "n^5 - n = n(n^4 - 1)",
+    "valid": true
+  },
+  "n^4 - 1": {
+    "normalized": "n^4 - 1",
+    "valid": true
+  },
+  "n^5 - n = n(n^4 - 1) = n(n^2 - 1)(n^2 + 1) = n(n-1)(n+1)(n^2+1)": {
+    "normalized": "n^5 - n = n(n^4 - 1) = n(n^2 - 1)(n^2 + 1) = n(n-1)(n+1)(n^2+1)",
+    "valid": true
+  },
+  "n-1": {
+    "normalized": "n-1",
+    "valid": true
+  },
+  "n+1": {
+    "normalized": "n+1",
+    "valid": true
+  },
+  "n \\equiv 0,1,2,3,4 \\pmod{5}": {
+    "normalized": "n \\equiv 0,1,2,3,4 \\pmod{5}",
+    "valid": true
+  },
+  "n^2+1": {
+    "normalized": "n^2+1",
+    "valid": true
+  },
+  "n \\equiv 2 \\pmod{5}": {
+    "normalized": "n \\equiv 2 \\pmod{5}",
+    "valid": true
+  },
+  "n \\equiv 3 \\pmod{5}": {
+    "normalized": "n \\equiv 3 \\pmod{5}",
+    "valid": true
+  },
+  "n \\equiv 2": {
+    "normalized": "n \\equiv 2",
+    "valid": true
+  },
+  "3 \\pmod{5}": {
+    "normalized": "3 \\pmod{5}",
+    "valid": true
+  },
+  "n^2 \\equiv 4 \\pmod{5}": {
+    "normalized": "n^2 \\equiv 4 \\pmod{5}",
+    "valid": true
+  },
+  "n^2+1 \\equiv 0 \\pmod{5}": {
+    "normalized": "n^2+1 \\equiv 0 \\pmod{5}",
+    "valid": true
+  },
+  "5 \\mid n^5 - n": {
+    "normalized": "5 \\mid n^5 - n",
+    "valid": true
+  },
+  "n(n-1)(n+1)(n^2+1)": {
+    "normalized": "n(n-1)(n+1)(n^2+1)",
+    "valid": true
+  },
+  "\\begin{align*}& n \\equiv 0 \\pmod{5} \\Rightarrow 5 \\mid n \\\\& n \\equiv 1 \\pmod{5} \\Rightarrow 5 \\mid n-1 \\\\& n \\equiv 4 \\pmod{5} \\Rightarrow 5 \\mid n+1 \\\\& n \\equiv 2 \\pmod{5} \\Rightarrow n^2 \\equiv 4 \\pmod{5} \\Rightarrow 5 \\mid n^2+1 \\\\& n \\equiv 3 \\pmod{5} \\Rightarrow n^2 \\equiv 9 \\equiv 4 \\pmod{5} \\Rightarrow 5 \\mid n^2+1 \\end{align*}": {
+    "normalized": "\\begin{aligned}& n \\equiv 0 \\pmod{5} \\Rightarrow 5 \\mid n \\\\& n \\equiv 1 \\pmod{5} \\Rightarrow 5 \\mid n-1 \\\\& n \\equiv 4 \\pmod{5} \\Rightarrow 5 \\mid n+1 \\\\& n \\equiv 2 \\pmod{5} \\Rightarrow n^2 \\equiv 4 \\pmod{5} \\Rightarrow 5 \\mid n^2+1 \\\\& n \\equiv 3 \\pmod{5} \\Rightarrow n^2 \\equiv 9 \\equiv 4 \\pmod{5} \\Rightarrow 5 \\mid n^2+1 \\end{aligned}",
+    "valid": true
+  },
+  "5 \\mid n^5 - n  \\text{ với mọi số nguyên }  n": {
+    "normalized": "5 \\mid n^5 - n  \\text{ với mọi số nguyên }  n",
+    "valid": true
+  },
+  "5 \\mid n^5 - n   \\forall n \\in \\mathbb{Z}": {
+    "normalized": "5 \\mid n^5 - n   \\forall n \\in \\mathbb{Z}",
+    "valid": true
+  },
+  "100 : 2 = 50": {
+    "normalized": "100 : 2 = 50",
+    "valid": true
+  },
+  "100 : 3 = 33 (\\text{ vì } 3 \\text{ × } 33 = 99 < 100 \\text{ và } 3 \\text{ × } 34 = 102 > 100)": {
+    "normalized": "100 : 3 = 33 (\\text{ vì } 3 \\text{ × } 33 = 99 < 100 \\text{ và } 3 \\text{ × } 34 = 102 > 100)",
+    "valid": true
+  },
+  "100 : 6 = 16 (\\text{ vì } 6 \\text{ × } 16 = 96 < 100 \\text{ và } 6 \\text{ × } 17 = 102 > 100)": {
+    "normalized": "100 : 6 = 16 (\\text{ vì } 6 \\text{ × } 16 = 96 < 100 \\text{ và } 6 \\text{ × } 17 = 102 > 100)",
+    "valid": true
+  },
+  "50 + 33 - 16 = 67": {
+    "normalized": "50 + 33 - 16 = 67",
+    "valid": true
+  },
+  "6 \\times 2": {
+    "normalized": "6 \\times 2",
+    "valid": true
+  },
+  "\\frac{6 \\times 2}{2}": {
+    "normalized": "\\frac{6 \\times 2}{2}",
+    "valid": true
+  },
+  "6 \\times 2 = 12": {
+    "normalized": "6 \\times 2 = 12",
+    "valid": true
+  },
+  "\\frac{12}{2} = 6": {
+    "normalized": "\\frac{12}{2} = 6",
+    "valid": true
+  },
+  "3 \\ge \\sqrt{ab}": {
+    "normalized": "3 \\ge \\sqrt{ab}",
+    "valid": true
+  },
+  "9 \\ge ab": {
+    "normalized": "9 \\ge ab",
+    "valid": true
+  },
+  "a=b=3": {
+    "normalized": "a=b=3",
+    "valid": true
+  },
+  "a=b=3 \\Rightarrow ab=9": {
+    "normalized": "a=b=3 \\Rightarrow ab=9",
+    "valid": true
+  },
+  "ab \\le 9 \\text{ với dấu bằng khi } a=b=3": {
+    "normalized": "ab \\le 9 \\text{ với dấu bằng khi } a=b=3",
+    "valid": true
+  },
+  "(a-b)^2 ≥ 0": {
+    "normalized": "(a-b)^2 ≥ 0",
+    "valid": true
+  },
+  "(a-b)^2": {
+    "normalized": "(a-b)^2",
+    "valid": true
+  },
+  "(a-b)^2 \\ge 0": {
+    "normalized": "(a-b)^2 \\ge 0",
+    "valid": true
+  },
+  "(a-b)^2 = a^2 - 2ab + b^2 = (a+b)^2 - 4ab": {
+    "normalized": "(a-b)^2 = a^2 - 2ab + b^2 = (a+b)^2 - 4ab",
+    "valid": true
+  },
+  "(a+b)^2 - 4ab \\ge 0 \\;\\Rightarrow\\; 36 - 4ab \\ge 0": {
+    "normalized": "(a+b)^2 - 4ab \\ge 0 \\;\\Rightarrow\\; 36 - 4ab \\ge 0",
+    "valid": true
+  },
+  "(a-b)^2 = 0": {
+    "normalized": "(a-b)^2 = 0",
+    "valid": true
+  },
+  "a=b": {
+    "normalized": "a=b",
+    "valid": true
+  },
+  "ab \\le 9;\\;\\text{dấu bằng khi } a=b=3": {
+    "normalized": "ab \\le 9;\\;\\text{dấu bằng khi } a=b=3",
+    "valid": true
+  },
+  "a+b=6 được a=b=3": {
+    "normalized": "a+b=6 được a=b=3",
+    "valid": true
+  },
+  "ab \\le 9\\;\\text{và dấu bằng khi } a=b=3": {
+    "normalized": "ab \\le 9\\;\\text{và dấu bằng khi } a=b=3",
+    "valid": true
+  },
+  "ab \\le 9\\;\\text{đẳng thức xảy ra khi } a=b=3": {
+    "normalized": "ab \\le 9\\;\\text{đẳng thức xảy ra khi } a=b=3",
+    "valid": true
+  },
+  "84 = 2^2 \\times 3 \\times 7": {
+    "normalized": "84 = 2^2 \\times 3 \\times 7",
+    "valid": true
+  },
+  "126 = 2 \\times 3^2 \\times 7": {
+    "normalized": "126 = 2 \\times 3^2 \\times 7",
+    "valid": true
+  },
+  "\\text{UCLN}(84,126) = 2^{\\min(2,1)} \\times 3^{\\min(1,2)} \\times 7^{\\min(1,1)} = 2^1 \\times 3^1 \\times 7^1 = 42": {
+    "normalized": "\\text{UCLN}(84,126) = 2^{\\min(2,1)} \\times 3^{\\min(1,2)} \\times 7^{\\min(1,1)} = 2^1 \\times 3^1 \\times 7^1 = 42",
+    "valid": true
+  },
+  "\\text{BCNN}(84,126) = 2^{\\max(2,1)} \\times 3^{\\max(1,2)} \\times 7^{\\max(1,1)} = 2^2 \\times 3^2 \\times 7^1 = 4 \\times 9 \\times 7 = 252": {
+    "normalized": "\\text{BCNN}(84,126) = 2^{\\max(2,1)} \\times 3^{\\max(1,2)} \\times 7^{\\max(1,1)} = 2^2 \\times 3^2 \\times 7^1 = 4 \\times 9 \\times 7 = 252",
+    "valid": true
+  },
+  "\\text{UCLN}=42,\\ \\text{BCNN}=252": {
+    "normalized": "\\text{UCLN}=42,\\ \\text{BCNN}=252",
+    "valid": true
+  },
+  "3 \\mid (n^2+n+1)": {
+    "normalized": "3 \\mid (n^2+n+1)",
+    "valid": true
+  },
+  "n\\equiv0,1,2\\pmod3": {
+    "normalized": "n\\equiv0,1,2\\pmod3",
+    "valid": true
+  },
+  "n \\bmod 3": {
+    "normalized": "n \\bmod 3",
+    "valid": true
+  },
+  "n = 0,1,2": {
+    "normalized": "n = 0,1,2",
+    "valid": true
+  },
+  "n\\equiv0\\Rightarrow1;\\ n\\equiv1\\Rightarrow0;\\ n\\equiv2\\Rightarrow1\\pmod3": {
+    "normalized": "n\\equiv0\\Rightarrow1;\\ n\\equiv1\\Rightarrow0;\\ n\\equiv2\\Rightarrow1\\pmod3",
+    "valid": true
+  },
+  "n\\equiv1\\pmod3": {
+    "normalized": "n\\equiv1\\pmod3",
+    "valid": true
+  },
+  "n^2+n+1\\equiv0\\pmod3": {
+    "normalized": "n^2+n+1\\equiv0\\pmod3",
+    "valid": true
+  },
+  "n\\equiv0,\\ 1,\\ 2\\pmod3": {
+    "normalized": "n\\equiv0,\\ 1,\\ 2\\pmod3",
+    "valid": true
+  },
+  "\\begin{aligned}&n\\equiv0:\\ n^2+n+1\\equiv0+0+1\\equiv1\\pmod3\\\\&n\\equiv1:\\ n^2+n+1\\equiv1+1+1\\equiv3\\equiv0\\pmod3\\\\&n\\equiv2:\\ n^2+n+1\\equiv4+2+1\\equiv7\\equiv1\\pmod3\\end{aligned}": {
+    "normalized": "\\begin{aligned}&n\\equiv0:\\ n^2+n+1\\equiv0+0+1\\equiv1\\pmod3\\\\&n\\equiv1:\\ n^2+n+1\\equiv1+1+1\\equiv3\\equiv0\\pmod3\\\\&n\\equiv2:\\ n^2+n+1\\equiv4+2+1\\equiv7\\equiv1\\pmod3\\end{aligned}",
+    "valid": true
+  },
+  "n\\equiv1": {
+    "normalized": "n\\equiv1",
+    "valid": true
+  },
+  "n=3k+1": {
+    "normalized": "n=3k+1",
+    "valid": true
+  },
+  "k\\in\\mathbb Z": {
+    "normalized": "k\\in\\mathbb Z",
+    "valid": true
+  },
+  "n\\equiv1\\pmod3\\ \\Leftrightarrow\\ n=3k+1,\\ k\\in\\mathbb Z": {
+    "normalized": "n\\equiv1\\pmod3\\ \\Leftrightarrow\\ n=3k+1,\\ k\\in\\mathbb Z",
+    "valid": true
+  },
+  "n = 3k + 1,\\ k\\in\\mathbb Z": {
+    "normalized": "n = 3k + 1,\\ k\\in\\mathbb Z",
+    "valid": true
+  },
+  "4  \\text{ đơn vị }": {
+    "normalized": "4  \\text{ đơn vị }",
+    "valid": true
+  },
+  "2  \\text{ cách }": {
+    "normalized": "2  \\text{ cách }",
+    "valid": true
+  },
+  "4!": {
+    "normalized": "4!",
+    "valid": true
+  },
+  "4! \\times 2 = 48": {
+    "normalized": "4! \\times 2 = 48",
+    "valid": true
+  },
+  "C(3,2)=3,\\quad C(2,2)=1": {
+    "normalized": "C(3,2)=3,\\quad C(2,2)=1",
+    "valid": true
+  },
+  "P=\\frac{C(3,2)+C(2,2)}{C(5,2)}": {
+    "normalized": "P=\\frac{C(3,2)+C(2,2)}{C(5,2)}",
+    "valid": true
+  },
+  "C(3,2)=\\frac{3\\times2}{2}=3,\\quad C(2,2)=1\\\\\\text{Số cách thuận lợi}=3+1=4": {
+    "normalized": "C(3,2)=\\frac{3\\times2}{2}=3,\\quad C(2,2)=1\\\\\\text{Số cách thuận lợi}=3+1=4",
+    "valid": true
+  },
+  "P=\\frac{4}{10}=\\frac{2}{5}": {
+    "normalized": "P=\\frac{4}{10}=\\frac{2}{5}",
+    "valid": true
+  },
+  "4 \\times 4 \\times 3 = 48": {
+    "normalized": "4 \\times 4 \\times 3 = 48",
+    "valid": true
+  },
+  "C(9,3)": {
+    "normalized": "C(9,3)",
+    "valid": true
+  },
+  "C(5,3)": {
+    "normalized": "C(5,3)",
+    "valid": true
+  },
+  "C(9,3) - C(5,3)": {
+    "normalized": "C(9,3) - C(5,3)",
+    "valid": true
+  },
+  "C(9,3) = \\frac{9!}{3!\\cdot6!} = \\frac{9\\cdot8\\cdot7}{3\\cdot2\\cdot1} = 84": {
+    "normalized": "C(9,3) = \\frac{9!}{3!\\cdot6!} = \\frac{9\\cdot8\\cdot7}{3\\cdot2\\cdot1} = 84",
+    "valid": true
+  },
+  "C(5,3) = \\frac{5!}{3!\\cdot2!} = \\frac{5\\cdot4}{2} = 10": {
+    "normalized": "C(5,3) = \\frac{5!}{3!\\cdot2!} = \\frac{5\\cdot4}{2} = 10",
+    "valid": true
+  },
+  "C(9,3) - C(5,3) = 84 - 10 = 74": {
+    "normalized": "C(9,3) - C(5,3) = 84 - 10 = 74",
+    "valid": true
+  },
+  "\\{0,1,2,3,4\\}": {
+    "normalized": "\\{0,1,2,3,4\\}",
+    "valid": true
+  },
+  "\\text{Với số nguyên } a,\\ a \\equiv r \\pmod{5},\\text{ trong đó } r\\in\\{0,1,2,3,4\\}": {
+    "normalized": "\\text{Với số nguyên } a,\\ a \\equiv r \\pmod{5},\\text{ trong đó } r\\in\\{0,1,2,3,4\\}",
+    "valid": true
+  },
+  "\\text{Từ 6 số và 5 dư số }\\Rightarrow\\exists\\,i\\neq j\\text{ sao cho } a_i\\equiv a_j\\pmod{5}": {
+    "normalized": "\\text{Từ 6 số và 5 dư số }\\Rightarrow\\exists\\,i\\neq j\\text{ sao cho } a_i\\equiv a_j\\pmod{5}",
+    "valid": true
+  },
+  "a_i\\equiv a_j\\pmod{5}\\ \\Rightarrow\\ 5\\mid (a_i - a_j)": {
+    "normalized": "a_i\\equiv a_j\\pmod{5}\\ \\Rightarrow\\ 5\\mid (a_i - a_j)",
+    "valid": true
+  },
+  "\\forall\\,a_1,\\ldots,a_6\\in\\mathbb{Z},\\ \\exists\\,i\\neq j\\text{ sao cho }5\\mid(a_i-a_j)": {
+    "normalized": "\\forall\\,a_1,\\ldots,a_6\\in\\mathbb{Z},\\ \\exists\\,i\\neq j\\text{ sao cho }5\\mid(a_i-a_j)",
+    "valid": true
+  },
+  "\\text{Tổng trước bước} = S,\\ \\text{Tổng sau bước} = S - a - b + (a+b) = S": {
+    "normalized": "\\text{Tổng trước bước} = S,\\ \\text{Tổng sau bước} = S - a - b + (a+b) = S",
+    "valid": true
+  },
+  "1+2+3+4+5+6 = 21": {
+    "normalized": "1+2+3+4+5+6 = 21",
+    "valid": true
+  },
+  "\\text{Kết quả cuối cùng} = 21 \\neq 20": {
+    "normalized": "\\text{Kết quả cuối cùng} = 21 \\neq 20",
+    "valid": true
+  },
+  "\\text{Không thể còn số }20": {
+    "normalized": "\\text{Không thể còn số }20",
+    "valid": true
+  },
+  "\\widehat{B} = \\widehat{C}": {
+    "normalized": "\\widehat{B} = \\widehat{C}",
+    "valid": true
+  },
+  "\\widehat{A} + \\widehat{B} + \\widehat{C} = 180^{\\circ}": {
+    "normalized": "\\widehat{A} + \\widehat{B} + \\widehat{C} = 180^{\\circ}",
+    "valid": true
+  },
+  "\\widehat{B}=\\widehat{C}": {
+    "normalized": "\\widehat{B}=\\widehat{C}",
+    "valid": true
+  },
+  "36^{\\circ} + 2\\widehat{B} = 180^{\\circ}": {
+    "normalized": "36^{\\circ} + 2\\widehat{B} = 180^{\\circ}",
+    "valid": true
+  },
+  "36^{\\circ} + \\widehat{B} + \\widehat{B} = 180^{\\\\.\\circ}": {
+    "normalized": "36^{\\circ} + \\widehat{B} + \\widehat{B} = 180^{\\\\.\\circ}",
+    "valid": true
+  },
+  "36^{\\circ}": {
+    "normalized": "36^{\\circ}",
+    "valid": true
+  },
+  "2\\widehat{B} = 144^{\\circ}": {
+    "normalized": "2\\widehat{B} = 144^{\\circ}",
+    "valid": true
+  },
+  "\\widehat{B} = 72^{\\circ}": {
+    "normalized": "\\widehat{B} = 72^{\\circ}",
+    "valid": true
+  },
+  "72^{\\circ}": {
+    "normalized": "72^{\\circ}",
+    "valid": true
+  },
+  "\\widehat{B} = 72^{\\circ},\\ \\widehat{C} = 72^{\\circ}": {
+    "normalized": "\\widehat{B} = 72^{\\circ},\\ \\widehat{C} = 72^{\\circ}",
+    "valid": true
+  },
+  "\\widehat{C} = 72^{\\circ}": {
+    "normalized": "\\widehat{C} = 72^{\\circ}",
+    "valid": true
+  },
+  "\\widehat{B}=72^{\\circ},\\ \\widehat{C}=72^{\\circ}": {
+    "normalized": "\\widehat{B}=72^{\\circ},\\ \\widehat{C}=72^{\\circ}",
+    "valid": true
+  },
+  "\\begin{aligned}&\\triangle BCA \\backsim \\triangle MNA \\\\ &\\Rightarrow MN \\parallel BC\\end{aligned}": {
+    "normalized": "\\begin{aligned}&\\triangle BCA \\backsim \\triangle MNA \\\\ &\\Rightarrow MN \\parallel BC\\end{aligned}",
+    "valid": true
+  },
+  "x^{2}-7x+12": {
+    "normalized": "x^{2}-7x+12",
+    "valid": true
+  },
+  "(x+a)(x+b)": {
+    "normalized": "(x+a)(x+b)",
+    "valid": true
+  },
+  "b": {
+    "normalized": "b",
+    "valid": true
+  },
+  "a+b=7": {
+    "normalized": "a+b=7",
+    "valid": true
+  },
+  "ab=12": {
+    "normalized": "ab=12",
+    "valid": true
+  },
+  "3+4=7": {
+    "normalized": "3+4=7",
+    "valid": true
+  },
+  "3×4=12": {
+    "normalized": "3×4=12",
+    "valid": true
+  },
+  "(x-3)(x-4)=0": {
+    "normalized": "(x-3)(x-4)=0",
+    "valid": true
+  },
+  "(x-3)(x-4)=0 ⇒ x-3=0 hoặc x-4=0": {
+    "normalized": "(x-3)(x-4)=0 ⇒ x-3=0 hoặc x-4=0",
+    "valid": true
+  },
+  "(x-3)(x-4)": {
+    "normalized": "(x-3)(x-4)",
+    "valid": true
+  },
+  "3\\times4=12": {
+    "normalized": "3\\times4=12",
+    "valid": true
+  },
+  "x²-7x+12=(x-3)(x-4)": {
+    "normalized": "x²-7x+12=(x-3)(x-4)",
+    "valid": true
+  },
+  "(x+a)(x+b)=x^{2}+(a+b)x+ab": {
+    "normalized": "(x+a)(x+b)=x^{2}+(a+b)x+ab",
+    "valid": true
+  },
+  "x-3=0": {
+    "normalized": "x-3=0",
+    "valid": true
+  },
+  "x-4=0": {
+    "normalized": "x-4=0",
+    "valid": true
+  },
+  "x=3": {
+    "normalized": "x=3",
+    "valid": true
+  },
+  "x=4": {
+    "normalized": "x=4",
+    "valid": true
+  },
+  "x-3=0 ⇒ x=3": {
+    "normalized": "x-3=0 ⇒ x=3",
+    "valid": true
+  },
+  "x-4=0 ⇒ x=4": {
+    "normalized": "x-4=0 ⇒ x=4",
+    "valid": true
+  },
+  "3\\\\times4=12": {
+    "normalized": "3\\\\times4=12",
+    "valid": true
+  },
+  "(x-3)(x-4)=0 \\\\Rightarrow x-3=0 \\\\text{ hoặc } x-4=0": {
+    "normalized": "(x-3)(x-4)=0 \\\\Rightarrow x-3=0 \\\\text{ hoặc } x-4=0",
+    "valid": true
+  },
+  "x^{2}-7x+12=(x-3)(x-4)": {
+    "normalized": "x^{2}-7x+12=(x-3)(x-4)",
+    "valid": true
+  },
+  "x-3=0 \\\\Rightarrow x=3": {
+    "normalized": "x-3=0 \\\\Rightarrow x=3",
+    "valid": true
+  },
+  "x-4=0 \\\\Rightarrow x=4": {
+    "normalized": "x-4=0 \\\\Rightarrow x=4",
+    "valid": true
+  },
+  "' in math mode at position 1: ": {
+    "normalized": "' in math mode at position 1: ",
+    "valid": true
+  },
+  ", ": {
+    "normalized": ", ",
+    "valid": true
+  },
+  "). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 2: the formula \"": {
+    "normalized": "). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 2: the formula \"",
+    "valid": false
+  },
+  "\" doesn't render (Can't use function '": {
+    "normalized": "\" doesn't render (Can't use function '",
+    "valid": true
+  },
+  "̲3+4=7": {
+    "normalized": "̲3+4=7",
+    "valid": false
+  },
+  "3\\time…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 3: the formula \"": {
+    "normalized": "3\\time…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 3: the formula \"",
+    "valid": false
+  },
+  "x+2\\ge 0": {
+    "normalized": "x+2\\ge 0",
+    "valid": true
+  },
+  "x\\ge 0": {
+    "normalized": "x\\ge 0",
+    "valid": true
+  },
+  "\\ge 0": {
+    "normalized": "\\ge 0",
+    "valid": true
+  },
+  "\\sqrt{x+2}": {
+    "normalized": "\\sqrt{x+2}",
+    "valid": true
+  },
+  "\\sqrt{u}": {
+    "normalized": "\\sqrt{u}",
+    "valid": true
+  },
+  "u\\ge 0": {
+    "normalized": "u\\ge 0",
+    "valid": true
+  },
+  "u=x+2": {
+    "normalized": "u=x+2",
+    "valid": true
+  },
+  "x+2≥ 0": {
+    "normalized": "x+2≥ 0",
+    "valid": true
+  },
+  "x≥ 0": {
+    "normalized": "x≥ 0",
+    "valid": true
+  },
+  "x+2=x²": {
+    "normalized": "x+2=x²",
+    "valid": true
+  },
+  "⇒": {
+    "normalized": "⇒",
+    "valid": true
+  },
+  "x+2=x^2": {
+    "normalized": "x+2=x^2",
+    "valid": true
+  },
+  "x^2-x-2=0": {
+    "normalized": "x^2-x-2=0",
+    "valid": true
+  },
+  "(x-2)(x+1)=0": {
+    "normalized": "(x-2)(x+1)=0",
+    "valid": true
+  },
+  "x=-1": {
+    "normalized": "x=-1",
+    "valid": true
+  },
+  "x²-x-2=0": {
+    "normalized": "x²-x-2=0",
+    "valid": true
+  },
+  "(a-b)(a+b)=a^2-b^2": {
+    "normalized": "(a-b)(a+b)=a^2-b^2",
+    "valid": true
+  },
+  "\\sqrt{2+2}=\\sqrt{4}=2=2": {
+    "normalized": "\\sqrt{2+2}=\\sqrt{4}=2=2",
+    "valid": true
+  },
+  "\\\\sqrt{x+2}=x": {
+    "normalized": "\\\\sqrt{x+2}=x",
+    "valid": true
+  },
+  "x+2\\\\ge 0": {
+    "normalized": "x+2\\\\ge 0",
+    "valid": true
+  },
+  "x\\\\ge 0": {
+    "normalized": "x\\\\ge 0",
+    "valid": true
+  },
+  "\\\\ge 0": {
+    "normalized": "\\\\ge 0",
+    "valid": true
+  },
+  "\\\\sqrt{x+2}": {
+    "normalized": "\\\\sqrt{x+2}",
+    "valid": true
+  },
+  "\\\\sqrt{u}": {
+    "normalized": "\\\\sqrt{u}",
+    "valid": true
+  },
+  "u\\\\ge 0": {
+    "normalized": "u\\\\ge 0",
+    "valid": true
+  },
+  "\\\\Rightarrow": {
+    "normalized": "\\\\Rightarrow",
+    "valid": true
+  },
+  "\\\\sqrt{2+2}=\\\\sqrt{4}=2=2": {
+    "normalized": "\\\\sqrt{2+2}=\\\\sqrt{4}=2=2",
+    "valid": true
+  },
+  "̲x\\ge 0": {
+    "normalized": "̲x\\ge 0",
+    "valid": false
+  },
+  "x \\neq 1": {
+    "normalized": "x \\neq 1",
+    "valid": true
+  },
+  "\\frac{x^{2}-1}{x-1}": {
+    "normalized": "\\frac{x^{2}-1}{x-1}",
+    "valid": true
+  },
+  "x-1 ≠ 0": {
+    "normalized": "x-1 ≠ 0",
+    "valid": true
+  },
+  "x^{2}-1": {
+    "normalized": "x^{2}-1",
+    "valid": true
+  },
+  "a^{2}-b^{2}=(a-b)(a+b)": {
+    "normalized": "a^{2}-b^{2}=(a-b)(a+b)",
+    "valid": true
+  },
+  "x²-1=(x-1)(x+1)": {
+    "normalized": "x²-1=(x-1)(x+1)",
+    "valid": true
+  },
+  "(x-1)": {
+    "normalized": "(x-1)",
+    "valid": true
+  },
+  "x+1=2": {
+    "normalized": "x+1=2",
+    "valid": true
+  },
+  "x-1 ≠ 0 ⇒ x ≠ 1": {
+    "normalized": "x-1 ≠ 0 ⇒ x ≠ 1",
+    "valid": true
+  },
+  "(x²-1)/(x-1)=((x-1)(x+1))/(x-1)=x+1": {
+    "normalized": "(x²-1)/(x-1)=((x-1)(x+1))/(x-1)=x+1",
+    "valid": true
+  },
+  "x+1=2 ⇒ x=1": {
+    "normalized": "x+1=2 ⇒ x=1",
+    "valid": true
+  },
+  "x=1": {
+    "normalized": "x=1",
+    "valid": true
+  },
+  "x ≠ 1": {
+    "normalized": "x ≠ 1",
+    "valid": true
+  },
+  "\\varnothing": {
+    "normalized": "\\varnothing",
+    "valid": true
+  },
+  "\\\\frac{x^{2}-1}{x-1}=2": {
+    "normalized": "\\\\frac{x^{2}-1}{x-1}=2",
+    "valid": true
+  },
+  "x \\\\neq 1": {
+    "normalized": "x \\\\neq 1",
+    "valid": true
+  },
+  "\\\\frac{x^{2}-1}{x-1}": {
+    "normalized": "\\\\frac{x^{2}-1}{x-1}",
+    "valid": true
+  },
+  "x-1 \\\\neq 0": {
+    "normalized": "x-1 \\\\neq 0",
+    "valid": true
+  },
+  "x^{2}-1=(x-1)(x+1)": {
+    "normalized": "x^{2}-1=(x-1)(x+1)",
+    "valid": true
+  },
+  "x-1 \\\\neq 0 \\\\Rightarrow x \\\\neq 1": {
+    "normalized": "x-1 \\\\neq 0 \\\\Rightarrow x \\\\neq 1",
+    "valid": true
+  },
+  "\\\\frac{x^{2}-1}{x-1}=\\\\frac{(x-1)(x+1)}{x-1}=x+1": {
+    "normalized": "\\\\frac{x^{2}-1}{x-1}=\\\\frac{(x-1)(x+1)}{x-1}=x+1",
+    "valid": true
+  },
+  "x+1=2 \\\\Rightarrow x=1": {
+    "normalized": "x+1=2 \\\\Rightarrow x=1",
+    "valid": true
+  },
+  "x-1 \\neq 0": {
+    "normalized": "x-1 \\neq 0",
+    "valid": true
+  },
+  "̲x^{2}-1=(x-1)(x…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 3: the formula \"": {
+    "normalized": "̲x^{2}-1=(x-1)(x…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | hint 3: the formula \"",
+    "valid": false
+  },
+  "̲x+1=2": {
+    "normalized": "̲x+1=2",
+    "valid": false
+  },
+  "n+2": {
+    "normalized": "n+2",
+    "valid": true
+  },
+  "2 \\times 3 = 6": {
+    "normalized": "2 \\times 3 = 6",
+    "valid": true
+  },
+  "\\text{Trong } \\{n, n+1, n+2\\}, \\text{ luôn có ít nhất một số chẵn}": {
+    "normalized": "\\text{Trong } \\{n, n+1, n+2\\}, \\text{ luôn có ít nhất một số chẵn}",
+    "valid": true
+  },
+  "r": {
+    "normalized": "r",
+    "valid": true
+  },
+  "r+1": {
+    "normalized": "r+1",
+    "valid": true
+  },
+  "r+2": {
+    "normalized": "r+2",
+    "valid": true
+  },
+  "r \\in \\{0,1,2\\}": {
+    "normalized": "r \\in \\{0,1,2\\}",
+    "valid": true
+  },
+  "\\text{Trong } \\{n, n+1, n+2\\}, \\text{ luôn có ít nhất một số chia hết cho 3}": {
+    "normalized": "\\text{Trong } \\{n, n+1, n+2\\}, \\text{ luôn có ít nhất một số chia hết cho 3}",
+    "valid": true
+  },
+  "6 \\mid n(n+1)(n+2) \\quad \\forall n \\in \\mathbb{Z}": {
+    "normalized": "6 \\mid n(n+1)(n+2) \\quad \\forall n \\in \\mathbb{Z}",
+    "valid": true
+  },
+  "\\\\mathbb{Z}": {
+    "normalized": "\\\\mathbb{Z}",
+    "valid": true
+  },
+  "2 \\\\times 3 = 6": {
+    "normalized": "2 \\\\times 3 = 6",
+    "valid": true
+  },
+  "r \\\\in \\\\{0,1,2\\\\}": {
+    "normalized": "r \\\\in \\\\{0,1,2\\\\}",
+    "valid": true
+  },
+  "p \\equiv 0, 1, \\text{hoặc } 2 \\pmod{3}": {
+    "normalized": "p \\equiv 0, 1, \\text{hoặc } 2 \\pmod{3}",
+    "valid": true
+  },
+  "p = 3 \\Rightarrow p+2 = 5, p+4 = 7 \\text{ (cả ba đều là số nguyên tố)}": {
+    "normalized": "p = 3 \\Rightarrow p+2 = 5, p+4 = 7 \\text{ (cả ba đều là số nguyên tố)}",
+    "valid": true
+  },
+  "p > 3, p \\text{ là số nguyên tố} \\Rightarrow p \\not\\equiv 0 \\pmod{3}": {
+    "normalized": "p > 3, p \\text{ là số nguyên tố} \\Rightarrow p \\not\\equiv 0 \\pmod{3}",
+    "valid": true
+  },
+  "p \\equiv 1 \\pmod{3} \\Rightarrow p+2 \\equiv 0 \\pmod{3} \\Rightarrow p+2 \\text{ là hợp số (vì } p+2 > 3)": {
+    "normalized": "p \\equiv 1 \\pmod{3} \\Rightarrow p+2 \\equiv 0 \\pmod{3} \\Rightarrow p+2 \\text{ là hợp số (vì } p+2 > 3)",
+    "valid": true
+  },
+  "p \\equiv 2 \\pmod{3} \\Rightarrow p+4 \\equiv 0 \\pmod{3} \\Rightarrow p+4 \\text{ là hợp số (vì } p+4 > 3)": {
+    "normalized": "p \\equiv 2 \\pmod{3} \\Rightarrow p+4 \\equiv 0 \\pmod{3} \\Rightarrow p+4 \\text{ là hợp số (vì } p+4 > 3)",
+    "valid": true
+  },
+  "p = 3": {
+    "normalized": "p = 3",
+    "valid": true
+  },
+  "p=3": {
+    "normalized": "p=3",
+    "valid": true
+  },
+  "x(7 - x) = 10 \\\\ \\Leftrightarrow \\\\ -x^2 + 7x - 10 = 0 \\\\ \\Leftrightarrow \\\\ x^2 - 7x + 10 = 0": {
+    "normalized": "x(7 - x) = 10 \\\\ \\Leftrightarrow \\\\ -x^2 + 7x - 10 = 0 \\\\ \\Leftrightarrow \\\\ x^2 - 7x + 10 = 0",
+    "valid": true
+  },
+  "x^2 - 7x + 10 = 0 \\\\ \\Leftrightarrow \\\\ (x - 2)(x - 5) = 0 \\\\ \\Leftrightarrow \\\\ x = 2 \\\\ \\text{hoặc} \\\\ x = 5": {
+    "normalized": "x^2 - 7x + 10 = 0 \\\\ \\Leftrightarrow \\\\ (x - 2)(x - 5) = 0 \\\\ \\Leftrightarrow \\\\ x = 2 \\\\ \\text{hoặc} \\\\ x = 5",
+    "valid": true
+  },
+  "-x^2 + 7x - 10 = 0": {
+    "normalized": "-x^2 + 7x - 10 = 0",
+    "valid": true
+  },
+  "x^2 - 7x + 10 = (x - 2)(x - 5)": {
+    "normalized": "x^2 - 7x + 10 = (x - 2)(x - 5)",
+    "valid": true
+  },
+  "x = 2 \\\\ \\Rightarrow \\\\ y = 7 - 2 = 5 \\\\ \\\\ x = 5 \\\\ \\Rightarrow \\\\ y = 7 - 5 = 2": {
+    "normalized": "x = 2 \\\\ \\Rightarrow \\\\ y = 7 - 2 = 5 \\\\ \\\\ x = 5 \\\\ \\Rightarrow \\\\ y = 7 - 5 = 2",
+    "valid": true
+  },
+  "a>0": {
+    "normalized": "a>0",
+    "valid": true
+  },
+  "b>0": {
+    "normalized": "b>0",
+    "valid": true
+  },
+  "\\frac{a+b}{2}\\ge\\sqrt{ab}": {
+    "normalized": "\\frac{a+b}{2}\\ge\\sqrt{ab}",
+    "valid": true
+  },
+  "x,y": {
+    "normalized": "x,y",
+    "valid": true
+  },
+  "\\frac{x+y}{2}\\ge\\sqrt{xy}": {
+    "normalized": "\\frac{x+y}{2}\\ge\\sqrt{xy}",
+    "valid": true
+  },
+  "x=y": {
+    "normalized": "x=y",
+    "valid": true
+  },
+  "a,b>0": {
+    "normalized": "a,b>0",
+    "valid": true
+  },
+  "\\frac{6}{2}\\ge\\sqrt{ab}": {
+    "normalized": "\\frac{6}{2}\\ge\\sqrt{ab}",
+    "valid": true
+  },
+  "3\\ge\\sqrt{ab}": {
+    "normalized": "3\\ge\\sqrt{ab}",
+    "valid": true
+  },
+  "9\\ge ab": {
+    "normalized": "9\\ge ab",
+    "valid": true
+  },
+  "\\ge0": {
+    "normalized": "\\ge0",
+    "valid": true
+  },
+  "ab\\le9\\text{, dấu bằng khi }a=b=3": {
+    "normalized": "ab\\le9\\text{, dấu bằng khi }a=b=3",
+    "valid": true
+  },
+  "ab\\\\le9": {
+    "normalized": "ab\\\\le9",
+    "valid": true
+  },
+  "\\\\frac{a+b}{2}\\\\ge\\\\sqrt{ab}": {
+    "normalized": "\\\\frac{a+b}{2}\\\\ge\\\\sqrt{ab}",
+    "valid": true
+  },
+  "\\\\frac{x+y}{2}\\\\ge\\\\sqrt{xy}": {
+    "normalized": "\\\\frac{x+y}{2}\\\\ge\\\\sqrt{xy}",
+    "valid": true
+  },
+  "\\\\frac{6}{2}\\\\ge\\\\sqrt{ab}": {
+    "normalized": "\\\\frac{6}{2}\\\\ge\\\\sqrt{ab}",
+    "valid": true
+  },
+  "3\\\\ge\\\\sqrt{ab}": {
+    "normalized": "3\\\\ge\\\\sqrt{ab}",
+    "valid": true
+  },
+  "9\\\\ge ab": {
+    "normalized": "9\\\\ge ab",
+    "valid": true
+  },
+  "\\\\ge0": {
+    "normalized": "\\\\ge0",
+    "valid": true
+  }
+}

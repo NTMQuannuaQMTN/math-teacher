@@ -1,4 +1,5 @@
 import type { ModelLesson } from "./solution";
+import {hasDamagedLatex} from './mathText';
 
 /**
  * Deterministic language hygiene for model lessons. Hosted models sometimes drift: Vietnamese written
@@ -8,6 +9,11 @@ import type { ModelLesson } from "./solution";
 
 const CJK = /[぀-ヿ㐀-鿿豈-﫿＀-￯]/u;
 const CYRILLIC = /[А-Яа-яЁёЪъЫыЭэЮю]/u;
+// Reject letters in every non-Latin script, including Thai, Arabic and Hangul.
+// Mathematical symbols and digits remain valid; script detection does not identify all foreign Latin words.
+// Greek letters are mathematical notation in Vietnamese textbooks (Δ for the discriminant, π, α), not a foreign language.
+const NON_LATIN_LETTER = /(?=\p{L})(?!\p{Script=Latin})(?!\p{Script=Greek})\P{Script=Common}/u;
+const FOREIGN_LATIN = /[äëïöüÿßñçğışřšžčł]/iu;
 /** Letters that only appear in Vietnamese written with its diacritics. */
 const VI_MARKED = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/iu;
 /** Common Vietnamese syllables as they look with their diacritics stripped. */
@@ -18,10 +24,14 @@ const VI_STRIPPED = new Set(
     "dang tong hieu tich thuong bieu cho rang luon moi nao deu nhau sao"
   ).split(" "),
 );
+// A marked phrase elsewhere in the field must not hide an unaccented mathematical phrase.
+// These pairs are unambiguous; ordinary Vietnamese words such as "cho hai" remain valid.
+const STRIPPED_MATH_PHRASE=/(?<!\p{L})(?:phuong trinh|dieu kien|gia tri|ket luan|biet thuc|binh phuong|cong thuc|so nguyen|dau bang|luy thua|giai thich|hai nghiem|nghiem thuc)(?!\p{L})/iu;
 
 /** True when the text reads as Vietnamese with its diacritics missing (maths is ignored). */
 export function isStrippedVietnamese(text: string): boolean {
   const prose = text.replace(/\$[^$]*\$/g, " ");
+  if (STRIPPED_MATH_PHRASE.test(prose)) return true;
   if (VI_MARKED.test(prose)) return false;
   const words = prose.toLowerCase().match(/\p{L}{2,}/gu) ?? [];
   const hits = words.filter((w) => VI_STRIPPED.has(w)).length;
@@ -59,7 +69,7 @@ const WORD_GLOSSARY: [RegExp, string][] = [
   [/\bfor\b/giu, "cho"],
   [/\band\b/giu, "và"],
   [/\btherefore\b/giu, "suy ra"],
-  [/\bso\b/giu, "do đó"],
+  [/(?<!\p{L})so(?!\p{L})(?!\s+(?:sánh|với|đo|kè)(?!\p{L}))/giu, "do đó"],
   [/\bwe\s+have\b/giu, "ta có"],
   [/\bhas\b/giu, "có"],
   [/\bfind\b/giu, "tìm"],
@@ -76,11 +86,20 @@ const WORD_GLOSSARY: [RegExp, string][] = [
   [/\bLo\s*Shu\b/giu, "ma phương 3 × 3"],
   [/(?<!\p{L})vuông\s+ma(?!\p{L})/giu, "ma phương"],
   [/(?<=\p{L})Known\b/gu, " đã biết"],
-  [/\bKnown\b/gu, "đã biết"],
+  [/\bKnown\b/giu, "đã biết"],
   // PTNK 2025 review: English glued to Vietnamese, and calques of English terms.
   [/(?<=\p{Ll})Strict(ly)?\b/gu, ""],
   [/\bcorresponding\b/giu, "tương ứng"],
   [/\brespectively\b/giu, "lần lượt"],
+  [/\bcongruence\b/giu, "đồng dư"],
+  [/\blcm\b/giu, "bội chung nhỏ nhất"],
+  [/\bmodulo\b/giu, "khi chia cho"],
+  [/\bfavorable\/total\b/giu, "số kết quả thuận lợi / tổng số kết quả"],
+  [/không\s+remettre/giu, "không hoàn lại"],
+  [/\bdifférence\b/giu, "hiệu"],
+  [/\bsynthesis\b/giu, "tổng hợp"],
+  [/\bAM-GM\b/giu, "Cô-si"],
+  [/nguyên lý phong bụ/giu, "nguyên lí Dirichlet"],
   [/hạng tử đồng loại/giu, "hạng tử đồng dạng"],
   [/\bphép mở rộng\b/giu, "khai triển"],
   [/\bhạn chế dưới\b/giu, "chặn dưới"],
@@ -88,7 +107,17 @@ const WORD_GLOSSARY: [RegExp, string][] = [
 
 /** English (or other foreign) words left in Vietnamese prose after the glossary: sent back to the model. */
 const FOREIGN_WORDS =
-  /(?<![\p{L}\\])(?:injective|surjective|bijective|strict(?:ly)?|with|where|therefore|hence|such that|increasing|decreasing|function|feit|diferen\p{L}*|vše)(?!\p{L})|\p{Ll}[A-Z][a-z]{2,}/u;
+  /(?<![\p{L}\\])(?:razionale|rationale|rationalization|injective|surjective|bijective|strict(?:ly)?|with|where|therefore|hence|such that|increasing|decreasing|function|system|vs|against|substitute into formula|feit|diferen\p{L}*|vše)(?!\p{L})|\p{Ll}[A-Z][a-z]{2,}/u;
+
+/** Unambiguous English words in prose; avoid words shared with Vietnamese (An, do, so, to, ...). */
+const ENGLISH_PROSE = /(?<![\p{L}\\])(?:game|games|theory|winning|losing|positions?|strategy|induction|backward|reasoning|initial|states?|rules?|players?|turns?|each|choose|piles?|remove|integer|stones?|last|take|wins?|logical|deduction|arithmetic|transition|symmetry|argument|termination|manual|analysis|verified|proof|definition|moves?|parity|integers|grid|piece|starts?|adjacent|cell|right|cannot|loses?|board|size|condition|winner|problem|asks?|which|explicitly|covered|standard|curriculum|defined|knowledge|base|involves|specific|framework|impartial|sprague|grundy|often|considered|logic|puzzle|rather|the|are|and|then|that|this|you|your|after|before|when|only|both|every)(?!\p{L})/iu;
+
+/** Streaming previews need the same script/word checks before a complete
+ * typed lesson is available. Mathematical command names are not prose. */
+export function hasForeignDisplayText(text:string):boolean {
+ const prose=text.replace(/\$[^$]*\$/g,' '),mathWords=[...text.matchAll(/\\text\{([^{}]*)\}/g)].map(m=>m[1]!).join(' ');
+ return NON_LATIN_LETTER.test(text)||FOREIGN_LATIN.test(prose+' '+mathWords)||FOREIGN_WORDS.test(prose+' '+mathWords)||ENGLISH_PROSE.test(prose+' '+mathWords);
+}
 
 /** A common but invalid shortcut: treating three expressions as exactly the set {1,2,3}
  * when the statement only says the three values are 1, 2, 3 in some order. */
@@ -122,7 +151,7 @@ export function simplifyNotation(text: string): string {
 export function patchVietnamese(text: string): string {
   let out = text;
   // Global regexes keep lastIndex between .test() calls: reset it, or a later string can be missed.
-  if (WORD_GLOSSARY.some(([re]) => ((re.lastIndex = 0), re.test(text)))) {
+  if (!isStrippedVietnamese(text) && WORD_GLOSSARY.some(([re]) => ((re.lastIndex = 0), re.test(text)))) {
     // Only outside $…$: a variable could be called "factor" in maths.
     out = out.replace(/(\$[^$]*\$)|([^$]+)/g, (m, math: string | undefined) => (math ? m : WORD_GLOSSARY.reduce((t, [re, vi]) => t.replace(re, vi), m)));
   }
@@ -146,7 +175,7 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const vi = input.analysis.language === "vi";
   const fix = <T extends string | null>(t: T): T => (vi && t ? (simplifyNotation(patchVietnamese(t)) as T) : t);
   const fixMath = <T extends string | null>(t: T): T =>
-    vi && t ? (simplifyNotation(t.replace(/(vuông\s+ma\s+)?Lo\s*Shu/giu, "ma phương 3 × 3").replace(/\\text\{\s*with\s*\}/g, "\\text{ với }")) as T) : t;
+    vi && t ? (simplifyNotation(t.replace(/(vuông\s+ma\s+)?Lo\s*Shu/giu, "ma phương 3 × 3").replace(/\\text\{([^{}]*)\}/g, (_m,words:string)=>`\\text{${patchVietnamese(words).replace(/\bvs\b/giu,'và')}}`)) as T) : t;
   const lesson: ModelLesson = vi
     ? {
         ...input,
@@ -157,21 +186,34 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
       }
     : input;
   const a = lesson.analysis;
-  const keep = (items: string[]) => (vi ? items.filter((t) => !isStrippedVietnamese(t)).map((t) => fix(t)) : items);
+  // Never remove a hypothesis just because its accents are missing. Preserve it for corrective
+  // feedback rather than allowing a solution with silently weakened displayed conditions.
+  const keep = (items: string[]) => items.map((t) => fix(t));
   const analysis = {
     ...a,
     // Shown as "Dạng bài": only when it is proper Vietnamese (models often leave it in English or without diacritics).
-    subtopic: vi && !VI_MARKED.test(a.subtopic) ? "" : fix(a.subtopic),
+    subtopic: fix(a.subtopic),
     concepts: keep(a.concepts),
     givens: keep(a.givens),
     unknowns: keep(a.unknowns),
     constraints: keep(a.constraints),
-    interpretationNotes: a.interpretationNotes.filter((n) => !NO_OP_NOTE.test(n) && !(vi && isStrippedVietnamese(n))).map((n) => fix(n)),
+    interpretationNotes: a.interpretationNotes.filter((n) => !NO_OP_NOTE.test(n)).map((n) => fix(n)),
   };
 
   const body: [string, string | null][] = [
+    ["statement", analysis.statement],
+    ["subtopic", analysis.subtopic],
+    ["status reason", analysis.statusReason],
+    ...analysis.concepts.map((t): [string, string] => ["concept", t]),
+    ...analysis.givens.map((t): [string, string] => ["given", t]),
+    ...analysis.unknowns.map((t): [string, string] => ["unknown", t]),
+    ...analysis.constraints.map((t): [string, string] => ["constraint", t]),
+    ...analysis.interpretationNotes.map((t): [string, string] => ["interpretation note", t]),
     ["strategy", lesson.strategy],
     ["final answer", lesson.finalAnswer.text],
+    ["final answer math", lesson.finalAnswer.math],
+    ...lesson.hints.map((h): [string, string | null] => [`hint ${h.id} math`, h.math]),
+    ...lesson.steps.flatMap((s): [string, string | null][] => [[`step ${s.id} math`, s.math], [`step ${s.id} result`, s.result ?? null]]),
     ...lesson.hints.flatMap((h): [string, string | null][] => [
       [`hint ${h.id}`, h.question],
       [`hint ${h.id}`, h.cue],
@@ -181,9 +223,22 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
       [`step ${s.id}`, s.title],
       [`step ${s.id}`, s.explanation],
       [`step ${s.id}`, s.reason],
+      [`step ${s.id} operation`, s.operation ?? null],
+      [`step ${s.id} verification method`, s.verification?.method ?? null],
+      [`step ${s.id} verification reason`, s.verification?.reason ?? null],
+      ...(s.factsUsed ?? []).map((t): [string, string] => [`step ${s.id} fact`, t]),
     ]),
+    ...(lesson.figure?.points ?? []).map((p): [string, string] => ["point label", p.label]),
+    ...(lesson.figure?.lines ?? []).map((l): [string, string | null] => ["line label", l.label]),
+    ...(lesson.figure?.circles ?? []).map((c): [string, string | null] => ["circle label", c.label]),
+    ...(lesson.figure?.angles ?? []).map((a): [string, string | null] => ["angle label", a.label]),
   ];
   const feedback: string[] = [];
+  const damaged=[...new Set(body.filter(([,t])=>t&&hasDamagedLatex(t)).map(([where])=>where))];
+  if(damaged.length)feedback.push(`${damaged.join(', ')}: damaged LaTeX escape or fused imes fragment; rewrite the original mathematical expression with properly escaped commands, never guess missing operators`);
+  if (!vi) feedback.push('English or mixed-language lesson metadata: all displayed explanations must be in Vietnamese with full diacritics; rewrite and set language vi');
+  const otherScript = vi ? [...new Set(body.filter(([, t]) => t && NON_LATIN_LETTER.test(t)).map(([where]) => where))] : [];
+  if (otherScript.length) feedback.push(`${otherScript.join(", ")}: foreign non-Latin letters in displayed fields; rewrite in Vietnamese`);
   const foreign = [...new Set(body.filter(([, t]) => t && CJK.test(t)).map(([where]) => where))];
   if (foreign.length > 0) {
     feedback.push(`${foreign.join(", ")} contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language`);
@@ -197,17 +252,21 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const texts = (m: string | null) => [...(m ?? "").matchAll(/\\text\{([^{}]*)\}/g)].map((x) => x[1]).join(" ");
   const withMath: [string, string | null][] = [
     ...body,
-    ...lesson.steps.map((s): [string, string | null] => [`step ${s.id}`, texts(s.math)]),
+    ...body.map(([where, t]): [string, string] => [where, texts(t)]),
+    ["final answer math", texts(lesson.finalAnswer.math)],
+    ...lesson.steps.flatMap((s): [string, string | null][] => [[`step ${s.id}`, texts(s.math)], [`step ${s.id} result`, texts(s.result ?? null)]]),
     ...lesson.hints.map((h): [string, string | null] => [`hint ${h.id}`, texts(h.math)]),
   ];
-  const english = vi ? [...new Set(withMath.flatMap(([where, t]) => { const m = t ? FOREIGN_WORDS.exec(prose(t)) : null; return m ? [`${where} ("${m[0]}")`] : []; }))] : [];
+  const foreignLatin = vi ? [...new Set(withMath.filter(([, t]) => t && FOREIGN_LATIN.test(prose(t))).map(([where]) => where))] : [];
+  if (foreignLatin.length) feedback.push(`${foreignLatin.join(", ")}: foreign Latin-script words in a Vietnamese lesson; rewrite in natural Vietnamese with full diacritics`);
+  const english = vi ? [...new Set(withMath.flatMap(([where, t]) => { const m = t ? FOREIGN_WORDS.exec(prose(t)) ?? ENGLISH_PROSE.exec(prose(t)) : null; return m ? [`${where} ("${m[0]}")`] : []; }))] : [];
   if (english.length > 0) {
     feedback.push(`${english.join(", ")}: English or other foreign words in a Vietnamese lesson — write them in Vietnamese ("đồng biến", "tương ứng", "với"), using only terms a Grade 9 student knows`);
   }
   const invalidSet = vi
     ? [...new Set(withMath.filter(([, t]) => {
         if (!t) return false;
-        const plainNotation = t.replace(/\$/g, "").replace(/\\/g, "");
+        const plainNotation = t.replace(/\\(?:left|right|big|Big|bigg|Bigg|quad|qquad)\b|\\[,;! ]/g,'').replace(/\$/g, "").replace(/\\/g, "");
         return INVALID_UNORDERED_SET_EQUALITY.test(plainNotation);
       }).map(([where]) => where))]
     : [];

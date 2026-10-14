@@ -1,0 +1,145 @@
+[
+  {
+    "id": "game-dev-normal",
+    "n": 21,
+    "moves": [
+      1,
+      2,
+      3
+    ],
+    "lastLoses": false,
+    "firstWins": true,
+    "winningMoves": [
+      1
+    ],
+    "losingStates": [
+      4,
+      8,
+      12,
+      16,
+      20
+    ],
+    "independentMethod": "Exhaustive recursive minimax of the finite move tree; memoization shares results only. Every move decreases the number of stones."
+  },
+  {
+    "id": "game-dev-misere",
+    "n": 25,
+    "moves": [
+      1,
+      2
+    ],
+    "lastLoses": true,
+    "firstWins": false,
+    "winningMoves": [],
+    "losingStates": [
+      1,
+      4,
+      7,
+      10,
+      13,
+      16,
+      19,
+      22,
+      25
+    ],
+    "independentMethod": "Exhaustive recursive minimax of the finite move tree; memoization shares results only. Every move decreases the number of stones."
+  },
+  {
+    "id": "game-dev-gaps",
+    "n": 20,
+    "moves": [
+      1,
+      3
+    ],
+    "lastLoses": false,
+    "firstWins": false,
+    "winningMoves": [],
+    "losingStates": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20
+    ],
+    "independentMethod": "Exhaustive recursive minimax of the finite move tree; memoization shares results only. Every move decreases the number of stones."
+  },
+  {
+    "id": "game-val-subset",
+    "n": 34,
+    "moves": [
+      1,
+      4,
+      5
+    ],
+    "lastLoses": false,
+    "firstWins": false,
+    "winningMoves": [],
+    "losingStates": [
+      2,
+      8,
+      10,
+      16,
+      18,
+      24,
+      26,
+      32,
+      34
+    ],
+    "independentMethod": "Exhaustive recursive minimax of the finite move tree; memoization shares results only. Every move decreases the number of stones."
+  },
+  {
+    "id": "game-val-misere",
+    "n": 40,
+    "moves": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "lastLoses": true,
+    "firstWins": true,
+    "winningMoves": [
+      4
+    ],
+    "losingStates": [
+      1,
+      6,
+      11,
+      16,
+      21,
+      26,
+      31,
+      36
+    ],
+    "independentMethod": "Exhaustive recursive minimax of the finite move tree; memoization shares results only. Every move decreases the number of stones."
+  },
+  {
+    "id": "game-val-no-move",
+    "n": 16,
+    "moves": [
+      2,
+      5
+    ],
+    "lastLoses": false,
+    "firstWins": true,
+    "winningMoves": [
+      2,
+      5
+    ],
+    "losingStates": [
+      1,
+      4,
+      7,
+      8,
+      11,
+      14,
+      15
+    ],
+    "independentMethod": "Exhaustive recursive minimax of the finite move tree; memoization shares results only. Every move decreases the number of stones."
+  }
+]

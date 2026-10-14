@@ -1,0 +1,44 @@
+{
+  "phase": "final",
+  "split": "final",
+  "n": 12,
+  "ready": 12,
+  "mathematicalProxyPasses": 12,
+  "qualityPasses": 12,
+  "controlledWithin30s": 12,
+  "maxMs": 1103.182708,
+  "perDomain": {
+    "algebra": {
+      "n": 3,
+      "ready": 3,
+      "mathematicalProxyPasses": 3,
+      "qualityPasses": 3,
+      "controlledWithin30s": 3,
+      "maxMs": 1103.182708
+    },
+    "geometry": {
+      "n": 3,
+      "ready": 3,
+      "mathematicalProxyPasses": 3,
+      "qualityPasses": 3,
+      "controlledWithin30s": 3,
+      "maxMs": 1012.7438749999997
+    },
+    "number_theory": {
+      "n": 3,
+      "ready": 3,
+      "mathematicalProxyPasses": 3,
+      "qualityPasses": 3,
+      "controlledWithin30s": 3,
+      "maxMs": 969.0542079999996
+    },
+    "combinatorics": {
+      "n": 3,
+      "ready": 3,
+      "mathematicalProxyPasses": 3,
+      "qualityPasses": 3,
+      "controlledWithin30s": 3,
+      "maxMs": 956.0179580000004
+    }
+  }
+}

@@ -42,9 +42,25 @@ export class ExprError extends Error {
 /** LaTeX that models often put in checks ("3(x-2) \\le 5x", "\\frac{1}{2}") → the plain grammar. */
 function delatex(input: string): string {
   let s = input.replace(/\$/g, "").replace(/\\left|\\right|\\,|\\;|\\!|\\displaystyle/g, "");
+  // Numeric combinations are bounded, explicit products. Unsupported symbolic calls
+  // remain rejected by the parser; no eval(), factorial overflow, or unbounded loops.
+  const choose = (_: string, ns: string, ks: string) => {
+    const n = Number(ns), k = Number(ks);
+    if (!Number.isInteger(n) || !Number.isInteger(k) || n < 0 || n > 52 || k < 0 || k > n) throw new ExprError("Combination arguments outside the supported range");
+    const r = Math.min(k, n-k);
+    if (r === 0) return "(1)";
+    return `(${Array.from({length:r}, (_,i)=>`(${n-i}/${i+1})`).join("*")})`;
+  };
+  s = s.replace(/\bC\s*\(\s*(\d+)\s*,\s*(\d+)\s*\)/g, choose)
+    .replace(/\\binom\s*\{\s*(\d+)\s*\}\s*\{\s*(\d+)\s*\}/g, choose);
+  // TeX allows a single unbraced token: \sqrt3 is sqrt(3), while \sqrt12 is sqrt(1)*2.
+  // Letters require whitespace after the command; \sqrtx is a different (unsupported) command name.
+  s=s.replace(/\\sqrt(?:\s+([A-Za-z0-9])|([0-9]))/g,(_,spaced:string,digit:string)=>`\\sqrt{${spaced??digit}}`)
+    .replace(/\\(?:d?frac)(?![A-Za-z])\s*(?:\{([^{}]+)\}|([A-Za-z0-9]))\s*(?:\{([^{}]+)\}|([A-Za-z0-9]))/g,(_,bracedN:string,n:string,bracedD:string,d:string)=>`\\frac{${bracedN??n}}{${bracedD??d}}`);
   // Innermost first, repeated, so nested \frac / \sqrt resolve.
   for (let i = 0; i < 6; i++) {
     const next = s
+      .replace(/\\(?:d?frac)(?![A-Za-z])\s*(?:\{([^{}]+)\}|([A-Za-z0-9]))\s*(?:\{([^{}]+)\}|([A-Za-z0-9]))/g,(_,bracedN:string,n:string,bracedD:string,d:string)=>`\\frac{${bracedN??n}}{${bracedD??d}}`)
       .replace(/\\d?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "(($1)/($2))")
       .replace(/\\sqrt\s*\[\s*3\s*\]\s*\{([^{}]*)\}/g, "cbrt($1)")
       // Other n-th roots of a non-negative radicand: \sqrt[4]{a} → (a)^(1/4).

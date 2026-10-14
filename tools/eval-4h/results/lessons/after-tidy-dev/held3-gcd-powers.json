@@ -1,0 +1,156 @@
+{
+  "input": "Tính $\\gcd(2^{12}-1,2^{18}-1)$ và giải thích bằng thuật toán Euclid.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tính $\\gcd(2^{12}-1,2^{18}-1)$ và giải thích bằng thuật toán Euclid.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Thuật toán Euclid cho hiệu các lũy thừa",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Thuật toán Euclid cho hiệu các lũy thừa"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Mô phỏng đúng các phép chia số mũ của thuật toán Euclid và dùng hằng đẳng thức hiệu lũy thừa ở mỗi bước.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Phần dư của số mũ dẫn đến phần dư nào của lũy thừa?",
+        "cue": "Thuật toán Euclid và hằng đẳng thức hiệu hai lũy thừa",
+        "explanation": "Nếu $r=sq+t$, thì $2^{r}-1=(2^{s}-1)Q+(2^{t}-1)$ với $Q$ là số nguyên, vì $2^{sq}-1$ chia hết cho $2^{s}-1$. Vì thế thay số thứ nhất bằng số dư lũy thừa không đổi ước chung lớn nhất.",
+        "math": "\\gcd(2^{r}-1,2^{s}-1)=\\gcd(2^{s}-1,2^{t}-1)",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Ước chung lớn nhất của hai số mũ bằng bao nhiêu?",
+        "cue": "Thuật toán Euclid trên số mũ",
+        "explanation": "Thực hiện phép chia có dư liên tiếp; số dư khác 0 cuối cùng là ước chung lớn nhất của hai số mũ.",
+        "math": "\\begin{gathered}18=1\\cdot12+6\\\\12=2\\cdot6+0\\end{gathered}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Dạng lũy thừa cuối cùng ứng với số mũ nào?",
+        "cue": "Lặp phép biến đổi Euclid đã chứng minh",
+        "explanation": "Áp dụng đẳng thức ở bước 1 theo đúng từng dòng của thuật toán Euclid, cặp lũy thừa cuối cùng rút về $2^{6}-1$ và $0$.",
+        "math": "\\gcd(2^{12}-1,2^{18}-1)=2^{6}-1",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Giá trị số cuối cùng là bao nhiêu?",
+        "cue": "Tính lũy thừa nguyên",
+        "explanation": "Tính chính xác $2^{6}-1=63$. Vậy ước chung lớn nhất cần tìm là $63$.",
+        "math": "2^{6}-1=63",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Nêu phép biến đổi Euclid cho lũy thừa",
+        "explanation": "Nếu $r=sq+t$, thì $2^{r}-1=(2^{s}-1)Q+(2^{t}-1)$ với $Q$ là số nguyên, vì $2^{sq}-1$ chia hết cho $2^{s}-1$. Vì thế thay số thứ nhất bằng số dư lũy thừa không đổi ước chung lớn nhất.",
+        "math": "\\gcd(2^{r}-1,2^{s}-1)=\\gcd(2^{s}-1,2^{t}-1)",
+        "reason": "Thuật toán Euclid và hằng đẳng thức hiệu hai lũy thừa",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chạy thuật toán Euclid trên hai số mũ",
+        "explanation": "Thực hiện phép chia có dư liên tiếp; số dư khác 0 cuối cùng là ước chung lớn nhất của hai số mũ.",
+        "math": "\\begin{gathered}18=1\\cdot12+6\\\\12=2\\cdot6+0\\end{gathered}",
+        "reason": "Thuật toán Euclid trên số mũ",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Chuyển từng phép chia sang hai số ban đầu",
+        "explanation": "Áp dụng đẳng thức ở bước 1 theo đúng từng dòng của thuật toán Euclid, cặp lũy thừa cuối cùng rút về $2^{6}-1$ và $0$.",
+        "math": "\\gcd(2^{12}-1,2^{18}-1)=2^{6}-1",
+        "reason": "Lặp phép biến đổi Euclid đã chứng minh",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Tính giá trị và kết luận",
+        "explanation": "Tính chính xác $2^{6}-1=63$. Vậy ước chung lớn nhất cần tìm là $63$.",
+        "math": "2^{6}-1=63",
+        "reason": "Tính lũy thừa nguyên",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $\\gcd(2^{12}-1,2^{18}-1)=63$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập số dư bằng lũy thừa nhanh, Euclid trên số nguyên lớn, liệt kê hữu hạn hoặc phân tích thập phân",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

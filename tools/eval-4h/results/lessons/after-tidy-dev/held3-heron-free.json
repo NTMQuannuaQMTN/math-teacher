@@ -1,0 +1,155 @@
+{
+  "input": "Cho tam giác $ABC$ có $AB=13$, $AC=15$, $BC=14$. Tính diện tích tam giác bằng phương pháp lớp 9 và chứng minh các phép tính.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tam giác $ABC$ có $AB=13$, $AC=15$, $BC=14$. Tính diện tích tam giác bằng phương pháp lớp 9 và chứng minh các phép tính.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Diện tích tam giác bằng đường cao và Pythagore",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Diện tích tam giác bằng đường cao và Pythagore"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Hạ đường cao, dùng hiệu hai phương trình Pythagore để tìm hình chiếu, rồi tính đường cao và diện tích.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Hai đoạn BH và CH có tổng bằng cạnh nào?",
+        "cue": "Dựng đường cao và cộng đoạn thẳng",
+        "explanation": "Hạ $AHperp BC$ tại $H$ và đặt $BH=x$. Khi đó $CH=BC-BH$. Các độ dài tính được dưới đây cho $0<x<BC$, nên $H$ thật sự nằm trong đoạn $BC$.",
+        "math": "BH=x,\\quad CH=14-x",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Hai phương trình có chung đại lượng nào để khử?",
+        "cue": "Định lí Pythagore trong hai tam giác vuông",
+        "explanation": "Hai tam giác $ABH$ và $ACH$ vuông tại $H$. Áp dụng định lí Pythagore cho từng tam giác.",
+        "math": "\\begin{cases}AH^2+x^2=13^2\\\\AH^2+(14-x)^2=15^2\\end{cases}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Độ dài BH bằng bao nhiêu?",
+        "cue": "Khai triển bình phương và giải phương trình bậc nhất",
+        "explanation": "Lấy phương trình thứ hai trừ phương trình thứ nhất, các hạng $AH^2$ và $x^2$ triệt tiêu sau khai triển. Giải phương trình bậc nhất còn lại được $x=5$.",
+        "math": "196-2\\cdot14x=56\\Rightarrow x=5",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Vì sao chọn căn dương?",
+        "cue": "Định lí Pythagore và lấy căn dương của độ dài",
+        "explanation": "Thay $BH=5$ vào tam giác vuông $ABH$: $AH^2=13^2-5^2=144$. Vì độ dài dương nên $AH=12$.",
+        "math": "AH=12",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Diện tích cuối cùng bằng bao nhiêu?",
+        "cue": "Công thức diện tích tam giác",
+        "explanation": "Dùng đáy $BC=14$ và chiều cao $AH=12$, diện tích bằng nửa tích đáy với chiều cao.",
+        "math": "S_{ABC}=\\frac12\\cdot14\\cdot12=84",
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Hạ đường cao và đặt độ dài hình chiếu",
+        "explanation": "Hạ $AHperp BC$ tại $H$ và đặt $BH=x$. Khi đó $CH=BC-BH$. Các độ dài tính được dưới đây cho $0<x<BC$, nên $H$ thật sự nằm trong đoạn $BC$.",
+        "math": "BH=x,\\quad CH=14-x",
+        "reason": "Dựng đường cao và cộng đoạn thẳng",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Viết hai phương trình Pythagore",
+        "explanation": "Hai tam giác $ABH$ và $ACH$ vuông tại $H$. Áp dụng định lí Pythagore cho từng tam giác.",
+        "math": "\\begin{cases}AH^2+x^2=13^2\\\\AH^2+(14-x)^2=15^2\\end{cases}",
+        "reason": "Định lí Pythagore trong hai tam giác vuông",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Trừ hai phương trình để tìm BH",
+        "explanation": "Lấy phương trình thứ hai trừ phương trình thứ nhất, các hạng $AH^2$ và $x^2$ triệt tiêu sau khai triển. Giải phương trình bậc nhất còn lại được $x=5$.",
+        "math": "196-2\\cdot14x=56\\Rightarrow x=5",
+        "reason": "Khai triển bình phương và giải phương trình bậc nhất",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Tính đường cao",
+        "explanation": "Thay $BH=5$ vào tam giác vuông $ABH$: $AH^2=13^2-5^2=144$. Vì độ dài dương nên $AH=12$.",
+        "math": "AH=12",
+        "reason": "Định lí Pythagore và lấy căn dương của độ dài",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Tính diện tích và kết luận",
+        "explanation": "Dùng đáy $BC=14$ và chiều cao $AH=12$, diện tích bằng nửa tích đáy với chiều cao.",
+        "math": "S_{ABC}=\\frac12\\cdot14\\cdot12=84",
+        "reason": "Công thức diện tích tam giác",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy diện tích tam giác $ABC$ bằng $84$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập bằng tỉ số diện tích, tọa độ chính xác hoặc phân hoạch sáu tam giác ở tâm",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 9,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-geometry-family",
+  "logs": []
+}

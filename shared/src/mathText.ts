@@ -1,3 +1,4 @@
+import { divisibilityLatex } from "./divisibility";
 /**
  * Utilities for the problem text format used across the app:
  * prose with inline maths in `$…$` and display maths in `$$…$$`.
@@ -29,6 +30,31 @@ export function parseMathText(input: string): MathSegment[] {
 
   while (i < input.length) {
     const ch = input[i];
+    // Models and pasted questions also use the standard TeX delimiters.
+    // Recognize these only outside existing math; \\[2pt] within an aligned
+    // formula remains a row-spacing instruction, not another math block.
+    if (ch === "\\" && (input[i + 1] === "(" || input[i + 1] === "[")) {
+      const display = input[i + 1] === "[";
+      const closer = display ? "]" : ")";
+      let end = -1;
+      for (let j = i + 2; j < input.length; j++) {
+        if (!display && input[j] === "\n" && input[j + 1] === "\n") break;
+        if (input[j] !== "\\") continue;
+        if (input[j + 1] === closer) { end = j; break; }
+        j++; // skip an escaped backslash, dollar sign or command character
+      }
+      if (end !== -1 && input.slice(i + 2, end).trim()) {
+        flushText();
+        segments.push({ kind: "math", value: input.slice(i + 2, end).trim(), display });
+        i = end + 2;
+        continue;
+      }
+    }
+    if (ch === "\\" && input[i + 1] === "\\") {
+      text += "\\\\";
+      i += 2;
+      continue;
+    }
     if (ch === "\\" && input[i + 1] === "$") {
       text += "$";
       i += 2;
@@ -95,6 +121,7 @@ export function isWellFormedMathText(input: string): boolean {
     if (segment.kind === "text") {
       if (/(^|[^\\])\$/.test(segment.value)) return false;
       if (/\\[A-Za-z]{2,}|[\^_]\{/.test(segment.value)) return false;
+      if (/(?<!\\)\\[()[\]]/.test(segment.value)) return false;
     } else {
       if (!hasBalancedBraces(segment.value)) return false;
       if (containsVietnamese(stripTextCommands(segment.value))) return false;
@@ -207,6 +234,7 @@ function wrapIfCompound(value: string): string {
 
 /** Converts a LaTeX maths expression to readable Unicode text. Best effort. */
 export function latexToPlain(tex: string): string {
+  tex = tex.replace(/\\not\s*\\vdots\b/g, "⋮̸");
   let out = "";
   let i = 0;
   while (i < tex.length) {
@@ -471,11 +499,24 @@ const DIMENSION = String.raw`\[\s*-?[\d.]+\s*(?:pt|em|ex|mm|cm|mu)\s*\]`;
  */
 export function repairLatex(input: string): string {
   return input
+    // A single JSON backslash in "\times" becomes a tab followed by imes.
+    // Only this unambiguous control-character signature is repaired; missing
+    // operator backslashes in fused letter strings are never guessed.
+    .replace(/\times(?=[^A-Za-z]|$)/g, "\\times")
+    .replace(/\\(begin|end)\{align\*?\}/g, "\\$1{aligned}")
+    .replace(/\\(begin|end)\{gather\*?\}/g, "\\$1{gathered}")
+    .replace(/\\(?:begin|end)\{equation\*?\}/g, "")
     .replace(/(?<!\\)\\n([A-Za-z]*)/g, (m, rest: string) => {
       for (let k = rest.length; k >= 0; k--) if (N_COMMANDS.has(`n${rest.slice(0, k)}`) && !/^[a-z]/.test(rest.slice(k)) || (k === rest.length && N_COMMANDS.has(`n${rest}`))) return m;
       return `\n${rest}`;
     })
     .replace(new RegExp(String.raw`(?<!\\)\\${DIMENSION}`, "g"), " ");
+}
+
+/** Broken JSON escapes or lost multiplication commands can parse in KaTeX as
+ * ordinary letters. Syntax success must not pass these off as mathematics. */
+export function hasDamagedLatex(text: string): boolean {
+  return /[\x00-\x08\x0B\x0C\x0D]/.test(text) || /(?<![\\\p{L}])[A-Za-z0-9]+imes[A-Za-z0-9]*(?!\p{L})/u.test(text);
 }
 
 const TEXT_GROUP = /\\(?:text|mbox|mathrm|textbf|operatorname)\s*\{[^{}]*\}/g;
@@ -506,7 +547,12 @@ export function textifyProse(math: string): string {
 
 /** A display-maths field as `$$…$$` for the renderer: repaired, prose in \text{}, several lines stacked. */
 export function displayFormula(math: string): string {
-  const m = textifyProse(repairLatex(math));
+  const m = divisibilityLatex(textifyProse(repairLatex(math)));
   const lines = m.split("\n").map((l) => l.trim()).filter(Boolean);
   return `$$${lines.length > 1 && !/\\begin\{/.test(m) ? `\\begin{gathered}${lines.join(" \\\\ ")}\\end{gathered}` : m}$$`;
+}
+
+/** Apply Vietnamese notation only inside delimited mathematics. */
+export function vietnameseMathText(text: string): string {
+  return parseMathText(text).map(s=>s.kind === "text" ? s.value : s.display ? `$$${divisibilityLatex(s.value)}$$` : `$${divisibilityLatex(s.value)}$`).join("");
 }

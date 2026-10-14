@@ -16,6 +16,7 @@ const Id = z.string().min(1).max(40).regex(/^[A-Za-z0-9_']+$/);
 const Text = z.string().max(1500);
 const ShortText = z.string().max(300);
 const Latex = z.string().max(800);
+const HiddenSearchPlanSchema=z.strictObject({rows:z.literal(2),columns:z.number().int().min(2).max(50),k:z.union([z.literal(2),z.literal(4)]),queries:z.array(z.array(z.tuple([z.number().int().min(1).max(2),z.number().int().min(1).max(50)])).min(2).max(4)).min(1).max(98)});
 
 // ---------------------------------------------------------------------------
 // Problem understanding
@@ -270,8 +271,9 @@ export const ModelLessonSchema = z.strictObject({
   /** One or two sentences: the plan, in plain words. */
   strategy: Text,
   hints: z.array(HintSchema).max(8),
-  steps: z.array(StepSchema).max(14),
+  steps: z.array(StepSchema).max(24),
   finalAnswer: z.strictObject({ text: Text, math: Latex.nullable() }),
+  gamePlans:z.array(HiddenSearchPlanSchema).max(2).optional(),
   answerChecks: z.array(AnswerCheckSchema).max(6),
   /**
    * Last on purpose: models write fields in schema order, so the figure is drawn
@@ -305,7 +307,7 @@ export const VerificationSchema = z.strictObject({
    */
   steps: z
     .array(z.strictObject({ stepId: z.string(), status: z.enum(["checked", "failed", "answer", "not_checked"]), claims: z.number().int() }))
-    .max(14)
+    .max(24)
     .optional(),
 });
 export type Verification = z.infer<typeof VerificationSchema>;

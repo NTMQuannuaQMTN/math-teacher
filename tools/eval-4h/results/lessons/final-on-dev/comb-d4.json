@@ -1,0 +1,134 @@
+{
+  "input": "Chứng minh rằng trong $13$ người bất kì luôn có ít nhất hai người sinh cùng một tháng.",
+  "lesson": {
+    "analysis": {
+      "statement": "Chứng minh rằng trong $13$ người bất kì luôn có ít nhất hai người sinh cùng một tháng.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Nguyên lí Dirichlet",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Nguyên lí Dirichlet"
+      ],
+      "techniques": [],
+      "givens": [
+        "$13$ đối tượng, $12$ loại"
+      ],
+      "unknowns": [
+        "Chứng minh có hai đối tượng cùng loại"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn lồng và thỏ thích hợp; số thỏ nhiều hơn số lồng.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Lồng là gì, thỏ là gì?",
+        "cue": "Mô hình nguyên lí Dirichlet",
+        "explanation": "Coi mỗi tháng là một lồng: có $12$ lồng. Coi mỗi người là một con thỏ: có $13$ con thỏ, mỗi người được đặt vào lồng là tháng sinh của mình.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Nếu mỗi tháng có nhiều nhất một người thì có tối đa bao nhiêu người?",
+        "cue": "Nguyên lí Dirichlet (chứng minh phản chứng)",
+        "explanation": "Giả sử không có hai người nào cùng tháng sinh: mỗi lồng có nhiều nhất một người, nên số người không vượt quá $12$. Nhưng có $13>12$ người — mâu thuẫn. Vậy có ít nhất hai người cùng một tháng sinh.",
+        "math": "13>12",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Điều cần chứng minh là gì?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy trong $13$ người luôn có ít nhất hai người sinh cùng một tháng.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chọn \"lồng\" và \"thỏ\"",
+        "explanation": "Coi mỗi tháng là một lồng: có $12$ lồng. Coi mỗi người là một con thỏ: có $13$ con thỏ, mỗi người được đặt vào lồng là tháng sinh của mình.",
+        "math": null,
+        "reason": "Mô hình nguyên lí Dirichlet",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Áp dụng nguyên lí Dirichlet",
+        "explanation": "Giả sử không có hai người nào cùng tháng sinh: mỗi lồng có nhiều nhất một người, nên số người không vượt quá $12$. Nhưng có $13>12$ người — mâu thuẫn. Vậy có ít nhất hai người cùng một tháng sinh.",
+        "math": "13>12",
+        "reason": "Nguyên lí Dirichlet (chứng minh phản chứng)",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy trong $13$ người luôn có ít nhất hai người sinh cùng một tháng.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy trong $13$ người luôn có ít nhất hai người sinh cùng một tháng.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra số đối tượng 13 lớn hơn số lồng 12",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 4,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-pigeonhole-month",
+  "logs": [
+    "lesson by the routine solver (pigeonhole-month); no model call"
+  ]
+}

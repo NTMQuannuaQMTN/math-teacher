@@ -1,0 +1,18 @@
+{
+  "phase": "baseline-geometry",
+  "questionsExecuted": 3,
+  "ready": 1,
+  "independentlyReviewed": 3,
+  "mathematicalPasses": 1,
+  "qualityPasses": 0,
+  "latencyMs": {
+    "p50": 68.8376659999999,
+    "p95": 187.33908399999996,
+    "max": 187.33908399999996
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 3,
+  "rubricMeanForReviewedOnly": 33.333333333333336,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured"
+}

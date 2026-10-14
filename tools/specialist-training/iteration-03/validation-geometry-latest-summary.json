@@ -1,0 +1,21 @@
+{
+  "phase": "validation-geometry-latest",
+  "questionsExecuted": 15,
+  "ready": 15,
+  "independentlyReviewed": 15,
+  "correctConclusionCount": 15,
+  "mathematicalPasses": 15,
+  "qualityPasses": 15,
+  "diagnosticVariantCount": 15,
+  "latencyMs": {
+    "p50": 47.215124999999716,
+    "p95": 141.78708300000017,
+    "max": 141.78708300000017
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 15,
+  "rubricMeanForReviewedOnly": 98.0,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": true
+}

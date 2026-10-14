@@ -1,0 +1,162 @@
+{
+  "input": "Tìm số tự nhiên nhỏ nhất chia cho $3$ dư $2$, chia cho $5$ dư $3$ và chia cho $7$ dư $2$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm số tự nhiên nhỏ nhất chia cho $3$ dư $2$, chia cho $5$ dư $3$ và chia cho $7$ dư $2$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Bài toán chia có dư (tìm số nhỏ nhất)",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Bài toán chia có dư (tìm số nhỏ nhất)"
+      ],
+      "techniques": [],
+      "givens": [
+        "chia cho $3$ dư $2$",
+        "chia cho $5$ dư $3$",
+        "chia cho $7$ dư $2$"
+      ],
+      "unknowns": [
+        "Số nhỏ nhất thỏa mãn"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Lần lượt ghép từng điều kiện: liệt kê các số thỏa điều kiện trước, chọn số đầu tiên thỏa điều kiện sau.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Các số chia cho số đầu tiên có số dư đã cho có dạng nào?",
+        "cue": "Định nghĩa phép chia có dư",
+        "explanation": "Số chia cho $3$ dư $2$ có dạng $3k+2$ ($k$ tự nhiên), tức là một trong các số $2, 5, 8, 11,\\ldots$",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Trong dãy $2, 5, \\ldots$ số đầu tiên chia $5$ dư $3$ là số nào?",
+        "cue": "Hiệu hai số có cùng số dư thì chia hết cho số chia; BCNN",
+        "explanation": "Thử lần lượt các số dạng $2+3k$: $2$ chia $5$ dư $2$, $5$ chia $5$ dư $0$, $8$ chia $5$ dư $3$. Số nhỏ nhất thỏa là $8$. Hai số cùng thỏa các điều kiện đã xét thì hiệu của chúng chia hết cho cả $3$ và $5$, tức chia hết cho $\\operatorname{BCNN}(3,5)=15$; vậy các số thỏa đến lúc này có dạng $8+15k$.",
+        "math": "x\\equiv 8\\pmod{15}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Trong dãy $8, 23, \\ldots$ số đầu tiên chia $7$ dư $2$ là số nào?",
+        "cue": "Hiệu hai số có cùng số dư thì chia hết cho số chia; BCNN",
+        "explanation": "Thử lần lượt các số dạng $8+15k$: $8$ chia $7$ dư $1$, $23$ chia $7$ dư $2$. Số nhỏ nhất thỏa là $23$. Hai số cùng thỏa các điều kiện đã xét thì hiệu của chúng chia hết cho cả $15$ và $7$, tức chia hết cho $\\operatorname{BCNN}(15,7)=105$; vậy các số thỏa đến lúc này có dạng $23+105k$.",
+        "math": "x\\equiv 23\\pmod{105}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Số nhỏ nhất là bao nhiêu?",
+        "cue": "Số nhỏ nhất của dãy",
+        "explanation": "Mọi số thỏa mãn đều có dạng $23+105k$ với $k\\ge0$, nên số nhỏ nhất là $23$. Vậy số tự nhiên nhỏ nhất thỏa mãn là $23$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Viết dạng của số cần tìm theo điều kiện đầu",
+        "explanation": "Số chia cho $3$ dư $2$ có dạng $3k+2$ ($k$ tự nhiên), tức là một trong các số $2, 5, 8, 11,\\ldots$",
+        "math": null,
+        "reason": "Định nghĩa phép chia có dư",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Thêm điều kiện chia cho 5 dư 3",
+        "explanation": "Thử lần lượt các số dạng $2+3k$: $2$ chia $5$ dư $2$, $5$ chia $5$ dư $0$, $8$ chia $5$ dư $3$. Số nhỏ nhất thỏa là $8$. Hai số cùng thỏa các điều kiện đã xét thì hiệu của chúng chia hết cho cả $3$ và $5$, tức chia hết cho $\\operatorname{BCNN}(3,5)=15$; vậy các số thỏa đến lúc này có dạng $8+15k$.",
+        "math": "x\\equiv 8\\pmod{15}",
+        "reason": "Hiệu hai số có cùng số dư thì chia hết cho số chia; BCNN",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Thêm điều kiện chia cho 7 dư 2",
+        "explanation": "Thử lần lượt các số dạng $8+15k$: $8$ chia $7$ dư $1$, $23$ chia $7$ dư $2$. Số nhỏ nhất thỏa là $23$. Hai số cùng thỏa các điều kiện đã xét thì hiệu của chúng chia hết cho cả $15$ và $7$, tức chia hết cho $\\operatorname{BCNN}(15,7)=105$; vậy các số thỏa đến lúc này có dạng $23+105k$.",
+        "math": "x\\equiv 23\\pmod{105}",
+        "reason": "Hiệu hai số có cùng số dư thì chia hết cho số chia; BCNN",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Mọi số thỏa mãn đều có dạng $23+105k$ với $k\\ge0$, nên số nhỏ nhất là $23$. Vậy số tự nhiên nhỏ nhất thỏa mãn là $23$.",
+        "math": null,
+        "reason": "Số nhỏ nhất của dãy",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy số tự nhiên nhỏ nhất thỏa mãn là $23$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tìm kiếm tuần tự độc lập: không có số nhỏ hơn thỏa mọi điều kiện",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 18,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-remainders",
+  "logs": [
+    "lesson by the routine solver (remainders); no model call"
+  ]
+}

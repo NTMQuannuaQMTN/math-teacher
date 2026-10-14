@@ -13,10 +13,10 @@
  */
 import type { Hint, ModelLesson, Step } from "../solution";
 import type { Derivation } from "./engine";
-import { factKey, factLatex, factPoints, factText, type Fact } from "./facts";
+import { factKey, factLatex, factPoints, factText, type Fact, type Seg } from "./facts";
 import { resolveFigure } from "../geometry";
 import { method } from "./methods";
-import { angleChain, angleCombination, lengthChain, type Premise } from "./chain";
+import { angleChain, angleCombination, lengthChain, withChainBudget, type Premise } from "./chain";
 import type { PlanGoal, ProofPlan } from "./planner";
 
 const MAX_STEPS = 14;
@@ -225,12 +225,71 @@ const needed = (p: Derivation) =>
 
 const bullet = (x: string) => `• ${x}`;
 
+/** Right angles from established perpendicular lines and incidences only; no drawing measurements. */
+function cyclicRightAngles(d: Derivation): { angle: string; reason: string }[] {
+  if (d.fact.t !== "cyclic") return [];
+  const at = currentProof.findIndex(p => p === d || factKey(p.fact) === factKey(d.fact));
+  const before = currentProof.slice(0, at < 0 ? currentProof.length : at);
+  const cols = before.flatMap(p => p.fact.t === "col" ? [p.fact.p] : p.fact.t === "midp" ? [[p.fact.a, p.fact.m, p.fact.b]] : []);
+  const on = (v: string, line: Seg) => line.includes(v) || cols.some(c => c.includes(v) && line.every(x => c.includes(x)));
+  const out: { angle: string; reason: string }[] = [];
+  const parallel = before.flatMap(p => p.fact.t === "para" ? [p.fact] : []);
+  const sameLine = (a: Seg, b: Seg) => a.every(x => on(x,b));
+  const directions = (line: Seg): Seg[] => {
+    const result: Seg[] = [line];
+    for (let i=0;i<result.length;i++) for (const p of parallel) {
+      for (const [a,b] of [[p.a,p.b],[p.b,p.a]] as [Seg,Seg][]) {
+        if (sameLine(result[i]!,a) && !result.some(s=>sameLine(s,b))) result.push(b);
+      }
+    }
+    return result;
+  };
+  for (const p of before) {
+    if (p.fact.t !== "perp") continue;
+    const f = p.fact;
+    for (const left of directions(f.a)) for (const right of directions(f.b)) {
+    for (const v of d.fact.p) for (const x of d.fact.p) for (const y of d.fact.p) {
+      if (v === x || v === y || x === y) continue;
+      if (on(v, left) && on(v, right) && on(x, left) && on(y, right)) {
+        const angle = [x, v, y].join("");
+        if (!out.some(a => a.angle[1] === v && [a.angle[0], a.angle[2]].sort().join("") === [x,y].sort().join("")))
+          out.push({ angle, reason: `${factText(f)}${sameLine(left,f.a)&&sameLine(right,f.b)?"":`; ${parallel.map(q=>factText(q)).join("; ")}; đường thẳng song song với một đường thẳng vuông góc cũng vuông góc`}; các điểm thuộc các đường thẳng theo cách dựng hoặc kết quả trước đó` });
+      }
+    }
+    }
+  }
+  return out;
+}
+
+function midpointSquareReason(f: Fact): string | null {
+  if(f.t!=="prod"||f.lhs.length!==1||f.rhs.length!==1)return null;
+  const l=f.lhs[0]!,r=f.rhs[0]!;
+  if(!("seg" in l)||!("seg" in r)||l.divide||r.divide||l.power!==2||r.power!==2)return null;
+  for(const p of currentProof)if(p.fact.t==="midp") {
+    const m=p.fact;
+    const wanted=[...l.seg].sort().join("")+"|"+[...r.seg].sort().join("");
+    const pairs=[[m.m,m.a].sort().join(""),[m.m,m.b].sort().join("")];
+    if(wanted===pairs.join("|")||wanted===[...pairs].reverse().join("|"))return `Vì ${m.m} là trung điểm của ${m.a}${m.b}, ta có ${m.m}${m.a} = ${m.m}${m.b}. Bình phương hai vế, suy ra ${show(f)}.`;
+  }
+  return null;
+}
+
 /** The lines of a derivation, given the words for each of its premises (same order as `d.premises`). */
 function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => string): string[] {
   const f = d.fact;
   const P = premises.map((p) => p.fact);
   const shown = premises.filter(needed).map(words);
   switch (d.method) {
+    case "ALTITUDE_ORTHOCENTER":
+      return [...shown.map(bullet), "Hai đường thẳng trên là hai đường cao của cùng một tam giác và đi qua cùng một điểm. Theo định lí ba đường cao đồng quy, đường cao thứ ba cũng đi qua điểm này.", `Vậy ${show(f)}.`];
+    case "MIDLINE": {
+      const mids = P.filter((x): x is Fact & { t: "midp" } => x.t === "midp");
+      if (mids.length !== 2) return [...shown.map(bullet), `⇒ ${show(f)}.`];
+      const [u, v] = mids as [Fact & { t: "midp" }, Fact & { t: "midp" }];
+      const a = [u.a, u.b].find((p) => p === v.a || p === v.b)!;
+      const b = u.a === a ? u.b : u.a, c = v.a === a ? v.b : v.a;
+      return [`Vì ${u.m} là trung điểm của ${u.a}${u.b} và ${v.m} là trung điểm của ${v.a}${v.b} (giả thiết),`, `${u.m}${v.m} là đường trung bình của tam giác ${a}${b}${c}.`, `Theo định lí đường trung bình của tam giác: ${u.m}${v.m} ∥ ${b}${c} và ${u.m}${v.m} = ${b}${c}/2.`, `Vậy ${show(f)}.`];
+    }
     case "ISOSCELES_CONVERSE": {
       const c = f as Fact & { t: "cong" };
       const v = c.a.find((x) => c.b.includes(x))!;
@@ -262,6 +321,13 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
     case "CYCLIC_QUADRILATERAL": {
       const r = P[0]!;
       const q = f.t === "cyclic" ? quad([...f.p]) : "";
+      const right = cyclicRightAngles(d);
+      for (const a of right) for (const b of right) {
+        if (a.angle[1] === b.angle[1] || [a.angle[0],a.angle[2]].sort().join("") !== [b.angle[0],b.angle[2]].sort().join("")) continue;
+        lastChainMath = [String.raw`\widehat{${a.angle}} = 90^\circ`, String.raw`\widehat{${b.angle}} = 90^\circ`];
+        return [`∠${a.angle} = 90° (vì ${a.reason}).`, `∠${b.angle} = 90° (vì ${b.reason}).`,
+          `Hai góc vuông cùng chắn đoạn ${a.angle[0]}${a.angle[2]}; vì vậy bốn điểm cùng thuộc đường tròn đường kính ${a.angle[0]}${a.angle[2]}.`, `⇒ tứ giác ${q} nội tiếp.`];
+      }
       if (r.t === "eqangle") {
         const [x, , y] = r.a;
         return [...shown.map(bullet), `⇒ hai đỉnh ${r.a[1]}, ${r.b[1]} cùng nhìn cạnh ${x}${y} dưới hai góc bằng nhau`, `⇒ tứ giác ${q} nội tiếp.`];
@@ -338,6 +404,8 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       ];
     }
     case "LENGTH_ALGEBRA": {
+      const midpointReason=midpointSquareReason(f);
+      if(midpointReason)return [midpointReason];
       if (!shown.length) return [`${show(f)}.`];
       // As a chain of equalities when one exists: each "=" substitutes one segment or ratio.
       const chain = lengthChain(f, premises.map((p): Premise => ({ fact: p.fact, reason: chainReason(p, words(p)) })), positions);
@@ -367,6 +435,9 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       if (comb) return [...comb, `⇒ ${show(f)}.`];
       return ["Ta có:", ...shown.map(bullet), `⇒ ${show(f)} (cộng, trừ các góc).`];
     }
+    case "CONSTRUCTION":
+      if (d.note?.includes("trực tâm")) return [`${d.note} (giả thiết). Theo định nghĩa, trực tâm nằm trên cả ba đường cao của tam giác. Vậy ${show(f)}.`];
+      return [...shown.map(bullet), `⇒ ${show(f)}.`];
     default:
       return [...shown.map(bullet), `⇒ ${show(f)}.`];
   }
@@ -396,6 +467,10 @@ export interface ExplainOptions {
 
 /** Builds the lesson for the proved goals of a plan (all goals should be proved and verified). */
 export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson {
+  return withChainBudget(1500, () => explainWithinBudget(plan, opts));
+}
+
+function explainWithinBudget(plan: ProofPlan, opts: ExplainOptions): ModelLesson {
   if (!plan.figure) throw new Error("plan without a figure");
   positions = resolveFigure(plan.figure).points;
   visiblePoints = plan.figure.points.filter((p) => !p.hidden && positions[p.id]).map((p) => p.id);
@@ -448,7 +523,8 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
   const words = (p: Derivation, byId: Map<number, Derivation>): string => {
     const text = show(p.fact);
     // ∠EAI and ∠JAE are one angle when J lies on ray AI: say so instead of citing a proof.
-    if (p.fact.t === "eqangle" && sameAngle(p.fact)) return `∠${p.fact.a.join("")} là góc chung`;
+  if (p.method === "SAME_RAY_ANGLE" && p.note) return p.note;
+  if (p.fact.t === "eqangle" && sameAngle(p.fact)) return `∠${p.fact.a.join("")} là góc chung`;
     if (p.method === "PREVIOUS_PART" && stepOf.has(sameKey(p.fact))) return `${text} (⟦${sameKey(p.fact)}⟧)`;
     if (p.premises.length === 0) {
       if (p.method === "CONCYCLIC_GIVEN") {
@@ -459,6 +535,10 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     }
     // An earlier step is cited by its number (filled in once steps are final).
     if (stepOf.has(sameKey(p.fact))) return `${text} (⟦${sameKey(p.fact)}⟧)`;
+    if (p.method === "MIDPOINT" || (p.method === "LENGTH_ALGEBRA" && p.fact.t === "cong")) {
+      const mid = p.premises.map(q=>byId.get(q)!.fact).find((q):q is Fact & {t:"midp"}=>q.t==="midp");
+      if(mid)return `${text} (vì ${mid.m} là trung điểm của ${mid.a}${mid.b})`;
+    }
     if (p.method === "ISOSCELES") {
       const c = byId.get(p.premises[0]!)!.fact as Fact & { t: "cong" };
       const v = c.a.find((x) => c.b.includes(x))!;
@@ -596,6 +676,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
     const sid = finalId.get(sameKey(d.fact));
     if (!sid) continue;
     const byId = new Map(g.proof.map((x) => [x.id, x]));
+    currentProof = g.proof;
     const h = hintFor(d, byId, (p) => words(p, byId));
     hints.push({
       id: `h${hints.length + 1}`,
@@ -647,6 +728,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       .replace(/⟦([^⟧]+)⟧/g, "");
   });
 
+  const usedAuxiliary=plan.auxiliary.filter(a=>steps.some(st=>mentions(st.title+st.explanation+st.math,a.id)));
   const goalsText = plan.goals.filter((g) => g.proved).map((g) => `${g.part ? `(${g.part}) ` : ""}${g.label}`);
   // What the problem gives, in its own words: the sentences of the statement before the first question.
   const opening = opts.statement
@@ -675,7 +757,7 @@ export function explainPlan(plan: ProofPlan, opts: ExplainOptions): ModelLesson 
       statusReason: null,
       interpretationNotes: [],
     },
-    strategy: `Chứng minh lần lượt: ${goalsText.join("; ")}. Mỗi bước chỉ dùng giả thiết, cách dựng hình và các kết quả đã chứng minh trước đó${plan.auxiliary.length ? `; vẽ thêm: ${plan.auxiliary.map((a) => a.text).join("; ")}` : ""}.`.slice(0, 1500),
+    strategy: `Chứng minh lần lượt: ${goalsText.join("; ")}. Mỗi bước chỉ dùng giả thiết, cách dựng hình và các kết quả đã chứng minh trước đó${usedAuxiliary.length ? `; vẽ thêm: ${usedAuxiliary.map((a) => a.text).join("; ")}` : ""}.`.slice(0, 1500),
     hints,
     steps,
     finalAnswer: { text: `Đã chứng minh: ${goalsText.join("; ")}.`.slice(0, 1500), math: null },
@@ -696,6 +778,15 @@ function hintFor(d: Derivation, byId: Map<number, Derivation>, words: (p: Deriva
     return qs.length ? [`Để có ${show(p.fact)}, dùng:`, ...qs.map((q) => bullet(words(q)))].join("\n") : "";
   };
   switch (d.method) {
+    case "ALTITUDE_ORTHOCENTER":
+      return {question:"Điểm giao của hai đường cao có nằm trên đường cao thứ ba không?",cue:"Định lí ba đường cao đồng quy",explanation:[...list,"Hai đường cao đã biết đi qua cùng một điểm. Theo định lí ba đường cao đồng quy, đường cao thứ ba đi qua điểm ấy, nên "+show(f)+"."].join("\n"),focus:factPoints(f)};
+    case "MIDLINE": {
+      const mids = premises.filter(p => p.fact.t === "midp").map(p => p.fact as Fact & {t:"midp"});
+      if (mids.length !== 2) return {question: "Hai trung điểm nằm trên hai cạnh nào?", cue: "Đường trung bình", explanation: "Xác định hai cạnh có trung điểm rồi áp dụng định lí đường trung bình.", focus: factPoints(f)};
+      const [u,v] = mids;
+      return {question: `Đoạn ${u!.m}${v!.m} nối hai trung điểm của tam giác nào?`, cue: "Định lí đường trung bình của tam giác",
+        explanation: `Vì ${u!.m} là trung điểm của ${u!.a}${u!.b} và ${v!.m} là trung điểm của ${v!.a}${v!.b}, đoạn nối hai điểm này là đường trung bình. Đường trung bình song song với cạnh thứ ba và bằng một nửa cạnh ấy. Từ đó suy ra ${show(f)}.`, focus: factPoints(f)};
+    }
     case "CYCLIC_QUADRILATERAL": {
       const r = premises[0]!;
       const q = f.t === "cyclic" ? quad([...f.p]) : "";
@@ -727,6 +818,8 @@ function hintFor(d: Derivation, byId: Map<number, Derivation>, words: (p: Deriva
       };
     }
     case "LENGTH_ALGEBRA": {
+      const midpointReason=midpointSquareReason(f);
+      if(midpointReason)return {question:"Điểm nào là trung điểm và hai đoạn thẳng nào bằng nhau?",cue:"Định nghĩa trung điểm; bình phương hai vế của đẳng thức",explanation:midpointReason,focus:factPoints(f)};
       const rt = premises.find((p) => p.method === "RIGHT_TRIANGLE_RELATIONS");
       if (rt) {
         const right = rt.premises.map((q) => byId.get(q)!.fact).find((x): x is Fact & { t: "perp" } => x.t === "perp" && x.a.some((q) => x.b.includes(q)));

@@ -60,8 +60,6 @@ export default function ScanResultScreen() {
   const [forcedSelection, setForcedSelection] = useState<{ start: number; end: number } | undefined>();
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<unknown>(null);
-  const [rereading, setRereading] = useState(false);
-  const [rereadError, setRereadError] = useState<unknown>(null);
   const [photoExpanded, setPhotoExpanded] = useState(false);
   const [questions, setQuestions] = useState<QuestionDraft[] | null>(() => initialQuestions(scan));
   const [editingQuestion, setEditingQuestion] = useState<number | null>(null);
@@ -162,29 +160,6 @@ export default function ScanResultScreen() {
     }
   }
 
-  async function readAgain() {
-    if (!scan || rereading) return;
-    if (dirty) {
-      const ok = await confirmAsync({
-        title: s.result.discardTitle,
-        message: s.result.discardBody,
-        confirmLabel: s.result.readAgain,
-        cancelLabel: s.common.cancel,
-      });
-      if (!ok) return;
-    }
-    setRereading(true);
-    setRereadError(null);
-    try {
-      applyScan(await api.retryOcr(scan.id), true);
-      setEditing(false);
-    } catch (err) {
-      setRereadError(err);
-    } finally {
-      setRereading(false);
-    }
-  }
-
   /** Discard this scan entirely (photo + text) and go back to Home. */
   async function deleteThisScan() {
     if (!scan || deleting) return;
@@ -282,10 +257,10 @@ export default function ScanResultScreen() {
           <Image source={{ uri: scan.image.url }} style={styles.flex} contentFit="contain" transition={150} cachePolicy="memory-disk" />
         </Pressable>
 
-        {pending || rereading ? (
+        {pending ? (
           <View style={[styles.card, styles.pending, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <ActivityIndicator color={colors.primary} />
-            <Text style={[typography.bodyStrong, { color: colors.text }]}>{rereading ? s.result.reading : s.process.reading}</Text>
+            <Text style={[typography.bodyStrong, { color: colors.text }]}>{s.process.reading}</Text>
           </View>
         ) : ocrFailed ? (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -295,7 +270,6 @@ export default function ScanResultScreen() {
               title={s.result.ocrFailedTitle}
               body={s.errorCodes[scan.ocrError!.code]}
             >
-              {scan.ocrError!.retryable ? <Button label={s.result.readAgain} icon="refresh" onPress={readAgain} /> : null}
               <Button label={s.result.typeItYourself} icon="create-outline" variant="secondary" onPress={startTyping} />
               <Button label={s.result.retake} icon="camera-outline" variant="secondary" onPress={retake} />
               <Button label={s.result.deleteScan} icon="trash-outline" variant="ghost" onPress={deleteThisScan} loading={deleting} />
@@ -318,7 +292,6 @@ export default function ScanResultScreen() {
             {isDemo ? <Banner tone="info" title={s.common.demoOcr} message={s.common.demoOcrHint} /> : null}
             {ocr?.status === "low_quality" && !editing ? <Banner tone="warning" message={s.result.lowQuality} /> : null}
             {ocr?.issues.includes("multiple_problems") && !editing && !questions ? <Banner tone="info" message={s.result.multipleProblems} /> : null}
-            {rereadError ? <Banner tone="danger" message={errorMessage(rereadError)} /> : null}
 
             {questions ? (
               <>
@@ -347,7 +320,6 @@ export default function ScanResultScreen() {
                   </View>
                 ) : null}
                 <View style={styles.inlineActions}>
-                  <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} style={styles.flex} />
                   <Button testID="delete-scan" label={s.result.deleteScan} icon="trash-outline" variant="ghost" size="md" onPress={deleteThisScan} loading={deleting} style={styles.flex} />
                 </View>
               </>
@@ -406,7 +378,6 @@ export default function ScanResultScreen() {
                     <Button testID="edit-button" label={s.result.edit} icon="create-outline" variant="secondary" size="md" onPress={() => setEditing(true)} style={styles.flex} />
                     <Button testID="delete-scan" label={s.common.delete} icon="trash-outline" variant="danger" size="md" onPress={deleteThisScan} loading={deleting} style={styles.flex} />
                   </View>
-                  {ocr ? <Button label={s.result.readAgain} icon="refresh" variant="ghost" size="md" onPress={readAgain} /> : null}
                 </>
               )}
             </View>
@@ -426,7 +397,7 @@ export default function ScanResultScreen() {
               icon="checkmark-circle"
               onPress={save}
               loading={saving}
-              disabled={!hasText || rereading || deleting}
+              disabled={!hasText || deleting}
               style={styles.flex}
             />
           </View>

@@ -1,0 +1,186 @@
+{
+  "input": "Từ các chữ số $0,1,2,3,4$ lập được bao nhiêu số tự nhiên chẵn có ba chữ số đôi một khác nhau?",
+  "lesson": {
+    "analysis": {
+      "statement": "Từ các chữ số $0,1,2,3,4$ lập được bao nhiêu số tự nhiên chẵn có ba chữ số đôi một khác nhau?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Lập số từ các chữ số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Lập số từ các chữ số"
+      ],
+      "techniques": [],
+      "givens": [
+        "Chữ số thuộc $\\{0,1,2,3,4\\}$"
+      ],
+      "unknowns": [
+        "Số các số lập được"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn lần lượt từng chữ số, xét riêng chữ số có điều kiện (đầu khác 0, cuối theo tính chẵn lẻ) trước.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Điều kiện nào ràng buộc chữ số đầu, chữ số cuối?",
+        "cue": "Phân tích đề",
+        "explanation": "Các chữ số lấy từ tập $\\{0,1,2,3,4\\}$; số có $3$ chữ số nên chữ số đầu khác $0$; các chữ số đôi một khác nhau; điều kiện chẵn chỉ phụ thuộc chữ số cuối.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Khi chữ số cuối là 0, chữ số đầu có bị hạn chế không?",
+        "cue": "Quy tắc nhân",
+        "explanation": "Chữ số cuối là $0$ (thỏa điều kiện chẵn). Các chữ số còn lại chọn trong $4$ chữ số khác $0$, đôi một khác nhau; chữ số đầu tự động khác $0$.",
+        "math": "4\\cdot 3=12",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Vì sao chữ số đầu phải khác cả 0 lẫn chữ số cuối?",
+        "cue": "Quy tắc nhân; chữ số đầu khác 0",
+        "explanation": "Chữ số cuối thuộc $\\{2,4\\}$: $2$ cách. Chữ số đầu khác $0$ và khác chữ số cuối: $3$ cách. Các chữ số ở giữa chọn trong các chữ số còn lại: $3$ cách.",
+        "math": "2\\cdot 3\\cdot 3=18",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Vì sao cộng hai trường hợp?",
+        "cue": "Quy tắc cộng: các trường hợp rời nhau, đầy đủ",
+        "explanation": "Hai trường hợp không trùng nhau (chữ số cuối khác nhau) và bao quát mọi số thỏa đề, nên cộng lại.",
+        "math": "12+18=30",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy lập được $30$ số.",
+        "math": null,
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Nhận dạng các điều kiện",
+        "explanation": "Các chữ số lấy từ tập $\\{0,1,2,3,4\\}$; số có $3$ chữ số nên chữ số đầu khác $0$; các chữ số đôi một khác nhau; điều kiện chẵn chỉ phụ thuộc chữ số cuối.",
+        "math": null,
+        "reason": "Phân tích đề",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Trường hợp chữ số cuối là 0",
+        "explanation": "Chữ số cuối là $0$ (thỏa điều kiện chẵn). Các chữ số còn lại chọn trong $4$ chữ số khác $0$, đôi một khác nhau; chữ số đầu tự động khác $0$.",
+        "math": "4\\cdot 3=12",
+        "reason": "Quy tắc nhân",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Trường hợp chữ số cuối khác 0",
+        "explanation": "Chữ số cuối thuộc $\\{2,4\\}$: $2$ cách. Chữ số đầu khác $0$ và khác chữ số cuối: $3$ cách. Các chữ số ở giữa chọn trong các chữ số còn lại: $3$ cách.",
+        "math": "2\\cdot 3\\cdot 3=18",
+        "reason": "Quy tắc nhân; chữ số đầu khác 0",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Cộng hai trường hợp",
+        "explanation": "Hai trường hợp không trùng nhau (chữ số cuối khác nhau) và bao quát mọi số thỏa đề, nên cộng lại.",
+        "math": "12+18=30",
+        "reason": "Quy tắc cộng: các trường hợp rời nhau, đầy đủ",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Kết luận",
+        "explanation": "Vậy lập được $30$ số.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy lập được $30$ số.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Liệt kê độc lập mọi dãy chữ số và đếm số thỏa điều kiện",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-digit-numbers",
+  "logs": [
+    "lesson by the routine solver (digit-numbers); no model call"
+  ]
+}

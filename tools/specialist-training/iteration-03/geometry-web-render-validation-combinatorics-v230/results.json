@@ -1,0 +1,530 @@
+[
+  {
+    "id": "comb3-val-sign-12-3",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 849.3918329999999,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 38,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nAn và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 12 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 3, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.\nTìm hiểu đề bài\n\nDẠNG BÀI\nTrò chơi đặt dấu và số dư\n\nCHO BIẾT\nAn và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 12 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 3, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nTrò chơi đặt dấu và số dư\n\nHƯỚNG GIẢI\nTheo dõi tổng theo số dư; cho quy tắc dấu và chứng minh với mọi phản ứng.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nĐặt một dấu cộng hoặc trừ thay đổi số dư theo công thức nào?\nSố dư của tổng và thứ tự đặt dấu đã cho\nTrước khi đặt dấu cho số \n𝑡\nt, gọi \n𝑟\nr là số dư của tổng đã đặt khi chia cho \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Đặt cộng cho số \n𝑡\nt làm số dư thành số dư của \n𝑟\n+\n𝑡\nr+t; đặt trừ làm số dư thành số dư của \n𝑟\n−\n𝑡\nr−t. An chọn ở lượt lẻ, Bình ở lượt chẵn. Khi đủ \n12\n12 dấu, An thắng đúng khi số dư bằng \n0\n0.\n\nGợi ý 2\nVì sao phải xét cả hai dấu mà đối phương có thể chọn?\nXét hết hai dấu của đối phương, suy ngược trên số lượt hữu hạn\nXét từ lượt cuối ngược về lượt đầu. Ở lượt An, một số dư có thể bảo đảm An thắng khi ít nhất một trong hai dấu dẫn đến một vị trí bảo đảm An thắng. Ở lượt Bình, An chỉ bảo đảm thắng khi cả hai dấu đều dẫn đến vị trí như vậy. Điều kiện cuối là số dư \n0\n0. Xét mọi số dư \n0\n,\n…\n,\n2\n0,…,2 ở từng lượt theo quy tắc này, trạng thái ban đầu lượt \n1\n1, số dư \n0\n0 cho thấy Bình bảo đảm thắng. Bảng sau cho dấu cụ thể ở tất cả vị trí thuộc chiến lược đó.\n\nGợi ý 3\nNếu đối phương đổi dấu ở lượt của họ, bạn tính lại số dư và chọn dấu nào?\nNêu dấu cụ thể theo số dư, không chỉ khẳng định tồn tại dấu\nTrong bảng, \n𝑅\n+\nR\n+\n\t​\n\n là các số dư trước lượt \n𝑡\nt mà Bình đặt cộng; \n𝑅\n−\nR\n−\n\t​\n\n là các số dư mà đặt trừ. Bình tính số dư hiện tại trước lượt của mình rồi theo đúng hàng tương ứng. Những số dư không có trong hàng không thể xuất hiện nếu đã giữ chiến lược từ đầu; mọi dấu của đối phương vẫn đưa tới một vị trí có quy tắc. Lượt đầu An có thể đặt dấu nào; Bình tính số dư sau dấu đó để chọn ở lượt 2.\n𝑡\n\t\n𝑅\n+\n\t\n𝑅\n−\n\n\n2\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n4\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n6\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n8\n\t\n0\n,\n2\n\t\n1\n\n\n10\n\t\n2\n\t\n1\n\n\n12\n\t\n1\n,\n2\n\t\n∅\nt\n2\n4\n6\n8\n10\n12\n\t​\n\nR\n+\n\t​\n\n0,1,2\n0,1,2\n0,1,2\n0,2\n2\n1,2\n\t​\n\nR\n−\n\t​\n\n∅\n∅\n∅\n1\n1\n∅\n\t​\n\n\t​\n\n\nGợi ý 4\nChiến lược có cần đối phương hợp tác chọn một dấu định sẵn không?\nDuy trì trạng thái bảo đảm thắng qua mọi dấu đối phương và hết số lượt\nỞ lượt của Bình, dấu trong bảng giữ vị trí bảo đảm người đó thắng. Ở lượt của đối phương, cả hai dấu đều giữ một vị trí như vậy, theo quy tắc phân loại. Bắt đầu từ lượt 1,số dư 0 rồi lặp lập luận qua mỗi lượt, tới lượt \n13\n13 điều kiện thắng của Bình được thỏa. Có đúng \n12\n12 dấu nên quá trình kết thúc. Vậy Bình có chiến lược thắng với quy tắc đặt dấu đã nêu, dù đối phương chọn dấu thế nào.\n\nẨn lời giải\nLời giải\n1\nTheo dõi số dư và người đến lượt\nTrước khi đặt dấu cho số \n𝑡\nt, gọi \n𝑟\nr là số dư của tổng đã đặt khi chia cho \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Đặt cộng cho số \n𝑡\nt làm số dư thành số dư của \n𝑟\n+\n𝑡\nr+t; đặt trừ làm số dư thành số dư của \n𝑟\n−\n𝑡\nr−t. An chọn ở lượt lẻ, Bình ở lượt chẵn. Khi đủ \n12\n12 dấu, An thắng đúng khi số dư bằng \n0\n0.\n\nSố dư của tổng và thứ tự đặt dấu đã cho\n\nChưa kiểm tra tự động\n2\nPhân loại bằng mọi lựa chọn còn lại\n\nDựa vào bước 1\nXét từ lượt cuối ngược về lượt đầu. Ở lượt An, một số dư có thể bảo đảm An thắng khi ít nhất một trong hai dấu dẫn đến một vị trí bảo đảm An thắng. Ở lượt Bình, An chỉ bảo đảm thắng khi cả hai dấu đều dẫn đến vị trí như vậy. Điều kiện cuối là số dư \n0\n0. Xét mọi số dư \n0\n,\n…\n,\n2\n0,…,2 ở từng lượt theo quy tắc này, trạng thái ban đầu lượt \n1\n1, số dư \n0\n0 cho thấy Bình bảo đảm thắng. Bảng sau cho dấu cụ thể ở tất cả vị trí thuộc chiến lược đó.\n\nXét hết hai dấu của đối phương, suy ngược trên số lượt hữu hạn\n\nChưa kiểm tra tự động\n3\nQuy tắc chọn dấu thực hiện được\n\nDựa vào bước 2\nTrong bảng, \n𝑅\n+\nR\n+\n\t​\n\n là các số dư trước lượt \n𝑡\nt mà Bình đặt cộng; \n𝑅\n−\nR\n−\n\t​\n\n là các số dư mà đặt trừ. Bình tính số dư hiện tại trước lượt của mình rồi theo đúng hàng tương ứng. Những số dư không có trong hàng không thể xuất hiện nếu đã giữ chiến lược từ đầu; mọi dấu của đối phương vẫn đưa tới một vị trí có quy tắc. Lượt đầu An có thể đặt dấu nào; Bình tính số dư sau dấu đó để chọn ở lượt 2.\n𝑡\n\t\n𝑅\n+\n\t\n𝑅\n−\n\n\n2\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n4\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n6\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n8\n\t\n0\n,\n2\n\t\n1\n\n\n10\n\t\n2\n\t\n1\n\n\n12\n\t\n1\n,\n2\n\t\n∅\nt\n2\n4\n6\n8\n10\n12\n\t​\n\nR\n+\n\t​\n\n0,1,2\n0,1,2\n0,1,2\n0,2\n2\n1,2\n\t​\n\nR\n−\n\t​\n\n∅\n∅\n∅\n1\n1\n∅\n\t​\n\n\t​\n\n\nNêu dấu cụ thể theo số dư, không chỉ khẳng định tồn tại dấu\n\nChưa kiểm tra tự động\n4\nBảo đảm cho mọi phản ứng và kết thúc\n\nDựa vào bước 3\nỞ lượt của Bình, dấu trong bảng giữ vị trí bảo đảm người đó thắng. Ở lượt của đối phương, cả hai dấu đều giữ một vị trí như vậy, theo quy tắc phân loại. Bắt đầu từ lượt 1,số dư 0 rồi lặp lập luận qua mỗi lượt, tới lượt \n13\n13 điều kiện thắng của Bình được thỏa. Có đúng \n12\n12 dấu nên quá trình kết thúc. Vậy Bình có chiến lược thắng với quy tắc đặt dấu đã nêu, dù đối phương chọn dấu thế nào.\n\nDuy trì trạng thái bảo đảm thắng qua mọi dấu đối phương và hết số lượt\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-board-50",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 821.7433329999999,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 112,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho bàn cờ \n2\n×\n50\n2×50. An chọn một ô ban đầu, sau đó mỗi lượt An di chuyển sang một ô kề bên. Bình chọn \n𝑘\nk ô mỗi lượt để hỏi An. Chứng minh Bình có thể thắng sau không quá 49 lượt với \n𝑘\n=\n4\nk=4 và không quá 98 lượt với \n𝑘\n=\n2\nk=2.\nTìm hiểu đề bài\n\nDẠNG BÀI\nTìm vị trí trên bàn cờ bằng tính chẵn lẻ\n\nCHO BIẾT\nBàn cờ \n2\n×\n50\n2×50.\nAn buộc di chuyển sang ô chung cạnh mỗi lượt.\n\nCẦN TÌM\nChiến lược của Bình\n\nKIẾN THỨC SỬ DỤNG\nTính chẵn lẻ\nChiến lược cho mọi nước đi\n\nPHƯƠNG PHÁP\nBất biến, đơn biến\n\nHƯỚNG GIẢI\nQuét hai cột từ trái sang phải; khi chỉ được hỏi hai ô, dùng màu bàn cờ và hai lần quét.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nMột bước sang ô kề cạnh có thể đổi cột nhiều hơn một đơn vị không?\nDùng đúng luật di chuyển kề cạnh và phát hiện vị trí\nGọi ô ở hàng \n𝑟\nr, cột \n𝑐\nc là \n(\n𝑟\n,\n𝑐\n)\n(r,c), với \n𝑟\n=\n1\n,\n2\nr=1,2 và \n1\n≤\n𝑐\n≤\n50\n1≤c≤50. Hai ô kề bên có chung một cạnh. Mỗi lượt An di chuyển trước, rồi Bình hỏi các ô ở vị trí hiện tại của An. An phải trả lời đúng; Bình thắng khi trong các ô hỏi có ô An đang đứng. Nếu đề quy ước hỏi lần đầu ngay sau khi An chọn ô ban đầu, chiến lược cũng giữ nguyên: lượt đầu chỉ cần vị trí bất kỳ, còn giữa hai lần hỏi An vẫn phải đi đúng một bước. Bình không cần biết ô ban đầu hay đoán nước đi của An.\n\nGợi ý 2\nỞ lượt \n1\n1, Bình hỏi chính xác những ô nào khi \n𝑘\n=\n4\nk=4?\nChỉ rõ bốn ô khác nhau ở từng lượt; không cần đoán đối phương\nĐây là lịch hỏi cụ thể, không phụ thuộc vị trí hay nước đi của An. \n𝑡\nt là số lượt, \n𝑄\n𝑡\nQ\nt\n\t​\n\n là tập các ô hỏi sau khi An di chuyển ở lượt đó. Mỗi tọa độ là (hàng,cột); nếu đã tìm thấy An thì dừng. Các lượt giữa dấu ba chấm, nếu có, dùng đúng công thức sau. Ở lượt \n𝑡\nt, hỏi cả hai hàng của hai cột \n𝑡\n,\n𝑡\n+\n1\nt,t+1.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n1\n,\n2\n)\n,\n(\n2\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n1\n,\n3\n)\n,\n(\n2\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n1\n,\n4\n)\n,\n(\n2\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n1\n,\n5\n)\n,\n(\n2\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n1\n,\n47\n)\n,\n(\n2\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n1\n,\n48\n)\n,\n(\n2\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n1\n,\n49\n)\n,\n(\n2\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n1\n,\n50\n)\n,\n(\n2\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(1,2),(2,1),(2,2)\n(1,2),(1,3),(2,2),(2,3)\n(1,3),(1,4),(2,3),(2,4)\n(1,4),(1,5),(2,4),(2,5)\n⋮\n(1,46),(1,47),(2,46),(2,47)\n(1,47),(1,48),(2,47),(2,48)\n(1,48),(1,49),(2,48),(2,49)\n(1,49),(1,50),(2,49),(2,50)\n\t​\n\n\t​\n\n\nGợi ý 3\nSau khi hỏi cả hai cột đầu, nếu An chưa bị phát hiện thì An chỉ có thể ở phía nào?\nSuy luận lần lượt: vị trí còn có thể đứng luôn ở bên phải vùng đã quét\nỞ lượt \n𝑗\n=\n1\n,\n2\n,\n…\n,\n49\nj=1,2,…,49, Bình hỏi cả bốn ô của cột \n𝑗\nj và \n𝑗\n+\n1\nj+1. Nếu An chưa bị phát hiện sau lượt đầu thì An ở cột ít nhất \n3\n3. Giả sử sau lượt \n𝑗\n−\n1\nj−1, An ở cột ít nhất \n𝑗\n+\n1\nj+1; bước tiếp theo chỉ có thể đưa An về cột ít nhất \n𝑗\nj. Hai cột \n𝑗\n,\n𝑗\n+\n1\nj,j+1 đều được hỏi, nên nếu vẫn thoát thì An phải ở cột ít nhất \n𝑗\n+\n2\nj+2. Đây là suy luận cho mọi nước đi, kể cả đi dọc. Sau lượt \n49\n49, muốn thoát An phải ở cột ít nhất \n51\n51, không tồn tại. Vậy \n𝑘\n=\n4\nk=4 bảo đảm thắng sau không quá \n49\n49 lượt.\n\nGợi ý 4\nNếu An đang ở ô có tổng hàng và cột chẵn, sau một bước tổng đó chẵn hay lẻ?\nTính chẵn lẻ đổi sau mỗi bước sang ô chung cạnh\nTô màu ô theo tính chẵn lẻ của \n𝑟\n+\n𝑐\nr+c. Đi ngang hoặc đi dọc đều đổi màu. Vì An buộc phải đi ở mỗi lượt, biết màu ở một lượt sẽ biết màu ở mọi lượt sau. Trong hai cột kề nhau có đúng hai ô của mỗi màu. Ta có thể dùng hai câu hỏi để kiểm tra toàn bộ một màu trong vùng hai cột.\n\nGợi ý 5\nHai tọa độ trong mỗi hàng của bảng có tổng hàng và cột cùng tính chẵn lẻ không?\nCho lịch hỏi thực hiện được và chứng minh hai ô mỗi lượt cùng màu\nỞ lượt \n𝑡\n=\n1\n,\n…\n,\n49\nt=1,…,49, hỏi \n(\n1\n,\n𝑡\n)\n(1,t) và \n(\n2\n,\n𝑡\n+\n1\n)\n(2,t+1) theo bảng. Hai ô có cùng màu vì tổng hàng và cột là \n𝑡\n+\n1\nt+1 và \n𝑡\n+\n3\nt+3; sang lượt sau, màu được hỏi đổi. Không biết An ở đâu vẫn làm đúng bảng này.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nGợi ý 6\nVì sao hỏi hai ô cùng màu đủ thay cho bốn ô khi đã biết màu của An?\nPhân hai khả năng về màu, quét một khả năng mà không bỏ sót nước đi\nTrong \n49\n49 lượt đầu, ở lượt \n𝑗\nj hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1). Màu của hai ô được hỏi đổi đúng như màu của An sau mỗi bước. Nếu màu của An ở lượt đầu trùng màu được hỏi, thì ở mọi lượt sau cũng trùng. Đối với trường hợp màu này, hai câu hỏi đã kiểm tra mọi ô An có thể đứng trong hai cột đang quét. Lập luận cột ở câu a áp dụng nguyên vẹn, nên An sẽ bị phát hiện trong lượt \n49\n49 hoặc sớm hơn. Nếu An vẫn chưa bị phát hiện thì màu của An ở lượt đầu phải là màu còn lại.\n\nGợi ý 7\nGiữa lượt \n1\n1 và lượt \n50\n50 có bao nhiêu bước đổi màu?\nTính màu theo số bước thực sự giữa hai lượt; không lặp sai màu quét trước\nNếu qua lượt \n49\n49 chưa thắng, tiếp tục theo bảng sau. Ở lượt đầu của lần quét cũ, màu hỏi có tổng hàng và cột chẵn, nên An khi đó phải ở màu lẻ. Sau \n49\n49 bước giữa lượt \n1\n1 và lượt \n50\n50, màu của An có tính chẵn lẻ giống \n1\n+\n49\n1+49. Vì vậy cặp \n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n(1,1),(2,2) ở lượt \n50\n50 có đúng màu An. Cả lịch hỏi và An đều đổi màu sau mỗi bước, nên mọi hàng tiếp theo vẫn hỏi đúng màu.\n𝑡\n\t\n𝑄\n𝑡\n\n\n50\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n51\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n52\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n53\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n95\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n96\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n97\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n98\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n50\n51\n52\n53\n⋮\n95\n96\n97\n98\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nGợi ý 8\nNếu lần quét đầu không bắt được An, ta đã biết thêm điều gì để chọn hai ô trong lần quét sau?\nNếu lần đầu chưa bắt được thì màu đã biết; lần quét thứ hai kiểm tra đúng màu ở mọi lượt\nNếu chưa thắng, từ lượt \n50\n50 ta biết chắc màu của An: đó là màu đối lập với màu mà lần quét cũ sẽ kiểm tra ở lượt này. Quét lại từ trái sang phải trong \n49\n49 lượt: ở lượt \n49\n+\n𝑗\n49+j hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1), với \n𝑗\n=\n1\n,\n…\n,\n49\nj=1,…,49. Hai ô này luôn có đúng màu hiện tại của An. Vị trí An lúc bắt đầu lần quét thứ hai có thể bất kỳ; lập luận ở câu a vẫn áp dụng, vì cả hai cột đang quét đã được kiểm tra đầy đủ đối với màu An có thể đứng. Vậy \n𝑘\n=\n2\nk=2 bảo đảm thắng sau không quá \n98\n98 lượt; cùng với câu a, ta được cả hai kết luận cần chứng minh.\n\nẨn lời giải\nLời giải\n1\nĐánh số ô và xác định khi nào phát hiện An\nGọi ô ở hàng \n𝑟\nr, cột \n𝑐\nc là \n(\n𝑟\n,\n𝑐\n)\n(r,c), với \n𝑟\n=\n1\n,\n2\nr=1,2 và \n1\n≤\n𝑐\n≤\n50\n1≤c≤50. Hai ô kề bên có chung một cạnh. Mỗi lượt An di chuyển trước, rồi Bình hỏi các ô ở vị trí hiện tại của An. An phải trả lời đúng; Bình thắng khi trong các ô hỏi có ô An đang đứng. Nếu đề quy ước hỏi lần đầu ngay sau khi An chọn ô ban đầu, chiến lược cũng giữ nguyên: lượt đầu chỉ cần vị trí bất kỳ, còn giữa hai lần hỏi An vẫn phải đi đúng một bước. Bình không cần biết ô ban đầu hay đoán nước đi của An.\n\nDùng đúng luật di chuyển kề cạnh và phát hiện vị trí\n2\na) Các ô Bình hỏi khi \n𝑘\n=\n4\nk=4\n\nDựa vào bước 1\nĐây là lịch hỏi cụ thể, không phụ thuộc vị trí hay nước đi của An. \n𝑡\nt là số lượt, \n𝑄\n𝑡\nQ\nt\n\t​\n\n là tập các ô hỏi sau khi An di chuyển ở lượt đó. Mỗi tọa độ là (hàng,cột); nếu đã tìm thấy An thì dừng. Các lượt giữa dấu ba chấm, nếu có, dùng đúng công thức sau. Ở lượt \n𝑡\nt, hỏi cả hai hàng của hai cột \n𝑡\n,\n𝑡\n+\n1\nt,t+1.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n1\n,\n2\n)\n,\n(\n2\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n1\n,\n3\n)\n,\n(\n2\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n1\n,\n4\n)\n,\n(\n2\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n1\n,\n5\n)\n,\n(\n2\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n1\n,\n47\n)\n,\n(\n2\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n1\n,\n48\n)\n,\n(\n2\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n1\n,\n49\n)\n,\n(\n2\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n1\n,\n50\n)\n,\n(\n2\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(1,2),(2,1),(2,2)\n(1,2),(1,3),(2,2),(2,3)\n(1,3),(1,4),(2,3),(2,4)\n(1,4),(1,5),(2,4),(2,5)\n⋮\n(1,46),(1,47),(2,46),(2,47)\n(1,47),(1,48),(2,47),(2,48)\n(1,48),(1,49),(2,48),(2,49)\n(1,49),(1,50),(2,49),(2,50)\n\t​\n\n\t​\n\n\nChỉ rõ bốn ô khác nhau ở từng lượt; không cần đoán đối phương\n3\na) Chứng minh quét hai cột bắt được mọi đường đi\n\nDựa vào bước 2\nỞ lượt \n𝑗\n=\n1\n,\n2\n,\n…\n,\n49\nj=1,2,…,49, Bình hỏi cả bốn ô của cột \n𝑗\nj và \n𝑗\n+\n1\nj+1. Nếu An chưa bị phát hiện sau lượt đầu thì An ở cột ít nhất \n3\n3. Giả sử sau lượt \n𝑗\n−\n1\nj−1, An ở cột ít nhất \n𝑗\n+\n1\nj+1; bước tiếp theo chỉ có thể đưa An về cột ít nhất \n𝑗\nj. Hai cột \n𝑗\n,\n𝑗\n+\n1\nj,j+1 đều được hỏi, nên nếu vẫn thoát thì An phải ở cột ít nhất \n𝑗\n+\n2\nj+2. Đây là suy luận cho mọi nước đi, kể cả đi dọc. Sau lượt \n49\n49, muốn thoát An phải ở cột ít nhất \n51\n51, không tồn tại. Vậy \n𝑘\n=\n4\nk=4 bảo đảm thắng sau không quá \n49\n49 lượt.\n\nSuy luận lần lượt: vị trí còn có thể đứng luôn ở bên phải vùng đã quét\n4\nb) Mỗi bước đổi màu bàn cờ\n\nDựa vào bước 3\nTô màu ô theo tính chẵn lẻ của \n𝑟\n+\n𝑐\nr+c. Đi ngang hoặc đi dọc đều đổi màu. Vì An buộc phải đi ở mỗi lượt, biết màu ở một lượt sẽ biết màu ở mọi lượt sau. Trong hai cột kề nhau có đúng hai ô của mỗi màu. Ta có thể dùng hai câu hỏi để kiểm tra toàn bộ một màu trong vùng hai cột.\n\nTính chẵn lẻ đổi sau mỗi bước sang ô chung cạnh\n5\nb) Lịch hỏi hai ô trong lần quét đầu\n\nDựa vào bước 4\nỞ lượt \n𝑡\n=\n1\n,\n…\n,\n49\nt=1,…,49, hỏi \n(\n1\n,\n𝑡\n)\n(1,t) và \n(\n2\n,\n𝑡\n+\n1\n)\n(2,t+1) theo bảng. Hai ô có cùng màu vì tổng hàng và cột là \n𝑡\n+\n1\nt+1 và \n𝑡\n+\n3\nt+3; sang lượt sau, màu được hỏi đổi. Không biết An ở đâu vẫn làm đúng bảng này.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nCho lịch hỏi thực hiện được và chứng minh hai ô mỗi lượt cùng màu\n6\nQuét lần đầu để loại một khả năng về màu\n\nDựa vào bước 5\nTrong \n49\n49 lượt đầu, ở lượt \n𝑗\nj hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1). Màu của hai ô được hỏi đổi đúng như màu của An sau mỗi bước. Nếu màu của An ở lượt đầu trùng màu được hỏi, thì ở mọi lượt sau cũng trùng. Đối với trường hợp màu này, hai câu hỏi đã kiểm tra mọi ô An có thể đứng trong hai cột đang quét. Lập luận cột ở câu a áp dụng nguyên vẹn, nên An sẽ bị phát hiện trong lượt \n49\n49 hoặc sớm hơn. Nếu An vẫn chưa bị phát hiện thì màu của An ở lượt đầu phải là màu còn lại.\n\nPhân hai khả năng về màu, quét một khả năng mà không bỏ sót nước đi\n7\nb) Lịch hỏi lần hai và màu tại lượt chuyển\n\nDựa vào bước 6\nNếu qua lượt \n49\n49 chưa thắng, tiếp tục theo bảng sau. Ở lượt đầu của lần quét cũ, màu hỏi có tổng hàng và cột chẵn, nên An khi đó phải ở màu lẻ. Sau \n49\n49 bước giữa lượt \n1\n1 và lượt \n50\n50, màu của An có tính chẵn lẻ giống \n1\n+\n49\n1+49. Vì vậy cặp \n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n(1,1),(2,2) ở lượt \n50\n50 có đúng màu An. Cả lịch hỏi và An đều đổi màu sau mỗi bước, nên mọi hàng tiếp theo vẫn hỏi đúng màu.\n𝑡\n\t\n𝑄\n𝑡\n\n\n50\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n51\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n52\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n53\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n95\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n96\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n97\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n98\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n50\n51\n52\n53\n⋮\n95\n96\n97\n98\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nTính màu theo số bước thực sự giữa hai lượt; không lặp sai màu quét trước\n8\nQuét lại với màu đã được xác định\n\nDựa vào bước 7\nNếu chưa thắng, từ lượt \n50\n50 ta biết chắc màu của An: đó là màu đối lập với màu mà lần quét cũ sẽ kiểm tra ở lượt này. Quét lại từ trái sang phải trong \n49\n49 lượt: ở lượt \n49\n+\n𝑗\n49+j hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1), với \n𝑗\n=\n1\n,\n…\n,\n49\nj=1,…,49. Hai ô này luôn có đúng màu hiện tại của An. Vị trí An lúc bắt đầu lần quét thứ hai có thể bất kỳ; lập luận ở câu a vẫn áp dụng, vì cả hai cột đang quét đã được kiểm tra đầy đủ đối với màu An có thể đứng. Vậy \n𝑘\n=\n2\nk=2 bảo đảm thắng sau không quá \n98\n98 lượt; cùng với câu a, ta được cả hai kết luận cần chứng minh.\n\nNếu lần đầu chưa bắt được thì màu đã biết; lần quét thứ hai kiểm tra đúng màu ở mọi lượt\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h7",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h8",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-digits-15-6-10",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 789.400541,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 24,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTừ các chữ số \n0\n,\n1\n,\n2\n,\n3\n,\n4\n,\n5\n,\n6\n,\n7\n0,1,2,3,4,5,6,7, lập được bao nhiêu số tự nhiên có 6 chữ số đôi một khác nhau và chia hết cho \n10\n10?\nTìm hiểu đề bài\n\nDẠNG BÀI\nĐếm số có thứ tự và chữ số khác nhau\n\nCHO BIẾT\nTừ các chữ số \n0\n,\n1\n,\n2\n,\n3\n,\n4\n,\n5\n,\n6\n,\n7\n0,1,2,3,4,5,6,7, lập được bao nhiêu số tự nhiên có 6 chữ số đôi một khác nhau và chia hết cho \n10\n10?\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nĐếm số có thứ tự và chữ số khác nhau\n\nHƯỚNG GIẢI\nXác định rõ đối tượng, thứ tự và phần trùng trước khi tính.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nCó được tính một dãy bắt đầu bằng 0 là số có đủ chữ số không?\nDấu hiệu chia hết và điều kiện chữ số đầu của số nhiều chữ số\nĐây là số có \n6\n6 chữ số nên chữ số đầu không được 0. Chữ số đôi một khác nhau nên không dùng lại. Chia hết cho \n10\n10 khi và chỉ khi chữ số cuối thuộc \n{\n0\n}\n{0}. Các trường hợp theo chữ số cuối không giao nhau.\n\nGợi ý 2\nVì sao đổi hai chữ số giữa thường tạo một số khác, không phải đếm trùng?\nQuy tắc nhân với thứ tự vị trí, không lặp và không có 0 đứng đầu\nNếu cuối là 0, chữ số đầu có \n7\n7 lựa chọn. Nếu cuối khác 0, chữ số đầu không được bằng chữ số cuối và cũng không được 0, nên có \n6\n6 lựa chọn. Sau hai vị trí ấy còn \n6\n6 chữ số để điền lần lượt \n4\n4 vị trí giữa; số lựa chọn giảm một sau mỗi vị trí. Thứ tự các vị trí làm nên các số khác nhau nên không chia cho giai thừa.\ncu\no\nˆ\nˊ\ni\n\t\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n\n\n0\n\t\n7\n⋅\n6\n⋅\n5\n⋅\n4\n⋅\n3\n=\n2520\ncu\no\nˆ\nˊ\ni\n0\n\t​\n\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n7⋅6⋅5⋅4⋅3=2520\n\t​\n\n\t​\n\n\nGợi ý 3\nMột số có thể thuộc đồng thời hai dòng chữ số cuối không?\nQuy tắc cộng cho các trường hợp cuối khác nhau\nMỗi số có duy nhất một chữ số cuối, nên cộng các dòng. Vậy lập được \n2520\n2520 số thỏa yêu cầu.\n2520\n=\n2520\n2520=2520\n\nẨn lời giải\nLời giải\n1\nXác định điều kiện từng vị trí\nĐây là số có \n6\n6 chữ số nên chữ số đầu không được 0. Chữ số đôi một khác nhau nên không dùng lại. Chia hết cho \n10\n10 khi và chỉ khi chữ số cuối thuộc \n{\n0\n}\n{0}. Các trường hợp theo chữ số cuối không giao nhau.\n\nDấu hiệu chia hết và điều kiện chữ số đầu của số nhiều chữ số\n\nChưa kiểm tra tự động\n2\nĐếm sau khi cố định chữ số cuối\n\nDựa vào bước 1\nNếu cuối là 0, chữ số đầu có \n7\n7 lựa chọn. Nếu cuối khác 0, chữ số đầu không được bằng chữ số cuối và cũng không được 0, nên có \n6\n6 lựa chọn. Sau hai vị trí ấy còn \n6\n6 chữ số để điền lần lượt \n4\n4 vị trí giữa; số lựa chọn giảm một sau mỗi vị trí. Thứ tự các vị trí làm nên các số khác nhau nên không chia cho giai thừa.\ncu\no\nˆ\nˊ\ni\n\t\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n\n\n0\n\t\n7\n⋅\n6\n⋅\n5\n⋅\n4\n⋅\n3\n=\n2520\ncu\no\nˆ\nˊ\ni\n0\n\t​\n\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n7⋅6⋅5⋅4⋅3=2520\n\t​\n\n\t​\n\n\nQuy tắc nhân với thứ tự vị trí, không lặp và không có 0 đứng đầu\n\nChưa kiểm tra tự động\n3\nCộng các chữ số cuối có thể có\n\nDựa vào bước 2\nMỗi số có duy nhất một chữ số cuối, nên cộng các dòng. Vậy lập được \n2520\n2520 số thỏa yêu cầu.\n2520\n=\n2520\n2520=2520\n\nQuy tắc cộng cho các trường hợp cuối khác nhau\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-merge-6",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 788.4258749999999,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 36,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTrên bảng có các số \n1\n,\n2\n,\n…\n,\n6\n1,2,…,6. Mỗi lượt xóa hai số \n𝑎\n,\n𝑏\na,b và viết số \n𝑎\n+\n𝑏\n+\n2\na+b+2. Sau 5 lượt còn một số. Tìm số đó và chứng minh kết quả không phụ thuộc thứ tự chọn.\nTìm hiểu đề bài\n\nDẠNG BÀI\nBất biến khi ghép hai số\n\nCHO BIẾT\nTrên bảng có các số \n1\n,\n2\n,\n…\n,\n6\n1,2,…,6. Mỗi lượt xóa hai số \n𝑎\n,\n𝑏\na,b và viết số \n𝑎\n+\n𝑏\n+\n2\na+b+2. Sau 5 lượt còn một số. Tìm số đó và chứng minh kết quả không phụ thuộc thứ tự chọn.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nBất biến khi ghép hai số\n\nHƯỚNG GIẢI\nCho phân hoạch hoặc bất biến, chỉ rõ cách tìm nhân chứng và kiểm tra điều kiện.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau một lần ghép, tổng giảm một lượng phụ thuộc vào a,b không?\nTrừ hai số bị xóa rồi cộng số mới\nGọi \n𝑆\nS là tổng các số đang có, \n𝑞\nq là số lượng. Xóa \n𝑎\n,\n𝑏\na,b rồi viết \n𝑎\n+\n𝑏\n+\n2\na+b+2 làm tổng thay đổi đúng \n2\n2 và số lượng giảm 1, bất kể chọn số nào.\n𝑆\n′\n=\n𝑆\n−\n(\n−\n2\n)\n,\n𝑞\n′\n=\n𝑞\n−\n1\nS\n′\n=S−(−2),q\n′\n=q−1\n\nGợi ý 2\nVì sao chỉ thử một vài cách ghép chưa đủ để chứng minh bất biến?\nHiệu giữa tổng và hằng số nhân số lượng được giữ nguyên\nXét \n𝑆\n−\n(\n−\n2\n)\n𝑞\nS−(−2)q. Sau phép ghép, thay công thức vừa tìm vào thì được đúng giá trị cũ; đây là đẳng thức đúng với mọi \n𝑎\n,\n𝑏\na,b.\n𝑆\n′\n−\n(\n−\n2\n)\n𝑞\n′\n=\n(\n𝑆\n−\n(\n−\n2\n)\n)\n−\n(\n−\n2\n)\n(\n𝑞\n−\n1\n)\n=\n𝑆\n−\n(\n−\n2\n)\n𝑞\nS\n′\n−(−2)q\n′\n=(S−(−2))−(−2)(q−1)=S−(−2)q\n\nGợi ý 3\nKhi chỉ còn một số, tổng và số lượng bằng gì?\nSố lượng giảm 1 mỗi lượt và bất biến đã chứng minh cho mọi phép ghép\nBan đầu tổng là \n1\n+\n2\n+\n⋯\n+\n6\n=\n6\n⋅\n7\n2\n1+2+⋯+6=\n2\n6⋅7\n\t​\n\n, có \n6\n6 số. Sau \n5\n5 lượt số lượng còn 1. Gọi số cuối là \n𝑥\nx; dùng bất biến đầu–cuối và giải đẳng thức. Vậy số cuối cùng luôn là \n31\n31, không phụ thuộc thứ tự chọn.\n𝑥\n−\n(\n−\n2\n)\n=\n6\n⋅\n7\n2\n−\n(\n−\n2\n)\n⋅\n6\n,\n𝑥\n=\n31\nx−(−2)=\n2\n6⋅7\n\t​\n\n−(−2)⋅6,x=31\n\nẨn lời giải\nLời giải\n1\nTheo dõi tổng và số lượng\nGọi \n𝑆\nS là tổng các số đang có, \n𝑞\nq là số lượng. Xóa \n𝑎\n,\n𝑏\na,b rồi viết \n𝑎\n+\n𝑏\n+\n2\na+b+2 làm tổng thay đổi đúng \n2\n2 và số lượng giảm 1, bất kể chọn số nào.\n𝑆\n′\n=\n𝑆\n−\n(\n−\n2\n)\n,\n𝑞\n′\n=\n𝑞\n−\n1\nS\n′\n=S−(−2),q\n′\n=q−1\n\nTrừ hai số bị xóa rồi cộng số mới\n\nChưa kiểm tra tự động\n2\nBất biến không phụ thuộc lựa chọn\n\nDựa vào bước 1\nXét \n𝑆\n−\n(\n−\n2\n)\n𝑞\nS−(−2)q. Sau phép ghép, thay công thức vừa tìm vào thì được đúng giá trị cũ; đây là đẳng thức đúng với mọi \n𝑎\n,\n𝑏\na,b.\n𝑆\n′\n−\n(\n−\n2\n)\n𝑞\n′\n=\n(\n𝑆\n−\n(\n−\n2\n)\n)\n−\n(\n−\n2\n)\n(\n𝑞\n−\n1\n)\n=\n𝑆\n−\n(\n−\n2\n)\n𝑞\nS\n′\n−(−2)q\n′\n=(S−(−2))−(−2)(q−1)=S−(−2)q\n\nHiệu giữa tổng và hằng số nhân số lượng được giữ nguyên\n\nChưa kiểm tra tự động\n3\nTính giá trị đầu và cuối\n\nDựa vào bước 2\nBan đầu tổng là \n1\n+\n2\n+\n⋯\n+\n6\n=\n6\n⋅\n7\n2\n1+2+⋯+6=\n2\n6⋅7\n\t​\n\n, có \n6\n6 số. Sau \n5\n5 lượt số lượng còn 1. Gọi số cuối là \n𝑥\nx; dùng bất biến đầu–cuối và giải đẳng thức. Vậy số cuối cùng luôn là \n31\n31, không phụ thuộc thứ tự chọn.\n𝑥\n−\n(\n−\n2\n)\n=\n6\n⋅\n7\n2\n−\n(\n−\n2\n)\n⋅\n6\n,\n𝑥\n=\n31\nx−(−2)=\n2\n6⋅7\n\t​\n\n−(−2)⋅6,x=31\n\nSố lượng giảm 1 mỗi lượt và bất biến đã chứng minh cho mọi phép ghép\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-probability-zero",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 789.5342920000003,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 22,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTrong hộp có 1 viên bi đỏ và 1 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\nTìm hiểu đề bài\n\nDẠNG BÀI\nXác suất cặp đồng khả năng\n\nCHO BIẾT\nTrong hộp có 1 viên bi đỏ và 1 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nXác suất cặp đồng khả năng\n\nHƯỚNG GIẢI\nXác định rõ đối tượng, thứ tự và phần trùng trước khi tính.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nRút đồng thời có phân biệt đỏ trước, xanh sau với xanh trước, đỏ sau không?\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n2\n2\n=\n2\n⋅\n1\n2\n=\n1\nC\n2\n2\n\t​\n\n=\n2\n2⋅1\n\t​\n\n=1\n\nGợi ý 2\nMột cặp có thể vừa gồm hai viên đỏ vừa gồm hai viên xanh không?\nQuy tắc cộng cho hai màu tách nhau\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n1\n2\n+\n𝐶\n1\n2\n=\n0\n+\n0\n=\n0\nC\n1\n2\n\t​\n\n+C\n1\n2\n\t​\n\n=0+0=0\n\nGợi ý 3\nVì sao chỉ được dùng tỉ số số cách khi mọi cặp có khả năng như nhau?\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n0\n1\n1\n0\n\t​\n\n.\n0\n1\n=\n0\n1\n1\n0\n\t​\n\n=\n1\n0\n\t​\n\n\nẨn lời giải\nLời giải\n1\nĐếm không gian cặp không thứ tự\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n2\n2\n=\n2\n⋅\n1\n2\n=\n1\nC\n2\n2\n\t​\n\n=\n2\n2⋅1\n\t​\n\n=1\n\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\n\nChưa kiểm tra tự động\n2\nHai trường hợp cùng màu không giao nhau\n\nDựa vào bước 1\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n1\n2\n+\n𝐶\n1\n2\n=\n0\n+\n0\n=\n0\nC\n1\n2\n\t​\n\n+C\n1\n2\n\t​\n\n=0+0=0\n\nQuy tắc cộng cho hai màu tách nhau\n\nChưa kiểm tra tự động\n3\nLấy số cặp thuận lợi chia tổng số cặp\n\nDựa vào bước 2\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n0\n1\n1\n0\n\t​\n\n.\n0\n1\n=\n0\n1\n1\n0\n\t​\n\n=\n1\n0\n\t​\n\n\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-probability-one",
+    "width": 390,
+    "syntheticPresentationFixture": false,
+    "durationMs": 789.4378339999994,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 22,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTrong hộp có 0 viên bi đỏ và 4 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\nTìm hiểu đề bài\n\nDẠNG BÀI\nXác suất cặp đồng khả năng\n\nCHO BIẾT\nTrong hộp có 0 viên bi đỏ và 4 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nXác suất cặp đồng khả năng\n\nHƯỚNG GIẢI\nXác định rõ đối tượng, thứ tự và phần trùng trước khi tính.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nRút đồng thời có phân biệt đỏ trước, xanh sau với xanh trước, đỏ sau không?\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n4\n2\n=\n4\n⋅\n3\n2\n=\n6\nC\n4\n2\n\t​\n\n=\n2\n4⋅3\n\t​\n\n=6\n\nGợi ý 2\nMột cặp có thể vừa gồm hai viên đỏ vừa gồm hai viên xanh không?\nQuy tắc cộng cho hai màu tách nhau\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n0\n2\n+\n𝐶\n4\n2\n=\n0\n+\n6\n=\n6\nC\n0\n2\n\t​\n\n+C\n4\n2\n\t​\n\n=0+6=6\n\nGợi ý 3\nVì sao chỉ được dùng tỉ số số cách khi mọi cặp có khả năng như nhau?\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n1\n1\n1\n1\n\t​\n\n.\n6\n6\n=\n1\n1\n6\n6\n\t​\n\n=\n1\n1\n\t​\n\n\nẨn lời giải\nLời giải\n1\nĐếm không gian cặp không thứ tự\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n4\n2\n=\n4\n⋅\n3\n2\n=\n6\nC\n4\n2\n\t​\n\n=\n2\n4⋅3\n\t​\n\n=6\n\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\n\nChưa kiểm tra tự động\n2\nHai trường hợp cùng màu không giao nhau\n\nDựa vào bước 1\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n0\n2\n+\n𝐶\n4\n2\n=\n0\n+\n6\n=\n6\nC\n0\n2\n\t​\n\n+C\n4\n2\n\t​\n\n=0+6=6\n\nQuy tắc cộng cho hai màu tách nhau\n\nChưa kiểm tra tự động\n3\nLấy số cặp thuận lợi chia tổng số cặp\n\nDựa vào bước 2\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n1\n1\n1\n1\n\t​\n\n.\n6\n6\n=\n1\n1\n6\n6\n\t​\n\n=\n1\n1\n\t​\n\n\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-sign-12-3",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 771.1470840000002,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 38,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nAn và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 12 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 3, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.\nTìm hiểu đề bài\n\nDẠNG BÀI\nTrò chơi đặt dấu và số dư\n\nCHO BIẾT\nAn và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 12 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 3, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nTrò chơi đặt dấu và số dư\n\nHƯỚNG GIẢI\nTheo dõi tổng theo số dư; cho quy tắc dấu và chứng minh với mọi phản ứng.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nĐặt một dấu cộng hoặc trừ thay đổi số dư theo công thức nào?\nSố dư của tổng và thứ tự đặt dấu đã cho\nTrước khi đặt dấu cho số \n𝑡\nt, gọi \n𝑟\nr là số dư của tổng đã đặt khi chia cho \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Đặt cộng cho số \n𝑡\nt làm số dư thành số dư của \n𝑟\n+\n𝑡\nr+t; đặt trừ làm số dư thành số dư của \n𝑟\n−\n𝑡\nr−t. An chọn ở lượt lẻ, Bình ở lượt chẵn. Khi đủ \n12\n12 dấu, An thắng đúng khi số dư bằng \n0\n0.\n\nGợi ý 2\nVì sao phải xét cả hai dấu mà đối phương có thể chọn?\nXét hết hai dấu của đối phương, suy ngược trên số lượt hữu hạn\nXét từ lượt cuối ngược về lượt đầu. Ở lượt An, một số dư có thể bảo đảm An thắng khi ít nhất một trong hai dấu dẫn đến một vị trí bảo đảm An thắng. Ở lượt Bình, An chỉ bảo đảm thắng khi cả hai dấu đều dẫn đến vị trí như vậy. Điều kiện cuối là số dư \n0\n0. Xét mọi số dư \n0\n,\n…\n,\n2\n0,…,2 ở từng lượt theo quy tắc này, trạng thái ban đầu lượt \n1\n1, số dư \n0\n0 cho thấy Bình bảo đảm thắng. Bảng sau cho dấu cụ thể ở tất cả vị trí thuộc chiến lược đó.\n\nGợi ý 3\nNếu đối phương đổi dấu ở lượt của họ, bạn tính lại số dư và chọn dấu nào?\nNêu dấu cụ thể theo số dư, không chỉ khẳng định tồn tại dấu\nTrong bảng, \n𝑅\n+\nR\n+\n\t​\n\n là các số dư trước lượt \n𝑡\nt mà Bình đặt cộng; \n𝑅\n−\nR\n−\n\t​\n\n là các số dư mà đặt trừ. Bình tính số dư hiện tại trước lượt của mình rồi theo đúng hàng tương ứng. Những số dư không có trong hàng không thể xuất hiện nếu đã giữ chiến lược từ đầu; mọi dấu của đối phương vẫn đưa tới một vị trí có quy tắc. Lượt đầu An có thể đặt dấu nào; Bình tính số dư sau dấu đó để chọn ở lượt 2.\n𝑡\n\t\n𝑅\n+\n\t\n𝑅\n−\n\n\n2\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n4\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n6\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n8\n\t\n0\n,\n2\n\t\n1\n\n\n10\n\t\n2\n\t\n1\n\n\n12\n\t\n1\n,\n2\n\t\n∅\nt\n2\n4\n6\n8\n10\n12\n\t​\n\nR\n+\n\t​\n\n0,1,2\n0,1,2\n0,1,2\n0,2\n2\n1,2\n\t​\n\nR\n−\n\t​\n\n∅\n∅\n∅\n1\n1\n∅\n\t​\n\n\t​\n\n\nGợi ý 4\nChiến lược có cần đối phương hợp tác chọn một dấu định sẵn không?\nDuy trì trạng thái bảo đảm thắng qua mọi dấu đối phương và hết số lượt\nỞ lượt của Bình, dấu trong bảng giữ vị trí bảo đảm người đó thắng. Ở lượt của đối phương, cả hai dấu đều giữ một vị trí như vậy, theo quy tắc phân loại. Bắt đầu từ lượt 1,số dư 0 rồi lặp lập luận qua mỗi lượt, tới lượt \n13\n13 điều kiện thắng của Bình được thỏa. Có đúng \n12\n12 dấu nên quá trình kết thúc. Vậy Bình có chiến lược thắng với quy tắc đặt dấu đã nêu, dù đối phương chọn dấu thế nào.\n\nẨn lời giải\nLời giải\n1\nTheo dõi số dư và người đến lượt\nTrước khi đặt dấu cho số \n𝑡\nt, gọi \n𝑟\nr là số dư của tổng đã đặt khi chia cho \n3\n3, với \n0\n≤\n𝑟\n<\n3\n0≤r<3. Đặt cộng cho số \n𝑡\nt làm số dư thành số dư của \n𝑟\n+\n𝑡\nr+t; đặt trừ làm số dư thành số dư của \n𝑟\n−\n𝑡\nr−t. An chọn ở lượt lẻ, Bình ở lượt chẵn. Khi đủ \n12\n12 dấu, An thắng đúng khi số dư bằng \n0\n0.\n\nSố dư của tổng và thứ tự đặt dấu đã cho\n\nChưa kiểm tra tự động\n2\nPhân loại bằng mọi lựa chọn còn lại\n\nDựa vào bước 1\nXét từ lượt cuối ngược về lượt đầu. Ở lượt An, một số dư có thể bảo đảm An thắng khi ít nhất một trong hai dấu dẫn đến một vị trí bảo đảm An thắng. Ở lượt Bình, An chỉ bảo đảm thắng khi cả hai dấu đều dẫn đến vị trí như vậy. Điều kiện cuối là số dư \n0\n0. Xét mọi số dư \n0\n,\n…\n,\n2\n0,…,2 ở từng lượt theo quy tắc này, trạng thái ban đầu lượt \n1\n1, số dư \n0\n0 cho thấy Bình bảo đảm thắng. Bảng sau cho dấu cụ thể ở tất cả vị trí thuộc chiến lược đó.\n\nXét hết hai dấu của đối phương, suy ngược trên số lượt hữu hạn\n\nChưa kiểm tra tự động\n3\nQuy tắc chọn dấu thực hiện được\n\nDựa vào bước 2\nTrong bảng, \n𝑅\n+\nR\n+\n\t​\n\n là các số dư trước lượt \n𝑡\nt mà Bình đặt cộng; \n𝑅\n−\nR\n−\n\t​\n\n là các số dư mà đặt trừ. Bình tính số dư hiện tại trước lượt của mình rồi theo đúng hàng tương ứng. Những số dư không có trong hàng không thể xuất hiện nếu đã giữ chiến lược từ đầu; mọi dấu của đối phương vẫn đưa tới một vị trí có quy tắc. Lượt đầu An có thể đặt dấu nào; Bình tính số dư sau dấu đó để chọn ở lượt 2.\n𝑡\n\t\n𝑅\n+\n\t\n𝑅\n−\n\n\n2\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n4\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n6\n\t\n0\n,\n1\n,\n2\n\t\n∅\n\n\n8\n\t\n0\n,\n2\n\t\n1\n\n\n10\n\t\n2\n\t\n1\n\n\n12\n\t\n1\n,\n2\n\t\n∅\nt\n2\n4\n6\n8\n10\n12\n\t​\n\nR\n+\n\t​\n\n0,1,2\n0,1,2\n0,1,2\n0,2\n2\n1,2\n\t​\n\nR\n−\n\t​\n\n∅\n∅\n∅\n1\n1\n∅\n\t​\n\n\t​\n\n\nNêu dấu cụ thể theo số dư, không chỉ khẳng định tồn tại dấu\n\nChưa kiểm tra tự động\n4\nBảo đảm cho mọi phản ứng và kết thúc\n\nDựa vào bước 3\nỞ lượt của Bình, dấu trong bảng giữ vị trí bảo đảm người đó thắng. Ở lượt của đối phương, cả hai dấu đều giữ một vị trí như vậy, theo quy tắc phân loại. Bắt đầu từ lượt 1,số dư 0 rồi lặp lập luận qua mỗi lượt, tới lượt \n13\n13 điều kiện thắng của Bình được thỏa. Có đúng \n12\n12 dấu nên quá trình kết thúc. Vậy Bình có chiến lược thắng với quy tắc đặt dấu đã nêu, dù đối phương chọn dấu thế nào.\n\nDuy trì trạng thái bảo đảm thắng qua mọi dấu đối phương và hết số lượt\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-board-50",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 821.4660000000003,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 112,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nCho bàn cờ \n2\n×\n50\n2×50. An chọn một ô ban đầu, sau đó mỗi lượt An di chuyển sang một ô kề bên. Bình chọn \n𝑘\nk ô mỗi lượt để hỏi An. Chứng minh Bình có thể thắng sau không quá 49 lượt với \n𝑘\n=\n4\nk=4 và không quá 98 lượt với \n𝑘\n=\n2\nk=2.\nTìm hiểu đề bài\n\nDẠNG BÀI\nTìm vị trí trên bàn cờ bằng tính chẵn lẻ\n\nCHO BIẾT\nBàn cờ \n2\n×\n50\n2×50.\nAn buộc di chuyển sang ô chung cạnh mỗi lượt.\n\nCẦN TÌM\nChiến lược của Bình\n\nKIẾN THỨC SỬ DỤNG\nTính chẵn lẻ\nChiến lược cho mọi nước đi\n\nPHƯƠNG PHÁP\nBất biến, đơn biến\n\nHƯỚNG GIẢI\nQuét hai cột từ trái sang phải; khi chỉ được hỏi hai ô, dùng màu bàn cờ và hai lần quét.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nMột bước sang ô kề cạnh có thể đổi cột nhiều hơn một đơn vị không?\nDùng đúng luật di chuyển kề cạnh và phát hiện vị trí\nGọi ô ở hàng \n𝑟\nr, cột \n𝑐\nc là \n(\n𝑟\n,\n𝑐\n)\n(r,c), với \n𝑟\n=\n1\n,\n2\nr=1,2 và \n1\n≤\n𝑐\n≤\n50\n1≤c≤50. Hai ô kề bên có chung một cạnh. Mỗi lượt An di chuyển trước, rồi Bình hỏi các ô ở vị trí hiện tại của An. An phải trả lời đúng; Bình thắng khi trong các ô hỏi có ô An đang đứng. Nếu đề quy ước hỏi lần đầu ngay sau khi An chọn ô ban đầu, chiến lược cũng giữ nguyên: lượt đầu chỉ cần vị trí bất kỳ, còn giữa hai lần hỏi An vẫn phải đi đúng một bước. Bình không cần biết ô ban đầu hay đoán nước đi của An.\n\nGợi ý 2\nỞ lượt \n1\n1, Bình hỏi chính xác những ô nào khi \n𝑘\n=\n4\nk=4?\nChỉ rõ bốn ô khác nhau ở từng lượt; không cần đoán đối phương\nĐây là lịch hỏi cụ thể, không phụ thuộc vị trí hay nước đi của An. \n𝑡\nt là số lượt, \n𝑄\n𝑡\nQ\nt\n\t​\n\n là tập các ô hỏi sau khi An di chuyển ở lượt đó. Mỗi tọa độ là (hàng,cột); nếu đã tìm thấy An thì dừng. Các lượt giữa dấu ba chấm, nếu có, dùng đúng công thức sau. Ở lượt \n𝑡\nt, hỏi cả hai hàng của hai cột \n𝑡\n,\n𝑡\n+\n1\nt,t+1.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n1\n,\n2\n)\n,\n(\n2\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n1\n,\n3\n)\n,\n(\n2\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n1\n,\n4\n)\n,\n(\n2\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n1\n,\n5\n)\n,\n(\n2\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n1\n,\n47\n)\n,\n(\n2\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n1\n,\n48\n)\n,\n(\n2\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n1\n,\n49\n)\n,\n(\n2\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n1\n,\n50\n)\n,\n(\n2\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(1,2),(2,1),(2,2)\n(1,2),(1,3),(2,2),(2,3)\n(1,3),(1,4),(2,3),(2,4)\n(1,4),(1,5),(2,4),(2,5)\n⋮\n(1,46),(1,47),(2,46),(2,47)\n(1,47),(1,48),(2,47),(2,48)\n(1,48),(1,49),(2,48),(2,49)\n(1,49),(1,50),(2,49),(2,50)\n\t​\n\n\t​\n\n\nGợi ý 3\nSau khi hỏi cả hai cột đầu, nếu An chưa bị phát hiện thì An chỉ có thể ở phía nào?\nSuy luận lần lượt: vị trí còn có thể đứng luôn ở bên phải vùng đã quét\nỞ lượt \n𝑗\n=\n1\n,\n2\n,\n…\n,\n49\nj=1,2,…,49, Bình hỏi cả bốn ô của cột \n𝑗\nj và \n𝑗\n+\n1\nj+1. Nếu An chưa bị phát hiện sau lượt đầu thì An ở cột ít nhất \n3\n3. Giả sử sau lượt \n𝑗\n−\n1\nj−1, An ở cột ít nhất \n𝑗\n+\n1\nj+1; bước tiếp theo chỉ có thể đưa An về cột ít nhất \n𝑗\nj. Hai cột \n𝑗\n,\n𝑗\n+\n1\nj,j+1 đều được hỏi, nên nếu vẫn thoát thì An phải ở cột ít nhất \n𝑗\n+\n2\nj+2. Đây là suy luận cho mọi nước đi, kể cả đi dọc. Sau lượt \n49\n49, muốn thoát An phải ở cột ít nhất \n51\n51, không tồn tại. Vậy \n𝑘\n=\n4\nk=4 bảo đảm thắng sau không quá \n49\n49 lượt.\n\nGợi ý 4\nNếu An đang ở ô có tổng hàng và cột chẵn, sau một bước tổng đó chẵn hay lẻ?\nTính chẵn lẻ đổi sau mỗi bước sang ô chung cạnh\nTô màu ô theo tính chẵn lẻ của \n𝑟\n+\n𝑐\nr+c. Đi ngang hoặc đi dọc đều đổi màu. Vì An buộc phải đi ở mỗi lượt, biết màu ở một lượt sẽ biết màu ở mọi lượt sau. Trong hai cột kề nhau có đúng hai ô của mỗi màu. Ta có thể dùng hai câu hỏi để kiểm tra toàn bộ một màu trong vùng hai cột.\n\nGợi ý 5\nHai tọa độ trong mỗi hàng của bảng có tổng hàng và cột cùng tính chẵn lẻ không?\nCho lịch hỏi thực hiện được và chứng minh hai ô mỗi lượt cùng màu\nỞ lượt \n𝑡\n=\n1\n,\n…\n,\n49\nt=1,…,49, hỏi \n(\n1\n,\n𝑡\n)\n(1,t) và \n(\n2\n,\n𝑡\n+\n1\n)\n(2,t+1) theo bảng. Hai ô có cùng màu vì tổng hàng và cột là \n𝑡\n+\n1\nt+1 và \n𝑡\n+\n3\nt+3; sang lượt sau, màu được hỏi đổi. Không biết An ở đâu vẫn làm đúng bảng này.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nGợi ý 6\nVì sao hỏi hai ô cùng màu đủ thay cho bốn ô khi đã biết màu của An?\nPhân hai khả năng về màu, quét một khả năng mà không bỏ sót nước đi\nTrong \n49\n49 lượt đầu, ở lượt \n𝑗\nj hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1). Màu của hai ô được hỏi đổi đúng như màu của An sau mỗi bước. Nếu màu của An ở lượt đầu trùng màu được hỏi, thì ở mọi lượt sau cũng trùng. Đối với trường hợp màu này, hai câu hỏi đã kiểm tra mọi ô An có thể đứng trong hai cột đang quét. Lập luận cột ở câu a áp dụng nguyên vẹn, nên An sẽ bị phát hiện trong lượt \n49\n49 hoặc sớm hơn. Nếu An vẫn chưa bị phát hiện thì màu của An ở lượt đầu phải là màu còn lại.\n\nGợi ý 7\nGiữa lượt \n1\n1 và lượt \n50\n50 có bao nhiêu bước đổi màu?\nTính màu theo số bước thực sự giữa hai lượt; không lặp sai màu quét trước\nNếu qua lượt \n49\n49 chưa thắng, tiếp tục theo bảng sau. Ở lượt đầu của lần quét cũ, màu hỏi có tổng hàng và cột chẵn, nên An khi đó phải ở màu lẻ. Sau \n49\n49 bước giữa lượt \n1\n1 và lượt \n50\n50, màu của An có tính chẵn lẻ giống \n1\n+\n49\n1+49. Vì vậy cặp \n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n(1,1),(2,2) ở lượt \n50\n50 có đúng màu An. Cả lịch hỏi và An đều đổi màu sau mỗi bước, nên mọi hàng tiếp theo vẫn hỏi đúng màu.\n𝑡\n\t\n𝑄\n𝑡\n\n\n50\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n51\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n52\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n53\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n95\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n96\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n97\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n98\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n50\n51\n52\n53\n⋮\n95\n96\n97\n98\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nGợi ý 8\nNếu lần quét đầu không bắt được An, ta đã biết thêm điều gì để chọn hai ô trong lần quét sau?\nNếu lần đầu chưa bắt được thì màu đã biết; lần quét thứ hai kiểm tra đúng màu ở mọi lượt\nNếu chưa thắng, từ lượt \n50\n50 ta biết chắc màu của An: đó là màu đối lập với màu mà lần quét cũ sẽ kiểm tra ở lượt này. Quét lại từ trái sang phải trong \n49\n49 lượt: ở lượt \n49\n+\n𝑗\n49+j hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1), với \n𝑗\n=\n1\n,\n…\n,\n49\nj=1,…,49. Hai ô này luôn có đúng màu hiện tại của An. Vị trí An lúc bắt đầu lần quét thứ hai có thể bất kỳ; lập luận ở câu a vẫn áp dụng, vì cả hai cột đang quét đã được kiểm tra đầy đủ đối với màu An có thể đứng. Vậy \n𝑘\n=\n2\nk=2 bảo đảm thắng sau không quá \n98\n98 lượt; cùng với câu a, ta được cả hai kết luận cần chứng minh.\n\nẨn lời giải\nLời giải\n1\nĐánh số ô và xác định khi nào phát hiện An\nGọi ô ở hàng \n𝑟\nr, cột \n𝑐\nc là \n(\n𝑟\n,\n𝑐\n)\n(r,c), với \n𝑟\n=\n1\n,\n2\nr=1,2 và \n1\n≤\n𝑐\n≤\n50\n1≤c≤50. Hai ô kề bên có chung một cạnh. Mỗi lượt An di chuyển trước, rồi Bình hỏi các ô ở vị trí hiện tại của An. An phải trả lời đúng; Bình thắng khi trong các ô hỏi có ô An đang đứng. Nếu đề quy ước hỏi lần đầu ngay sau khi An chọn ô ban đầu, chiến lược cũng giữ nguyên: lượt đầu chỉ cần vị trí bất kỳ, còn giữa hai lần hỏi An vẫn phải đi đúng một bước. Bình không cần biết ô ban đầu hay đoán nước đi của An.\n\nDùng đúng luật di chuyển kề cạnh và phát hiện vị trí\n2\na) Các ô Bình hỏi khi \n𝑘\n=\n4\nk=4\n\nDựa vào bước 1\nĐây là lịch hỏi cụ thể, không phụ thuộc vị trí hay nước đi của An. \n𝑡\nt là số lượt, \n𝑄\n𝑡\nQ\nt\n\t​\n\n là tập các ô hỏi sau khi An di chuyển ở lượt đó. Mỗi tọa độ là (hàng,cột); nếu đã tìm thấy An thì dừng. Các lượt giữa dấu ba chấm, nếu có, dùng đúng công thức sau. Ở lượt \n𝑡\nt, hỏi cả hai hàng của hai cột \n𝑡\n,\n𝑡\n+\n1\nt,t+1.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n1\n,\n2\n)\n,\n(\n2\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n1\n,\n3\n)\n,\n(\n2\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n1\n,\n4\n)\n,\n(\n2\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n1\n,\n5\n)\n,\n(\n2\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n1\n,\n47\n)\n,\n(\n2\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n1\n,\n48\n)\n,\n(\n2\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n1\n,\n49\n)\n,\n(\n2\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n1\n,\n50\n)\n,\n(\n2\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(1,2),(2,1),(2,2)\n(1,2),(1,3),(2,2),(2,3)\n(1,3),(1,4),(2,3),(2,4)\n(1,4),(1,5),(2,4),(2,5)\n⋮\n(1,46),(1,47),(2,46),(2,47)\n(1,47),(1,48),(2,47),(2,48)\n(1,48),(1,49),(2,48),(2,49)\n(1,49),(1,50),(2,49),(2,50)\n\t​\n\n\t​\n\n\nChỉ rõ bốn ô khác nhau ở từng lượt; không cần đoán đối phương\n3\na) Chứng minh quét hai cột bắt được mọi đường đi\n\nDựa vào bước 2\nỞ lượt \n𝑗\n=\n1\n,\n2\n,\n…\n,\n49\nj=1,2,…,49, Bình hỏi cả bốn ô của cột \n𝑗\nj và \n𝑗\n+\n1\nj+1. Nếu An chưa bị phát hiện sau lượt đầu thì An ở cột ít nhất \n3\n3. Giả sử sau lượt \n𝑗\n−\n1\nj−1, An ở cột ít nhất \n𝑗\n+\n1\nj+1; bước tiếp theo chỉ có thể đưa An về cột ít nhất \n𝑗\nj. Hai cột \n𝑗\n,\n𝑗\n+\n1\nj,j+1 đều được hỏi, nên nếu vẫn thoát thì An phải ở cột ít nhất \n𝑗\n+\n2\nj+2. Đây là suy luận cho mọi nước đi, kể cả đi dọc. Sau lượt \n49\n49, muốn thoát An phải ở cột ít nhất \n51\n51, không tồn tại. Vậy \n𝑘\n=\n4\nk=4 bảo đảm thắng sau không quá \n49\n49 lượt.\n\nSuy luận lần lượt: vị trí còn có thể đứng luôn ở bên phải vùng đã quét\n4\nb) Mỗi bước đổi màu bàn cờ\n\nDựa vào bước 3\nTô màu ô theo tính chẵn lẻ của \n𝑟\n+\n𝑐\nr+c. Đi ngang hoặc đi dọc đều đổi màu. Vì An buộc phải đi ở mỗi lượt, biết màu ở một lượt sẽ biết màu ở mọi lượt sau. Trong hai cột kề nhau có đúng hai ô của mỗi màu. Ta có thể dùng hai câu hỏi để kiểm tra toàn bộ một màu trong vùng hai cột.\n\nTính chẵn lẻ đổi sau mỗi bước sang ô chung cạnh\n5\nb) Lịch hỏi hai ô trong lần quét đầu\n\nDựa vào bước 4\nỞ lượt \n𝑡\n=\n1\n,\n…\n,\n49\nt=1,…,49, hỏi \n(\n1\n,\n𝑡\n)\n(1,t) và \n(\n2\n,\n𝑡\n+\n1\n)\n(2,t+1) theo bảng. Hai ô có cùng màu vì tổng hàng và cột là \n𝑡\n+\n1\nt+1 và \n𝑡\n+\n3\nt+3; sang lượt sau, màu được hỏi đổi. Không biết An ở đâu vẫn làm đúng bảng này.\n𝑡\n\t\n𝑄\n𝑡\n\n\n1\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n2\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n3\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n4\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n46\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n47\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n48\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n49\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n1\n2\n3\n4\n⋮\n46\n47\n48\n49\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nCho lịch hỏi thực hiện được và chứng minh hai ô mỗi lượt cùng màu\n6\nQuét lần đầu để loại một khả năng về màu\n\nDựa vào bước 5\nTrong \n49\n49 lượt đầu, ở lượt \n𝑗\nj hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1). Màu của hai ô được hỏi đổi đúng như màu của An sau mỗi bước. Nếu màu của An ở lượt đầu trùng màu được hỏi, thì ở mọi lượt sau cũng trùng. Đối với trường hợp màu này, hai câu hỏi đã kiểm tra mọi ô An có thể đứng trong hai cột đang quét. Lập luận cột ở câu a áp dụng nguyên vẹn, nên An sẽ bị phát hiện trong lượt \n49\n49 hoặc sớm hơn. Nếu An vẫn chưa bị phát hiện thì màu của An ở lượt đầu phải là màu còn lại.\n\nPhân hai khả năng về màu, quét một khả năng mà không bỏ sót nước đi\n7\nb) Lịch hỏi lần hai và màu tại lượt chuyển\n\nDựa vào bước 6\nNếu qua lượt \n49\n49 chưa thắng, tiếp tục theo bảng sau. Ở lượt đầu của lần quét cũ, màu hỏi có tổng hàng và cột chẵn, nên An khi đó phải ở màu lẻ. Sau \n49\n49 bước giữa lượt \n1\n1 và lượt \n50\n50, màu của An có tính chẵn lẻ giống \n1\n+\n49\n1+49. Vì vậy cặp \n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n(1,1),(2,2) ở lượt \n50\n50 có đúng màu An. Cả lịch hỏi và An đều đổi màu sau mỗi bước, nên mọi hàng tiếp theo vẫn hỏi đúng màu.\n𝑡\n\t\n𝑄\n𝑡\n\n\n50\n\t\n(\n1\n,\n1\n)\n,\n(\n2\n,\n2\n)\n\n\n51\n\t\n(\n1\n,\n2\n)\n,\n(\n2\n,\n3\n)\n\n\n52\n\t\n(\n1\n,\n3\n)\n,\n(\n2\n,\n4\n)\n\n\n53\n\t\n(\n1\n,\n4\n)\n,\n(\n2\n,\n5\n)\n\n\n⋮\n\t\n⋮\n\n\n95\n\t\n(\n1\n,\n46\n)\n,\n(\n2\n,\n47\n)\n\n\n96\n\t\n(\n1\n,\n47\n)\n,\n(\n2\n,\n48\n)\n\n\n97\n\t\n(\n1\n,\n48\n)\n,\n(\n2\n,\n49\n)\n\n\n98\n\t\n(\n1\n,\n49\n)\n,\n(\n2\n,\n50\n)\nt\n50\n51\n52\n53\n⋮\n95\n96\n97\n98\n\t​\n\nQ\nt\n\t​\n\n(1,1),(2,2)\n(1,2),(2,3)\n(1,3),(2,4)\n(1,4),(2,5)\n⋮\n(1,46),(2,47)\n(1,47),(2,48)\n(1,48),(2,49)\n(1,49),(2,50)\n\t​\n\n\t​\n\n\nTính màu theo số bước thực sự giữa hai lượt; không lặp sai màu quét trước\n8\nQuét lại với màu đã được xác định\n\nDựa vào bước 7\nNếu chưa thắng, từ lượt \n50\n50 ta biết chắc màu của An: đó là màu đối lập với màu mà lần quét cũ sẽ kiểm tra ở lượt này. Quét lại từ trái sang phải trong \n49\n49 lượt: ở lượt \n49\n+\n𝑗\n49+j hỏi \n(\n1\n,\n𝑗\n)\n(1,j) và \n(\n2\n,\n𝑗\n+\n1\n)\n(2,j+1), với \n𝑗\n=\n1\n,\n…\n,\n49\nj=1,…,49. Hai ô này luôn có đúng màu hiện tại của An. Vị trí An lúc bắt đầu lần quét thứ hai có thể bất kỳ; lập luận ở câu a vẫn áp dụng, vì cả hai cột đang quét đã được kiểm tra đầy đủ đối với màu An có thể đứng. Vậy \n𝑘\n=\n2\nk=2 bảo đảm thắng sau không quá \n98\n98 lượt; cùng với câu a, ta được cả hai kết luận cần chứng minh.\n\nNếu lần đầu chưa bắt được thì màu đã biết; lần quét thứ hai kiểm tra đúng màu ở mọi lượt\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h4",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h5",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h6",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h7",
+        "expectsMath": true,
+        "renderedMath": 2,
+        "pass": true
+      },
+      {
+        "id": "h8",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-digits-15-6-10",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 789.5798749999994,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 24,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTừ các chữ số \n0\n,\n1\n,\n2\n,\n3\n,\n4\n,\n5\n,\n6\n,\n7\n0,1,2,3,4,5,6,7, lập được bao nhiêu số tự nhiên có 6 chữ số đôi một khác nhau và chia hết cho \n10\n10?\nTìm hiểu đề bài\n\nDẠNG BÀI\nĐếm số có thứ tự và chữ số khác nhau\n\nCHO BIẾT\nTừ các chữ số \n0\n,\n1\n,\n2\n,\n3\n,\n4\n,\n5\n,\n6\n,\n7\n0,1,2,3,4,5,6,7, lập được bao nhiêu số tự nhiên có 6 chữ số đôi một khác nhau và chia hết cho \n10\n10?\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nĐếm số có thứ tự và chữ số khác nhau\n\nHƯỚNG GIẢI\nXác định rõ đối tượng, thứ tự và phần trùng trước khi tính.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nCó được tính một dãy bắt đầu bằng 0 là số có đủ chữ số không?\nDấu hiệu chia hết và điều kiện chữ số đầu của số nhiều chữ số\nĐây là số có \n6\n6 chữ số nên chữ số đầu không được 0. Chữ số đôi một khác nhau nên không dùng lại. Chia hết cho \n10\n10 khi và chỉ khi chữ số cuối thuộc \n{\n0\n}\n{0}. Các trường hợp theo chữ số cuối không giao nhau.\n\nGợi ý 2\nVì sao đổi hai chữ số giữa thường tạo một số khác, không phải đếm trùng?\nQuy tắc nhân với thứ tự vị trí, không lặp và không có 0 đứng đầu\nNếu cuối là 0, chữ số đầu có \n7\n7 lựa chọn. Nếu cuối khác 0, chữ số đầu không được bằng chữ số cuối và cũng không được 0, nên có \n6\n6 lựa chọn. Sau hai vị trí ấy còn \n6\n6 chữ số để điền lần lượt \n4\n4 vị trí giữa; số lựa chọn giảm một sau mỗi vị trí. Thứ tự các vị trí làm nên các số khác nhau nên không chia cho giai thừa.\ncu\no\nˆ\nˊ\ni\n\t\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n\n\n0\n\t\n7\n⋅\n6\n⋅\n5\n⋅\n4\n⋅\n3\n=\n2520\ncu\no\nˆ\nˊ\ni\n0\n\t​\n\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n7⋅6⋅5⋅4⋅3=2520\n\t​\n\n\t​\n\n\nGợi ý 3\nMột số có thể thuộc đồng thời hai dòng chữ số cuối không?\nQuy tắc cộng cho các trường hợp cuối khác nhau\nMỗi số có duy nhất một chữ số cuối, nên cộng các dòng. Vậy lập được \n2520\n2520 số thỏa yêu cầu.\n2520\n=\n2520\n2520=2520\n\nẨn lời giải\nLời giải\n1\nXác định điều kiện từng vị trí\nĐây là số có \n6\n6 chữ số nên chữ số đầu không được 0. Chữ số đôi một khác nhau nên không dùng lại. Chia hết cho \n10\n10 khi và chỉ khi chữ số cuối thuộc \n{\n0\n}\n{0}. Các trường hợp theo chữ số cuối không giao nhau.\n\nDấu hiệu chia hết và điều kiện chữ số đầu của số nhiều chữ số\n\nChưa kiểm tra tự động\n2\nĐếm sau khi cố định chữ số cuối\n\nDựa vào bước 1\nNếu cuối là 0, chữ số đầu có \n7\n7 lựa chọn. Nếu cuối khác 0, chữ số đầu không được bằng chữ số cuối và cũng không được 0, nên có \n6\n6 lựa chọn. Sau hai vị trí ấy còn \n6\n6 chữ số để điền lần lượt \n4\n4 vị trí giữa; số lựa chọn giảm một sau mỗi vị trí. Thứ tự các vị trí làm nên các số khác nhau nên không chia cho giai thừa.\ncu\no\nˆ\nˊ\ni\n\t\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n\n\n0\n\t\n7\n⋅\n6\n⋅\n5\n⋅\n4\n⋅\n3\n=\n2520\ncu\no\nˆ\nˊ\ni\n0\n\t​\n\ns\no\nˆ\nˊ\n c\na\nˊ\nch\n7⋅6⋅5⋅4⋅3=2520\n\t​\n\n\t​\n\n\nQuy tắc nhân với thứ tự vị trí, không lặp và không có 0 đứng đầu\n\nChưa kiểm tra tự động\n3\nCộng các chữ số cuối có thể có\n\nDựa vào bước 2\nMỗi số có duy nhất một chữ số cuối, nên cộng các dòng. Vậy lập được \n2520\n2520 số thỏa yêu cầu.\n2520\n=\n2520\n2520=2520\n\nQuy tắc cộng cho các trường hợp cuối khác nhau\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-merge-6",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 789.590209,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 36,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTrên bảng có các số \n1\n,\n2\n,\n…\n,\n6\n1,2,…,6. Mỗi lượt xóa hai số \n𝑎\n,\n𝑏\na,b và viết số \n𝑎\n+\n𝑏\n+\n2\na+b+2. Sau 5 lượt còn một số. Tìm số đó và chứng minh kết quả không phụ thuộc thứ tự chọn.\nTìm hiểu đề bài\n\nDẠNG BÀI\nBất biến khi ghép hai số\n\nCHO BIẾT\nTrên bảng có các số \n1\n,\n2\n,\n…\n,\n6\n1,2,…,6. Mỗi lượt xóa hai số \n𝑎\n,\n𝑏\na,b và viết số \n𝑎\n+\n𝑏\n+\n2\na+b+2. Sau 5 lượt còn một số. Tìm số đó và chứng minh kết quả không phụ thuộc thứ tự chọn.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nBất biến khi ghép hai số\n\nHƯỚNG GIẢI\nCho phân hoạch hoặc bất biến, chỉ rõ cách tìm nhân chứng và kiểm tra điều kiện.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nSau một lần ghép, tổng giảm một lượng phụ thuộc vào a,b không?\nTrừ hai số bị xóa rồi cộng số mới\nGọi \n𝑆\nS là tổng các số đang có, \n𝑞\nq là số lượng. Xóa \n𝑎\n,\n𝑏\na,b rồi viết \n𝑎\n+\n𝑏\n+\n2\na+b+2 làm tổng thay đổi đúng \n2\n2 và số lượng giảm 1, bất kể chọn số nào.\n𝑆\n′\n=\n𝑆\n−\n(\n−\n2\n)\n,\n𝑞\n′\n=\n𝑞\n−\n1\nS\n′\n=S−(−2),q\n′\n=q−1\n\nGợi ý 2\nVì sao chỉ thử một vài cách ghép chưa đủ để chứng minh bất biến?\nHiệu giữa tổng và hằng số nhân số lượng được giữ nguyên\nXét \n𝑆\n−\n(\n−\n2\n)\n𝑞\nS−(−2)q. Sau phép ghép, thay công thức vừa tìm vào thì được đúng giá trị cũ; đây là đẳng thức đúng với mọi \n𝑎\n,\n𝑏\na,b.\n𝑆\n′\n−\n(\n−\n2\n)\n𝑞\n′\n=\n(\n𝑆\n−\n(\n−\n2\n)\n)\n−\n(\n−\n2\n)\n(\n𝑞\n−\n1\n)\n=\n𝑆\n−\n(\n−\n2\n)\n𝑞\nS\n′\n−(−2)q\n′\n=(S−(−2))−(−2)(q−1)=S−(−2)q\n\nGợi ý 3\nKhi chỉ còn một số, tổng và số lượng bằng gì?\nSố lượng giảm 1 mỗi lượt và bất biến đã chứng minh cho mọi phép ghép\nBan đầu tổng là \n1\n+\n2\n+\n⋯\n+\n6\n=\n6\n⋅\n7\n2\n1+2+⋯+6=\n2\n6⋅7\n\t​\n\n, có \n6\n6 số. Sau \n5\n5 lượt số lượng còn 1. Gọi số cuối là \n𝑥\nx; dùng bất biến đầu–cuối và giải đẳng thức. Vậy số cuối cùng luôn là \n31\n31, không phụ thuộc thứ tự chọn.\n𝑥\n−\n(\n−\n2\n)\n=\n6\n⋅\n7\n2\n−\n(\n−\n2\n)\n⋅\n6\n,\n𝑥\n=\n31\nx−(−2)=\n2\n6⋅7\n\t​\n\n−(−2)⋅6,x=31\n\nẨn lời giải\nLời giải\n1\nTheo dõi tổng và số lượng\nGọi \n𝑆\nS là tổng các số đang có, \n𝑞\nq là số lượng. Xóa \n𝑎\n,\n𝑏\na,b rồi viết \n𝑎\n+\n𝑏\n+\n2\na+b+2 làm tổng thay đổi đúng \n2\n2 và số lượng giảm 1, bất kể chọn số nào.\n𝑆\n′\n=\n𝑆\n−\n(\n−\n2\n)\n,\n𝑞\n′\n=\n𝑞\n−\n1\nS\n′\n=S−(−2),q\n′\n=q−1\n\nTrừ hai số bị xóa rồi cộng số mới\n\nChưa kiểm tra tự động\n2\nBất biến không phụ thuộc lựa chọn\n\nDựa vào bước 1\nXét \n𝑆\n−\n(\n−\n2\n)\n𝑞\nS−(−2)q. Sau phép ghép, thay công thức vừa tìm vào thì được đúng giá trị cũ; đây là đẳng thức đúng với mọi \n𝑎\n,\n𝑏\na,b.\n𝑆\n′\n−\n(\n−\n2\n)\n𝑞\n′\n=\n(\n𝑆\n−\n(\n−\n2\n)\n)\n−\n(\n−\n2\n)\n(\n𝑞\n−\n1\n)\n=\n𝑆\n−\n(\n−\n2\n)\n𝑞\nS\n′\n−(−2)q\n′\n=(S−(−2))−(−2)(q−1)=S−(−2)q\n\nHiệu giữa tổng và hằng số nhân số lượng được giữ nguyên\n\nChưa kiểm tra tự động\n3\nTính giá trị đầu và cuối\n\nDựa vào bước 2\nBan đầu tổng là \n1\n+\n2\n+\n⋯\n+\n6\n=\n6\n⋅\n7\n2\n1+2+⋯+6=\n2\n6⋅7\n\t​\n\n, có \n6\n6 số. Sau \n5\n5 lượt số lượng còn 1. Gọi số cuối là \n𝑥\nx; dùng bất biến đầu–cuối và giải đẳng thức. Vậy số cuối cùng luôn là \n31\n31, không phụ thuộc thứ tự chọn.\n𝑥\n−\n(\n−\n2\n)\n=\n6\n⋅\n7\n2\n−\n(\n−\n2\n)\n⋅\n6\n,\n𝑥\n=\n31\nx−(−2)=\n2\n6⋅7\n\t​\n\n−(−2)⋅6,x=31\n\nSố lượng giảm 1 mỗi lượt và bất biến đã chứng minh cho mọi phép ghép\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-probability-zero",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 789.6493330000012,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 22,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTrong hộp có 1 viên bi đỏ và 1 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\nTìm hiểu đề bài\n\nDẠNG BÀI\nXác suất cặp đồng khả năng\n\nCHO BIẾT\nTrong hộp có 1 viên bi đỏ và 1 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nXác suất cặp đồng khả năng\n\nHƯỚNG GIẢI\nXác định rõ đối tượng, thứ tự và phần trùng trước khi tính.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nRút đồng thời có phân biệt đỏ trước, xanh sau với xanh trước, đỏ sau không?\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n2\n2\n=\n2\n⋅\n1\n2\n=\n1\nC\n2\n2\n\t​\n\n=\n2\n2⋅1\n\t​\n\n=1\n\nGợi ý 2\nMột cặp có thể vừa gồm hai viên đỏ vừa gồm hai viên xanh không?\nQuy tắc cộng cho hai màu tách nhau\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n1\n2\n+\n𝐶\n1\n2\n=\n0\n+\n0\n=\n0\nC\n1\n2\n\t​\n\n+C\n1\n2\n\t​\n\n=0+0=0\n\nGợi ý 3\nVì sao chỉ được dùng tỉ số số cách khi mọi cặp có khả năng như nhau?\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n0\n1\n1\n0\n\t​\n\n.\n0\n1\n=\n0\n1\n1\n0\n\t​\n\n=\n1\n0\n\t​\n\n\nẨn lời giải\nLời giải\n1\nĐếm không gian cặp không thứ tự\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n2\n2\n=\n2\n⋅\n1\n2\n=\n1\nC\n2\n2\n\t​\n\n=\n2\n2⋅1\n\t​\n\n=1\n\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\n\nChưa kiểm tra tự động\n2\nHai trường hợp cùng màu không giao nhau\n\nDựa vào bước 1\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n1\n2\n+\n𝐶\n1\n2\n=\n0\n+\n0\n=\n0\nC\n1\n2\n\t​\n\n+C\n1\n2\n\t​\n\n=0+0=0\n\nQuy tắc cộng cho hai màu tách nhau\n\nChưa kiểm tra tự động\n3\nLấy số cặp thuận lợi chia tổng số cặp\n\nDựa vào bước 2\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n0\n1\n1\n0\n\t​\n\n.\n0\n1\n=\n0\n1\n1\n0\n\t​\n\n=\n1\n0\n\t​\n\n\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  },
+  {
+    "id": "comb3-val-probability-one",
+    "width": 1100,
+    "syntheticPresentationFixture": false,
+    "durationMs": 788.2905410000003,
+    "scope": "Navigation plus stored actual solution fetch and browser math/font rendering; solver HTTP timing measured separately",
+    "latexErrors": 0,
+    "plainFallbacks": 0,
+    "renderedMath": 22,
+    "visibleText": "Kiểm tra bài giải\n\nĐỀ BÀI\n\nTrong hộp có 0 viên bi đỏ và 4 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\nTìm hiểu đề bài\n\nDẠNG BÀI\nXác suất cặp đồng khả năng\n\nCHO BIẾT\nTrong hộp có 0 viên bi đỏ và 4 viên bi xanh, các viên phân biệt. Rút đồng thời ngẫu nhiên 2 viên, mọi cặp có khả năng như nhau. Tính xác suất hai viên cùng màu.\n\nCẦN TÌM\nKết quả và lập luận đầy đủ\n\nKIẾN THỨC SỬ DỤNG\nXác suất cặp đồng khả năng\n\nHƯỚNG GIẢI\nXác định rõ đối tượng, thứ tự và phần trùng trước khi tính.\nGợi ý\nHãy thử suy nghĩ với từng gợi ý trước khi xem đáp án.\n\nGợi ý 1\nRút đồng thời có phân biệt đỏ trước, xanh sau với xanh trước, đỏ sau không?\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n4\n2\n=\n4\n⋅\n3\n2\n=\n6\nC\n4\n2\n\t​\n\n=\n2\n4⋅3\n\t​\n\n=6\n\nGợi ý 2\nMột cặp có thể vừa gồm hai viên đỏ vừa gồm hai viên xanh không?\nQuy tắc cộng cho hai màu tách nhau\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n0\n2\n+\n𝐶\n4\n2\n=\n0\n+\n6\n=\n6\nC\n0\n2\n\t​\n\n+C\n4\n2\n\t​\n\n=0+6=6\n\nGợi ý 3\nVì sao chỉ được dùng tỉ số số cách khi mọi cặp có khả năng như nhau?\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n1\n1\n1\n1\n\t​\n\n.\n6\n6\n=\n1\n1\n6\n6\n\t​\n\n=\n1\n1\n\t​\n\n\nẨn lời giải\nLời giải\n1\nĐếm không gian cặp không thứ tự\nCác viên phân biệt và rút đồng thời nên mỗi kết quả là một cặp không thứ tự, không lặp viên. Đề cho mọi cặp có khả năng như nhau. Với một nhóm gồm \n𝑗\nj người, xếp thứ tự nhóm đó có đúng \n𝑗\n!\nj! cách. Đếm các lựa chọn có thứ tự rồi chia cho \n𝑗\n!\nj! vì mọi nhóm không thứ tự bị đếm đúng bấy nhiêu lần; gọi số nhóm là \n𝐶\n𝑁\n𝑗\nC\nN\nj\n\t​\n\n với \n𝑁\nN người. Với \n𝑗\n=\n0\nj=0 có một nhóm rỗng; nếu \n𝑗\n>\n𝑁\nj>N thì không có nhóm.\n𝐶\n4\n2\n=\n4\n⋅\n3\n2\n=\n6\nC\n4\n2\n\t​\n\n=\n2\n4⋅3\n\t​\n\n=6\n\nMỗi cặp bị đếm hai lần khi kể thứ tự rút; đồng khả năng do đề cho\n\nChưa kiểm tra tự động\n2\nHai trường hợp cùng màu không giao nhau\n\nDựa vào bước 1\nHai viên cùng màu thì hoặc đều đỏ, hoặc đều xanh. Không có cặp thuộc cả hai trường hợp; các viên phân biệt nên chọn cặp trong từng màu.\n𝐶\n0\n2\n+\n𝐶\n4\n2\n=\n0\n+\n6\n=\n6\nC\n0\n2\n\t​\n\n+C\n4\n2\n\t​\n\n=0+6=6\n\nQuy tắc cộng cho hai màu tách nhau\n\nChưa kiểm tra tự động\n3\nLấy số cặp thuận lợi chia tổng số cặp\n\nDựa vào bước 2\nVì các cặp đồng khả năng, xác suất bằng số cặp cùng màu chia số cặp có thể rút. Rút gọn phân số bằng ước chung. Vậy xác suất cần tìm là \n1\n1\n1\n1\n\t​\n\n.\n6\n6\n=\n1\n1\n6\n6\n\t​\n\n=\n1\n1\n\t​\n\n\nĐịnh nghĩa xác suất với các kết quả đồng khả năng\n\nChưa kiểm tra tự động\n\nTạo bài học mới\n\nBáo lỗi\n\nLỗi đã báo",
+    "pageOverflow": false,
+    "foreignUi": false,
+    "titleMath": 0,
+    "hintTitleAudits": [
+      {
+        "id": "h1",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h2",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      },
+      {
+        "id": "h3",
+        "expectsMath": false,
+        "renderedMath": 0,
+        "pass": true
+      }
+    ],
+    "separateFinalAnswerCards": 0,
+    "errors": [],
+    "drag": null,
+    "pass": true
+  }
+]

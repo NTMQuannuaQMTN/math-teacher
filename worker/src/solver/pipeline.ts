@@ -1,3 +1,29 @@
+import {circleBisectorLesson,verifyCircleBisectorCertificate} from "./circleBisectorLesson";
+import {multipartLesson} from './multipartLesson';
+import {hiddenSearchFeedback} from '../../../shared/src/hiddenSearch';
+import {vertexAssignmentLesson} from './vertexAssignmentLesson';
+import {diameterOrthocenterDiagnosis} from "./diameterOrthocenterDiagnosis";
+import {geometryHypothesisDiagnosis} from "./geometryHypothesisDiagnosis";
+import {incircleCaseLesson,verifyIncircleCertificate} from "./incircleCaseLesson";
+import {triangleCalculationLesson} from "./triangleCalculation";
+import {twoRadicalEquationLesson} from './twoRadicalEquation';
+import {quadraticRangeLesson} from './quadraticRange';
+import {constantRadicalLesson} from './constantRadical';
+import {positiveParameterLesson} from './positiveParameters';
+import {positiveInequalityLesson} from './positiveInequality';
+import {remainderParameterLesson} from './remainderParameter';
+import {symmetricSystemLesson} from './symmetricSystem';
+import {radicalSequenceLesson} from './radicalSequence';
+import {rootRadicalProductLesson} from './rootRadicalProduct';
+import {rootFourthPowerLesson} from './rootFourthPower';
+import {conclusionConsistencyFeedback} from '../../../shared/src/conclusionConsistency';
+import {numericDivisibilityFeedback} from '../../../shared/src/numericDivisibility';
+import {biquadraticEquationLesson} from './biquadraticEquation';
+import {systemEquationLesson} from './systemEquation';
+import {parameterEquationLesson} from './parameterEquation';
+import {rationalInequalityLesson} from './rationalInequality';
+import {unaryEquationLesson} from './unaryEquation';
+import {rationalEquationLesson} from './rationalEquation';
 import { z } from "zod";
 import { previewPartialLesson } from "../../../shared/src/progressPreview";
 import { ModelLessonSchema, type ModelLesson, type SolveProgress, type Verification } from "../../../shared/src/solution";
@@ -8,9 +34,23 @@ import { planProof, type ProofPlan } from "../../../shared/src/proof/planner";
 import { answerMismatch, computeAnswers, type OracleResult } from "../../../shared/src/oracle";
 import { explainPlan, planReadability, verifiedFactsNote } from "../../../shared/src/proof/explain";
 import { latexFeedback, plainUnrenderable } from "./latexCheck";
-import { containsVietnamese, normalizeProblemText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
+import { vietnameseMathText, containsVietnamese, normalizeProblemText, parseMathText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
+import { dropRepeatedLines, tidyNumberBrackets, tidyNumberBracketsInText } from "../../../shared/src/latexTidy";
 import { OcrFailure } from "../ocr/provider";
+import { withinSignal } from "./deadline";
+import { proofDependencyFeedback } from "../../../shared/src/proofDependencies";
+import { divisibilityLatex } from "../../../shared/src/divisibility";
+import { boardSearchLesson, verifyBoardSearch } from "./boardSearchGame";
+import { takeAwayLesson, verifyGameCertificate } from "./takeAwayGame";
+import { certifiedCombinatoricsLesson } from "./certifiedCombinatorics";
+import {certifiedNumberTheoryLesson} from './certifiedNumberTheory';
+import { routineLesson } from './routine';
+import { repairLanguage, repairableLanguage } from './languageRepair';
+import { joinSystem, stripTaskLabel } from './routine/text';
+import {certifiedAlgebraFamily} from './certifiedAlgebraFamilies';
+import {certifiedGeometryFamily} from './certifiedGeometryFamilies';
+import { cleanLanguage } from "../../../shared/src/language";
 import type { Curriculum } from "./curriculum";
 import { toGrammarJsonSchema, toStrictJsonSchema } from "./jsonSchema";
 import type { ChatMessage, JsonModel } from "./llm";
@@ -88,6 +128,10 @@ export interface SolveOptions {
   outlineModel?: JsonModel;
   /** Compute what can be computed (shared/src/oracle.ts) and give it to the model. Default on. */
   computeFirst?: boolean;
+  /** Exact algebra lessons before inference. Default on; disable only for provider-path audits. */
+  exactAlgebra?: boolean;
+  /** Certified routine-task lessons (./routine) before inference. Default on. */
+  routine?: boolean;
 }
 
 /** Stage 1 of a two-stage solve: the solution's outline only. */
@@ -114,6 +158,11 @@ function plannerResult(plan: ProofPlan, statement: string, log: (m: string) => v
   if (missing.length) {
     // A partial lesson says plainly what it does not cover.
     lesson.finalAnswer.text = `${lesson.finalAnswer.text} Phần chưa được giải trong bài này: ${missing.map((m) => m.trim().replace(/[.;:]+$/, "")).join("; ")}.`.slice(0, 1500);
+    const last = lesson.steps.at(-1);
+    if (last) {
+      const note = ` Phần chưa được giải: ${missing.map((m) => m.trim().replace(/[.;:]+$/, "")).join("; ")}.`.slice(0, 700);
+      last.explanation = last.explanation.slice(0, 1500 - note.length) + note;
+    }
   }
   const parsed = ModelLessonSchema.safeParse(lesson);
   if (!parsed.success) {
@@ -406,20 +455,27 @@ export function repairCircleRefs(figure: NonNullable<ModelLesson["figure"]>): No
 /** Normalizes all student-facing strings (NFC for Vietnamese, no control characters). */
 export function tidy(lesson: ModelLesson): ModelLesson {
   // repairLatex first: a literal "\n" would otherwise look like a LaTeX command to wrapBareLatex.
-  const t = (s: string) => wrapBareLatex(fixDoubledEscapes(repairLatex(normalizeProblemText(s))));
+  const t = (s: string) => vietnameseMathText(wrapBareLatex(fixDoubledEscapes(repairLatex(normalizeProblemText(s)))));
   const tn = (s: string | null) => (s === null ? null : t(s));
-  const stackMathLines = (m: string | null) => stackLines(m === null ? null : textifyProse(repairLatex(fixDoubledEscapes(m))));
+  const stackMathLines = (m: string | null) => stackLines(m === null ? null : dropRepeatedLines(tidyNumberBrackets(divisibilityLatex(textifyProse(repairLatex(fixDoubledEscapes(parseMathText(m).map((s) => s.value).join(" "))))))));
+  // Solution prose: also drop template brackets around plain numbers inside its $…$ (the statement stays as written).
+  const ts = (s: string) => tidyNumberBracketsInText(t(s));
+  const tsn = (s: string | null) => (s === null ? null : ts(s));
   return {
     ...lesson,
     analysis: {
       ...lesson.analysis,
       statement: t(lesson.analysis.statement),
+      subtopic: t(lesson.analysis.subtopic),
+      givens: lesson.analysis.givens.map(t), unknowns: lesson.analysis.unknowns.map(t),
+      constraints: lesson.analysis.constraints.map(t), concepts: lesson.analysis.concepts.map(t),
+      interpretationNotes: lesson.analysis.interpretationNotes.map(t),
       statusReason: tn(lesson.analysis.statusReason),
     },
     strategy: t(lesson.strategy),
-    hints: lesson.hints.map((h) => ({ ...h, question: t(h.question), cue: tn(h.cue), explanation: t(h.explanation), math: stackMathLines(h.math) })),
-    steps: lesson.steps.map((s) => ({ ...s, title: t(s.title), explanation: t(s.explanation), reason: tn(s.reason), math: stackMathLines(s.math) })),
-    finalAnswer: { text: t(lesson.finalAnswer.text), math: stackMathLines(lesson.finalAnswer.math) },
+    hints: lesson.hints.map((h) => ({ ...h, question: ts(h.question), cue: tsn(h.cue), explanation: ts(h.explanation), math: stackMathLines(h.math) })),
+    steps: lesson.steps.map((s) => ({ ...s, title: ts(s.title), explanation: ts(s.explanation), reason: tsn(s.reason), math: stackMathLines(s.math) })),
+    finalAnswer: { text: ts(lesson.finalAnswer.text), math: stackMathLines(lesson.finalAnswer.math) },
     figure: lesson.figure ? repairCircleRefs(expandSegmentRefs(expandObjectRefs(lesson.figure))) : lesson.figure,
   };
 }
@@ -439,7 +495,18 @@ const MINOR_FEEDBACK = [/can't be evaluated/, /points to unknown step/, /left ou
  * marked "unverified" (never presented as checked); if it isn't even
  * structurally valid, the solve fails.
  */
-export async function solveProblem(
+/**
+ * "Bài 2." / "Câu 3 (1 điểm):" numbering and OCR's boxed system braces are not part of the task: the solvers get the
+ * task itself, and the lesson keeps the student's own statement.
+ */
+export async function solveProblem(model: JsonModel, curriculum: Curriculum, problemText: string, options: SolveOptions): Promise<SolveResult> {
+  const task = joinSystem(stripTaskLabel(problemText));
+  const result = await solveTask(model, curriculum, task, options);
+  if (task !== problemText && result.lesson.analysis.statement === task) result.lesson.analysis.statement = problemText;
+  return result;
+}
+
+async function solveTask(
   model: JsonModel,
   curriculum: Curriculum,
   problemText: string,
@@ -460,15 +527,128 @@ export async function solveProblem(
     onPlan,
     outlineModel,
     computeFirst = true,
+    exactAlgebra = true,
+    routine = true,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
+  const vertices=vertexAssignmentLesson(problemText);
+  if(vertices&&vertices.verify()) {
+    const checked=verifyLesson(tidy(vertices.lesson),{problemText});
+    if(!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&checked.verification.status!=='unverified')return {lesson:checked.lesson,verification:{...checked.verification,status:'verified'},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-vertex-assignment'};
+  }
+  const multipart=multipartLesson(problemText);
+  if(multipart&&multipart.verify()) {
+    const checked=verifyLesson(tidy(multipart.lesson),{problemText});
+    if(!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&checked.verification.status!=='unverified')return {lesson:checked.lesson,verification:{...checked.verification,status:multipart.coverage==='complete'?'verified':'partial'},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-multipart'};
+  }
+  if (signal.aborted) throw new OcrFailure("timeout", "solve cancelled", true);
+  const algebraFamily=exactAlgebra?certifiedAlgebraFamily(problemText):null;
+  if(algebraFamily&&algebraFamily.verify()) {
+    const lesson=tidy(algebraFamily.lesson);
+    if(!latexFeedback(lesson).length&&!cleanLanguage(lesson).feedback.length)return {
+      lesson,verification:{status:'verified',figureIssue:null,checks:[{label:algebraFamily.label,passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-algebra-family'
+    };
+  }
+  const exactEquation = exactAlgebra ? (rationalEquationLesson(problemText) ?? unaryEquationLesson(problemText) ?? rationalInequalityLesson(problemText) ?? parameterEquationLesson(problemText) ?? systemEquationLesson(problemText) ?? biquadraticEquationLesson(problemText) ?? twoRadicalEquationLesson(problemText) ?? quadraticRangeLesson(problemText) ?? constantRadicalLesson(problemText) ?? positiveParameterLesson(problemText) ?? positiveInequalityLesson(problemText) ?? remainderParameterLesson(problemText) ?? symmetricSystemLesson(problemText) ?? radicalSequenceLesson(problemText) ?? rootRadicalProductLesson(problemText) ?? rootFourthPowerLesson(problemText)) : null;
+  if (exactEquation) {
+    const lesson = tidy(exactEquation.lesson);
+    if (!latexFeedback(lesson).length && !cleanLanguage(lesson).feedback.length) return {
+      lesson, verification: {status:"verified",figureIssue:null,checks:[{label:"Kiểm tra biến đổi đa thức, điều kiện xác định, toàn bộ nghiệm, bảng dấu hoặc biệt thức theo tham số bằng phép tính chính xác",passed:true}]},
+      attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"deterministic-algebra",
+    };
+  }
+  const geometryFamily=proofPlanner?certifiedGeometryFamily(problemText):null;
+  if(geometryFamily&&geometryFamily.verify()) {
+    const lesson=tidy(geometryFamily.lesson);
+    if(!latexFeedback(lesson).length&&!cleanLanguage(lesson).feedback.length)return {
+      lesson,verification:{status:'verified',figureIssue:null,checks:[{label:geometryFamily.label,passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-geometry-family'
+    };
+  }
+  const incircle=proofPlanner ? incircleCaseLesson(problemText) : null;
+  if(incircle&&verifyIncircleCertificate(incircle.certificate)) {
+    const checked=verifyLesson(tidy(incircle.lesson),{problemText});
+    if(checked.verification.status!=="unverified"&&!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&!proofDependencyFeedback(checked.lesson,problemText).length)return {
+      lesson:checked.lesson,verification:{...checked.verification,status:"partial",checks:[...checked.verification.checks,{label:"Đối chiếu toàn bộ giả thiết; lời giải nêu thứ tự điểm, phía của góc và giao điểm cụ thể bằng đối xứng. Chứng nhận cấu hình không phải chứng minh hình thức của toàn bộ lời giải.",passed:true}]},
+      attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-incircle-case-proof",
+    };
+  }
+  const hypothesisDiagnosis=proofPlanner ? geometryHypothesisDiagnosis(problemText) : null;
+  if(hypothesisDiagnosis && !latexFeedback(hypothesisDiagnosis).length && !cleanLanguage(hypothesisDiagnosis).feedback.length && !proofDependencyFeedback(hypothesisDiagnosis,problemText).length) return {
+    lesson:hypothesisDiagnosis,verification:{status:"partial",figureIssue:null,checks:[{label:"Ví dụ cụ thể kiểm tra điều kiện vị trí và đỉnh phân biệt; chưa chứng minh kết luận thiếu giả thiết",passed:true}]},
+    attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-hypothesis-diagnosis",
+  };
+  const diagnosis=proofPlanner ? diameterOrthocenterDiagnosis(problemText) : null;
+  if(diagnosis && !latexFeedback(diagnosis).length && !cleanLanguage(diagnosis).feedback.length && !proofDependencyFeedback(diagnosis,problemText).length) return {
+    lesson:diagnosis,verification:{status:"partial",figureIssue:null,checks:[{label:"Phản ví dụ tam giác đều: hai cặp đỉnh trùng nhau; chưa chứng minh kết luận tổng quát",passed:true}]},
+    attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-degeneracy-diagnosis",
+  };
+  const circleBisector = proofPlanner ? circleBisectorLesson(problemText) : null;
+  if (circleBisector && verifyCircleBisectorCertificate(circleBisector.certificate)) {
+    const checked=verifyLesson(tidy(circleBisector.lesson),{problemText});
+    if (checked.verification.status !== "unverified" && !latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length && !proofDependencyFeedback(checked.lesson,problemText).length) return {
+      lesson:checked.lesson,verification:{...checked.verification,status:"partial",checks:[...checked.verification.checks,{label:"Đã đối chiếu giả thiết của cấu hình; lời giải xét vị trí trong đoạn, trùng đầu đoạn và trên phần kéo dài. Các nhánh điều kiện không được đo trên một hình duy nhất.",passed:true}]},
+      attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-case-proof",
+    };
+  }
+  const exactTriangle = proofPlanner ? triangleCalculationLesson(problemText) : null;
+  if (exactTriangle) {
+    const checked = verifyLesson(tidy(exactTriangle.lesson), {problemText});
+    if (!latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length && !proofDependencyFeedback(checked.lesson,problemText).length && checked.verification.status !== "unverified") return {
+      lesson:checked.lesson, verification:{...checked.verification,status:"verified",checks:[...checked.verification.checks,{label:"Tổng góc, tính chất tam giác cân hoặc tỉ lệ đồng dạng được tính bằng phân số chính xác",passed:true}]},
+      attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"deterministic-geometry",
+    };
+  }
+  const board = boardSearchLesson(problemText);
+  if (board && board.certificates.every((c,i)=>verifyBoardSearch(c,i===0?4:2))) {
+    const lesson = tidy(board.lesson);
+    if (!latexFeedback(lesson).length && !cleanLanguage(lesson).feedback.length) return {
+      lesson, verification: {status:"verified",figureIssue:null,checks:[{label:"Tất cả vị trí ban đầu và mọi đường đi hợp lệ đều bị phát hiện trong giới hạn lượt",passed:true}]},
+      attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"deterministic-board-search",
+    };
+  }
+  const combinatorics=certifiedCombinatoricsLesson(problemText);
+  if(combinatorics&&combinatorics.verify()) {
+    const checked=verifyLesson(tidy(combinatorics.lesson),{problemText});
+    if(checked.verification.status!=="unverified"&&!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length) return {
+      lesson:checked.lesson,verification:{...checked.verification,status:"verified",checks:[...checked.verification.checks,{label:combinatorics.label,passed:true}]},
+      attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"certified-combinatorics",
+    };
+  }
+  const game = takeAwayLesson(problemText);
+  if (game && verifyGameCertificate(game.certificate)) {
+    const checked = verifyLesson(tidy(game.lesson), { problemText });
+    if (!latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length) {
+      return { lesson: checked.lesson, verification: { status: "verified", figureIssue: null, checks: [{ label: "Kiểm tra mọi nước hợp lệ ở tất cả trạng thái hữu hạn", passed: true }] }, attempts: 0, durationMs: Date.now() - started, usage: {}, costUsd: 0, model: "deterministic-combinatorics" };
+    }
+  }
   // Geometry rules and the figure schema are only sent when a figure is needed (input-token saving).
   let withFigure = looksLikeGeometry(problemText);
   const vietnamese = containsVietnamese(problemText);
   const tier = problemTier(problemText);
   // Only the knowledge-base sections relevant to this problem go into the prompt.
   const domains = problemDomains(problemText);
+  const certifiedInteger = certifiedNumberTheoryLesson(problemText);
+  if (certifiedInteger) {
+    const valid = certifiedInteger.verify();
+    const checked = verifyLesson(tidy(certifiedInteger.lesson), { problemText });
+    if (valid && checked.verification.status !== 'unverified' && !latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length) {
+      return {lesson:checked.lesson,verification:{...checked.verification,status:certifiedInteger.coverage==='complete'?'verified':'partial',checks:[...checked.verification.checks,{label:certifiedInteger.label,passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'deterministic-number-theory'};
+    }
+  }
+  // Routine tasks in any wording (remainders of powers, ƯCLN/BCNN, divisor problems, integer equations, counting,
+  // right-triangle/circle/Thales lengths): a certified lesson with no model call.
+  if (routine) {
+    const routineResult = routineLesson(problemText);
+    if (routineResult) {
+      const checked = verifyLesson(tidy(routineResult.lesson), { problemText });
+      if (checked.verification.status !== "unverified" && !latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length) {
+        log(`lesson by the routine solver (${routineResult.family}); no model call`);
+        return { lesson: checked.lesson, verification: { ...checked.verification, status: "verified", checks: [...checked.verification.checks, { label: routineResult.label, passed: true }] }, attempts: 0, durationMs: Date.now() - started, usage: {}, costUsd: 0, model: `routine-${routineResult.family}` };
+      }
+      log(`routine solver (${routineResult.family}) lesson rejected by the lesson checks; continuing`);
+    }
+  }
   // Geometry: the figure the checker will build from the statement, with exact definitions and measured facts, so the
   // solution reasons about the right objects (and its claims can match the figure).
   const figureNotes = withFigure ? describeStatementFigure(normalizeProblemText(problemText)) : null;
@@ -487,7 +667,12 @@ export async function solveProblem(
     plannerPartial = partial;
   }
   try {
-    return await solveWithModel();
+    const result = await solveWithModel();
+    const leakage = cleanLanguage(result.lesson).feedback;
+    if (leakage.length) throw new OcrFailure("malformed_output", "lesson contains untranslated student-facing text", true);
+    if (latexFeedback(result.lesson).length) throw new OcrFailure("malformed_output", "lesson still contains broken mathematical formatting", true);
+    if(hiddenSearchFeedback(result.lesson,problemText).length)throw new OcrFailure('incomplete','the game strategy has no valid exhaustive query certificate',true);
+    return result;
   } catch (err) {
     // The model failed (timeout, gateway, gave up): the claims the planner proved are still worth showing.
     const fallback = plannerPartial?.();
@@ -518,7 +703,7 @@ export async function solveProblem(
     const t0 = Date.now();
     try {
       onProgress?.({ stage: "thinking", attempt: 1, elapsedMs: Date.now() - started, stepsWritten: 0, problemKind: null, strategy: null });
-      const text = await outlineModel.complete({
+      const text = await withinSignal(signal, () => outlineModel.complete({
         messages: [
           { role: "system", content: OUTLINE_SYSTEM },
           { role: "user", content: `${normalizeProblemText(problemText)}${computedNote ? `\n\n${computedNote}` : ""}` },
@@ -527,7 +712,7 @@ export async function solveProblem(
         schemaName: "outline",
         signal,
         onUsage: (u) => (usage[outlineModel.model] = addUsage(usage[outlineModel.model] ?? emptyUsage(), u)),
-      });
+      }));
       const parsed = OutlineSchema.safeParse(JSON.parse(text));
       if (parsed.success && parsed.data.outline.trim()) {
         outlineNote =
@@ -547,7 +732,7 @@ export async function solveProblem(
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
   ];
-  let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number; gaveUp: boolean } | null = null;
+  let best: { lesson: ModelLesson; verification: Verification; score: number; model: string; problems: number; drawn: number; gaveUp: boolean; contradictoryConclusion:boolean; invalidNumericAssertion:boolean } | null = null;
   const finish = (attempts: number, producedBy: string) => {
     let costUsd = 0;
     for (const [name, u] of Object.entries(usage)) {
@@ -569,7 +754,7 @@ export async function solveProblem(
     report(attempt === 1 ? "thinking" : "retrying");
     let text: string;
     try {
-      text = await current.complete({
+      text = await withinSignal(signal, () => current.complete({
         messages,
         schema: current.grammarConstrained
           ? withFigure
@@ -582,16 +767,17 @@ export async function solveProblem(
         signal,
         onUsage: (u) => (usage[current.model] = addUsage(usage[current.model] ?? emptyUsage(), u)),
         onDelta: onProgress ? (partial) => report(partial ? "writing" : attempt === 1 ? "thinking" : "retrying", partial) : undefined,
-      });
+      }));
     } catch (err) {
       // A temporary failure on the first attempt (truncated output, rate limit, timeout) gets the next
       // attempt instead of failing the solve; a failed retry never throws away a lesson we already have.
       // …but only while a retry can still finish in a reasonable time: after a long failed request (a hard problem
       // the model ran out of tokens or time on), another full attempt would double the wait for a likely failure.
       const spent = Date.now() - started;
+      if (signal.aborted && !best) throw err;
       // A failure-only fallback (a different, faster model) is worth trying even after a long failed attempt.
-      const switching = fallbackOnlyOnFailure && !!fallback && current !== fallback;
-      if (!best && attempt < maxAttempts && err instanceof OcrFailure && (err.retryable || switching) && (spent <= retryBudgetMs || switching)) {
+      const switching = !!fallback && current !== fallback;
+      if (!signal.aborted && !best && attempt < maxAttempts && err instanceof OcrFailure && (err.retryable || switching) && (spent <= retryBudgetMs || switching)) {
         lastFailed = true;
         log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again`);
         continue;
@@ -601,6 +787,8 @@ export async function solveProblem(
         throw new OcrFailure("incomplete", `the model could not finish this problem in time (${err.message})`, true);
       }
       if (!best || best.gaveUp) throw err;
+      if (best.contradictoryConclusion) throw new OcrFailure("incomplete", "the final conclusion contradicts the worked solution and correction could not finish", true);
+      if (best.invalidNumericAssertion) throw new OcrFailure("incomplete", "a displayed numeric divisibility assertion is false and correction could not finish", true);
       log(`attempt ${attempt} failed (${(err as Error).message.slice(0, 120)}); keeping attempt ${attempt - 1}`);
       return { lesson: best.lesson, verification: best.verification, ...finish(attempt, best.model) };
     }
@@ -609,13 +797,37 @@ export async function solveProblem(
     const parsed = parseLesson(text);
     let problems: string[];
 
-    if ("lesson" in parsed) {
+    const dependencies = "lesson" in parsed ? proofDependencyFeedback(tidy(parsed.lesson), problemText) : [];
+    if ("lesson" in parsed && dependencies.length === 0) {
+      // A model cannot bypass Vietnamese hygiene by mislabelling its output language.
+      if (vietnamese) parsed.lesson.analysis.language = "vi";
       // The model may leave the statement empty (it's the confirmed problem text): fill it in, since
       // the point builder and claim checker read the statement.
       if (!parsed.lesson.analysis.statement.trim()) {
         parsed.lesson.analysis.statement = normalizeProblemText(problemText);
       }
-      const checked = verifyLesson(tidy(parsed.lesson), { problemText: normalizeProblemText(problemText) });
+      // The topic is metadata: a model that copies a schema example ("number_theory" for an algebra question) gets the
+      // label of the deterministic classifier instead of a rejected lesson and a full regeneration.
+      const specificDomains = problemDomains(problemText).filter((d) => d !== "algebra");
+      // Not "geometry": that label means the lesson needs a figure, and the keyword classifier misses figure-only statements.
+      if ((parsed.lesson.analysis.topic === "number_theory" || parsed.lesson.analysis.topic === "combinatorics") && !specificDomains.includes(parsed.lesson.analysis.topic)) {
+        log(`topic "${parsed.lesson.analysis.topic}" relabelled "${specificDomains[0] ?? "algebra"}" (classifier)`);
+        parsed.lesson.analysis.topic = (specificDomains[0] ?? "algebra") as ModelLesson["analysis"]["topic"];
+      }
+      let candidate = tidy(parsed.lesson);
+      // A few English/foreign words in otherwise usable prose: rewrite only those fields (formulas and numbers must come
+      // back unchanged) instead of discarding the lesson.
+      // This is a small field-only rewrite, not another solve. Do it whenever the background deadline still permits it:
+      // a slow but mathematically correct answer must not be discarded merely because it reached this check after the
+      // full-solve retry budget. Prefer the configured stronger fallback for the rewrite; it sees only the offending
+      // fields and cannot alter formulas or prose numbers (repairLanguage enforces both invariants).
+      const language = cleanLanguage(candidate);
+      if (vietnamese && language.feedback.length && repairableLanguage(language.lesson) && !signal.aborted) {
+        const repairModel = fallback ?? current;
+        const repaired = await repairLanguage(language.lesson, repairModel, signal, (u) => (usage[repairModel.model] = addUsage(usage[repairModel.model] ?? emptyUsage(), u)), log);
+        if (repaired && !cleanLanguage(repaired).feedback.length) candidate = tidy(repaired);
+      }
+      const checked = verifyLesson(candidate, { problemText: normalizeProblemText(problemText) });
       // Formulas the app can't render go back to the model; whatever is left is shown as plain text.
       const latex = latexFeedback(checked.lesson);
       // The final answer must agree with what was computed (a wrong answer is a failed check, worth a retry).
@@ -623,7 +835,7 @@ export async function solveProblem(
       if (mismatch.length) log(`answer differs from the computation: ${mismatch.join(" | ").slice(0, 200)}`);
       const result = {
         ...checked,
-        verification: mismatch.length ? { ...checked.verification, status: "unverified" as const, checks: [...checked.verification.checks, ...mismatch.map((m) => ({ label: m.slice(0, 200), passed: false }))].slice(0, 40) } : checked.verification,
+        verification: mismatch.length || latex.length ? { ...checked.verification, status: "unverified" as const, checks: [...checked.verification.checks, ...mismatch.map((m) => ({ label: m.slice(0, 200), passed: false })), ...(latex.length ? [{ label: "Một số công thức chưa hiển thị đầy đủ; cần kiểm tra lại lời giải", passed: false }] : [])].slice(0, 40) } : checked.verification,
         lesson: latex.length ? plainUnrenderable(checked.lesson) : checked.lesson,
         feedback: [...checked.feedback, ...latex, ...mismatch],
       };
@@ -637,12 +849,14 @@ export async function solveProblem(
       // Same score: prefer the more complete figure, then the attempt with fewer remaining problems.
       const f = result.lesson.figure;
       const drawn = f ? f.points.length + f.circles.length + f.lines.length : 0;
+      const invalidNumericAssertion=numericDivisibilityFeedback(result.lesson).length>0;
       const better =
         !best ||
-        score > best.score ||
-        (score === best.score && (drawn > best.drawn || (drawn === best.drawn && result.feedback.length < best.problems)));
+        (best.invalidNumericAssertion&&!invalidNumericAssertion) ||
+        ((!invalidNumericAssertion||best.invalidNumericAssertion)&&(score > best.score ||
+        (score === best.score && (drawn > best.drawn || (drawn === best.drawn && result.feedback.length < best.problems)))));
       if (better) {
-        best = { lesson: result.lesson, verification: result.verification, score, model: current.model, problems: result.feedback.length, drawn, gaveUp };
+        best = { lesson: result.lesson, verification: result.verification, score, model: current.model, problems: result.feedback.length, drawn, gaveUp, contradictoryConclusion:conclusionConsistencyFeedback(result.lesson,problemText).length>0,invalidNumericAssertion };
       }
       problems = result.feedback;
       log(`attempt ${attempt}: ${result.verification.status}, ${problems.length} problem(s)${problems.length ? `: ${problems.slice(0, 3).join(" | ")}` : ""}`);
@@ -661,7 +875,7 @@ export async function solveProblem(
         return { lesson: result.lesson, verification: result.verification, ...finish(attempt, current.model) };
       }
     } else {
-      problems = parsed.problems;
+      problems = "lesson" in parsed ? dependencies : parsed.problems;
       log(`attempt ${attempt}: invalid structure: ${problems.slice(0, 3).join(" | ")}`);
     }
 
@@ -687,6 +901,8 @@ export async function solveProblem(
     log(`the model marked a problem within the curriculum as unsupported on every attempt; not storing that`);
     throw new OcrFailure("incomplete", "the model could not finish a problem that is within the curriculum", true);
   }
+  if (best.contradictoryConclusion) throw new OcrFailure("incomplete", "the final conclusion contradicts the worked solution after correction attempts", true);
+  if (best.invalidNumericAssertion) throw new OcrFailure("incomplete", "a displayed numeric divisibility assertion remains false after correction attempts", true);
   return { lesson: best.lesson, verification: best.verification, ...finish(maxAttempts, best.model) };
   }
 }

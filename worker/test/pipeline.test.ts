@@ -5,8 +5,11 @@ import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { toStrictJsonSchema } from "../src/solver/jsonSchema";
 import type { ChatMessage, JsonModel } from "../src/solver/llm";
 import { mockAlgebraLesson, mockGeometryLesson } from "../src/solver/mock";
-import { solveProblem, stackMathLines } from "../src/solver/pipeline";
+import { solveProblem as solveWithModel, stackMathLines } from "../src/solver/pipeline";
 import { buildSystemPrompt, buildUserMessage } from "../src/solver/prompts";
+
+// These tests exercise inference, retries and hygiene; exact algebra is tested separately.
+const solveProblem:typeof solveWithModel=(model,curriculum,text,options)=>solveWithModel(model,curriculum,text,{...options,exactAlgebra:false});
 
 /** A model that returns scripted outputs and records what it was sent. */
 class ScriptedModel implements JsonModel {
@@ -177,7 +180,6 @@ describe("stackMathLines", () => {
 
 describe("malformed figure checks", () => {
   it("repairs segment-name refs and drops hopeless checks instead of retrying", async () => {
-    const { solveProblem } = await import("../src/solver/pipeline");
     const { mockGeometryLesson } = await import("../src/solver/mock");
     const { VN_GRADE_9 } = await import("../src/solver/curriculum");
     const lesson = mockGeometryLesson() as unknown as { figure: { checks: unknown[] } };
@@ -202,7 +204,6 @@ describe("malformed figure checks", () => {
 
 describe("messy ids", () => {
   it("cleans ids consistently instead of rejecting the lesson", async () => {
-    const { solveProblem } = await import("../src/solver/pipeline");
     const { mockAlgebraLesson } = await import("../src/solver/mock");
     const { VN_GRADE_9 } = await import("../src/solver/curriculum");
     const lesson = mockAlgebraLesson() as unknown as { steps: { id: string }[]; hints: { stepId: string }[] };
@@ -245,7 +246,6 @@ describe("object references in figures", () => {
 
 describe("retry policy", () => {
   it("does not regenerate a lesson whose only feedback is a malformed check, but does for a wrong answer", async () => {
-    const { solveProblem } = await import("../src/solver/pipeline");
     const { mockAlgebraLesson } = await import("../src/solver/mock");
     const { VN_GRADE_9 } = await import("../src/solver/curriculum");
     const run = async (check: { statements: string[]; expected: string }) => {

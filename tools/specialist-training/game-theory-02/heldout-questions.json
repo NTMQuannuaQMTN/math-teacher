@@ -1,0 +1,185 @@
+{
+  "createdAt": "2026-10-12T07:38:10.034905+00:00",
+  "selectionSeed": 1791790897,
+  "cases": [
+    {
+      "id": "take-range-162",
+      "family": "takeaway",
+      "text": "Có 162 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy từ 1 đến 6 viên sỏi. Người lấy viên sỏi cuối cùng thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "stones": 162,
+        "moves": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "lastLoses": false
+      },
+      "scan": "1e129ae7-d7a5-4743-8199-938fc64c3ba3"
+    },
+    {
+      "id": "take-range-97",
+      "family": "takeaway",
+      "text": "Có 97 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy từ 1 đến 6 viên sỏi. Người lấy viên sỏi cuối cùng thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "stones": 97,
+        "moves": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "lastLoses": false
+      },
+      "scan": "cdbdfaaf-340c-4a08-81a2-98eb06e227bc"
+    },
+    {
+      "id": "take-misere-59",
+      "family": "takeaway",
+      "text": "Có 59 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy 1, 3 hoặc 4 viên sỏi. Người lấy viên sỏi cuối cùng thua. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "stones": 59,
+        "moves": [
+          1,
+          3,
+          4
+        ],
+        "lastLoses": true
+      },
+      "scan": "1142d711-8219-477b-a57c-f329c128e0ef"
+    },
+    {
+      "id": "take-misere-41",
+      "family": "takeaway",
+      "text": "Có 41 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy 1, 3 hoặc 4 viên sỏi. Người lấy viên sỏi cuối cùng thua. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "stones": 41,
+        "moves": [
+          1,
+          3,
+          4
+        ],
+        "lastLoses": true
+      },
+      "scan": "0dfaf126-69e9-418b-a5a2-a89982d199af"
+    },
+    {
+      "id": "piles-25-39-False",
+      "family": "piles",
+      "text": "Có hai đống sỏi, một đống có 25 viên và một đống có 39 viên. Hai người luân phiên chơi; mỗi lượt chọn đúng một đống và lấy một số nguyên dương viên sỏi từ đống đó. Người lấy viên cuối cùng thắng. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+      "parameters": {
+        "a": 25,
+        "b": 39,
+        "lastLoses": false
+      },
+      "scan": "a89b225e-0875-4fbf-8376-11a49f37f507"
+    },
+    {
+      "id": "piles-28-28-False",
+      "family": "piles",
+      "text": "Có hai đống sỏi, một đống có 28 viên và một đống có 28 viên. Hai người luân phiên chơi; mỗi lượt chọn đúng một đống và lấy một số nguyên dương viên sỏi từ đống đó. Người lấy viên cuối cùng thắng. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+      "parameters": {
+        "a": 28,
+        "b": 28,
+        "lastLoses": false
+      },
+      "scan": "42a83efc-2647-4ea6-93f2-603ab6c5308c"
+    },
+    {
+      "id": "piles-1-43-True",
+      "family": "piles",
+      "text": "Có hai đống sỏi, một đống có 1 viên và một đống có 43 viên. Hai người luân phiên chơi; mỗi lượt chọn đúng một đống và lấy một số nguyên dương viên sỏi từ đống đó. Người lấy viên cuối cùng thua. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+      "parameters": {
+        "a": 1,
+        "b": 43,
+        "lastLoses": true
+      },
+      "scan": "342a165f-a86c-4f9c-a18b-d0027ce493e7"
+    },
+    {
+      "id": "piles-18-18-True",
+      "family": "piles",
+      "text": "Có hai đống sỏi, một đống có 18 viên và một đống có 18 viên. Hai người luân phiên chơi; mỗi lượt chọn đúng một đống và lấy một số nguyên dương viên sỏi từ đống đó. Người lấy viên cuối cùng thua. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+      "parameters": {
+        "a": 18,
+        "b": 18,
+        "lastLoses": true
+      },
+      "scan": "941f0817-5eaf-4da0-a0de-22d4c0df40c1"
+    },
+    {
+      "id": "signs-25-9",
+      "family": "signs",
+      "text": "An và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 25 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 9, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "n": 25,
+        "modulus": 9
+      },
+      "scan": "7bb697be-ac28-4d0b-96f2-58ee44135a80"
+    },
+    {
+      "id": "signs-27-10",
+      "family": "signs",
+      "text": "An và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 27 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 10, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "n": 27,
+        "modulus": 10
+      },
+      "scan": "d5a5a105-e98c-49dc-b16a-aa56714f726e"
+    },
+    {
+      "id": "signs-28-7",
+      "family": "signs",
+      "text": "An và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 28 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của các số chia hết cho 7, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": {
+        "n": 28,
+        "modulus": 7
+      },
+      "scan": "7241f910-8964-466c-8231-2db0f1a0e367"
+    },
+    {
+      "id": "board-15",
+      "family": "board",
+      "text": "Cho bàn cờ $2\\times15$. An chọn một ô ban đầu, sau đó mỗi lượt An di chuyển sang một ô kề bên. Bình chọn $k$ ô mỗi lượt để hỏi An. Chứng minh Bình có thể thắng sau không quá 14 lượt với $k=4$ và không quá 28 lượt với $k=2$.",
+      "parameters": {
+        "columns": 15
+      },
+      "scan": "60837e4e-a3f2-4778-852c-a9728b0cfaaf"
+    },
+    {
+      "id": "board-21",
+      "family": "board",
+      "text": "Cho bàn cờ $2\\times21$. An chọn một ô ban đầu, sau đó mỗi lượt An di chuyển sang một ô kề bên. Bình chọn $k$ ô mỗi lượt để hỏi An. Chứng minh Bình có thể thắng sau không quá 20 lượt với $k=4$ và không quá 40 lượt với $k=2$.",
+      "parameters": {
+        "columns": 21
+      },
+      "scan": "3a376b18-4d83-4c02-94c3-8bc0a873a9be"
+    },
+    {
+      "id": "board-staying",
+      "family": "unsupported-diagnostic",
+      "text": "Cho bàn cờ $2\\times7$. An được đứng yên hoặc đi sang ô kề cạnh. Bình hỏi 2 ô mỗi lượt. Bình có bảo đảm bắt được An không? Hãy chứng minh.",
+      "parameters": null,
+      "scan": "8a144483-44fe-4ae6-ba20-76d93565147c"
+    },
+    {
+      "id": "chomp",
+      "family": "unsupported-diagnostic",
+      "text": "Hai người chơi luân phiên trên hình chữ nhật ô vuông $3\\times6$. Mỗi lượt chọn một ô và xóa ô đó cùng các ô ở bên phải và bên trên. Người xóa ô góc dưới bên trái thua. Ai có chiến lược thắng? Hãy chỉ rõ chiến lược.",
+      "parameters": null,
+      "scan": "ea242586-cd21-4e62-98ca-2d45e3e2c8b9"
+    },
+    {
+      "id": "wythoff",
+      "family": "unsupported-diagnostic",
+      "text": "Có hai đống sỏi gồm 9 và 15 viên. Mỗi lượt được lấy một số nguyên dương từ một đống hoặc lấy cùng một số từ cả hai đống. Người lấy viên cuối cùng thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+      "parameters": null,
+      "scan": "a78f3b21-9ae5-41fa-b373-5ee5310ddd0d"
+    }
+  ]
+}

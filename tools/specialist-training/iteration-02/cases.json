@@ -1,0 +1,62 @@
+[
+  {
+    "id": "game-dev-normal",
+    "split": "development",
+    "text": "Có 21 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy từ 1 đến 3 viên sỏi. Người lấy viên sỏi cuối cùng thắng. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+    "source": "Generated feedback game family; numeric variants are validation, never held-out."
+  },
+  {
+    "id": "game-dev-misere",
+    "split": "development",
+    "text": "Có 25 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy 1 hoặc 2 viên sỏi. Người lấy viên sỏi cuối cùng thua. Ai có chiến lược thắng? Hãy chứng minh.",
+    "source": "Generated feedback game family; numeric variants are validation, never held-out."
+  },
+  {
+    "id": "game-dev-gaps",
+    "split": "development",
+    "text": "Có 20 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy 1 hoặc 3 viên sỏi. Người lấy viên sỏi cuối cùng thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+    "source": "Generated feedback game family; numeric variants are validation, never held-out."
+  },
+  {
+    "id": "game-val-subset",
+    "split": "validation",
+    "text": "Có 34 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy 1, 4 hoặc 5 viên sỏi. Người lấy viên sỏi cuối cùng thắng. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+    "source": "Generated feedback game family; numeric variants are validation, never held-out."
+  },
+  {
+    "id": "game-val-misere",
+    "split": "validation",
+    "text": "Có 40 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy từ 1 đến 4 viên sỏi. Người lấy viên sỏi cuối cùng thua. Ai có chiến lược thắng? Hãy chứng minh.",
+    "source": "Generated feedback game family; numeric variants are validation, never held-out."
+  },
+  {
+    "id": "game-val-no-move",
+    "split": "validation",
+    "text": "Có 16 viên sỏi. Hai người chơi luân phiên, mỗi lượt lấy 2 hoặc 5 viên sỏi. Ai không lấy được viên nào thì thua. Ai có chiến lược thắng? Hãy chứng minh.",
+    "source": "Generated feedback game family; numeric variants are validation, never held-out."
+  },
+  {
+    "id": "user-board-2x9",
+    "split": "development",
+    "text": "Cho bàn cờ $2\\times9$. An chọn một ô ban đầu, sau đó mỗi lượt An di chuyển sang một ô kề bên. Bình chọn $k$ ô mỗi lượt để hỏi An. Chứng minh Bình có thể thắng sau không quá 8 lượt với $k=4$ và không quá 16 lượt với $k=2$.",
+    "source": "Actual user feedback; manually transcribed clear 2×9 dimensions. No OCR request made; malformed pasted dimensions remain an ambiguous-input regression."
+  },
+  {
+    "id": "held-two-piles",
+    "text": "Có hai đống sỏi, một đống có 2 viên và một đống có 3 viên. Hai người luân phiên chơi; mỗi lượt chọn đúng một đống và lấy một số nguyên dương viên sỏi từ đống đó. Người lấy viên cuối cùng thắng. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+    "split": "held_out",
+    "source": "Fresh generated structural transfer family, reserved only after development/validation; not a numeric variant of the developed algorithms."
+  },
+  {
+    "id": "held-sign-game",
+    "text": "An và Bình luân phiên đặt dấu cộng hoặc dấu trừ trước các số 1, 2, 3, ..., 10 theo đúng thứ tự này; An đặt dấu trước số 1. An thắng nếu tổng có dấu của mười số chia hết cho 3, nếu không Bình thắng. Ai có chiến lược thắng? Hãy chứng minh.",
+    "split": "held_out",
+    "source": "Fresh generated structural transfer family, reserved only after development/validation; not a numeric variant of the developed algorithms."
+  },
+  {
+    "id": "held-monotone-board",
+    "text": "Một quân cờ bắt đầu ở ô (1,1) trên bàn cờ 4 hàng, 4 cột. Hai người luân phiên di chuyển quân sang ô chung cạnh ở bên phải hoặc ở phía trên, nếu còn ô trong bàn. Người không còn nước đi thua. Người đi trước có chiến lược thắng không? Hãy chứng minh.",
+    "split": "held_out",
+    "source": "Fresh generated structural transfer family, reserved only after development/validation; not a numeric variant of the developed algorithms."
+  }
+]

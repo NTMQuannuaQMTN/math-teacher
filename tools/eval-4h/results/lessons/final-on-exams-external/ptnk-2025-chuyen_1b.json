@@ -1,0 +1,158 @@
+{
+  "input": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh $x_1^4+x_2^4>\\frac92$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh $x_1^4+x_2^4>\\frac92$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Chặn tổng lũy thừa bậc bốn của hai nghiệm",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chặn tổng lũy thừa bậc bốn của hai nghiệm"
+      ],
+      "techniques": [],
+      "givens": [
+        "$x^2-2(m+1)x+2m=0$",
+        "$m\\in\\mathbb{R}$"
+      ],
+      "unknowns": [
+        "Chứng minh $x_1^4+x_2^4>\\frac92$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng Vi-ét và hằng đẳng thức, khử bậc ba rồi hoàn thành bình phương để chứng minh cận cho mọi tham số.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Tổng và tích hai nghiệm phụ thuộc tham số như thế nào?",
+        "cue": "Biệt thức; bình phương không âm; Vi-ét",
+        "explanation": "Hệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là $x_1,x_2$, và đặt tổng là $S$, tích là $P$. Vi-ét cho hai biểu thức này theo tham số.",
+        "math": "\\begin{gathered}\\Delta=4m^{2}+4=(4)(m-(0))^2+(4)\\ge4>0\\\\S=x_1+x_2=2m+2,\\quad P=x_1x_2=2m\\end{gathered}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Bình phương tổng hai bình phương chứa hạng tử tích nào cần trừ đi?",
+        "cue": "Hằng đẳng thức; khai triển và thu gọn",
+        "explanation": "Khai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.",
+        "math": "\\begin{gathered}x_1^2+x_2^2=S^2-2P\\\\x_1^4+x_2^4=(x_1^2+x_2^2)^2-2(x_1x_2)^2\\\\=(S^2-2P)^2-2P^2=S^4-4PS^2+2P^2\\end{gathered}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Sau khi thu gọn, hệ số của từng bậc tham số là gì?",
+        "cue": "Thay Vi-ét; khai triển chính xác",
+        "explanation": "Thay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.",
+        "math": "x_1^4+x_2^4=(2m+2)^4-4(2m)(2m+2)^2+2(2m)^2=16m^{4}+32m^{3}+40m^{2}+32m+16",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Có thể nhóm đa thức thành một lũy thừa bậc bốn không âm, một bình phương và hằng số nào?",
+        "cue": "Đổi biến; khai triển; hoàn thành bình phương; tổng số không âm",
+        "explanation": "Đặt $t=m-(-\\frac{1}{2})$, tức $m=t+(-\\frac{1}{2})$. Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.",
+        "math": "\\begin{gathered}t=m-(-\\frac{1}{2})\\\\x_1^4+x_2^4=16t^{4}+16t^{2}+8t+7\\\\=(16)t^4+(16)(t-(-\\frac{1}{4}))^2+(6)\\ge6>\\frac{9}{2}\\end{gathered}",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Cận dưới tìm được có lớn hơn cận trong đề không? Có cần thử riêng từng tham số nữa không?",
+        "cue": "Biến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt",
+        "explanation": "Mỗi số thực $m$ cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy $x_1^4+x_2^4>\\frac92$ đúng với mọi số thực $m$.",
+        "math": null,
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chứng minh hai nghiệm thực tồn tại và ghi tổng, tích",
+        "explanation": "Hệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là $x_1,x_2$, và đặt tổng là $S$, tích là $P$. Vi-ét cho hai biểu thức này theo tham số.",
+        "math": "\\begin{gathered}\\Delta=4m^{2}+4=(4)(m-(0))^2+(4)\\ge4>0\\\\S=x_1+x_2=2m+2,\\quad P=x_1x_2=2m\\end{gathered}",
+        "reason": "Biệt thức; bình phương không âm; Vi-ét",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Biểu diễn tổng lũy thừa bậc bốn qua tổng và tích",
+        "explanation": "Khai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.",
+        "math": "\\begin{gathered}x_1^2+x_2^2=S^2-2P\\\\x_1^4+x_2^4=(x_1^2+x_2^2)^2-2(x_1x_2)^2\\\\=(S^2-2P)^2-2P^2=S^4-4PS^2+2P^2\\end{gathered}",
+        "reason": "Hằng đẳng thức; khai triển và thu gọn",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Thay Vi-ét và khai triển theo tham số",
+        "explanation": "Thay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.",
+        "math": "x_1^4+x_2^4=(2m+2)^4-4(2m)(2m+2)^2+2(2m)^2=16m^{4}+32m^{3}+40m^{2}+32m+16",
+        "reason": "Thay Vi-ét; khai triển chính xác",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Đổi biến để khử bậc ba và hoàn thành bình phương",
+        "explanation": "Đặt $t=m-(-\\frac{1}{2})$, tức $m=t+(-\\frac{1}{2})$. Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.",
+        "math": "\\begin{gathered}t=m-(-\\frac{1}{2})\\\\x_1^4+x_2^4=16t^{4}+16t^{2}+8t+7\\\\=(16)t^4+(16)(t-(-\\frac{1}{4}))^2+(6)\\ge6>\\frac{9}{2}\\end{gathered}",
+        "reason": "Đổi biến; khai triển; hoàn thành bình phương; tổng số không âm",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Kết luận cho mọi tham số",
+        "explanation": "Mỗi số thực $m$ cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy $x_1^4+x_2^4>\\frac92$ đúng với mọi số thực $m$.",
+        "math": null,
+        "reason": "Biến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $x_1^4+x_2^4>\\frac92$ đúng với mọi số thực $m$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Kiểm tra biến đổi đa thức, điều kiện xác định, toàn bộ nghiệm, bảng dấu hoặc biệt thức theo tham số bằng phép tính chính xác",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 20,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-algebra",
+  "logs": []
+}

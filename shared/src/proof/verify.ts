@@ -10,9 +10,10 @@
  *   6. numeric sanity: every fact holds on the figure AND on randomly perturbed copies of it (same construction,
  *      moved free points) — a fact true only in this particular drawing is rejected
  *
- * The figure decides configuration questions only (which side of a line a point is on, whether a point is between
- * two others) — the facts a textbook proof reads off the hypothesis ("D nằm trên cung nhỏ AC"). These are reported
- * as `configuration` notes on the steps that rely on them.
+ * Numerical configurations are sanity checks, not proofs of point order. Undirected angle chases
+ * involving unrestricted line intersections are rejected until the proof system represents
+ * explicit order deductions or exhaustive positional cases. Other configuration-dependent
+ * methods still require care; perturbing a drawing is not universal certification.
  */
 import { resolveFigure } from "../geometry";
 import type { Figure } from "../solution";
@@ -41,6 +42,8 @@ export interface VerifyResult {
 export interface VerifyOptions {
   /** Extra givens (statement shape words) as produced by the planner, with the method "GIVEN". */
   statementGivens?: Fact[];
+  /** Original confirmed text, only for explicit segment-order prerequisites. */
+  statementText?: string;
   /** Goals proved in earlier parts (method PREVIOUS_PART). */
   previous?: Fact[];
   /** Highest grade allowed (default 9). */
@@ -55,6 +58,49 @@ const sameSeg = (a: Seg, b: Seg) => (a[0] === b[0] && a[1] === b[1]) || (a[0] ==
 const sameAngle = (a: Tri, b: Tri) => a[1] === b[1] && ((a[0] === b[0] && a[2] === b[2]) || (a[0] === b[2] && a[2] === b[0]));
 const common = (a: Seg, b: Seg) => a.find((x) => b.includes(x));
 const other = (s: Seg, x: string) => (s[0] === x ? s[1] : s[0]);
+
+/** A parallel section inside a triangle has a stable point order, proved by the stated segment bounds.
+ * The allowance applies only to that five-point configuration, not arbitrary intersections or extra points. */
+function boundedParallelSection(figure:Figure,id:string,used:Set<string>,statement?:string):boolean {
+ if(!statement)return false;
+ const p=figure.points.find(q=>q.id===id);if(p?.kind!=="intersection")return false;
+ const [m,helper,a,c]=p.refs;
+ const start=figure.points.find(q=>q.id===m),direction=figure.points.find(q=>q.id===helper);
+ if(start?.kind!=="on_segment"||direction?.kind!=="translate"||direction.refs[0]!==m||direction.value!==1)return false;
+ const b=direction.refs[1];
+ if(direction.refs[2]!==c||!a||!b||!c||!m||new Set([a,b,c,m,id]).size!==5||!sameSeg(start.refs as Seg,[a,b]))return false;
+ if([...used].some(q=>![a,b,c,m,id].includes(q)))return false;
+ const text=statement.split(/chứng minh/iu)[0]!.replace(/\$/g,"").replace(/\s+/g," ");
+ const within=(q:string,x:string,y:string)=>new RegExp(`${q} (?:là (?:một )?điểm )?(?:nằm )?(?:trên|thuộc) đoạn(?: thẳng)? (?:${x}${y}|${y}${x})(?:[,. ]|$)`).test(text);
+ return within(m,a,b)&&within(id,a,c);
+}
+
+/** Altitudes of an acute triangle lie on its sides; the altitude from a right
+ * vertex lies on the hypotenuse. These are statement deductions, not coordinates. */
+function boundedAltitudeFoot(figure:Figure,id:string,used:Set<string>,statement?:string):boolean {
+ if(!statement)return false;
+ const p=figure.points.find(q=>q.id===id);if(p?.kind!=="foot")return false;
+ const text=statement.split(/chứng minh/iu)[0]!.replace(/\$/g,"").replace(/\s+/g," ");
+ for(const match of text.matchAll(/tam giác ([A-Z]{3}) (nhọn|vuông tại ([A-Z]))/gu)) {
+  const vertices=[...match[1]!],right=match[3];
+  if(new Set(vertices).size!==3||p.refs.length!==3||!p.refs.every(q=>vertices.includes(q))||new Set(p.refs).size!==3)continue;
+  if(right&&p.refs[0]!==right)continue;
+  const allowed=new Set(vertices);
+  for(const foot of figure.points)if(foot.kind==='foot'&&foot.refs.length===3&&new Set(foot.refs).size===3&&foot.refs.every(q=>vertices.includes(q))&&(!right||foot.refs[0]===right))allowed.add(foot.id);
+  if([...used].every(q=>allowed.has(q)))return true;
+ }
+ return false;
+}
+
+/** Ninety degrees is unchanged by reversal of either ray. Only use line
+ * incidence/direction facts and explicit right angles for this exemption. */
+function positionIndependentRightAngles(f:Fact,premises:Fact[],orient:Oracle['orient']):boolean {
+ const angles=f.t==='aval'&&f.v===90?[f.a]:f.t==='eqangle'||f.t==='suppl'?[f.a,f.b]:[];
+ if(!angles.length)return false;
+ const system=new LinearSystem(180);
+ for(const p of premises)if(p.t==='col'||p.t==='para'||p.t==='perp'||p.t==='midp'||p.t==='aval'&&p.v===90)for(const eq of angleEquations(p,orient))system.add(eq,0);
+ return angles.every(a=>{const eqs=angleEquations({t:'aval',a,v:90},orient);return eqs.length>0&&eqs.every(eq=>system.implies(eq)!==null);});
+}
 
 /** Moves the figure's free parameters a little (free points, angles of points on circles, ratios on segments). */
 function perturb(figure: Figure, rnd: () => number): Figure {
@@ -148,8 +194,30 @@ export function verifyProof(figure: Figure, proof: Derivation[], goals: Fact[], 
       need(givenKeys.has(factKey(f)), "not a given of the statement or its construction");
     } else
       switch (d.method) {
+        case "SAME_RAY_ANGLE": {
+          let valid=false;
+          if(f.t==='eqangle'&&f.a[1]===f.b[1])for(const a of [f.a,[f.a[2],f.a[1],f.a[0]]] as Tri[])for(const b of [f.b,[f.b[2],f.b[1],f.b[0]]] as Tri[]) {
+            if(a[0]!==b[0]||a[2]===b[2])continue;
+            for(const [footId,end] of [[a[2],b[2]],[b[2],a[2]]]) {
+              const col=P.some(p=>p.t==='col'&&p.p.slice().sort().join() === [a[1],footId,end].sort().join());
+              const perp=(x:Seg,y:Seg)=>P.some(p=>p.t==='perp'&&((sameSeg(p.a,x)&&sameSeg(p.b,y))||(sameSeg(p.b,x)&&sameSeg(p.a,y))));
+              for(const source of figure.points.map(p=>p.id))if(![a[1],footId,end].includes(source))valid ||=col&&P.length===3&&perp([source,a[1]],[source,end!])&&perp([source,footId!],[a[1],end!]);
+            }
+          }
+          need(valid,'same-ray equality needs the actual projection foot, its collinearity and the established right angle at the source vertex');
+          break;
+        }
         case "ANGLE_CHASE":
           need(algebra(f, d.premises, "angle"), "does not follow from the cited facts by angle chasing");
+          // An intersection of infinite lines does not specify the order of its points.
+          // Undirected angle equations selected on one drawing can change to supplements
+          // in another admissible configuration. Until the proof represents and proves
+          // those positional cases, a numerical orientation is not a justification.
+          if (f.t === "eqangle" || f.t === "aval" || f.t === "suppl") {
+            const used = new Set([f, ...P].flatMap(factPoints));
+            const unrestricted = figure.points.filter(p=>(p.kind === "intersection" || p.kind === "line_circle" || p.kind === "circle_circle" || p.kind === "foot") && used.has(p.id) && !boundedParallelSection(figure,p.id,used,opts.statementText) && !boundedAltitudeFoot(figure,p.id,used,opts.statementText));
+            need(unrestricted.length === 0 || positionIndependentRightAngles(f,P,oracle.orient), `undirected angle chase uses unrestricted line intersections (${unrestricted.map(p=>p.id).join(", ")}); point order needs an explicit proof or exhaustive cases, not the drawing`);
+          }
           if (f.t === "eqangle" || f.t === "aval" || f.t === "suppl") configuration.push("vị trí tương đối của các điểm (theo hình)");
           break;
         case "SAME_LINE": {
@@ -166,6 +234,19 @@ export function verifyProof(figure: Figure, proof: Derivation[], goals: Fact[], 
           need(P.length === 1 && P[0]!.t === "midp" && f.t === "cong" && sameSeg(f.a, [P[0]!.m, P[0]!.a]) !== sameSeg(f.a, [P[0]!.m, P[0]!.b]) &&
             [f.a, f.b].every((s) => sameSeg(s, [(P[0] as Fact & { t: "midp" }).m, (P[0] as Fact & { t: "midp" }).a]) || sameSeg(s, [(P[0] as Fact & { t: "midp" }).m, (P[0] as Fact & { t: "midp" }).b])), "not the two halves of the midpoint's segment");
           break;
+        case "MIDLINE": {
+          const u = P[0], v = P[1];
+          if (P.length !== 2 || u?.t !== "midp" || v?.t !== "midp" || u.m === v.m) { need(false, "MIDLINE needs two distinct side midpoints"); break; }
+          const vertex = [u.a, u.b].find((p) => p === v.a || p === v.b);
+          if (!vertex) { need(false, "midpoints must belong to two sides with a common vertex"); break; }
+          const b = u.a === vertex ? u.b : u.a, c = v.a === vertex ? v.b : v.a;
+          need(b !== c && oracle.orient(vertex, b, c) !== 0, "the triangle must be nondegenerate");
+          const expected: Fact = f.t === "para"
+            ? { t: "para", a: [u.m, v.m], b: [b, c] }
+            : { t: "prod", lhs: [{ seg: [u.m, v.m], power: 1, divide: false }], rhs: [{ seg: [b, c], power: 1, divide: false }, { number: 2, divide: true }] };
+          need((f.t === "para" || f.t === "prod") && factKey(f) === factKey(expected), "not the parallel or half-length conclusion of the midpoint theorem");
+          break;
+        }
         case "ISOSCELES": {
           const c = P[0];
           if (P.length !== 1 || c?.t !== "cong" || f.t !== "eqangle") { need(false, "ISOSCELES needs one equality of two sides"); break; }
@@ -182,6 +263,14 @@ export function verifyProof(figure: Figure, proof: Derivation[], goals: Fact[], 
           if (!v) { need(false, "the sides share no vertex"); break; }
           const [x, y] = [other(f.a, v), other(f.b, v)];
           need(sameAngle(e.a, [v, x, y]) && sameAngle(e.b, [v, y, x]) || sameAngle(e.a, [v, y, x]) && sameAngle(e.b, [v, x, y]), "the cited angles are not the base angles");
+          break;
+        }
+        case "ALTITUDE_ORTHOCENTER": {
+          if (f.t !== "perp" || P.length !== 2 || P.some(p=>p.t !== "perp")) {need(false,"needs exactly two established altitudes");break;}
+          const keys=new Set(P.map(factKey));
+          const valid=([[f.a,f.b],[f.b,f.a]] as [Seg,Seg][]).some(([height,side])=>
+            ([height,[height[1],height[0]]] as Seg[]).some(([c,h])=>keys.has(factKey({t:"perp",a:[side[0],h],b:[side[1],c]})) && keys.has(factKey({t:"perp",a:[side[1],h],b:[side[0],c]}))));
+          need(new Set([...f.a,...f.b]).size===4 && valid,"premises are not the other two altitudes of the same triangle through the same point");
           break;
         }
         case "PERPENDICULAR_BISECTOR": {
@@ -227,9 +316,26 @@ export function verifyProof(figure: Figure, proof: Derivation[], goals: Fact[], 
           const chordOk = (x === x2 && y === y2) || (x === y2 && y === x2);
           need(chordOk && [x, y, p, q].sort().join() === [...f.p].sort().join(), "the angles don't look at one side of the quadrilateral");
           if (!chordOk) break;
+          for(const e of figure.points)for(const h of figure.points) {
+            if(e.id===h.id||e.kind!=='foot'||h.kind!=='foot'||e.refs.length!==3||h.refs.length!==3)continue;
+            const [b,a,c]=e.refs;
+            if(h.refs[0]!==c||!sameSeg(h.refs.slice(1) as Seg,[a!,b!])||[b,c,e.id,h.id].slice().sort().join()!==f.p.slice().sort().join())continue;
+            const text=opts.statementText?.split(/chứng minh|chứng tỏ|prove/iu)[0]!.replace(/\$/g,'').replace(/\s+/g,' ') ?? '';
+            const nonRight=[a!+b!+c!,a!+c!+b!,b!+a!+c!,b!+c!+a!,c!+a!+b!,c!+b!+a!].some(tri=>new RegExp(`tam giác ${tri} (?:nhọn|tù|không vuông)(?:[,. ]|$)`,'u').test(text));
+            need(nonRight,'two altitude feet can coincide with vertices in a right triangle; four distinct cyclic vertices need an established non-right-triangle condition');
+          }
           const same = oracle.orient(x, y, p) === oracle.orient(x, y, q);
-          need(r.t === "eqangle" ? same : !same, r.t === "eqangle" ? "equal angles on opposite sides of the chord don't give a cyclic quadrilateral" : "supplementary angles on the same side don't give a cyclic quadrilateral");
-          configuration.push(`${p}, ${q} ${same ? "cùng phía" : "khác phía"} đối với ${x}${y}`);
+          const ancestors:Fact[]=[],seen=new Set<number>();
+          const visit=(id:number)=>{if(seen.has(id))return;seen.add(id);const a=byId.get(id)!;ancestors.push(a.fact);a.premises.forEach(visit);};
+          d.premises.forEach(visit);
+          const right=positionIndependentRightAngles(r,ancestors,oracle.orient);
+          const alreadyCyclic=ancestors.some(a=>a.t==='cyclic'&&a.p.slice().sort().join()===f.p.slice().sort().join());
+          const text=opts.statementText?.split(/chứng minh|chứng tỏ|prove/iu)[0]!.replace(/\$/g,'').replace(/\s+/g,' ') ?? '';
+          const side=r.t==='eqangle'?'cùng':'khác';
+          const explicitSide=new RegExp(`(?:${p}\\s*(?:,|và)\\s*${q}|${q}\\s*(?:,|và)\\s*${p})\\s*(?:nằm |ở |thuộc )?${side} phía (?:so với |đối với )?(?:đường thẳng )?(?:${x}${y}|${y}${x})(?:[,. ]|$)`,'u').test(text);
+          need(right||alreadyCyclic||explicitSide,'circle converse needs established vertex sides or two established right angles; the drawing does not prove this prerequisite');
+          need(right||(r.t === "eqangle" ? same : !same), r.t === "eqangle" ? "equal angles on opposite sides of the chord don't give a cyclic quadrilateral" : "supplementary angles on the same side don't give a cyclic quadrilateral");
+          configuration.push(right?'hai góc vuông đã chứng minh; không phụ thuộc phía của các đỉnh':`${p}, ${q} ${same ? "cùng phía" : "khác phía"} đối với ${x}${y}`);
           break;
         }
         case "SIMILAR_AA":

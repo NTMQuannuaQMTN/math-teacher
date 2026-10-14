@@ -1,8 +1,9 @@
-import { parseMathText, repairLatex, wrapBareLatex, type MathSegment } from "@shared/mathText";
+import { latexToPlain, vietnameseMathText, parseMathText, repairLatex, wrapBareLatex, type MathSegment } from "@shared/mathText";
 
 export interface MathPayload {
   segments: MathSegment[];
   fontSize: number;
+  fontWeight: string;
   color: string;
   align: "left" | "center";
 }
@@ -13,7 +14,7 @@ export interface MathPayload {
  */
 export function layoutSegments(text: string): MathSegment[] {
   // repairLatex also fixes lessons stored before the server repaired them ("\n", "\[2pt]").
-  const segments = parseMathText(wrapBareLatex(repairLatex(text)));
+  const segments = parseMathText(vietnameseMathText(wrapBareLatex(repairLatex(text))));
   return segments
     .map((segment, i) => {
       if (segment.kind !== "text") return segment;
@@ -27,8 +28,8 @@ export function layoutSegments(text: string): MathSegment[] {
     .filter((segment) => segment.kind !== "text" || segment.value.length > 0);
 }
 
-export function toPayload(text: string, fontSize: number, color: string, align: "left" | "center"): MathPayload {
-  return { segments: layoutSegments(text), fontSize, color, align };
+export function toPayload(text: string, fontSize: number, color: string, align: "left" | "center", fontWeight = "normal"): MathPayload {
+  return { segments: layoutSegments(text).map(s=>s.kind === "math" ? {...s, plain: latexToPlain(s.value)} : s), fontSize, fontWeight, color, align };
 }
 
 /**
@@ -37,7 +38,7 @@ export function toPayload(text: string, fontSize: number, color: string, align: 
  * or markup. Size/expansion caps stop pathological input from freezing the view.
  */
 export const KATEX_OPTIONS = {
-  throwOnError: false,
+  throwOnError: true,
   trust: false,
   strict: "ignore",
   maxSize: 20,
@@ -51,6 +52,14 @@ export const KATEX_OPTIONS = {
  * Web calls this directly; the WebView gets FIT_DISPLAYS_JS below. Keep them in sync.
  */
 export function fitDisplays(root: HTMLElement): void {
+  // Long inline formulas (especially in hint titles) must remain accessible
+  // without stretching or being clipped by the page. Keep ordinary inline
+  // math in the prose; only formulas wider than the whole line scroll.
+  const inline = root.querySelectorAll<HTMLElement>(".inline");
+  for (const el of inline) {
+    const inner = el.querySelector<HTMLElement>(".katex");
+    el.classList.toggle("wide", !!inner && root.clientWidth > 0 && Math.max(inner.scrollWidth, inner.getBoundingClientRect().width) > root.clientWidth);
+  }
   const blocks = root.querySelectorAll<HTMLElement>(".display");
   for (let i = 0; i < blocks.length; i++) {
     const el = blocks[i]!;
@@ -71,6 +80,11 @@ export function fitDisplays(root: HTMLElement): void {
  * "[bytecode]" in production.
  */
 const FIT_DISPLAYS_JS = `function fitDisplays(root) {
+    var inline = root.querySelectorAll(".inline");
+    for (var j = 0; j < inline.length; j++) {
+      var innerInline = inline[j].querySelector(".katex");
+      inline[j].classList.toggle("wide", !!innerInline && root.clientWidth > 0 && Math.max(innerInline.scrollWidth, innerInline.getBoundingClientRect().width) > root.clientWidth);
+    }
     var blocks = root.querySelectorAll(".display");
     for (var i = 0; i < blocks.length; i++) {
       var el = blocks[i];
@@ -112,6 +126,7 @@ export const RENDER_SCRIPT = `
   ${FIT_DISPLAYS_JS}
   window.renderMath = function (payload) {
     root.style.fontSize = payload.fontSize + "px";
+    root.style.fontWeight = payload.fontWeight || "normal";
     root.style.color = payload.color;
     root.style.textAlign = payload.align;
     root.textContent = "";
@@ -124,7 +139,7 @@ export const RENDER_SCRIPT = `
         katex.render(seg.value, el, Object.assign({ displayMode: seg.display }, options));
       } catch (e) {
         failures++;
-        el.textContent = seg.value;
+        el.textContent = seg.plain || "Không thể hiển thị công thức này.";
         el.className += " raw";
       }
       root.appendChild(el);
@@ -133,8 +148,11 @@ export const RENDER_SCRIPT = `
     post({ type: "rendered", failures: failures });
     requestAnimationFrame(reportHeight);
   };
-  if (window.ResizeObserver) new ResizeObserver(reportHeight).observe(root);
-  window.addEventListener("load", reportHeight);
+  function relayout() { fitDisplays(root); reportHeight(); }
+  if (window.ResizeObserver) new ResizeObserver(relayout).observe(root);
+  window.addEventListener("resize", relayout);
+  window.addEventListener("load", relayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
   post({ type: "ready" });
 })();
 `;
@@ -145,10 +163,13 @@ body { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
 #root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.55; word-wrap: break-word; overflow-wrap: anywhere; padding: 2px 0;
+  min-width: 0; max-width: 100%;
 }
 .katex { font-size: 1.1em; }
 .display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; -webkit-overflow-scrolling: touch; }
 .display .katex-display { margin: 0.35em 0; }
 .inline .katex { white-space: nowrap; }
+.inline.wide { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; padding: 4px 0; }
+.inline.wide .katex { display: inline-block; }
 .raw { font-family: Menlo, monospace; font-size: 0.9em; opacity: 0.8; }
 `;

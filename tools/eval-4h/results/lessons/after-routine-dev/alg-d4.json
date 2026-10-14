@@ -1,0 +1,160 @@
+{
+  "input": "Cho phương trình $x^2-2(m+1)x+m^2+3=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm phân biệt.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2-2(m+1)x+m^2+3=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm phân biệt.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Phương trình bậc hai chứa tham số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai chứa tham số"
+      ],
+      "techniques": [],
+      "givens": [
+        "$x^2-2(m+1)x+m^2+3=0$"
+      ],
+      "unknowns": [
+        "Các giá trị của $m$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Xét dấu biệt thức theo tham số.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Biệt thức cần thỏa điều kiện gì để phương trình có hai nghiệm phân biệt?",
+        "cue": "Số nghiệm của phương trình bậc hai theo dấu của biệt thức",
+        "explanation": "Hệ số của $x^2$ là $1\\ne0$ với mọi $m$, nên đây là phương trình bậc hai. Phương trình có hai nghiệm phân biệt khi và chỉ khi $\\Delta'>0$.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Sau khi khai triển, biệt thức là biểu thức nào của $m$?",
+        "cue": "Công thức biệt thức thu gọn",
+        "explanation": "Hệ số của $x$ chẵn nên dùng biệt thức thu gọn $\\Delta'=b'^2-ac$ với $b=2b'$. Khai triển và rút gọn:",
+        "math": "\\Delta'=2m-2",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Chia hai vế cho hệ số của m, chiều bất đẳng thức có đổi không?",
+        "cue": "Giải bất phương trình bậc nhất",
+        "explanation": "Giải bất phương trình bậc nhất ẩn $m$.",
+        "math": "2m-2>0\\ \\Leftrightarrow\\ m>1",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy phương trình có hai nghiệm phân biệt khi và chỉ khi $m>1$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Hệ số và điều kiện của phương trình bậc hai",
+        "explanation": "Hệ số của $x^2$ là $1\\ne0$ với mọi $m$, nên đây là phương trình bậc hai. Phương trình có hai nghiệm phân biệt khi và chỉ khi $\\Delta'>0$.",
+        "math": null,
+        "reason": "Số nghiệm của phương trình bậc hai theo dấu của biệt thức",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Tính biệt thức thu gọn",
+        "explanation": "Hệ số của $x$ chẵn nên dùng biệt thức thu gọn $\\Delta'=b'^2-ac$ với $b=2b'$. Khai triển và rút gọn:",
+        "math": "\\Delta'=2m-2",
+        "reason": "Công thức biệt thức thu gọn",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Giải điều kiện",
+        "explanation": "Giải bất phương trình bậc nhất ẩn $m$.",
+        "math": "2m-2>0\\ \\Leftrightarrow\\ m>1",
+        "reason": "Giải bất phương trình bậc nhất",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Vậy phương trình có hai nghiệm phân biệt khi và chỉ khi $m>1$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy phương trình có hai nghiệm phân biệt khi và chỉ khi $m>1$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tính lại biệt thức bằng số với m trên lưới và đối chiếu điều kiện tìm được",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 37,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-discriminant-condition",
+  "logs": [
+    "lesson by the routine solver (discriminant-condition); no model call"
+  ]
+}

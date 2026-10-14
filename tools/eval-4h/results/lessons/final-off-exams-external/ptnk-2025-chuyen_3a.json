@@ -1,0 +1,135 @@
+{
+  "input": "Cho các số nguyên dương $m,n$ thỏa mãn: $m^2+m+n^2$ chia hết cho tích $mn$ (1). Chứng minh không tồn tại $m,n$ thỏa mãn (1) khi $n=3$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho các số nguyên dương $m,n$ thỏa mãn: $m^2+m+n^2$ chia hết cho tích $mn$ (1). Chứng minh không tồn tại $m,n$ thỏa mãn (1) khi $n=3$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chia hết biểu thức bậc hai và ước chung",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chia hết biểu thức bậc hai và ước chung"
+      ],
+      "techniques": [],
+      "givens": [
+        "$m,n$ nguyên dương.",
+        "$m^2+m+n^2\\vdots mn$"
+      ],
+      "unknowns": [
+        "Kết luận đúng theo đúng phần hỏi của đề."
+      ],
+      "constraints": [
+        "Các ẩn và thương chia hết đều là số nguyên; chỉ triệt tiêu nhân tử khác0."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Giữ miền nguyên dương, dùng các ước bắt buộc của tích và trừ bội để suy ra điều kiện hai chiều.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Tại sao m chỉ có thể là một ước dương của bình phương n?",
+        "cue": "Ước của tích; trừ các bội; liệt kê hết ước dương của số cố định",
+        "explanation": "Vì $mn$ là ước của biểu thức nên $m$ cũng là ước của biểu thức. Trừ $m^2+m$, đều chia hết cho $m$, được $n^2$ chia hết cho $m$. Với $n=3$, suy ra $m$ là một ước dương của $9$; vì $m>0$, các ứng viên đều được liệt kê bên dưới.",
+        "math": "9\\vdots m,\\quad m\\in\\{1,3,9\\}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Có ứng viên nào làm phép chia cho tích cho thương nguyên không?",
+        "cue": "Thử tất cả ứng viên trong chính điều kiện gốc, không chỉ điều kiện cần",
+        "explanation": "Thay $n=3$ và từng giá trị $m$ vào cả tử và tích. Mỗi dòng bên dưới đều có số dư khác0 khi chia biểu thức cho tích, nên đều bị loại.",
+        "math": "\\begin{gathered}m=1:\\quad 11\\not\\vdots 3\\\\m=3:\\quad 21\\not\\vdots 9\\\\m=9:\\quad 99\\not\\vdots 27\\end{gathered}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Vì sao không còn m lớn hơn những ứng viên trong bảng?",
+        "cue": "Điều kiện cần bao quát và loại hết từng ứng viên",
+        "explanation": "Mọi cặp hợp lệ phải cho một trong các ước vừa xét, nhưng tất cả đều vi phạm điều kiện gốc. Vậy không tồn tại cặp số nguyên dương thỏa điều kiện khi $n=3$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Từ chia hết cho tích, chặn tập ứng viên bằng một ước cố định",
+        "explanation": "Vì $mn$ là ước của biểu thức nên $m$ cũng là ước của biểu thức. Trừ $m^2+m$, đều chia hết cho $m$, được $n^2$ chia hết cho $m$. Với $n=3$, suy ra $m$ là một ước dương của $9$; vì $m>0$, các ứng viên đều được liệt kê bên dưới.",
+        "math": "9\\vdots m,\\quad m\\in\\{1,3,9\\}",
+        "reason": "Ước của tích; trừ các bội; liệt kê hết ước dương của số cố định",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Kiểm tra từng ứng viên trong điều kiện gốc",
+        "explanation": "Thay $n=3$ và từng giá trị $m$ vào cả tử và tích. Mỗi dòng bên dưới đều có số dư khác0 khi chia biểu thức cho tích, nên đều bị loại.",
+        "math": "\\begin{gathered}m=1:\\quad 11\\not\\vdots 3\\\\m=3:\\quad 21\\not\\vdots 9\\\\m=9:\\quad 99\\not\\vdots 27\\end{gathered}",
+        "reason": "Thử tất cả ứng viên trong chính điều kiện gốc, không chỉ điều kiện cần",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận từ tập ứng viên đã xét đầy đủ",
+        "explanation": "Mọi cặp hợp lệ phải cho một trong các ước vừa xét, nhưng tất cả đều vi phạm điều kiện gốc. Vậy không tồn tại cặp số nguyên dương thỏa điều kiện khi $n=3$.",
+        "math": null,
+        "reason": "Điều kiện cần bao quát và loại hết từng ứng viên",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy không tồn tại cặp số nguyên dương thỏa điều kiện khi $n=3$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra tất cả ước có giới hạn đã chứng minh và điều kiện gốc",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 13,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

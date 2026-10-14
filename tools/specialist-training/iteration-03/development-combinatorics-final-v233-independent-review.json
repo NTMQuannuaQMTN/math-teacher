@@ -1,0 +1,98 @@
+[
+  {
+    "id": "comb3-selection",
+    "independentAnswer": "100",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-pigeonhole",
+    "independentAnswer": "Hai vị trí đầu tiên có số dư lặp",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-invariant",
+    "independentAnswer": "106",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-two-piles",
+    "independentAnswer": "Người đi trước",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-sign-game",
+    "independentAnswer": "Bình",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-board-user",
+    "independentAnswer": "k4:8 lượt; k2:16 lượt",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-takeaway-normal",
+    "independentAnswer": "Người đi trước",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-takeaway-misere",
+    "independentAnswer": "Người đi sau",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-takeaway-sparse",
+    "independentAnswer": "Người đi trước",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-digits",
+    "independentAnswer": "36",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-inclusion",
+    "independentAnswer": "4",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-constructive-pair",
+    "independentAnswer": "Cặp đầu tiên (i,11−i) có cả hai số được đánh dấu",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-double-count",
+    "independentAnswer": "28",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-probability",
+    "independentAnswer": "2/5",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-explicit-witness",
+    "independentAnswer": "(-8, 4)",
+    "actualReady": true,
+    "mathPass": true
+  },
+  {
+    "id": "comb3-no-witness",
+    "independentAnswer": "Không có cặp",
+    "actualReady": true,
+    "mathPass": true
+  }
+]

@@ -1,0 +1,134 @@
+{
+  "input": "Phân tích $x^4+4y^4$ thành tích các đa thức với hệ số nguyên và chứng minh đẳng thức.",
+  "lesson": {
+    "analysis": {
+      "statement": "Phân tích $x^4+4y^4$ thành tích các đa thức với hệ số nguyên và chứng minh đẳng thức.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hằng đẳng thức Sophie Germain",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hằng đẳng thức Sophie Germain"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Thêm rồi bớt cùng một hạng tử để tạo hiệu hai bình phương, sau đó khai triển kiểm tra.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Cần thêm hạng tử nào để tạo bình phương?",
+        "cue": "Khai triển bình phương một tổng",
+        "explanation": "Ta thêm rồi bớt $4x^2y^2$, nên giá trị biểu thức không đổi. Ba hạng đầu tạo bình phương của $x^2+2y^2$.",
+        "math": "x^4+4y^4=(x^2+2y^2)^2-4x^2y^2",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Hai biểu thức đóng vai trò A và B là gì?",
+        "cue": "Hằng đẳng thức hiệu hai bình phương",
+        "explanation": "Vì $4x^2y^2=(2xy)^2$, áp dụng $A^2-B^2=(A-B)(A+B)$.",
+        "math": "(x^2+2y^2-2xy)(x^2+2y^2+2xy)",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Kết quả phân tích thành hai nhân tử nào?",
+        "cue": "Tính giao hoán của phép cộng",
+        "explanation": "Viết theo thứ tự bậc quen thuộc; mọi hệ số đều là số nguyên.",
+        "math": "(x^2-2xy+2y^2)(x^2+2xy+2y^2)",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Khai triển tích có khôi phục đúng biểu thức ban đầu không?",
+        "cue": "Khai triển độc lập kiểm tra hai vế",
+        "explanation": "Nhân hai biểu thức liên hợp theo hạng $2xy$: tích bằng $(x^2+2y^2)^2-(2xy)^2=x^4+4y^4$. Các hạng $x^2y^2$ triệt tiêu đúng.",
+        "math": "(x^2+2y^2)^2-(2xy)^2=x^4+4y^4",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tạo một bình phương hoàn chỉnh",
+        "explanation": "Ta thêm rồi bớt $4x^2y^2$, nên giá trị biểu thức không đổi. Ba hạng đầu tạo bình phương của $x^2+2y^2$.",
+        "math": "x^4+4y^4=(x^2+2y^2)^2-4x^2y^2",
+        "reason": "Khai triển bình phương một tổng",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Nhận ra hiệu hai bình phương",
+        "explanation": "Vì $4x^2y^2=(2xy)^2$, áp dụng $A^2-B^2=(A-B)(A+B)$.",
+        "math": "(x^2+2y^2-2xy)(x^2+2y^2+2xy)",
+        "reason": "Hằng đẳng thức hiệu hai bình phương",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Sắp xếp các hạng tử trong hai nhân tử",
+        "explanation": "Viết theo thứ tự bậc quen thuộc; mọi hệ số đều là số nguyên.",
+        "math": "(x^2-2xy+2y^2)(x^2+2xy+2y^2)",
+        "reason": "Tính giao hoán của phép cộng",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Khai triển ngược để chứng minh đẳng thức",
+        "explanation": "Nhân hai biểu thức liên hợp theo hạng $2xy$: tích bằng $(x^2+2y^2)^2-(2xy)^2=x^4+4y^4$. Các hạng $x^2y^2$ triệt tiêu đúng.",
+        "math": "(x^2+2y^2)^2-(2xy)^2=x^4+4y^4",
+        "reason": "Khai triển độc lập kiểm tra hai vế",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $x^4+4y^4=(x^2-2xy+2y^2)(x^2+2xy+2y^2)$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Đối chiếu độc lập hệ số, điều kiện dấu bằng, khai triển đa thức hoặc từng tổng hữu hạn",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 4,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-algebra-family",
+  "logs": []
+}

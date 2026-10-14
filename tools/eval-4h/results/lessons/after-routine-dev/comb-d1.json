@@ -1,0 +1,134 @@
+{
+  "input": "Từ các chữ số $1,2,3,4,5$ lập được bao nhiêu số tự nhiên có ba chữ số đôi một khác nhau?",
+  "lesson": {
+    "analysis": {
+      "statement": "Từ các chữ số $1,2,3,4,5$ lập được bao nhiêu số tự nhiên có ba chữ số đôi một khác nhau?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Lập số từ các chữ số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Lập số từ các chữ số"
+      ],
+      "techniques": [],
+      "givens": [
+        "Chữ số thuộc $\\{1,2,3,4,5\\}$"
+      ],
+      "unknowns": [
+        "Số các số lập được"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn lần lượt từng chữ số, xét riêng chữ số có điều kiện (đầu khác 0, cuối theo tính chẵn lẻ) trước.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Điều kiện nào ràng buộc chữ số đầu, chữ số cuối?",
+        "cue": "Phân tích đề",
+        "explanation": "Các chữ số lấy từ tập $\\{1,2,3,4,5\\}$; số có $3$ chữ số nên chữ số đầu khác $0$; các chữ số đôi một khác nhau.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Chữ số thứ hai còn bao nhiêu cách?",
+        "cue": "Quy tắc nhân (chỉnh hợp)",
+        "explanation": "Chữ số thứ nhất có $5$ cách, chữ số thứ hai còn $4$ cách (khác chữ số đã dùng), …, chữ số thứ $3$ còn $3$ cách. Không có chữ số $0$ nên chữ số đầu không bị hạn chế thêm.",
+        "math": "5\\cdot 4\\cdot 3=60",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy lập được $60$ số.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Nhận dạng các điều kiện",
+        "explanation": "Các chữ số lấy từ tập $\\{1,2,3,4,5\\}$; số có $3$ chữ số nên chữ số đầu khác $0$; các chữ số đôi một khác nhau.",
+        "math": null,
+        "reason": "Phân tích đề",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Xếp các chữ số khác nhau",
+        "explanation": "Chữ số thứ nhất có $5$ cách, chữ số thứ hai còn $4$ cách (khác chữ số đã dùng), …, chữ số thứ $3$ còn $3$ cách. Không có chữ số $0$ nên chữ số đầu không bị hạn chế thêm.",
+        "math": "5\\cdot 4\\cdot 3=60",
+        "reason": "Quy tắc nhân (chỉnh hợp)",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy lập được $60$ số.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy lập được $60$ số.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Liệt kê độc lập mọi dãy chữ số và đếm số thỏa điều kiện",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 9,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-digit-numbers",
+  "logs": [
+    "lesson by the routine solver (digit-numbers); no model call"
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "input": "Với mỗi số tự nhiên $n$, đặt $a_n=\\left(2+\\sqrt3\\right)^n+\\left(2-\\sqrt3\\right)^n$. Tìm $n$ để $a_n$ chia hết cho 4.",
+  "lesson": {
+    "analysis": {
+      "statement": "Với mỗi số tự nhiên $n$, đặt $a_n=\\left(2+\\sqrt3\\right)^n+\\left(2-\\sqrt3\\right)^n$. Tìm $n$ để $a_n$ chia hết cho 4.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Dãy liên hợp: tính nguyên và chu kỳ số dư",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Dãy liên hợp: tính nguyên và chu kỳ số dư"
+      ],
+      "techniques": [],
+      "givens": [
+        "$a_n=\\left(2+\\sqrt3\\right)^n+\\left(2-\\sqrt3\\right)^n$"
+      ],
+      "unknowns": [
+        "Tất cả số tự nhiên $n$ sao cho $a_n$ chia hết cho $4$."
+      ],
+      "constraints": [
+        "Chỉ số tự nhiên gồm0; chu kỳ phải xét cặp số hạng liên tiếp."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chứng minh công thức truy hồi và tính nguyên, rồi theo dõi cặp số dư để chứng minh chu kỳ đầy đủ.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Từ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?",
+        "cue": "Đặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa",
+        "explanation": "Đặt $p=2+\\sqrt{3}$, $q=2-\\sqrt{3}$. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích $pq=1\\ne0$ nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số $0$.",
+        "math": "p=2+\\sqrt{3},\\quad q=2-\\sqrt{3},\\quad p+q=(2+\\sqrt{3})+(2-\\sqrt{3})=4,\\quad pq=(2+\\sqrt{3})(2-\\sqrt{3})=1,\\quad a_n= p^{n}+q^{n}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Từ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?",
+        "cue": "Khai triển tích; Vi-ét đảo; chuyển vế",
+        "explanation": "Khai triển tích $(t-p)(t-q)$ rồi thay tổng và tích vừa tính. Cho $t=p$ hoặc $t=q$ làm tích bằng $0$, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.",
+        "math": "\\begin{gathered}(t-p)(t-q)=t^2-(4)t+(1)\\\\p^2=(4)p-(1),\\quad q^2=(4)q-(1)\\end{gathered}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Từ tổng và tích của hai cơ số, suy ra quan hệ nào giữa ba số hạng liên tiếp?",
+        "cue": "Nhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy",
+        "explanation": "Với mọi số nguyên $n\\ge0$, nhân đẳng thức của $p$ với $p^{n}$ và của $q$ với $q^{n}$. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.",
+        "math": "\\begin{gathered}p^{n+2}=(4)p^{n+1}-(1)p^{n}\\\\q^{n+2}=(4)q^{n+1}-(1)q^{n}\\\\a_{n+2}=(4)(p^{n+1}+q^{n+1})-(1)(p^{n}+q^{n})\\\\a_{n+2}=(4)a_{n+1}-(1)a_n\\end{gathered}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Vì sao biểu thức chứa căn vẫn cho số nguyên ở mọi chỉ số?",
+        "cue": "Hai số hạng đầu nguyên; công thức truy hồi giữ tính nguyên",
+        "explanation": "Hai cơ số khác0 cho $a_0=2$; tổng của chúng cho $a_1=4$. Đây đều là số nguyên. Công thức vừa chứng minh chỉ nhân với các hệ số nguyên rồi trừ, nên từ hai số hạng nguyên suy ra số hạng tiếp theo nguyên. Bắt đầu từ chỉ số0, lập luận lần lượt chứng minh tất cả số hạng nguyên; vì vậy phép xét chia hết có nghĩa.",
+        "math": "a_0=2,\\quad a_1=4,\\quad a_{n+2}=(4)a_{n+1}-(1)a_n",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Cặp nào lặp lại, từ đâu, và tại sao việc lặp kéo dài mãi?",
+        "cue": "Cùng cặp đầu vào cho cùng cặp đầu ra ở mọi lần tiếp theo; chứng minh chu kỳ đầy đủ",
+        "explanation": "Cặp ở chỉ số $2$ là $(2,0)$, đúng bằng cặp ở chỉ số $0$. Không cặp nào trước đó lặp. Vì chuyển trạng thái là duy nhất, từ chỉ số $0$ các cặp lặp theo chu kỳ $2$. Chu kỳ bắt đầu ngay ở chỉ số0, nên mọi chỉ số đều nằm trong một chu kỳ đã kiểm tra.",
+        "math": "(a_{2},a_{3})\\equiv(a_{0},a_{1})\\equiv(2,0)\\pmod{4}",
+        "stepId": "s7",
+        "focus": []
+      },
+      {
+        "id": "h6",
+        "level": 4,
+        "question": "Công thức chỉ số có bao gồm mọi lần lặp mà không thêm vị trí có số dư khác0 không?",
+        "cue": "Phần đầu và chu kỳ bao quát mọi số tự nhiên; điều kiện cần và đủ",
+        "explanation": "Chu kỳ bắt đầu từ chỉ số0; trong mỗi chu kỳ, nhận đúng các vị trí có số dư0 của bảng. Các vị trí khác đều có số dư khác0, nên không chia hết. Vậy tất cả chỉ số cần tìm là $n=1+2k,\\ k\\in\\mathbb Z,\\ k\\ge0$.",
+        "math": null,
+        "stepId": "s8",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Đặt tên cho hai cơ số và tính tổng, tích",
+        "explanation": "Đặt $p=2+\\sqrt{3}$, $q=2-\\sqrt{3}$. Khai triển, gộp các hạng tử cùng căn để tính tổng và tích như bên dưới. Tích $pq=1\\ne0$ nên cả hai cơ số khác không; biểu thức xác định cả ở chỉ số $0$.",
+        "math": "p=2+\\sqrt{3},\\quad q=2-\\sqrt{3},\\quad p+q=(2+\\sqrt{3})+(2-\\sqrt{3})=4,\\quad pq=(2+\\sqrt{3})(2-\\sqrt{3})=1,\\quad a_n= p^{n}+q^{n}",
+        "reason": "Đặt tên; khai triển và rút gọn căn; điều kiện của lũy thừa",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Dựng phương trình bậc hai mà cả hai cơ số thỏa mãn",
+        "explanation": "Khai triển tích $(t-p)(t-q)$ rồi thay tổng và tích vừa tính. Cho $t=p$ hoặc $t=q$ làm tích bằng $0$, nên cả hai cơ số thỏa mãn phương trình bậc hai này. Chuyển hạng tử tự do sang vế phải để viết bình phương theo cơ số.",
+        "math": "\\begin{gathered}(t-p)(t-q)=t^2-(4)t+(1)\\\\p^2=(4)p-(1),\\quad q^2=(4)q-(1)\\end{gathered}",
+        "reason": "Khai triển tích; Vi-ét đảo; chuyển vế",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Nhân với lũy thừa rồi cộng hai đẳng thức",
+        "explanation": "Với mọi số nguyên $n\\ge0$, nhân đẳng thức của $p$ với $p^{n}$ và của $q$ với $q^{n}$. Dùng quy tắc nhân các lũy thừa cùng cơ số, rồi cộng hai đẳng thức. Nhóm theo định nghĩa của dãy để được đúng quan hệ cần chứng minh; lập luận đúng ở mọi chỉ số, không chỉ một vài số đầu.",
+        "math": "\\begin{gathered}p^{n+2}=(4)p^{n+1}-(1)p^{n}\\\\q^{n+2}=(4)q^{n+1}-(1)q^{n}\\\\a_{n+2}=(4)(p^{n+1}+q^{n+1})-(1)(p^{n}+q^{n})\\\\a_{n+2}=(4)a_{n+1}-(1)a_n\\end{gathered}",
+        "reason": "Nhân đẳng thức; quy tắc lũy thừa; cộng và thay định nghĩa dãy",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Chứng minh mọi số hạng là số nguyên",
+        "explanation": "Hai cơ số khác0 cho $a_0=2$; tổng của chúng cho $a_1=4$. Đây đều là số nguyên. Công thức vừa chứng minh chỉ nhân với các hệ số nguyên rồi trừ, nên từ hai số hạng nguyên suy ra số hạng tiếp theo nguyên. Bắt đầu từ chỉ số0, lập luận lần lượt chứng minh tất cả số hạng nguyên; vì vậy phép xét chia hết có nghĩa.",
+        "math": "a_0=2,\\quad a_1=4,\\quad a_{n+2}=(4)a_{n+1}-(1)a_n",
+        "reason": "Hai số hạng đầu nguyên; công thức truy hồi giữ tính nguyên",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Theo dõi hai số hạng liên tiếp để bảo đảm chu kỳ",
+        "explanation": "Xét cặp số dư $(a_n,a_{n+1})$ khi chia $4$. Công thức truy hồi xác định duy nhất cặp kế tiếp từ cặp hiện tại. Có nhiều nhất $16$ cặp; khi một cặp lặp lại, toàn bộ các cặp sau lặp theo cùng cách. Phải trùng cả hai số dư, không chỉ một số hạng.",
+        "math": "(u,v)\\longmapsto(v,(4)v-(1)u)\\pmod{4}",
+        "reason": "Trạng thái gồm hai số hạng; chuyển trạng thái duy nhất trên tập hữu hạn",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s6",
+        "title": "Tính các cặp số dư từ chỉ số 0 đến 1",
+        "explanation": "Bắt đầu từ cặp số dư của $(2,4)$, dùng đúng công thức truy hồi để tính mỗi cặp kế tiếp. Bảng ghi cả hai số dư; những cột có số dư của $a_n$ bằng0 là chỉ số được nhận.",
+        "math": "\\begin{array}{c|cc}n&0&1\\\\\\hline a_n\\bmod 4&2&0\\\\a_{n+1}\\bmod 4&0&2\\end{array}",
+        "reason": "Tính từng chuyển trạng thái; đối chiếu điều kiện chia hết",
+        "uses": [
+          "s5"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s7",
+        "title": "Chứng minh phần trước chu kỳ và mọi chu kỳ tiếp theo",
+        "explanation": "Cặp ở chỉ số $2$ là $(2,0)$, đúng bằng cặp ở chỉ số $0$. Không cặp nào trước đó lặp. Vì chuyển trạng thái là duy nhất, từ chỉ số $0$ các cặp lặp theo chu kỳ $2$. Chu kỳ bắt đầu ngay ở chỉ số0, nên mọi chỉ số đều nằm trong một chu kỳ đã kiểm tra.",
+        "math": "(a_{2},a_{3})\\equiv(a_{0},a_{1})\\equiv(2,0)\\pmod{4}",
+        "reason": "Cùng cặp đầu vào cho cùng cặp đầu ra ở mọi lần tiếp theo; chứng minh chu kỳ đầy đủ",
+        "uses": [
+          "s6"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s8",
+        "title": "Kết luận mọi chỉ số thỏa mãn, không chỉ các số đầu",
+        "explanation": "Chu kỳ bắt đầu từ chỉ số0; trong mỗi chu kỳ, nhận đúng các vị trí có số dư0 của bảng. Các vị trí khác đều có số dư khác0, nên không chia hết. Vậy tất cả chỉ số cần tìm là $n=1+2k,\\ k\\in\\mathbb Z,\\ k\\ge0$.",
+        "math": null,
+        "reason": "Phần đầu và chu kỳ bao quát mọi số tự nhiên; điều kiện cần và đủ",
+        "uses": [
+          "s7"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy tất cả chỉ số cần tìm là $n=1+2k,\\ k\\in\\mathbb Z,\\ k\\ge0$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra đẳng thức truy hồi, tính nguyên và mọi cạnh của chu kỳ cặp số dư",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s6",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s7",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s8",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 49,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

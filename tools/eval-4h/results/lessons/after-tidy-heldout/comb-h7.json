@@ -1,0 +1,160 @@
+{
+  "input": "Một nhóm có $5$ bạn nam và $4$ bạn nữ. Có bao nhiêu cách chọn ra $2$ bạn nam và $2$ bạn nữ?",
+  "lesson": {
+    "analysis": {
+      "statement": "Một nhóm có $5$ bạn nam và $4$ bạn nữ. Có bao nhiêu cách chọn ra $2$ bạn nam và $2$ bạn nữ?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Tổ hợp và quy tắc nhân",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tổ hợp và quy tắc nhân"
+      ],
+      "techniques": [],
+      "givens": [
+        "$5$ nam, $4$ nữ"
+      ],
+      "unknowns": [
+        "Số cách chọn"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn riêng từng nhóm rồi nhân.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Chọn nam có bao nhiêu cách?",
+        "cue": "Tổ hợp: chọn không kể thứ tự",
+        "explanation": "Chọn $2$ bạn nam trong $5$ bạn nam, không kể thứ tự: $C_{5}^{2}=10$ cách.",
+        "math": "C_{5}^{2}=\\frac{5!}{2!\\,3!}=10",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Chọn nữ có bao nhiêu cách?",
+        "cue": "Tổ hợp",
+        "explanation": "Tương tự, chọn $2$ bạn nữ trong $4$ bạn nữ: $C_{4}^{2}=6$ cách.",
+        "math": "C_{4}^{2}=6",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Vì sao nhân, không cộng?",
+        "cue": "Quy tắc nhân",
+        "explanation": "Mỗi cách chọn nam ghép với mỗi cách chọn nữ cho một nhóm khác nhau, và mỗi nhóm thỏa đề được tạo đúng một lần (phần nam và phần nữ của nó xác định duy nhất). Theo quy tắc nhân:",
+        "math": "10\\cdot 6=60",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy có $60$ cách chọn.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chọn các bạn nam",
+        "explanation": "Chọn $2$ bạn nam trong $5$ bạn nam, không kể thứ tự: $C_{5}^{2}=10$ cách.",
+        "math": "C_{5}^{2}=\\frac{5!}{2!\\,3!}=10",
+        "reason": "Tổ hợp: chọn không kể thứ tự",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chọn các bạn nữ",
+        "explanation": "Tương tự, chọn $2$ bạn nữ trong $4$ bạn nữ: $C_{4}^{2}=6$ cách.",
+        "math": "C_{4}^{2}=6",
+        "reason": "Tổ hợp",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Nhân hai bước",
+        "explanation": "Mỗi cách chọn nam ghép với mỗi cách chọn nữ cho một nhóm khác nhau, và mỗi nhóm thỏa đề được tạo đúng một lần (phần nam và phần nữ của nó xác định duy nhất). Theo quy tắc nhân:",
+        "math": "10\\cdot 6=60",
+        "reason": "Quy tắc nhân",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Vậy có $60$ cách chọn.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy có $60$ cách chọn.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Liệt kê độc lập mọi nhóm và đếm nhóm đúng số nam, nữ",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 8,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-choose-two-groups",
+  "logs": [
+    "lesson by the routine solver (choose-two-groups); no model call"
+  ]
+}

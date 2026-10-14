@@ -1,3 +1,6 @@
+import {conclusionConsistencyFeedback} from '../../../shared/src/conclusionConsistency';
+import {diameterOrthocenterDiagnosis} from '../solver/diameterOrthocenterDiagnosis';
+import {geometryHypothesisDiagnosis} from '../solver/geometryHypothesisDiagnosis';
 import { SolveProgressSchema, SolveRequestSchema, VerificationSchema, ModelLessonSchema, type Solution, type SolutionResponse, type SolveProgress } from "../../../shared/src/solution";
 import { normalizeProblemText } from "../../../shared/src/mathText";
 import type { ErrorCode } from "../../../shared/src/contract";
@@ -16,9 +19,15 @@ import { FailoverJsonModel } from "../solver/failover";
 import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
+import { latexFeedback } from "../solver/latexCheck";
+import { proofDependencyFeedback } from "../../../shared/src/proofDependencies";
+import { cleanLanguage } from "../../../shared/src/language";
 import { parseLesson, solveProblem } from "../solver/pipeline";
 import { hostedModelOptions, looksLikeGeometry, problemTier, selectSolverModelIds, soclaasModelOptions } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
+import {hiddenSearchFeedback} from '../../../shared/src/hiddenSearch';
+import { withinSignal } from "../solver/deadline";
+import { AttemptBudgetJsonModel } from "../solver/attemptBudget";
 import type { RouteContext } from "./scans";
 
 interface SolutionRow {
@@ -47,6 +56,17 @@ const HOUR = 3600;
 /** Product latency contract: one question may never spend longer than 30 seconds in solving. */
 export const MAX_SOLVE_WALL_CLOCK_MS = 30_000;
 
+/**
+ * How long a solve may keep working after the HTTP reply (the reply itself always comes within 26 s: the lesson, or
+ * "pending" for the app to poll). Accuracy first: a hard problem gets the full verified pipeline with its corrective
+ * retry instead of being cut off. Development default 300 s; production default 26 s, because Cloudflare ends
+ * waitUntil work about 30 s after the response (raise it only with a queue/Durable Object behind it).
+ */
+export function backgroundSolveMs(env: Env): number {
+  const fallback = isDevelopment(env) ? 300_000 : 26_000;
+  return Math.min(900_000, Math.max(26_000, intVar(env.SOLVE_BACKGROUND_MS, fallback)));
+}
+
 function solveTimeoutMs(env: Env): number {
   // Keep the cap absolute even if an old deployment or secret still contains a larger value.
   return Math.min(MAX_SOLVE_WALL_CLOCK_MS, Math.max(1_000, intVar(env.SOLVE_TIMEOUT_MS, MAX_SOLVE_WALL_CLOCK_MS)));
@@ -59,7 +79,7 @@ function solveTimeoutMs(env: Env): number {
 // Opt-in (it cost ≈ $1.5 in one evening of testing): SOLVER_GEMINI_FALLBACK=on.
 const geminiFallbackOn = (env: Env) => !!env.GEMINI_API_KEY && (env.SOLVER_GEMINI_FALLBACK || "off").toLowerCase() === "on";
 
-function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean; outlineModel?: JsonModel } {
+export function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean; outlineModel?: JsonModel } {
   const provider = (env.SOLVER_PROVIDER || "gemini").toLowerCase();
 
   if (provider === "gemini" && env.GEMINI_API_KEY) {
@@ -102,6 +122,7 @@ function createModels(env: Env, request: Request, problemText: string): { model:
   }
 
   if (provider === "local") {
+    const freeHosted = !!env.LOCAL_LLM_URL && new URL(env.LOCAL_LLM_URL).hostname === "openrouter.ai" && !!env.LOCAL_SOLVER_MODEL?.endsWith(":free");
     // Open model behind an OpenAI-compatible server; no API cost when self-hosted.
     // Adaptive reasoning (hosted reasoning models): hidden reasoning is most of the latency, and a simple
     // problem doesn't need much of it. Local llama.cpp models ignore this (thinking stays off).
@@ -109,13 +130,27 @@ function createModels(env: Env, request: Request, problemText: string): { model:
       apiKey: env.LOCAL_LLM_API_KEY,
       thinking: false,
       ...hostedModelOptions(problemText, {
-        simpleEffort: env.LOCAL_SIMPLE_REASONING_EFFORT,
-        effort: env.LOCAL_REASONING_EFFORT,
-        complexMaxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, 24_000),
+        simpleEffort: env.LOCAL_SIMPLE_REASONING_EFFORT || (freeHosted ? "minimal" : undefined),
+        effort: env.LOCAL_REASONING_EFFORT || (freeHosted ? "minimal" : undefined),
+        complexMaxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, freeHosted ? 6_000 : 24_000),
         // With the Gemini fallback on, stop the free model sooner so the fallback (Gemini 3.5 Flash, medium thinking: 145–190 s on a 3-part chuyên geometry proof) still fits; "low" thinking was measured and gave unusable lessons.
         complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, geminiFallbackOn(env) ? 120_000 : 240_000),
       }),
     });
+    if (env.SOLVER_SOCLAAS_FALLBACK === "on" && env.SOCLAAS_API_KEY) {
+      const name=env.SOCLAAS_MODEL || "qwen3.6:35b";
+      const paid=new LocalJsonModel(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1",name,{
+        apiKey:env.SOCLAAS_API_KEY,thinking:false,gatewayThinking:false,maxTokens:3600,requestTimeoutMs:20_000,
+      });
+      const configured=Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
+      const budget=Number.isFinite(configured) && configured>=0 ? configured : 1;
+      return {
+        model:new AttemptBudgetJsonModel(model,6000),
+        fallback:new BudgetedJsonModel(paid,env.DB,budget, m=>console.log(`[solve] ${m}`),3600,true),
+        // Unrenderable/invalid proofs also deserve a fallback, not just provider outages.
+        fallbackOnlyOnFailure:false,
+      };
+    }
     if (env.SOLVER_FAILOVER_URL) {
       const failover = new LocalJsonModel(env.SOLVER_FAILOVER_URL, env.SOLVER_FAILOVER_MODEL || "local", { apiKey: env.SOLVER_FAILOVER_API_KEY, thinking: false });
       return { model: new FailoverJsonModel(model, failover, (m) => console.log(`[solve] ${m}`)) };
@@ -140,7 +175,7 @@ function createModels(env: Env, request: Request, problemText: string): { model:
     const url = env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1";
     const name = env.SOCLAAS_MODEL || "qwen3.6:35b";
     const budget = Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
-    const capped = (m: LocalJsonModel, maxTokens: number) => new BudgetedJsonModel(m, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), maxTokens);
+    const capped = (m: LocalJsonModel, maxTokens: number) => new BudgetedJsonModel(m, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), maxTokens,true);
     // A hard non-geometry problem needs more than one request's window (reasoning + a long lesson ≈ 40K tokens at
     // ~130 tokens/s > the gateway's 240 s): an outline request thinks, then the lesson is written without long thinking.
     const twoStage = o.gatewayThinking && !looksLikeGeometry(problemText) && env.SOLVER_TWO_STAGE !== "off";
@@ -174,21 +209,27 @@ function failureCode(err: unknown): ErrorCode {
   return isAbort(err) ? "solve_timeout" : "internal_error";
 }
 
-function toApiSolution(row: SolutionRow): Solution {
+function toApiSolution(row: SolutionRow,problemText?:string): Solution {
   const lesson = row.lesson_json ? ModelLessonSchema.safeParse(JSON.parse(row.lesson_json)) : null;
   const verification = row.verification_json ? VerificationSchema.safeParse(JSON.parse(row.verification_json)) : null;
-  const status = row.status === "ready" && !lesson?.success ? "failed" : row.status;
+  const unsafe = lesson?.success && (latexFeedback(lesson.data).length || cleanLanguage(lesson.data).feedback.length || hiddenSearchFeedback(lesson.data,problemText??lesson.data.analysis.statement).length || proofDependencyFeedback(lesson.data,problemText??lesson.data.analysis.statement).length || conclusionConsistencyFeedback(lesson.data,problemText??lesson.data.analysis.statement).length ||
+    (diameterOrthocenterDiagnosis(problemText??lesson.data.analysis.statement)!==null && row.model!=="geometry-degeneracy-diagnosis") ||
+    (geometryHypothesisDiagnosis(problemText??lesson.data.analysis.statement)!==null && row.model!=="geometry-hypothesis-diagnosis"));
+  const status = row.status === "ready" && (!lesson?.success || unsafe) ? "failed" : row.status;
   return {
     id: row.id,
     scanId: row.scan_id,
     questionId: row.question_id,
     status,
     createdAt: row.created_at,
-    lesson: lesson?.success ? lesson.data : null,
+    lesson: status === "ready" && lesson?.success ? lesson.data : null,
     verification: verification?.success ? verification.data : null,
+    // A ready lesson with an error code is the previous lesson kept after a failed regenerate.
     error:
-      status === "failed"
-        ? { code: row.error_code ?? "internal_error", retryable: row.error_code !== "problem_not_confirmed" && row.error_code !== "solve_quota_exhausted" }
+      status === "ready" && row.error_code
+        ? { code: row.error_code as ErrorCode, retryable: row.error_code !== "solve_quota_exhausted" }
+        : status === "failed"
+        ? { code: unsafe ? "solve_incomplete" : row.error_code ?? "internal_error", retryable: row.error_code !== "problem_not_confirmed" && row.error_code !== "solve_quota_exhausted" }
         : null,
     model: row.model,
     promptVersion: row.prompt_version,
@@ -205,7 +246,7 @@ async function findSolution(db: D1Database, ownerId: string, scanId: string, que
 }
 
 function isFresh(row: SolutionRow, env: Env): boolean {
-  return row.status === "pending" && row.started_at !== null && Date.parse(row.started_at) > Date.now() - solveTimeoutMs(env) - 5_000;
+  return row.status === "pending" && row.started_at !== null && Date.parse(row.started_at) > Date.now() - Math.max(solveTimeoutMs(env), backgroundSolveMs(env)) - 5_000;
 }
 
 /** GET /v1/scans/:id/questions/:qid/solution — 202 while pending, so clients know to keep polling. */
@@ -226,6 +267,21 @@ export async function getSolution(rc: RouteContext, scanId: string, questionId =
  * and should poll GET …/solution.
  */
 export async function solveScan(rc: RouteContext, scanId: string, questionId = "q1"): Promise<Response> {
+  // Start at request receipt, before parsing, hashing, database reads, model selection,
+  // verification, persistence and response serialization. Reserve one second for HTTP delivery.
+  const responseSignal = AbortSignal.timeout(Math.min(29_000, solveTimeoutMs(rc.env)));
+  // The reply is due at 26 s; generation itself may continue in the background (backgroundSolveMs).
+  const replyAfterMs = Math.min(26_000, solveTimeoutMs(rc.env));
+  try {
+    return await withinSignal(responseSignal, () => solveScanWithinDeadline(rc, scanId, questionId, replyAfterMs));
+  } catch (err) {
+    if (err instanceof OcrFailure && err.kind === "timeout") throw new ApiError(503, "solve_timeout", "Không thể hoàn thành lời giải trong thời gian cho phép. Vui lòng thử lại.", true);
+    throw err;
+  }
+}
+
+async function solveScanWithinDeadline(rc: RouteContext, scanId: string, questionId: string, replyAfterMs: number): Promise<Response> {
+  const requestStarted = Date.now();
   const { env, request, ownerId, ctx } = rc;
   let body: unknown = {};
   if (request.headers.get("content-type")?.includes("application/json")) {
@@ -254,8 +310,8 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
   // The student's own finished lesson for the same text is kept across prompt versions: re-solving it
   // after every deploy would spend quota on something they already have ("Regenerate" asks for a new one).
   const sameText = existing?.problem_hash === problemHash || (existing?.problem_key != null && existing.problem_key === key);
-  if (existing && existing.status === "ready" && sameText && !regenerate) {
-    return json({ solution: toApiSolution(existing) } satisfies SolutionResponse);
+  if (existing && existing.status === "ready" && sameText && existing.prompt_version === PROMPT_VERSION && !regenerate && toApiSolution(existing,problemText).status === "ready") {
+    return json({ solution: toApiSolution(existing,problemText) } satisfies SolutionResponse);
   }
 
   // Shared library: if anyone already has a verified lesson for this exact problem, reuse it —
@@ -284,7 +340,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
       .run();
     console.log(`[solve ${scanId}/${questionId}] reused a shared lesson (no AI call)`);
     const row = await findSolution(env.DB, ownerId, scanId, questionId);
-    if (row) return json({ solution: toApiSolution(row) } satisfies SolutionResponse);
+    if (row) return json({ solution: toApiSolution(row,problemText) } satisfies SolutionResponse);
   }
 
   const { model, fallback, fallbackOnlyOnFailure, outlineModel } = createModels(env, request, problemText);
@@ -294,7 +350,7 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
   // Take the lock atomically: insert, or reclaim a row that isn't being generated right now.
   const id = existing?.id ?? crypto.randomUUID();
   const ts = nowIso();
-  const staleBefore = new Date(Date.now() - solveTimeoutMs(env) - 5_000).toISOString();
+  const staleBefore = new Date(Date.now() - Math.max(solveTimeoutMs(env), backgroundSolveMs(env)) - 5_000).toISOString();
   const lock = await env.DB.prepare(
     `INSERT INTO solutions (id, scan_id, question_id, owner_id, status, problem_hash, model, prompt_version, attempts, started_at, created_at, updated_at)
      VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, 0, ?, ?, ?)
@@ -341,13 +397,17 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
   };
 
   let keptPrevious: ErrorCode | null = null;
+  const backgroundMs = backgroundSolveMs(env);
+  const generationSignal = AbortSignal.timeout(Math.max(1_000, backgroundMs - (Date.now() - requestStarted)));
   const work = (async () => {
     try {
       const result = await solveProblem(model, VN_GRADE_9, problemText, {
         fallback,
         fallbackOnlyOnFailure,
         outlineModel,
-        signal: AbortSignal.timeout(solveTimeoutMs(env)),
+        signal: generationSignal,
+        // Accuracy first: a corrective retry stays allowed for most of the background budget, not only the first 25 s.
+        retryBudgetMs: Math.max(25_000, Math.round(backgroundMs * 0.6)),
         log: (m) => console.log(`[solve ${scanId}/${questionId}] ${m}`),
         onProgress,
       });
@@ -374,12 +434,16 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
       console.error(`[solve ${scanId}] failed`, err instanceof Error ? err.message : err);
       await writes;
       // A failed Regenerate (quota, timeout…) must not take away the lesson the student already had.
-      if (existing?.status === "ready" && existing.lesson_json && sameText) {
+      // The row may say "pending"/"failed" after an interrupted earlier attempt (a reload, a closed tab) while still holding
+      // the student's previous lesson: keep that lesson whenever it is still servable for the same text.
+      const previousServable = !!existing?.lesson_json && sameText && toApiSolution({ ...existing, status: "ready", error_code: null }, problemText).status === "ready";
+      if (previousServable && existing) {
         await env.DB.prepare(
-          `UPDATE solutions SET status = 'ready', error_code = NULL, problem_hash = ?, model = ?, prompt_version = ?, started_at = NULL, updated_at = ?
+          `UPDATE solutions SET status = 'ready', error_code = ?, problem_hash = ?, model = ?, prompt_version = ?, started_at = NULL, updated_at = ?
            WHERE scan_id = ? AND question_id = ?`,
         )
-          .bind(existing.problem_hash, existing.model, existing.prompt_version, nowIso(), scanId, questionId)
+          // error_code on a ready row = "the last regenerate failed, this is the previous lesson" (read by polling clients).
+          .bind(failureCode(err), existing.problem_hash, existing.model, existing.prompt_version, nowIso(), scanId, questionId)
           .run();
         keptPrevious = failureCode(err);
         console.log(`[solve ${scanId}/${questionId}] kept the previous lesson after a failed regenerate (${keptPrevious})`);
@@ -392,15 +456,23 @@ export async function solveScan(rc: RouteContext, scanId: string, questionId = "
         .run();
     }
   })();
-  // Keep generating (and save the result) even if the student leaves the screen.
+  // Keep generating (and save the result) even if the student leaves the screen or the reply has gone.
   ctx.waitUntil(work);
-  await work;
-  if (keptPrevious) {
-    // Tell the app the regenerate failed; the previous lesson is still there when the student reopens it.
-    throw new ApiError(503, keptPrevious, "Regenerating failed; the previous lesson was kept.", keptPrevious !== "solve_quota_exhausted");
+  // Reply within the deadline: the finished lesson, or "pending" (202) while it is still being worked out and checked.
+  const finished = await Promise.race([
+    work.then(() => true),
+    new Promise<false>((resolve) => setTimeout(() => resolve(false), Math.max(0, replyAfterMs - (Date.now() - requestStarted)))),
+  ]);
+  if (!finished) {
+    const pending = await findSolution(env.DB, ownerId, scanId, questionId);
+    if (!pending) throw new ApiError(500, "internal_error", "Solution vanished.");
+    console.log(`[solve ${scanId}/${questionId}] still working after ${Math.round((Date.now() - requestStarted) / 1000)} s; replying "pending", continuing in the background (≤ ${Math.round(backgroundMs / 1000)} s)`);
+    return json({ solution: toApiSolution(pending, problemText) } satisfies SolutionResponse, 202);
   }
+  // A failed regenerate returns the previous lesson (200) with the failure in `error`: the app shows it with a notice
+  // instead of an error response.
 
   const row = await findSolution(env.DB, ownerId, scanId, questionId);
   if (!row) throw new ApiError(500, "internal_error", "Solution vanished.");
-  return json({ solution: toApiSolution(row) } satisfies SolutionResponse);
+  return json({ solution: toApiSolution(row,problemText) } satisfies SolutionResponse);
 }

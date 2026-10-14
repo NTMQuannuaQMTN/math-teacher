@@ -1,0 +1,19 @@
+{
+  "phase": "development-geometry-advanced-fixed",
+  "questionsExecuted": 4,
+  "ready": 4,
+  "independentlyReviewed": 4,
+  "correctConclusionCount": 3,
+  "mathematicalPasses": 3,
+  "qualityPasses": 3,
+  "latencyMs": {
+    "p50": 26.774207999999817,
+    "p95": 169.18491699999993,
+    "max": 169.18491699999993
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 4,
+  "rubricMeanForReviewedOnly": 78.25,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured"
+}

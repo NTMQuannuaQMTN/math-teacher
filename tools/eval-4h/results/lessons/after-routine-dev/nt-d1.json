@@ -1,0 +1,135 @@
+{
+  "input": "Tìm số dư khi chia $3^{100}$ cho $5$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm số dư khi chia $3^{100}$ cho $5$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Số dư của lũy thừa (chu kì số dư)",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Số dư của lũy thừa (chu kì số dư)"
+      ],
+      "techniques": [],
+      "givens": [
+        "$3^{100}$",
+        "chia cho $5$"
+      ],
+      "unknowns": [
+        "Số dư"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính số dư của các lũy thừa nhỏ để tìm chu kì, rồi chia số mũ cho chu kì.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Nhân số dư trước với $3$ rồi chia cho $5$, số dư nào xuất hiện lại đầu tiên?",
+        "cue": "Tính chất: nếu $a\\equiv b\\pmod m$ thì $ac\\equiv bc\\pmod m$",
+        "explanation": "Cần tìm số dư khi chia $3^{100}$ cho $5$. Số mũ quá lớn để tính trực tiếp, nên ta tìm quy luật. Mỗi lũy thừa sau bằng lũy thừa trước nhân $3$, nên số dư của lũy thừa sau bằng số dư của (số dư trước $\\times 3$) khi chia cho $5$. Ta tính lần lượt cho đến khi một số dư lặp lại.",
+        "math": "3^{1}\\equiv 3,\\quad 3^{2}\\equiv 4,\\quad 3^{3}\\equiv 2,\\quad 3^{4}\\equiv 1\\pmod{5}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Số mũ $100$ chia cho $4$ dư bao nhiêu?",
+        "cue": "Phép chia có dư cho số mũ; nâng đồng dư lên lũy thừa",
+        "explanation": "Ta có $3^{4}\\equiv 1\\pmod{5}$. Chia số mũ $100$ cho $4$: $100=4\\cdot 25+0$. Do đó $3^{100}=(3^{4})^{25}\\cdot 3^{0}$. Vì $3^{4}\\equiv1$ nên $(3^{4})^{25}\\equiv 1^{25}=1\\pmod{5}$ (nâng hai vế đồng dư lên cùng lũy thừa).",
+        "math": "3^{100}=\\left(3^{4}\\right)^{25}\\cdot 3^{0}\\equiv 1\\cdot 3^{0}\\equiv 1\\pmod{5}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đáp số là bao nhiêu?",
+        "cue": "Định nghĩa số dư",
+        "explanation": "Vậy số dư khi chia $3^{100}$ cho $5$ là $1$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính số dư của các lũy thừa nhỏ",
+        "explanation": "Cần tìm số dư khi chia $3^{100}$ cho $5$. Số mũ quá lớn để tính trực tiếp, nên ta tìm quy luật. Mỗi lũy thừa sau bằng lũy thừa trước nhân $3$, nên số dư của lũy thừa sau bằng số dư của (số dư trước $\\times 3$) khi chia cho $5$. Ta tính lần lượt cho đến khi một số dư lặp lại.",
+        "math": "3^{1}\\equiv 3,\\quad 3^{2}\\equiv 4,\\quad 3^{3}\\equiv 2,\\quad 3^{4}\\equiv 1\\pmod{5}",
+        "reason": "Tính chất: nếu $a\\equiv b\\pmod m$ thì $ac\\equiv bc\\pmod m$",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Viết số mũ theo chu kì 4",
+        "explanation": "Ta có $3^{4}\\equiv 1\\pmod{5}$. Chia số mũ $100$ cho $4$: $100=4\\cdot 25+0$. Do đó $3^{100}=(3^{4})^{25}\\cdot 3^{0}$. Vì $3^{4}\\equiv1$ nên $(3^{4})^{25}\\equiv 1^{25}=1\\pmod{5}$ (nâng hai vế đồng dư lên cùng lũy thừa).",
+        "math": "3^{100}=\\left(3^{4}\\right)^{25}\\cdot 3^{0}\\equiv 1\\cdot 3^{0}\\equiv 1\\pmod{5}",
+        "reason": "Phép chia có dư cho số mũ; nâng đồng dư lên lũy thừa",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy số dư khi chia $3^{100}$ cho $5$ là $1$.",
+        "math": null,
+        "reason": "Định nghĩa số dư",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy số dư khi chia $3^{100}$ cho $5$ là $1$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tính lại số dư bằng lũy thừa nhanh theo môđun (độc lập với chu kì)",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 10,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-power-residue",
+  "logs": [
+    "lesson by the routine solver (power-residue); no model call"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "phase": "baseline-number-theory-cubes",
+  "questionsExecuted": 3,
+  "ready": 0,
+  "independentlyReviewed": 3,
+  "correctConclusionCount": 0,
+  "mathematicalPasses": 0,
+  "qualityPasses": 0,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 18890.424166999997,
+    "p95": 20081.511209,
+    "max": 20081.511209
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 0,
+  "rubricMeanForReviewedOnly": null,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

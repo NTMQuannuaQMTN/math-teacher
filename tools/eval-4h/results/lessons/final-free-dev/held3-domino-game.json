@@ -1,0 +1,182 @@
+{
+  "input": "An và Bình luân phiên đặt một quân domino phủ đúng hai ô kề cạnh còn trống trên bàn cờ $2\\times8$. An đi trước. Ai không còn nước đi hợp lệ thì thua. Ai có chiến lược thắng? Hãy nêu rõ nước đáp cho mọi nước đi của đối phương, chứng minh nước đáp luôn hợp lệ và trò chơi kết thúc.",
+  "lesson": {
+    "analysis": {
+      "statement": "An và Bình luân phiên đặt một quân domino phủ đúng hai ô kề cạnh còn trống trên bàn cờ $2\\times8$. An đi trước. Ai không còn nước đi hợp lệ thì thua. Ai có chiến lược thắng? Hãy nêu rõ nước đáp cho mọi nước đi của đối phương, chứng minh nước đáp luôn hợp lệ và trò chơi kết thúc.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Chiến lược ghép cặp đối xứng",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chiến lược ghép cặp đối xứng"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn một bất biến áp dụng cho mọi lượt và chứng minh đầy đủ rằng trạng thái đích hoặc mọi nước đáp được kiểm soát.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Ảnh của một ô sau phép quay nửa vòng là ô nào?",
+        "cue": "Tính chất phép quay nửa vòng của hình chữ nhật",
+        "explanation": "Đánh số hàng $1,2$ và cột $1,\\ldots,8$. Phép quay $R(r,c)=(3-r,9-c)$ biến bàn cờ thành chính nó và biến hai ô kề cạnh thành hai ô kề cạnh.",
+        "math": "R(r,c)=(3-r,9-c)",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Bình phải làm gì ngay sau mỗi nước của An?",
+        "cue": "Chiến lược đối xứng cố định, không phụ thuộc một ví dụ chơi cụ thể",
+        "explanation": "Sau mỗi nước An đặt domino $D$, Bình đặt domino $R(D)$ là ảnh của đúng hai ô đó qua phép quay 180 độ. Quy tắc này xác định một nước đáp cho mọi domino ngang hoặc dọc mà An có thể đặt.",
+        "math": "\\text{ Dlongmapsto } R(D)",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Tại sao điều kiện số cột chẵn loại domino dọc cố định?",
+        "cue": "Xét đủ hai hướng domino và dùng số cột chẵn",
+        "explanation": "Vì $8$ chẵn, không có cột giữa cố định. Domino dọc ở cột $c$ biến thành domino dọc ở cột $9-c\\ne c$. Domino ngang ở một hàng biến sang hàng kia, nên cũng không chung ô với nó. Vì vậy $D$ và $R(D)$ luôn rời nhau.",
+        "math": "D\\cap R(D)=\\varnothing",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Nếu ảnh của nước An đã bị phủ thì điều gì xảy ra với nước An?",
+        "cue": "Bất biến đối xứng và phép quay là song ánh, tự nghịch đảo",
+        "explanation": "Trước lượt An, tập ô đã phủ đối xứng qua $R$ vì Bình luôn khôi phục đối xứng sau lượt mình. Nếu một ô của $R(D)$ đã bị phủ, ảnh ngược của nó trong $D$ cũng đã bị phủ, mâu thuẫn với việc An vừa đi hợp lệ. Kết hợp bước 3, cả hai ô của $R(D)$ đều trống.",
+        "math": "R(U)=U,\\quad D\\cap U=\\varnothing\\Rightarrow R(D)\\cap U=\\varnothing",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Ai có thể là người đầu tiên không còn nước khi Bình luôn đáp được?",
+        "cue": "Số ô hữu hạn và mỗi nước phủ thêm hai ô chưa dùng",
+        "explanation": "Bàn cờ có $2\\cdot8=16$ ô. Mỗi cặp lượt An–Bình phủ thêm bốn ô khác nhau, nên sau hữu hạn không quá $4$ cặp lượt, trò chơi phải dừng. Bình luôn có nước đáp sau nước của An; vì thế người đầu tiên không còn nước hợp lệ là An.",
+        "math": "16/4=4",
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Ghép cặp các ô bằng phép quay 180 độ",
+        "explanation": "Đánh số hàng $1,2$ và cột $1,\\ldots,8$. Phép quay $R(r,c)=(3-r,9-c)$ biến bàn cờ thành chính nó và biến hai ô kề cạnh thành hai ô kề cạnh.",
+        "math": "R(r,c)=(3-r,9-c)",
+        "reason": "Tính chất phép quay nửa vòng của hình chữ nhật",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Nêu chiến lược đáp rõ cho mọi nước của An",
+        "explanation": "Sau mỗi nước An đặt domino $D$, Bình đặt domino $R(D)$ là ảnh của đúng hai ô đó qua phép quay 180 độ. Quy tắc này xác định một nước đáp cho mọi domino ngang hoặc dọc mà An có thể đặt.",
+        "math": "\\text{ Dlongmapsto } R(D)",
+        "reason": "Chiến lược đối xứng cố định, không phụ thuộc một ví dụ chơi cụ thể",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Chứng minh domino đáp khác và không chồng lên nước vừa đi",
+        "explanation": "Vì $8$ chẵn, không có cột giữa cố định. Domino dọc ở cột $c$ biến thành domino dọc ở cột $9-c\\ne c$. Domino ngang ở một hàng biến sang hàng kia, nên cũng không chung ô với nó. Vì vậy $D$ và $R(D)$ luôn rời nhau.",
+        "math": "D\\cap R(D)=\\varnothing",
+        "reason": "Xét đủ hai hướng domino và dùng số cột chẵn",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Chứng minh nước đáp luôn còn trống",
+        "explanation": "Trước lượt An, tập ô đã phủ đối xứng qua $R$ vì Bình luôn khôi phục đối xứng sau lượt mình. Nếu một ô của $R(D)$ đã bị phủ, ảnh ngược của nó trong $D$ cũng đã bị phủ, mâu thuẫn với việc An vừa đi hợp lệ. Kết hợp bước 3, cả hai ô của $R(D)$ đều trống.",
+        "math": "R(U)=U,\\quad D\\cap U=\\varnothing\\Rightarrow R(D)\\cap U=\\varnothing",
+        "reason": "Bất biến đối xứng và phép quay là song ánh, tự nghịch đảo",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Chứng minh trò chơi kết thúc và xác định người thắng",
+        "explanation": "Bàn cờ có $2\\cdot8=16$ ô. Mỗi cặp lượt An–Bình phủ thêm bốn ô khác nhau, nên sau hữu hạn không quá $4$ cặp lượt, trò chơi phải dừng. Bình luôn có nước đáp sau nước của An; vì thế người đầu tiên không còn nước hợp lệ là An.",
+        "math": "16/4=4",
+        "reason": "Số ô hữu hạn và mỗi nước phủ thêm hai ô chưa dùng",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy Bình có chiến lược thắng: sau mọi nước $D$ của An, đặt $R(D)$ qua phép quay $180^\\circ$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra vét cạn không gian trạng thái đồng xu hoặc mọi domino hợp lệ và ảnh quay của nó",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 44,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-combinatorics",
+  "logs": []
+}

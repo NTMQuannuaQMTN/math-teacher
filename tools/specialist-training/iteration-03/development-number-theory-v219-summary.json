@@ -1,0 +1,21 @@
+{
+  "phase": "development-number-theory-v219",
+  "questionsExecuted": 25,
+  "ready": 25,
+  "independentlyReviewed": 25,
+  "correctConclusionCount": 25,
+  "mathematicalPasses": 25,
+  "qualityPasses": 20,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 25.880083000000013,
+    "p95": 45.94079099999908,
+    "max": 73.08525000000009
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 25,
+  "rubricMeanForReviewedOnly": 97.8,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

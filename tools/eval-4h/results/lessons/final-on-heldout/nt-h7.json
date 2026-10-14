@@ -1,0 +1,161 @@
+{
+  "input": "Tìm ước chung lớn nhất và bội chung nhỏ nhất của $84$ và $120$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm ước chung lớn nhất và bội chung nhỏ nhất của $84$ và $120$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Ước chung lớn nhất, bội chung nhỏ nhất",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Ước chung lớn nhất, bội chung nhỏ nhất"
+      ],
+      "techniques": [],
+      "givens": [
+        "$84$",
+        "$120$"
+      ],
+      "unknowns": [
+        "ƯCLN và BCNN"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng thuật toán Euclid để tìm ƯCLN, rồi suy ra BCNN.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Hai số cần tìm ước chung là bao nhiêu?",
+        "cue": "Tính giá trị biểu thức",
+        "explanation": "Hai số cần xét là $84$ và $120$.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Số dư khác 0 cuối cùng là bao nhiêu?",
+        "cue": "Thuật toán Euclid: $\\gcd(u,v)=\\gcd(v,r)$",
+        "explanation": "Chia số lớn cho số nhỏ, rồi lấy số chia chia cho số dư, lặp lại đến khi số dư bằng $0$. Mỗi bước dùng tính chất: nếu $u=vq+r$ thì $\\gcd(u,v)=\\gcd(v,r)$, vì mọi ước chung của $u$ và $v$ đều chia hết $r=u-vq$, và ngược lại mọi ước chung của $v$ và $r$ đều chia hết $u=vq+r$.",
+        "math": "\\begin{aligned}120=84\\cdot 1+36\\\\84=36\\cdot 2+12\\\\36=12\\cdot 3+0\\end{aligned}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Vì sao số chia cuối cùng là ƯCLN?",
+        "cue": "$\\gcd(d,0)=d$",
+        "explanation": "Phép chia cuối có số dư $0$, nên $\\gcd$ bằng số chia cuối cùng (số dư khác $0$ cuối cùng): $\\gcd(84,120)=12$.",
+        "math": "\\gcd(84,120)=12",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Tích hai số chia cho ƯCLN được bao nhiêu?",
+        "cue": "Hệ thức $\\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)=ab$",
+        "explanation": "Với hai số nguyên dương $a,b$ ta có $\\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)=a\\cdot b$. Do đó BCNN bằng tích hai số chia cho ƯCLN.",
+        "math": "\\operatorname{BCNN}(84,120)=\\frac{84\\cdot 120}{12}=840",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính hai số",
+        "explanation": "Hai số cần xét là $84$ và $120$.",
+        "math": null,
+        "reason": "Tính giá trị biểu thức",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Thực hiện thuật toán Euclid",
+        "explanation": "Chia số lớn cho số nhỏ, rồi lấy số chia chia cho số dư, lặp lại đến khi số dư bằng $0$. Mỗi bước dùng tính chất: nếu $u=vq+r$ thì $\\gcd(u,v)=\\gcd(v,r)$, vì mọi ước chung của $u$ và $v$ đều chia hết $r=u-vq$, và ngược lại mọi ước chung của $v$ và $r$ đều chia hết $u=vq+r$.",
+        "math": "\\begin{aligned}120=84\\cdot 1+36\\\\84=36\\cdot 2+12\\\\36=12\\cdot 3+0\\end{aligned}",
+        "reason": "Thuật toán Euclid: $\\gcd(u,v)=\\gcd(v,r)$",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Số dư khác 0 cuối cùng là ƯCLN",
+        "explanation": "Phép chia cuối có số dư $0$, nên $\\gcd$ bằng số chia cuối cùng (số dư khác $0$ cuối cùng): $\\gcd(84,120)=12$.",
+        "math": "\\gcd(84,120)=12",
+        "reason": "$\\gcd(d,0)=d$",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Tính BCNN từ ƯCLN",
+        "explanation": "Với hai số nguyên dương $a,b$ ta có $\\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)=a\\cdot b$. Do đó BCNN bằng tích hai số chia cho ƯCLN.",
+        "math": "\\operatorname{BCNN}(84,120)=\\frac{84\\cdot 120}{12}=840",
+        "reason": "Hệ thức $\\gcd(a,b)\\cdot\\operatorname{lcm}(a,b)=ab$",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy ƯCLN là $12$ và BCNN là $840$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra ƯCLN bằng đẳng thức Bézout độc lập (ước chung nào cũng chia hết ƯCLN) và BCNN·ƯCLN = tích",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 5,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-gcd-lcm",
+  "logs": [
+    "lesson by the routine solver (gcd-lcm); no model call"
+  ]
+}

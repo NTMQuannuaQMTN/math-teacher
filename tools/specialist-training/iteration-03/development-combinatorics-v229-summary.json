@@ -1,0 +1,21 @@
+{
+  "phase": "development-combinatorics-v229",
+  "questionsExecuted": 14,
+  "ready": 14,
+  "independentlyReviewed": 14,
+  "correctConclusionCount": 14,
+  "mathematicalPasses": 14,
+  "qualityPasses": 12,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 16.846459000000323,
+    "p95": 60.40708399999994,
+    "max": 60.40708399999994
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 14,
+  "rubricMeanForReviewedOnly": 98.28571428571429,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

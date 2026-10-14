@@ -1,0 +1,134 @@
+{
+  "input": "Tìm giá trị nhỏ nhất của $|x-1|+|x-4|+|x-7|$ với $x$ thực và tất cả giá trị $x$ đạt giá trị nhỏ nhất.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm giá trị nhỏ nhất của $|x-1|+|x-4|+|x-7|$ với $x$ thực và tất cả giá trị $x$ đạt giá trị nhỏ nhất.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Giá trị nhỏ nhất của tổng khoảng cách trên trục số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Giá trị nhỏ nhất của tổng khoảng cách trên trục số"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Ghép hai khoảng cách ngoài để có cận dưới, rồi xét chính xác khi nào cả hai bất đẳng thức đồng thời đạt dấu bằng.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Trong ba số, số nào nằm giữa hai số còn lại?",
+        "cue": "Ý nghĩa giá trị tuyệt đối là khoảng cách trên trục số",
+        "explanation": "Biểu thức là tổng khoảng cách từ điểm $x$ trên trục số đến ba điểm $1,4,7$. Ta giữ riêng khoảng cách đến điểm giữa $4$.",
+        "math": "T=|x-1|+|x-4|+|x-7|",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Hai hạng ngoài cho cận dưới nào?",
+        "cue": "Bất đẳng thức tam giác và giá trị tuyệt đối không âm",
+        "explanation": "Theo bất đẳng thức tam giác, $|x-1|+|x-7|\\ge|7-1|=6$. Đồng thời $|x-4|\\ge0$. Cộng hai bất đẳng thức cho $Tge6$.",
+        "math": "\\text{ Tge } 6+0=6",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Điểm nào vừa nằm trong đoạn ngoài vừa có khoảng cách đến điểm giữa bằng 0?",
+        "cue": "Điều kiện dấu bằng của bất đẳng thức tam giác trên trục số",
+        "explanation": "Dấu bằng $|x-1|+|x-7|=6$ xảy ra khi $1\\le xle7$. Dấu bằng $|x-4|=0$ xảy ra khi và chỉ khi $x=4$. Vì $4$ nằm trong đoạn $[1,7]$, hai dấu bằng đồng thời xảy ra duy nhất tại $x=4$.",
+        "math": "T=6\\Longleftrightarrow x=4",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Giá trị nào đạt cận dưới vừa chứng minh?",
+        "cue": "Thay trực tiếp và đối chiếu cận dưới",
+        "explanation": "Tại $x=4$, biểu thức bằng $3+0+3=6$. Vậy giá trị nhỏ nhất là $6$ và chỉ đạt tại $x=4$.",
+        "math": "T(4)=6",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tách ba khoảng cách cần tối ưu",
+        "explanation": "Biểu thức là tổng khoảng cách từ điểm $x$ trên trục số đến ba điểm $1,4,7$. Ta giữ riêng khoảng cách đến điểm giữa $4$.",
+        "math": "T=|x-1|+|x-4|+|x-7|",
+        "reason": "Ý nghĩa giá trị tuyệt đối là khoảng cách trên trục số",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Lập cận dưới bằng bất đẳng thức tam giác",
+        "explanation": "Theo bất đẳng thức tam giác, $|x-1|+|x-7|\\ge|7-1|=6$. Đồng thời $|x-4|\\ge0$. Cộng hai bất đẳng thức cho $Tge6$.",
+        "math": "\\text{ Tge } 6+0=6",
+        "reason": "Bất đẳng thức tam giác và giá trị tuyệt đối không âm",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Xác định đầy đủ điều kiện đạt dấu bằng",
+        "explanation": "Dấu bằng $|x-1|+|x-7|=6$ xảy ra khi $1\\le xle7$. Dấu bằng $|x-4|=0$ xảy ra khi và chỉ khi $x=4$. Vì $4$ nằm trong đoạn $[1,7]$, hai dấu bằng đồng thời xảy ra duy nhất tại $x=4$.",
+        "math": "T=6\\Longleftrightarrow x=4",
+        "reason": "Điều kiện dấu bằng của bất đẳng thức tam giác trên trục số",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Thay lại để kiểm tra và kết luận",
+        "explanation": "Tại $x=4$, biểu thức bằng $3+0+3=6$. Vậy giá trị nhỏ nhất là $6$ và chỉ đạt tại $x=4$.",
+        "math": "T(4)=6",
+        "reason": "Thay trực tiếp và đối chiếu cận dưới",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy giá trị nhỏ nhất là $6$, đạt duy nhất khi $x=4$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Đối chiếu độc lập hệ số, điều kiện dấu bằng, khai triển đa thức hoặc từng tổng hữu hạn",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 11,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-algebra-family",
+  "logs": []
+}

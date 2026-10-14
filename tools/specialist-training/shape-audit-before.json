@@ -1,0 +1,215 @@
+{
+  "matched": 363,
+  "failures": [
+    {
+      "constant": -182,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": -168,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": -118,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": -86,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": -54,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": 42,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": 74,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": 106,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": 156,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    },
+    {
+      "constant": 170,
+      "issues": [
+        {
+          "path": [
+            "hints",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        },
+        {
+          "path": [
+            "steps",
+            2,
+            "math"
+          ],
+          "message": "Too big: expected string to have <=800 characters"
+        }
+      ]
+    }
+  ]
+}

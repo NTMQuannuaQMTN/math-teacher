@@ -2,6 +2,8 @@
  * Reads a preview from a lesson's partial JSON while it streams (fields complete so far). Display-only:
  * nothing here is verified.
  */
+import {hasDamagedLatex, isWellFormedMathText} from './mathText';
+import {hasForeignDisplayText,isStrippedVietnamese} from './language';
 
 /** The value of a top-level-ish string field once its closing quote has arrived. */
 function completeString(partial: string, key: string): string | null {
@@ -29,9 +31,10 @@ export function previewPartialLesson(partial: string, { vietnamese = false }: { 
   const stepsAt = partial.indexOf('"steps"');
   const steps = stepsAt >= 0 ? partial.slice(stepsAt) : "";
   const kind = completeString(partial, "subtopic");
+  const safe=(text:string|null)=>text&&(!vietnamese||(VI_MARKED.test(text)&&!hasForeignDisplayText(text)&&!isStrippedVietnamese(text)))&&!hasDamagedLatex(text)&&isWellFormedMathText(text)?text:null;
   return {
-    problemKind: kind && (!vietnamese || VI_MARKED.test(kind)) ? kind : null,
-    strategy: completeString(partial, "strategy"),
+    problemKind: safe(kind),
+    strategy: safe(completeString(partial, "strategy")),
     stepsWritten: (steps.match(/"geometryActions"\s*:\s*\[[^\]]*\]/g) ?? []).length,
   };
 }

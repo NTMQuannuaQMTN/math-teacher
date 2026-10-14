@@ -1,0 +1,156 @@
+{
+  "input": "Tìm tất cả các cặp số nguyên $(x,y)$ thỏa mãn $x^2+y^2=25$. Chứng minh không bỏ sót nghiệm.",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các cặp số nguyên $(x,y)$ thỏa mãn $x^2+y^2=25$. Chứng minh không bỏ sót nghiệm.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Phương trình tổng hai bình phương nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình tổng hai bình phương nguyên"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chặn trị tuyệt đối của từng ẩn, liệt kê bình phương hữu hạn rồi khôi phục mọi dấu và thứ tự.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Mỗi ẩn có thể có trị tuyệt đối lớn hơn căn của tổng không?",
+        "cue": "Bình phương không âm và lấy căn hai vế",
+        "explanation": "Vì $x^2,y^2ge0$ và tổng bằng $25$, ta có $x^2le25$ và $y^2le25$. Do đó $|x|,|y|le5$.",
+        "math": "-5le x,yle5",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Những cặp bình phương nào cộng lại đúng bằng vế phải?",
+        "cue": "Liệt kê đầy đủ trong giới hạn đã chứng minh",
+        "explanation": "Các bình phương của số nguyên từ $0$ đến $5$ là hữu hạn. Đối chiếu hai số trong danh sách có tổng $25$ cho các cặp trị tuyệt đối sau.",
+        "math": "(|x|,|y|)in{(5,0),(4,3),(3,4),(0,5)}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Số 0 có tạo hai lựa chọn dấu khác nhau không?",
+        "cue": "Mỗi số nguyên được xác định bởi trị tuyệt đối và dấu; cặp có thứ tự",
+        "explanation": "Với tọa độ khác $0$, mỗi trị tuyệt đối cho hai dấu; nếu đổi thứ tự hai trị tuyệt đối khác nhau thì được cặp có thứ tự mới. Tọa độ bằng $0$ chỉ có một dấu. Liệt kê theo quy tắc này, không nhân máy móc cho trường hợp có số 0.",
+        "math": "(x,y)in{(-5,0),(-4,-3),(-4,3),(-3,-4),(-3,4),(0,-5),(0,5),(3,-4),(3,4),(4,-3),(4,3),(5,0)}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Vì sao danh sách không bỏ sót nghiệm có trị tuyệt đối khác?",
+        "cue": "Kiểm tra trực tiếp và hai chiều của phép liệt kê",
+        "explanation": "Mỗi cặp trong danh sách đều cho $x^2+y^2=25$. Ngược lại, bước 1 và 2 đã xét mọi trị tuyệt đối có thể, nên không còn nghiệm nào khác. Tổng cộng có $12$ cặp có thứ tự.",
+        "math": "N=12",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chứng minh miền tìm kiếm hữu hạn",
+        "explanation": "Vì $x^2,y^2ge0$ và tổng bằng $25$, ta có $x^2le25$ và $y^2le25$. Do đó $|x|,|y|le5$.",
+        "math": "-5le x,yle5",
+        "reason": "Bình phương không âm và lấy căn hai vế",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Liệt kê các bình phương có thể dùng",
+        "explanation": "Các bình phương của số nguyên từ $0$ đến $5$ là hữu hạn. Đối chiếu hai số trong danh sách có tổng $25$ cho các cặp trị tuyệt đối sau.",
+        "math": "(|x|,|y|)in{(5,0),(4,3),(3,4),(0,5)}",
+        "reason": "Liệt kê đầy đủ trong giới hạn đã chứng minh",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Khôi phục dấu và thứ tự không trùng",
+        "explanation": "Với tọa độ khác $0$, mỗi trị tuyệt đối cho hai dấu; nếu đổi thứ tự hai trị tuyệt đối khác nhau thì được cặp có thứ tự mới. Tọa độ bằng $0$ chỉ có một dấu. Liệt kê theo quy tắc này, không nhân máy móc cho trường hợp có số 0.",
+        "math": "(x,y)in{(-5,0),(-4,-3),(-4,3),(-3,-4),(-3,4),(0,-5),(0,5),(3,-4),(3,4),(4,-3),(4,3),(5,0)}",
+        "reason": "Mỗi số nguyên được xác định bởi trị tuyệt đối và dấu; cặp có thứ tự",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kiểm tra và kết luận tính đầy đủ",
+        "explanation": "Mỗi cặp trong danh sách đều cho $x^2+y^2=25$. Ngược lại, bước 1 và 2 đã xét mọi trị tuyệt đối có thể, nên không còn nghiệm nào khác. Tổng cộng có $12$ cặp có thứ tự.",
+        "math": "N=12",
+        "reason": "Kiểm tra trực tiếp và hai chiều của phép liệt kê",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy có $12$ cặp số nguyên có thứ tự: $(-5,0), (-4,-3), (-4,3), (-3,-4), (-3,4), (0,-5), (0,5), (3,-4), (3,4), (4,-3), (4,3), (5,0)$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập số dư bằng lũy thừa nhanh, Euclid trên số nguyên lớn, liệt kê hữu hạn hoặc phân tích thập phân",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 3,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

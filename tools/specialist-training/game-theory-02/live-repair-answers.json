@@ -1,0 +1,1213 @@
+[
+  {
+    "id": "q1",
+    "text": "Câu 1 (2 điểm). Cho phương trình $x^2 - 2(m + 1)x + 2m = 0$ (m là tham số).\n\na) Chứng minh rằng với mọi m phương trình luôn có hai nghiệm phân biệt $x_1, x_2$.\n\nb) Chứng minh $x_1^4 + x_2^4 > \\frac{9}{2}$.\n\nc) Chứng minh $(x_1 + \\sqrt{x_1^2 + 1}) (x_2 + \\sqrt{x_2^2 + 1}) = 1$ khi và chỉ khi $m = -1$.",
+    "lesson": {
+      "analysis": {
+        "statement": "Câu 1 (2 điểm). Cho phương trình $x^2 - 2(m + 1)x + 2m = 0$ (m là tham số).\n\na) Chứng minh rằng với mọi m phương trình luôn có hai nghiệm phân biệt $x_1, x_2$.\n\nb) Chứng minh $x_1^4 + x_2^4 > \\frac{9}{2}$.\n\nc) Chứng minh $(x_1 + \\sqrt{x_1^2 + 1}) (x_2 + \\sqrt{x_2^2 + 1}) = 1$ khi và chỉ khi $m = -1$.",
+        "language": "vi",
+        "topic": "algebra",
+        "subtopic": "Biệt thức theo tham số và chứng minh với mọi giá trị",
+        "gradeLevel": 9,
+        "withinCurriculum": true,
+        "concepts": [
+          "Ẩn và tham số",
+          "Biệt thức",
+          "Hoàn thành bình phương",
+          "Chặn tổng lũy thừa bậc bốn của hai nghiệm",
+          "Đẳng thức chứa hai nghiệm và căn; điều kiện cần và đủ"
+        ],
+        "techniques": [
+          "discriminant"
+        ],
+        "givens": [
+          "$x^2 - 2(m + 1)x + 2m = 0$",
+          "$m\\in\\mathbb{R}$"
+        ],
+        "unknowns": [
+          "Chứng minh rằng với mọi $m$ phương trình luôn có hai nghiệm phân biệt $x_1, x_2$.",
+          "Chứng minh $x_1^4 + x_2^4 > \\frac{9}{2}$.",
+          "Chứng minh $(x_1 + \\sqrt{x_1^2 + 1}) (x_2 + \\sqrt{x_2^2 + 1}) = 1$ khi và chỉ khi $m = -1$."
+        ],
+        "constraints": [],
+        "status": "solvable",
+        "statusReason": null,
+        "interpretationNotes": []
+      },
+      "strategy": "a) Xác định hệ số, tính biệt thức theo tham số, hoàn thành bình phương để xét dấu với mọi giá trị; nếu khẳng định sai thì chỉ ra phản ví dụ cụ thể.\nb) Dùng Vi-ét và hằng đẳng thức, khử bậc ba rồi hoàn thành bình phương để chứng minh cận cho mọi tham số.\nc) Nhân liên hợp, chứng minh một nhân tử luôn dương để suy ra tổng hai nghiệm bằng không, rồi dùng Vi-ét và kiểm tra chiều ngược lại.",
+      "hints": [
+        {
+          "id": "p1_h1",
+          "level": 1,
+          "question": "a) Đang xét phương trình theo ẩn nào? Hệ số bậc hai có thể bằng không không?",
+          "cue": "Hệ số của phương trình bậc hai; phân biệt ẩn và tham số",
+          "explanation": "Xét phương trình theo ẩn $x$; $m$ là tham số. Hệ số bậc hai $a=1\\ne0$ không phụ thuộc tham số, nên ở mọi giá trị của tham số ta thực sự có phương trình bậc hai.",
+          "math": "a=1,\\quad b=-2m-2,\\quad c=2m",
+          "stepId": "p1_s1",
+          "focus": []
+        },
+        {
+          "id": "p1_h3",
+          "level": 3,
+          "question": "a) Hoàn thành bình phương cho biệt thức. Hằng số còn lại có dương không?",
+          "cue": "Bình phương không âm; xét dấu hằng số",
+          "explanation": "Hoàn thành bình phương như biểu thức bên dưới. Bình phương luôn không âm, hệ số của nó dương, còn hằng số $4$ dương. Vì thế biệt thức luôn lớn hơn hoặc bằng hằng số dương này ở mọi số thực $m$.",
+          "math": "\\Delta=(4)(m-(0))^2+(4)\\ge4>0",
+          "stepId": "p1_s3",
+          "focus": []
+        },
+        {
+          "id": "p2_h1",
+          "level": 1,
+          "question": "b) Tổng và tích hai nghiệm phụ thuộc tham số như thế nào?",
+          "cue": "Biệt thức; bình phương không âm; Vi-ét",
+          "explanation": "Hệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là $x_1,x_2$, và đặt tổng là $S$, tích là $P$. Vi-ét cho hai biểu thức này theo tham số.",
+          "math": "\\begin{gathered}\\Delta=4m^{2}+4=(4)(m-(0))^2+(4)\\ge4>0\\\\S=x_1+x_2=2m+2,\\quad P=x_1x_2=2m\\end{gathered}",
+          "stepId": "p2_s1",
+          "focus": []
+        },
+        {
+          "id": "p2_h3",
+          "level": 3,
+          "question": "b) Sau khi thu gọn, hệ số của từng bậc tham số là gì?",
+          "cue": "Thay Vi-ét; khai triển chính xác",
+          "explanation": "Thay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.",
+          "math": "x_1^4+x_2^4=(2m+2)^4-4(2m)(2m+2)^2+2(2m)^2=16m^{4}+32m^{3}+40m^{2}+32m+16",
+          "stepId": "p2_s3",
+          "focus": []
+        },
+        {
+          "id": "p2_h5",
+          "level": 4,
+          "question": "b) Cận dưới tìm được có lớn hơn cận trong đề không? Có cần thử riêng từng tham số nữa không?",
+          "cue": "Biến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt",
+          "explanation": "Mỗi số thực $m$ cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy $x_1^4 + x_2^4 > \\frac{9}{2}$ đúng với mọi số thực $m$.",
+          "math": null,
+          "stepId": "p2_s5",
+          "focus": []
+        },
+        {
+          "id": "p3_h1",
+          "level": 1,
+          "question": "c) Vì sao mỗi căn lớn hơn giá trị tuyệt đối của nghiệm? Điều đó cho biết dấu thừa số như thế nào?",
+          "cue": "Biệt thức; hoàn thành bình phương; so sánh bình phương hai số không âm",
+          "explanation": "Hệ số bậc hai khác không; hoàn thành bình phương cho biệt thức như bên dưới chứng minh nó dương với mọi tham số. Gọi hai nghiệm thực phân biệt là $x_1,x_2$. Vì $1>0$, mỗi căn luôn xác định và lớn hơn giá trị tuyệt đối của số tương ứng: bình phương của căn lớn hơn bình phương giá trị tuyệt đối, và cả hai không âm. Do đó cả hai thừa số trong tích cần xét đều dương.",
+          "math": "\\begin{gathered}\\Delta=4m^{2}+4=(4)(m-(0))^2+(4)\\ge4>0\\\\\\sqrt{x_1^2+(1)}>|x_1|,\\quad \\sqrt{x_2^2+(1)}>|x_2|\\end{gathered}",
+          "stepId": "p3_s1",
+          "focus": []
+        },
+        {
+          "id": "p3_h4",
+          "level": 4,
+          "question": "c) Sau khi cộng nghiệm thứ hai rồi trừ căn thứ nhất, hai vế là gì?",
+          "cue": "Cộng hoặc trừ cùng một biểu thức vào hai vế",
+          "explanation": "Trước hết cộng $x_2$ vào cả hai vế để đưa hai nghiệm về cùng một phía. Tiếp theo trừ $\\sqrt{x_1^2+(1)}$ ở cả hai vế. Viết riêng từng dòng để theo dõi dấu khi chuyển vế.",
+          "math": "\\begin{gathered}x_1+\\sqrt{x_1^2+(1)}=\\sqrt{x_2^2+(1)}-x_2\\\\x_1+\\sqrt{x_1^2+(1)}+x_2=\\sqrt{x_2^2+(1)}\\\\x_1+x_2=\\sqrt{x_2^2+(1)}-\\sqrt{x_1^2+(1)}\\end{gathered}",
+          "stepId": "p3_s5",
+          "focus": []
+        },
+        {
+          "id": "p3_h6",
+          "level": 4,
+          "question": "c) Tổng hai nghiệm bằng không cho tham số nào? Tại tham số ấy, vì sao tích thật sự bằng cận đã cho?",
+          "cue": "Vi-ét; giải phương trình tham số; chứng minh cả hai chiều",
+          "explanation": "Vi-ét cho tổng hai nghiệm như bên dưới; đặt tổng bằng không và giải được tham số. Ngược lại, tại tham số này hai nghiệm có tổng bằng không nên đối nhau; hai căn bằng nhau. Khi đó tích hai thừa số là hiệu hai bình phương và bằng $1$. Tất cả phép biến đổi đã được chứng minh tương đương nên không còn tham số khác. Vậy đẳng thức đã cho đúng khi và chỉ khi $m=-1$.",
+          "math": "\\begin{gathered}x_1+x_2=-\\frac{-2m-2}{1}=0\\quad\\Leftrightarrow\\quad m=-1\\\\x_2=-x_1\\quad\\Rightarrow\\quad (x_1+\\sqrt{x_1^2+(1)})(-x_1+\\sqrt{x_1^2+(1)})=x_1^2+(1)-x_1^2=1\\end{gathered}",
+          "stepId": "p3_s9",
+          "focus": []
+        }
+      ],
+      "steps": [
+        {
+          "id": "p1_s1",
+          "title": "a) Xác định các hệ số và điều kiện dùng biệt thức",
+          "explanation": "Xét phương trình theo ẩn $x$; $m$ là tham số. Hệ số bậc hai $a=1\\ne0$ không phụ thuộc tham số, nên ở mọi giá trị của tham số ta thực sự có phương trình bậc hai.",
+          "math": "a=1,\\quad b=-2m-2,\\quad c=2m",
+          "reason": "Hệ số của phương trình bậc hai; phân biệt ẩn và tham số",
+          "uses": [],
+          "geometryActions": []
+        },
+        {
+          "id": "p1_s2",
+          "title": "a) Tính biệt thức theo tham số",
+          "explanation": "Thay đúng hệ số bậc nhất và hạng tử tự do vào công thức biệt thức, khai triển bình phương rồi thu gọn. Điều kiện để có hai nghiệm thực phân biệt là biệt thức dương, chứ không phải chỉ không âm.",
+          "math": "\\begin{gathered}\\Delta=b^2-4ac=(-2m-2)^2-4(1)(2m)\\\\\\Delta=4m^{2}+4\\end{gathered}",
+          "reason": "Công thức biệt thức và điều kiện có hai nghiệm phân biệt",
+          "uses": [
+            "p1_s1"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p1_s3",
+          "title": "a) Chứng minh dấu với mọi giá trị tham số",
+          "explanation": "Hoàn thành bình phương như biểu thức bên dưới. Bình phương luôn không âm, hệ số của nó dương, còn hằng số $4$ dương. Vì thế biệt thức luôn lớn hơn hoặc bằng hằng số dương này ở mọi số thực $m$.",
+          "math": "\\Delta=(4)(m-(0))^2+(4)\\ge4>0",
+          "reason": "Bình phương không âm; xét dấu hằng số",
+          "uses": [
+            "p1_s2"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p1_s4",
+          "title": "a) Áp dụng điều kiện nghiệm và kết luận",
+          "explanation": "Hệ số bậc hai khác không và biệt thức dương đã được chứng minh cho mọi tham số, nên công thức nghiệm cho hai nghiệm thực phân biệt. Vậy với mọi số thực $m$, phương trình đã cho có hai nghiệm thực phân biệt.",
+          "math": null,
+          "reason": "Phân loại nghiệm thực của phương trình bậc hai bằng biệt thức",
+          "uses": [
+            "p1_s3"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p2_s1",
+          "title": "b) Chứng minh hai nghiệm thực tồn tại và ghi tổng, tích",
+          "explanation": "Hệ số bậc hai khác không. Hoàn thành bình phương cho biệt thức được cận dương bên dưới, nên phương trình có hai nghiệm thực phân biệt với mọi tham số. Gọi chúng là $x_1,x_2$, và đặt tổng là $S$, tích là $P$. Vi-ét cho hai biểu thức này theo tham số.",
+          "math": "\\begin{gathered}\\Delta=4m^{2}+4=(4)(m-(0))^2+(4)\\ge4>0\\\\S=x_1+x_2=2m+2,\\quad P=x_1x_2=2m\\end{gathered}",
+          "reason": "Biệt thức; bình phương không âm; Vi-ét",
+          "uses": [],
+          "geometryActions": []
+        },
+        {
+          "id": "p2_s2",
+          "title": "b) Biểu diễn tổng lũy thừa bậc bốn qua tổng và tích",
+          "explanation": "Khai triển bình phương tổng hai nghiệm để tìm tổng bình phương. Sau đó bình phương tổng bình phương rồi trừ hai lần tích bình phương; khai triển tiếp cho biểu thức chỉ chứa S và P. Đây là đẳng thức với mọi cặp nghiệm thực, không cần tính riêng từng nghiệm.",
+          "math": "\\begin{gathered}x_1^2+x_2^2=S^2-2P\\\\x_1^4+x_2^4=(x_1^2+x_2^2)^2-2(x_1x_2)^2\\\\=(S^2-2P)^2-2P^2=S^4-4PS^2+2P^2\\end{gathered}",
+          "reason": "Hằng đẳng thức; khai triển và thu gọn",
+          "uses": [
+            "p2_s1"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p2_s3",
+          "title": "b) Thay Vi-ét và khai triển theo tham số",
+          "explanation": "Thay đúng tổng và tích vào đẳng thức vừa chứng minh; tính các lũy thừa, khai triển rồi gộp hệ số của từng bậc tham số.",
+          "math": "x_1^4+x_2^4=(2m+2)^4-4(2m)(2m+2)^2+2(2m)^2=16m^{4}+32m^{3}+40m^{2}+32m+16",
+          "reason": "Thay Vi-ét; khai triển chính xác",
+          "uses": [
+            "p2_s2"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p2_s4",
+          "title": "b) Đổi biến để khử bậc ba và hoàn thành bình phương",
+          "explanation": "Đặt $t=m-(-\\frac{1}{2})$, tức $m=t+(-\\frac{1}{2})$. Khai triển theo t; cách chọn hằng số này làm hệ số bậc ba bằng không. Hoàn thành bình phương phần bậc hai và bậc nhất. Hai hệ số đứng trước lũy thừa bậc bốn và bình phương đều không âm, nên mọi giá trị thực của t cho cận dưới đã chỉ ra.",
+          "math": "\\begin{gathered}t=m-(-\\frac{1}{2})\\\\x_1^4+x_2^4=16t^{4}+16t^{2}+8t+7\\\\=(16)t^4+(16)(t-(-\\frac{1}{4}))^2+(6)\\ge6>\\frac{9}{2}\\end{gathered}",
+          "reason": "Đổi biến; khai triển; hoàn thành bình phương; tổng số không âm",
+          "uses": [
+            "p2_s3"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p2_s5",
+          "title": "b) Kết luận cho mọi tham số",
+          "explanation": "Mỗi số thực $m$ cho đúng một số thực t; cận dưới đã được chứng minh cho mọi t. Cận này còn lớn hơn số cần chứng minh, nên bất đẳng thức là nghiêm ngặt với mọi tham số. Vậy $x_1^4 + x_2^4 > \\frac{9}{2}$ đúng với mọi số thực $m$.",
+          "math": null,
+          "reason": "Biến đổi song ánh giữa tham số và ẩn phụ; cận dưới nghiêm ngặt",
+          "uses": [
+            "p2_s4"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s1",
+          "title": "c) Xác định hai nghiệm và điều kiện của các căn",
+          "explanation": "Hệ số bậc hai khác không; hoàn thành bình phương cho biệt thức như bên dưới chứng minh nó dương với mọi tham số. Gọi hai nghiệm thực phân biệt là $x_1,x_2$. Vì $1>0$, mỗi căn luôn xác định và lớn hơn giá trị tuyệt đối của số tương ứng: bình phương của căn lớn hơn bình phương giá trị tuyệt đối, và cả hai không âm. Do đó cả hai thừa số trong tích cần xét đều dương.",
+          "math": "\\begin{gathered}\\Delta=4m^{2}+4=(4)(m-(0))^2+(4)\\ge4>0\\\\\\sqrt{x_1^2+(1)}>|x_1|,\\quad \\sqrt{x_2^2+(1)}>|x_2|\\end{gathered}",
+          "reason": "Biệt thức; hoàn thành bình phương; so sánh bình phương hai số không âm",
+          "uses": [],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s2",
+          "title": "c) Khai triển tích hai biểu thức liên hợp",
+          "explanation": "Đặt hai nhân tử cạnh nhau và dùng hằng đẳng thức hiệu hai bình phương. Bình phương căn trả lại biểu thức dưới căn; sau đó trừ hai hạng tử bình phương giống nhau.",
+          "math": "\\begin{aligned}(x_2+\\sqrt{x_2^2+(1)})(\\sqrt{x_2^2+(1)}-x_2)&=\\sqrt{x_2^2+(1)}^2-x_2^2\\\\&=(x_2^2+(1))-x_2^2\\\\&=1\\end{aligned}",
+          "reason": "Hằng đẳng thức hiệu hai bình phương; bình phương căn bậc hai",
+          "uses": [
+            "p3_s1"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s3",
+          "title": "c) Chia đẳng thức liên hợp cho một thừa số dương",
+          "explanation": "Bước đầu đã chứng minh $x_2+\\sqrt{x_2^2+(1)}>0$, nên thừa số này khác không. Chia cả hai vế của đẳng thức ở bước trước cho chính thừa số ấy. Không được chia trước khi biết mẫu khác không.",
+          "math": "\\begin{gathered}\\frac{(x_2+\\sqrt{x_2^2+(1)})(\\sqrt{x_2^2+(1)}-x_2)}{x_2+\\sqrt{x_2^2+(1)}}=\\frac{1}{x_2+\\sqrt{x_2^2+(1)}}\\\\\\sqrt{x_2^2+(1)}-x_2=\\frac{1}{x_2+\\sqrt{x_2^2+(1)}}\\end{gathered}",
+          "reason": "Chia hai vế cho cùng một số khác không",
+          "uses": [
+            "p3_s2"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s4",
+          "title": "c) Chia tích cần chứng minh và thay biểu thức vừa tìm",
+          "explanation": "Xét chiều cần: giả sử tích trong đề bằng $1$. Chia hai vế cho thừa số dương chứa nghiệm thứ hai; vế trái rút gọn thừa số ấy. Thay thương bên phải bằng biểu thức đã chứng minh ở bước trước.",
+          "math": "\\begin{gathered}(x_1+\\sqrt{x_1^2+(1)})(x_2+\\sqrt{x_2^2+(1)})=1\\\\\\frac{(x_1+\\sqrt{x_1^2+(1)})(x_2+\\sqrt{x_2^2+(1)})}{x_2+\\sqrt{x_2^2+(1)}}=\\frac{1}{x_2+\\sqrt{x_2^2+(1)}}\\\\x_1+\\sqrt{x_1^2+(1)}=\\frac{1}{x_2+\\sqrt{x_2^2+(1)}}\\\\x_1+\\sqrt{x_1^2+(1)}=\\sqrt{x_2^2+(1)}-x_2\\end{gathered}",
+          "reason": "Chia cho thừa số dương; thay bằng một đẳng thức đã chứng minh",
+          "uses": [
+            "p3_s3"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s5",
+          "title": "c) Cộng nghiệm thứ hai rồi trừ căn ở cả hai vế",
+          "explanation": "Trước hết cộng $x_2$ vào cả hai vế để đưa hai nghiệm về cùng một phía. Tiếp theo trừ $\\sqrt{x_1^2+(1)}$ ở cả hai vế. Viết riêng từng dòng để theo dõi dấu khi chuyển vế.",
+          "math": "\\begin{gathered}x_1+\\sqrt{x_1^2+(1)}=\\sqrt{x_2^2+(1)}-x_2\\\\x_1+\\sqrt{x_1^2+(1)}+x_2=\\sqrt{x_2^2+(1)}\\\\x_1+x_2=\\sqrt{x_2^2+(1)}-\\sqrt{x_1^2+(1)}\\end{gathered}",
+          "reason": "Cộng hoặc trừ cùng một biểu thức vào hai vế",
+          "uses": [
+            "p3_s4"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s6",
+          "title": "c) Nhân hiệu hai căn với tổng hai căn",
+          "explanation": "Tổng hai căn dương nên khác không. Nhân tử và mẫu của hiệu hai căn với tổng hai căn. Khai triển tử bằng hiệu hai bình phương, thay bình phương từng căn, rồi khử hai hằng số bằng nhau.",
+          "math": "\\begin{aligned}\\sqrt{x_2^2+(1)}-\\sqrt{x_1^2+(1)}&=\\frac{(\\sqrt{x_2^2+(1)}-\\sqrt{x_1^2+(1)})(\\sqrt{x_2^2+(1)}+\\sqrt{x_1^2+(1)})}{\\sqrt{x_2^2+(1)}+\\sqrt{x_1^2+(1)}}\\\\&=\\frac{(x_2^2+(1))-(x_1^2+(1))}{\\sqrt{x_2^2+(1)}+\\sqrt{x_1^2+(1)}}\\\\&=\\frac{x_2^2-x_1^2}{\\sqrt{x_2^2+(1)}+\\sqrt{x_1^2+(1)}}\\\\&=\\frac{(x_2-x_1)(x_2+x_1)}{\\sqrt{x_2^2+(1)}+\\sqrt{x_1^2+(1)}}\\end{aligned}",
+          "reason": "Nhân liên hợp; hiệu hai bình phương; tổng hai căn khác không",
+          "uses": [
+            "p3_s5"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s7",
+          "title": "c) Nhân mẫu, chuyển vế và đặt tổng hai nghiệm làm nhân tử chung",
+          "explanation": "Thay hiệu hai căn bằng phân thức ở bước trước. Nhân cả hai vế với tổng hai căn dương. Trừ vế phải khỏi hai vế, đặt tổng hai nghiệm làm nhân tử chung, rồi bỏ ngoặc có dấu trừ phía trước.",
+          "math": "\\begin{gathered}x_1+x_2=\\frac{(x_2-x_1)(x_1+x_2)}{\\sqrt{x_2^2+(1)}+\\sqrt{x_1^2+(1)}}\\\\(x_1+x_2)(\\sqrt{x_1^2+(1)}+\\sqrt{x_2^2+(1)})=(x_2-x_1)(x_1+x_2)\\\\(x_1+x_2)(\\sqrt{x_1^2+(1)}+\\sqrt{x_2^2+(1)})-(x_2-x_1)(x_1+x_2)=0\\\\(x_1+x_2)[\\sqrt{x_1^2+(1)}+\\sqrt{x_2^2+(1)}-(x_2-x_1)]=0\\\\(x_1+x_2)(\\sqrt{x_1^2+(1)}+\\sqrt{x_2^2+(1)}+x_1-x_2)=0\\end{gathered}",
+          "reason": "Nhân hai vế với số khác không; chuyển vế; đặt nhân tử chung",
+          "uses": [
+            "p3_s6"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s8",
+          "title": "c) Chứng minh nhân tử thứ hai dương để suy ra tổng hai nghiệm bằng không",
+          "explanation": "Mỗi căn lớn hơn giá trị tuyệt đối của nghiệm tương ứng, như bước đầu đã chứng minh. Mặt khác $|x_1|+x_1\\ge0$ và $|x_2|-x_2\\ge0$. Cộng hai bất đẳng thức này cho cận dưới bằng không; tổng hai căn còn lớn hơn cận đó, nên nhân tử thứ hai dương. Tích ở bước trước bằng không và nhân tử thứ hai khác không, vì vậy nhân tử thứ nhất phải bằng không. Ta không thể tự giả sử hai nghiệm đối nhau trước khi chứng minh điều này.",
+          "math": "\\begin{gathered}|x_1|+x_1\\ge0,\\quad |x_2|-x_2\\ge0\\\\\\sqrt{x_1^2+(1)}+\\sqrt{x_2^2+(1)}+x_1-x_2>|x_1|+|x_2|+x_1-x_2\\ge0\\\\(x_1+x_2)(\\sqrt{x_1^2+(1)}+\\sqrt{x_2^2+(1)}+x_1-x_2)=0\\quad\\Rightarrow\\quad x_1+x_2=0\\end{gathered}",
+          "reason": "Giá trị tuyệt đối; cộng bất đẳng thức; tích bằng không",
+          "uses": [
+            "p3_s7"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "p3_s9",
+          "title": "c) Dùng Vi-ét để tìm tham số và kiểm tra chiều ngược lại",
+          "explanation": "Vi-ét cho tổng hai nghiệm như bên dưới; đặt tổng bằng không và giải được tham số. Ngược lại, tại tham số này hai nghiệm có tổng bằng không nên đối nhau; hai căn bằng nhau. Khi đó tích hai thừa số là hiệu hai bình phương và bằng $1$. Tất cả phép biến đổi đã được chứng minh tương đương nên không còn tham số khác. Vậy đẳng thức đã cho đúng khi và chỉ khi $m=-1$.",
+          "math": "\\begin{gathered}x_1+x_2=-\\frac{-2m-2}{1}=0\\quad\\Leftrightarrow\\quad m=-1\\\\x_2=-x_1\\quad\\Rightarrow\\quad (x_1+\\sqrt{x_1^2+(1)})(-x_1+\\sqrt{x_1^2+(1)})=x_1^2+(1)-x_1^2=1\\end{gathered}",
+          "reason": "Vi-ét; giải phương trình tham số; chứng minh cả hai chiều",
+          "uses": [
+            "p3_s8"
+          ],
+          "geometryActions": []
+        }
+      ],
+      "finalAnswer": {
+        "text": "a) Vậy với mọi số thực $m$, phương trình đã cho có hai nghiệm thực phân biệt.\nb) Vậy $x_1^4 + x_2^4 > \\frac{9}{2}$ đúng với mọi số thực $m$.\nc) Vậy đẳng thức đã cho đúng khi và chỉ khi $m=-1$.",
+        "math": null
+      },
+      "answerChecks": [],
+      "figure": null
+    },
+    "verification": {
+      "status": "verified",
+      "checks": [],
+      "figureIssue": null,
+      "steps": [
+        {
+          "stepId": "p1_s1",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p1_s2",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p1_s3",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p1_s4",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p2_s1",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p2_s2",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p2_s3",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p2_s4",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p2_s5",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s1",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s2",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s3",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s4",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s5",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s6",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s7",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s8",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "p3_s9",
+          "status": "not_checked",
+          "claims": 0
+        }
+      ]
+    },
+    "attempts": 0,
+    "durationMs": 3749,
+    "usage": {},
+    "costUsd": 0,
+    "model": "certified-multipart",
+    "audit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": []
+    },
+    "endToEndOfflineMs": 4125.8495,
+    "problemHash": "799d2260c0b831d276ed4adfe7dc9cc15572ffe7d3b413bdbeb9dafe8be09fa3",
+    "problemKey": "ebd93bc267aeaca389a800df6fce62db09229f5cfa9b2e8dcb8c88c876a58f67",
+    "promptVersion": "solver-v2.40"
+  },
+  {
+    "id": "q2",
+    "text": "Câu 2 (1.5 điểm). Người ta muốn ghi bốn số thực ở bốn đỉnh của hình vuông $ABCD$ (mỗi đỉnh một số) thỏa mãn:\n\ni) Bốn số được ghi là đối một phân biệt;\n\nii) Tổng hai số được ghi ở hai đầu của cạnh $AB$ là 0;\n\niii) Tổng hai số được ghi ở hai đầu của ba cạnh còn lại là ba giá trị phân biệt: 1, 2, 3.\n\na) Hãy chỉ ra một cách ghi thỏa mãn các điều kiện trên.\n\nb) Trong các cách ghi thỏa mãn các điều kiện trên, tìm cách ghi có tổng bình phương của các số ở bốn đỉnh là nhỏ nhất.",
+    "lesson": {
+      "analysis": {
+        "statement": "Câu 2 (1.5 điểm). Người ta muốn ghi bốn số thực ở bốn đỉnh của hình vuông $ABCD$ (mỗi đỉnh một số) thỏa mãn:\n\ni) Bốn số được ghi là đối một phân biệt;\n\nii) Tổng hai số được ghi ở hai đầu của cạnh $AB$ là 0;\n\niii) Tổng hai số được ghi ở hai đầu của ba cạnh còn lại là ba giá trị phân biệt: 1, 2, 3.\n\na) Hãy chỉ ra một cách ghi thỏa mãn các điều kiện trên.\n\nb) Trong các cách ghi thỏa mãn các điều kiện trên, tìm cách ghi có tổng bình phương của các số ở bốn đỉnh là nhỏ nhất.",
+        "language": "vi",
+        "topic": "algebra",
+        "subtopic": "Gán số ở đỉnh: các tổng và cận bình phương",
+        "gradeLevel": 9,
+        "withinCurriculum": true,
+        "concepts": [
+          "Gán số ở đỉnh: các tổng và cận bình phương"
+        ],
+        "techniques": [],
+        "givens": [],
+        "unknowns": [
+          "Kết luận cần chứng minh và các trường hợp phải xét"
+        ],
+        "constraints": [],
+        "status": "solvable",
+        "statusReason": null,
+        "interpretationNotes": [
+          "Cụm “đối một phân biệt” trong đề hiện tại được hiểu là “đôi một phân biệt” theo điều kiện về bốn số; giữ nguyên văn đề để đối chiếu."
+        ]
+      },
+      "strategy": "Viết ba giá trị theo một thứ tự chưa biết, xác định tổng ở cạnh đối diện rồi xét hai trường hợp và hoàn thành bình phương.",
+      "hints": [
+        {
+          "id": "h1",
+          "level": 1,
+          "question": "Ba giá trị ở ba cạnh còn lại đã được gán thứ tự hay chưa?",
+          "cue": "Chuyển đúng các giả thiết thành ẩn, giữ điều kiện đôi một phân biệt",
+          "explanation": "Gọi số tại $A,B,C,D$ lần lượt là $a,b,c,d$. Ta có $a+b=0$. Ba tổng $b+c$, $c+d$, $d+a$ nhận ba giá trị $1,2,3$ theo một thứ tự nào đó, mỗi giá trị xuất hiện đúng một lần; không gán trước thứ tự.",
+          "math": "a+b=0",
+          "stepId": "s1",
+          "focus": []
+        },
+        {
+          "id": "h2",
+          "level": 2,
+          "question": "Cách ghi vừa nêu có giữ đủ ba tổng và bốn số khác nhau không?",
+          "cue": "Nhân chứng cụ thể và kiểm tra từng cạnh, không chỉ nói tồn tại",
+          "explanation": "Chọn số tại các đỉnh $(A,B,C,D)=(3,-3,4,-1)$. Bốn số khác nhau. Tổng cạnh $AB$ bằng $0$, các cạnh $BC,CD,DA$ lần lượt bằng $1,3,2$. Các phép cộng bên dưới kiểm tra trực tiếp mọi điều kiện.",
+          "math": "\\begin{gathered}(3)+(-3)=0\\\\(-3)+(4)=1\\\\(4)+(-1)=3\\\\(-1)+(3)=2\\end{gathered}",
+          "stepId": "s2",
+          "focus": []
+        },
+        {
+          "id": "h3",
+          "level": 3,
+          "question": "Vì sao c+d phải là giá trị lớn nhất, và còn bao nhiêu thứ tự cần xét?",
+          "cue": "Cộng các tổng, dùng a+b=0; số lớn nhất là tổng hai số còn lại",
+          "explanation": "Vì $a+b=0$, nên $(b+c)+(d+a)=c+d$. Do đó một trong ba giá trị phải bằng tổng hai giá trị còn lại. Các giá trị dương và $3=1+2$, nên $c+d=3$. Còn đúng hai trường hợp: $b+c=1,d+a=2$ hoặc $b+c=2,d+a=1$.",
+          "math": "(b+c)+(d+a)=c+d",
+          "stepId": "s3",
+          "focus": []
+        },
+        {
+          "id": "h4",
+          "level": 4,
+          "question": "Vì sao các bộ đạt dấu bằng vẫn có bốn số đôi một phân biệt?",
+          "cue": "Xét hết hai trường hợp; kiểm tra miền và mọi nhân chứng đạt cận",
+          "explanation": "Nếu $b+c=2$ và $d+a=1$ thì đổi vai trò $1,2$ trong phép tính trên. Cận không đổi, dấu bằng khi $a=-\\frac{1}{4}$. Trường hợp đầu đạt tại $(A,B,C,D)=(\\frac{1}{4},-\\frac{1}{4},\\frac{5}{4},\\frac{7}{4})$; trường hợp sau đạt tại $(A,B,C,D)=(-\\frac{1}{4},\\frac{1}{4},\\frac{7}{4},\\frac{5}{4})$. Hai số đầu khác nhau vì $1\\ne2$; hai số cuối khác nhau và đều lớn hơn trị tuyệt đối của hai số đầu, nên bốn số đôi một phân biệt. Thay lại các tổng cạnh đúng bằng $0,1,3,2$ hoặc $0,2,3,1$.",
+          "math": null,
+          "stepId": "s5",
+          "focus": []
+        },
+        {
+          "id": "h5",
+          "level": 4,
+          "question": "Đã chỉ rõ cách ghi và kiểm tra đủ điều kiện của kết luận chưa?",
+          "cue": "Nhân chứng đã kiểm tra; khi tối ưu, cận và mọi trường hợp đạt cận đã được chứng minh",
+          "explanation": "Vậy tổng bình phương nhỏ nhất là $\\frac{19}{4}$, đạt tại đúng hai cách ghi đã kiểm tra.",
+          "math": null,
+          "stepId": "s6",
+          "focus": []
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Đặt ẩn và viết đúng điều kiện bằng lời",
+          "explanation": "Gọi số tại $A,B,C,D$ lần lượt là $a,b,c,d$. Ta có $a+b=0$. Ba tổng $b+c$, $c+d$, $d+a$ nhận ba giá trị $1,2,3$ theo một thứ tự nào đó, mỗi giá trị xuất hiện đúng một lần; không gán trước thứ tự.",
+          "math": "a+b=0",
+          "reason": "Chuyển đúng các giả thiết thành ẩn, giữ điều kiện đôi một phân biệt",
+          "uses": [],
+          "geometryActions": []
+        },
+        {
+          "id": "s2",
+          "title": "a) Nêu một cách ghi cụ thể",
+          "explanation": "Chọn số tại các đỉnh $(A,B,C,D)=(3,-3,4,-1)$. Bốn số khác nhau. Tổng cạnh $AB$ bằng $0$, các cạnh $BC,CD,DA$ lần lượt bằng $1,3,2$. Các phép cộng bên dưới kiểm tra trực tiếp mọi điều kiện.",
+          "math": "\\begin{gathered}(3)+(-3)=0\\\\(-3)+(4)=1\\\\(4)+(-1)=3\\\\(-1)+(3)=2\\end{gathered}",
+          "reason": "Nhân chứng cụ thể và kiểm tra từng cạnh, không chỉ nói tồn tại",
+          "uses": [
+            "s1"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s3",
+          "title": "b) Xác định tổng ở cạnh đối diện",
+          "explanation": "Vì $a+b=0$, nên $(b+c)+(d+a)=c+d$. Do đó một trong ba giá trị phải bằng tổng hai giá trị còn lại. Các giá trị dương và $3=1+2$, nên $c+d=3$. Còn đúng hai trường hợp: $b+c=1,d+a=2$ hoặc $b+c=2,d+a=1$.",
+          "math": "(b+c)+(d+a)=c+d",
+          "reason": "Cộng các tổng, dùng a+b=0; số lớn nhất là tổng hai số còn lại",
+          "uses": [
+            "s2"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s4",
+          "title": "Trường hợp thứ nhất: hoàn thành bình phương",
+          "explanation": "Nếu $b+c=1$ và $d+a=2$ thì $b=-a$, $c=a+1$, $d=2-a$. Thay vào tổng bình phương, khai triển và hoàn thành bình phương như bên dưới. Bình phương không âm nên cận nhỏ nhất là $\\frac{19}{4}$; dấu bằng khi $a=\\frac{1}{4}$.",
+          "math": "\\begin{gathered}T=2a^2+(a+1)^2+(2-a)^2\\\\=4\\left(a-(\\frac{1}{4})\\right)^2+\\frac{19}{4}\\ge\\frac{19}{4}\\end{gathered}",
+          "reason": "Thay các ẩn theo a; đẳng thức bình phương; bình phương không âm",
+          "uses": [
+            "s3"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s5",
+          "title": "Trường hợp thứ hai và kiểm tra dấu bằng",
+          "explanation": "Nếu $b+c=2$ và $d+a=1$ thì đổi vai trò $1,2$ trong phép tính trên. Cận không đổi, dấu bằng khi $a=-\\frac{1}{4}$. Trường hợp đầu đạt tại $(A,B,C,D)=(\\frac{1}{4},-\\frac{1}{4},\\frac{5}{4},\\frac{7}{4})$; trường hợp sau đạt tại $(A,B,C,D)=(-\\frac{1}{4},\\frac{1}{4},\\frac{7}{4},\\frac{5}{4})$. Hai số đầu khác nhau vì $1\\ne2$; hai số cuối khác nhau và đều lớn hơn trị tuyệt đối của hai số đầu, nên bốn số đôi một phân biệt. Thay lại các tổng cạnh đúng bằng $0,1,3,2$ hoặc $0,2,3,1$.",
+          "math": null,
+          "reason": "Xét hết hai trường hợp; kiểm tra miền và mọi nhân chứng đạt cận",
+          "uses": [
+            "s4"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s6",
+          "title": "Kết luận",
+          "explanation": "Vậy tổng bình phương nhỏ nhất là $\\frac{19}{4}$, đạt tại đúng hai cách ghi đã kiểm tra.",
+          "math": null,
+          "reason": "Nhân chứng đã kiểm tra; khi tối ưu, cận và mọi trường hợp đạt cận đã được chứng minh",
+          "uses": [
+            "s5"
+          ],
+          "geometryActions": []
+        }
+      ],
+      "finalAnswer": {
+        "text": "Vậy tổng bình phương nhỏ nhất là $\\frac{19}{4}$, đạt tại đúng hai cách ghi đã kiểm tra.",
+        "math": null
+      },
+      "answerChecks": [],
+      "figure": null
+    },
+    "verification": {
+      "status": "verified",
+      "checks": [],
+      "figureIssue": null,
+      "steps": [
+        {
+          "stepId": "s1",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "s2",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "s3",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "s4",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "s5",
+          "status": "not_checked",
+          "claims": 0
+        },
+        {
+          "stepId": "s6",
+          "status": "not_checked",
+          "claims": 0
+        }
+      ]
+    },
+    "attempts": 0,
+    "durationMs": 741,
+    "usage": {},
+    "costUsd": 0,
+    "model": "certified-vertex-assignment",
+    "audit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": []
+    },
+    "endToEndOfflineMs": 1108.2870840000005,
+    "problemHash": "c1012c16662cc0d69da3ea02e55e1fbc629a883b7bce51431db0fd1f3a382f90",
+    "problemKey": "a86976e4403d6966fb00cd3669d949262d862304c46a331ca171cd9ba5e40b3c",
+    "promptVersion": "solver-v2.40"
+  },
+  {
+    "id": "q5",
+    "text": "Câu 5 (1.5 điểm). Cho bảng ô vuông kích thước $2 \\times 9$ và số nguyên đường $k \\leq 18$. Hai ô của bảng được gọi là kế bến nếu chứng có một cạnh chung. Hai bạn An và Bình chơi trò \"Truy Tìm Tàu Ngầm\" như sau: Trước khi trò chơi bắt đầu, An chọn một ô trên bảng và không cho Bình biết. Ở mỗi lượt chơi:\n\n- An phải chọn một ô mới, kề bên với ô đã chọn trước đó, và không cho Bình biết;\n- Sau khi An chọn xong, Bình chọn kô của bảng và hỏi An: trong kô này có ô An vừa chọn hay không? Nếu có thì Bình thắng, nếu không thì hai bạn lại chơi lượt tiếp theo.\n\na) Xét k = 4. Chứng minh rằng Bình có thể thắng sau không quá 8 lượt chơi.\n\nb) Xét k = 2. Chứng minh rằng Bình có thể thắng sau không quá 16 lượt chơi.",
+    "lesson": {
+      "analysis": {
+        "statement": "Câu 5 (1.5 điểm). Cho bảng ô vuông kích thước $2 \\times 9$ và số nguyên đường $k \\leq 18$. Hai ô của bảng được gọi là kế bến nếu chứng có một cạnh chung. Hai bạn An và Bình chơi trò \"Truy Tìm Tàu Ngầm\" như sau: Trước khi trò chơi bắt đầu, An chọn một ô trên bảng và không cho Bình biết. Ở mỗi lượt chơi:\n\n- An phải chọn một ô mới, kề bên với ô đã chọn trước đó, và không cho Bình biết;\n- Sau khi An chọn xong, Bình chọn kô của bảng và hỏi An: trong kô này có ô An vừa chọn hay không? Nếu có thì Bình thắng, nếu không thì hai bạn lại chơi lượt tiếp theo.\n\na) Xét k = 4. Chứng minh rằng Bình có thể thắng sau không quá 8 lượt chơi.\n\nb) Xét k = 2. Chứng minh rằng Bình có thể thắng sau không quá 16 lượt chơi.",
+        "language": "vi",
+        "topic": "combinatorics",
+        "subtopic": "Tìm vị trí trên bàn cờ bằng tính chẵn lẻ",
+        "gradeLevel": 9,
+        "withinCurriculum": true,
+        "concepts": [
+          "Tính chẵn lẻ",
+          "Chiến lược cho mọi nước đi"
+        ],
+        "techniques": [
+          "invariant"
+        ],
+        "givens": [
+          "Bàn cờ $2\\times9$.",
+          "An buộc di chuyển sang ô chung cạnh mỗi lượt."
+        ],
+        "unknowns": [
+          "Chiến lược của Bình"
+        ],
+        "constraints": [
+          "Không đứng yên, không đi chéo; ô kề bên có chung cạnh."
+        ],
+        "status": "solvable",
+        "statusReason": null,
+        "interpretationNotes": [
+          "Đọc các lỗi gõ “nguyên đường”, “kế bến nếu chứng”, “kô” lần lượt là “nguyên dương”, “kề bên nếu chúng”, “k ô”; giữ nguyên luật An phải đi trước rồi Bình hỏi."
+        ]
+      },
+      "strategy": "Với bốn câu hỏi, dùng lịch sáu lượt và kiểm tra toàn bộ vị trí còn có thể đứng sau từng lượt. Với hai câu hỏi, quét hai cột theo màu bàn cờ trong hai lần.",
+      "hints": [
+        {
+          "id": "h1",
+          "level": 1,
+          "question": "Một bước sang ô kề cạnh có thể đổi cột nhiều hơn một đơn vị không?",
+          "cue": "Dùng đúng luật di chuyển kề cạnh và phát hiện vị trí",
+          "explanation": "Gọi ô ở hàng $r$, cột $c$ là $(r,c)$, với $r=1,2$ và $1\\le c\\le9$. Hai ô kề bên có chung một cạnh. Mỗi lượt An di chuyển đúng một lần trước, rồi Bình hỏi $k$ ô về cùng vị trí hiện tại của An; An không di chuyển giữa các câu hỏi trong một lượt. An phải trả lời đúng; Bình thắng khi trong các ô hỏi có ô An đang đứng. Nếu đề quy ước hỏi lần đầu ngay sau khi An chọn ô ban đầu, chiến lược cũng giữ nguyên: lượt đầu chỉ cần vị trí bất kỳ, còn giữa hai lần hỏi An vẫn phải đi đúng một bước. Bình không cần biết ô ban đầu hay đoán nước đi của An.",
+          "math": null,
+          "stepId": "s1",
+          "focus": []
+        },
+        {
+          "id": "h2",
+          "level": 2,
+          "question": "Bạn có thể đọc bốn tọa độ phải hỏi ở lượt đầu từ bảng không?",
+          "cue": "Một lịch hỏi rõ ràng, kiểm tra được cho mọi nước đi",
+          "explanation": "Bình hỏi đúng bốn ô trong mỗi hàng của bảng sau, theo thứ tự từ lượt 1 đến lượt 6. Nếu phát hiện An thì dừng. Nếu An trả lời không, tiếp tục sang hàng kế tiếp; lịch này không phụ thuộc vị trí ban đầu hoặc nước đi của An. Ta sẽ kiểm tra từng lượt để chứng minh không còn đường thoát sau lượt 6.",
+          "math": "\\begin{array}{c|l}t&Q_t\\\\\\hline 1&(1,1), (1,3), (2,2), (2,4)\\\\2&(1,4), (1,6), (2,5), (2,7)\\\\3&(1,2), (1,7), (1,9), (2,8)\\\\4&(1,1), (1,3), (2,2), (2,4)\\\\5&(1,4), (1,6), (2,5), (2,7)\\\\6&(1,1), (1,7), (1,9), (2,8)\\end{array}",
+          "stepId": "s2",
+          "focus": []
+        },
+        {
+          "id": "h3",
+          "level": 3,
+          "question": "Ở lượt $1$, từ các vị trí còn lại của lượt trước An có thể đi đến những ô nào?",
+          "cue": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "explanation": "Trước lượt đầu, An có thể ở bất kỳ ô nào. Mỗi ô đều có một ô kề bên, nên sau bước di chuyển đầu tiên cả 18 ô vẫn có thể là vị trí An. Loại đúng bốn ô Bình hỏi ở lượt 1; các ô còn lại được ghi ở dòng thứ hai. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $14$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{1}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\\\2&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\end{array}\\\\C_{1}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&\\circ&-&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\\\2&\\circ&-&\\circ&-&\\circ&\\circ&\\circ&\\circ&\\circ\\end{array}\\end{gathered}",
+          "stepId": "s3",
+          "focus": []
+        },
+        {
+          "id": "h4",
+          "level": 4,
+          "question": "Ở lượt $4$, từ các vị trí còn lại của lượt trước An có thể đi đến những ô nào?",
+          "cue": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $3$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $5$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{4}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&\\circ&-&\\circ&-&\\circ&-&\\circ&-&\\circ\\\\2&-&\\circ&-&\\circ&-&\\circ&-&\\circ&-\\end{array}\\\\C_{4}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&\\circ&-&\\circ&-&\\circ\\\\2&-&-&-&-&-&\\circ&-&\\circ&-\\end{array}\\end{gathered}",
+          "stepId": "s6",
+          "focus": []
+        },
+        {
+          "id": "h5",
+          "level": 4,
+          "question": "Ở lượt $6$, từ các vị trí còn lại của lượt trước An có thể đi đến những ô nào?",
+          "cue": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $5$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Không còn ô nào có thể đứng nếu chưa bị phát hiện. Vậy mọi đường đi của An đều bị phát hiện trong không quá 6 lượt, và $6\\le8$, nên yêu cầu câu a được chứng minh.",
+          "math": "\\begin{gathered}D_{6}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&-&-&\\circ&-&\\circ\\\\2&-&-&-&-&-&-&-&\\circ&-\\end{array}\\\\C_{6}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&-&-&-&-&-\\\\2&-&-&-&-&-&-&-&-&-\\end{array}\\end{gathered}",
+          "stepId": "s8",
+          "focus": []
+        },
+        {
+          "id": "h6",
+          "level": 4,
+          "question": "Hai tọa độ trong mỗi hàng của bảng có tổng hàng và cột cùng tính chẵn lẻ không?",
+          "cue": "Cho lịch hỏi thực hiện được và chứng minh hai ô mỗi lượt cùng màu",
+          "explanation": "Ở lượt $t=1,\\ldots,8$, hỏi $(1,t)$ và $(2,t+1)$ theo bảng. Hai ô có cùng màu vì tổng hàng và cột là $t+1$ và $t+3$; sang lượt sau, màu được hỏi đổi. Không biết An ở đâu vẫn làm đúng bảng này.",
+          "math": "\\begin{array}{c|l}t&Q_t\\\\\\hline 1&(1,1), (2,2)\\\\2&(1,2), (2,3)\\\\3&(1,3), (2,4)\\\\4&(1,4), (2,5)\\\\5&(1,5), (2,6)\\\\6&(1,6), (2,7)\\\\7&(1,7), (2,8)\\\\8&(1,8), (2,9)\\end{array}",
+          "stepId": "s10",
+          "focus": []
+        },
+        {
+          "id": "h7",
+          "level": 4,
+          "question": "Giữa lượt $1$ và lượt $9$ có bao nhiêu bước đổi màu?",
+          "cue": "Tính màu theo số bước thực sự giữa hai lượt; không lặp sai màu quét trước",
+          "explanation": "Nếu qua lượt $8$ chưa thắng, tiếp tục theo bảng sau. Ở lượt đầu của lần quét cũ, màu hỏi có tổng hàng và cột chẵn, nên An khi đó phải ở màu lẻ. Sau $8$ bước giữa lượt $1$ và lượt $9$, màu của An có tính chẵn lẻ giống $1+8$. Vì vậy cặp $(2,1),(1,2)$ ở lượt $9$ có đúng màu An. Cả lịch hỏi và An đều đổi màu sau mỗi bước, nên mọi hàng tiếp theo vẫn hỏi đúng màu.",
+          "math": "\\begin{array}{c|l}t&Q_t\\\\\\hline 9&(1,2), (2,1)\\\\10&(1,3), (2,2)\\\\11&(1,4), (2,3)\\\\12&(1,5), (2,4)\\\\13&(1,6), (2,5)\\\\14&(1,7), (2,6)\\\\15&(1,8), (2,7)\\\\16&(1,9), (2,8)\\end{array}",
+          "stepId": "s12",
+          "focus": []
+        },
+        {
+          "id": "h8",
+          "level": 4,
+          "question": "Nếu lần quét đầu không bắt được An, ta đã biết thêm điều gì để chọn hai ô trong lần quét sau?",
+          "cue": "Nếu lần đầu chưa bắt được thì màu đã biết; lần quét thứ hai kiểm tra đúng màu ở mọi lượt",
+          "explanation": "Nếu chưa thắng, từ lượt $9$ ta biết chắc màu của An: đó là màu đối lập với màu mà lần quét cũ sẽ kiểm tra ở lượt này. Quét lại từ trái sang phải trong $8$ lượt: ở lượt $8+j$ hỏi $(2,j)$ và $(1,j+1)$, với $j=1,\\ldots,8$. Hai ô này luôn có đúng màu hiện tại của An. Vị trí An lúc bắt đầu lần quét thứ hai có thể bất kỳ; sau lần hỏi đầu, nếu chưa trúng thì cột ít nhất là 3. Ở lượt thứ $j$ của lần quét này, từ cột ít nhất $j+1$ sau lượt trước, An chỉ có thể đi về cột ít nhất $j$; hai cột $j,j+1$ đã được hỏi đầy đủ với màu của An, nên nếu thoát thì cột ít nhất là $j+2$. Sau lượt cuối phải đứng ngoài bảng, không thể xảy ra. Vậy $k=2$ bảo đảm thắng sau không quá $16$ lượt; cùng với câu a, ta được cả hai kết luận cần chứng minh.",
+          "math": null,
+          "stepId": "s13",
+          "focus": []
+        }
+      ],
+      "steps": [
+        {
+          "id": "s1",
+          "title": "Đánh số ô và xác định khi nào phát hiện An",
+          "explanation": "Gọi ô ở hàng $r$, cột $c$ là $(r,c)$, với $r=1,2$ và $1\\le c\\le9$. Hai ô kề bên có chung một cạnh. Mỗi lượt An di chuyển đúng một lần trước, rồi Bình hỏi $k$ ô về cùng vị trí hiện tại của An; An không di chuyển giữa các câu hỏi trong một lượt. An phải trả lời đúng; Bình thắng khi trong các ô hỏi có ô An đang đứng. Nếu đề quy ước hỏi lần đầu ngay sau khi An chọn ô ban đầu, chiến lược cũng giữ nguyên: lượt đầu chỉ cần vị trí bất kỳ, còn giữa hai lần hỏi An vẫn phải đi đúng một bước. Bình không cần biết ô ban đầu hay đoán nước đi của An.",
+          "math": null,
+          "reason": "Dùng đúng luật di chuyển kề cạnh và phát hiện vị trí",
+          "uses": [],
+          "geometryActions": []
+        },
+        {
+          "id": "s2",
+          "title": "a) Lịch hỏi cụ thể với $k=4$",
+          "explanation": "Bình hỏi đúng bốn ô trong mỗi hàng của bảng sau, theo thứ tự từ lượt 1 đến lượt 6. Nếu phát hiện An thì dừng. Nếu An trả lời không, tiếp tục sang hàng kế tiếp; lịch này không phụ thuộc vị trí ban đầu hoặc nước đi của An. Ta sẽ kiểm tra từng lượt để chứng minh không còn đường thoát sau lượt 6.",
+          "math": "\\begin{array}{c|l}t&Q_t\\\\\\hline 1&(1,1), (1,3), (2,2), (2,4)\\\\2&(1,4), (1,6), (2,5), (2,7)\\\\3&(1,2), (1,7), (1,9), (2,8)\\\\4&(1,1), (1,3), (2,2), (2,4)\\\\5&(1,4), (1,6), (2,5), (2,7)\\\\6&(1,1), (1,7), (1,9), (2,8)\\end{array}",
+          "reason": "Một lịch hỏi rõ ràng, kiểm tra được cho mọi nước đi",
+          "uses": [
+            "s1"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s3",
+          "title": "a) Kiểm tra mọi nước đi ở lượt $1$",
+          "explanation": "Trước lượt đầu, An có thể ở bất kỳ ô nào. Mỗi ô đều có một ô kề bên, nên sau bước di chuyển đầu tiên cả 18 ô vẫn có thể là vị trí An. Loại đúng bốn ô Bình hỏi ở lượt 1; các ô còn lại được ghi ở dòng thứ hai. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $14$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{1}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\\\2&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\end{array}\\\\C_{1}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&\\circ&-&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\\\2&\\circ&-&\\circ&-&\\circ&\\circ&\\circ&\\circ&\\circ\\end{array}\\end{gathered}",
+          "reason": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "uses": [
+            "s2"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s4",
+          "title": "a) Kiểm tra mọi nước đi ở lượt $2$",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $1$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $11$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{2}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&\\circ&-&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\\\2&-&\\circ&-&\\circ&\\circ&\\circ&\\circ&\\circ&\\circ\\end{array}\\\\C_{2}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&\\circ&-&\\circ&-&\\circ&-&\\circ&\\circ&\\circ\\\\2&-&\\circ&-&\\circ&-&\\circ&-&\\circ&\\circ\\end{array}\\end{gathered}",
+          "reason": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "uses": [
+            "s3"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s5",
+          "title": "a) Kiểm tra mọi nước đi ở lượt $3$",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $2$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $8$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{3}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&\\circ&-&\\circ&-&\\circ&\\circ&\\circ&\\circ\\\\2&\\circ&-&\\circ&-&\\circ&-&\\circ&\\circ&\\circ\\end{array}\\\\C_{3}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&\\circ&-&\\circ&-&\\circ&-\\\\2&\\circ&-&\\circ&-&\\circ&-&\\circ&-&\\circ\\end{array}\\end{gathered}",
+          "reason": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "uses": [
+            "s4"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s6",
+          "title": "a) Kiểm tra mọi nước đi ở lượt $4$",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $3$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $5$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{4}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&\\circ&-&\\circ&-&\\circ&-&\\circ&-&\\circ\\\\2&-&\\circ&-&\\circ&-&\\circ&-&\\circ&-\\end{array}\\\\C_{4}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&\\circ&-&\\circ&-&\\circ\\\\2&-&-&-&-&-&\\circ&-&\\circ&-\\end{array}\\end{gathered}",
+          "reason": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "uses": [
+            "s5"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s7",
+          "title": "a) Kiểm tra mọi nước đi ở lượt $5$",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $4$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Còn $2$ vị trí có thể đứng, nên tiếp tục hỏi theo bảng.",
+          "math": "\\begin{gathered}D_{5}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&\\circ&-&\\circ&-&\\circ&-\\\\2&-&-&-&-&\\circ&-&\\circ&-&\\circ\\end{array}\\\\C_{5}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&-&-&-&\\circ&-\\\\2&-&-&-&-&-&-&-&-&\\circ\\end{array}\\end{gathered}",
+          "reason": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "uses": [
+            "s6"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s8",
+          "title": "a) Kiểm tra mọi nước đi ở lượt $6$",
+          "explanation": "Bắt đầu từ từng ô còn có thể đứng sau lượt $5$. Từ mỗi ô, liệt kê ô khác hàng cùng cột và ô cùng hàng ở cột liền trước hoặc liền sau nếu cột đó tồn tại. Hợp các vị trí đến được là dòng đầu; loại những ô nằm trong bốn ô hỏi ở lượt này, ta được dòng thứ hai. Một đường đi chưa bị phát hiện phải kết thúc ở một trong các ô còn lại đó. Ký hiệu $D$ là bảng sau khi đi, $C$ là bảng sau khi hỏi. Hàng đầu ghi số cột, cột đầu ghi số hàng; vòng tròn đánh dấu ô còn có thể đứng, dấu gạch là ô đã bị loại. Đọc từng ô theo tọa độ (hàng,cột). Không còn ô nào có thể đứng nếu chưa bị phát hiện. Vậy mọi đường đi của An đều bị phát hiện trong không quá 6 lượt, và $6\\le8$, nên yêu cầu câu a được chứng minh.",
+          "math": "\\begin{gathered}D_{6}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&-&-&\\circ&-&\\circ\\\\2&-&-&-&-&-&-&-&\\circ&-\\end{array}\\\\C_{6}:\\quad \\begin{array}{c|ccccccccc} &1&2&3&4&5&6&7&8&9\\\\\\hline 1&-&-&-&-&-&-&-&-&-\\\\2&-&-&-&-&-&-&-&-&-\\end{array}\\end{gathered}",
+          "reason": "Liệt kê tất cả ô kề cạnh; loại vị trí đã được hỏi nếu An trả lời không",
+          "uses": [
+            "s7"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s9",
+          "title": "b) Mỗi bước đổi màu bàn cờ",
+          "explanation": "Tô màu ô theo tính chẵn lẻ của $r+c$. Đi ngang hoặc đi dọc đều đổi màu. Vì An buộc phải đi ở mỗi lượt, biết màu ở một lượt sẽ biết màu ở mọi lượt sau. Trong hai cột kề nhau có đúng hai ô của mỗi màu. Ta có thể dùng hai câu hỏi để kiểm tra toàn bộ một màu trong vùng hai cột.",
+          "math": null,
+          "reason": "Tính chẵn lẻ đổi sau mỗi bước sang ô chung cạnh",
+          "uses": [
+            "s8"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s10",
+          "title": "b) Lịch hỏi hai ô trong lần quét đầu",
+          "explanation": "Ở lượt $t=1,\\ldots,8$, hỏi $(1,t)$ và $(2,t+1)$ theo bảng. Hai ô có cùng màu vì tổng hàng và cột là $t+1$ và $t+3$; sang lượt sau, màu được hỏi đổi. Không biết An ở đâu vẫn làm đúng bảng này.",
+          "math": "\\begin{array}{c|l}t&Q_t\\\\\\hline 1&(1,1), (2,2)\\\\2&(1,2), (2,3)\\\\3&(1,3), (2,4)\\\\4&(1,4), (2,5)\\\\5&(1,5), (2,6)\\\\6&(1,6), (2,7)\\\\7&(1,7), (2,8)\\\\8&(1,8), (2,9)\\end{array}",
+          "reason": "Cho lịch hỏi thực hiện được và chứng minh hai ô mỗi lượt cùng màu",
+          "uses": [
+            "s9"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s11",
+          "title": "Quét lần đầu để loại một khả năng về màu",
+          "explanation": "Trong $8$ lượt đầu, ở lượt $j$ hỏi $(1,j)$ và $(2,j+1)$. Màu của hai ô được hỏi đổi đúng như màu của An sau mỗi bước. Nếu màu của An ở lượt đầu trùng màu được hỏi, thì ở mọi lượt sau cũng trùng. Đối với trường hợp màu này, hai câu hỏi đã kiểm tra mọi ô An có thể đứng trong hai cột đang quét. Sau lượt đầu, nếu chưa trúng thì cột của An ít nhất là 3. Nếu sau lượt $j-1$ cột ít nhất là $j+1$, bước đi tiếp theo cho cột ít nhất là $j$; vì hai ô đúng màu ở cột $j,j+1$ đều được hỏi, muốn thoát phải có cột ít nhất là $j+2$. Sau lượt cuối phải có cột lớn hơn số cột của bảng, không tồn tại; nên An sẽ bị phát hiện trong lượt $8$ hoặc sớm hơn. Nếu An vẫn chưa bị phát hiện thì màu của An ở lượt đầu phải là màu còn lại.",
+          "math": null,
+          "reason": "Phân hai khả năng về màu, quét một khả năng mà không bỏ sót nước đi",
+          "uses": [
+            "s10"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s12",
+          "title": "b) Lịch hỏi lần hai và màu tại lượt chuyển",
+          "explanation": "Nếu qua lượt $8$ chưa thắng, tiếp tục theo bảng sau. Ở lượt đầu của lần quét cũ, màu hỏi có tổng hàng và cột chẵn, nên An khi đó phải ở màu lẻ. Sau $8$ bước giữa lượt $1$ và lượt $9$, màu của An có tính chẵn lẻ giống $1+8$. Vì vậy cặp $(2,1),(1,2)$ ở lượt $9$ có đúng màu An. Cả lịch hỏi và An đều đổi màu sau mỗi bước, nên mọi hàng tiếp theo vẫn hỏi đúng màu.",
+          "math": "\\begin{array}{c|l}t&Q_t\\\\\\hline 9&(1,2), (2,1)\\\\10&(1,3), (2,2)\\\\11&(1,4), (2,3)\\\\12&(1,5), (2,4)\\\\13&(1,6), (2,5)\\\\14&(1,7), (2,6)\\\\15&(1,8), (2,7)\\\\16&(1,9), (2,8)\\end{array}",
+          "reason": "Tính màu theo số bước thực sự giữa hai lượt; không lặp sai màu quét trước",
+          "uses": [
+            "s11"
+          ],
+          "geometryActions": []
+        },
+        {
+          "id": "s13",
+          "title": "Quét lại với màu đã được xác định",
+          "explanation": "Nếu chưa thắng, từ lượt $9$ ta biết chắc màu của An: đó là màu đối lập với màu mà lần quét cũ sẽ kiểm tra ở lượt này. Quét lại từ trái sang phải trong $8$ lượt: ở lượt $8+j$ hỏi $(2,j)$ và $(1,j+1)$, với $j=1,\\ldots,8$. Hai ô này luôn có đúng màu hiện tại của An. Vị trí An lúc bắt đầu lần quét thứ hai có thể bất kỳ; sau lần hỏi đầu, nếu chưa trúng thì cột ít nhất là 3. Ở lượt thứ $j$ của lần quét này, từ cột ít nhất $j+1$ sau lượt trước, An chỉ có thể đi về cột ít nhất $j$; hai cột $j,j+1$ đã được hỏi đầy đủ với màu của An, nên nếu thoát thì cột ít nhất là $j+2$. Sau lượt cuối phải đứng ngoài bảng, không thể xảy ra. Vậy $k=2$ bảo đảm thắng sau không quá $16$ lượt; cùng với câu a, ta được cả hai kết luận cần chứng minh.",
+          "math": null,
+          "reason": "Nếu lần đầu chưa bắt được thì màu đã biết; lần quét thứ hai kiểm tra đúng màu ở mọi lượt",
+          "uses": [
+            "s12"
+          ],
+          "geometryActions": []
+        }
+      ],
+      "finalAnswer": {
+        "text": "Bình có chiến lược thắng sau không quá $6$ lượt với $k=4$ và $16$ lượt với $k=2$.",
+        "math": null
+      },
+      "gamePlans": [
+        {
+          "rows": 2,
+          "columns": 9,
+          "k": 4,
+          "queries": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            [
+              [
+                1,
+                4
+              ],
+              [
+                1,
+                6
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                2,
+                7
+              ]
+            ],
+            [
+              [
+                1,
+                2
+              ],
+              [
+                1,
+                7
+              ],
+              [
+                1,
+                9
+              ],
+              [
+                2,
+                8
+              ]
+            ],
+            [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            [
+              [
+                1,
+                4
+              ],
+              [
+                1,
+                6
+              ],
+              [
+                2,
+                5
+              ],
+              [
+                2,
+                7
+              ]
+            ],
+            [
+              [
+                1,
+                1
+              ],
+              [
+                1,
+                7
+              ],
+              [
+                1,
+                9
+              ],
+              [
+                2,
+                8
+              ]
+            ]
+          ]
+        },
+        {
+          "rows": 2,
+          "columns": 9,
+          "k": 2,
+          "queries": [
+            [
+              [
+                1,
+                1
+              ],
+              [
+                2,
+                2
+              ]
+            ],
+            [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                3
+              ]
+            ],
+            [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                5
+              ]
+            ],
+            [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                6
+              ]
+            ],
+            [
+              [
+                1,
+                6
+              ],
+              [
+                2,
+                7
+              ]
+            ],
+            [
+              [
+                1,
+                7
+              ],
+              [
+                2,
+                8
+              ]
+            ],
+            [
+              [
+                1,
+                8
+              ],
+              [
+                2,
+                9
+              ]
+            ],
+            [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                1
+              ]
+            ],
+            [
+              [
+                1,
+                3
+              ],
+              [
+                2,
+                2
+              ]
+            ],
+            [
+              [
+                1,
+                4
+              ],
+              [
+                2,
+                3
+              ]
+            ],
+            [
+              [
+                1,
+                5
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            [
+              [
+                1,
+                6
+              ],
+              [
+                2,
+                5
+              ]
+            ],
+            [
+              [
+                1,
+                7
+              ],
+              [
+                2,
+                6
+              ]
+            ],
+            [
+              [
+                1,
+                8
+              ],
+              [
+                2,
+                7
+              ]
+            ],
+            [
+              [
+                1,
+                9
+              ],
+              [
+                2,
+                8
+              ]
+            ]
+          ]
+        }
+      ],
+      "answerChecks": [],
+      "figure": null
+    },
+    "verification": {
+      "status": "verified",
+      "figureIssue": null,
+      "checks": [
+        {
+          "label": "Tất cả vị trí ban đầu và mọi đường đi hợp lệ đều bị phát hiện trong giới hạn lượt",
+          "passed": true
+        }
+      ]
+    },
+    "attempts": 0,
+    "durationMs": 1957,
+    "usage": {},
+    "costUsd": 0,
+    "model": "deterministic-board-search",
+    "audit": {
+      "schemaValid": true,
+      "latexErrors": [],
+      "languageErrors": []
+    },
+    "endToEndOfflineMs": 2874.2273749999986,
+    "problemHash": "c55664a1a056e4c615d789a4b76f9fcc408b557999672633d2cc4349eca6cfac",
+    "problemKey": "21e718491ef9767e9d39989bc52b8be310e8e85dc852fca28424a57bd11be3df",
+    "promptVersion": "solver-v2.40"
+  }
+]

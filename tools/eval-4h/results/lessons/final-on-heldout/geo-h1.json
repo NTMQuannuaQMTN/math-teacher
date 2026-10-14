@@ -1,0 +1,310 @@
+{
+  "input": "Cho tam giác $ABC$ vuông tại $A$, đường cao $AH$. Biết $BH=4$ cm, $HC=9$ cm. Tính $AH$ và $AB$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tam giác $ABC$ vuông tại $A$, đường cao $AH$. Biết $BH=4$ cm, $HC=9$ cm. Tính $AH$ và $AB$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Hệ thức lượng trong tam giác vuông",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ thức lượng trong tam giác vuông"
+      ],
+      "techniques": [],
+      "givens": [
+        "$BH=4$",
+        "$HC=9$"
+      ],
+      "unknowns": [
+        "$AH$",
+        "$AB$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng định lí Pythagore và các hệ thức lượng, tính dần từ các đoạn đã biết.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Cạnh huyền là cạnh nào?",
+        "cue": "Phân tích giả thiết",
+        "explanation": "Tam giác $ABC$ vuông tại $A$, cạnh huyền $BC$, đường cao $AH$ (nên $H$ nằm giữa $B$ và $C$, các tam giác $AHB$, $AHC$ vuông tại $H$). Đã biết: $BH=4$, $HC=9$.",
+        "math": null,
+        "stepId": "s1",
+        "focus": [
+          "seg_AB",
+          "seg_BC",
+          "seg_CA",
+          "seg_AH"
+        ]
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Đã biết những đoạn nào để tính được AH?",
+        "cue": "Hệ thức lượng trong tam giác vuông",
+        "explanation": "Áp dụng hệ thức lượng trong tam giác vuông:",
+        "math": "AH^2=BH\\cdot HC=4\\cdot 9\\ \\Rightarrow\\ AH=6",
+        "stepId": "s2",
+        "focus": [
+          "seg_AH",
+          "seg_BC"
+        ]
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đã biết những đoạn nào để tính được AB?",
+        "cue": "Định lí Pythagore trong tam giác AHB vuông",
+        "explanation": "Áp dụng định lí Pythagore trong tam giác AHB vuông:",
+        "math": "AB^2=AH^2+BH^2=36+16=52\\ \\Rightarrow\\ AB=2\\sqrt{13}",
+        "stepId": "s3",
+        "focus": [
+          "seg_AB",
+          "seg_AH",
+          "seg_BC"
+        ]
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy $AH=6\\text{ cm}$, $AB=2\\sqrt{13}\\text{ cm}$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": [
+          "seg_AH",
+          "seg_AB"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định tam giác vuông và các yếu tố đã biết",
+        "explanation": "Tam giác $ABC$ vuông tại $A$, cạnh huyền $BC$, đường cao $AH$ (nên $H$ nằm giữa $B$ và $C$, các tam giác $AHB$, $AHC$ vuông tại $H$). Đã biết: $BH=4$, $HC=9$.",
+        "math": null,
+        "reason": "Phân tích giả thiết",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_BC",
+              "seg_CA",
+              "seg_AH"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "Tính AH",
+        "explanation": "Áp dụng hệ thức lượng trong tam giác vuông:",
+        "math": "AH^2=BH\\cdot HC=4\\cdot 9\\ \\Rightarrow\\ AH=6",
+        "reason": "Hệ thức lượng trong tam giác vuông",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AH",
+              "seg_BC"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "Tính AB",
+        "explanation": "Áp dụng định lí Pythagore trong tam giác AHB vuông:",
+        "math": "AB^2=AH^2+BH^2=36+16=52\\ \\Rightarrow\\ AB=2\\sqrt{13}",
+        "reason": "Định lí Pythagore trong tam giác AHB vuông",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_AH",
+              "seg_BC"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Vậy $AH=6\\text{ cm}$, $AB=2\\sqrt{13}\\text{ cm}$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AH",
+              "seg_AB"
+            ]
+          }
+        ]
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $AH=6\\text{ cm}$, $AB=2\\sqrt{13}\\text{ cm}$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": {
+      "scale": "schematic",
+      "points": [
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 8,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 2.8974505767320036,
+          "y": 3.845046783753275,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "H",
+          "label": "H",
+          "kind": "foot",
+          "refs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_CA",
+          "kind": "segment",
+          "from": "C",
+          "to": "A",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_AH",
+          "kind": "segment",
+          "from": "A",
+          "to": "H",
+          "style": "given",
+          "label": null
+        }
+      ],
+      "circles": [],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "AH² = BH· HC",
+        "passed": true
+      },
+      {
+        "label": "Dựng tam giác bằng tọa độ và đo lại mọi độ dài đã cho và đã tính",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "checked",
+        "claims": 1
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 31,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-right-triangle",
+  "logs": [
+    "lesson by the routine solver (right-triangle); no model call"
+  ]
+}

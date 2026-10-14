@@ -1,0 +1,134 @@
+{
+  "input": "Cho lục giác đều $ABCDEF$ nội tiếp đường tròn tâm $O$, bán kính bằng $5$. Tính độ dài cạnh và diện tích lục giác, chứng minh các bước.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho lục giác đều $ABCDEF$ nội tiếp đường tròn tâm $O$, bán kính bằng $5$. Tính độ dài cạnh và diện tích lục giác, chứng minh các bước.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Lục giác đều nội tiếp đường tròn",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Lục giác đều nội tiếp đường tròn"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chia lục giác thành sáu tam giác ở tâm, chứng minh mỗi tam giác đều rồi tính diện tích bằng đường cao.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Mỗi góc ở tâm bằng bao nhiêu?",
+        "cue": "Tổng góc quanh tâm và tính đều của lục giác",
+        "explanation": "Sáu đỉnh của lục giác đều chia đường tròn thành sáu cung bằng nhau, nên mỗi góc ở tâm bằng $360^\\circ/6=60^\\circ$.",
+        "math": "\\widehat{AOB}=60^\\circ",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Cạnh lục giác liên hệ bán kính thế nào?",
+        "cue": "Tam giác cân và tổng ba góc của tam giác",
+        "explanation": "Ta có $OA=OB=5$ là hai bán kính và góc xen giữa bằng $60^\\circ$. Hai góc đáy của tam giác cân $AOB$ cộng lại $120^\\circ$, nên mỗi góc cũng bằng $60^\\circ$; tam giác $AOB$ đều.",
+        "math": "AB=OA=OB=5",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Diện tích một trong sáu tam giác bằng bao nhiêu?",
+        "cue": "Đường cao tam giác đều, định lí Pythagore và công thức diện tích",
+        "explanation": "Hạ đường cao của tam giác đều cạnh $5$; đường cao chia đáy thành hai đoạn $5/2$. Theo Pythagore, đường cao bằng $5\\sqrt3/2$.",
+        "math": "S_{AOB}=\\frac12\\cdot5\\cdot\\frac{5\\sqrt3}{2}=\\frac{25\\sqrt3}{4}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Diện tích cả lục giác bằng bao nhiêu lần một tam giác?",
+        "cue": "Quy tắc cộng diện tích các phần không chồng lấn",
+        "explanation": "Sáu tam giác ở tâm có phần trong không chồng nhau và hợp lại đúng lục giác, nên diện tích lục giác bằng sáu lần diện tích một tam giác.",
+        "math": "S=6\\cdot\\frac{25\\sqrt3}{4}=\\frac{75\\sqrt3}{2}",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chia đều góc ở tâm",
+        "explanation": "Sáu đỉnh của lục giác đều chia đường tròn thành sáu cung bằng nhau, nên mỗi góc ở tâm bằng $360^\\circ/6=60^\\circ$.",
+        "math": "\\widehat{AOB}=60^\\circ",
+        "reason": "Tổng góc quanh tâm và tính đều của lục giác",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chứng minh tam giác ở tâm là tam giác đều",
+        "explanation": "Ta có $OA=OB=5$ là hai bán kính và góc xen giữa bằng $60^\\circ$. Hai góc đáy của tam giác cân $AOB$ cộng lại $120^\\circ$, nên mỗi góc cũng bằng $60^\\circ$; tam giác $AOB$ đều.",
+        "math": "AB=OA=OB=5",
+        "reason": "Tam giác cân và tổng ba góc của tam giác",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Tính diện tích một tam giác đều",
+        "explanation": "Hạ đường cao của tam giác đều cạnh $5$; đường cao chia đáy thành hai đoạn $5/2$. Theo Pythagore, đường cao bằng $5\\sqrt3/2$.",
+        "math": "S_{AOB}=\\frac12\\cdot5\\cdot\\frac{5\\sqrt3}{2}=\\frac{25\\sqrt3}{4}",
+        "reason": "Đường cao tam giác đều, định lí Pythagore và công thức diện tích",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Cộng sáu phần không chồng lấn",
+        "explanation": "Sáu tam giác ở tâm có phần trong không chồng nhau và hợp lại đúng lục giác, nên diện tích lục giác bằng sáu lần diện tích một tam giác.",
+        "math": "S=6\\cdot\\frac{25\\sqrt3}{4}=\\frac{75\\sqrt3}{2}",
+        "reason": "Quy tắc cộng diện tích các phần không chồng lấn",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy cạnh lục giác bằng $5$ và diện tích bằng $\\dfrac{75\\sqrt3}{2}$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập bằng tỉ số diện tích, tọa độ chính xác hoặc phân hoạch sáu tam giác ở tâm",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-geometry-family",
+  "logs": []
+}

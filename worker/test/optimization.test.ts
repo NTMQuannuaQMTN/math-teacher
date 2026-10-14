@@ -10,7 +10,7 @@ import { repairLatex, textifyProse } from "../../shared/src/mathText";
 import { latexFeedback, plainUnrenderable } from "../src/solver/latexCheck";
 import { OcrFailure } from "../src/ocr/provider";
 import { LocalJsonModel } from "../src/solver/localModel";
-import { parseLesson, solveProblem, tidy } from "../src/solver/pipeline";
+import { parseLesson, solveProblem as solveWithModel, tidy } from "../src/solver/pipeline";
 import { VN_GRADE_9 } from "../src/solver/curriculum";
 import { buildSystemPrompt } from "../src/solver/prompts";
 import { problemTier } from "../src/solver/routing";
@@ -18,6 +18,9 @@ import { FailoverJsonModel } from "../src/solver/failover";
 import { mockGeometryLesson as mockGeometryLessonForTest } from "../src/solver/mock";
 import { SolutionSchema } from "../../shared/src/solution";
 import type { JsonModel } from "../src/solver/llm";
+
+// These tests exercise inference, retries and hygiene; exact algebra is tested separately.
+const solveProblem:typeof solveWithModel=(model,curriculum,text,options)=>solveWithModel(model,curriculum,text,{...options,exactAlgebra:false});
 
 /** A correct, verifiable Grade 9 lesson: 3(x − 2) ≤ 5x + 4 − 7x  ⇔  x ≤ 2. */
 function inequalityLesson(overrides: Partial<ModelLesson> = {}): ModelLesson {
@@ -416,13 +419,12 @@ describe("pipeline retries", () => {
     expect(gradeLevelReport(r.lesson).forbidden).toEqual([]);
   });
 
-  it("after the time budget, retries only for a wrong lesson, not for presentation feedback", async () => {
+  it("after the retry budget, attempts a bounded language repair, fails safely if it is unusable, and still retries a mathematical error", async () => {
     const chinese = inequalityLesson();
     chinese.hints[1] = { ...chinese.hints[1]!, question: "我们可以看到 điều gì?" };
     const model = scripted([JSON.stringify(chinese), JSON.stringify(inequalityLesson())]);
-    const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal, retryBudgetMs: -1 });
-    expect(model.calls).toBe(1);
-    expect(r.verification.status).toBe("verified");
+    await expect(solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal, retryBudgetMs: -1 })).rejects.toMatchObject({ kind: "malformed_output" });
+    expect(model.calls).toBe(2);
 
     const wrong = inequalityLesson({ answerChecks: [{ kind: "inequality", statements: ["3(x - 2) <= 5x + 4 - 7x"], assignments: [], expected: "x <= 3" }] });
     const model2 = scripted([JSON.stringify(wrong), JSON.stringify(inequalityLesson())]);
@@ -811,6 +813,45 @@ describe("failure-only fallback (temporary Gemini fallback, 2026-10-06)", () => 
     const backup = scripted([JSON.stringify(inequalityLesson())]);
     await solveProblem(primary, VN_GRADE_9, text, opts(backup));
     expect([primary.calls, backup.calls]).toEqual([2, 0]);
+  });
+});
+
+describe("late language repair", () => {
+  it("uses the fallback for a field-only rewrite even after the full-solve retry budget", async () => {
+    const leaked = inequalityLesson();
+    leaked.steps[1] = { ...leaked.steps[1]!, explanation: "By setting the two expressions equal, solve for $x$." };
+    let primaryCalls = 0;
+    let fallbackCalls = 0;
+    const primary: JsonModel = {
+      name: "local",
+      model: "slow-free-model",
+      async complete() {
+        primaryCalls++;
+        return JSON.stringify(leaked);
+      },
+    };
+    const fallback: JsonModel = {
+      name: "local",
+      model: "language-fallback",
+      async complete({ messages, schemaName }) {
+        fallbackCalls++;
+        expect(schemaName).toBe("language_repair");
+        const items = JSON.parse(messages[1]!.content).items as { id: string; text: string }[];
+        return JSON.stringify({
+          items: items.map((item) => ({ ...item, text: "Đặt hai biểu thức bằng nhau rồi tìm $x$." })),
+        });
+      },
+    };
+
+    const result = await solveProblem(primary, VN_GRADE_9, leaked.analysis.statement, {
+      signal: new AbortController().signal,
+      fallback,
+      retryBudgetMs: -1,
+    });
+
+    expect([primaryCalls, fallbackCalls]).toEqual([1, 1]);
+    expect(result.lesson.steps[1]!.explanation).toBe("Đặt hai biểu thức bằng nhau rồi tìm $x$.");
+    expect(cleanLanguage(result.lesson).feedback).toEqual([]);
   });
 });
 

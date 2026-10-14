@@ -37,7 +37,7 @@ export default function DevLessonScreen() {
   if (!__DEV__) return <Redirect href="/" />;
   return (
     <View style={{ flex: 1 }}>
-      <Stack.Screen options={{ title: "Lesson (dev)" }} />
+      <Stack.Screen options={{ title: "Kiểm tra bài giải" }} />
       {error ? <Text>{error}</Text> : solution ? <LessonView solution={solution} progress={progress} setProgress={(u) => setProgress(u)} onRegenerate={() => undefined} /> : <ActivityIndicator />}
     </View>
   );

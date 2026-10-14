@@ -1,0 +1,156 @@
+{
+  "input": "Ban đầu có $9$ đồng xu đều ngửa. Mỗi lượt phải lật đúng $2$ đồng xu phân biệt. Có thể làm cho cả $9$ đồng xu đều sấp không? Chứng minh cho mọi dãy lượt đi.",
+  "lesson": {
+    "analysis": {
+      "statement": "Ban đầu có $9$ đồng xu đều ngửa. Mỗi lượt phải lật đúng $2$ đồng xu phân biệt. Có thể làm cho cả $9$ đồng xu đều sấp không? Chứng minh cho mọi dãy lượt đi.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Bất biến chẵn lẻ",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Bất biến chẵn lẻ"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn một bất biến áp dụng cho mọi lượt và chứng minh đầy đủ rằng trạng thái đích hoặc mọi nước đáp được kiểm soát.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Ban đầu số đồng xu ngửa là chẵn hay lẻ?",
+        "cue": "Định nghĩa đại lượng bất biến theo tính chẵn lẻ",
+        "explanation": "Gọi $H$ là số đồng xu đang ngửa. Ban đầu $H=9$, là số lẻ. Ta chỉ cần theo dõi tính chẵn lẻ của $H$, không cần đoán thứ tự các lượt.",
+        "math": "H_0=9equiv1pmod2",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Một lượt có thể làm số đồng ngửa thay đổi những lượng nào?",
+        "cue": "Phân loại đầy đủ theo trạng thái của hai đồng được lật",
+        "explanation": "Nếu lật hai đồng ngửa thì $H$ giảm $2$; lật một ngửa và một sấp thì $H$ không đổi; lật hai đồng sấp thì $H$ tăng $2$. Đây là ba trường hợp duy nhất vì hai đồng được chọn là phân biệt.",
+        "math": "\\text{ Delta Hin }{-2,0,2}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Vì sao lập luận áp dụng cho mọi độ dài dãy lượt?",
+        "cue": "Cộng một số chẵn không đổi tính chẵn lẻ; quy nạp theo số lượt",
+        "explanation": "Cả ba độ thay đổi đều là số chẵn, nên sau mỗi lượt $H$ vẫn cùng tính chẵn lẻ với trước lượt. Bằng quy nạp theo số lượt, $H$ luôn lẻ sau mọi dãy lượt hợp lệ.",
+        "math": "H_tequiv H_0equiv1pmod2",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Trạng thái tất cả sấp có bao nhiêu đồng ngửa?",
+        "cue": "Mâu thuẫn với bất biến đã chứng minh",
+        "explanation": "Khi cả $9$ đồng xu đều sấp thì $H=0$, là số chẵn. Trạng thái này trái với bất biến $H$ luôn lẻ, nên không thể đạt được bằng bất kỳ dãy lượt nào.",
+        "math": "\\begin{gathered}0 \\\\ otequiv1pmod2\\end{gathered}",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chọn đại lượng bất biến",
+        "explanation": "Gọi $H$ là số đồng xu đang ngửa. Ban đầu $H=9$, là số lẻ. Ta chỉ cần theo dõi tính chẵn lẻ của $H$, không cần đoán thứ tự các lượt.",
+        "math": "H_0=9equiv1pmod2",
+        "reason": "Định nghĩa đại lượng bất biến theo tính chẵn lẻ",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Xét đầy đủ một lượt lật hai đồng xu",
+        "explanation": "Nếu lật hai đồng ngửa thì $H$ giảm $2$; lật một ngửa và một sấp thì $H$ không đổi; lật hai đồng sấp thì $H$ tăng $2$. Đây là ba trường hợp duy nhất vì hai đồng được chọn là phân biệt.",
+        "math": "\\text{ Delta Hin }{-2,0,2}",
+        "reason": "Phân loại đầy đủ theo trạng thái của hai đồng được lật",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Chứng minh tính chẵn lẻ không đổi",
+        "explanation": "Cả ba độ thay đổi đều là số chẵn, nên sau mỗi lượt $H$ vẫn cùng tính chẵn lẻ với trước lượt. Bằng quy nạp theo số lượt, $H$ luôn lẻ sau mọi dãy lượt hợp lệ.",
+        "math": "H_tequiv H_0equiv1pmod2",
+        "reason": "Cộng một số chẵn không đổi tính chẵn lẻ; quy nạp theo số lượt",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "So sánh với trạng thái đích và kết luận",
+        "explanation": "Khi cả $9$ đồng xu đều sấp thì $H=0$, là số chẵn. Trạng thái này trái với bất biến $H$ luôn lẻ, nên không thể đạt được bằng bất kỳ dãy lượt nào.",
+        "math": "\\begin{gathered}0 \\\\ otequiv1pmod2\\end{gathered}",
+        "reason": "Mâu thuẫn với bất biến đã chứng minh",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy không thể làm cho cả $9$ đồng xu đều sấp.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra vét cạn không gian trạng thái đồng xu hoặc mọi domino hợp lệ và ảnh quay của nó",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 4,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-combinatorics",
+  "logs": []
+}

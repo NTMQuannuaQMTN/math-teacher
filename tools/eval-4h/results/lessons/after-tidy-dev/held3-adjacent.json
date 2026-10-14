@@ -1,0 +1,108 @@
+{
+  "input": "Có $6$ học sinh phân biệt, trong đó có An và Bình. Xếp cả $6$ em thành một hàng. Hỏi có bao nhiêu cách để An và Bình đứng cạnh nhau? Giải thích vì sao không đếm lặp.",
+  "lesson": {
+    "analysis": {
+      "statement": "Có $6$ học sinh phân biệt, trong đó có An và Bình. Xếp cả $6$ em thành một hàng. Hỏi có bao nhiêu cách để An và Bình đứng cạnh nhau? Giải thích vì sao không đếm lặp.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Hoán vị có điều kiện",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hoán vị có điều kiện"
+      ],
+      "techniques": [],
+      "givens": [
+        "$6$ người phân biệt xếp thành một hàng"
+      ],
+      "unknowns": [
+        "Số cách xếp"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Xử lí điều kiện trước (gộp khối hoặc đặt chỗ cho bạn có điều kiện), rồi xếp phần còn lại.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Trong khối có mấy cách sắp hai bạn?",
+        "cue": "Phương pháp gộp khối; quy tắc nhân",
+        "explanation": "Khi An và Bình đứng cạnh nhau, coi hai bạn là một \"khối\". Khi đó cần xếp $5$ đối tượng (khối và $4$ bạn còn lại): $5!=120$ cách. Trong khối, An đứng trước hoặc Bình đứng trước: $2$ cách. Mỗi cách xếp có An, Bình cạnh nhau ứng với đúng một cặp (cách xếp khối, thứ tự trong khối), nên không bị đếm lặp.",
+        "math": "2\\cdot 5!=2\\cdot 120=240",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy có $240$ cách xếp.",
+        "math": null,
+        "stepId": "s2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Ghép An và Bình thành một khối",
+        "explanation": "Khi An và Bình đứng cạnh nhau, coi hai bạn là một \"khối\". Khi đó cần xếp $5$ đối tượng (khối và $4$ bạn còn lại): $5!=120$ cách. Trong khối, An đứng trước hoặc Bình đứng trước: $2$ cách. Mỗi cách xếp có An, Bình cạnh nhau ứng với đúng một cặp (cách xếp khối, thứ tự trong khối), nên không bị đếm lặp.",
+        "math": "2\\cdot 5!=2\\cdot 120=240",
+        "reason": "Phương pháp gộp khối; quy tắc nhân",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Kết luận",
+        "explanation": "Vậy có $240$ cách xếp.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy có $240$ cách xếp.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Liệt kê độc lập mọi hoán vị và kiểm tra điều kiện",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-row-adjacent",
+  "logs": [
+    "lesson by the routine solver (row-adjacent); no model call"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "phase": "baseline-number-theory",
+  "questionsExecuted": 3,
+  "ready": 1,
+  "independentlyReviewed": 3,
+  "correctConclusionCount": 1,
+  "mathematicalPasses": 1,
+  "qualityPasses": 1,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 4642.714625,
+    "p95": 20108.863624999998,
+    "max": 20108.863624999998
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 3,
+  "rubricMeanForReviewedOnly": 32.666666666666664,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

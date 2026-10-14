@@ -1,0 +1,6 @@
+{
+  "recordedAt": "2026-10-12T01:25:29.436012+00:00",
+  "failure": "Harness assumed hint id h1; model-produced held-out answer uses hint_1. Page math rendered but selector timed out. No application failure established.",
+  "fix": "Read first hint id from actual typed lesson; all individual hint title audits still use actual ids.",
+  "inferenceRerun": false
+}

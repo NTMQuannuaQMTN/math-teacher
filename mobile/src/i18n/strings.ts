@@ -1,8 +1,8 @@
 import type { ErrorCode } from "@shared/contract";
 
 /**
- * All user-facing copy. Vietnamese is the primary audience (Grade 9); English
- * is the fallback for any other device language.
+ * All user-facing copy. The interface always selects Vietnamese for Grade 9
+ * students; the English dictionary is retained for reference.
  */
 const en = {
   appName: "Math Teacher",
@@ -283,6 +283,7 @@ const en = {
     editProblem: "Edit problem",
     regenerate: "Create a new lesson",
     failedTitle: "Couldn't prepare the lesson",
+    regenerating: "Preparing and checking a new lesson. You can keep reading this one meanwhile.",
     regenerateKept: (reason: string) => `The new lesson couldn't be prepared (${reason.replace(/\.$/, "")}). This is your previous lesson.`,
   },
   a11y: {
@@ -295,7 +296,7 @@ const en = {
 export type Strings = typeof en;
 
 const vi: Strings = {
-  appName: "Math Teacher",
+  appName: "Trợ lý Toán học",
   tagline: "Chụp ảnh bài toán để bắt đầu",
   common: {
     cancel: "Hủy",
@@ -573,6 +574,7 @@ const vi: Strings = {
     editProblem: "Sửa đề bài",
     regenerate: "Tạo bài học mới",
     failedTitle: "Chưa chuẩn bị được bài học",
+    regenerating: "Đang tạo và kiểm tra bài giải mới. Trong lúc chờ, bạn vẫn có thể xem bài giải này.",
     regenerateKept: (reason: string) => `Chưa tạo lại được bài giải (${reason.replace(/\.$/, "")}). Đây là bài giải trước của bạn.`,
   },
   a11y: {

@@ -1,0 +1,134 @@
+{
+  "input": "Một giải bóng đá có $8$ đội, mỗi đội gặp mỗi đội khác đúng một lần. Hỏi có tất cả bao nhiêu trận đấu?",
+  "lesson": {
+    "analysis": {
+      "statement": "Một giải bóng đá có $8$ đội, mỗi đội gặp mỗi đội khác đúng một lần. Hỏi có tất cả bao nhiêu trận đấu?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Đếm cặp (tổ hợp chập 2)",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Đếm cặp (tổ hợp chập 2)"
+      ],
+      "techniques": [],
+      "givens": [
+        "$8$ đội"
+      ],
+      "unknowns": [
+        "Số trận đấu"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Mỗi đối tượng cần đếm ứng với một cặp không thứ tự; đếm cặp có thứ tự rồi chia 2.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Một trận đấu được xác định bởi những gì?",
+        "cue": "Tương ứng một – một giữa đối tượng cần đếm và cặp không thứ tự",
+        "explanation": "Mỗi trận đấu được xác định bởi đúng hai đội khác nhau, không kể thứ tự (đội thứ nhất với đội thứ hai cũng chính là đội thứ hai với đội thứ nhất). Ngược lại mỗi cặp đội cho đúng một trận đấu.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Vì sao phải chia cho 2?",
+        "cue": "Quy tắc nhân; mỗi cặp đếm hai lần",
+        "explanation": "Chọn đội thứ nhất có $8$ cách, đội thứ hai có $7$ cách, được $8\\cdot7$ cặp có thứ tự. Mỗi cặp không thứ tự được đếm đúng hai lần (đổi chỗ hai đội), nên chia cho $2$.",
+        "math": "\\frac{8\\cdot 7}{2}=28",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đáp số là bao nhiêu?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy có $28$ trận đấu.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Mỗi trận đấu ứng với một cặp đội",
+        "explanation": "Mỗi trận đấu được xác định bởi đúng hai đội khác nhau, không kể thứ tự (đội thứ nhất với đội thứ hai cũng chính là đội thứ hai với đội thứ nhất). Ngược lại mỗi cặp đội cho đúng một trận đấu.",
+        "math": null,
+        "reason": "Tương ứng một – một giữa đối tượng cần đếm và cặp không thứ tự",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Đếm số cặp không kể thứ tự",
+        "explanation": "Chọn đội thứ nhất có $8$ cách, đội thứ hai có $7$ cách, được $8\\cdot7$ cặp có thứ tự. Mỗi cặp không thứ tự được đếm đúng hai lần (đổi chỗ hai đội), nên chia cho $2$.",
+        "math": "\\frac{8\\cdot 7}{2}=28",
+        "reason": "Quy tắc nhân; mỗi cặp đếm hai lần",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy có $28$ trận đấu.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy có $28$ trận đấu.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Liệt kê độc lập mọi cặp không thứ tự",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 5,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-pairs-match",
+  "logs": [
+    "lesson by the routine solver (pairs-match); no model call"
+  ]
+}

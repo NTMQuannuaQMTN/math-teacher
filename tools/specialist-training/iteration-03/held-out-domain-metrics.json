@@ -1,0 +1,64 @@
+{
+  "configuration": "solver-v2.34",
+  "sourceFrozenBeforeEvaluation": true,
+  "perDomain": {
+    "algebra": {
+      "n": 4,
+      "ready": 1,
+      "mathematicalPasses": 1,
+      "qualityPasses": 0,
+      "rubricProxyMean": 23.75,
+      "p50Ms": 24615.645542,
+      "p95Ms": 26135.677333999996,
+      "maxMs": 26135.677333999996,
+      "timeoutCount": 1,
+      "criticalReturnedMathErrors": 0,
+      "criticalErrorLimit": "Missing answers are non-passes; no math output is not evidence of mathematical safety."
+    },
+    "geometry": {
+      "n": 4,
+      "ready": 0,
+      "mathematicalPasses": 0,
+      "qualityPasses": 0,
+      "rubricProxyMean": 0.0,
+      "p50Ms": 26022.189625,
+      "p95Ms": 26024.789791000017,
+      "maxMs": 26024.789791000017,
+      "timeoutCount": 3,
+      "criticalReturnedMathErrors": 0,
+      "criticalErrorLimit": "Missing answers are non-passes; no math output is not evidence of mathematical safety."
+    },
+    "number_theory": {
+      "n": 4,
+      "ready": 0,
+      "mathematicalPasses": 0,
+      "qualityPasses": 0,
+      "rubricProxyMean": 0.0,
+      "p50Ms": 22110.373625000007,
+      "p95Ms": 25390.324709000008,
+      "maxMs": 25390.324709000008,
+      "timeoutCount": 0,
+      "criticalReturnedMathErrors": 0,
+      "criticalErrorLimit": "Missing answers are non-passes; no math output is not evidence of mathematical safety."
+    },
+    "combinatorics": {
+      "n": 4,
+      "ready": 0,
+      "mathematicalPasses": 0,
+      "qualityPasses": 0,
+      "rubricProxyMean": 0.0,
+      "p50Ms": 17811.632125000004,
+      "p95Ms": 26018.96562500001,
+      "maxMs": 26018.96562500001,
+      "timeoutCount": 1,
+      "criticalReturnedMathErrors": 0,
+      "criticalErrorLimit": "Missing answers are non-passes; no math output is not evidence of mathematical safety."
+    }
+  },
+  "returnedErrors": {
+    "solve_timeout": 5,
+    "solve_malformed_output": 9,
+    "solve_incomplete": 1
+  },
+  "humanSatisfaction": "Not measured"
+}

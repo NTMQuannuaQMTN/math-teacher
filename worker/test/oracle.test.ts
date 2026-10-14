@@ -13,6 +13,16 @@ function datasetProblem(id: string): string {
 }
 
 describe("compute-first answers (no model)", () => {
+  it.each([1, 3, -2])("does not invent the excluded root at a removable singularity %s", (a) => {
+    const r = computeAnswer(`Giải phương trình $\\frac{x^{2}-${a*a}}{x-${a}}=${2*a}$.`)!;
+    expect(r.solutions).toEqual([]);
+    expect(r.status).toBe("none");
+  });
+
+  it("retains a legitimate rational-expression root away from the singularity", () => {
+    const r = computeAnswer("Giải phương trình $\\frac{x^{2}-1}{x-1}=4$.")!;
+    expect(r.solutions).toEqual([{ x: 3 }]);
+  });
   it("finds all integer solutions of a Diophantine equation in the search box", () => {
     const r = computeAnswer(datasetProblem("hanoi-2025-chuyen_II.2"))!;
     expect(r.formal.kind).toBe("integer_solutions");

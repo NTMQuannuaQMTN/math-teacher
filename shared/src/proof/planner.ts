@@ -139,6 +139,13 @@ function auxClaim(fragment: string, figure: Figure): { point: PointDef; text: st
     }
     return null;
   }
+  m = new RegExp(`${L}\\s+là đường trung trực (?:của )?(?:đoạn (?:thẳng )?)?${L}`).exec(t);
+  if (m) {
+    const [a,b,c,d]=m.slice(1) as [string,string,string,string];
+    if (![a,b,c,d].every(x=>taken.has(x)))return null;
+    const id=fresh(taken);
+    return {point:point(id,"midpoint",[c,d]),text:`Gọi ${id} là trung điểm của ${c}${d}`,fact:{t:"col",p:[a,b,id]},label:`${a}${b} đi qua trung điểm của ${c}${d}`};
+  }
   m = new RegExp(`${L}\\s+đi qua trung điểm (?:của )?(?:đoạn (?:thẳng )?)?${L}`).exec(t);
   if (m) {
     const [a, b, c, d] = m.slice(1) as [string, string, string, string];
@@ -173,6 +180,8 @@ function shapeClaims(text: string): { label: string; fact: Fact }[] {
     const pair = pairs.find(([x, y]) => [...x].sort().join() !== [...y].sort().join());
     if (pair) out.push({ label: `${name} (${pair[0].join("")} = ${pair[1].join("")})`, fact: { t: "cong", a: pair[0], b: pair[1] } });
   }
+  const bisector=/([A-Z]'*)([A-Z]'*)\s+là đường trung trực (?:của )?(?:đoạn (?:thẳng )?)?([A-Z]'*)([A-Z]'*)/.exec(t);
+  if(bisector)out.push({label:`${bisector[1]}${bisector[2]} ⊥ ${bisector[3]}${bisector[4]}`,fact:{t:"perp",a:[bisector[1]!,bisector[2]!],b:[bisector[3]!,bisector[4]!]}});
   const m = /(?:tứ giác\s+)?([A-Z]'*)([A-Z]'*)([A-Z]'*)([A-Z]'*)\s+là\s+hình\s+(bình hành|chữ nhật|thoi|vuông)/.exec(t);
   if (!m) return out;
   const [a, b, c, d, kind] = m.slice(1) as [string, string, string, string, string];
@@ -227,6 +236,9 @@ const GOAL_PART = /chứng minh|prove|chứng tỏ/i;
 const COMPUTE_PART = /tính|tìm|xác định|giá trị (lớn|nhỏ) nhất|compute|find/i;
 
 export function planProof(statement: string, limits: Partial<SearchLimits> = {}): ProofPlan {
+  // One budget for the whole question, rather than a new budget for each goal/depth.
+  const deadline = Date.now() + Math.max(0, limits.timeMs ?? 4_000);
+  const remaining = () => Math.max(0, deadline - Date.now());
   const empty = (status: PlanStatus, reason: string): ProofPlan => ({ status, reason, figure: null, goals: [], unparsed: [], auxiliary: [], computeParts: [], stats: { givens: 0, facts: 0, rounds: 0, elapsedMs: 0 }, log: [] });
   const built = figureFromStatement(statement);
   if (!built) return empty("PARSING_UNCERTAIN", "the statement's figure could not be constructed");
@@ -289,7 +301,18 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
       const body = r.replace(/^(chứng minh|chứng tỏ|prove)\s*(rằng|that)?/i, "");
       if (!/\s(và|and)\s/.test(body) && parseClaims(body).length === 0 && shapeClaims(body).length === 0 && !tryAux(body, claims, part.letter)) unparsed.push(`${part.letter}: ${r.trim().slice(0, 100)}`);
     }
+    if (/là đường trung trực/.test(body)) tryAux(body,claims,part.letter);
     if (claims.length === 0 && !unparsed.some((u) => u.startsWith(`${part.letter}:`))) unparsed.push(`${part.letter}: ${body.trim().slice(0, 80)}`);
+    // parseClaims groups relation types; restore the requested order before banning later goals.
+    // Otherwise "AB=AC và AO perpendicular BC" wrongly forbids the equal tangents needed by the second proof.
+    const requestedOrder = new Map<string, number>();
+    body.split(/\s+(?:và|and)\s+/).forEach((fragment, i) => {
+      for (const c of parseClaims(fragment)) {
+        const f=claimFact(c.claim);
+        if (f && !requestedOrder.has(factKey(f))) requestedOrder.set(factKey(f),i);
+      }
+    });
+    claims.sort((a,b)=>(requestedOrder.get(factKey(a.fact)) ?? Number.MAX_SAFE_INTEGER)-(requestedOrder.get(factKey(b.fact)) ?? Number.MAX_SAFE_INTEGER));
     for (const c of claims) {
       // A claim false on the exact figure is a parsing problem (or a wrong figure), never something to prove.
       if (!oracle.holds(c.fact)) {
@@ -320,7 +343,23 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
   for (const letter of [...new Set(goals.map((g) => g.part))]) {
     const partGoals = goals.filter((g) => g.part === letter);
     const allowedAux = new Set(auxiliary.filter((a) => partEnd(a.part) <= partEnd(letter)).map((a) => a.id));
-    const sub = restrictFigure(figure, statement.slice(0, partEnd(letter)), allowedAux);
+    let sub = restrictFigure(figure, statement.slice(0, partEnd(letter)), allowedAux);
+    // A circle named in a cyclicity goal becomes available only after that goal
+    // is proved. A circumcenter drawn for the goal is not an original premise.
+    const pendingCircles=new Set<string>();
+    for(const part of parts) {
+      const request=part.text.split(/chứng minh|chứng tỏ|prove/iu).slice(1).join(' ').replace(/\$/g,'');
+      for(const named of request.matchAll(/(?:một )?đường tròn\s*\(([A-Z]'*)\)/gu)) {
+        const cyclic=goals.filter(g=>g.part===part.letter&&g.fact.t==='cyclic');
+        if(cyclic.length&&!cyclic.every(g=>previous.some(p=>factKey(p.fact)===factKey(g.fact))))for(const circle of sub.circles)if(circle.label===`(${named[1]})`)pendingCircles.add(circle.id);
+      }
+    }
+    if(pendingCircles.size) {
+      const removed=new Set(pendingCircles);
+      let changed=true;
+      while(changed) {changed=false;for(const p of sub.points)if(!removed.has(p.id)&&p.refs.some(r=>removed.has(r))) {removed.add(p.id);changed=true;}}
+      sub={...sub,points:sub.points.filter(p=>!removed.has(p.id)),circles:sub.circles.filter(c=>!removed.has(c.id)&&!removed.has(c.center)&&(!c.through||!removed.has(c.through)))};
+    }
     const subOracle = new Oracle(resolveFigure(sub).points);
     const ids = new Set(sub.points.map((p) => p.id));
     const givens: { fact: Fact; method: string; note?: string }[] = constructionFacts(sub, subOracle);
@@ -333,10 +372,11 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
     // Claims in the order the statement asks them ("chứng minh A và B": A first): each is proved without the later
     // ones (banned), unless it has no other proof.
     const maxDepth = limits.depth ?? 5;
-    let res = search(sub, givens, [], { ...limits, depth: 1 });
+    let res = search(sub, givens, [], { ...limits, depth: 1, timeMs: remaining() });
     const deepen = (goal: Fact, banned: Fact[]) => {
       for (let depth = 1; depth <= maxDepth; depth++) {
-        res = search(sub, givens, [goal], { ...limits, depth }, banned);
+        if (remaining() === 0) return null;
+        res = search(sub, givens, [goal], { ...limits, depth, timeMs: remaining() }, banned);
         if (res.proved[0]) return { d: res.proved[0], state: res.state };
       }
       return null;
@@ -352,6 +392,7 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
       const ok =
         found &&
         verifyProof(sub, extractProof(found.state, found.d), [g.fact], {
+          statementText: statement,
           statementGivens: givens.filter((q) => q.method === "GIVEN").map((q) => q.fact),
           previous: givens.filter((q) => q.method === "PREVIOUS_PART").map((q) => q.fact),
         }).ok;
@@ -370,7 +411,7 @@ export function planProof(statement: string, limits: Partial<SearchLimits> = {})
       if (!b) return planGoals.push({ ...g, proved: false, proof: [] });
       const proof = extractProof(b.state, b.d);
       // A goal counts only when the independent verifier accepts every step of its proof.
-      const verification = verifyProof(sub, proof, [g.fact], { statementGivens: shapeGivens, previous: prevFacts });
+      const verification = verifyProof(sub, proof, [g.fact], { statementText: statement, statementGivens: shapeGivens, previous: prevFacts });
       if (!verification.ok) log.push(`verifier rejected "${g.label}": ${verification.steps.filter((x) => !x.ok).map((x) => `#${x.id} ${x.problems.join(", ")}`).join("; ")} ${verification.issues.join("; ")}`);
       if (verification.ok) {
         previous.push({ fact: g.fact, label: g.label, part: g.part });

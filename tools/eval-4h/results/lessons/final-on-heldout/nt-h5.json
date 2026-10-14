@@ -1,0 +1,162 @@
+{
+  "input": "Chứng minh rằng $n^5-n$ chia hết cho $5$ với mọi số nguyên $n$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Chứng minh rằng $n^5-n$ chia hết cho $5$ với mọi số nguyên $n$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Đa thức nguyên và các lớp số dư",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Đa thức nguyên và các lớp số dư"
+      ],
+      "techniques": [],
+      "givens": [
+        "$n\\in\\mathbb Z$"
+      ],
+      "unknowns": [
+        "Tính đúng của khẳng định với mọi giá trị"
+      ],
+      "constraints": [
+        "Các giá trị thuộc miền số nguyên."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chứng minh tính đầy đủ của các lớp số dư, rồi tính chính xác và kết luận.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Mọi số nguyên, kể cả âm, có những khả năng số dư nào?",
+        "cue": "Phép chia có dư đúng cả khi số bị chia âm",
+        "explanation": "Gọi $P(n)=n^5-n$. Theo phép chia có dư, mọi số nguyên $n$ viết duy nhất thành $n=5q+r$ với $q$ nguyên và $0\\le r<5$. Vì biểu thức là đa thức có hệ số nguyên, ta sẽ kiểm tra tất cả $5$ số dư, không giới hạn giá trị của $n$.",
+        "math": "n=5q+r,\\quad q\\in\\mathbb Z,\\quad r\\in\\{0,1,\\ldots,4\\}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Vì sao thay một số nguyên bằng số dư của nó không đổi số dư của đa thức?",
+        "cue": "Hằng đẳng thức hiệu lũy thừa; tính chất cộng và nhân của chia hết",
+        "explanation": "Vì $n-r=5q$, hiệu $n^{j}-r^{j}$ chia hết cho $5$: với $j\\ge2$, dùng hằng đẳng thức hiệu hai lũy thừa; với $j=1$ là hiệu $n-r$, còn hạng tử hằng có hiệu bằng 0. Nhân từng hiệu với hệ số nguyên và cộng lại cho $P(n)-P(r)$ chia hết cho $5$. Do đó $P(n)$ và $P(r)$ có cùng số dư. Đây là lý do bảng hữu hạn bao quát mọi giá trị.",
+        "math": "n^{j}-r^{j}=(n-r)(n^{j-1}+n^{j-2}r+\\cdots+r^{j-1}),\\qquad P(n)\\equiv P(r)\\pmod{5}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Những cột nào trong bảng có số dư bằng không?",
+        "cue": "Thay từng khả năng số dư; phép chia có dư chính xác",
+        "explanation": "Thay từng số dư $r$ vào $P(r)=r^5-r$, tính các lũy thừa rồi chia cho $5$. Bảng ghi số dư không âm, nhỏ hơn $5$; số dư 0 là đúng điều kiện chia hết.",
+        "math": "\\begin{array}{c|ccccc}r&0&1&2&3&4\\\\\\hline P(r)\\bmod 5&0&0&0&0&0\\end{array}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Vì sao bảng cho tất cả nghiệm, chứ không chỉ vài nghiệm tìm được?",
+        "cue": "Phân chia đầy đủ, không trùng các lớp số dư; điều kiện cần và đủ",
+        "explanation": "Mọi cột của bảng đều có số dư 0, nên không còn trường hợp nào phải loại. Vậy với mọi số nguyên $n$, $n^5-n$ chia hết cho $5$.",
+        "math": "n^5-n\\vdots 5",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Chia miền vô hạn thành các lớp số dư đầy đủ",
+        "explanation": "Gọi $P(n)=n^5-n$. Theo phép chia có dư, mọi số nguyên $n$ viết duy nhất thành $n=5q+r$ với $q$ nguyên và $0\\le r<5$. Vì biểu thức là đa thức có hệ số nguyên, ta sẽ kiểm tra tất cả $5$ số dư, không giới hạn giá trị của $n$.",
+        "math": "n=5q+r,\\quad q\\in\\mathbb Z,\\quad r\\in\\{0,1,\\ldots,4\\}",
+        "reason": "Phép chia có dư đúng cả khi số bị chia âm",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chứng minh vì sao chỉ số dư quyết định chia hết",
+        "explanation": "Vì $n-r=5q$, hiệu $n^{j}-r^{j}$ chia hết cho $5$: với $j\\ge2$, dùng hằng đẳng thức hiệu hai lũy thừa; với $j=1$ là hiệu $n-r$, còn hạng tử hằng có hiệu bằng 0. Nhân từng hiệu với hệ số nguyên và cộng lại cho $P(n)-P(r)$ chia hết cho $5$. Do đó $P(n)$ và $P(r)$ có cùng số dư. Đây là lý do bảng hữu hạn bao quát mọi giá trị.",
+        "math": "n^{j}-r^{j}=(n-r)(n^{j-1}+n^{j-2}r+\\cdots+r^{j-1}),\\qquad P(n)\\equiv P(r)\\pmod{5}",
+        "reason": "Hằng đẳng thức hiệu lũy thừa; tính chất cộng và nhân của chia hết",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Tính số dư trong các trường hợp 0 đến 4",
+        "explanation": "Thay từng số dư $r$ vào $P(r)=r^5-r$, tính các lũy thừa rồi chia cho $5$. Bảng ghi số dư không âm, nhỏ hơn $5$; số dư 0 là đúng điều kiện chia hết.",
+        "math": "\\begin{array}{c|ccccc}r&0&1&2&3&4\\\\\\hline P(r)\\bmod 5&0&0&0&0&0\\end{array}",
+        "reason": "Thay từng khả năng số dư; phép chia có dư chính xác",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Đối chiếu mọi trường hợp và kết luận hai chiều",
+        "explanation": "Mọi cột của bảng đều có số dư 0, nên không còn trường hợp nào phải loại. Vậy với mọi số nguyên $n$, $n^5-n$ chia hết cho $5$.",
+        "math": "n^5-n\\vdots 5",
+        "reason": "Phân chia đầy đủ, không trùng các lớp số dư; điều kiện cần và đủ",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy với mọi số nguyên $n$, $n^5-n$ chia hết cho $5$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra đa thức nguyên và đầy đủ mọi lớp số dư, gồm số âm",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 6,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-residue-classes",
+  "logs": [
+    "lesson by the routine solver (residue-classes); no model call"
+  ]
+}

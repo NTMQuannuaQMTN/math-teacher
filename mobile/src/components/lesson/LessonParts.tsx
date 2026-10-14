@@ -8,6 +8,8 @@ import { MathText } from "@/components/math/MathText";
 import { useStrings } from "@/i18n";
 import { radius, spacing, typography, useTheme } from "@/theme";
 import { RichText } from "./RichText";
+import { separateSubquestions } from "./subquestions";
+export { separateSubquestions } from "./subquestions";
 
 
 export function SectionTitle({ children, right }: { children: string; right?: ReactNode }) {
@@ -22,15 +24,6 @@ export function SectionTitle({ children, right }: { children: string; right?: Re
   );
 }
 
-/** Keeps multi-part answers readable: each exam subquestion starts on its own line. */
-export function separateSubquestions(text: string): string {
-  return text
-    .split(/(\$\$[\s\S]*?\$\$|\$[^$]*\$)/g)
-    .map((part, i) => (i % 2 === 0 ? part.replace(/[ \t]+(?=[a-e]\)\s)/giu, "\n") : part))
-    .join("")
-    .replace(/\n[ \t]+/g, "\n")
-    .trim();
-}
 
 export function Card({ children, accent }: { children: ReactNode; accent?: "primary" | "success" | "warning" }) {
   const { colors } = useTheme();
@@ -92,12 +85,12 @@ export function HintCard({ hint, index, revealed, active, onReveal, onFocus }: H
             </Text>
           </View>
         </View>
-        <RichText text={hint.question} style={[typography.subtitle, { color: colors.text }]} />
-        {hint.cue ? <RichText text={hint.cue} style={[typography.body, styles.cue, { color: colors.textMuted }]} /> : null}
+        <MathText text={separateSubquestions(hint.question)} fontSize={typography.subtitle.fontSize} fontWeight={typography.subtitle.fontWeight} color={colors.text} testID={`hint-title-${hint.id}`} />
+        {hint.cue ? <RichText text={separateSubquestions(hint.cue)} style={[typography.body, styles.cue, { color: colors.textMuted }]} /> : null}
       </Pressable>
       {revealed ? (
         <View style={[styles.reveal, { backgroundColor: colors.surfaceMuted }]} accessibilityLiveRegion="polite">
-          <RichText text={hint.explanation} style={[typography.body, { color: colors.text }]} />
+          <RichText text={separateSubquestions(hint.explanation)} style={[typography.body, { color: colors.text }]} />
           {hint.math ? <MathText text={displayMath(hint.math)} fontSize={17} /> : null}
         </View>
       ) : (

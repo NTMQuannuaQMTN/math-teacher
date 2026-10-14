@@ -1,0 +1,134 @@
+{
+  "input": "Cho tam giác $ABC$. Điểm $D$ thuộc cạnh $AB$, điểm $E$ thuộc cạnh $BC$, với $AD/DB=2$ và $BE/EC=3$. Đường thẳng $DE$ cắt đường thẳng $AC$ tại $F$. Xác định vị trí $F$ và tính $AF/FC$, kèm chứng minh.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tam giác $ABC$. Điểm $D$ thuộc cạnh $AB$, điểm $E$ thuộc cạnh $BC$, với $AD/DB=2$ và $BE/EC=3$. Đường thẳng $DE$ cắt đường thẳng $AC$ tại $F$. Xác định vị trí $F$ và tính $AF/FC$, kèm chứng minh.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Định lí Menelaus và vị trí giao điểm ngoài",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Định lí Menelaus và vị trí giao điểm ngoài"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Trước hết xác định F phải ở ngoài đoạn, sau đó chứng minh tích tỉ số bằng 1 bằng các tam giác vuông đồng dạng.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Đường thẳng DE đã đi qua hai cạnh nào của tam giác?",
+        "cue": "Một đường thẳng cắt miền trong của tam giác theo một đoạn có hai đầu trên biên",
+        "explanation": "Đường thẳng qua hai điểm trong $Din AB$ và $Ein BC$ cắt đường biên của tam giác tại $D,E$. Phần còn lại của đường thẳng nằm ngoài tam giác, nên giao điểm thứ ba với đường thẳng $AC$ không thể nằm trong đoạn $AC$.",
+        "math": "F\\notin [AC]",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Ba tỉ số đường cao triệt tiêu ra sao?",
+        "cue": "Đồng dạng các tam giác vuông có một góc nhọn chung",
+        "explanation": "Từ $A,B,C$ hạ các đường vuông góc tới $DEF$, có độ dài lần lượt $h_A,h_B,h_C$. Các cặp tam giác vuông chung góc tại $D,E,F$ đồng dạng, cho $AD/DB=h_A/h_B$, $BE/EC=h_B/h_C$ và $CF/FA=h_C/h_A$.",
+        "math": "\\frac{AD}{DB}=\\frac{h_A}{h_B},\\quad\\frac{BE}{EC}=\\frac{h_B}{h_C},\\quad\\frac{CF}{FA}=\\frac{h_C}{h_A}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Tỉ số AF/FC bằng bao nhiêu?",
+        "cue": "Định lí Menelaus vừa được chứng minh; các độ dài đều dương",
+        "explanation": "Nhân ba đẳng thức, các đường cao triệt tiêu, được tích bằng $1$. Thay hai tỉ số đã biết.",
+        "math": "2\\cdot3\\cdot\\frac{CF}{FA}=1\\Rightarrow\\frac{AF}{FC}=6",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Tỉ số lớn hơn hay nhỏ hơn 1 quyết định F ở phía nào?",
+        "cue": "Cộng đoạn thẳng trên một tia và so sánh độ dài",
+        "explanation": "Vì $AF/FC=6>1$, nếu $F$ nằm trên tia đối của $AC$ qua $A$ thì $FC=FA+AC>FA$, trái với tỉ số lớn hơn $1$. Do đó $F$ nằm trên phần kéo dài của $AC$ qua $C$.",
+        "math": "F\\text{ nằm trên phần kéo dài }AC\\text{ qua C}",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định giao điểm không nằm trong đoạn AC",
+        "explanation": "Đường thẳng qua hai điểm trong $Din AB$ và $Ein BC$ cắt đường biên của tam giác tại $D,E$. Phần còn lại của đường thẳng nằm ngoài tam giác, nên giao điểm thứ ba với đường thẳng $AC$ không thể nằm trong đoạn $AC$.",
+        "math": "F\\notin [AC]",
+        "reason": "Một đường thẳng cắt miền trong của tam giác theo một đoạn có hai đầu trên biên",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chứng minh hệ thức Menelaus trong cấu hình",
+        "explanation": "Từ $A,B,C$ hạ các đường vuông góc tới $DEF$, có độ dài lần lượt $h_A,h_B,h_C$. Các cặp tam giác vuông chung góc tại $D,E,F$ đồng dạng, cho $AD/DB=h_A/h_B$, $BE/EC=h_B/h_C$ và $CF/FA=h_C/h_A$.",
+        "math": "\\frac{AD}{DB}=\\frac{h_A}{h_B},\\quad\\frac{BE}{EC}=\\frac{h_B}{h_C},\\quad\\frac{CF}{FA}=\\frac{h_C}{h_A}",
+        "reason": "Đồng dạng các tam giác vuông có một góc nhọn chung",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Nhân ba tỉ số và thay số",
+        "explanation": "Nhân ba đẳng thức, các đường cao triệt tiêu, được tích bằng $1$. Thay hai tỉ số đã biết.",
+        "math": "2\\cdot3\\cdot\\frac{CF}{FA}=1\\Rightarrow\\frac{AF}{FC}=6",
+        "reason": "Định lí Menelaus vừa được chứng minh; các độ dài đều dương",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Dùng độ lớn tỉ số để chọn đúng phía",
+        "explanation": "Vì $AF/FC=6>1$, nếu $F$ nằm trên tia đối của $AC$ qua $A$ thì $FC=FA+AC>FA$, trái với tỉ số lớn hơn $1$. Do đó $F$ nằm trên phần kéo dài của $AC$ qua $C$.",
+        "math": "F\\text{ nằm trên phần kéo dài }AC\\text{ qua C}",
+        "reason": "Cộng đoạn thẳng trên một tia và so sánh độ dài",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $F$ nằm ngoài đoạn $AC$ về phía $C$ và $\\dfrac{AF}{FC}=6$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập bằng tỉ số diện tích, tọa độ chính xác hoặc phân hoạch sáu tam giác ở tâm",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "certified-geometry-family",
+  "logs": []
+}

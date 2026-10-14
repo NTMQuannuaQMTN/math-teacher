@@ -1,0 +1,17 @@
+{
+  "phase": "algebra-phase-final",
+  "questionsExecuted": 22,
+  "ready": 22,
+  "independentlyReviewed": 22,
+  "mathematicalPasses": 22,
+  "latencyMs": {
+    "p50": 42.277084000001196,
+    "p95": 141.64441699999952,
+    "max": 148.19437499999913
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 22,
+  "rubricMeanForReviewedOnly": 95.5909090909091,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured"
+}

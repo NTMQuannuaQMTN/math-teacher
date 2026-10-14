@@ -1,0 +1,145 @@
+{
+  "specification": "/Users/qnrj/.codex/attachments/5bc19ca2-17ff-45e0-a1bf-ec76f6a21b11/Pasted text.txt",
+  "startedAt": "2026-10-10T11:31:55Z",
+  "budgetSeconds": 14400,
+  "activeSeconds": 5956.483676000001,
+  "idleSeconds": 60634.776163999995,
+  "lastCheckpointAt": "2026-10-11T06:01:46.259840+00:00",
+  "currentPhase": "initial-run-review",
+  "phases": [
+    {
+      "id": "phase-0-audit",
+      "startedAt": "2026-10-10T11:31:55Z",
+      "endedAt": "2026-10-10T11:32:32.455433+00:00",
+      "activeSecondsEstimate": 37.455433
+    },
+    {
+      "id": "algebra",
+      "startedAt": "2026-10-10T12:31:27Z",
+      "endedAt": "2026-10-10T14:30:01.423276+00:00",
+      "activeSecondsEstimate": 2737.4232760000004
+    },
+    {
+      "id": "geometry",
+      "startedAt": "2026-10-10T14:30:01.423276+00:00",
+      "endedAt": "2026-10-10T14:37:06Z",
+      "activeSecondsEstimate": 197.93551300000001
+    },
+    {
+      "id": "number_theory",
+      "startedAt": "2026-10-10T14:37:06Z",
+      "endedAt": "2026-10-10T14:40:52.401548+00:00",
+      "activeSecondsEstimate": 226.401548
+    },
+    {
+      "id": "combinatorics-integration",
+      "startedAt": "2026-10-10T14:40:52.401548+00:00",
+      "endedAt": "2026-10-11T06:01:46.259840+00:00",
+      "activeSecondsEstimate": 2757.267906000001
+    }
+  ],
+  "baseline": {
+    "workerTestsPassed": 414,
+    "workerTestFilesPassed": 22,
+    "testDurationSeconds": 5.34,
+    "actualAlgebraQuestions": 3
+  },
+  "configurationFrozen": false,
+  "heldOutEvaluated": true,
+  "next": [
+    "Read user feedback in reports before starting another iteration; retain unused active budget."
+  ],
+  "notes": [
+    "Timing starts at first measured UTC timestamp; prior initial reading time is excluded.",
+    "Do not count idle waiting; close active intervals at interruptions.",
+    "Existing reports preserved pending fresh evidence.",
+    "Second idle boundary is estimated from tool chronology; do not describe active duration as subsecond-precise.",
+    "Geometry and Number Theory are bounded workloads so far, not one-hour claims. Preserve unused phase budget for validation and integration."
+  ],
+  "idleIntervals": [
+    {
+      "startedAt": "2026-10-10T11:32:32.455433+00:00",
+      "endedAt": "2026-10-10T12:31:27Z",
+      "reason": "Approval/continuity gap; excluded conservatively because continuous active work cannot be established."
+    },
+    {
+      "startedAt": "2026-10-10T12:32:50Z",
+      "endedAt": "2026-10-10T13:20:49Z",
+      "reason": "Second network approval gap; conservative boundary estimate, not charged as engineering."
+    },
+    {
+      "startedAt": "2026-10-10T14:01:23Z",
+      "endedAt": "2026-10-10T14:26:21Z",
+      "reason": "Free validation network approval; conservatively exclude surrounding unmeasured interval."
+    },
+    {
+      "startedAt": "2026-10-10T14:30:01.423276+00:00",
+      "endedAt": "2026-10-10T14:33:48.064487+00:00",
+      "reason": "Network approval wait; conservatively excluded in full."
+    },
+    {
+      "startedAt": "2026-10-10T14:46:18.936489+00:00",
+      "endedAt": "2026-10-10T15:11:04.681086+00:00",
+      "reason": "Local server permission wait; excluded conservatively."
+    },
+    {
+      "startedAt": "2026-10-10T15:11:04.681086+00:00",
+      "endedAt": "2026-10-10T15:30:54Z",
+      "reason": "HTTP harness approval/continuity gap, excluded conservatively."
+    },
+    {
+      "startedAt": "2026-10-10T15:31:35.527415+00:00",
+      "endedAt": "2026-10-11T00:40:20Z",
+      "reason": "Extended approval/continuity interruption; excluded conservatively in full."
+    },
+    {
+      "startedAt": "2026-10-11T00:42:35Z",
+      "endedAt": "2026-10-11T01:15:50Z",
+      "reason": "Second HTTP validation approval; boundary conservatively estimated from check chronology."
+    },
+    {
+      "startedAt": "2026-10-11T01:18:37.682314+00:00",
+      "endedAt": "2026-10-11T01:31:14.954056+00:00",
+      "reason": "Final validation network approval wait, excluded conservatively."
+    },
+    {
+      "startedAt": "2026-10-11T01:38:31.060521+00:00",
+      "endedAt": "2026-10-11T03:34:44.851653+00:00",
+      "reason": "Minimal reasoning comparison approval wait, excluded conservatively."
+    },
+    {
+      "startedAt": "2026-10-11T03:39:50.858525+00:00",
+      "endedAt": "2026-10-11T04:00:10.590101+00:00",
+      "reason": "Frozen evaluation approval/continuity wait; conservatively excluded in full."
+    },
+    {
+      "startedAt": "2026-10-11T04:22:35Z",
+      "endedAt": "2026-10-11T06:01:46.259840+00:00",
+      "reason": "Final tool/session-cleanup continuity gap; exclude the entire unmeasured interval conservatively, including surrounding short operations."
+    }
+  ],
+  "activeIntervalStartedAt": "2026-10-10T12:31:27Z",
+  "remainingSeconds": 8443.516324,
+  "regressions": {
+    "passed": 471,
+    "files": 30,
+    "mobileTestsPassed": 2,
+    "sharedTypecheck": "pass",
+    "workerTypecheck": "pass",
+    "mobileTypecheck": "pass",
+    "mobileLint": "pass"
+  },
+  "frozenConfiguration": "tools/specialist-training/frozen-configuration.json",
+  "heldOutExecuted": 16,
+  "frozenEvaluationFinishedAt": "2026-10-11T04:11:40.164597+00:00",
+  "finalIntegrationNotes": [
+    "Frozen held-out and development batches finished; no held-out rerun or model/prompt changes follow.",
+    "Independent schema audit:10 of363 matched finite factor-family examples exceeded typed math limits; fix after frozen evaluation with regression evidence.",
+    "Restore not_checkable presentation warning omitted with removal of Final Answer card.",
+    "Reject unproved positional cases in undirected intersection-angle chases; independent development counterexample and renamed proof regression.",
+    "Cap presentation-chain search at100ms per attempt and1.5s across a lesson; retain explicit-equation fallback.",
+    "Final checks:471 Worker tests30 files,2 mobile tests,all typechecks and lint pass."
+  ],
+  "initialRunFinishedAt": "2026-10-11T06:01:46.259840+00:00",
+  "evaluationConfigurationWasFrozen": true
+}

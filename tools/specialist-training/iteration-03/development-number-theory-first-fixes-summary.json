@@ -1,0 +1,21 @@
+{
+  "phase": "development-number-theory-first-fixes",
+  "questionsExecuted": 12,
+  "ready": 12,
+  "independentlyReviewed": 12,
+  "correctConclusionCount": 12,
+  "mathematicalPasses": 12,
+  "qualityPasses": 12,
+  "diagnosticVariantCount": 0,
+  "latencyMs": {
+    "p50": 25.054791999999907,
+    "p95": 75.4476249999999,
+    "max": 75.4476249999999
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 12,
+  "rubricMeanForReviewedOnly": 97.83333333333333,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": false
+}

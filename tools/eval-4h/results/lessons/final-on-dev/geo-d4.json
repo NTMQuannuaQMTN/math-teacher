@@ -1,0 +1,135 @@
+{
+  "input": "Cho đường tròn $(O;3\\text{ cm})$ và điểm $M$ với $OM=5$ cm. Kẻ tiếp tuyến $MA$ với đường tròn ($A$ là tiếp điểm). Tính $MA$.",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn $(O;3\\text{ cm})$ và điểm $M$ với $OM=5$ cm. Kẻ tiếp tuyến $MA$ với đường tròn ($A$ là tiếp điểm). Tính $MA$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Dây và tiếp tuyến của đường tròn",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Dây và tiếp tuyến của đường tròn"
+      ],
+      "techniques": [],
+      "givens": [
+        "$R=3$",
+        "$OM=5$"
+      ],
+      "unknowns": [
+        "$MA$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Đưa về tam giác vuông có cạnh huyền là bán kính (hoặc đoạn nối tâm), rồi dùng định lí Pythagore.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Góc nào giữa tiếp tuyến và bán kính là góc vuông?",
+        "cue": "Tính chất tiếp tuyến: vuông góc với bán kính tại tiếp điểm",
+        "explanation": "$MA$ là tiếp tuyến tại $A$ nên $MA\\perp OA$: tam giác $OAM$ vuông tại $A$, với $OA=3$ (bán kính) và cạnh huyền $OM=5$.",
+        "math": "MA\\perp OA",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Cạnh huyền của tam giác vuông là cạnh nào?",
+        "cue": "Định lí Pythagore",
+        "explanation": "Áp dụng định lí Pythagore:",
+        "math": "MA^2=OM^2-OA^2=25-9=16\\ \\Rightarrow\\ MA=4\\text{ cm}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đáp số?",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy $MA=4\\text{ cm}$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tiếp tuyến vuông góc với bán kính",
+        "explanation": "$MA$ là tiếp tuyến tại $A$ nên $MA\\perp OA$: tam giác $OAM$ vuông tại $A$, với $OA=3$ (bán kính) và cạnh huyền $OM=5$.",
+        "math": "MA\\perp OA",
+        "reason": "Tính chất tiếp tuyến: vuông góc với bán kính tại tiếp điểm",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Tính MA",
+        "explanation": "Áp dụng định lí Pythagore:",
+        "math": "MA^2=OM^2-OA^2=25-9=16\\ \\Rightarrow\\ MA=4\\text{ cm}",
+        "reason": "Định lí Pythagore",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy $MA=4\\text{ cm}$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $MA=4\\text{ cm}$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Dựng lại tam giác vuông bằng số và kiểm tra cạnh huyền",
+        "passed": true
+      }
+    ],
+    "figureIssue": "figure_missing",
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 3,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-tangent-length",
+  "logs": [
+    "lesson by the routine solver (tangent-length); no model call"
+  ]
+}

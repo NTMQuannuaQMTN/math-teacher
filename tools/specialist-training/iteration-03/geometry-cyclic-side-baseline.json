@@ -1,0 +1,43 @@
+{
+  "capturedAt": "2026-10-11T19:43:23Z",
+  "actualVerifierResult": "accepted cyclic ABCD from undirected angle ACB=ADB using same-side positions in one drawing",
+  "drawing": {
+    "A": [
+      -1,
+      0
+    ],
+    "B": [
+      1,
+      0
+    ],
+    "C": [
+      0,
+      2
+    ],
+    "D": [
+      1,
+      1.5
+    ]
+  },
+  "counterexample": {
+    "A": [
+      -1,
+      0
+    ],
+    "B": [
+      1,
+      0
+    ],
+    "C": [
+      0,
+      2
+    ],
+    "D": [
+      0,
+      -2
+    ]
+  },
+  "independentDerivation": "ACB=ADB=2 arctan(1/2), but circle ABC has center (0,3/4), radius5/4, whereas distance of D from center is11/4. The same-side prerequisite was not stated or proved.",
+  "scope": "actual internal verifier, not an HTTP question",
+  "severity": "material universal-proof failure"
+}

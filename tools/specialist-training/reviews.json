@@ -1,0 +1,690 @@
+{
+  "baseline-network/alg-dev-quadratic": {
+    "correctness": "Fail",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      20,
+      20,
+      8,
+      10,
+      5,
+      3
+    ],
+    "verification": "Exact expansion: (x-3)(x-4)=x²-7x+12, so the roots are exactly 3 and 4. Substitution gives zero for both. However, the actual first hint uses (x+a)(x+b) with a+b=7 instead of -7; this is a material teaching error.",
+    "failure": "Final roots are right, but the first hint has the wrong coefficient sign. Machine substitution alone wrongly yielded verified. Added general coefficient comparison for factorisation hints, including numeric variants. Analysis topic also incorrectly says geometry; no code claims that model topic is authoritative."
+  },
+  "baseline-network/alg-dev-radical": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      12,
+      9,
+      6,
+      5
+    ],
+    "verification": "The equation forces x≥0. Squaring is equivalent under that condition and gives (x-2)(x+1)=0. Only 2 is nonnegative, and √(2+2)=2. This proves existence and completeness.",
+    "failure": "The reason mentions a difference-of-squares identity alongside the actual sum/product factorisation; the identity is not directly the factorisation used. Several display formulas were downgraded to plain text by the actual renderer repair."
+  },
+  "baseline-network/alg-dev-rational": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      8,
+      10,
+      5,
+      3
+    ],
+    "verification": "For x≠1 the left side equals x+1. Equality to 2 requires x=1, excluded by the original denominator. Hence there are no solutions. This is an exact independent algebraic argument.",
+    "failure": "The oracle emitted x=1 from floating-point convergence near a removable singularity and rejected the mathematically correct answer. Fixed rejection of candidates whose recognised value is undefined in the ORIGINAL expression. Actual prose also leaked the Hungarian word külön; language checks now detect unsupported Latin diacritics."
+  },
+  "validation/alg-val-system": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      5,
+      4
+    ],
+    "verification": "Substituting y=7-x yields x²-7x+10=(x-2)(x-5)=0. Both ordered pairs (2,5) and (5,2) satisfy sum 7 and product 10, and the factorisation exhausts x. Verification is independent of the application checker.",
+    "failure": "The interpretation note is cut off mid-sentence; many mathematical expressions in prose lack delimiters. This validation preceded the later deadline and factor-hint changes and is not a frozen final evaluation."
+  },
+  "validation/alg-val-inequality": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      8,
+      10,
+      7,
+      3
+    ],
+    "verification": "Independent identity: 36-4ab=(a-b)²≥0 since a+b=6. Thus ab≤9, with equality iff a=b=3. The actual AM-GM proof is also mathematically valid.",
+    "failure": "The only hint incorrectly says arithmetic mean versus arithmetic mean instead of geometric mean and does not guide all steps. Two substitution examples cannot verify the universal inequality; changed mixed proof/equality statements to at most partial deterministic verification. English acronym AM-GM remains a terminology issue."
+  },
+  "baseline/geo-dev-angle": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      6,
+      3
+    ],
+    "verification": "AB=AC gives B=C. The angle sum gives 36+2B=180, hence B=C=72 degrees. The actual proof is complete. The constructed coordinates also measure these angles, but the numerical drawing is not the proof.",
+    "failure": "Lowercase known survived language repair, and escaped degree notation was malformed in an explanation. One-letter angle symbols were not measurable by the checker; now expanded only in a three-vertex figure. No geometry rendering or dragging was rewritten."
+  },
+  "baseline/geo-dev-proof": {
+    "correctness": "Pass",
+    "completeness": "Fail",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      30,
+      5,
+      5,
+      8,
+      8,
+      5
+    ],
+    "verification": "The actual planner proves only MN parallel BC and honestly declares the half-length claim unsolved. Independent full proof: M,N are midpoints of two sides, so the midpoint theorem gives both parallelism and MN=BC/2. The emitted similarity argument skips the corresponding-angle deduction.",
+    "failure": "Fractional segment relation was not parsed; MIDLINE was registered but not implemented in search. Added general fraction parsing, midpoint-theorem search, independent theorem-precondition verification, and explicit Vietnamese explanation. Corrupted 1/3 conclusion is rejected."
+  },
+  "baseline/nt-dev-divisibility": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      7,
+      4
+    ],
+    "verification": "Among three consecutive integers one is even and one is divisible by 3. Their product is therefore divisible by coprime 2 and 3, hence by 6. This proves the claim for every integer, including negatives. Six substitutions alone are not the universal proof.",
+    "failure": "Displayed modulo and lcm are foreign terminology. Added classroom terminology cleanup; numerical checks retain partial status."
+  },
+  "baseline/nt-dev-prime": {
+    "correctness": "Pass",
+    "completeness": "Fail",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      10,
+      12,
+      10,
+      8,
+      3
+    ],
+    "verification": "p=2 fails since p+2=4. p=3 gives primes 3,5,7. For prime p>3, p has remainder 1 or 2 modulo 3, so p+2 or p+4 is a multiple of 3 greater than 3. No other prime works. The actual answer does not explicitly test p=2, but its final small-case conclusion requires this additional check; completeness is therefore downgraded below.",
+    "failure": "The actual solution splits into p=3 and p>3 but omits prime p=2. Its candidate is right but its proof is incomplete. Verification uses prose instead of arithmetic and remains not_checkable."
+  },
+  "baseline/comb-dev-digits": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      13,
+      10,
+      8,
+      4
+    ],
+    "verification": "Independent enumeration of ordered triples of distinct digits from {0,1,2,3,4}, with the first nonzero, yields 4×4×3=48. Each triple gives exactly one three-digit number; no repetition or ordering ambiguity.",
+    "failure": "The answer is correct. Routing had omitted the Combinatorics profile for this wording; added counting cues and a cross-specialist routing regression."
+  },
+  "baseline/comb-dev-selection": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      10,
+      8,
+      9,
+      3
+    ],
+    "verification": "Independent enumeration of 3-element subsets of 9 labelled people gives 84 subsets; 10 use only the 5 boys. Hence 74 contain a girl. The two classes are disjoint and exhaustive.",
+    "failure": "Correct count, but the solution invokes a combination formula without explaining division by the number of orders. Checker could not parse C(9,3). Added bounded arithmetic and exhaustive independent subset tests; prompt must explain overcounting correction."
+  },
+  "baseline/comb-dev-pigeonhole": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      8,
+      10,
+      5,
+      2
+    ],
+    "verification": "There are exactly five residue classes modulo 5 and six input integers. Two must share a class; writing them as 5q+r and 5s+r makes their difference 5(q-s). This is a proof for all inputs; two selected numerical examples do not prove it.",
+    "failure": "Actual prose calls the principle phong bụ and leaks congruence. Added natural terminology cleanup. Only one hint guides a three-step proof. The shared routing did not identify the pigeonhole wording as combinatorics; regression now does."
+  },
+  "baseline/comb-dev-parity": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      9,
+      4
+    ],
+    "verification": "Every move preserves S because S-a-b+(a+b)=S. The starting total is 21, so any final singleton must be 21, never 20. Independent enumeration of all pair-merge states confirms the unique final value 21.",
+    "failure": "The question exercises a sum invariant rather than parity. Machine checking the initial sum is not checking the invariant proof, even though the independently reviewed explanation is valid."
+  },
+  "application-validation/alg-val-inequality": {
+    "verification": "The identity (a-b)²=(a+b)²-4ab=36-4ab≥0 proves ab≤9. Equality requires a=b and sum 6, hence a=b=3. The actual proof establishes both directions.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      5,
+      4
+    ],
+    "failure": "Mathematics valid; actual final-step explanation swallowed Vietnamese prose inside dollar delimiters, and one empty hint is unhelpful. Added structural delimiter checking and readable fallback."
+  },
+  "application-validation/geo-val-tangents": {
+    "verification": "A tangent is perpendicular to the radius at its contact: ∠PAO=∠PBO=90°. These are opposite angles of quadrilateral PAOB; their sum is 180°, so the four distinct points are concyclic. Every premise follows from the two given tangencies.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      5
+    ],
+    "failure": "No mathematical failure. Typed tangent points, construction highlighting and draggable external point are preserved. Machine status remains partial, despite this independently valid proof."
+  },
+  "application-validation/nt-val-gcd": {
+    "verification": "84=2²·3·7 and 126=2·3²·7. Minimum common prime exponents give gcd42, maximum exponents give lcm252. Independently, Euclid gives gcd(126,84)=gcd(84,42)=42, and 84·126/42=252.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      10,
+      3
+    ],
+    "failure": "The hints refer to step IDs that do not exactly match their intended conclusions. Two numerical checks confirm numbers, not the validity of arbitrary prime-factorisation arguments."
+  },
+  "application-validation/nt-val-mod": {
+    "verification": "For n=3k,3k+1,3k+2 the respective residues of n²+n+1 are 1,0,1. Integer residue classes partition all integers, including negatives. Therefore exactly n=3k+1 works.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      6,
+      4
+    ],
+    "failure": "Actual prose leaked modulo throughout hints, reasons and concepts. Added classroom terminology cleanup; expression is not deterministically checkable by existing schema."
+  },
+  "application-validation/comb-val-arrangements": {
+    "verification": "Collapsing adjacent An/Bình to one block is a bijection between admissible arrangements and a permutation of four distinct objects plus one of two internal orders. Thus 4!·2=48, independently enumerable over all 120 permutations.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      9,
+      10,
+      5,
+      3
+    ],
+    "failure": "Actual first hint contains Thai อยู่. Non-Latin script coverage added; this response fails Vietnamese quality despite correct counting."
+  },
+  "application-validation/comb-val-probability": {
+    "verification": "Label all five balls. There are 10 equiprobable unordered pairs. Three of the red pairs and the sole blue pair are favourable, so 4/10=2/5. Independent enumeration of all ten subsets gives four matching colours.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      9,
+      9,
+      5,
+      3
+    ],
+    "failure": "Actual constraint contains French remettre and cue contains favorable/total. Added safe contextual glossary. Formula-only combination explanation still does not explicitly explain the two orders per pair."
+  },
+  "application-validation-fast/alg-val-system": {
+    "verification": "y=7-x converts xy=10 equivalently to (x-2)(x-5)=0. Both ordered pairs (2,5),(5,2) satisfy the original equations. This exhausts all real x, and y is uniquely determined for each.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      13,
+      10,
+      9,
+      4
+    ],
+    "failure": "Correct complete answer. Strategy calls substitution an auxiliary-variable method, a terminology imprecision. This interrupted batch is not a frozen evaluation."
+  },
+  "application-validation-fast/alg-val-inequality": {
+    "verification": "For a,b>0, AM-GM gives 3≥√ab and both sides are nonnegative, hence 9≥ab. Equality iff a=b=3. Squaring is justified in the actual step.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      9,
+      10,
+      6,
+      4
+    ],
+    "failure": "Mathematics valid, but model invents OCR corrections cocom/cocombinatorics absent from confirmed input and mislabels the analysis topic. Only one hint. These unsupported interpretation notes fail student explanation quality; no hidden held-out correction."
+  },
+  "application-validation-fast/geo-val-right": {
+    "verification": "Pythagoras gives BC²=9²+12²=225, so positive length BC=15. Two perpendicular legs are base and height, giving area9·12/2=54. Drawing A=(5.4,7.2), B=(0,0), C=(15,0) indeed gives AB9,AC12 and perpendicular legs.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      8,
+      9,
+      5,
+      3
+    ],
+    "failure": "Actual lesson repeatedly calls the hypotenuse a diagonal, and a math hint contains English vs. Correct numbers but terminology and leakage fail quality. The current glossary does not yet detect every Latin word; record unresolved rather than claim perfect hygiene."
+  },
+  "application-validation-fast/geo-val-tangents": {
+    "verification": "A tangent is perpendicular to the radius at its contact: ∠PAO=∠PBO=90°. These are opposite angles of quadrilateral PAOB; their sum is 180°, so the four distinct points are concyclic. Every premise follows from the two given tangencies.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      5
+    ],
+    "failure": "No mathematical failure. Typed tangent points, construction highlighting and draggable external point are preserved. Machine status remains partial, despite this independently valid proof."
+  },
+  "application-validation-final/geo-val-tangents": {
+    "verification": "A tangent is perpendicular to the radius at its contact: ∠PAO=∠PBO=90°. These are opposite angles of quadrilateral PAOB; their sum is 180°, so the four distinct points are concyclic. Every premise follows from the two given tangencies.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      5
+    ],
+    "failure": "No mathematical failure. Typed tangent points, construction highlighting and draggable external point are preserved. Machine status remains partial, despite this independently valid proof."
+  },
+  "application-validation-final/nt-val-gcd": {
+    "verification": "Independent Euclid: gcd(126,84)=gcd(84,42)=42. Product identity gives lcm=84·126/42=252. The actual prime decompositions 2²·3·7 and2·3²·7 and min/max exponents are exact.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      13,
+      10,
+      10,
+      3
+    ],
+    "failure": "Mathematics valid; number-theory analysis is labelled system and the note needlessly asks to confirm positivity. No mathematical defect; numerical answer checks do not establish every proof step."
+  },
+  "application-validation-final/nt-val-mod": {
+    "verification": "The exhaustive residues n=3k,3k+1,3k+2 give 1,0,1 for n²+n+1 modulo3. This partitions all integers; exactly n=3k+1 works for every integer k, including negatives.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      8,
+      10,
+      10,
+      4
+    ],
+    "failure": "Correct and complete solution, but interpretation note falsely says integer domain is unspecified and is truncated, contradicting the final step. Metadata consistency needs a general rejection check."
+  },
+  "application-validation-final/comb-val-arrangements": {
+    "verification": "Under the natural interpretation that An/Bình are two of the five friends, collapsing the adjacent pair is a bijection to four objects with two internal orders, giving48. Enumeration of all120 permutations confirms48. The actual hint also discusses the alternative seven-person interpretation.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      9,
+      10,
+      9,
+      3
+    ],
+    "failure": "Actual note invents an outside-the-five ambiguity and claims clarification is necessary while analysis remains solvable. Foreign Thai is absent in this run; the earlier leakage fix worked on this sample."
+  },
+  "application-validation-final/comb-val-probability": {
+    "verification": "Label all five balls. There are 10 equiprobable unordered pairs. Three of the red pairs and the sole blue pair are favourable, so 4/10=2/5. Independent enumeration of all ten subsets gives four matching colours.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      8,
+      9,
+      10,
+      3
+    ],
+    "failure": "French/English leakage from the first HTTP batch is absent now. However, the note falsely calls simultaneous drawing ambiguous and is truncated; combination formula still lacks an explicit explanation of division by two orders."
+  },
+  "application-validation-final/alg-val-system": {
+    "verification": "Exact substitution y=7-x reduces the system to (x-2)(x-5)=0. The two ordered pairs (2,5),(5,2) satisfy both equations. The step sequence exhausts x and recovers unique y in each case.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      12,
+      10,
+      9,
+      4
+    ],
+    "failure": "Valid complete mathematics and render audit passes. The note invents a need to clarify the real domain despite usual Grade9 convention, and strategy calls substitution auxiliary-variable work; minor terminology concern."
+  },
+  "application-validation-final/alg-val-inequality": {
+    "verification": "AM-GM for positive a,b gives 3≥√ab. Nonnegative sides permit squaring, so ab≤9; equality iff a=b=3. The actual steps justify this equivalence.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      7,
+      10,
+      9,
+      4
+    ],
+    "failure": "Actual note claims the direction of the inequality is unclear although the confirmed text explicitly contains ab≤9. Analysis labels an algebra inequality combinatorics. These false interpretation notes fail explanation quality."
+  },
+  "application-validation-final/geo-val-right": {
+    "verification": "Pythagoras gives BC=√(81+144)=15 and area9·12/2=54. Positivity selects the positive square root. These are valid conclusions from perpendicular legs; no diagram-based proof is needed.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      6,
+      10,
+      8,
+      3
+    ],
+    "failure": "Analysis invents counting and divisibility concepts and claims the topic needs clarification; a hint and result call legs angles. Step verification method fields retain English internal labels. Correct numbers do not make the lesson coherent."
+  },
+  "application-validation-final/alg-val-surd": {
+    "verification": "(2±√3)²=7±4√3 and 2>√3 justify principal square roots. Thus the specific final result2√3 is correct. But the actual second hint asserts sqrt(7-4√3)=a-b√3 merely from a,b>0 and matching squares. The alternative positive pair a=√3,b=2/√3 matches those squares but a-b√3=√3-2<0, so the proposed general hint is invalid without a≥b√3. The worked final step does assert the specific positive sign.",
+    "correctness": "Fail",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      25,
+      20,
+      8,
+      9,
+      9,
+      3
+    ],
+    "failure": "Correct final value with an unsafe principal-square-root hint. Also patchVietnamese mistakenly translated the valid Vietnamese word so in so sánh into do đó. Add contextual glossary regression; retain square-root sign error as a prompt/verifier limitation."
+  },
+  "application-validation-final/nt-val-divisors": {
+    "verification": "72=2³·3². Every positive divisor is2ᵃ3ᵇ with0≤a≤3,0≤b≤2. It is a square iff both exponents are even, yielding exactly1,4,9,36. Independent enumeration of every divisor1..72 confirms this list.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      8,
+      10,
+      5,
+      3
+    ],
+    "failure": "Correct exhaustive mathematics. The interpretation note invents an OCR word system absent from the question; the final-step list is concatenated without line breaks and final conclusion appears only in hidden metadata, not naturally as a sentence in the step."
+  },
+  "application-validation-final/nt-val-power": {
+    "verification": "Exact factorisation n⁵-n=n(n-1)(n+1)(n²+1). The complete residue classes0,1,4 force divisibility via n,n-1,n+1; classes2,3 force n²+1≡0 mod5. Thus all integers work, including negatives. Five exhaustive residues independently confirm the proof.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Fail",
+    "score": [
+      40,
+      20,
+      10,
+      10,
+      5,
+      3
+    ],
+    "failure": "Actual hint leaks French différence and final reason English synthesis. A hint retains a stray dollar after renderer fallback. Contextual glossary and a post-fallback render guard added before freeze."
+  },
+  "application-validation-final/comb-val-inclusion": {
+    "verification": "Enumeration of all integers1..100 gives67 meeting the predicate. Inclusion-exclusion gives50+33-16=67. But the actual math fields assert100:3=33 and100:6=16 instead of floor(100/3)=33 and floor(100/6)=16 or quotients with remainders. These exact equalities are false, despite correct surrounding floor explanation.",
+    "correctness": "Fail",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      25,
+      20,
+      10,
+      10,
+      8,
+      3
+    ],
+    "failure": "Correct count with false intermediate division equalities. The machine verifier could not check the prose-labelled assignment and labelled not_checkable. Explicit quotient/remainder/floor checking remains an unresolved verifier gap."
+  },
+  "application-validation-final/comb-val-handshake": {
+    "verification": "Each of six people contributes two incidences, giving12. Each unordered handshake has exactly two endpoints, so12=2E andE=6. This is exhaustive double counting. A six-cycle demonstrates that the stated configuration is feasible.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      10,
+      10,
+      10,
+      3
+    ],
+    "failure": "The counting proof is complete. The interpretation note needlessly claims a concrete graph structure is necessary and ends truncated. Combinatorics routing missed handshake wording; regression revealed it and a general cue is added before freeze."
+  },
+  "application-validation-minimal/alg-val-inequality": {
+    "verification": "AM-GM applies because a,b>0. Its left side equals3; nonnegative sides allow squaring, hence ab≤9. Equality holds iff a=b=3. The actual steps and four hints justify each deduction.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      4
+    ],
+    "failure": "No material failure. Minimal reasoning removes the spurious interpretation note present in the none run for this sample; the three-question comparison is too small to establish universal improvement."
+  },
+  "application-frozen-held_out/comb-ho-dice": {
+    "verification": "Thirty-six ordered pairs of face values are equiprobable. Exactly(1,6),(2,5),(3,4),(4,3),(5,2),(6,1) sum7. Probability6/36=1/6; order matters. The actual lesson uses the same ordered outcome model, lists all six favourable pairs, gives36 total and concludes1/6 in the final worked step. Independent enumeration agrees; no LLM self-verification is relied on.",
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      4
+    ],
+    "failure": "No material failure. Numerical self-check6/36=1/6 checks arithmetic only, not the equiprobable outcome model; independent review supplied that check. The frozen held-out set has just one returned lesson, so this success cannot hide15 controlled failures."
+  },
+  "application-frozen-development/geo-dev-proof": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      11,
+      10,
+      10,
+      4
+    ],
+    "verification": "For arbitrary coordinates A,B,C, M=(A+B)/2 and N=(A+C)/2 imply N−M=(C−B)/2, so both parallelism and half-length are universal. The actual worked steps also state the two midpoint givens and apply the Grade9 midpoint theorem. Both requested claims are present.",
+    "failure": "Hints only restate the target and theorem rather than showing the midpoint deduction; worked steps are complete. No mathematical substitution was made in the recorded answer."
+  },
+  "application-frozen-development/nt-dev-equation": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      4
+    ],
+    "verification": "Exact expansion gives (x−3)(y−2)=13. All signed divisors of13 are −13,−1,1,13, yielding exactly (−10,1),(2,−11),(4,15),(16,3). Substitution in xy−2x−3y gives7 for all four. The integer change of variables is bijective and 13≠0, proving completeness.",
+    "failure": "No material mathematical failure observed. Deterministic schema guard subsequently added for larger factor tables after a separate family audit; this recorded answer is unchanged."
+  },
+  "application-frozen-development/nt-dev-square": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      4
+    ],
+    "verification": "Every integer, including negative integers, is even or odd. Its square is0 or1 modulo4. Adding2 gives2 or3, neither a square residue. Thus no integer n exists, with no bounded search assumption.",
+    "failure": "No material failure observed in this answer; the rule supports only constants congruent to2 modulo4."
+  },
+  "application-frozen-development/comb-dev-digits": {
+    "correctness": "Pass",
+    "completeness": "Pass",
+    "explanation": "Pass",
+    "formatting": "Pass",
+    "score": [
+      40,
+      20,
+      14,
+      10,
+      10,
+      4
+    ],
+    "verification": "Independent enumeration of all ordered triples of distinct digits from0..4 with first digit nonzero gives48. The actual argument selects4 first digits,4 remaining second digits including0, and3 third digits. Every valid three-digit number corresponds to exactly one such triple.",
+    "failure": "Some phrasing is awkward (còn bao gồm bao nhiêu), but understandable Vietnamese with accents. No material counting or completeness failure observed."
+  },
+  "application-frozen-development/ptnk-2025-chuyen-4a": {
+    "correctness": "Fail",
+    "completeness": "Fail",
+    "explanation": "Fail",
+    "formatting": "Pass",
+    "score": [
+      20,
+      5,
+      8,
+      8,
+      9,
+      1
+    ],
+    "verification": "Independent admissible counterexample on the unit circle: polar angles A=0°, B=300°, C=140°, D=70°. Triangle angles are80°,70°,30° (acute and ordered), D is on minor arc AC, CD=1.14715>AB=1. E on line AB has parameter−0.106398 (outside beyond A), F on AC has parameter0.627427. Then angle AED=110° but AFD=70° and EBD=35°. The actual first equality AED=EBD+EDB is false in this configuration; the required concyclicity uses supplementary angles. Local perturbations of one drawing do not prove point order. Full coordinates are archived in geometry-configuration-counterexample.json.",
+    "failure": "Critical incorrect universal proof: point order was inferred from the illustration, despite the stated constraints allowing another case. Frozen output and score remain unchanged. Final integration conservatively rejects undirected angle chases involving unrestricted line intersections until order or all cases are proved; no held-out tuning or reevaluation followed."
+  }
+}

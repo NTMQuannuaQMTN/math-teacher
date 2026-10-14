@@ -1,0 +1,21 @@
+{
+  "phase": "validation-algebra-exam-variants",
+  "questionsExecuted": 3,
+  "ready": 3,
+  "independentlyReviewed": 3,
+  "correctConclusionCount": 3,
+  "mathematicalPasses": 3,
+  "qualityPasses": 3,
+  "diagnosticVariantCount": 3,
+  "latencyMs": {
+    "p50": 49.38483399999973,
+    "p95": 66.1680419999999,
+    "max": 66.1680419999999
+  },
+  "responsesOver30Seconds": 0,
+  "rubricScored": 3,
+  "rubricMeanForReviewedOnly": 95.0,
+  "heldOut": false,
+  "humanSatisfaction": "Not measured",
+  "standaloneTexCompilationPassed": true
+}

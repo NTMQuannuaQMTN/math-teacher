@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Math Teacher",
+    "name": "Trợ lý Toán học",
     "slug": "math-teacher",
     "scheme": "mathteacher",
     "version": "0.2.0",
@@ -11,8 +11,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.mathteacher.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "Math Teacher uses the camera to photograph the maths problem you want to scan.",
-        "NSPhotoLibraryUsageDescription": "Math Teacher lets you choose a photo of a maths problem from your library."
+        "NSCameraUsageDescription": "Ứng dụng cần dùng máy ảnh để chụp đề bài toán bạn muốn giải.",
+        "NSPhotoLibraryUsageDescription": "Ứng dụng cho phép bạn chọn ảnh đề bài toán từ thư viện ảnh."
       }
     },
     "android": {
@@ -35,7 +35,7 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Math Teacher uses the camera to photograph the maths problem you want to scan.",
+          "cameraPermission": "Ứng dụng cần dùng máy ảnh để chụp đề bài toán bạn muốn giải.",
           "microphonePermission": false,
           "recordAudioAndroid": false
         }
@@ -43,7 +43,7 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Math Teacher lets you choose a photo of a maths problem from your library.",
+          "photosPermission": "Ứng dụng cho phép bạn chọn ảnh đề bài toán từ thư viện ảnh.",
           "cameraPermission": false,
           "microphonePermission": false
         }

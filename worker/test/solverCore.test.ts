@@ -187,10 +187,10 @@ function isoscelesLesson(overrides: Partial<ModelLesson> = {}): ModelLesson {
       statement: "Cho tam giác $ABC$ cân tại $A$ có $\\widehat{A} = 40^{\\circ}$. Tính $\\widehat{B}$.",
       language: "vi",
       topic: "geometry",
-      subtopic: "isosceles triangle angles",
+      subtopic: "Góc trong tam giác cân",
       gradeLevel: 7,
       withinCurriculum: true,
-      concepts: ["isosceles triangle", "triangle angle sum"],
+      concepts: ["Tam giác cân", "Tổng ba góc trong tam giác"],
       techniques: [],
       givens: ["$AB = AC$", "$\\widehat{A} = 40^{\\circ}$"],
       unknowns: ["$\\widehat{B}$"],
@@ -199,14 +199,14 @@ function isoscelesLesson(overrides: Partial<ModelLesson> = {}): ModelLesson {
       statusReason: null,
       interpretationNotes: [],
     },
-    strategy: "Use base angles and the angle sum.",
+    strategy: "Dùng góc ở đáy và tổng ba góc trong tam giác.",
     hints: [
-      { id: "h1", level: 1, question: "What kind of triangle is ABC?", cue: null, explanation: "Isosceles.", math: null, stepId: "s1", focus: ["AB", "AC"] },
-      { id: "h2", level: 2, question: "Base angles?", cue: null, explanation: "Equal.", math: null, stepId: "s2", focus: ["angle_B", "ACB"] },
+      { id: "h1", level: 1, question: "Tam giác ABC là tam giác gì?", cue: null, explanation: "Tam giác cân.", math: null, stepId: "s1", focus: ["AB", "AC"] },
+      { id: "h2", level: 2, question: "Hai góc ở đáy có quan hệ gì?", cue: null, explanation: "Hai góc bằng nhau.", math: null, stepId: "s2", focus: ["angle_B", "ACB"] },
     ],
     steps: [
-      { id: "s1", title: "Isosceles", explanation: "AB = AC", math: null, reason: null, uses: [], geometryActions: [{ action: "highlight", targets: ["seg_AB", "AC"] }] },
-      { id: "s2", title: "Angle sum", explanation: "…", math: "2\\widehat{B} + 40^{\\circ} = 180^{\\circ}", reason: null, uses: [], geometryActions: [{ action: "highlight", targets: ["ABC", "ghost"] }] },
+      { id: "s1", title: "Tam giác cân", explanation: "AB = AC", math: null, reason: null, uses: [], geometryActions: [{ action: "highlight", targets: ["seg_AB", "AC"] }] },
+      { id: "s2", title: "Tổng ba góc", explanation: "…", math: "2\\widehat{B} + 40^{\\circ} = 180^{\\circ}", reason: null, uses: [], geometryActions: [{ action: "highlight", targets: ["ABC", "ghost"] }] },
     ],
     finalAnswer: { text: "$\\widehat{B} = 70^{\\circ}$", math: null },
     figure: {
@@ -446,12 +446,12 @@ describe("language hygiene", () => {
     return lesson;
   };
 
-  it("drops stripped-Vietnamese list items and no-op notes without asking for a retry", () => {
+  it("preserves stripped-Vietnamese hypotheses for correction and drops only no-op notes", () => {
     const { lesson, feedback } = cleanLanguage(viLesson());
-    expect(lesson.analysis.givens).toEqual(["$AB = AC$"]);
-    expect(lesson.analysis.concepts).toEqual(["công thức Vi-ét"]);
+    expect(lesson.analysis.givens).toEqual(viLesson().analysis.givens);
+    expect(lesson.analysis.concepts).toEqual(["biet thuc", "công thức Vi-ét"]);
     expect(lesson.analysis.interpretationNotes).toEqual([]);
-    expect(feedback).toEqual([]);
+    expect(feedback.join(' ')).toContain('without diacritics');
   });
 
   it.each([

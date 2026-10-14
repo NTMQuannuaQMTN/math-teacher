@@ -1,3 +1,5 @@
+import {conclusionConsistencyFeedback} from './conclusionConsistency';
+import {numericDivisibilityFeedback} from './numericDivisibility';
 /**
  * Deterministic checks on an AI-generated lesson. No AI involved:
  *
@@ -15,12 +17,13 @@ import { checkClaims, statementGivens, statementParts } from "./claims";
 import { regularizeTriangle } from "./figureShape";
 import { gradeLevelFeedback, unsupportedFeedback } from "./gradeLevel";
 import { derivationSlips } from "./derivations";
+import { factorizationFeedback } from "./algebraAudit";
 import { adoptStatementFigure } from "./figureFromText";
 import { isKnownTechnique, problemDomains } from "./knowledgeBase";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
-import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, type Env } from "./expr";
+import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, normalizeExpression, type Env } from "./expr";
 import { dist, evaluateFigureCheck, resolveFigure, type ResolvedFigure } from "./geometry";
 import type { AnswerCheck, Figure, FigureCheck, ModelLesson, Verification } from "./solution";
 
@@ -372,7 +375,7 @@ export function restatesAnswer(check: AnswerCheck, lesson: ModelLesson): boolean
 const SAMPLE_POOL = [0.37, 1.73, 2.9, 4.41, 6.2, 9.7, -0.61, -2.3, -3.7, 13.1, 0.83, 5.55];
 
 function evalValue(src: string): number {
-  return evalExpression(src.replace(/,(\d)/g, ".$1"), {});
+  return evalExpression(normalizeExpression(src).replace(/,(\d)/g, ".$1"), {});
 }
 
 export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
@@ -388,7 +391,7 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
             const env: Env = {};
             for (const { variable, value } of set) env[variable.replace("_", "")] = evalValue(value);
             if (conditions.some((c) => evalCondition(c, env) !== true)) return { label, passed: false, detail: `a condition fails for ${JSON.stringify(env)}` };
-            const got = evalExpression(first.replace(/,(\d)/g, ".$1"), env);
+            const got = evalExpression(normalizeExpression(first).replace(/,(\d)/g, ".$1"), env);
             const want = evalValue(check.expected);
             if (!approxEqual(got, want, 1e-6)) return { label, passed: false, detail: `${got} vs ${want}` };
           }
@@ -796,6 +799,19 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
   const checks: Verification["checks"] = [];
   let answerLevelPassed = 0;
   let answerLevelFailed = 0;
+  const classified = problemDomains(problemText ?? lesson.analysis.statement);
+  const specific = lesson.analysis.topic;
+  if ((specific === "geometry" || specific === "number_theory" || specific === "combinatorics") && !classified.includes(specific)) {
+    const issue = "analysis topic conflicts with the confirmed question; use its actual mathematical subject, not a schema example";
+    feedback.push(issue);checks.push({label:issue,passed:false});answerLevelFailed++;
+  }
+  for (const note of lesson.analysis.interpretationNotes) {
+    const alleged = /(?:sửa|OCR lỗi)[^"“]{0,30}["“]([^"”]+)["”]/iu.exec(note)?.[1];
+    if (alleged && !(problemText ?? lesson.analysis.statement).toLocaleLowerCase().includes(alleged.toLocaleLowerCase())) {
+      const issue = "interpretation note claims to correct text absent from the confirmed question; do not invent OCR corrections";
+      feedback.push(issue);checks.push({label:issue,passed:false});answerLevelFailed++;
+    }
+  }
   let figureIssue: string | null = report.retryHints?.length ? "figure_missing" : null;
   /** Proof parts whose claim couldn't be measured on the figure (e.g. it uses a point the figure lacks). */
   const proofUncovered: string[] = [];
@@ -998,7 +1014,23 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
     );
   }
 
+  for (const issue of numericDivisibilityFeedback(lesson)) {
+    checks.push({label:"Khẳng định chia hết bằng số phải đúng trong cả gợi ý và lời giải",passed:false});
+    answerLevelFailed++;
+    feedback.push(issue);
+  }
+  for (const issue of conclusionConsistencyFeedback(lesson, problemText)) {
+    checks.push({label:"Kết luận và kết quả ở bước cuối phải thống nhất",passed:false});
+    answerLevelFailed++;
+    feedback.push(issue);
+  }
+
   // Arithmetic slips inside a step's derivation: wrong even when the final answer happens to be right.
+  for (const issue of factorizationFeedback(lesson, problemText)) {
+    checks.push({ label: issue.slice(0, 200), passed: false });
+    answerLevelFailed++;
+    feedback.push(issue);
+  }
   const slips = lesson.analysis.status === "solvable" ? derivationSlips(lesson) : [];
   for (const slip of slips) {
     checks.push({ label: `step ${slip.stepId}: derivation is consistent`, passed: false });
@@ -1026,7 +1058,7 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
   else status = "not_checkable";
   // Machine checks test claims and answers, never the argument itself: a problem that only asks for a proof is at
   // most "partial" (PTNK 2025 1a: a check of Δ at m = 0 must not label "Δ > 0 với mọi m" as verified).
-  if (status === "verified" && isProofOnly(lesson.analysis.statement)) status = "partial";
+  if (status === "verified" && /(?<!\p{L})(?:chứng minh|chứng tỏ|prove|show that)(?!\p{L})/iu.test(lesson.analysis.statement)) status = "partial";
 
   // Repairs can remove every point of a broken figure; an empty figure is not a valid lesson (the schema needs
   // ≥ 1 point), so drop it like any unusable figure — the text lesson is still served.
