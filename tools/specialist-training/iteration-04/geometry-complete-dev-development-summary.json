@@ -1,0 +1,13 @@
+{
+  "topic": "geometry",
+  "split": "development",
+  "stage": "complete-dev",
+  "n": 6,
+  "ready": 5,
+  "verified": 4,
+  "answerPasses": 5,
+  "qualityPasses": 5,
+  "controlledWithin30s": 6,
+  "meanMs": 1271.673402833333,
+  "maxMs": 1842.168833
+}

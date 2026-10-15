@@ -1,0 +1,13 @@
+{
+  "topic": "geometry",
+  "split": "development",
+  "stage": "post-dependency-fix",
+  "n": 6,
+  "ready": 4,
+  "verified": 3,
+  "answerPasses": 4,
+  "qualityPasses": 4,
+  "controlledWithin30s": 6,
+  "meanMs": 999.9461944999999,
+  "maxMs": 1151.831542
+}

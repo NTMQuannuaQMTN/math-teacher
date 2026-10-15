@@ -1,0 +1,13 @@
+{
+  "topic": "geometry",
+  "split": "development",
+  "stage": "post-circle-power",
+  "n": 6,
+  "ready": 3,
+  "verified": 2,
+  "answerPasses": 3,
+  "qualityPasses": 3,
+  "controlledWithin30s": 6,
+  "meanMs": 1024.2981181666667,
+  "maxMs": 1167.6112500000002
+}

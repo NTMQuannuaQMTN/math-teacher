@@ -14,8 +14,9 @@ export function circleBisectorCertificate(input:string):CircleBisectorCertificat
  const d=arc[1]!;
  if(new Set([a,b,c,d,e,f,o]).size!==7 || m[4]!==d!+b! || m[5]!==a!+b! || m[7]!==d!+c! || m[8]!==a!+c! || m[10]!.replace(/\s/g,'')!==[a,d,e,f].join(',') || m[11]!==o || m[12]!==o)return null;
  // Optional angle/chord restrictions are retained, not promoted to new goals or trusted prose.
- const prefix=m[3]!.trim().slice(0,arc.index).trim();
- if(prefix && prefix!==`có \\hat ${a}>\\hat ${b}>\\hat ${c}` && prefix!==`có \\widehat{${a}}>\\widehat{${b}}>\\widehat{${c}}`)return null;
+ const prefix=m[3]!.trim().slice(0,arc.index).trim()
+  .replace(/\\(?:widehat|hat)\s*\{?([A-Z])\}?/g,'\\hat $1');
+ if(prefix && prefix!==`có \\hat ${a}>\\hat ${b}>\\hat ${c}`)return null;
  if(arc[2] && arc[2]!==`${c}${d}>${a}${b}`)return null;
  return {a:a!,b:b!,c:c!,d,e,f,o,statement};
 }

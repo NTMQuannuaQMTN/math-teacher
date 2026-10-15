@@ -2,7 +2,7 @@ import {solveProblem} from '../src/solver/pipeline';
 import {VN_GRADE_9} from '../src/solver/curriculum';
 import type {JsonModel} from '../src/solver/llm';
 import {describe,it,expect} from 'vitest';
-import {exactUnaryEquation,verifyUnaryCertificate,rootSign,fraction} from '../../shared/src/rationalPolynomial';
+import {exactUnaryEquation,verifyUnaryCertificate,rootSign,fraction,isolateUnaryTerm,exactRationalEquation,exactPolynomialRoots} from '../../shared/src/rationalPolynomial';
 import {unaryEquationLesson} from '../src/solver/unaryEquation';
 import {latexFeedback} from '../src/solver/latexCheck';
 import {cleanLanguage} from '../../shared/src/language';
@@ -52,5 +52,23 @@ describe('radical and absolute-value equivalence',()=>{
  });
  it('rejects missing or altered branches',()=>{
   const c=exactUnaryEquation('abs(3x+2)=7')!;c.branches.pop();expect(verifyUnaryCertificate(c)).toBe(false);
+ });
+ it('accepts a request for a complete domain check after the equation',()=>{
+  const result=unaryEquationLesson('Giải phương trình $\\sqrt{x+5}=x-1$ và trình bày bước kiểm tra điều kiện đầy đủ.');
+  expect(result).not.toBeNull();
+  expect(result!.lesson.finalAnswer.text).toContain('x=4');
+  expect(result!.lesson.steps.at(-1)!.explanation).toContain('Không có nghiệm khác');
+ });
+ it('isolates a single radical from a polynomial sum before squaring',()=>{
+  const certificate=exactUnaryEquation('x^2-4x+2\\sqrt{2x-1}+1=0');
+  expect(isolateUnaryTerm('x^2-4x+2\\sqrt{2x-1}+1=0')).toContain('sqrt');
+  expect(exactPolynomialRoots([5n,-16n,18n,-8n,1n])).toHaveLength(2);
+  expect(exactRationalEquation('((2*x)-1)=((-(x^2-4*x+1))/2)^2')).not.toBeNull();
+  expect(certificate).not.toBeNull();
+  const result=unaryEquationLesson('Giải phương trình $x^2-4x+2\\sqrt{2x-1}+1=0$.');
+  expect(result).not.toBeNull();
+  expect(result!.lesson.finalAnswer.text).toContain('x=1');
+  expect(result!.lesson.steps.some(step=>step.math?.includes('(x-1)^{3}(x-5)'))).toBe(true);
+  expect(result!.lesson.steps[0]!.explanation).toContain('không âm');
  });
 });

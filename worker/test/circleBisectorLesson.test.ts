@@ -72,6 +72,10 @@ describe('circle and chord-bisector proof covers every point-order case',()=>{
   const cert=circleBisectorCertificate(text)!;
   expect(verifyCircleBisectorCertificate({...cert,e:'X'})).toBe(false);
  });
+ it('accepts braced and unbraced widehat spellings from normalized exam text',()=>{
+  expect(circleBisectorLesson(text.replace(/\\hat ([ABC])/g,'\\widehat $1'))).not.toBeNull();
+  expect(circleBisectorLesson(text.replace(/\\hat ([ABC])/g,'\\widehat{$1}'))).not.toBeNull();
+ });
  it('does not turn a conditional paragraph into an unconditional claim when punctuation changes',()=>{
   const f=circleBisectorLesson(text)!.lesson.figure!,r=resolveFigure(f);
   const bad=String.raw`\widehat{AEO}=\widehat{AFO}`;

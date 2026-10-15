@@ -6,6 +6,8 @@ function cyclicClaims(text:string):{points:string;index:number}[] {
   const plain=text.replace(/\$/g,'').replace(/\\text\{([^}]*)\}/g,'$1');
   const out=[...plain.matchAll(/\b([A-Z]{4})\s+(?:là\s+(?:tứ giác\s+)?)?nội tiếp/gu)].map(m=>({points:m[1]!,index:m.index!}));
   for(const m of plain.matchAll(/([A-Z])\s*,\s*([A-Z])\s*,\s*([A-Z])\s*(?:,|và)\s*([A-Z])\s+(?:cùng thuộc|cùng nằm trên|thuộc một đường tròn|nằm trên một đường tròn)/gu))out.push({points:m.slice(1,5).join(''),index:m.index!});
+  // Two named chords of the same circle explicitly put all four endpoints on it.
+  for(const m of plain.matchAll(/Hai dây\s+([A-Z]{2})\s+và\s+([A-Z]{2})\s+của (?:cùng )?một đường tròn/gu))out.push({points:m[1]!+m[2]!,index:m.index!});
   return out.filter(c=>new Set(c.points).size===4);
 }
 /** A concrete diameter witness; the two right angles must have different vertices and the same endpoints. */

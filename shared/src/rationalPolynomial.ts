@@ -1,4 +1,5 @@
 import {parseExpression,splitRelation,variablesOf} from './expr';
+import {expressionSource} from './expressionSource';
 
 export interface Fraction {n:bigint;d:bigint}
 export type Polynomial=Fraction[];
@@ -77,6 +78,22 @@ function squareRoot(n:bigint):bigint|null {
 function roots(p:bigint[]):ExactRoot[] {
  if(p.length===1)return [];
  if(p.length===2)return [{u:fraction(-p[0]!,p[1]!),v:zero(),radicand:0n}];
+ if(p.length>3){
+  if(p.length>5)throw Error('polynomial degree is not supported');
+  const divisors=(value:bigint)=>{value=value<0n?-value:value;if(value===0n)return [0n];const out:bigint[]=[];for(let d=1n;d*d<=value;d++)if(value%d===0n){out.push(d);if(d*d!==value)out.push(value/d);}return out;};
+  const numerators=p[0]===0n?[0n]:divisors(p[0]!),denominators=divisors(p.at(-1)!);
+  let rational:Fraction|null=null;
+  outer:for(const n0 of numerators)for(const sign of n0===0n?[1n]:[-1n,1n])for(const d0 of denominators){
+   const candidate=fraction(sign*n0,d0),root:ExactRoot={u:candidate,v:zero(),radicand:0n};
+   if(rootSatisfiesPolynomial(root,p.map(n=>fraction(n)))){rational=candidate;break outer;}
+  }
+  if(!rational)throw Error('higher-degree polynomial has no rational factor');
+  const [quotient,remainder]=quotientRemainder(p.map(n=>fraction(n)),[neg(rational),fraction(1n)]);
+  if(remainder.some(c=>c.n!==0n))throw Error('rational factor division failed');
+  const rest=roots(primitive(quotient));
+  const first:ExactRoot={u:rational,v:zero(),radicand:0n};
+  return [first,...rest].filter((root,index,all)=>all.findIndex(other=>rootKey(other)===rootKey(root))===index);
+ }
  const [c,b,a]=p as [bigint,bigint,bigint],d=b*b-4n*a*c;
  if(d<0n)return [];const s=squareRoot(d);
  if(s!==null){const rs=[fraction(-b-s,2n*a),fraction(-b+s,2n*a)];return rs.filter((r,i)=>i===0||!equal(r,rs[0]!)).map(u=>({u,v:zero(),radicand:0n}));}
@@ -91,6 +108,7 @@ export function rootSatisfiesPolynomial(root:ExactRoot,p:Polynomial):boolean {
  return value.u.n===0n&&value.v.n===0n;
 }
 const rootKey=(r:ExactRoot)=>`${r.u.n}/${r.u.d}:${r.v.n}/${r.v.d}:${r.radicand}`;
+export const exactPolynomialRoots=(coefficients:bigint[])=>roots(coefficients);
 const polynomialKey=(p:Polynomial)=>p.map(c=>`${c.n}/${c.d}`).join(',');
 /** Structural symbolic conversion, not degree inference from a handful of numerical samples. */
 export function exactRationalEquation(original:string):EquationCertificate|null {
@@ -98,7 +116,10 @@ export function exactRationalEquation(original:string):EquationCertificate|null 
   const rel=splitRelation(original);if(!rel||rel.rel!=='=')return null;
   const vars=new Set([...variablesOf(rel.sides[0]),...variablesOf(rel.sides[1])]);if(vars.size!==1)return null;
   const variable=[...vars][0]!,originalLeft=compile(parseExpression(rel.sides[0]),variable),originalRight=compile(parseExpression(rel.sides[1]),variable),a=reduceRational(originalLeft),b=reduceRational(originalRight);
-  const polynomial=sum(product(a.n,b.d),product(b.n,a.d).map(neg));if(polynomial.length>3)return null;
+  // Complete exact solving is available through degree four when rational
+  // linear factors reduce the remainder to a quadratic.  Unsupported
+  // irreducible cubics/quartics are rejected by roots(), never approximated.
+  const polynomial=sum(product(a.n,b.d),product(b.n,a.d).map(neg));if(polynomial.length>5)return null;
   const coefficients=primitive(polynomial);if(coefficients.some(c=>c>10n**12n||c< -(10n**12n)))return null;
   const excluded=[...a.excluded,...b.excluded].filter((p,i,all)=>all.findIndex(q=>polynomialKey(p)===polynomialKey(q))===i);
   if(excluded.length>8)return null;
@@ -147,6 +168,22 @@ export function shiftedPowerLatex(variable:string,center:Fraction,power:number):
  const body=`${variable}${center.n<0n?'+':'-'}${fractionLatex(abs)}`;
  return power===1?body:`(${body})${exp}`;
 }
+/** Complete linear factorization for the supported rationally-factorable cubic/quartic certificates. */
+export function polynomialLinearFactorizationLatex(coefficients:bigint[],variable:string):string|null {
+ try {
+  if(coefficients.length<2||coefficients.length>5)return null;
+  let remaining=coefficients.map(n=>fraction(n));const factors:{root:Fraction;multiplicity:number}[]=[];
+  for(const root of roots(coefficients)){
+   if(root.v.n!==0n)continue;let multiplicity=0;
+   for(;;){const [quotient,remainder]=quotientRemainder(remaining,[neg(root.u),one()]);if(remainder.some(c=>c.n!==0n))break;remaining=quotient;multiplicity++;}
+   if(multiplicity)factors.push({root:root.u,multiplicity});
+  }
+  if(remaining.length!==1||!factors.length)return null;
+  const leading=remaining[0]!,prefix=leading.n===leading.d?'':fractionLatex(leading);
+  const body=factors.map(({root,multiplicity})=>{const factor=shiftedPowerLatex(variable,root,multiplicity);return multiplicity===1?`(${factor})`:factor;}).join('');
+  return `${prefix}${body}`;
+ }catch{return null;}
+}
 /** Σ coefficient·body without "(4)(…)+(4)": zero terms dropped, unit coefficients hidden, signs merged. body "" = constant. */
 export function sumLatex(terms:[Fraction,string][]):string {
  const out:string[]=[];
@@ -181,13 +218,52 @@ function arithmeticSource(node:ReturnType<typeof parseExpression>):string {
  if(node.t==='bin')return `(${arithmeticSource(node.a)}${node.op}${arithmeticSource(node.b)})`;
  throw Error('nested function not supported');
 }
+/**
+ * Isolate one top-level square root or absolute-value term from a sum.  This
+ * accepts equations such as p(x)+2sqrt(q(x))=0 without teaching the solver a
+ * particular set of coefficients.  Products or nested functions remain out of
+ * scope unless the function is multiplied only by a nonzero constant.
+ */
+export function isolateUnaryTerm(original:string):string|null {
+ const relation=splitRelation(original);if(!relation||relation.rel!=='=')return null;
+ type Node=ReturnType<typeof parseExpression>;
+ const terms:{node:Node;sign:1|-1}[]=[];
+ const flatten=(node:Node,sign:1|-1):void=>{
+  if(node.t==='neg'){flatten(node.a,sign===1?-1:1);return;}
+  if(node.t==='bin'&&(node.op==='+'||node.op==='-')){flatten(node.a,sign);flatten(node.b,node.op==='+'?sign:sign===1?-1:1);return;}
+  terms.push({node,sign});
+ };
+ flatten(parseExpression(relation.sides[0]),1);flatten(parseExpression(relation.sides[1]),-1);
+ const callCount=(node:Node):number=>node.t==='call'?1:node.t==='neg'?callCount(node.a):node.t==='bin'?callCount(node.a)+callCount(node.b):0;
+ const unary=terms.flatMap((term,index)=>{
+  const node=term.node;
+  if(node.t==='call'&&(node.fn==='sqrt'||node.fn==='abs'))return [{index,term,call:node,coefficient:'1'}];
+  if(node.t==='bin'&&node.op==='*'){
+   const call=node.a.t==='call'&&(node.a.fn==='sqrt'||node.a.fn==='abs')?node.a:node.b.t==='call'&&(node.b.fn==='sqrt'||node.b.fn==='abs')?node.b:null;
+   const factor=call===node.a?node.b:call===node.b?node.a:null;
+   if(call&&factor&&callCount(factor)===0&&variablesOf(expressionSource(factor)).size===0)return [{index,term,call,coefficient:expressionSource(factor)}];
+  }
+  return [];
+ });
+ if(unary.length!==1||terms.some((term,index)=>index!==unary[0]!.index&&callCount(term.node)>0))return null;
+ const u=unary[0]!,signedCoefficient=u.term.sign===1?u.coefficient:`-(${u.coefficient})`;
+ // Verify that the coefficient is a defined, nonzero rational constant.
+ const coefficient=compile(parseExpression(signedCoefficient),'x');
+ if(coefficient.n.length!==1||coefficient.d.length!==1||coefficient.n[0]!.n===0n)return null;
+ const remaining=terms.filter((_,index)=>index!==u.index);
+ const rest=remaining.map((term,index)=>`${term.sign===1?(index?' + ':''):(index?' - ':'-')}(${expressionSource(term.node)})`).join('')||'0';
+ return `${u.call.fn}(${expressionSource(u.call.a)})=(-(${rest}))/(${signedCoefficient})`;
+}
 export function exactUnaryEquation(original:string):UnaryEquationCertificate|null {
  try {
   const relation=splitRelation(original);if(!relation||relation.rel!=='=')return null;
   const normalizeAbs=(s:string)=>s.trim().replace(/\\left|\\right/g,'').replace(/^\\left\|([\s\S]+)\\right\|$/,'abs($1)').replace(/^\|([^|]+)\|$/,'abs($1)').replace(/^\\lvert([\s\S]+)\\rvert$/,'abs($1)').replace(/^\\vert([\s\S]+)\\vert$/,'abs($1)');
   let a=parseExpression(normalizeAbs(relation.sides[0])),b=parseExpression(normalizeAbs(relation.sides[1]));
   if(b.t==='call'&&(b.fn==='sqrt'||b.fn==='abs'))[a,b]=[b,a];
-  if(a.t!=='call'||(a.fn!=='sqrt'&&a.fn!=='abs'))return null;
+  if(a.t!=='call'||(a.fn!=='sqrt'&&a.fn!=='abs')){
+   const isolated=isolateUnaryTerm(original);if(!isolated)return null;
+   const inner=exactUnaryEquation(isolated);return inner?{...inner,original}:null;
+  }
   const argument=arithmeticSource(a.a),other=arithmeticSource(b),kind=a.fn;
   const expressions=kind==='sqrt'?[`${argument}=(${other})^2`]:[`${argument}=${other}`,`${argument}=-(${other})`];
   const branches=expressions.map(exactRationalEquation);if(branches.some(c=>!c))return null;

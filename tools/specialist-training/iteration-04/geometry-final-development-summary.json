@@ -1,0 +1,13 @@
+{
+  "topic": "geometry",
+  "split": "development",
+  "stage": "stress-development",
+  "n": 11,
+  "ready": 11,
+  "verified": 8,
+  "answerPasses": 11,
+  "qualityPasses": 11,
+  "controlledWithin30s": 11,
+  "meanMs": 954.1787462727272,
+  "maxMs": 976.5586660000004
+}

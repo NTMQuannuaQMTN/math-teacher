@@ -1,0 +1,13 @@
+{
+  "topic": "algebra",
+  "split": "held-out",
+  "stage": "final",
+  "n": 2,
+  "ready": 0,
+  "verified": 0,
+  "answerPasses": 0,
+  "qualityPasses": 0,
+  "controlledWithin30s": 2,
+  "meanMs": 985.2102709999999,
+  "maxMs": 1026.6589999999999
+}

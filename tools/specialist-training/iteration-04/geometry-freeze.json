@@ -1,0 +1,24 @@
+{
+  "frozenAt": "2026-10-14T14:57:01+08:00",
+  "topic": "geometry",
+  "externalInference": "disabled",
+  "developmentResult": {
+    "cases": 11,
+    "ready": 11,
+    "answerPasses": 11,
+    "qualityPasses": 11,
+    "meanMs": 954.1787462727272,
+    "maxMs": 976.5586660000004
+  },
+  "validation": "npm run check: 95 test files, 1115 tests, all typechecks and mobile lint passed",
+  "files": {
+    "tools/specialist-training/iteration-04/cases.jsonl": "f0f2fe6ae11903a988db917ffab7f603ff4ae00b9feb5793c052f8f09987adfa",
+    "shared/src/proofDependencies.ts": "da5c2567cb804e41090b2b09981adbc72d60df8c5bb4331e8bceeeb30e40cbf2",
+    "worker/src/solver/circleBisectorLesson.ts": "b581e8cf50e555606552e51f8bf740e7bf143637880a1560134bf5b06843184b",
+    "worker/src/solver/circlePowerLesson.ts": "46f4ff7b8de671a2bd86707eb2612b2e35dbfe633ad9565f8524cbeb3aae5a73",
+    "worker/src/solver/incircleExternalBisectorLesson.ts": "899236fda597888c73842eaa9ae693e6edc40dd999d96fd5e9bcfbba2f9001a0",
+    "worker/src/solver/orthicMidpointLesson.ts": "73831241dcb17866eec3534eaa71304cbc3e1fdd6f30ea027eaa99ebe1622772",
+    "worker/src/solver/pipeline.ts": "42a65dc69aab9fb14714d6d46877d75139b8c4ab3063eac275d0f4f625eea1c7"
+  },
+  "heldoutRawRowsSha256": "a9dbef60ad8e3d6105dc735a9e53f664f0d9c33648740fe40ea6aac80c89069a"
+}

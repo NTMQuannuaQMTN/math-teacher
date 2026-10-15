@@ -1,4 +1,7 @@
 import {circleBisectorLesson,verifyCircleBisectorCertificate} from "./circleBisectorLesson";
+import {circlePowerLesson,verifyCirclePowerCertificate} from './circlePowerLesson';
+import {incircleExternalBisectorLesson,verifyIncircleExternalBisectorCertificate} from './incircleExternalBisectorLesson';
+import {orthicMidpointLesson,verifyOrthicMidpointCertificate} from './orthicMidpointLesson';
 import {multipartLesson} from './multipartLesson';
 import {hiddenSearchFeedback} from '../../../shared/src/hiddenSearch';
 import {vertexAssignmentLesson} from './vertexAssignmentLesson';
@@ -16,6 +19,8 @@ import {symmetricSystemLesson} from './symmetricSystem';
 import {radicalSequenceLesson} from './radicalSequence';
 import {rootRadicalProductLesson} from './rootRadicalProduct';
 import {rootFourthPowerLesson} from './rootFourthPower';
+import {reciprocalSystemLesson} from './reciprocalSystemLesson';
+import {symmetricRationalIdentityLesson} from './symmetricRationalIdentityLesson';
 import {conclusionConsistencyFeedback} from '../../../shared/src/conclusionConsistency';
 import {numericDivisibilityFeedback} from '../../../shared/src/numericDivisibility';
 import {biquadraticEquationLesson} from './biquadraticEquation';
@@ -550,7 +555,7 @@ async function solveTask(
       lesson,verification:{status:'verified',figureIssue:null,checks:[{label:algebraFamily.label,passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-algebra-family'
     };
   }
-  const exactEquation = exactAlgebra ? (rationalEquationLesson(problemText) ?? unaryEquationLesson(problemText) ?? rationalInequalityLesson(problemText) ?? parameterEquationLesson(problemText) ?? systemEquationLesson(problemText) ?? biquadraticEquationLesson(problemText) ?? twoRadicalEquationLesson(problemText) ?? quadraticRangeLesson(problemText) ?? constantRadicalLesson(problemText) ?? positiveParameterLesson(problemText) ?? positiveInequalityLesson(problemText) ?? remainderParameterLesson(problemText) ?? symmetricSystemLesson(problemText) ?? radicalSequenceLesson(problemText) ?? rootRadicalProductLesson(problemText) ?? rootFourthPowerLesson(problemText)) : null;
+  const exactEquation = exactAlgebra ? (symmetricRationalIdentityLesson(problemText) ?? rationalEquationLesson(problemText) ?? unaryEquationLesson(problemText) ?? rationalInequalityLesson(problemText) ?? parameterEquationLesson(problemText) ?? reciprocalSystemLesson(problemText) ?? systemEquationLesson(problemText) ?? biquadraticEquationLesson(problemText) ?? twoRadicalEquationLesson(problemText) ?? quadraticRangeLesson(problemText) ?? constantRadicalLesson(problemText) ?? positiveParameterLesson(problemText) ?? positiveInequalityLesson(problemText) ?? remainderParameterLesson(problemText) ?? symmetricSystemLesson(problemText) ?? radicalSequenceLesson(problemText) ?? rootRadicalProductLesson(problemText) ?? rootFourthPowerLesson(problemText)) : null;
   if (exactEquation) {
     const lesson = tidy(exactEquation.lesson);
     if (!latexFeedback(lesson).length && !cleanLanguage(lesson).feedback.length) return {
@@ -571,6 +576,20 @@ async function solveTask(
     if(checked.verification.status!=="unverified"&&!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&!proofDependencyFeedback(checked.lesson,problemText).length)return {
       lesson:checked.lesson,verification:{...checked.verification,status:"partial",checks:[...checked.verification.checks,{label:"Đối chiếu toàn bộ giả thiết; lời giải nêu thứ tự điểm, phía của góc và giao điểm cụ thể bằng đối xứng. Chứng nhận cấu hình không phải chứng minh hình thức của toàn bộ lời giải.",passed:true}]},
       attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-incircle-case-proof",
+    };
+  }
+  const externalBisector=proofPlanner?incircleExternalBisectorLesson(problemText):null;
+  if(externalBisector&&verifyIncircleExternalBisectorCertificate(externalBisector.certificate)) {
+    const checked=verifyLesson(tidy(externalBisector.lesson),{problemText});
+    if(!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&!proofDependencyFeedback(checked.lesson,problemText).length)return {
+      lesson:checked.lesson,verification:{status:'verified',figureIssue:null,checks:[{label:'Hai góc vuông được suy ra độc lập từ hai phân giác và bán kính vuông góc tiếp tuyến',passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-incircle-external-bisector'
+    };
+  }
+  const orthicMidpoint=proofPlanner?orthicMidpointLesson(problemText):null;
+  if(orthicMidpoint&&verifyOrthicMidpointCertificate(orthicMidpoint.certificate)) {
+    const checked=verifyLesson(tidy(orthicMidpoint.lesson),{problemText});
+    if(checked.verification.status!=='unverified'&&!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&!proofDependencyFeedback(checked.lesson,problemText).length)return {
+      lesson:checked.lesson,verification:{...checked.verification,status:'partial',checks:[...checked.verification.checks,{label:'Đã đối chiếu cấu hình; hai phép nội tiếp dựa trên bốn góc vuông, hai phép đồng dạng và thứ tự tia được chứng minh riêng. Chứng nhận cấu hình không thay thế chứng minh hình thức.',passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'geometry-orthic-midpoint-proof'
     };
   }
   const hypothesisDiagnosis=proofPlanner ? geometryHypothesisDiagnosis(problemText) : null;
@@ -597,6 +616,13 @@ async function solveTask(
     if (!latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length && !proofDependencyFeedback(checked.lesson,problemText).length && checked.verification.status !== "unverified") return {
       lesson:checked.lesson, verification:{...checked.verification,status:"verified",checks:[...checked.verification.checks,{label:"Tổng góc, tính chất tam giác cân hoặc tỉ lệ đồng dạng được tính bằng phân số chính xác",passed:true}]},
       attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"deterministic-geometry",
+    };
+  }
+  const circlePower=proofPlanner?circlePowerLesson(problemText):null;
+  if(circlePower&&verifyCirclePowerCertificate(circlePower.certificate)) {
+    const checked=verifyLesson(tidy(circlePower.lesson),{problemText});
+    if(!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&!proofDependencyFeedback(checked.lesson,problemText).length)return {
+      lesson:checked.lesson,verification:{status:'verified',figureIssue:null,checks:[{label:'Đẳng thức tích được suy ra từ hai cặp góc và tam giác đồng dạng; phép tính độ dài dùng phân số chính xác',passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-circle-power'
     };
   }
   const board = boardSearchLesson(problemText);

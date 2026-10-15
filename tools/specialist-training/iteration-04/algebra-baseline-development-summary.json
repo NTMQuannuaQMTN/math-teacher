@@ -1,0 +1,13 @@
+{
+  "topic": "algebra",
+  "split": "development",
+  "stage": "baseline",
+  "n": 6,
+  "ready": 0,
+  "verified": 0,
+  "answerPasses": 0,
+  "qualityPasses": 0,
+  "controlledWithin30s": 6,
+  "meanMs": 986.0207358333333,
+  "maxMs": 1136.807666
+}

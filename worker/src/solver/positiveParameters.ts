@@ -2,8 +2,13 @@ import {exactPositiveParameters,verifyPositiveParameterCertificate,fractionLatex
 import {algebraProofLesson,type AlgebraDeduction} from './algebraProofLesson';
 export function positiveParameterLesson(text:string) {
  try {
- const match=/^Cho phương trình\s+\$([^$]+)\$\.\s*Tìm tất cả\s+\$([a-z])\$\s+để phương trình có hai nghiệm phân biệt và cả hai nghiệm đều dương\.$/iu.exec(text.trim());if(!match)return null;
- const c=exactPositiveParameters(match[1]!,match[2]!);if(!c||!verifyPositiveParameterCertificate(c))return null;
+ const cleaned=text.trim();
+ const domain='(?:\\\\in\\\\mathbb\\s*\\{?R\\}?|\\\\in\\\\mathbbR)?';
+ const tail='có hai nghiệm(?:\\s+thực)?\\s+phân biệt và (?:cả hai nghiệm đều|đều)\\s+dương';
+ const given=new RegExp(`^Cho phương trình\\s+\\$([^$]+)\\$\\.\\s*Tìm tất cả\\s+\\$([a-z])${domain}\\$\\s+để phương trình ${tail}\\.$`,'iu').exec(cleaned);
+ const requested=new RegExp(`^Tìm tất cả\\s+\\$([a-z])${domain}\\$\\s+để phương trình\\s+\\$([^$]+)\\$\\s+${tail}\\.$`,'iu').exec(cleaned);
+ const equation=given?.[1]??requested?.[2],parameter=given?.[2]??requested?.[1];if(!equation||!parameter)return null;
+ const c=exactPositiveParameters(equation,parameter);if(!c||!verifyPositiveParameterCertificate(c))return null;
  const b=c.base,m=b.parameter,f=fractionLatex,delta=polynomialLatex(b.discriminant,m),sum=`-\\frac{${polynomialLatex(b.b,m)}}{${f(b.a)}}`,product=`\\frac{${polynomialLatex(b.c,m)}}{${f(b.a)}}`;
  const set=(intervals:PositiveParameterCertificate['intervals'])=>intervals.length?intervals.map(intervalLatex).join('\\cup'):'\\varnothing';
  const final=c.intervals.length?`Vậy tất cả tham số cần tìm là $${m}\\in${set(c.intervals)}$.`:'Vậy không có tham số thực nào thỏa mãn yêu cầu.';
@@ -19,6 +24,6 @@ export function positiveParameterLesson(text:string) {
   details.push({title:`Giải điều kiện ${labels[i]} dương`,explanation:`Rút gọn hiệu thành $F=\\frac{${n}}{${d}}$. Tìm đầy đủ nghiệm tử để chia trục số thành các khoảng. Dấu ở khoảng phải cùng là dấu hệ số bậc cao nhất của tử chia mẫu; qua nghiệm đơn đổi dấu, qua nghiệm kép giữ dấu. Chọn các khoảng dương và loại điểm bằng không vì điều kiện nghiêm ngặt.`,math:`\\begin{gathered}F=\\frac{${n}}{${d}}>0${derivation?'\\\\'+derivation:''}\\\\${chart}\\\\${m}\\in${set(condition.intervals)}\\end{gathered}`,reason:'Giải bậc nhất hoặc bậc hai; xét dấu theo nghiệm và bội; bất phương trình nghiêm ngặt',question:`Giá trị nào làm ${labels[i]} bằng không? Những khoảng nào cho dấu dương?`});
  });
  details.push({title:'Lấy giao ba điều kiện và kết luận',explanation:`Tham số phải thuộc đồng thời ba tập vừa tìm; lấy giao giữ đúng các khoảng chung và các đầu mút được phép. Tính cần và đủ đã được chứng minh, nên mọi tham số trong tập này thỏa mãn yêu cầu, còn mọi tham số ngoài tập đều vi phạm ít nhất một điều kiện. ${final}`,math:`${m}\\in(${set(c.conditions[0]!.intervals)})\\cap(${set(c.conditions[1]!.intervals)})\\cap(${set(c.conditions[2]!.intervals)})=${set(c.intervals)}`,reason:'Giao các điều kiện cần và đủ',question:'Một tham số chỉ thỏa mãn hai trong ba điều kiện có được nhận không?'});
- const lesson=algebraProofLesson(text,'Điều kiện hai nghiệm phân biệt đều dương','Kết hợp biệt thức và Vi-ét thành ba điều kiện cần và đủ, giải chính xác từng bất phương trình rồi lấy giao.',details,final,{givens:[`$${match[1]}$`],unknowns:[`Tất cả $${m}$ để hai nghiệm phân biệt và đều dương`]} );return lesson?{lesson,certificate:c}:null;
+ const lesson=algebraProofLesson(text,'Điều kiện hai nghiệm phân biệt đều dương','Kết hợp biệt thức và Vi-ét thành ba điều kiện cần và đủ, giải chính xác từng bất phương trình rồi lấy giao.',details,final,{givens:[`$${equation}$`],unknowns:[`Tất cả $${m}$ để hai nghiệm phân biệt và đều dương`]} );return lesson?{lesson,certificate:c}:null;
  }catch{return null;}
 }
