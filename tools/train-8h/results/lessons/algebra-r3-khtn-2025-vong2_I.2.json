@@ -1,0 +1,223 @@
+{
+  "question": {
+    "id": "khtn-2025-vong2/I.2",
+    "split": "train",
+    "source": "exam khtn-2025-vong2",
+    "input": "Giải hệ phương trình $\\begin{cases}x+y+xy=3,\\\\ 1+12(x+y)=7y^3+6xy(y+3-xy).\\end{cases}$",
+    "reference": "$(x,y)=(1,1)$",
+    "reference_status": "teacher",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Giải hệ phương trình: $\\begin{cases}x+y+xy=3 \\\\ 1+12(x+y)=7y^3+6xy(y+3-xy)\\end{cases}$",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hệ phương trình",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ phương trình phi tuyến",
+        "Biến đổi đại số",
+        "Đặt ẩn phụ",
+        "Phân tích nhân tử",
+        "Hệ phương trình đối xứng"
+      ],
+      "techniques": [
+        "substitution",
+        "factorization"
+      ],
+      "givens": [
+        "Hệ phương trình: $\\begin{cases}x+y+xy=3 \\\\ 1+12(x+y)=7y^3+6xy(y+3-xy)\\end{cases}$"
+      ],
+      "unknowns": [
+        "x",
+        "y"
+      ],
+      "constraints": [
+        "Phương trình thứ hai có bậc 3, cần biến đổi khéo léo để đưa về hệ đối xứng hoặc phương trình bậc hai."
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Đặt $S = x + y$ và $P = xy$ để biến đổi hệ phương trình thành phương trình bậc 2 theo $S$ với tham số $y$, sau đó giải và kiểm tra điều kiện nghiệm thực.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 1,
+        "question": "Bạn thử đặt $S = x + y$ và $P = xy$ rồi thay vào phương trình (1) xem sao?",
+        "cue": "Đặt $S = x + y$ và $P = xy$. Từ phương trình (1), ta có thể biểu diễn $P$ theo $S$.",
+        "explanation": "Từ $x+y+xy=3$, ta có $P = 3 - S$. Thay $P$ vào phương trình (2) để khử $xy$.",
+        "math": "P = 3 - S",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 2,
+        "question": "Sau khi thay $P = 3 - S$ vào phương trình (2), bạn thấy phương trình mới có dạng như thế nào?",
+        "cue": "Thay $P = 3 - S$ vào phương trình (2) và rút gọn.",
+        "explanation": "Phương trình (2) trở thành: $1 + 12S = 7y^3 + 6(3-S)(y + 3 - (3-S))$. Rút gọn vế phải: $y + 3 - 3 + S = y + S$. Vậy $1 + 12S = 7y^3 + 6(3-S)(y+S)$. Đây là phương trình bậc 3 theo $y$ với tham số $S$. Tuy nhiên, ta có thể thử tìm mối liên hệ giữa $y$ và $S$.",
+        "math": "1 + 12S = 7y^3 + 6(3-S)(y+S)",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 3,
+        "question": "Bạn thử kiểm tra xem $(1; 1)$ có phải là nghiệm của hệ không?",
+        "cue": "Thử $y = 1$ hoặc $y = S-1$ (tức $x=1$).",
+        "explanation": "Nếu $y=1$, từ $S=x+1$ và $P=x$, ta có $x+1+x=3 \\Rightarrow 2x=2 \\Rightarrow x=1$. Khi đó $S=2, P=1$. Thay vào phương trình (2): $1+12(2) = 25$. Vế phải: $7(1)^3 + 6(1)(1+3-1) = 7 + 18 = 25$. Đúng. Vậy $(1,1)$ là nghiệm. Để chứng minh duy nhất, ta cần phân tích kỹ hơn.",
+        "math": "x = 1, y = 1",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Đặt ẩn phụ và biểu diễn P theo S",
+        "explanation": "Đặt $S = x + y$ và $P = xy$. Từ phương trình (1), ta có $S + P = 3$, suy ra $P = 3 - S$. Điều kiện để $x, y$ là nghiệm thực là $S^2 - 4P \\ge 0$, tức $S^2 - 4(3-S) \\ge 0 \\Leftrightarrow S^2 + 4S - 12 \\ge 0 \\Leftrightarrow (S+6)(S-2) \\ge 0$, vậy $S \\ge 2$ hoặc $S \\le -6$.",
+        "math": "P = 3 - S",
+        "reason": "Đặt ẩn phụ và biến đổi đại số",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Đặt ẩn phụ",
+          "Biểu diễn P theo S"
+        ],
+        "operation": "substitution",
+        "result": "P = 3 - S",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại điều kiện xác định"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Thay P vào phương trình (2) và rút gọn",
+        "explanation": "Thay $P = 3 - S$ vào phương trình (2): $1 + 12S = 7y^3 + 6(3-S)(y + 3 - (3-S))$. Rút gọn vế phải: $y + 3 - 3 + S = y + S$. Phương trình trở thành: $1 + 12S = 7y^3 + 6(3-S)(y+S)$. Mở rộng: $1 + 12S = 7y^3 + 6(3y + 3S - Sy - S^2)$. $1 + 12S = 7y^3 + 18y + 18S - 6Sy - 6S^2$. Chuyển vế: $7y^3 - 6Sy + 18y - 6S^2 + 6S - 1 = 0$. Đây là phương trình bậc 3 theo $y$. Ta thử tìm nghiệm đặc biệt. Nếu $y=1$, phương trình trở thành: $7 - 6S + 18 - 6S^2 + 6S - 1 = 0 \\Leftrightarrow -6S^2 + 24 = 0 \\Leftrightarrow S^2 = 4 \\Leftrightarrow S = \\pm 2$. Vì $S \\ge 2$ hoặc $S \\le -6$, nên $S=2$ hoặc $S=-2$ (loại vì $-2$ không thuộc tập nghiệm). Với $S=2$, ta có $x+y=2$ và $xy=3-2=1$. Hệ $x+y=2, xy=1$ có nghiệm $x=y=1$. Vậy $(1,1)$ là một nghiệm.",
+        "math": "7y^3 - 6Sy + 18y - 6S^2 + 6S - 1 = 0",
+        "reason": "Thay thế và rút gọn phương trình",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Thay P vào PT(2)",
+          "Giải PT bậc 3 theo y"
+        ],
+        "operation": "substitution",
+        "result": "7y^3 - 6Sy + 18y - 6S^2 + 6S - 1 = 0",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại phép thay thế"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Chứng minh nghiệm duy nhất",
+        "explanation": "Ta cần chứng minh $(1,1)$ là nghiệm duy nhất. Từ $7y^3 - 6Sy + 18y - 6S^2 + 6S - 1 = 0$, ta coi đây là phương trình bậc 2 theo $S$: $-6S^2 + (6 - 6y)S + (7y^3 + 18y - 1) = 0$. Giải phương trình bậc 2 theo $S$: $\\Delta_S = (6-6y)^2 - 4(-6)(7y^3+18y-1) = 36(1-y)^2 + 24(7y^3+18y-1) = 36(1-2y+y^2) + 168y^3 + 432y - 24 = 168y^3 + 36y^2 + 384y + 12$. Để $S$ là số thực, cần $\\Delta_S \\ge 0$. Tuy nhiên, ta có thể phân tích nhân tử phương trình ban đầu theo $y-1$. Ta thấy $y=1$ là nghiệm của $7y^3 - 6Sy + 18y - 6S^2 + 6S - 1 = 0$ khi $S=2$. Thực tế, ta có thể viết lại phương trình: $7y^3 + 18y - 1 - 6S(y-1) - 6S^2 = 0$. Nếu $y=1$, ta có $7+18-1 - 6S(0) - 6S^2 = 24 - 6S^2 = 0 \\Rightarrow S^2=4$. Với $S=2$, $x=y=1$. Với $S=-2$, $x+y=-2, xy=5$, vô nghiệm thực. Vậy chỉ có $S=2, y=1$ là khả dĩ. Ta cần kiểm tra xem có nghiệm nào khác không. Xét hàm số $f(y) = 7y^3 - 6Sy + 18y - 6S^2 + 6S - 1$. Đạo hàm $f'(y) = 21y^2 - 6S + 18$. Vì $S \\ge 2$ hoặc $S \\le -6$, nếu $S \\ge 2$, $f'(y) = 21y^2 + 18 - 6S$. Nếu $S=2$, $f'(y) = 21y^2 + 6 > 0$, hàm đồng biến, chỉ có 1 nghiệm $y=1$. Nếu $S > 2$, $f'(y)$ có thể âm, nhưng ta đã biết $S$ phụ thuộc vào $y$ qua $S^2+4S-12 \\ge 0$. Cách khác: từ $x+y+xy=3$, ta có $x = \\frac{3-y}{1+y}$ (với $y \\ne -1$). Thay vào phương trình (2). Đây là cách trực tiếp nhưng tính toán phức tạp. Cách đặt ẩn phụ $S, P$ là tốt nhất. Ta đã có $7y^3 - 6Sy + 18y - 6S^2 + 6S - 1 = 0$. Ta coi đây là phương trình bậc 2 theo $S$: $6S^2 + (6y-6)S - (7y^3+18y-1) = 0$. $\\$\\Delta_S = 36(y-1)^2$",
+        "math": "S = 2, y = 1 \\Rightarrow x = 1",
+        "reason": "Giải phương trình bậc 2 và kiểm tra điều kiện",
+        "uses": [
+          "step1",
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải phương trình bậc 2 theo S",
+          "Kiểm tra điều kiện nghiệm thực"
+        ],
+        "operation": "factorization",
+        "result": "Nghiệm duy nhất (1; 1)",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại nghiệm"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Hệ phương trình có nghiệm duy nhất (x; y) = (1; 1).",
+      "math": "(x, y) = (1, 1)"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x + y + x*y = 3",
+          "1 + 12*(x + y) = 7*y^3 + 6*x*y*(y + 3 - x*y)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "1"
+            },
+            {
+              "variable": "y",
+              "value": "1"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "x + y + x*y = 3",
+        "passed": true
+      },
+      {
+        "label": "methods within the curriculum (calculus (derivatives)",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 191,
+  "usage": {
+    "default": {
+      "input": 14793,
+      "cachedInput": 0,
+      "output": 8078,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01893541,
+  "model": "default",
+  "logs": [
+    "computed: - system (99 ms)",
+    "attempt 1: unverified, 2 problem(s): the solution uses calculus (derivatives, integrals, limits), which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …) | step 3: broken mathematical delimiters or prose swallowed into math; write balanced $…$ with prose outside math.",
+    "attempt 2: unverified, 1 problem(s): the solution uses calculus (derivatives, integrals, limits), which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)",
+    "usage: model=default in=14793 (cached 0) out=8078 (reasoning 0) ≈ $0.0189",
+    "total ≈ $0.0189 over 2 attempt(s); lesson by default"
+  ]
+}

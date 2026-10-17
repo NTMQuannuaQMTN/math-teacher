@@ -1,0 +1,181 @@
+{
+  "question": {
+    "id": "nt8-h1",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $2^x+3=y^2$.",
+    "reference": "Không có cặp nào (với $x\\ge2$: $y^2\\equiv3\\pmod4$ vô lí; $x=1$: $y^2=5$ không chính phương)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các cặp số nguyên dương $(x, y)$ thỏa mãn phương trình $2^x + 3 = y^2$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Phương trình nghiệm nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Số chính phương",
+        "Đồng dư (mod 4)",
+        "Chẵn lẻ"
+      ],
+      "techniques": [
+        "parity",
+        "remainders"
+      ],
+      "givens": [
+        "Phương trình $2^x + 3 = y^2$"
+      ],
+      "unknowns": [
+        "x, y"
+      ],
+      "constraints": [
+        "x, y là số nguyên dương (x > 0, y > 0)"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu tìm nghiệm nguyên dương của phương trình $2^x + 3 = y^2$. Với $x$ là số nguyên dương, $2^x$ luôn chẵn, nên $y^2 = 2^x + 3$ luôn lẻ. Xét đồng dư khi chia cho 4: với $x \\ge 2$, $2^x \\equiv 0 \\pmod 4$, suy ra $y^2 \\equiv 3 \\pmod 4$. Tuy nhiên, không có số chính phương nào có số dư là 3 khi c"
+      ]
+    },
+    "strategy": "Xét tính chất của số chính phương khi chia cho 4 để loại trừ các trường hợp $x \\ge 2$, sau đó kiểm tra trường hợp còn lại $x = 1$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 3,
+        "question": "Bạn hãy thử chia $y^2$ cho 4, xem số dư có thể là những số nào?",
+        "cue": "Số chính phương là bình phương của một số nguyên.",
+        "explanation": "Hãy thử xét xem $y^2$ chia cho 4 thì có thể dư những số nào. Một số chính phương khi chia cho 4 chỉ có thể dư 0 hoặc 1 mà thôi.",
+        "math": "y^2 \\equiv 0 \\text{ hoặc } 1 \\pmod 4",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 4,
+        "question": "Nếu $x \\ge 2$, thì $2^x + 3$ chia cho 4 dư mấy?",
+        "cue": "Xét $2^x$ với $x \\ge 2$.",
+        "explanation": "Nếu $x \\ge 2$, thì $2^x$ chia hết cho 4. Khi đó $2^x + 3$ sẽ dư 3 khi chia cho 4. Điều này mâu thuẫn với tính chất của số chính phương.",
+        "math": "2^x + 3 \\equiv 3 \\pmod 4",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Vậy chỉ còn trường hợp $x = 1$. Bạn hãy thử thay $x = 1$ vào phương trình để tìm $y$ xem sao.",
+        "cue": "Kiểm tra trường hợp còn lại.",
+        "explanation": "Vì $x \\ge 2$ không thỏa mãn, bạn hãy thử thay $x = 1$ vào phương trình xem có tìm được $y$ nguyên dương không.",
+        "math": "x = 1",
+        "stepId": "step_2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xét số dư của $y^2$ khi chia cho 4",
+        "explanation": "Ta xét tính chẵn lẻ và số dư của $y^2$ khi chia cho 4. Vì $x$ là số nguyên dương, nếu $x \\ge 2$ thì $2^x$ chia hết cho 4. Khi đó $y^2 = 2^x + 3$ sẽ có dạng $4k + 3$. Tuy nhiên, mọi số chính phương $y^2$ khi chia cho 4 chỉ có thể dư 0 hoặc 1 (vì nếu $y$ chẵn, $y=2k \\Rightarrow y^2=4k^2 \\equiv 0$; nếu $y$ lẻ, $y=2k+1 \\Rightarrow y^2=4k^2+4k+1 \\equiv 1$). Do đó, $y^2$ không thể dư 3 khi chia cho 4.",
+        "math": "y^2 \\equiv 0 \\text{ hoặc } 1 \\pmod 4",
+        "reason": "Tính chất số chính phương",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "tính chất số chính phương mod 4"
+        ],
+        "operation": "suy luận",
+        "result": "y^2 không thể dư 3 khi chia cho 4",
+        "verification": {
+          "status": "verified",
+          "method": "số học mô-đun",
+          "reason": "Kiểm tra tính đúng đắn của lập luận đồng dư"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Kiểm tra trường hợp $x = 1$",
+        "explanation": "Từ bước 1, ta thấy $x$ không thể lớn hơn hoặc bằng 2. Vậy chỉ còn trường hợp $x = 1$. Khi đó phương trình trở thành $2^1 + 3 = y^2$, hay $5 = y^2$. Vì 5 không phải là số chính phương (không có số nguyên nào bình phương bằng 5), nên phương trình vô nghiệm.",
+        "math": "x = 1 \\Rightarrow y^2 = 5",
+        "reason": "Thay giá trị và kiểm tra",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "kiểm tra số chính phương"
+        ],
+        "operation": "suy luận",
+        "result": "Phương trình vô nghiệm",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị vào phương trình để kiểm tra"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Phương trình đã cho vô nghiệm (không có cặp số nguyên dương nào thỏa mãn).",
+      "math": "\\text{Vô nghiệm}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "integers",
+        "statements": [
+          "(2^x + 3) % 4 == 3",
+          "x > 0",
+          "y > 0",
+          "y^2 == 2^x + 3"
+        ],
+        "assignments": [],
+        "expected": "none"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "(2^x + 3) % 4 = 3",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 130420,
+  "usage": {
+    "default": {
+      "input": 5720,
+      "cachedInput": 0,
+      "output": 1916,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.005486319999999999,
+  "model": "default",
+  "logs": [
+    "computed: - integer_solutions (12 ms)",
+    "attempt 1 failed (local model request timed out); trying again",
+    "escalating to default",
+    "language repair: 3/3 field(s) rewritten in 1 s",
+    "attempt 2: unverified, 1 problem(s): answer check \"(2^x + 3) % 4 = 3\" failed: integers checks support one variable",
+    "usage: model=default in=5720 (cached 0) out=1916 (reasoning 0) ≈ $0.0055",
+    "total ≈ $0.0055 over 2 attempt(s); lesson by default"
+  ]
+}

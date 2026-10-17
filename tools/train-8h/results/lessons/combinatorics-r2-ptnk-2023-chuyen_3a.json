@@ -1,0 +1,235 @@
+{
+  "question": {
+    "id": "ptnk-2023-chuyen/3a",
+    "split": "train",
+    "source": "exam ptnk-2023-chuyen",
+    "input": "Người ta tô màu mỗi ô của bảng hình vuông $4\\times4$ bằng một trong hai màu đen hoặc trắng thỏa mãn các điều kiện sau: i. Số ô đen trên các hàng đều bằng nhau. ii. Số ô đen trên các cột đôi một khác nhau. Tính số ô đen trên mỗi hàng.",
+    "reference": "2",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Người ta tô màu mỗi ô của bảng hình vuông $4 \\times 4$ bằng một trong hai màu đen hoặc trắng thỏa mãn các điều kiện sau: i. Số ô đen trên các hàng đều bằng nhau. ii. Số ô đen trên các cột đôi một khác nhau. Tính số ô đen trên mỗi hàng.",
+      "language": "vi",
+      "topic": "arithmetic",
+      "subtopic": "Toán",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tổng hợp (Summation)",
+        "Số nguyên không âm",
+        "Tính chất dãy số liên tiếp hoặc khác nhau"
+      ],
+      "techniques": [
+        "case_analysis",
+        "bounding"
+      ],
+      "givens": [
+        "Bảng hình vuông $4 \\times 4$.",
+        "Mỗi ô được tô đen hoặc trắng.",
+        "Số ô đen trên 4 hàng bằng nhau.",
+        "Số ô đen trên 4 cột đôi một khác nhau."
+      ],
+      "unknowns": [
+        "Số ô đen trên mỗi hàng"
+      ],
+      "constraints": [
+        "Bảng $4 \\times 4$ có tổng 16 ô.",
+        "Số ô đen trên mỗi hàng bằng nhau, gọi là $k$.",
+        "Tổng số ô đen là $4k$.",
+        "Số ô đen trên 4 cột là 4 số nguyên không âm đôi một khác nhau.",
+        "Tổng số ô đen cũng bằng tổng số ô đen trên 4 cột."
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Gọi số ô đen trên mỗi hàng là $k$. Tổng số ô đen là $4k$. Tổng này cũng bằng tổng số ô đen trên 4 cột. Vì số ô đen trên các cột là 4 số nguyên không âm đôi một khác nhau và không vượt quá 4, ta liệt kê các bộ 4 số phân biệt trong ${0,1,2,3,4}$ để tìm bộ có tổng chia hết cho 4.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Nếu gọi số ô đen trên mỗi hàng là $k$, thì tổng số ô đen trong bảng tính theo hàng là bao nhiêu? Và tổng này liên hệ thế nào với tổng số ô đen trên các cột?",
+        "cue": "Tổng số ô đen trong bảng",
+        "explanation": "Gọi số ô đen trên mỗi hàng là $k$. Vì có 4 hàng và số ô đen trên mỗi hàng bằng nhau, tổng số ô đen trong cả bảng là $4k$. Mặt khác, tổng số ô đen cũng bằng tổng số ô đen trên 4 cột.",
+        "math": "S = 4k = c_1 + c_2 + c_3 + c_4",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Số ô đen trên mỗi cột là các số nguyên không âm. Vì có 4 cột và số ô đen trên các cột đôi một khác nhau, hãy liệt kê các bộ 4 số nguyên không âm đôi một khác nhau có thể có. Tổng của chúng phải bằng $4k$.",
+        "cue": "Các số nguyên không âm đôi một khác nhau",
+        "explanation": "Số ô đen trên mỗi cột là một số nguyên không âm (từ 0 đến 4). Vì có 4 cột và số ô đen trên các cột đôi một khác nhau, ta có 4 số nguyên không âm đôi một khác nhau. Tổng của 4 số nguyên không âm đôi một khác nhau nhỏ nhất là $0+1+2+3=6$ và lớn nhất là $1+2+3+4=10$ (vì tổng là $4k$ nên chẵn, và max possible sum of 4 distinct from {0,1,2,3,4} is 10). Thực tế, các giá trị có thể là tập con 4 phần tử của {0,1,2,3,4}. Tổng các phần tử của tập con này phải chia hết cho 4.",
+        "math": "c_i \\in \\{0, 1, 2, 3, 4\\}, c_i \\neq c_j",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Trong các bộ 4 số nguyên không âm đôi một khác nhau có tổng chia hết cho 4, bộ nào là hợp lý nhất? (Lưu ý: mỗi cột có tối đa 4 ô). Sau khi tìm được tổng số ô đen, hãy tính $k$.",
+        "cue": "Kiểm tra tính khả thi",
+        "explanation": "Ta đã tìm được $k=2$. Tổng số ô đen là 8. Các cột có số ô đen đôi một khác nhau và tổng bằng 8. Các bộ 4 số nguyên không âm đôi một khác nhau có tổng bằng 8 là {0,1,2,5} (5 không thể vì max là 4) -> Sai. Tập con của {0,1,2,3,4} có 4 phần tử. Tổng của {0,1,2,3}=6. Tổng của {0,1,2,4}=7. Tổng của {0,1,3,4}=8. Tổng của {0,2,3,4}=9. Tổng của {1,2,3,4}=10. Chỉ có {0,1,3,4} có tổng bằng 8. Vậy $4k=8 \\Rightarrow k=2$. Ta cần kiểm tra xem có thể xếp được bảng $4 \\times 4$ với 2 ô đen mỗi hàng và số ô đen các cột lần lượt là 0, 1, 3, 4 hay không. Đây là bài toán tồn tại cấu hình. Với $k=2$, tổng ô đen là 8. Cột có 4 ô đen nghĩa là cột đó toàn đen. Cột có 0 ô đen nghĩa là cột đó toàn trắng. Cột có 1 ô đen và 3 ô đen. Hàng nào cũng có 2 ô đen. Điều này hoàn toàn khả thi.",
+        "math": "k=2",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Thiết lập mối liên hệ giữa số ô đen trên hàng và cột",
+        "explanation": "Gọi số ô đen trên mỗi hàng là $k$. Vì bảng có 4 hàng và số ô đen trên mỗi hàng bằng nhau, tổng số ô đen trong bảng là $4k$. Gọi số ô đen trên 4 cột lần lượt là $c_1, c_2, c_3, c_4$. Tổng số ô đen cũng bằng tổng các số ô đen trên các cột, nên $c_1 + c_2 + c_3 + c_4 = 4k$.",
+        "math": "c_1 + c_2 + c_3 + c_4 = 4k",
+        "reason": "Định nghĩa và tính chất tổng",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "Đặt ẩn và lập tổng",
+        "result": "Tổng số ô đen là $4k$ và cũng bằng tổng 4 số ô đen trên các cột.",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Tổng số ô đen tính theo hàng và theo cột phải bằng nhau."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Xác định tập giá trị có thể có của số ô đen trên các cột",
+        "explanation": "Số ô đen trên mỗi cột là một số nguyên không âm và không vượt quá 4 (vì mỗi cột có 4 ô). Đề bài cho biết số ô đen trên các cột đôi một khác nhau, nghĩa là $c_1, c_2, c_3, c_4$ là 4 số nguyên không âm đôi một khác nhau, thuộc tập ${0, 1, 2, 3, 4}$. Ta cần tìm 4 số phân biệt trong tập này sao cho tổng của chúng chia hết cho 4.",
+        "math": "\\begin{gathered}c_i \\in \\\\ {0, 1, 2, 3, 4}, c_i \\neq c_j \\text{ với } i \\neq j\\end{gathered}",
+        "reason": "Điều kiện xác định của số ô đen trên cột",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "s1"
+        ],
+        "operation": "List possible values",
+        "result": "Các số ô đen trên cột là 4 số nguyên phân biệt trong đoạn [0, 4].",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Mỗi cột có 4 ô, nên số ô đen tối đa là 4. Các số phải khác nhau."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Tìm giá trị của $k$",
+        "explanation": "Các tập con có 4 phần tử của tập ${0, 1, 2, 3, 4}$ là:\n1. ${0, 1, 2, 3}$ có tổng là $0+1+2+3=6$. Khi đó $4k=6$ (vô lý vì $k$ nguyên).\n2. ${0, 1, 2, 4}$ có tổng là $0+1+2+4=7$. Khi đó $4k=7$ (vô lý).\n3. ${0, 1, 3, 4}$ có tổng là $0+1+3+4=8$. Khi đó $4k=8 \\Rightarrow k=2$ (thỏa mãn).\n4. ${0, 2, 3, 4}$ có tổng là $0+2+3+4=9$. Khi đó $4k=9$ (vô lý).\n5. ${1, 2, 3, 4}$ có tổng là $1+2+3+4=10$. Khi đó $4k=10$ (vô lý).\nVậy chỉ có trường hợp tổng bằng 8 là thỏa mãn, suy ra $k=2$.",
+        "math": "k = 2",
+        "reason": "Tính chất chia hết và điều kiện nguyên",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "s2"
+        ],
+        "operation": "Tính toán và kiểm tra lại",
+        "result": "Số ô đen trên mỗi hàng là 2.",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Chỉ có một bộ số thỏa mãn điều kiện tổng chia hết cho 4."
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Kiểm tra tính hợp lệ của kết quả",
+        "explanation": "Ta đã tìm được $k=2$. Cần kiểm tra xem có tồn tại cách tô màu thỏa mãn không. Tổng số ô đen là 8. Số ô đen trên các cột là ${0, 1, 3, 4}$ (sắp xếp lại). Cột có 4 ô đen: toàn đen. Cột có 0 ô đen: toàn trắng. Cột có 1 ô đen và 3 ô đen. Mỗi hàng có 2 ô đen. Ta có thể xây dựng bảng như sau: Gọi các cột là C1, C2, C3, C4 có số ô đen lần lượt là 4, 0, 3, 1. C1 đen hết, C2 trắng hết. Hàng 1: C1 đen, C3 đen, C4 trắng -> 2 ô đen. Hàng 2: C1 đen, C3 đen, C4 trắng -> 2 ô đen. Hàng 3: C1 đen, C3 trắng, C4 đen -> 2 ô đen. Hàng 4: C1 đen, C3 trắng, C4 trắng -> 1 ô đen (sai). Thử lại: C1(4), C2(0), C3(3), C4(1). Tổng 8. Hàng nào cũng 2 ô. C1 đen cả 4 hàng. C2 trắng cả 4 hàng. Còn lại C3 và C4. C3 có 3 đen, 1 trắng. C4 có 1 đen, 3 trắng. Tổng số ô đen ở C3 và C4 là 4. Mỗi hàng cần thêm 1 ô đen nữa (vì đã có C1 đen). Vậy mỗi hàng phải có đúng 1 ô đen trong ${C3, C4}$. Điều này có nghĩa là ma trận con $4 \\times 2$ (C3, C4) phải có mỗi hàng 1 đen. Tổng số đen trong ma trận con này là 4. C3 có 3 đen, C4 có 1 đen. Tổng 4. Đúng. Ví dụ: Hàng 1: C3 đen, C4 trắng. Hàng 2: C3 đen, C4 trắng. Hàng 3: C3 đen, C4 trắng. Hàng 4: C3 trắng, C4 đen. Khi đó C3 có 3 đen, C4 có 1 đen. Mỗi hàng có C1 đen + (C3 hoặc C4 đen) = 2 đen. Thỏa mãn.",
+        "math": "k = 2",
+        "reason": "Kiểm tra tính khả thi của cấu hình",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "s3"
+        ],
+        "operation": "Verify existence",
+        "result": "Tồn tại cách tô màu thỏa mãn với $k=2$.",
+        "verification": {
+          "status": "verified",
+          "method": "construction",
+          "reason": "Đã chỉ ra được một cách tô màu cụ thể."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số ô đen trên mỗi hàng là 2.",
+      "math": "2"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "4 * 2 = 8",
+          "0 + 1 + 2 + 5 = 8 (valid sum of 4 distinct non-negative integers)",
+          "0 + 1 + 3 + 4 = 8 (valid sum of 4 distinct non-negative integers)"
+        ],
+        "assignments": [],
+        "expected": "2"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "methods within the curriculum (matrices or complex numbers)",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 110,
+  "usage": {
+    "default": {
+      "input": 17697,
+      "cachedInput": 0,
+      "output": 4267,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.014449490000000002,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "language repair: 3/7 field(s) rewritten in 0 s",
+    "removed 4 optional metadata field(s) still not in Vietnamese",
+    "attempt 2: unverified, 2 problem(s): the solution uses matrices or complex numbers, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …) | answer check \"4 * 2 = 8\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "usage: model=default in=17697 (cached 0) out=4267 (reasoning 0) ≈ $0.0144",
+    "total ≈ $0.0144 over 2 attempt(s); lesson by default"
+  ]
+}

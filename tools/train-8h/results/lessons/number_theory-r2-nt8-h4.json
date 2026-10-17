@@ -1,0 +1,293 @@
+{
+  "question": {
+    "id": "nt8-h4",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm tất cả các số tự nhiên $n$ sao cho $n^2+4n+97$ là số chính phương.",
+    "reference": "$n\\in\\{12;44\\}$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các số tự nhiên $n$ sao cho $n^2+4n+97$ là số chính phương.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Số chính phương",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Số chính phương",
+        "Hằng đẳng thức hiệu hai bình phương",
+        "Phân tích một số thành các thừa số nguyên dương"
+      ],
+      "techniques": [
+        "factorization",
+        "domain_conditions",
+        "case_analysis"
+      ],
+      "givens": [
+        "Biểu thức $n^2 + 4n + 97$ là một số chính phương"
+      ],
+      "unknowns": [
+        "n"
+      ],
+      "constraints": [
+        "n là số tự nhiên ($n \\in \\mathbb{N}$)",
+        "k là số tự nhiên ($k \\in \\mathbb{N}$)"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Không thể giải quyết vì không có thông tin về điều kiện xác định hoặc các ràng buộc khác."
+      ]
+    },
+    "strategy": "Đặt biểu thức bằng $k^2$, biến đổi về dạng hiệu hai bình phương, phân tích 93 thành các cặp thừa số và giải hệ phương trình để tìm $n$.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 1,
+        "question": "Bạn hãy đặt $n^2 + 4n + 97 = k^2$ ($k \\in \\mathbb{N}$). Bạn có thể biến đổi vế trái về dạng bình phương của một đa thức được không?",
+        "cue": "Số chính phương là bình phương của một số tự nhiên.",
+        "explanation": "Đặt $n^2 + 4n + 97 = k^2$ với $k$ là số tự nhiên. Sau đó, mình sẽ biến đổi vế trái về dạng bình phương của một đa thức để áp dụng hằng đẳng thức hiệu hai bình phương.",
+        "math": "n^2 + 4n + 97 = k^2",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 2,
+        "question": "Sau khi biến đổi, bạn sẽ có $k^2 - (n+2)^2 = 93$. Bạn có thể áp dụng hằng đẳng thức hiệu hai bình phương để phân tích vế trái thành tích của hai thừa số được không?",
+        "cue": "Hằng đẳng thức hiệu hai bình phương: $A^2 - B^2 = (A-B)(A+B)$.",
+        "explanation": "Ta có $k^2 - (n+2)^2 = 93$. Áp dụng hằng đẳng thức hiệu hai bình phương, ta được $(k - (n+2))(k + (n+2)) = 93$. Vì $n$ là số tự nhiên nên $k+n+2 > k-n-2 > 0$ và hai thừa số này cùng chẵn lẻ.",
+        "math": "k^2 - (n+2)^2 = 93",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 3,
+        "question": "Bạn hãy phân tích 93 thành các cặp thừa số nguyên dương. Vì $n \\ge 0$, bạn có thể xác định được cặp thừa số nào phù hợp không?",
+        "cue": "Phân tích 93 thành các cặp thừa số nguyên dương.",
+        "explanation": "Các cặp thừa số nguyên dương của 93 là $(1; 93)$ và $(3; 31)$. Vì $k+n+2 > k-n-2$, ta xét hai trường hợp: $k-n-2=1, k+n+2=93$ và $k-n-2=3, k+n+2=31$. Giải hệ phương trình trong mỗi trường hợp để tìm $n$.",
+        "math": "k-n-2=1, k+n+2=93",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Đặt ẩn phụ và biến đổi",
+        "explanation": "Để $n^2 + 4n + 97$ là số chính phương, ta đặt nó bằng $k^2$ với $k$ là số tự nhiên. Sau đó, mình sẽ biến đổi biểu thức để áp dụng hằng đẳng thức.",
+        "math": "n^2 + 4n + 97 = k^2 \\Leftrightarrow (n+2)^2 + 93 = k^2",
+        "reason": "Đẳng thức đại số",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định nghĩa số chính phương"
+        ],
+        "operation": "Biến đổi đại số",
+        "result": "Biểu thức được biến đổi thành $(n+2)^2 + 93 = k^2$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu để kiểm tra."
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Áp dụng hằng đẳng thức",
+        "explanation": "Chuyển vế để có hiệu hai bình phương, sau đó áp dụng hằng đẳng thức $A^2 - B^2 = (A-B)(A+B)$.",
+        "math": "k^2 - (n+2)^2 = 93 \\Leftrightarrow (k - n - 2)(k + n + 2) = 93",
+        "reason": "Hằng đẳng thức hiệu hai bình phương",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Hằng đẳng thức hiệu hai bình phương"
+        ],
+        "operation": "Áp dụng hằng đẳng thức",
+        "result": "Phương trình được phân tích thành tích hai thừa số bằng 93.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu để kiểm tra."
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Xét các trường hợp",
+        "explanation": "Vì $n$ là số tự nhiên nên $k+n+2 > k-n-2 > 0$. Hai thừa số này cùng chẵn lẻ (vì tổng của chúng là $2(k+2)$ chẵn). Ta xét các cặp ước dương của 93.",
+        "math": "93 = 1 \\times 93 = 3 \\times 31",
+        "reason": "Phân tích số nguyên dương thành các thừa số",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tính chất của số tự nhiên",
+          "Phân tích số thành thừa số"
+        ],
+        "operation": "Phân tích thừa số",
+        "result": "Các cặp thừa số của 93 là (1; 93) và (3; 31).",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu để kiểm tra."
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Tìm nghiệm thứ nhất",
+        "explanation": "Giải hệ phương trình trong từng trường hợp để tìm $n$.",
+        "math": "\\begin{cases} k - n - 2 = 1 \\\\ k + n + 2 = 93 \\end{cases} \\Rightarrow n = 44",
+        "reason": "Giải hệ phương trình bậc nhất hai ẩn",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải hệ phương trình"
+        ],
+        "operation": "Giải hệ phương trình",
+        "result": "Tìm được $n = 44$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu để kiểm tra."
+        }
+      },
+      {
+        "id": "step5",
+        "title": "Tìm nghiệm thứ hai",
+        "explanation": "Giải hệ phương trình trong trường hợp còn lại.",
+        "math": "\\begin{cases} k - n - 2 = 3 \\\\ k + n + 2 = 31 \\end{cases} \\Rightarrow n = 12",
+        "reason": "Giải hệ phương trình bậc nhất hai ẩn",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải hệ phương trình"
+        ],
+        "operation": "Giải hệ phương trình",
+        "result": "Tìm được $n = 12$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu để kiểm tra."
+        }
+      },
+      {
+        "id": "step6",
+        "title": "Kết luận",
+        "explanation": "Kiểm tra điều kiện $n \\in \\mathbb{N}$ và kết luận.",
+        "math": "n \\in \\{12; 44\\}",
+        "reason": "Thỏa mãn điều kiện $n \\in \\mathbb{N}$",
+        "uses": [
+          "step4",
+          "step5"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Điều kiện xác định"
+        ],
+        "operation": "Kết luận",
+        "result": "Các giá trị của $n$ là 12 và 44.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu để kiểm tra."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Đáp số: $n \\in \\{12; 44\\}$",
+      "math": "n \\in \\{12; 44\\}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "integers",
+        "statements": [
+          "(n^2+4n+97) % 3 = 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "12"
+            }
+          ],
+          [
+            {
+              "variable": "n",
+              "value": "44"
+            }
+          ]
+        ],
+        "expected": "12; 44"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 54888,
+  "usage": {
+    "default": {
+      "input": 6109,
+      "cachedInput": 0,
+      "output": 7418,
+      "reasoning": 4368
+    }
+  },
+  "costUsd": 0.01402441,
+  "model": "default",
+  "logs": [
+    "computed: integer target (predicate)",
+    "outline in 34 s (565 chars)",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"(n^2+4n+97) % 3 = 0\" can't be evaluated (could not evaluate: Not a relation). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=6109 (cached 0) out=7418 (reasoning 4368) ≈ $0.0140",
+    "total ≈ $0.0140 over 1 attempt(s); lesson by default"
+  ]
+}

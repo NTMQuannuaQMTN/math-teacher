@@ -1,0 +1,279 @@
+{
+  "question": {
+    "id": "khtn-2025-vong2/II.1",
+    "split": "train",
+    "source": "exam khtn-2025-vong2",
+    "input": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $25^y+\\left(4^x+1\\right)\\left(4x^2+3x+3\\right)=\\left(4^x+4x^2+3x+4\\right)5^y$.",
+    "reference": "$(x;y)\\in\\{(1;1);(2;2)\\}$",
+    "reference_status": "teacher",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $25^y+\\big(4^x+1\\big)\\big(4x^2+3x+3\\big)=\\big(4^x+4x^2+3x+4\\big)5^y$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Phương trình nghiệm nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Phương trình nghiệm nguyên",
+        "Hệ thức Vi-ét",
+        "Phép tính đồng dư",
+        "Hằng đẳng thức hiệu hai bình phương"
+      ],
+      "techniques": [
+        "substitution",
+        "vieta",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình $25^y+(4^x+1)(4x^2+3x+3)=(4^x+4x^2+3x+4)5^y$"
+      ],
+      "unknowns": [
+        "x, y"
+      ],
+      "constraints": [
+        "x, y là số nguyên dương"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu sử dụng phép tính đồng dư (mod 3, mod 8) và phân tích nhân tử $U^2-V^2=39$ để chứng minh không tồn tại nghiệm khác. Các phương pháp này không nằm trong chương trình Toán lớp 9 (THCS) hoặc các chuyên đề Toán chuyên đã nêu (A1-A5, C1-C4)."
+      ]
+    },
+    "strategy": "Đặt $A = 5^y$ để biến phương trình thành bậc hai theo $A$. Sử dụng hệ thức Vi-ét để tìm hai giá trị có thể có của $5^y$. Giải từng trường hợp bằng cách thử nghiệm và sử dụng đồng dư thức cùng hằng đẳng thức hiệu hai bình phương để chứng minh tính duy nhất của nghiệm.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Bạn có nhận xét gì về cấu trúc của phương trình khi đặt $A = 5^y$ không?",
+        "cue": "Phương trình bậc hai theo $5^y$",
+        "explanation": "Bạn hãy đặt $A = 5^y$. Khi đó $25^y = A^2$. Phương trình sẽ trở thành một phương trình bậc hai theo $A$: $A^2 - (4^x + 4x^2 + 3x + 4)A + (4^x + 1)(4x^2 + 3x + 3) = 0$. Bạn hãy thử thay $A = 4^x + 1$ vào để xem sao?",
+        "math": "A^2 - (4^x + 4x^2 + 3x + 4)A + (4^x + 1)(4x^2 + 3x + 3) = 0",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Sau khi tìm được hai giá trị có thể có của $5^y$, bạn sẽ giải quyết từng trường hợp như thế nào?",
+        "cue": "Hệ thức Vi-ét",
+        "explanation": "Vì $A_1 = 4^x + 1$ là một nghiệm, theo hệ thức Vi-ét, tích hai nghiệm bằng hệ số tự do $(4^x + 1)(4x^2 + 3x + 3)$. Từ đó bạn dễ dàng tìm được nghiệm còn lại $A_2 = 4x^2 + 3x + 3$. Vậy ta có hai trường hợp: $5^y = 4^x + 1$ hoặc $5^y = 4x^2 + 3x + 3$.",
+        "math": "5^y = 4^x + 1 \\quad \\text{hoặc} \\quad 5^y = 4x^2 + 3x + 3",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Để giải phương trình $5^y = 4x^2 + 3x + 3$, bạn có thể dùng tính chất đồng dư để tìm tính chẵn lẻ của $y$ không?",
+        "cue": "Phép tính đồng dư",
+        "explanation": "Với trường hợp $5^y = 4x^2 + 3x + 3$, bạn hãy thử xét đồng dư theo mod 3 để tìm tính chẵn lẻ của $y$. Sau đó, đặt $y = 2k$ và biến đổi phương trình về dạng hiệu hai bình phương $U^2 - V^2 = 39$ để tìm nghiệm nguyên.",
+        "math": "5^y \\equiv (-1)^y \\pmod 3 \\quad \\text{và} \\quad 4x^2 + 3x + 3 \\equiv x^2 \\pmod 3",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Biến đổi phương trình thành bậc hai theo $5^y$",
+        "explanation": "Đặt $A = 5^y$. Khi đó $25^y = (5^y)^2 = A^2$. Phương trình đã cho trở thành phương trình bậc hai theo $A$.",
+        "math": "A^2 - (4^x + 4x^2 + 3x + 4)A + (4^x + 1)(4x^2 + 3x + 3) = 0",
+        "reason": "Đặt ẩn phụ và biến đổi đại số",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Đặt ẩn phụ $A = 5^y$"
+        ],
+        "operation": "substitution",
+        "result": "Phương trình bậc hai theo $A$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra $A_1 = 4^x + 1$ là nghiệm"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tìm hai giá trị của $5^y$ bằng Vi-ét",
+        "explanation": "Ta thấy tổng các hệ số của phương trình bậc hai theo $A$ bằng $1 - (4^x + 4x^2 + 3x + 4) + (4^x + 1)(4x^2 + 3x + 3)$. Tuy nhiên, cách nhanh nhất là nhận thấy $A_1 = 4^x + 1$ là một nghiệm vì tích hai nghiệm bằng hệ số tự do. Theo hệ thức Vi-ét, tích hai nghiệm $A_1 \\cdot A_2 = (4^x + 1)(4x^2 + 3x + 3)$. Do đó, nghiệm còn lại là $A_2 = 4x^2 + 3x + 3$.",
+        "math": "A_1 = 4^x + 1, \\quad A_2 = 4x^2 + 3x + 3",
+        "reason": "Hệ thức Vi-ét",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Hệ thức Vi-ét"
+        ],
+        "operation": "vieta",
+        "result": "Hai giá trị có thể có của $5^y$.",
+        "verification": {
+          "status": "verified",
+          "method": "vieta",
+          "reason": "Tổng nghiệm $A_1 + A_2 = 4^x + 1 + 4x^2 + 3x + 3 = 4^x + 4x^2 + 3x + 4$ (đúng hệ số $B$)"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Giải trường hợp $5^y = 4^x + 1$",
+        "explanation": "Ta có hai trường hợp xảy ra:\n1. $5^y = 4^x + 1$\n2. $5^y = 4x^2 + 3x + 3$\n\nVới trường hợp 1: $5^y = 4^x + 1$.\n- Nếu $x = 1$, ta có $5^y = 4^1 + 1 = 5 \\Rightarrow y = 1$. Vậy $(1; 1)$ là một nghiệm.\n- Nếu $x \\ge 2$: Xét đồng dư mod 3. Ta có $4^x + 1 \\equiv 1^x + 1 \\equiv 2 \\pmod 3$. Mặt khác $5^y \\equiv (-1)^y \\pmod 3$. Để $(-1)^y \\equiv 2 \\equiv -1 \\pmod 3$, thì $y$ phải là số lẻ.\nXét đồng dư mod 8. Với $x \\ge 2$, $4^x$ chia hết cho 16 nên $4^x + 1 \\equiv 1 \\pmod 8$. Mặt khác $5^y \\equiv 1 \\pmod 8$ khi và chỉ khi $y$ là số chẵn.\nNhư vậy $y$ vừa lẻ vừa chẵn, vô lý. Vậy trường hợp này vô nghiệm với $x \\ge 2$.",
+        "math": "5^y = 4^x + 1 \\Rightarrow (x;y) = (1;1)",
+        "reason": "Xét trường hợp $5^y = 4^x + 1$",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Thử nghiệm",
+          "Đồng dư thức mod 3",
+          "Đồng dư thức mod 8"
+        ],
+        "operation": "phân tích trường hợp",
+        "result": "Nghiệm $(1; 1)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra $x=1, y=1$"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Giải trường hợp $5^y = 4x^2 + 3x + 3$",
+        "explanation": "Với trường hợp 2: $5^y = 4x^2 + 3x + 3$.\n- Nếu $x = 2$, ta có $5^y = 4(2^2) + 3(2) + 3 = 16 + 6 + 3 = 25 = 5^2 \\Rightarrow y = 2$. Vậy $(2; 2)$ là một nghiệm.\n- Nếu $x \\ge 3$: Xét đồng dư mod 3. Ta có $4x^2 + 3x + 3 \\equiv x^2 \\pmod 3$. Mặt khác $5^y \\equiv (-1)^y \\pmod 3$. Vì $x^2 \\equiv 0$ hoặc $1 \\pmod 3$, nên $(-1)^y$ phải bằng 1 (vì nếu $x^2 \\equiv 0$ thì $5^y \\vdots 3$ vô lý). Do đó $y$ là số chẵn.\nĐặt $y = 2k$ ($k \\ge 1$). Phương trình trở thành $5^{2k} = 4x^2 + 3x + 3$. Nhân hai vế với 16:\n$16 \\cdot 5^{2k} = 64x^2 + 48x + 48$\n$(4 \\cdot 5^k)^2 = (8x + 3)^2 - 9 + 48$\n$(4 \\cdot 5^k)^2 - (8x + 3)^2 = 39$\nĐặt $U = 4 \\cdot 5^k$ và $V = 8x + 3$. Ta có $U^2 - V^2 = 39 \\Rightarrow (U - V)(U + V) = 39$.\nVì $U, V$ là số nguyên dương và $U + V > U - V$, ta xét các cặp ước của 39:\n+ $U - V = 1$ và $U + V = 39 \\Rightarrow 2U = 40 \\Rightarrow U = 20$. Khi đó $4 \\cdot 5^k = 20 \\Rightarrow 5^k = 5 \\Rightarrow k = 1 \\Rightarrow y = 2$. Suy ra $V = 19 \\Rightarrow 8x + 3 = 19 \\Rightarrow x = 2$. (Trùng nghiệm $(2; 2)$).\n+ $U - V = 3$ và $U + V = 13 \\Rightarrow 2U = 16 \\Rightarrow U = 8$. Khi đó $4 \\cdot 5^k = 8 \\Rightarrow 5^k = 2$ (vô nghiệm vì $k$ nguyên dương).\nVậy trường hợp này chỉ có nghiệm $(2; 2)$.",
+        "math": "5^y = 4x^2 + 3x + 3 \\Rightarrow (x;y) = (2;2)",
+        "reason": "Xét trường hợp $5^y = 4x^2 + 3x + 3$",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Thử nghiệm",
+          "Đồng dư thức mod 3",
+          "Hằng đẳng thức hiệu hai bình phương"
+        ],
+        "operation": "factorization",
+        "result": "Nghiệm $(2; 2)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra $x=2, y=2$"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Kết luận",
+        "explanation": "Tổng hợp các kết quả từ hai trường hợp trên, ta tìm được các cặp số nguyên dương $(x; y)$ thỏa mãn phương trình là $(1; 1)$ và $(2; 2)$.",
+        "math": "(x;y) \\in \\{(1;1); (2;2)\\}",
+        "reason": "Tổng hợp kết quả",
+        "uses": [
+          "step_3",
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tổng hợp nghiệm"
+        ],
+        "operation": "conclusion",
+        "result": "Các cặp nghiệm là $(1; 1)$ và $(2; 2)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại cả hai nghiệm"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Các cặp số nguyên dương cần tìm là $(1;1)$ và $(2;2)$.",
+      "math": "(x;y) = (1;1); (x;y) = (2;2)"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "integers",
+        "statements": [
+          "25^y + (4^x + 1) * (4 * x^2 + 3 * x + 3) = (4^x + 4 * x^2 + 3 * x + 4) * 5^y"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "1"
+            },
+            {
+              "variable": "y",
+              "value": "1"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "2"
+            },
+            {
+              "variable": "y",
+              "value": "2"
+            }
+          ]
+        ],
+        "expected": "2"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 107293,
+  "usage": {
+    "default": {
+      "input": 7453,
+      "cachedInput": 0,
+      "output": 13704,
+      "reasoning": 8698
+    }
+  },
+  "costUsd": 0.02418393,
+  "model": "default",
+  "logs": [
+    "computed: - integer_solutions (26 ms)",
+    "outline in 68 s (1342 chars)",
+    "language repair: 4/4 field(s) rewritten in 2 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"25^y + (4^x + 1) * (4 * x^2 + 3 * x + 3) = (4^x + 4 * x^2 + 3 * x + 4) * 5^y\" can't be evaluated (integers checks support one variable). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=7453 (cached 0) out=13704 (reasoning 8698) ≈ $0.0242",
+    "total ≈ $0.0242 over 1 attempt(s); lesson by default"
+  ]
+}

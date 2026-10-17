@@ -405,6 +405,16 @@ function scripted(outputs: (string | Error)[]): JsonModel & { calls: number } {
 }
 
 describe("pipeline retries", () => {
+  it("after a timeout asks for a concise lesson, and the timeout does not use up the correction attempt", async () => {
+    const seen: string[] = [];
+    const outputs: (string | Error)[] = [new OcrFailure("timeout", "local model request timed out", true), JSON.stringify(inequalityLesson({ answerChecks: [{ kind: "inequality", statements: ["3(x - 2) <= 5x + 4 - 7x"], assignments: [], expected: "x <= 3" }] })), JSON.stringify(inequalityLesson())];
+    const model = { ...scripted(outputs), async complete(req: { messages: { content: string }[] }) { seen.push(req.messages.map((m) => m.content).join("\n")); const next = outputs[this.calls++]; if (next instanceof Error) throw next; return next ?? ""; } } as JsonModel & { calls: number };
+    const r = await solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal, retryBudgetMs: 60_000 });
+    expect(model.calls).toBe(3);
+    expect(seen[1]).toContain("NGẮN GỌN");
+    expect(r.verification.status).toBe("verified");
+  });
+
   it("does not retry when the daily quota is exhausted", async () => {
     const model = scripted([new OcrFailure("quota_exhausted", "quota", false)]);
     await expect(solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal })).rejects.toThrow(/quota/);
@@ -421,7 +431,7 @@ describe("pipeline retries", () => {
 
   it("after the retry budget, attempts a bounded language repair, fails safely if it is unusable, and still retries a mathematical error", async () => {
     const chinese = inequalityLesson();
-    chinese.hints[1] = { ...chinese.hints[1]!, question: "我们可以看到 điều gì?" };
+    chinese.hints[1] = { ...chinese.hints[1]!, question: "我们可以看到 điều này" };
     const model = scripted([JSON.stringify(chinese), JSON.stringify(inequalityLesson())]);
     await expect(solveProblem(model, VN_GRADE_9, "Giải bất phương trình $3(x - 2) \\le 5x + 4 - 7x$.", { signal: new AbortController().signal, retryBudgetMs: -1 })).rejects.toMatchObject({ kind: "malformed_output" });
     expect(model.calls).toBe(2);

@@ -23,6 +23,7 @@ import { isKnownTechnique, problemDomains } from "./knowledgeBase";
 import { cleanLanguage } from "./language";
 import { constructNamedPoints } from "./pointDefinitions";
 import { completeFigure, defineReferencedObjects } from "./figureComplete";
+import { expressionMod } from "./integerTargets";
 import { evalCondition, evalExpression, evalRelation, approxEqual, splitRelation, variablesOf, normalizeExpression, type Env } from "./expr";
 import { dist, evaluateFigureCheck, resolveFigure, type ResolvedFigure } from "./geometry";
 import type { AnswerCheck, Figure, FigureCheck, ModelLesson, Verification } from "./solution";
@@ -380,6 +381,21 @@ function evalValue(src: string): number {
 
 export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
   const label = check.statements[0] ?? check.kind;
+  // "MA^2 = MB * MC" is a relation between segments, not an algebraic identity: sampling numbers for M, A, B, C proves
+  // nothing either way (training run 2026-10-14: a correct proof was withheld because of it). Geometric relations are
+  // measured on the figure instead.
+  if ((check.kind === "identity" || check.kind === "inequality") && check.statements.some((s) => /(?<![A-Za-z\\])[A-Z]{2}(?![A-Za-z])/.test(s))) {
+    return { label, passed: false, malformed: true, detail: "a relation between segments (MA, AB…) is not an algebraic identity; it is checked on the figure" };
+  }
+  // "(2^100 + 3^100) % 7" expecting 6: a closed integer expression modulo m is computed exactly. In floating point
+  // 2^100 + 3^100 has lost its last digits and the check failed (final evaluation 2026-10-15: a correct answer withheld).
+  if (check.statements.length === 1 && check.expected && /^-?\d+$/.test(check.expected.trim())) {
+    const mm = /^\s*\(?(.+?)\)?\s*(?:%|\bmod\b)\s*(\d+)\s*$/.exec(check.statements[0]!);
+    if (mm && /\^\s*\(?\d{3,}/.test(mm[1]!)) {
+      const r = expressionMod(mm[1]!.replace(/\*\*/g, "^"), BigInt(mm[2]!));
+      if (r !== null) return r === BigInt(check.expected.trim()) ? { label, passed: true, detail: "computed exactly by modular exponentiation" } : { label, passed: false, detail: `the exact remainder is ${r}` };
+    }
+  }
   try {
     switch (check.kind) {
       case "substitute": {
@@ -456,9 +472,10 @@ export function runAnswerCheck(check: AnswerCheck): CheckOutcome {
       case "integers": {
         const condition = check.statements[0]!;
         const domain = check.statements.slice(1);
-        if (!check.expected) return { label, passed: false, detail: "missing expected answer set" };
+        // Limits of the evaluator, not a mathematical failure: "can't be evaluated", never "failed" (would withhold a correct lesson).
+        if (!check.expected) return { label, passed: false, malformed: true, detail: "missing expected answer set" };
         const vars = [...new Set([condition, ...domain].flatMap((st) => [...variablesOf(st.replace(/\b(or|and|hoặc|và)\b/gi, " "))]))];
-        if (vars.length !== 1) return { label, passed: false, detail: "integers checks support one variable" };
+        if (vars.length !== 1) return { label, passed: false, malformed: true, detail: "integers checks support one variable" };
         const v = vars[0]!;
         const none = /^\s*(none|không có|∅|\\varnothing|\\emptyset)\s*$/i.test(check.expected);
         let compared = 0;
@@ -904,12 +921,20 @@ export function verifyLesson(input: ModelLesson, { problemText }: { problemText?
         }
       }
       // Each "Chứng minh …" part must have at least one of its claims measured (and passing) to count as verified.
+      // If the statement's OWN conclusion is false in the figure, the figure is built wrongly (training run 2026-10-14:
+      // a secant MBC drawn with B, C not on a line through M made "MA² = MB·MC" false): then no claim measured on it may
+      // count against the lesson.
+      let goalFalseInFigure = false;
       for (const part of statementParts(l.analysis.statement)) {
         if (!/chứng minh|prove|show that/i.test(part.text)) continue;
         const measured = checkClaims([part.text.replace(/^.*?(chứng minh|prove|show that)/is, "")], resolved, { exact: l.figure!.scale === "exact" });
         if (measured.length === 0) proofUncovered.push(part.letter || "the proof");
+        if (measured.some((c) => !c.passed)) goalFalseInFigure = true;
       }
-      for (const claim of extremal ? [] : checkClaims(claimTexts, resolved, { exact: l.figure!.scale === "exact" }).slice(0, 12)) {
+      if (goalFalseInFigure) {
+        feedback.push("figure: the statement's own conclusion is false in the constructed figure, so the figure does not satisfy the hypotheses — build every point exactly from its definition (e.g. B and C on one line through M)");
+      }
+      for (const claim of extremal || goalFalseInFigure ? [] : checkClaims(claimTexts, resolved, { exact: l.figure!.scale === "exact" }).slice(0, 12)) {
         checks.push({ label: claim.label, passed: claim.passed });
         if (claim.passed) answerLevelPassed++;
         else {

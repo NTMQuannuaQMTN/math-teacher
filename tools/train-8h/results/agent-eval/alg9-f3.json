@@ -1,0 +1,215 @@
+{
+  "id": "alg9-f3",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "verified",
+  "seconds": 45,
+  "costUsd": 0.0167,
+  "final": "Vậy $m=0$ hoặc $m=\\frac{5}{2}$.",
+  "hints": [
+    "Xét điều kiện để phương trình có hai nghiệm phân biệt",
+    "Biểu diễn $x_1^2+x_2^2$ qua tổng và tích hai nghiệm",
+    "Giải phương trình theo $m$ và đối chiếu điều kiện"
+  ],
+  "reference": "$m\\in\\{0;\\frac52\\}$ ($\\Delta'=m^2-3m+4>0$ với mọi $m$)",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2-2(m-1)x+m-3=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=10$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "phương trình bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "phương trình bậc hai một ẩn",
+        "điều kiện có hai nghiệm (biệt thức Δ)",
+        "hệ thức Vi-ét",
+        "hằng đẳng thức đáng nhớ"
+      ],
+      "techniques": [
+        "vieta",
+        "discriminant",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình $x^2-2(m-1)x+m-3=0$",
+        "Phương trình có hai nghiệm $x_1, x_2$"
+      ],
+      "unknowns": [
+        "Giá trị của tham số $m$"
+      ],
+      "constraints": [
+        "Điều kiện để phương trình có hai nghiệm phân biệt: $\\Delta > 0$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng điều kiện $\\Delta > 0$ để xác định phương trình luôn có hai nghiệm phân biệt với mọi $m$. Sau đó áp dụng hệ thức Vi-ét kết hợp hằng đẳng thức $x_1^2+x_2^2 = (x_1+x_2)^2 - 2x_1x_2$ để lập phương trình theo $m$ và giải tìm $m$ thỏa mãn.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Xét điều kiện để phương trình có hai nghiệm phân biệt",
+        "cue": "Biệt thức $\\Delta$",
+        "explanation": "Tính biệt thức $\\Delta$ của phương trình bậc hai theo $m$. Để phương trình có hai nghiệm phân biệt, ta cần $\\Delta > 0$. Hãy giải bất phương trình này để tìm điều kiện của $m$.",
+        "math": "\\Delta = b^2 - 4ac",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Biểu diễn $x_1^2+x_2^2$ qua tổng và tích hai nghiệm",
+        "cue": "Hằng đẳng thức $A^2+B^2 = (A+B)^2 - 2AB$",
+        "explanation": "Sử dụng hằng đẳng thức $x_1^2+x_2^2 = (x_1+x_2)^2 - 2x_1x_2$. Thay $x_1+x_2$ và $x_1x_2$ bằng các biểu thức theo $m$ từ hệ thức Vi-ét, ta sẽ được một phương trình theo $m$.",
+        "math": "x_1^2+x_2^2 = (x_1+x_2)^2 - 2x_1x_2",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Giải phương trình theo $m$ và đối chiếu điều kiện",
+        "cue": "Giải phương trình bậc hai",
+        "explanation": "Giải phương trình theo $m$ vừa tìm được. Sau đó, đối chiếu các giá trị $m$ tìm được với điều kiện $\\Delta > 0$ ở câu a để chọn kết quả cuối cùng.",
+        "math": "m^2 - 4m - 5 = 0",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Điều kiện để phương trình có hai nghiệm phân biệt",
+        "explanation": "Ta tính biệt thức $\\Delta$ của phương trình bậc hai. Để phương trình có hai nghiệm phân biệt, $\\Delta$ phải lớn hơn 0.",
+        "math": "\\begin{gathered}\\Delta = [-2(m-1)]^2 - 4(m-3) = 4m^2 - 12m + 16 = 4(m^2 - 3m + 4) \\\\ \\Delta' = (m-1)^2 - (m-3) = m^2 - 3m + 4 \\\\ \\Delta' = (m - \\frac{3}{2})^2 + \\frac{7}{4} > 0 \\quad (\\forall m)\\end{gathered}",
+        "reason": "Biệt thức $\\Delta$ và hằng đẳng thức bình phương một tổng",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Điều kiện để phương trình bậc hai có hai nghiệm phân biệt là $\\Delta > 0$"
+        ],
+        "operation": "compute",
+        "result": "Phương trình luôn có hai nghiệm phân biệt với mọi $m$.",
+        "verification": {
+          "status": "verified",
+          "method": "discriminant",
+          "reason": "Biệt thức thu gọn $\\Delta' = (m - 1.5)^2 + 1.75$ luôn dương."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Áp dụng hệ thức Vi-ét",
+        "explanation": "Theo hệ thức Vi-ét, ta có tổng và tích hai nghiệm theo $m$. Ta biến đổi biểu thức $x_1^2+x_2^2$ về dạng chứa tổng và tích.",
+        "math": "\\begin{cases} x_1 + x_2 = 2(m-1) \\\\ x_1 x_2 = m-3 \\end{cases}\nx_1^2 + x_2^2 = (x_1+x_2)^2 - 2x_1x_2 = [2(m-1)]^2 - 2(m-3)",
+        "reason": "Hệ thức Vi-ét và hằng đẳng thức $A^2+B^2 = (A+B)^2 - 2AB$",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Hệ thức Vi-ét",
+          "Hằng đẳng thức đáng nhớ"
+        ],
+        "operation": "expand",
+        "result": "Biểu thức $x_1^2+x_2^2$ được viết theo $m$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x_1+x_2$ và $x_1x_2$ vào công thức."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Giải phương trình tìm $m$",
+        "explanation": "Thay biểu thức theo $m$ vào điều kiện $x_1^2+x_2^2=10$, ta giải phương trình bậc hai theo $m$.",
+        "math": "4(m-1)^2 - 2(m-3) = 10 \n4(m^2 - 2m + 1) - 2m + 6 = 10 \n4m^2 - 10m = 0 \n2m(2m - 5) = 0 \n\\left[\\begin{array}{l}m = 0 \\\\m = \\frac{5}{2} \\end{array}\\right.",
+        "reason": "Giải phương trình bậc hai và phân tích nhân tử",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải phương trình bậc hai"
+        ],
+        "operation": "solve",
+        "result": "m = 0 hoặc m = 2.5",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay m=0 và m=2.5 vào phương trình gốc để kiểm tra."
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Đối chiếu các giá trị $m$ tìm được với điều kiện $\\Delta > 0$ (luôn đúng với mọi $m$). Cả hai giá trị đều thỏa mãn.",
+        "math": "m = 0 \\quad \\text{hoặc} \\quad m = \\frac{5}{2}",
+        "reason": "Đối chiếu điều kiện",
+        "uses": [
+          "s1",
+          "s3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Điều kiện xác định nghiệm"
+        ],
+        "operation": "conclude",
+        "result": "Vậy $m=0$ hoặc $m=2.5$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại với đề bài."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $m=0$ hoặc $m=\\frac{5}{2}$.",
+      "math": "m = 0 \\quad \\text{hoặc} \\quad m = \\frac{5}{2}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 - 2(m-1)x + m - 3 = 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "0"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "2.5"
+            }
+          ]
+        ],
+        "expected": null
+      },
+      {
+        "kind": "value",
+        "statements": [
+          "(2*(0+1))^2 - 2*(0-3)",
+          "(2*(2.5+1))^2 - 2*(2.5-3)"
+        ],
+        "assignments": [],
+        "expected": "10"
+      }
+    ],
+    "figure": null
+  },
+  "failed": [],
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 1: not_checkable, 2 problem(s): answer check \"x^2 - 2(m-1)x + m - 3 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | answer check \"x_1^2 + x_2^2\" can't be evaluated (could not evaluate: Unknown variable x1). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 2: verified, 1 problem(s): answer check \"x^2 - 2(m-1)x + m - 3 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "usage: model=default in=21379 (cached 0) out=4643 (reasoning 0) ≈ $0.0167",
+    "total ≈ $0.0167 over 2 attempt(s); lesson by default"
+  ]
+}

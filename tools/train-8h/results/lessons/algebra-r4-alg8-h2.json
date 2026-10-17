@@ -1,0 +1,222 @@
+{
+  "question": {
+    "id": "alg8-h2",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Giải hệ phương trình $\\begin{cases}x^2+y^2=10\\\\x+y+xy=7\\end{cases}$.",
+    "reference": "$(x;y)\\in\\{(1;3),(3;1)\\}$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Giải hệ phương trình: $\\begin{cases}x^2+y^2=10\\\\x+y+xy=7\\end{cases}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hệ phương trình",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ phương trình bậc nhất hai ẩn (đối xứng)",
+        "Đặt ẩn phụ",
+        "Định lý Vi-ét đảo"
+      ],
+      "techniques": [
+        "substitution",
+        "vieta"
+      ],
+      "givens": [
+        "$x^2 + y^2 = 10$",
+        "x + y + xy = 7"
+      ],
+      "unknowns": [
+        "x",
+        "y"
+      ],
+      "constraints": [
+        "x, y là các số thực"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Hệ phương trình này không thuộc dạng đối xứng loại I (vì $x^2+y^2$ không thể viết trực tiếp qua $S=x+y$ và $P=xy$ mà không làm mất tính đối xứng của $xy$ trong vế thứ hai, hoặc nếu đặt ẩn phụ thì không tạo ra hệ đối xứng chuẩn). Tuy nhiên, đây là bài toán cơ bản có thể giải bằng cách đặt ẩn phụ …"
+      ]
+    },
+    "strategy": "Đặt ẩn phụ $S=x+y, P=xy$ để biến đổi hệ phương trình thành hệ phương trình bậc nhất hoặc bậc hai đơn giản hơn, sau đó giải tìm $S$ và $P$, cuối cùng dùng định lý Vi-ét đảo để tìm $x$ và $y$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn thấy mối liên hệ giữa $x^2+y^2$ và $(x+y)^2$ như thế nào? Nếu đặt $S=x+y$ và $P=xy$ thì hệ phương trình sẽ biến đổi ra sao?",
+        "cue": "Nhớ lại hằng đẳng thức $(x+y)^2 = x^2 + y^2 + 2xy$.",
+        "explanation": "Bạn hãy đặt $S = x+y$ và $P = xy$. Từ phương trình thứ nhất, bạn có thể tính được giá trị của $S^2 - 2P$. Từ phương trình thứ hai, bạn có $S + P = 7$. Từ đó bạn sẽ có một hệ phương trình mới với hai ẩn $S$ và $P$.",
+        "math": "S = x+y, P = xy",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Khi đã có tổng $S$ và tích $P$ của $x$ và $y$, bạn có thể tìm $x$ và $y$ bằng cách nào?",
+        "cue": "Giải hệ phương trình bậc nhất hai ẩn.",
+        "explanation": "Sau khi tìm được $S$ và $P$, bạn sẽ có tổng và tích của $x$ và $y$. Khi đó $x$ và $y$ chính là hai nghiệm của phương trình bậc hai $t^2 - St + P = 0$.",
+        "math": "t^2 - St + P = 0",
+        "stepId": "step_2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Đặt ẩn phụ và biến đổi hệ",
+        "explanation": "Đặt $S = x+y$ và $P = xy$. Từ $x^2+y^2=10$, ta có $S^2 - 2P = 10$. Từ $x+y+xy=7$, ta có $S+P=7$. Ta có hệ mới: $\\begin{cases} S^2 - 2P = 10 \\\\ S + P = 7 \\end{cases}$.",
+        "math": "\\begin{cases} S^2 - 2P = 10 \\\\ S + P = 7 \\end{cases}",
+        "reason": "Biến đổi đại số và đặt ẩn phụ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Hằng đẳng thức $(x+y)^2 = x^2+y^2+2xy$",
+          "Đặt ẩn phụ"
+        ],
+        "operation": "substitution",
+        "result": "Hệ phương trình mới với $S$ và $P$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại nghiệm"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Giải hệ tìm S và P",
+        "explanation": "Từ $S+P=7$ suy ra $P = 7-S$. Thay vào $S^2 - 2P = 10$ ta được $S^2 - 2(7-S) = 10 \\Leftrightarrow S^2 + 2S - 24 = 0$. Phương trình này có nghiệm $S_1 = 4, S_2 = -6$. Với $S=4 \\Rightarrow P=3$. Với $S=-6 \\Rightarrow P=13$.",
+        "math": "\\begin{cases} S=4, P=3 \\\\ S=-6, P=13 \\end{cases}",
+        "reason": "Giải phương trình bậc hai",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải phương trình bậc hai"
+        ],
+        "operation": "solve",
+        "result": "Hai cặp giá trị $(S, P)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại nghiệm"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tìm x và y từ S và P",
+        "explanation": "Với $S=4, P=3$, $x, y$ là nghiệm của $t^2 - 4t + 3 = 0$. Phương trình này có $\\Delta' = 4-3=1 > 0$, nghiệm $t=1, t=3$. Vậy $(x,y) = (1,3)$ hoặc $(3,1)$. Với $S=-6, P=13$, $x, y$ là nghiệm của $t^2 + 6t + 13 = 0$. Phương trình này có $\\Delta' = 9-13=-4 < 0$, vô nghiệm thực.",
+        "math": "\\left[\\begin{array}{l}x=1\\\\y=3\\end{array}\\right.\\; ; \\; \\left[\\begin{array}{l}x=3\\\\y=1\\end{array}\\right.",
+        "reason": "Giải phương trình bậc hai",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định lý Vi-ét đảo",
+          "Biệt thức $\\Delta$"
+        ],
+        "operation": "solve",
+        "result": "Nghiệm của hệ phương trình.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại nghiệm"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Hệ phương trình có hai nghiệm: $(x; y) = (1; 3)$ và $(x; y) = (3; 1)$.",
+      "math": "\\left[\\begin{array}{l}x=1\\\\y=3\\end{array}\\right.\\; ; \\; \\left[\\begin{array}{l}x=3\\\\y=1\\end{array}\\right."
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 + y^2 = 10",
+          "x + y + x*y = 7"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "1"
+            },
+            {
+              "variable": "y",
+              "value": "3"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "3"
+            },
+            {
+              "variable": "y",
+              "value": "1"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "x^2 + y^2 = 10",
+        "passed": true
+      },
+      {
+        "label": "Một số công thức chưa hiển thị đầy đủ; cần kiểm tra lại lời giải",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 33340,
+  "usage": {
+    "default": {
+      "input": 13869,
+      "cachedInput": 0,
+      "output": 4349,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01285153,
+  "model": "default",
+  "logs": [
+    "computed: - system (104 ms)",
+    "attempt 1: unverified, 1 problem(s): interpretationNotes: broken mathematical delimiters or prose swallowed into math; write balanced $…$ with prose outside math.",
+    "attempt 2: unverified, 1 problem(s): interpretationNotes: broken mathematical delimiters or prose swallowed into math; write balanced $…$ with prose outside math.",
+    "usage: model=default in=13869 (cached 0) out=4349 (reasoning 0) ≈ $0.0129",
+    "total ≈ $0.0129 over 2 attempt(s); lesson by default"
+  ]
+}

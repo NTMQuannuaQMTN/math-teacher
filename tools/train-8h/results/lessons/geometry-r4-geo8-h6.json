@@ -1,0 +1,263 @@
+{
+  "question": {
+    "id": "geo8-h6",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho đường tròn $(O;5\\text{ cm})$ và hai dây $AB=8$ cm, $CD=6$ cm song song với nhau, nằm khác phía đối với tâm $O$. Tính khoảng cách giữa hai dây.",
+    "reference": "$7$ cm (khoảng cách từ $O$ đến $AB$ là $3$ cm, đến $CD$ là $4$ cm)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn (O; 5 cm) và hai dây AB = 8 cm, CD = 6 cm song song với nhau, nằm khác phía đối với tâm O. Tính khoảng cách giữa hai dây.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Geometry - Circle properties",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Đường kính vuông góc với dây cung",
+        "Định lý Pythagore trong tam giác vuông",
+        "Khoảng cách từ tâm đến dây cung"
+      ],
+      "techniques": [
+        "pythagoras",
+        "similar_triangles"
+      ],
+      "givens": [
+        "Đường tròn (O; R = 5 cm)",
+        "Dây AB = 8 cm",
+        "Dây CD = 6 cm"
+      ],
+      "unknowns": [
+        "Khoảng cách giữa hai dây AB và CD"
+      ],
+      "constraints": [
+        "Hai dây AB và CD song song",
+        "Hai dây nằm khác phía đối với tâm O"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Kẻ đường vuông góc từ tâm O đến hai dây song song, sử dụng tính chất đường kính vuông góc với dây cung để tìm trung điểm, sau đó áp dụng định lý Pythagore để tính khoảng cách từ tâm đến mỗi dây. Cuối cùng, cộng hai khoảng cách này lại vì hai dây nằm khác phía đối với tâm.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Nếu kẻ một đường thẳng đi qua tâm O vuông góc với hai dây song song AB và CD, thì đường thẳng đó cắt hai dây tại những điểm nào?",
+        "cue": "Đường kính vuông góc với dây cung",
+        "explanation": "Bạn hãy kẻ đường thẳng đi qua tâm O và vuông góc với hai dây song song AB và CD. Gọi giao điểm của đường thẳng này với AB là M và với CD là N. Theo tính chất đường kính vuông góc với dây cung, M và N sẽ lần lượt là trung điểm của AB và CD. Khi đó, OM chính là khoảng cách từ tâm O đến dây AB, và ON là khoảng cách từ tâm O đến dây CD.",
+        "math": "OM \\perp AB \\Rightarrow MA = MB = \\frac{AB}{2}",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Bây giờ, hãy tính độ dài đoạn OM và ON bằng cách áp dụng định lý Pythagore vào các tam giác vuông OMA và ONC.",
+        "cue": "Định lý Pythagore",
+        "explanation": "Xét tam giác OMA vuông tại M. Bạn biết độ dài cạnh huyền OA (bán kính) và cạnh góc vuông AM (nửa dây AB). Áp dụng định lý Pythagore, bạn sẽ tính được OM. Tương tự, xét tam giác ONC vuông tại N, bạn sẽ tính được ON.",
+        "math": "OM^2 = OA^2 - AM^2",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Cuối cùng, vì hai dây nằm khác phía đối với tâm O, bạn sẽ tính khoảng cách giữa hai dây (đoạn MN) như thế nào?",
+        "cue": "Vị trí tương đối",
+        "explanation": "Vì hai dây AB và CD nằm khác phía đối với tâm O, nên điểm O nằm giữa hai dây. Do đó, khoảng cách giữa hai dây chính là tổng độ dài hai đoạn OM và ON.",
+        "math": "MN = OM + ON",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xác định trung điểm của các dây cung",
+        "explanation": "Để tính khoảng cách từ tâm đến các dây, ta sử dụng tính chất đường kính vuông góc với dây cung. Ta kẻ đường thẳng đi qua O vuông góc với AB và CD. Vì AB // CD, nên đường thẳng này cũng vuông góc với CD. Gọi M và N lần lượt là giao điểm của đường thẳng này với AB và CD. Khi đó, M và N là trung điểm của AB và CD.",
+        "math": "MA = MB = \\frac{AB}{2} = \\frac{8}{2} = 4 \\text{ (cm)} \\\\ NC = ND = \\frac{CD}{2} = \\frac{6}{2} = 3 \\text{ (cm)}",
+        "reason": "Tính chất đường kính vuông góc với dây cung",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "AB // CD",
+          "OM \\perp AB",
+          "ON \\perp CD"
+        ],
+        "operation": "calculate",
+        "result": "MA = 4 cm, NC = 3 cm",
+        "verification": {
+          "status": "verified",
+          "method": "figure",
+          "reason": "M và N là trung điểm của AB và CD"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tính khoảng cách từ O đến dây AB",
+        "explanation": "Xét tam giác OMA vuông tại M (vì $OM \\perp AB)$. Áp dụng định lý Pythagore, ta có $OA^2 = OM^2 + MA^2$. Từ đó suy ra $OM^2 = OA^2 - MA^2$. Ta biết OA = 5 cm (bán kính) và MA = 4 cm.",
+        "math": "OM^2 = OA^2 - MA^2 = 5^2 - 4^2 = 25 - 16 = 9 \\\\ \\Rightarrow OM = \\sqrt{9} = 3 \\text{ (cm)}",
+        "reason": "Định lý Pythagore",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "OA = 5 cm",
+          "MA = 4 cm",
+          "OM \\perp AB"
+        ],
+        "operation": "calculate",
+        "result": "OM = 3 cm",
+        "verification": {
+          "status": "verified",
+          "method": "figure",
+          "reason": "OM^2 + MA^2 = 3^2 + 4^2 = 25 = OA^2"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tính khoảng cách từ O đến dây CD",
+        "explanation": "Tương tự, xét tam giác ONC vuông tại N (vì $ON \\perp CD)$. Áp dụng định lý Pythagore, ta có $OC^2 = ON^2 + NC^2$. Suy ra $ON^2 = OC^2 - NC^2$. Ta biết OC = 5 cm (bán kính) và NC = 3 cm.",
+        "math": "ON^2 = OC^2 - NC^2 = 5^2 - 3^2 = 25 - 9 = 16 \\\\ \\Rightarrow ON = \\sqrt{16} = 4 \\text{ (cm)}",
+        "reason": "Định lý Pythagore",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "OC = 5 cm",
+          "NC = 3 cm",
+          "ON \\perp CD"
+        ],
+        "operation": "calculate",
+        "result": "ON = 4 cm",
+        "verification": {
+          "status": "verified",
+          "method": "figure",
+          "reason": "ON^2 + NC^2 = 4^2 + 3^2 = 25 = OC^2"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính khoảng cách giữa hai dây",
+        "explanation": "Vì hai dây AB và CD nằm khác phía đối với tâm O, nên điểm O nằm giữa hai dây. Do đó, khoảng cách giữa hai dây chính là tổng độ dài hai đoạn OM và ON.",
+        "math": "MN = OM + ON = 3 + 4 = 7 \\text{ (cm)}",
+        "reason": "Tính chất vị trí tương đối của các điểm",
+        "uses": [
+          "step_2",
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "AB và CD khác phía đối với O",
+          "OM = 3 cm",
+          "ON = 4 cm"
+        ],
+        "operation": "calculate",
+        "result": "MN = 7 cm",
+        "verification": {
+          "status": "verified",
+          "method": "figure",
+          "reason": "MN = OM + ON = 3 + 4 = 7"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Khoảng cách giữa hai dây AB và CD là 7 cm.",
+      "math": "7 \\text{ cm}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "sqrt(5^2 - 4^2) + sqrt(5^2 - 3^2)"
+        ],
+        "assignments": [],
+        "expected": "7"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [],
+      "circles": [],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "sqrt(5^2 - 4^2) + sqrt(5^2 - 3^2)",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 33645,
+  "usage": {
+    "default": {
+      "input": 8927,
+      "cachedInput": 0,
+      "output": 4525,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01089515,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — points not constructed: C, D (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "language repair round 1: not accepted statusReason: still foreign",
+    "language repair round 2: not accepted statusReason: still foreign",
+    "language repair: 0/1 field(s) rewritten in 1 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: verified, 10 problem(s): figure: cycle at point A (left out of the figure) | figure: circle c_O could not be constructed (left out of the figure) | figure: point A (on_circle) could not be constructed (left out of the figure)",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=8927 (cached 0) out=4525 (reasoning 0) ≈ $0.0109",
+    "total ≈ $0.0109 over 1 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "question": {
+    "id": "alg9-f2",
+    "split": "fresh",
+    "source": "authored 2026-10-15 11:00 before the second run's model calls (verified); never used for a fix",
+    "input": "Giải hệ phương trình $\\begin{cases}x+y=5\\\\x^3+y^3=35\\end{cases}$.",
+    "reference": "$(x;y)\\in\\{(2;3),(3;2)\\}$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Giải hệ phương trình: $\\begin{cases}x+y=5\\\\x^3+y^3=35\\end{cases}$",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hệ phương trình",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ phương trình bậc nhất và bậc hai (đối xứng)",
+        "Định lý Vi-ét đảo",
+        "Phương trình bậc hai"
+      ],
+      "techniques": [
+        "substitution",
+        "vieta"
+      ],
+      "givens": [
+        "x + y = 5",
+        "$x^3 + y^3 = 35$"
+      ],
+      "unknowns": [
+        "x",
+        "y"
+      ],
+      "constraints": [
+        "x, y là các số thực"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng hằng đẳng thức $x^3 + y^3 = (x + y)(x^2 - xy + y^2)$ để tìm tích $xy$. Sau đó, áp dụng định lý Vi-ét đảo để tìm $x$ và $y$ thông qua phương trình bậc hai.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn có thể biến đổi phương trình $x^3 + y^3 = 35$ về một biểu thức liên quan đến $x + y$ và $xy$ không?",
+        "cue": "Hằng đẳng thức đáng nhớ liên quan đến $x^3 + y^3$ và $x + y$.",
+        "explanation": "Bạn hãy nhớ lại hằng đẳng thức: $x^3 + y^3 = (x + y)(x^2 - xy + y^2)$. Từ đó, bạn có thể biến đổi $x^2 - xy + y^2$ về dạng chỉ chứa $(x + y)$ và $xy$ để tìm ra giá trị của $xy$.",
+        "math": "x^3 + y^3 = (x + y)(x^2 - xy + y^2)",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Nếu biết tổng $x + y$ và tích $xy$, bạn có thể tìm $x$ và $y$ bằng cách giải phương trình bậc hai nào không?",
+        "cue": "Đặt $S = x + y$ và $P = xy$.",
+        "explanation": "Bây giờ bạn đã có giá trị của $x + y$ và $xy$. Hãy đặt $S = x + y$ và $P = xy$. Khi đó $x$ và $y$ chính là hai nghiệm của phương trình bậc hai $X^2 - SX + P = 0$.",
+        "math": "X^2 - (x+y)X + xy = 0",
+        "stepId": "step_2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Tìm tích $xy$",
+        "explanation": "Ta sử dụng hằng đẳng thức $x^3 + y^3 = (x + y)(x^2 - xy + y^2)$ để biến đổi phương trình thứ hai. Sau đó, biến đổi $x^2 - xy + y^2$ thành $(x + y)^2 - 3xy$ để thay các giá trị đã biết vào.",
+        "math": "35 = 5 \\cdot ((x + y)^2 - 3xy) \\Rightarrow 7 = 25 - 3xy \\Rightarrow 3xy = 18 \\Rightarrow xy = 6",
+        "reason": "Hằng đẳng thức $x^3 + y^3 = (x + y)(x^2 - xy + y^2)$ và biến đổi đại số.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "x + y = 5",
+          "x^3 + y^3 = 35"
+        ],
+        "operation": "substitution",
+        "result": "xy = 6",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x+y=5$ và $xy=6$ vào $x^3+y^3 = (x+y)((x+y)^2-3xy) = 5(25-18) = 35$ (đúng)."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tìm $x$ và $y$",
+        "explanation": "Ta có hệ mới: $x + y = 5$ và $xy = 6$. Theo định lý Vi-ét đảo, $x$ và $y$ là hai nghiệm của phương trình bậc hai $X^2 - 5X + 6 = 0$. Giải phương trình này ta tìm được $x$ và $y$.",
+        "math": "X^2 - 5X + 6 = 0 \\Rightarrow \\Delta = 25 - 24 = 1 \\Rightarrow X = \\frac{5 \\pm 1}{2} \\Rightarrow \\left[\\begin{array}{l}X = 3\\\\X = 2\\end{array}\\right.",
+        "reason": "Định lý Vi-ét đảo và công thức nghiệm phương trình bậc hai.",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "x + y = 5",
+          "xy = 6"
+        ],
+        "operation": "quadratic_formula",
+        "result": "x = 2, y = 3 hoặc x = 3, y = 2",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Với $x=2, y=3$: $x+y=5$ và $x^3+y^3=8+27=35$. Với $x=3, y=2$: $x+y=5$ và $x^3+y^3=27+8=35$."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Hệ phương trình có hai nghiệm: $(x; y) = (2; 3)$ và $(x; y) = (3; 2)$.",
+      "math": "\\begin{cases}x=2\\\\y=3\\end{cases} \\text{ hoặc } \\begin{cases}x=3\\\\y=2\\end{cases}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x + y = 5",
+          "x^3 + y^3 = 35"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "2"
+            },
+            {
+              "variable": "y",
+              "value": "3"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "3"
+            },
+            {
+              "variable": "y",
+              "value": "2"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "x + y = 5",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 14803,
+  "usage": {
+    "default": {
+      "input": 5807,
+      "cachedInput": 0,
+      "output": 1870,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.00545555,
+  "model": "default",
+  "logs": [
+    "computed: - system (26 ms)",
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=default in=5807 (cached 0) out=1870 (reasoning 0) ≈ $0.0055",
+    "total ≈ $0.0055 over 1 attempt(s); lesson by default"
+  ]
+}

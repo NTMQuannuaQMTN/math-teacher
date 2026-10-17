@@ -1,0 +1,296 @@
+{
+  "question": {
+    "id": "ptnk-2023-chuyen/1",
+    "split": "train",
+    "source": "exam ptnk-2023-chuyen",
+    "input": "Giải hệ phương trình $\\begin{cases}(x+y)\\left(4+\\frac{1}{xy}\\right)=1\\\\ \\left(4x+\\frac{1}{x}\\right)\\left(4y+\\frac{1}{y}\\right)=-20\\end{cases}$.",
+    "reference": "$(x,y)\\in\\{(1,-\\tfrac12),(\\tfrac14,-\\tfrac12),(-\\tfrac12,1),(-\\tfrac12,\\tfrac14)\\}$",
+    "reference_status": "official",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Giải hệ phương trình $\\begin{cases}(x+y)\\left(4+\\frac{1}{xy}\\right)=1 \\\\ \\left(4x+\\frac{1}{x}\\right)\\left(4y+\\frac{1}{y}\\right)=-20\\end{cases}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hệ phương trình",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ phương trình",
+        "Biến đổi đại số",
+        "Đặt ẩn phụ",
+        "Hệ phương trình đối xứng loại 1"
+      ],
+      "techniques": [
+        "substitution",
+        "factorization"
+      ],
+      "givens": [
+        "Hệ phương trình: $\\begin{cases}(x+y)\\left(4+\\frac{1}{xy}\\right)=1 \\\\ \\left(4x+\\frac{1}{x}\\right)\\left(4y+\\frac{1}{y}\\right)=-20\\end{cases}$"
+      ],
+      "unknowns": [
+        "x",
+        "y"
+      ],
+      "constraints": [
+        "Điều kiện xác định: $x \\neq 0$ và $y \\neq 0$."
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Đặt ẩn phụ $u = 4x + 1/x$ và $v = 4y + 1/y$ để biến đổi hệ phương trình thành hệ đối xứng mới, sau đó giải tìm $u, v$ và cuối cùng tìm $x, y$.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 2,
+        "question": "Bạn có nhận xét gì về cấu trúc của hai phương trình trong hệ khi biểu diễn qua tổng $x+y$ và tích $xy$?",
+        "cue": "Bạn hãy thử khai triển và biến đổi các biểu thức trong hệ về dạng chứa tổng $S = x+y$ và tích $P = xy$ xem sao?",
+        "explanation": "Khai triển vế trái của phương trình thứ nhất: $(x+y)(4 + \\frac{1}{xy}) = 4(x+y) + \\frac{x+y}{xy} = 4(x+y) + \\frac{1}{x} + \\frac{1}{y}$. Từ đó ta có thể thấy mối liên hệ giữa các biểu thức chứa $x$ và $y$. Hãy thử khai triển phương trình thứ hai xem nó có liên quan gì đến $S$ và $P$ không.",
+        "math": "S = x + y, P = xy",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Nếu đặt $u = 4x + \\frac{1}{x}$ và $v = 4y + \\frac{1}{y}$, hệ phương trình sẽ trở nên đơn giản hơn như thế nào?",
+        "cue": "Bạn hãy thử đặt $u = 4x + \\frac{1}{x}$ và $v = 4y + \\frac{1}{y}$.",
+        "explanation": "Nếu đặt $u = 4x + \\frac{1}{x}$ và $v = 4y + \\frac{1}{y}$, thì phương trình thứ hai trở thành $uv = -20$. Còn phương trình thứ nhất, nếu khai triển ra sẽ là $4(x+y) + \\frac{1}{x} + \\frac{1}{y} = 1$. Ta thấy $u+v = 4x + \\frac{1}{x} + 4y + \\frac{1}{y} = 4(x+y) + \\frac{1}{x} + \\frac{1}{y}$. Vậy phương trình thứ nhất chính là $u+v = 1$. Khi đó ta có một hệ phương trình đối xứng mới với $u$ và $v$.",
+        "math": "u = 4x + 1/x, v = 4y + 1/y",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 4,
+        "question": "Sau khi tìm được giá trị của $u$ và $v$, bạn sẽ tìm $x$ và $y$ như thế nào?",
+        "cue": "Sau khi tìm được $u$ và $v$, bạn giải phương trình bậc hai để tìm $x$ và $y$.",
+        "explanation": "Khi đã có cặp $(u, v)$, bạn giải phương trình $4x + \\frac{1}{x} = u$ (tương đương $4x^2 - ux + 1 = 0$) để tìm $x$. Tương tự với $y$. Vì hệ đối xứng, nếu $(u, v)$ là một nghiệm thì $(v, u)$ cũng là một nghiệm, dẫn đến các cặp $(x, y)$ hoán đổi cho nhau.",
+        "math": "4x^2 - ux + 1 = 0",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Xác định điều kiện xác định",
+        "explanation": "Đầu tiên, ta xác định điều kiện xác định của hệ phương trình. Vì các phân thức có mẫu là $x$ và $y$, nên $x$ và $y$ khác 0.",
+        "math": "x \\neq 0, y \\neq 0",
+        "reason": "Điều kiện xác định của phân thức.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Điều kiện xác định của phân thức."
+        ],
+        "operation": "domain_conditions",
+        "result": "Điều kiện xác định là $x \\neq 0$ và $y \\neq 0$.",
+        "verification": {
+          "status": "verified",
+          "method": "domain_check",
+          "reason": "Các phân thức có mẫu là x và y."
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Đặt ẩn phụ và biến đổi hệ phương trình",
+        "explanation": "Ta đặt ẩn phụ để đơn giản hóa hệ phương trình. Đặt $u = 4x + \\frac{1}{x}$ và $v = 4y + \\frac{1}{y}$. Khi đó, ta có $u + v = 4x + \\frac{1}{x} + 4y + \\frac{1}{y} = 4(x+y) + \\frac{1}{x} + \\frac{1}{y}$. Phương trình thứ nhất của hệ là $(x+y)(4 + \\frac{1}{xy}) = 4(x+y) + \\frac{x+y}{xy} = 4(x+y) + \\frac{1}{y} + \\frac{1}{x}$. Vậy phương trình thứ nhất chính là $u + v = 1$. Phương trình thứ hai là $uv = -20$. Ta có hệ mới: $\\begin{cases} u + v = 1 \\\\ uv = -20 \\end{cases}$.",
+        "math": "\\begin{cases} u + v = 1 \\\\ uv = -20 \\end{cases}",
+        "reason": "Đặt ẩn phụ và biến đổi đại số.",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định lý Vi-ét đảo."
+        ],
+        "operation": "substitution",
+        "result": "Hệ phương trình mới là $\\begin{cases} u + v = 1 \\\\ uv = -20 \\end{cases}$.",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_manipulation",
+          "reason": "Biến đổi vế trái phương trình 1 và 2."
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Giải hệ phương trình mới",
+        "explanation": "Từ hệ $\\begin{cases} u + v = 1 \\\\ uv = -20 \\end{cases}$, theo định lý Vi-ét đảo, $u$ và $v$ là nghiệm của phương trình bậc hai $T^2 - T - 20 = 0$. Phương trình này có $\\Delta = (-1)^2 - 4(1)(-20) = 81 > 0$, nên có hai nghiệm phân biệt $T_1 = 5$ và $T_2 = -4$. Vậy ta có hai trường hợp: $\\begin{cases} u = 5 \\\\ v = -4 \\end{cases}$ hoặc $\\begin{cases} u = -4 \\\\ v = 5 \\end{cases}$.",
+        "math": "T^2 - T - 20 = 0 \\Rightarrow T_1 = 5, T_2 = -4",
+        "reason": "Định lý Vi-ét đảo.",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định lý Vi-ét đảo."
+        ],
+        "operation": "vieta",
+        "result": "Các cặp $(u, v)$ là $(5, -4)$ và $(-4, 5)$.",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_manipulation",
+          "reason": "Giải phương trình bậc hai."
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Tìm x và y từ u và v",
+        "explanation": "Ta xét từng trường hợp để tìm $x$ và $y$.\nTrường hợp 1: $u = 5$ và $v = -4$.\n$u = 5 \\Rightarrow 4x + \\frac{1}{x} = 5 \\Leftrightarrow 4x^2 - 5x + 1 = 0$. Phương trình này có $1 + (-5) + 4 = 0$ nên có hai nghiệm $x_1 = 1$ và $x_2 = 1/4$.\n$v = -4 \\Rightarrow 4y + \\frac{1}{y} = -4 \\Leftrightarrow 4y^2 + 4y + 1 = 0 \\Leftrightarrow (2y+1)^2 = 0$ nên có nghiệm kép $y = -1/2$.\nVậy ta được hai nghiệm $(x, y) = (1; -1/2)$ và $(1/4; -1/2)$.\nTrường hợp 2: $u = -4$ và $v = 5$.\nTương tự, ta tìm được $x = -1/2$ và $y \\in \\{1; 1/4\\}$.\nVậy ta được hai nghiệm $(x, y) = (-1/2; 1)$ và $(-1/2; 1/4)$.",
+        "math": "\\begin{cases} 4x^2 - 5x + 1 = 0 \\\\ 4y^2 + 4y + 1 = 0 \\end{cases} \\text{ hoặc } \\begin{cases} 4x^2 + 4x + 1 = 0 \\\\ 4y^2 - 5y + 1 = 0 \\end{cases}",
+        "reason": "Giải phương trình bậc hai.",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải phương trình bậc hai."
+        ],
+        "operation": "factorization",
+        "result": "Các nghiệm của hệ là $(1; -1/2), (1/4; -1/2), (-1/2; 1), (-1/2; 1/4)$.",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_manipulation",
+          "reason": "Giải phương trình bậc hai."
+        }
+      },
+      {
+        "id": "step5",
+        "title": "Kết luận",
+        "explanation": "Tất cả các nghiệm tìm được đều thỏa mãn điều kiện $x \\neq 0$ và $y \\neq 0$. Vậy hệ phương trình có 4 nghiệm như trên.",
+        "math": "x \\neq 0, y \\neq 0",
+        "reason": "Kiểm tra điều kiện xác định.",
+        "uses": [
+          "step4",
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Kiểm tra điều kiện xác định."
+        ],
+        "operation": "domain_conditions",
+        "result": "Hệ phương trình có 4 nghiệm: $(1; -1/2), (1/4; -1/2), (-1/2; 1), (-1/2; 1/4)$.",
+        "verification": {
+          "status": "verified",
+          "method": "domain_check",
+          "reason": "Các nghiệm đều khác 0."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Hệ phương trình có 4 nghiệm:\n(x; y) = (-1/2; 1/4)\n(x; y) = (-1/2; 1)\n(x; y) = (1/4; -1/2)\n(x; y) = (1; -1/2)",
+      "math": "\\left\\{\\begin{matrix} (x;y) = (-1/2; 1/4) \\\\ (x;y) = (-1/2; 1) \\\\ (x;y) = (1/4; -1/2) \\\\ (x;y) = (1; -1/2) \\end{matrix}\\right."
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "(x+y)*(4+1/(x*y))=1",
+          "(4*x+1/x)*(4*y+1/y)=-20"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "-0.5"
+            },
+            {
+              "variable": "y",
+              "value": "0.25"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "-0.5"
+            },
+            {
+              "variable": "y",
+              "value": "1"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "0.25"
+            },
+            {
+              "variable": "y",
+              "value": "-0.5"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "1"
+            },
+            {
+              "variable": "y",
+              "value": "-0.5"
+            }
+          ]
+        ],
+        "expected": "4 solutions"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "(x+y)*(4+1/(x*y))=1",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step5",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 146,
+  "usage": {
+    "default": {
+      "input": 5341,
+      "cachedInput": 0,
+      "output": 3705,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.008035050000000002,
+  "model": "default",
+  "logs": [
+    "computed: - system (46 ms)",
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=default in=5341 (cached 0) out=3705 (reasoning 0) ≈ $0.0080",
+    "total ≈ $0.0080 over 1 attempt(s); lesson by default"
+  ]
+}

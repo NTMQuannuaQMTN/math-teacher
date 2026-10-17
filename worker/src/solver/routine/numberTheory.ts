@@ -447,3 +447,89 @@ export function divisibleForAllLesson(text: string): RoutineResult | null {
 }
 
 export const NUMBER_THEORY_ROUTINES = [powerResidueLesson, gcdLcmLesson, remaindersLesson, integerEquationLesson, linearDivisorLesson, divisibleForAllLesson];
+NUMBER_THEORY_ROUTINES.unshift(consecutiveProductLesson);
+
+// ------------------------------------------------- "P(n) chia hết cho m với mọi n" via consecutive integers
+/**
+ * Reviewer 2026-10-15 (nt8-h9, 6/10): the residue-class table with "P(n) ≡ P(r)" is too heavy for Grade 9. The usual
+ * argument: P(n) = a·(product of k consecutive integers) + m·R(n), and a product of k consecutive integers is divisible by
+ * k! (k ≤ 5: one of 2 consecutive is even; among 3 one is divisible by 3 …). Found by exact polynomial arithmetic and
+ * used only when m | a·k! and R has integer coefficients.
+ */
+export function consecutiveProductLesson(text: string): RoutineResult | null {
+  const t = flatten(text);
+  if (!singleTask(t) || !/chứng minh|chứng tỏ/i.test(t)) return null;
+  const m = /([0-9a-z^+\-*()]+)\s+(?:luôn\s+)?chia hết cho\s+(\d+)/i.exec(t);
+  const domain = domainOf(t);
+  if (!m || !domain || !/với mọi/i.test(t)) return null;
+  const vars = [...new Set(m[1]!.match(/[a-z]/g) ?? [])];
+  if (vars.length !== 1) return null;
+  const v = vars[0]!, mod = BigInt(m[2]!);
+  const P = integerPolynomial(m[1]!, v);
+  if (!P || mod < 2n) return null;
+  const deg = P.coefficients.length - 1;
+  if (deg < 2 || deg > 5) return null;
+  const factorial = (k: number) => { let f = 1n; for (let i = 2n; i <= BigInt(k); i++) f *= i; return f; };
+  // Centred product of k consecutive integers: (n - lo)(n - lo + 1)…, lo = floor((k-1)/2).
+  const centred = (k: number): bigint[] => {
+    const lo = Math.floor((k - 1) / 2);
+    let Q: bigint[] = [1n];
+    for (let i = 0; i < k; i++) {
+      const r = BigInt(i - lo);
+      const next = Array<bigint>(Q.length + 1).fill(0n);
+      Q.forEach((c, j) => { next[j] = next[j]! + c * r; next[j + 1] = next[j + 1]! + c; });
+      Q = next;
+    }
+    return Q;
+  };
+  const factorsOf = (k: number) => { const lo = Math.floor((k - 1) / 2); return Array.from({ length: k }, (_, i) => { const r = i - lo; return r === 0 ? v : `(${v}${r > 0 ? "+" : "-"}${Math.abs(r)})`; }).join(""); };
+  // P(n) = Σ c_k · (k consecutive integers) + mod·R(n): the leading term is removed by a product of as many consecutive
+  // integers, until the rest is a multiple of mod (review 2026-10-15: n⁵ − n ⋮ 30 was a 30-row remainder table; the
+  // textbook proof is (n−2)(n−1)n(n+1)(n+2) + 5(n−1)n(n+1)). Each c_k·k! must be divisible by mod.
+  const terms: { c: bigint; k: number; Q: bigint[] }[] = [];
+  let rest = [...P.coefficients];
+  for (let k = deg; k >= 2 && rest.some((c) => c % mod !== 0n); k--) {
+    const c = rest[k] ?? 0n;
+    if (c === 0n) continue;
+    const Q = centred(k);
+    if ((c * factorial(k)) % mod !== 0n) return null;
+    terms.push({ c, k, Q });
+    rest = rest.map((x, i) => x - c * (Q[i] ?? 0n));
+  }
+  if (!terms.length || rest.some((c) => c % mod !== 0n) || terms.length > 2) return null;
+  while (rest.length > 1 && rest[rest.length - 1] === 0n) rest.pop();
+  const R = rest.map((c) => c / mod);
+  const polyTex = (p: bigint[]) => {
+    const out: string[] = [];
+    for (let i = p.length - 1; i >= 0; i--) {
+      const c = p[i]!; if (c === 0n) continue;
+      const ab = c < 0n ? -c : c, body = i === 0 ? String(ab) : `${ab === 1n ? "" : ab}${v}${i > 1 ? `^{${i}}` : ""}`;
+      out.push(`${c < 0n ? "-" : out.length ? "+" : ""}${body}`);
+    }
+    return out.join("") || "0";
+  };
+  const coefTex = (c: bigint, first: boolean) => (c === 1n ? (first ? "" : "+") : c === -1n ? "-" : c < 0n ? String(c) : first ? String(c) : `+${c}`);
+  const restTex = R.every((c) => c === 0n) ? "" : R.filter((c) => c !== 0n).length === 1 ? (() => { const one = polyTex(R.map((c) => c * mod)); return one.startsWith("-") ? one : `+${one}`; })() : `+${mod}\\left(${polyTex(R)}\\right)`;
+  const expr = latex(m[1]!);
+  const why = (k: number) => k === 2 ? "Trong hai số nguyên liên tiếp luôn có một số chẵn, nên tích chia hết cho $2$."
+    : k === 3 ? "Trong ba số nguyên liên tiếp luôn có một số chẵn và một số chia hết cho $3$; vì $2$ và $3$ nguyên tố cùng nhau nên tích chia hết cho $6$."
+    : k === 4 ? "Trong bốn số nguyên liên tiếp có một số chia hết cho $3$, và có hai số chẵn liên tiếp, một trong hai số đó chia hết cho $4$, nên tích chia hết cho $2\\cdot4=8$; vì $3$ và $8$ nguyên tố cùng nhau nên tích chia hết cho $24$."
+    : "Trong năm số nguyên liên tiếp có một số chia hết cho $5$, có một số chia hết cho $3$, và có hai số chẵn liên tiếp, một trong hai số đó chia hết cho $4$, nên tích chia hết cho $8$; vì $3$, $5$, $8$ đôi một nguyên tố cùng nhau nên tích chia hết cho $120$.";
+  const decomposition = `${expr}=${terms.map((t, i) => `${coefTex(t.c, i === 0)}${factorsOf(t.k)}`).join("")}${restTex}`;
+  const termWord = terms.length === 1 ? `một tích của ${terms[0]!.k} số nguyên liên tiếp` : `tổng của ${terms.map((t) => `${t.c === 1n ? "" : `${t.c < 0n ? -t.c : t.c} lần `}tích ${t.k} số nguyên liên tiếp`).join(" và ")}`;
+  const details: AlgebraDeduction[] = [
+    { title: "Tách thành tích các số nguyên liên tiếp", explanation: `Ta viết $${expr}$ thành ${termWord}${restTex ? `, cộng với một bội của $${mod}$` : ""}. Khai triển vế phải để kiểm tra lại.`, math: decomposition, reason: "Khai triển và nhóm hạng tử", question: `Có thể viết biểu thức thành tích của các số nguyên liên tiếp không?` },
+    ...terms.map((t): AlgebraDeduction => ({ title: terms.length === 1 ? "Tích các số nguyên liên tiếp" : `Tích ${t.k} số nguyên liên tiếp`, explanation: `${why(t.k)}${t.c === 1n || t.c === -1n ? (factorial(t.k) !== mod ? ` Mà $${factorial(t.k)}$ chia hết cho $${mod}$.` : "") : ` Nhân với $${t.c < 0n ? -t.c : t.c}$: $${(t.c < 0n ? -t.c : t.c)}\\cdot${factorial(t.k)}=${(t.c < 0n ? -t.c : t.c) * factorial(t.k)}$ chia hết cho $${mod}$.`}`, math: `${t.c === 1n || t.c === -1n ? "" : `${t.c < 0n ? -t.c : t.c}`}${factorsOf(t.k)}\\ \\vdots\\ ${t.c === 1n || t.c === -1n ? factorial(t.k) : mod}`, reason: "Tính chất chia hết của tích các số nguyên liên tiếp", question: `Vì sao tích ${t.k} số nguyên liên tiếp chia hết cho $${factorial(t.k)}$?` })),
+    { title: "Kết luận", explanation: `Mỗi số hạng ở vế phải đều chia hết cho $${mod}$, nên tổng của chúng chia hết cho $${mod}$. Vậy $${expr}$ chia hết cho $${mod}$ với mọi số ${domainWord(domain)} $${v}$.`, math: `${expr}\\ \\vdots\\ ${mod}`, reason: "Tính chất chia hết của một tổng", question: "Tổng của các số chia hết cho một số thì sao?" },
+  ];
+  const final = `Vậy $${expr}$ chia hết cho $${mod}$ với mọi số ${domainWord(domain)} $${v}$.`;
+  const lesson = lessonOf(text, "Chứng minh chia hết với mọi số nguyên", "Viết biểu thức thành tích các số nguyên liên tiếp cộng với một bội của số chia.", details, final, { givens: [`$${v}$ là số ${domainWord(domain)}`], unknowns: [`Chứng minh $${expr}$ chia hết cho $${mod}$`] });
+  // Certificate: the identity holds coefficientwise, and the claim holds on a full window of values.
+  const verify = () => {
+    const back = P.coefficients.map((_, i) => terms.reduce((s, t) => s + t.c * (t.Q[i] ?? 0n), 0n) + mod * (R[i] ?? 0n));
+    if (P.coefficients.some((c, i) => c !== back[i])) return false;
+    for (let n = -200n; n <= 200n; n++) if (integerPolynomialValue(P, n) % mod !== 0n) return false;
+    return true;
+  };
+  return lesson ? { lesson, verify, label: "Kiểm tra đẳng thức khai triển và tính chia hết trên mọi giá trị |n| ≤ 200", family: "consecutive-product" } : null;
+}

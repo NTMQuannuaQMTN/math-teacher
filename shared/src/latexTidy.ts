@@ -48,3 +48,26 @@ export function dropRepeatedLines(latex: string): string {
     return kept.length === 1 ? kept[0]!.replace(/^&/, "") : `\\begin{${env}}${kept.join("\\\\")}\\end{${env}}`;
   });
 }
+
+/**
+ * "m^2-m-6=0 \Leftrightarrow \begin{cases} m = 3 \\ m = -2 \end{cases}": a brace ("and") that gives ONE variable several
+ * different values is never an intended system — it is the "or" bracket written wrongly (final evaluation 2026-10-14:
+ * a correct lesson was withheld for it). Rewritten as the Vietnamese "hoặc" bracket \left[\begin{array}{l}…\end{array}\right.
+ */
+export function bracketAlternatives(latex: string): string {
+  return latex.replace(/\\begin\{cases\}([\s\S]*?)\\end\{cases\}/g, (whole, body: string) => {
+    const rows = body.split(/\\\\/).map((r) => r.replace(/&/g, "").trim()).filter(Boolean);
+    if (rows.length < 2) return whole;
+    const parsed = rows.map((r) => /^([A-Za-z](?:_\{?\w+\}?)?)\s*=\s*([^=]+)$/.exec(r));
+    if (parsed.some((p) => !p) || new Set(parsed.map((p) => p![1])).size !== 1 || new Set(parsed.map((p) => p![2]!.replace(/\s+/g, ""))).size !== rows.length) return whole;
+    return `\\left[\\begin{array}{l}${rows.join("\\\\")}\\end{array}\\right.`;
+  });
+}
+
+/**
+ * Slot pictures for arrangements: "_ N _ N _ N _" (training 2026-10-15, comb8-h1: "Double subscript" — the lesson was
+ * discarded). A lone underscore between spaces is an empty place, not a subscript: drawn as \square.
+ */
+export function slotUnderscores(latex: string): string {
+  return latex.replace(/(^|[\s,;(])_(?=[\s,;)]|$)/g, "$1\\square");
+}

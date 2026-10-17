@@ -1,0 +1,266 @@
+{
+  "question": {
+    "id": "fin2-a2",
+    "split": "final2",
+    "source": "authored 2026-10-15 15:50, after all fixes of the second run; run once (final evaluation 2)",
+    "input": "Cho phương trình $x^2-2(m-1)x+m^2-3=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=10$.",
+    "reference": "$m=0$ (điều kiện $\\Delta'=4-2m\\ge0$ loại $m=4$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute",
+    "topic": "algebra"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2 - 2(m-1)x + m^2 - 3 = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 10$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Phương trình bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai một ẩn",
+        "Biệt thức Δ và điều kiện có hai nghiệm phân biệt",
+        "Định lý Vi-ét",
+        "Biến đổi biểu thức đối xứng"
+      ],
+      "techniques": [
+        "vieta",
+        "discriminant",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình: $x^2 - 2(m-1)x + m^2 - 3 = 0$",
+        "Hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 10$"
+      ],
+      "unknowns": [
+        "Giá trị của tham số $m$"
+      ],
+      "constraints": [
+        "Phương trình phải có hai nghiệm phân biệt ($\\Delta > 0$)",
+        "Hai nghiệm phải thỏa mãn $x_1^2 + x_2^2 = 10$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính biệt thức $\\Delta$ theo $m$ để xác định điều kiện có hai nghiệm phân biệt. Sau đó, sử dụng định lý Vi-ét để biểu diễn $x_1^2 + x_2^2$ qua $m$, giải phương trình tìm $m$ và kiểm tra lại với điều kiện của $\\Delta$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Bạn có thể biểu diễn $x_1^2 + x_2^2$ qua tổng và tích của hai nghiệm không?",
+        "cue": "Công thức biến đổi $x_1^2 + x_2^2$.",
+        "explanation": "Bạn hãy nhớ lại hằng đẳng thức đáng nhớ liên quan đến tổng và tích hai số. Ta có thể viết $x_1^2 + x_2^2$ theo tổng $S = x_1 + x_2$ và tích $P = x_1 x_2$ như thế nào?",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Theo định lý Vi-ét, tổng và tích của hai nghiệm $x_1, x_2$ là bao nhiêu theo $m$?",
+        "cue": "Định lý Vi-ét.",
+        "explanation": "Áp dụng định lý Vi-ét cho phương trình bậc hai đã cho để tìm biểu thức của $x_1 + x_2$ và $x_1 x_2$ theo $m$. Sau đó thay vào đẳng thức ở bước trước để tìm $m$.",
+        "math": "x_1 + x_2 = -b/a = 2(m-1); x_1 x_2 = c/a = m^2 - 3",
+        "stepId": "step_3",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Bạn đã tìm được $m$, nhưng bạn đã kiểm tra xem phương trình có thực sự có hai nghiệm phân biệt với giá trị đó chưa?",
+        "cue": "Điều kiện để phương trình có hai nghiệm phân biệt.",
+        "explanation": "Sau khi tìm được các giá trị $m$ từ điều kiện $x_1^2 + x_2^2 = 10$, bạn nhớ kiểm tra lại xem giá trị nào làm cho biệt thức $\\Delta$ dương (tức là phương trình có hai nghiệm phân biệt).",
+        "math": "\\Delta > 0",
+        "stepId": "step_5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Tính biệt thức $\\Delta$",
+        "explanation": "Để phương trình có hai nghiệm phân biệt, biệt thức $\\Delta$ phải lớn hơn 0. Mình sẽ tính $\\Delta$ theo $m$.",
+        "math": "\\Delta = [-2(m-1)]^2 - 4(1)(m^2 - 3) = 8(2 - m)",
+        "reason": "Tính biệt thức $\\Delta$ của phương trình bậc hai",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given"
+        ],
+        "operation": "calculate",
+        "result": "$\\Delta = 8(2 - m)$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của phép tính đại số"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Biến đổi biểu thức nghiệm",
+        "explanation": "Ta biến đổi biểu thức $x_1^2 + x_2^2$ về dạng chứa tổng và tích hai nghiệm để dễ dàng thay thế.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2 = 10",
+        "reason": "Hằng đẳng thức đáng nhớ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given"
+        ],
+        "operation": "transform",
+        "result": "$(x_1 + x_2)^2 - 2x_1 x_2 = 10$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của hằng đẳng thức"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Áp dụng định lý Vi-ét",
+        "explanation": "Áp dụng định lý Vi-ét để tìm tổng và tích hai nghiệm theo $m$, sau đó thay vào phương trình ở bước 2.",
+        "math": "\\begin{cases} x_1 + x_2 = 2(m-1) \\\\ x_1 x_2 = m^2 - 3 \\end{cases}",
+        "reason": "Định lý Vi-ét",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_2"
+        ],
+        "operation": "substitution",
+        "result": "Thay vào phương trình: $[2(m-1)]^2 - 2(m^2 - 3) = 10$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của định lý Vi-ét"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Giải phương trình theo $m$",
+        "explanation": "Giải phương trình tìm được ở bước 3 để tìm các giá trị $m$ có thể.",
+        "math": "4(m^2 - 2m + 1) - 2m^2 + 6 = 10 \\Leftrightarrow 2m^2 - 8m = 0 \\Leftrightarrow \\left[\\begin{array}{l}m = 0 \\\\m = 4\\end{array}\\right.",
+        "reason": "Giải phương trình bậc hai",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_3"
+        ],
+        "operation": "solve",
+        "result": "$m = 0$ hoặc $m = 4$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của nghiệm"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Kiểm tra điều kiện",
+        "explanation": "Kiểm tra điều kiện để phương trình có hai nghiệm phân biệt ($\\Delta > 0$).",
+        "math": "\\Delta > 0 \\Leftrightarrow 8(2 - m) > 0 \\Leftrightarrow m < 2",
+        "reason": "Điều kiện có hai nghiệm phân biệt",
+        "uses": [
+          "step_1",
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1",
+          "step_4"
+        ],
+        "operation": "check",
+        "result": "Loại $m = 4$ (vì $4 > 2$), nhận $m = 0$ (vì $0 < 2$).",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của điều kiện"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị cần tìm là $m = 0$.",
+      "math": "m = 0"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "2*m^2 - 8*m = 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "0"
+            }
+          ]
+        ],
+        "expected": "0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "Một số công thức chưa hiển thị đầy đủ; cần kiểm tra lại lời giải",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 171190,
+  "usage": {
+    "default": {
+      "input": 15101,
+      "cachedInput": 0,
+      "output": 5969,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.015868329999999996,
+  "model": "default",
+  "logs": [
+    "computed: parameter condition (1 value(s))",
+    "language repair: 1/1 field(s) rewritten in 1 s",
+    "attempt 1: unverified, 2 problem(s): answer check \"2*m^2 - 8*m = 0\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | interpretationNotes: broken mathematical delimiters or prose swallowed into math; write balanced $…$ with prose outside math.",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 2: unverified, 2 problem(s): answer check \"x^2 - 2*(0-1)*x + 0^2 - 3 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | interpretationNotes: broken mathematical delimiters or prose swallowed into math; write balanced $…$ with prose outside math.",
+    "usage: model=default in=15101 (cached 0) out=5969 (reasoning 0) ≈ $0.0159",
+    "total ≈ $0.0159 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "type": "algebra",
+  "round": "2",
+  "split": "heldout",
+  "createdAt": "2026-10-14T10:19:40.204Z",
+  "spentTotalUsd": 0.32924849,
+  "results": [
+    {
+      "id": "alg8-h1",
+      "ok": true,
+      "producedBy": "deterministic-algebra",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 53,
+      "finalAnswer": "Vậy phương trình có tất cả các nghiệm: $x=4$.",
+      "costUsd": 0
+    },
+    {
+      "id": "alg8-h2",
+      "ok": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 21652,
+      "finalAnswer": "Hệ phương trình có hai nghiệm: $(x=1; y=3)$ và $(x=3; y=1)$.",
+      "costUsd": 0.0064
+    },
+    {
+      "id": "alg8-h3",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 84354,
+      "logs": [
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "topic \"combinatorics\" relabelled \"algebra\" (classifier)",
+        "language repair: 0/1 field(s) rewritten in 13 s",
+        "attempt 2: verified, 1 problem(s): hint hint2: foreign non-Latin letters in displayed fields; rewrite in Vietnamese",
+        "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=5589 (cached 0) out=3324 (reasoning 1996)",
+        "total ≈ $0.0000 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "alg8-h4",
+      "ok": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 21807,
+      "finalAnswer": "Giá trị của $m$ là $m = 1$ hoặc $m = -5$.",
+      "costUsd": 0.0069
+    },
+    {
+      "id": "alg8-h5",
+      "ok": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 28197,
+      "finalAnswer": "Giá trị của biểu thức $a^4 + b^4 + c^4$ là $18$.",
+      "costUsd": 0.0105
+    },
+    {
+      "id": "alg8-h6",
+      "ok": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 18394,
+      "finalAnswer": "Vận tốc của người đó lúc đi là 12 km/h.",
+      "costUsd": 0.006
+    }
+  ]
+}

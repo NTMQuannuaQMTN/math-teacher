@@ -65,6 +65,8 @@ let visiblePoints: string[] = [];
 const colKey = (a: string, b: string, c: string) => [a, b, c].sort().join(",");
 /** The chain of equalities of the last step written (LaTeX lines), or null when it had none. */
 let lastChainMath: string[] | null = null;
+/** The step just rendered proves its fact from scratch (two right angles): a merged predecessor that only derived its premise is redundant. */
+let lastSelfContained = false;
 /** The equality the chain proves when it is not the step's fact (a collinearity proved through an angle relation). */
 let lastChainFact: Fact | null = null;
 
@@ -253,7 +255,7 @@ function cyclicRightAngles(d: Derivation): { angle: string; reason: string }[] {
       if (on(v, left) && on(v, right) && on(x, left) && on(y, right)) {
         const angle = [x, v, y].join("");
         if (!out.some(a => a.angle[1] === v && [a.angle[0], a.angle[2]].sort().join("") === [x,y].sort().join("")))
-          out.push({ angle, reason: `${factText(f)}${sameLine(left,f.a)&&sameLine(right,f.b)?"":`; ${parallel.map(q=>factText(q)).join("; ")}; đường thẳng song song với một đường thẳng vuông góc cũng vuông góc`}; các điểm thuộc các đường thẳng theo cách dựng hoặc kết quả trước đó` });
+          out.push({ angle, reason: sameLine(left,f.a)&&sameLine(right,f.b) ? factText(f) : `${factText(f)}; ${parallel.map(q=>factText(q)).join("; ")}; đường thẳng song song với một đường thẳng vuông góc cũng vuông góc` });
       }
     }
     }
@@ -325,8 +327,9 @@ function lines(d: Derivation, premises: Derivation[], words: (p: Derivation) => 
       for (const a of right) for (const b of right) {
         if (a.angle[1] === b.angle[1] || [a.angle[0],a.angle[2]].sort().join("") !== [b.angle[0],b.angle[2]].sort().join("")) continue;
         lastChainMath = [String.raw`\widehat{${a.angle}} = 90^\circ`, String.raw`\widehat{${b.angle}} = 90^\circ`];
+        lastSelfContained = true;
         return [`∠${a.angle} = 90° (vì ${a.reason}).`, `∠${b.angle} = 90° (vì ${b.reason}).`,
-          `Hai góc vuông cùng chắn đoạn ${a.angle[0]}${a.angle[2]}; vì vậy bốn điểm cùng thuộc đường tròn đường kính ${a.angle[0]}${a.angle[2]}.`, `⇒ tứ giác ${q} nội tiếp.`];
+          `⇒ ${a.angle[1]}, ${b.angle[1]} cùng nhìn đoạn ${a.angle[0]}${a.angle[2]} dưới một góc vuông, nên cùng thuộc đường tròn đường kính ${a.angle[0]}${a.angle[2]}.`, `⇒ tứ giác ${q} nội tiếp.`];
       }
       if (r.t === "eqangle") {
         const [x, , y] = r.a;
@@ -523,6 +526,8 @@ function explainWithinBudget(plan: ProofPlan, opts: ExplainOptions): ModelLesson
   const words = (p: Derivation, byId: Map<number, Derivation>): string => {
     const text = show(p.fact);
     // ∠EAI and ∠JAE are one angle when J lies on ray AI: say so instead of citing a proof.
+  // Review 2026-10-15: the position of a foot on the hypotenuse is configuration, not something to prove — "góc I chung".
+  if (p.method === "SAME_RAY_ANGLE" && p.fact.t === "eqangle") return `góc ${p.fact.a[1]} chung`;
   if (p.method === "SAME_RAY_ANGLE" && p.note) return p.note;
   if (p.fact.t === "eqangle" && sameAngle(p.fact)) return `∠${p.fact.a.join("")} là góc chung`;
     if (p.method === "PREVIOUS_PART" && stepOf.has(sameKey(p.fact))) return `${text} (⟦${sameKey(p.fact)}⟧)`;
@@ -568,6 +573,7 @@ function explainWithinBudget(plan: ProofPlan, opts: ExplainOptions): ModelLesson
     // A goal is written as the statement writes it (the same fact, possibly in another order).
     lastChainMath = null;
     lastChainFact = null;
+    lastSelfContained = false;
     const ls = lines(it.goal ? { ...it.d, fact: it.goal.fact } : it.d, premises, (p) => words(p, byId));
     // The step's formula: its chain of equalities when it has one (the equality proved is its first and last side),
     // otherwise the fact.
@@ -617,6 +623,19 @@ function explainWithinBudget(plan: ProofPlan, opts: ExplainOptions): ModelLesson
       continue;
     }
     if (prev && !prev.goal && prev.part === it.part && shownPremises.length === 1 && prevFact && factKey(shownPremises[0]!.fact) === factKey(prevFact)) {
+      // geo8-h1 review "Chứng minh AEHF quá lòng vòng": "∠AEH = 90° = 180° − ∠AFH ⇒ tổng = 180°" followed by the two
+      // right angles again. The right-angle proof stands alone: it replaces the step that only derived its premise.
+      if (lastSelfContained && prev.facts.length === 1) {
+        prev.facts = [it.goal ? it.goal.fact : it.d.fact];
+        prev.texts = [text];
+        prev.maths = stepMath;
+        prev.reasons = m ? [m.vi.split(" (")[0]!] : [];
+        prev.goal = it.goal;
+        prev.goals = it.goal ? [it.goal] : [];
+        lastDerivation.set(prev, it.d);
+        stepOf.set(sameKey(it.d.fact), `s${drafts.length}`);
+        continue;
+      }
       prev.facts.push(it.goal ? it.goal.fact : it.d.fact);
       prev.maths.push(...stepMath.map((m, k) => (k === 0 && !/^&?\\Rightarrow/.test(m) ? `&\\Rightarrow ${m.replace(/^&/, "")}` : m)));
       prev.texts[prev.texts.length - 1] = prev.texts[prev.texts.length - 1]!.replace(/\.$/, "") + "\n" + ls.filter((l) => !l.startsWith("• ")).join("\n");

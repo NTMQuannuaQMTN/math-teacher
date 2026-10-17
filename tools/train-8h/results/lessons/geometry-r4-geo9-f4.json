@@ -1,0 +1,511 @@
+{
+  "question": {
+    "id": "geo9-f4",
+    "split": "fresh",
+    "source": "authored 2026-10-15 11:00 before the second run's model calls (verified); never used for a fix",
+    "input": "Cho tam giác $ABC$ có $\\widehat B=60^\\circ$, $\\widehat C=45^\\circ$ và đường cao $AH=6$ cm. Tính $BC$.",
+    "reference": "$BC=6+2\\sqrt3$ cm ($BH=2\\sqrt3$, $CH=6$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tam giác $ABC$ có $\\widehat{B}=60^\\circ$, $\\widehat{C}=45^\\circ$ và đường cao $AH=6$ cm. Tính $BC$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Lượng giác trong tam giác vuông",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ thức lượng trong tam giác vuông",
+        "Tỉ số lượng giác của góc nhọn"
+      ],
+      "techniques": [
+        "pythagoras",
+        "similar_triangles"
+      ],
+      "givens": [
+        "Tam giác ABC có $\\widehat{B} = 60^\\circ$, $\\widehat{C} = 45^\\circ$",
+        "Đường cao $AH = 6$ cm"
+      ],
+      "unknowns": [
+        "Độ dài đoạn thẳng BC"
+      ],
+      "constraints": [
+        "Tam giác ABC không vuông tại A (vì B=60, C=45 nên A=75)",
+        "AH là đường cao, nên H nằm trên BC"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Vấn đề nằm trong chương trình (Lượng giác lớp 9 trong tam giác vuông)."
+      ]
+    },
+    "strategy": "Dùng đường cao AH để chia tam giác ABC thành hai tam giác vuông ABH và ACH. Tính BH và CH bằng tỉ số lượng giác, sau đó cộng lại để có BC.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn có thể tính được độ dài $BH$ và $CH$ không?",
+        "cue": "Đường cao AH chia tam giác ABC thành hai tam giác vuông.",
+        "explanation": "Bạn hãy nhìn vào hai tam giác vuông $ABH$ và $ACH$. Trong mỗi tam giác này, bạn biết một cạnh góc vuông ($AH$) và một góc nhọn. Hãy dùng tỉ số lượng giác để tính hai đoạn thẳng $BH$ và $CH$.",
+        "math": "BH = AH \\cdot \\cot B",
+        "stepId": "step_1",
+        "focus": [
+          "seg_AH",
+          "seg_BH",
+          "seg_CH"
+        ]
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Bạn nhớ công thức liên hệ giữa cạnh góc vuông, đường cao và góc nhọn như thế nào?",
+        "cue": "Công thức tính cạnh góc vuông trong tam giác vuông.",
+        "explanation": "Trong tam giác vuông $ABH$ vuông tại $H$, ta có $BH = AH \\cdot \\cot B$. Tương tự trong tam giác vuông $ACH$ vuông tại $H$, ta có $CH = AH \\cdot \\cot C$. Bạn hãy thay số vào và tính nhé!",
+        "math": "BH = 6 \\cdot \\cot 60^\\circ, \\quad CH = 6 \\cdot \\cot 45^\\circ",
+        "stepId": "step_2",
+        "focus": [
+          "seg_BH",
+          "seg_CH"
+        ]
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Sau khi có $BH$ và $CH$, làm sao để tính được $BC$?",
+        "cue": "Độ dài BC bằng tổng hai đoạn BH và CH.",
+        "explanation": "Vì $H$ nằm trên cạnh $BC$ (do tam giác $ABC$ nhọn), nên $BC = BH + CH$. Bạn hãy cộng hai kết quả vừa tính được lại nhé.",
+        "math": "BC = BH + CH",
+        "stepId": "step_3",
+        "focus": [
+          "seg_BC"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xác định hai tam giác vuông",
+        "explanation": "Đường cao $AH$ vuông góc với $BC$ tại $H$, nên $AH$ chia tam giác $ABC$ thành hai tam giác vuông là $ABH$ và $ACH$. Ta sẽ tính độ dài hai đoạn $BH$ và $CH$ riêng.",
+        "math": "\\triangle ABH \\text{ vuông tại } H, \\quad \\triangle ACH \\text{ vuông tại } H",
+        "reason": "Định nghĩa đường cao",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AH",
+              "seg_BH",
+              "seg_CH",
+              "seg_BC",
+              "seg_AB",
+              "seg_AC"
+            ]
+          },
+          {
+            "action": "show",
+            "targets": [
+              "seg_BH",
+              "seg_CH"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AH là đường cao"
+        ],
+        "operation": "suy luận",
+        "result": "Hai tam giác vuông",
+        "verification": {
+          "status": "verified",
+          "method": "geometry",
+          "reason": "AH là đường cao"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tính độ dài BH",
+        "explanation": "Trong tam giác vuông $ABH$, ta có $\\widehat{B} = 60^\\circ$. Áp dụng hệ thức lượng: cạnh góc vuông $BH$ bằng cạnh góc vuông $AH$ nhân với $\\cot B$.",
+        "math": "BH = AH \\cdot \\cot 60^\\circ = 6 \\cdot \\frac{1}{\\sqrt{3}} = 2\\sqrt{3} \\text{ (cm)}",
+        "reason": "Tỉ số lượng giác trong tam giác vuông",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BH",
+              "seg_BC",
+              "seg_AH",
+              "ang_ABC"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "BH = AH * cot B"
+        ],
+        "operation": "calculation",
+        "result": "BH = 2\\sqrt{3}",
+        "verification": {
+          "status": "verified",
+          "method": "số học",
+          "reason": "6 / sqrt(3) = 2*sqrt(3)"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tính độ dài CH",
+        "explanation": "Trong tam giác vuông $ACH$, ta có $\\widehat{C} = 45^\\circ$. Áp dụng hệ thức lượng: $CH = AH \\cdot \\cot C$.",
+        "math": "CH = AH \\cdot \\cot 45^\\circ = 6 \\cdot 1 = 6 \\text{ (cm)}",
+        "reason": "Tỉ số lượng giác trong tam giác vuông",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_CH",
+              "seg_BC",
+              "seg_AH",
+              "seg_AB",
+              "seg_AC",
+              "ang_ACB"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "CH = AH * cot C"
+        ],
+        "operation": "calculation",
+        "result": "CH = 6",
+        "verification": {
+          "status": "verified",
+          "method": "số học",
+          "reason": "cot(45) = 1"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính độ dài BC",
+        "explanation": "Vì tam giác $ABC$ có $\\widehat{B}=60^\\circ$ và $\\widehat{C}=45^\\circ$ đều nhọn, nên chân đường cao $H$ nằm giữa hai đỉnh $B$ và $C$. Do đó $BC = BH + CH$.",
+        "math": "BC = BH + CH = 2\\sqrt{3} + 6 = 6 + 2\\sqrt{3} \\text{ (cm)}",
+        "reason": "Tính chất cộng đoạn thẳng",
+        "uses": [
+          "step_2",
+          "step_3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BC",
+              "seg_AB",
+              "seg_AC",
+              "ang_ABC",
+              "ang_ACB"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "BC = BH + CH"
+        ],
+        "operation": "calculation",
+        "result": "BC = 6 + 2\\sqrt{3}",
+        "verification": {
+          "status": "verified",
+          "method": "số học",
+          "reason": "2*sqrt(3) + 6"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Độ dài đoạn thẳng $BC$ là $6(1 + \\sqrt{3})$ cm.",
+      "math": "6(1 + \\sqrt{3}) \\text{ cm}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "6 + 6\\sqrt{3}"
+        ],
+        "assignments": [],
+        "expected": "6(1 + \\sqrt{3})"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 7.7274066103125465,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 2.8284271247461903,
+          "y": 4.898979485566356,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "H",
+          "label": "H",
+          "kind": "foot",
+          "refs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_AC",
+          "kind": "segment",
+          "from": "A",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_AH",
+          "kind": "segment",
+          "from": "A",
+          "to": "H",
+          "style": "given",
+          "label": "6"
+        },
+        {
+          "id": "seg_BH",
+          "kind": "segment",
+          "from": "B",
+          "to": "H",
+          "style": "construction",
+          "label": null
+        },
+        {
+          "id": "seg_CH",
+          "kind": "segment",
+          "from": "C",
+          "to": "H",
+          "style": "construction",
+          "label": null
+        }
+      ],
+      "circles": [],
+      "angles": [
+        {
+          "id": "ang_ABC",
+          "from": "B",
+          "vertex": "B",
+          "to": "C",
+          "label": "60°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_ACB",
+          "from": "C",
+          "vertex": "C",
+          "to": "A",
+          "label": "45°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_AHB",
+          "from": "A",
+          "vertex": "H",
+          "to": "H",
+          "label": "90°",
+          "right": true,
+          "style": "given"
+        },
+        {
+          "id": "ang_AHC",
+          "from": "A",
+          "vertex": "H",
+          "to": "C",
+          "label": "90°",
+          "right": true,
+          "style": "given"
+        },
+        {
+          "id": "ang_ABC_2",
+          "from": "A",
+          "vertex": "B",
+          "to": "C",
+          "label": null,
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_BCA",
+          "from": "B",
+          "vertex": "C",
+          "to": "A",
+          "label": null,
+          "right": false,
+          "style": "given"
+        }
+      ],
+      "marks": [],
+      "checks": [
+        {
+          "kind": "angle_value",
+          "refs": [
+            "A",
+            "C",
+            "B"
+          ],
+          "value": 45,
+          "role": "given"
+        },
+        {
+          "kind": "collinear",
+          "refs": [
+            "B",
+            "H",
+            "C"
+          ],
+          "value": 0.5,
+          "role": "given"
+        },
+        {
+          "kind": "perpendicular",
+          "refs": [
+            "A",
+            "H",
+            "B",
+            "C"
+          ],
+          "value": 0,
+          "role": "given"
+        },
+        {
+          "kind": "length_value",
+          "refs": [
+            "B",
+            "C"
+          ],
+          "value": 16.392304845413264,
+          "role": "derived"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "BC = 16.392304845413264",
+        "passed": false
+      },
+      {
+        "label": "figure matches the givens",
+        "passed": true
+      },
+      {
+        "label": "AH ⊥ BC",
+        "passed": true
+      },
+      {
+        "label": "6 + 6\\sqrt{3}",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "checked",
+        "claims": 1
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 54136,
+  "usage": {
+    "default": {
+      "input": 21220,
+      "cachedInput": 0,
+      "output": 7138,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.020398760000000002,
+  "model": "default",
+  "logs": [
+    "proof planner: UNSOLVED_WITHIN_BOUNDARY — no proof goal (computation only) (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "language repair: 6/6 field(s) rewritten in 1 s",
+    "attempt 1: unverified, 1 problem(s): derived claim BC = 16.392304845413264 is false in the constructed figure (measured 7.727, expected 16.392304845413264)",
+    "language repair: 6/6 field(s) rewritten in 0 s",
+    "attempt 2: unverified, 1 problem(s): derived claim BC = 16.392304845413264 is false in the constructed figure (measured 7.727, expected 16.392304845413264)",
+    "usage: model=default in=21220 (cached 0) out=7138 (reasoning 0) ≈ $0.0204",
+    "total ≈ $0.0204 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,264 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/II.1",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Cho $a,b,c$ là các số nguyên thỏa mãn $3a^2-bc$, $3b^2-ca$, $3c^2-ab$ đều chia hết cho 4. Chứng minh $abc$ chia hết cho 8.",
+    "reference": "proof",
+    "reference_status": "teacher",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho $a,b,c$ là các số nguyên thỏa mãn $3a^2-bc$, $3b^2-ca$, $3c^2-ab$ đều chia hết cho 4. Chứng minh $abc$ chia hết cho 8.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Số học",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tính chẵn lẻ của số nguyên",
+        "Điều kiện chia hết cho 4",
+        "Lập luận phản chứng"
+      ],
+      "techniques": [
+        "parity",
+        "divisibility",
+        "case_analysis"
+      ],
+      "givens": [
+        "a, b, $c \\in \\mathbb{Z}$",
+        "3a^2 - bc $\\vdots 4$",
+        "3b^2 - ca $\\vdots 4$",
+        "3c^2 - ab $\\vdots 4$"
+      ],
+      "unknowns": [
+        "Chứng minh $abc \\vdots 8$"
+      ],
+      "constraints": [
+        "a, b, c là các số nguyên",
+        "3a^2 - bc chia hết cho 4",
+        "3b^2 - ca chia hết cho 4",
+        "3c^2 - ab chia hết cho 4"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng phương pháp phản chứng và xét tính chẵn lẻ. Giả sử $abc$ không chia hết cho 8, ta sẽ loại trừ tất cả các trường hợp về số lượng số chẵn trong $a, b, c$ (0, 1, 2 số chẵn) bằng cách sử dụng điều kiện chia hết cho 4, từ đó suy ra $a, b, c$ phải đều chẵn, dẫn đến $abc$ chia hết cho 8.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Nếu $a, b, c$ đều là số lẻ thì $3a^2 - bc$ có chia hết cho 4 không?",
+        "cue": "Xét tính chẵn lẻ của các số nguyên.",
+        "explanation": "Bạn hãy thử xét xem nếu $a, b, c$ đều là số lẻ thì các biểu thức $3a^2 - bc$ có chia hết cho 4 không. Hãy nhớ rằng bình phương của một số lẻ luôn chia 4 dư 1.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "Nếu $a$ chẵn và $b, c$ lẻ, thì $a$ phải chia hết cho số nào?",
+        "cue": "Sử dụng tính chất chia hết cho 4.",
+        "explanation": "Nếu một số chẵn chia hết cho 4, thì nó phải chia hết cho 2. Bạn hãy xét trường hợp có đúng một số chẵn (ví dụ $a$ chẵn, $b, c$ lẻ). Từ điều kiện $3a^2 - bc \\vdots 4$, bạn có thể suy ra điều gì về $a$?",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Nếu $a, b$ chẵn và $c$ lẻ, thì $abc$ có chia hết cho 8 không?",
+        "cue": "Xét trường hợp có hai số chẵn.",
+        "explanation": "Nếu có đúng hai số chẵn (ví dụ $a, b$ chẵn, $c$ lẻ), hãy xem xét tích $abc$. Để $abc$ chia hết cho 8, tích của hai số chẵn đó cần thỏa mãn điều kiện gì?",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Nếu $a, b, c$ đều chẵn, thì $abc$ có chia hết cho 8 không?",
+        "cue": "Xét trường hợp có ba số chẵn.",
+        "explanation": "Nếu cả $a, b, c$ đều chẵn, hãy viết $a=2x, b=2y, c=2z$. Khi đó $abc = 8xyz$. Điều này có nghĩa là $abc$ luôn chia hết cho 8.",
+        "math": null,
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Giả sử phản chứng",
+        "explanation": "Ta sẽ chứng minh mệnh đề bằng phản chứng. Giả sử $abc$ không chia hết cho 8. Khi đó, trong ba số $a, b, c$, không thể có cả ba số đều chẵn (vì khi đó $abc$ chia hết cho 8). Ta sẽ xét các trường hợp còn lại.",
+        "math": "\\begin{gathered}abc \\\\ vdots 8\\end{gathered}",
+        "reason": "Phản chứng",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giả sử phản chứng"
+        ],
+        "operation": "Assumption",
+        "result": "abc \\nvdots 8",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Phản chứng là phương pháp hợp lệ."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Loại trường hợp 3 số lẻ",
+        "explanation": "Xét trường hợp cả ba số $a, b, c$ đều là số lẻ. Khi đó $a^2, b^2, c^2$ đều chia 4 dư 1 (tức $a^2 \\equiv 1 \\pmod 4$). Tích của hai số lẻ là số lẻ, nên $bc, ca, ab$ đều lẻ. Ta có $3a^2 - bc \\equiv 3(1) - 1 = 2 \\not\\equiv 0 \\pmod 4$. Điều này mâu thuẫn với giả thiết $3a^2 - bc \\vdots 4$. Vậy không thể có cả ba số đều lẻ.",
+        "math": "3a^2 - bc \\equiv 2 \\pmod 4",
+        "reason": "Tính chất số lẻ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Bình phương số lẻ chia 4 dư 1",
+          "Tích số lẻ là số lẻ"
+        ],
+        "operation": "Phép toán đồng dư",
+        "result": "Loại trường hợp 3 số lẻ",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "3(1)-1 = 2, không chia hết cho 4."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Loại trường hợp 1 số chẵn",
+        "explanation": "Xét trường hợp có đúng một số chẵn. Giả sử $a$ chẵn, $b, c$ lẻ. Từ $3a^2 - bc \\vdots 4$, ta có $3a^2 - bc = 4k$. Vì $b, c$ lẻ nên $bc$ lẻ. Để $3a^2 - bc$ chẵn (chia hết cho 4), thì $3a^2$ phải lẻ, điều này vô lý vì $a$ chẵn nên $a^2$ chẵn. Chờ đã, $3a^2$ chẵn, $bc$ lẻ => $3a^2 - bc$ lẻ. Mà số lẻ không thể chia hết cho 4. Vậy trường hợp này cũng vô lý? Không, hãy kiểm tra lại. $a$ chẵn => $a^2$ chẵn => $3a^2$ chẵn. $b, c$ lẻ => $bc$ lẻ. Chẵn - Lẻ = Lẻ. Số lẻ không chia hết cho 4. Vậy trường hợp có đúng một số chẵn là không thể xảy ra.",
+        "math": "3a^2 - bc \\text{ là số lẻ}",
+        "reason": "Tính chẵn lẻ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Chẵn - Lẻ = Lẻ"
+        ],
+        "operation": "Xét tính chẵn lẻ",
+        "result": "Loại trường hợp 1 số chẵn",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Chẵn - Lẻ = Lẻ, không chia hết cho 4."
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Loại trường hợp 2 số chẵn",
+        "explanation": "Xét trường hợp có đúng hai số chẵn. Giả sử $a, b$ chẵn, $c$ lẻ. Khi đó $abc = a \\cdot b \\cdot c$. Vì $a, b$ chẵn, nên $a=2x, b=2y$. $abc = 4xy c$. Để $abc$ chia hết cho 8, ta cần $4xy c \\vdots 8 \\Leftrightarrow xy c \\vdots 2$. Vì $c$ lẻ, nên cần $xy$ chẵn, tức là $a$ hoặc $b$ chia hết cho 4. Hãy kiểm tra điều kiện $3a^2 - bc \\vdots 4$. $3a^2 - bc = 4k$. $bc$ lẻ. $3a^2$ phải lẻ? Không, $a$ chẵn => $a^2$ chẵn => $3a^2$ chẵn. Chẵn - Lẻ = Lẻ. Lại mâu thuẫn? Ồ, nếu $a, b$ chẵn thì $ab$ chẵn. $3c^2 - ab \\vdots 4$. $c$ lẻ => $c^2$ lẻ => $3c^2$ lẻ. $ab$ chẵn. Lẻ - Chẵn = Lẻ. Không chia hết cho 4. Vậy trường hợp 2 số chẵn cũng không thể xảy ra? Hãy xem lại. Nếu $a, b$ chẵn, $c$ lẻ. $3a^2 - bc$: $a^2$ chẵn, $3a^2$ chẵn. $b$ chẵn, $c$ lẻ => $bc$ chẵn. Chẵn - Chẵn = Chẵn. Có thể chia hết cho 4. Ví dụ $a=2, b=2, c=1$. $3(4)-2=10$ (không chia hết 4). $a=4, b=2, c=1$. $3(16)-2=46$ (không chia hết 4). $a=2, b=4, c=1$. $3(4)-4=8$ (chia hết 4). $3(16)-2=46$ (không). $3(1)-8=-5$ (không). Vậy bộ (2,4,1) không thỏa mãn tất cả. Ta cần chứng minh nếu thỏa mãn thì $abc \\vdots 8$. Nếu $a, b$ chẵn, $c$ lẻ. $3a^2 - bc \\vdots 4$. $bc$ chẵn. $3a^2$ chẵn. $a$ chẵn. $3b^2 - ca \\vdots 4$. $ca$ chẵn. $3b^2$ chẵn. $b$ chẵn. $3c^2 - ab \\vdots 4$. $c$ lẻ => $c^2$ lẻ => $3c^2$ lẻ. $ab$ chẵn. Lẻ - Chẵn = Lẻ. Không chia hết cho 4. Vậy trường hợp 2 số chẵn cũng bị loại.",
+        "math": "3c^2 - ab \\text{ là số lẻ}",
+        "reason": "Tính chẵn lẻ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Lẻ - Chẵn = Lẻ"
+        ],
+        "operation": "Xét tính chẵn lẻ",
+        "result": "Loại trường hợp 2 số chẵn",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Lẻ - Chẵn = Lẻ, không chia hết cho 4."
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Kết luận",
+        "explanation": "Vậy chỉ còn trường hợp cả ba số $a, b, c$ đều chẵn. Khi đó $a=2x, b=2y, c=2z$ với $x,y,z \\in \\mathbb{Z}$. Tích $abc = (2x)(2y)(2z) = 8xyz$. Rõ ràng $8xyz$ chia hết cho 8. Vậy $abc \\vdots 8$.",
+        "math": "abc = 8xyz \\vdots 8",
+        "reason": "Tính chất chia hết",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định nghĩa số chẵn"
+        ],
+        "operation": "Substitution",
+        "result": "abc \\vdots 8",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Tích của 3 số chẵn luôn chia hết cho 8."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chứng minh hoàn tất: $abc$ chia hết cho 8.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "step 3: the lesson contains the solver's own working (\"Chờ đã\"); write only the clean solution, correct from the first step",
+        "passed": false
+      },
+      {
+        "label": "step 3: the lesson contains the solver's own working (\"Chờ đã\"); write only the clean solution, correct from the first step",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 149518,
+  "usage": {
+    "default": {
+      "input": 13457,
+      "cachedInput": 0,
+      "output": 4342,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.012655490000000002,
+  "model": "default",
+  "logs": [
+    "outline failed after 115 s (local model request timed out); writing the lesson without it",
+    "language repair: 2/2 field(s) rewritten in 1 s",
+    "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "language repair round 1: not accepted s0vm: still foreign, s1vm: still foreign, s2vm: still foreign, s3vm: still foreign, s4vm: still foreign",
+    "language repair round 2: not accepted s0vm: still foreign, s1vm: still foreign, s2vm: still foreign, s3vm: still foreign, s4vm: still foreign",
+    "language repair: 4/9 field(s) rewritten in 3 s",
+    "removed 5 optional metadata field(s) still not in Vietnamese",
+    "answer differs from the computation: step 3: the lesson contains the solver's own working (\"Chờ đã\"); write only the clean solution, correct from the first step",
+    "attempt 2: unverified, 1 problem(s): step 3: the lesson contains the solver's own working (\"Chờ đã\"); write only the clean solution, correct from the first step",
+    "usage: model=default in=13457 (cached 0) out=4342 (reasoning 0) ≈ $0.0127",
+    "total ≈ $0.0127 over 2 attempt(s); lesson by default",
+    "final answer contradicted by an exact computation: step 3: the lesson contains the solver's own working (\"Chờ đã\"); write only the clean solution, correct from the first step"
+  ]
+}

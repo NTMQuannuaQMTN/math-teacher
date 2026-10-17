@@ -1,0 +1,404 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/II.1",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Cho $a,b,c$ là các số nguyên thỏa mãn $3a^2-bc$, $3b^2-ca$, $3c^2-ab$ đều chia hết cho 4. Chứng minh $abc$ chia hết cho 8.",
+    "reference": "proof",
+    "reference_status": "teacher",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho $a, b, c$ là các số nguyên thỏa mãn $3a^2 - bc$, $3b^2 - ca$, $3c^2 - ab$ đều chia hết cho 4. Chứng minh $abc$ chia hết cho 8.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Lý thuyết số (Tính chia hết, Tính chẵn lẻ)",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Số chính phương (Perfect squares)",
+        "Số dư (Remainders)",
+        "Đồng dư (Congruences)",
+        "Phương pháp phản chứng"
+      ],
+      "techniques": [
+        "parity",
+        "perfect_squares",
+        "contradiction",
+        "divisibility"
+      ],
+      "givens": [
+        "a, b, c là các số nguyên",
+        "3a² - bc chia hết cho 4",
+        "3b² - ca chia hết cho 4",
+        "3c² - ab chia hết cho 4"
+      ],
+      "unknowns": [
+        "abc ⋮ 8"
+      ],
+      "constraints": [
+        "a, b, c là các số nguyên",
+        "3a² - bc ⋮ 4",
+        "3b² - ca ⋮ 4",
+        "3c² - ab ⋮ 4"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng phương pháp phản chứng và xét tính chẵn lẻ. Giả sử cả ba số lẻ để tìm mâu thuẫn, sau đó xét các trường hợp còn lại (2 chẵn 1 lẻ, 1 chẵn 2 lẻ, 3 chẵn) để chứng minh $abc ⋮ 8$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Nếu $a, b, c$ đều là số lẻ, thì $a^2, b^2, c^2$ chia 4 dư mấy?",
+        "cue": "Xét tính chẵn lẻ của các số.",
+        "explanation": "Bạn hãy thử giả sử cả ba số $a, b, c$ đều là số lẻ. Khi đó, bình phương của chúng ($a^2, b^2, c^2$) sẽ có số dư là gì khi chia cho 4? Và từ giả thiết $3a^2 - bc ⋮ 4$, bạn có thể suy ra điều gì về tích $bc$?",
+        "math": "a^2 \\equiv 1 \\pmod 4 \\text{ nếu } a \\text{ lẻ}",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Nhân vế theo vế các đẳng thức $bc \\equiv 3$, $ca \\equiv 3$, $ab \\equiv 3$ (mod 4) lại, ta được $(abc)^2$ chia 4 dư mấy?",
+        "cue": "Nhân các đồng dư thức.",
+        "explanation": "Từ các đồng dư thức về $bc, ca, ab$ mà bạn tìm được, hãy nhân vế theo vế cả ba biểu thức lại với nhau. Bạn sẽ thu được một biểu thức liên quan đến $(abc)^2$. Kết quả này có mâu thuẫn với tính chất của số chính phương chia 4 không?",
+        "math": "(abc)^2 \\equiv 27 \\equiv 3 \\pmod 4",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Nếu $a, b$ chẵn và $c$ lẻ, từ $3a^2 - bc ⋮ 4$ và $3b^2 - ca ⋮ 4$, bạn chứng minh được $a$ và $b$ chia hết cho 4 không?",
+        "cue": "Xét trường hợp có số chẵn.",
+        "explanation": "Vì giả sử cả ba số lẻ dẫn đến mâu thuẫn, nên phải có ít nhất một số chẵn. Bây giờ, hãy xét trường hợp có đúng hai số chẵn (ví dụ $a, b$ chẵn và $c$ lẻ). Từ $3a^2 - bc ⋮ 4$, vì $a$ chẵn nên $3a^2 ⋮ 4$, suy ra $bc ⋮ 4$. Vì $c$ lẻ nên $b$ phải chia hết cho 4. Tương tự với $a$. Khi đó $a, b$ đều chia hết cho 4, tích $abc$ sẽ chia hết cho mấy?",
+        "math": "a, b \\vdots 4 \\Rightarrow ab \\vdots 16 \\Rightarrow abc \\vdots 8",
+        "stepId": "step_3",
+        "focus": []
+      },
+      {
+        "id": "hint_4",
+        "level": 4,
+        "question": "Bạn đã hoàn thành các bước chứng minh cho tất cả các trường hợp chưa?",
+        "cue": "Kết luận.",
+        "explanation": "Bạn đã xét hết các trường hợp về tính chẵn lẻ chưa? (Cả 3 lẻ, 2 chẵn 1 lẻ, 1 chẵn 2 lẻ, cả 3 chẵn). Trong mọi trường hợp đều dẫn đến $abc ⋮ 8$. Hãy viết lại lời giải hoàn chỉnh.",
+        "math": null,
+        "stepId": "step_4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xét tính chẵn lẻ của a, b, c",
+        "explanation": "Ta sẽ sử dụng phương pháp phản chứng. Giả sử cả ba số $a, b, c$ đều là số lẻ.",
+        "math": "a^2 \\equiv 1 \\pmod 4, \\quad b^2 \\equiv 1 \\pmod 4, \\quad c^2 \\equiv 1 \\pmod 4",
+        "reason": "Tính chất số chính phương: Bình phương của một số lẻ luôn chia 4 dư 1.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giả thiết bài toán"
+        ],
+        "operation": "Substitution",
+        "result": "a^2 \\equiv 1 \\pmod 4, \\quad b^2 \\equiv 1 \\pmod 4, \\quad c^2 \\equiv 1 \\pmod 4",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra tính chất của bình phương số lẻ."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Suy ra đồng dư thức của các tích",
+        "explanation": "Từ giả thiết $3a^2 - bc ⋮ 4$, ta có $3a^2 \\equiv bc \\pmod 4$. Thay $a^2 \\equiv 1$ vào, ta được $bc \\equiv 3 \\pmod 4$. Tương tự, từ hai giả thiết còn lại, ta có $ca \\equiv 3 \\pmod 4$ và $ab \\equiv 3 \\pmod 4$.",
+        "math": "bc \\equiv 3 \\pmod 4, \\quad ca \\equiv 3 \\pmod 4, \\quad ab \\equiv 3 \\pmod 4",
+        "reason": "Thay $a^2 \\equiv 1$ vào $3a^2 - bc \\equiv 0 \\pmod 4$.",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1",
+          "Giả thiết"
+        ],
+        "operation": "Substitution",
+        "result": "bc \\equiv 3 \\pmod 4, \\quad ca \\equiv 3 \\pmod 4, \\quad ab \\equiv 3 \\pmod 4",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra phép thế."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tính $(abc)^2$ mod 4",
+        "explanation": "Nhân vế theo vế ba đồng dư thức trên: $(bc)(ca)(ab) \\equiv 3 \\times 3 \\times 3 \\pmod 4$. Ta có $(abc)^2 \\equiv 27 \\pmod 4$. Vì $27 = 4 \\times 6 + 3$ nên $(abc)^2 \\equiv 3 \\pmod 4$.",
+        "math": "(abc)^2 \\equiv 3 \\pmod 4",
+        "reason": "Nhân các đồng dư thức.",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_2"
+        ],
+        "operation": "Multiplication",
+        "result": "(abc)^2 \\equiv 3 \\pmod 4",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra phép nhân và phép chia lấy dư."
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Phản chứng",
+        "explanation": "Mọi số chính phương $x^2$ khi chia cho 4 chỉ có thể dư 0 hoặc 1 (vì $x$ chẵn thì $x^2 ⋮ 4$, $x$ lẻ thì $x^2 \\equiv 1 \\pmod 4$). Kết quả $(abc)^2 \\equiv 3 \\pmod 4$ là vô lý. Vậy giả sử ban đầu sai, nghĩa là $a, b, c$ không thể cùng lẻ.",
+        "math": "\\text{Vô lý}",
+        "reason": "Tính chất số chính phương mod 4.",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_3"
+        ],
+        "operation": "Contradiction",
+        "result": "\\text{Vô lý}",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra sự mâu thuẫn."
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Trường hợp 2 số chẵn, 1 số lẻ",
+        "explanation": "Vì không thể cùng lẻ, nên trong ba số $a, b, c$ phải có ít nhất một số chẵn. Ta xét các trường hợp còn lại. Trường hợp 1: Có đúng hai số chẵn. Giả sử $a, b$ chẵn và $c$ lẻ. Từ $3a^2 - bc ⋮ 4$, vì $a$ chẵn nên $a^2 ⋮ 4$ (thực tế $a^2 ⋮ 4$ nếu $a$ chẵn, nhưng để chắc chắn ta xét $a=2k \\Rightarrow a^2=4k^2 ⋮ 4$). Vậy $3a^2 ⋮ 4$, suy ra $bc ⋮ 4$. Vì $c$ lẻ nên $c$ không chia hết cho 2, do đó $b$ phải chia hết cho 4. Tương tự, từ $3b^2 - ca ⋮ 4$, ta có $ca ⋮ 4$, suy ra $a ⋮ 4$ (vì $c$ lẻ). Vậy $a, b$ đều chia hết cho 4. Khi đó $ab ⋮ 16$, suy ra $abc = ab \\cdot c ⋮ 16 \\cdot c ⋮ 8$.",
+        "math": "a \\vdots 4, \\quad b \\vdots 4 \\Rightarrow abc \\vdots 8",
+        "reason": "Xét trường hợp 2 số chẵn, 1 số lẻ.",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_4"
+        ],
+        "operation": "Phân tích trường hợp",
+        "result": "a \\vdots 4, \\quad b \\vdots 4 \\Rightarrow abc \\vdots 8",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": null
+        }
+      },
+      {
+        "id": "step_6",
+        "title": "Trường hợp 1 số chẵn, 2 số lẻ",
+        "explanation": "Trường hợp 2: Có đúng một số chẵn. Giả sử $a$ chẵn, $b, c$ lẻ. Từ $3b^2 - ca ⋮ 4$, vì $b$ lẻ nên $b^2 \\equiv 1 \\pmod 4$, suy ra $3b^2 \\equiv 3 \\pmod 4$. Vậy $3 - ca \\equiv 0 \\pmod 4 \\Rightarrow ca \\equiv 3 \\pmod 4$. Từ $3c^2 - ab ⋮ 4$, tương tự ta có $ab \\equiv 3 \\pmod 4$. Nhân hai đồng dư thức này: $(ca)(ab) \\equiv 3 \\times 3 \\pmod 4 \\Rightarrow a^2bc \\equiv 9 \\equiv 1 \\pmod 4$. Mặt khác, từ $3a^2 - bc ⋮ 4$, ta có $bc \\equiv 3a^2 \\pmod 4$. Thay vào: $a^2(3a^2) \\equiv 1 \\pmod 4 \\Rightarrow 3a^4 \\equiv 1 \\pmod 4$. Vì $a$ chẵn nên $a^2 ⋮ 4 \\Rightarrow a^4 ⋮ 4 \\Rightarrow 3a^4 \\equiv 0 \\pmod 4$. Mâu thuẫn với $1 \\pmod 4$. Vậy trường hợp này không xảy ra.",
+        "math": "\\text{Vô lý}",
+        "reason": "Xét trường hợp 1 số chẵn, 2 số lẻ.",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_4"
+        ],
+        "operation": "Contradiction",
+        "result": "\\text{Vô lý}",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra sự mâu thuẫn."
+        }
+      },
+      {
+        "id": "step_7",
+        "title": "Trường hợp cả 3 số chẵn",
+        "explanation": "Trường hợp 3: Cả ba số $a, b, c$ đều chẵn. Khi đó $a=2x, b=2y, c=2z$ với $x, y, z$ nguyên. Tích $abc = (2x)(2y)(2z) = 8xyz$. Rõ ràng $8xyz ⋮ 8$.",
+        "math": "abc = 8xyz \\vdots 8",
+        "reason": "Định nghĩa số chẵn.",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_4"
+        ],
+        "operation": "Substitution",
+        "result": "abc = 8xyz \\vdots 8",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra định nghĩa."
+        }
+      },
+      {
+        "id": "step_8",
+        "title": "Kết luận",
+        "explanation": "Tổng hợp lại: Ta đã xét tất cả các trường hợp về tính chẵn lẻ của $a, b, c$. Trường hợp cả 3 lẻ và 1 chẵn 2 lẻ đều dẫn đến mâu thuẫn. Các trường hợp còn lại (2 chẵn 1 lẻ và cả 3 chẵn) đều dẫn đến kết luận $abc ⋮ 8$. Vậy điều phải chứng minh là đúng.",
+        "math": "abc \\vdots 8",
+        "reason": "Tổng hợp các trường hợp.",
+        "uses": [
+          "step_5",
+          "step_6",
+          "step_7"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_5",
+          "step_6",
+          "step_7"
+        ],
+        "operation": "Conclusion",
+        "result": "abc \\vdots 8",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra kết luận."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chứng minh được $abc$ chia hết cho 8.",
+      "math": "abc \\vdots 8"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "(3*a^2 - b*c) % 4 == 0 and (3*b^2 - c*a) % 4 == 0 and (3*c^2 - a*b) % 4 == 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "2"
+            },
+            {
+              "variable": "b",
+              "value": "4"
+            },
+            {
+              "variable": "c",
+              "value": "1"
+            }
+          ]
+        ],
+        "expected": "0"
+      },
+      {
+        "kind": "substitute",
+        "statements": [
+          "(3*a^2 - b*c) % 4 == 0 and (3*b^2 - c*a) % 4 == 0 and (3*c^2 - a*b) % 4 == 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "4"
+            },
+            {
+              "variable": "b",
+              "value": "4"
+            },
+            {
+              "variable": "c",
+              "value": "2"
+            }
+          ]
+        ],
+        "expected": "0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "(3*a^2 - b*c) % 4 = 0",
+        "passed": false
+      },
+      {
+        "label": "(3*a^2 - b*c) % 4 = 0",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_6",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_7",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_8",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 115307,
+  "usage": {
+    "default": {
+      "input": 19021,
+      "cachedInput": 0,
+      "output": 15922,
+      "reasoning": 3964
+    }
+  },
+  "costUsd": 0.03276089,
+  "model": "default",
+  "logs": [
+    "outline in 42 s (699 chars)",
+    "language repair round 1: not accepted statusReason: numbers changed, s4vr: still foreign",
+    "language repair round 2: not accepted statusReason: numbers changed, s4vr: still foreign",
+    "language repair: 19/21 field(s) rewritten in 6 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: unverified, 2 problem(s): answer check \"(3*a^2 - b*c) % 4 = 0\" failed: a=1, b=1, c=1 does not satisfy (3*a^2 - b*c) % 4 = 0 | answer check \"(3*a^2 - b*c) % 4 = 0\" failed: a=2, b=2, c=1 does not satisfy (3*a^2 - b*c) % 4 = 0",
+    "language repair round 1: not accepted statusReason: numbers changed, s4vr: still foreign",
+    "language repair round 2: not accepted statusReason: numbers changed, s4vr: still foreign",
+    "language repair: 19/21 field(s) rewritten in 0 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 2: unverified, 1 problem(s): answer check \"(3*a^2 - b*c) % 4 = 0\" failed: a=2, b=4, c=1 does not satisfy (3*b^2 - c*a) % 4 = 0",
+    "usage: model=default in=19021 (cached 0) out=15922 (reasoning 3964) ≈ $0.0328",
+    "total ≈ $0.0328 over 2 attempt(s); lesson by default"
+  ]
+}

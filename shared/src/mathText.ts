@@ -387,6 +387,9 @@ function fixOcrPhrases(text: string): string {
 
 export function normalizeProblemText(input: string): string {
   return fixOcrPhrases(input.normalize("NFC"))
+    // A form feed / backspace before a letter is a LaTeX backslash lost in JSON ("\frac" → "\x0crac"): restore, not strip.
+    .replace(/\f(?=[A-Za-z])/g, "\\f")
+    .replace(/\u0008(?=[A-Za-z])/g, "\\b")
     .replace(/\r\n?/g, "\n")
     .replace(INVISIBLE_CHARS, "")
     .replace(/\t/g, " ")

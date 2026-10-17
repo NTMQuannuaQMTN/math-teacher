@@ -1,0 +1,119 @@
+{
+  "type": "number_theory",
+  "round": "2",
+  "split": "heldout",
+  "createdAt": "2026-10-14T13:55:16.742Z",
+  "spentTotalUsd": 1.2343343800000002,
+  "results": [
+    {
+      "id": "nt8-h1",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 63607,
+      "finalAnswer": "Không có cặp số nguyên dương nào thỏa mãn.",
+      "costUsd": 0.0191
+    },
+    {
+      "id": "nt8-h2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 62059,
+      "finalAnswer": "Chứng minh hoàn tất.",
+      "costUsd": 0.0152
+    },
+    {
+      "id": "nt8-h3",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 52188,
+      "finalAnswer": "Số nguyên tố cần tìm là $p = 3$.",
+      "costUsd": 0.0158
+    },
+    {
+      "id": "nt8-h4",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 54893,
+      "finalAnswer": "Đáp số: $n \\in \\{12; 44\\}$",
+      "costUsd": 0.014
+    },
+    {
+      "id": "nt8-h5",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 46975,
+      "finalAnswer": "Tập nghiệm của phương trình là: $S = \\{(1; 1); (-2; 1); (2; -1); (-1; -1); (-1; 2); (1; -2)\\}$.",
+      "costUsd": 0.0125
+    },
+    {
+      "id": "nt8-h6",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 28514,
+      "finalAnswer": "Chữ số tận cùng của $2^{2026} + 3^{2026}$ là 3.",
+      "costUsd": 0.0109
+    },
+    {
+      "id": "nt8-h7",
+      "ok": true,
+      "served": true,
+      "producedBy": "deterministic-number-theory",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 7,
+      "finalAnswer": "Vậy số dư cần tìm là $3$.",
+      "costUsd": 0
+    },
+    {
+      "id": "nt8-h8",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 115338,
+      "finalAnswer": "Các số nguyên $n$ cần tìm là $n = -6$ và $n = 4$.",
+      "costUsd": 0.0262
+    },
+    {
+      "id": "nt8-h9",
+      "ok": true,
+      "served": true,
+      "producedBy": "deterministic-number-theory",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 9,
+      "finalAnswer": "Vậy với mọi số nguyên $n$, $n^3+5n$ chia hết cho $6$.",
+      "costUsd": 0
+    },
+    {
+      "id": "nt8-h10",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-factorable-xy",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 15,
+      "finalAnswer": "Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(4;8);\\ (5;5);\\ (6;4);\\ (9;3)$.",
+      "costUsd": 0
+    }
+  ]
+}

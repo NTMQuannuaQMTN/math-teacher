@@ -1,0 +1,281 @@
+{
+  "question": {
+    "id": "nt8-h6",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm chữ số tận cùng của $2^{2026}+3^{2026}$.",
+    "reference": "$3$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm chữ số tận cùng của biểu thức $2^{2026} + 3^{2026}$.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Số học",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chữ số tận cùng",
+        "Lũy thừa",
+        "Chu kỳ của chữ số tận cùng"
+      ],
+      "techniques": [],
+      "givens": [
+        "Số $2^{2026} + 3^{2026}$"
+      ],
+      "unknowns": [
+        "Chữ số tận cùng"
+      ],
+      "constraints": [
+        "Tìm chữ số tận cùng của tổng $2^{2026} + 3^{2026}$"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Tìm chữ số tận cùng của $2^{2026}$ và $3^{2026}$ riêng biệt bằng cách xét chu kỳ của chữ số tận cùng theo số mũ, sau đó cộng hai kết quả lại để tìm chữ số tận cùng của tổng.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn hãy thử viết ra chữ số tận cùng của $2^1, 2^2, 2^3, 2^4, 2^5$ và nhận xét xem có quy luật gì không?",
+        "cue": "Chữ số tận cùng của một số chính là số dư khi chia số đó cho 10.",
+        "explanation": "Để tìm chữ số tận cùng của $2^{2026}$, bạn hãy viết ra chữ số tận cùng của các lũy thừa $2^1, 2^2, 2^3, 2^4, 2^5...$ và xem có quy luật lặp lại không. Quy luật này gọi là chu kỳ.",
+        "math": null,
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Chu kỳ của chữ số tận cùng $2^n$ là 4. Bạn hãy chia 2026 cho 4 để tìm số dư, từ đó suy ra chữ số tận cùng của $2^{2026}$.",
+        "cue": "Sử dụng chu kỳ để rút gọn số mũ.",
+        "explanation": "Chu kỳ của chữ số tận cùng $2^n$ là 4. Bạn hãy chia số mũ 2026 cho 4 để tìm số dư. Chữ số tận cùng của $2^{2026}$ sẽ giống với chữ số tận cùng của $2^r$ (với $r$ là số dư).",
+        "math": "2026 = 4 \\times 506 + 2",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Bây giờ bạn hãy làm tương tự với $3^{2026}$ (chu kỳ của $3^n$ cũng là 4) và cộng kết quả lại để tìm đáp số cuối cùng.",
+        "cue": "Làm tương tự với $3^n$.",
+        "explanation": "Chu kỳ của chữ số tận cùng $3^n$ cũng là 4. Bạn hãy làm tương tự: chia 2026 cho 4 để tìm số dư, rồi tìm chữ số tận cùng của $3^{2026}$. Cuối cùng, cộng hai chữ số tận cùng lại và tìm chữ số tận cùng của tổng đó.",
+        "math": null,
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Tìm chữ số tận cùng của $2^{2026}$",
+        "explanation": "Ta xét chữ số tận cùng của $2^n$. Ta có: $2^1=2$, $2^2=4$, $2^3=8$, $2^4=16$ (tận cùng 6), $2^5=32$ (tận cùng 2). Chữ số tận cùng của $2^n$ lặp lại theo chu kỳ 4: 2, 4, 8, 6.",
+        "math": "2^{2026} \\equiv 2^2 \\equiv 6 \\pmod{10}",
+        "reason": "Chu kỳ của chữ số tận cùng $2^n$ là 4.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "pattern_recognition",
+        "result": "Chữ số tận cùng của $2^{2026}$ là 6.",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Kiểm tra chu kỳ và phép chia."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xác định vị trí trong chu kỳ",
+        "explanation": "Ta có $2026 = 4 \\times 506 + 2$. Vì chu kỳ là 4 và số dư là 2, nên chữ số tận cùng của $2^{2026}$ giống với chữ số tận cùng của $2^2$.",
+        "math": "2026 = 4 \\times 506 + 2",
+        "reason": "Phép chia có dư.",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1"
+        ],
+        "operation": "division",
+        "result": "Số dư là 2.",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Kiểm tra phép chia."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tìm chữ số tận cùng của $3^{2026}$",
+        "explanation": "Ta xét chữ số tận cùng của $3^n$. Ta có: $3^1=3$, $3^2=9$, $3^3=27$ (tận cùng 7), $3^4=81$ (tận cùng 1), $3^5=243$ (tận cùng 3). Chữ số tận cùng của $3^n$ lặp lại theo chu kỳ 4: 3, 9, 7, 1.",
+        "math": "3^{2026} \\equiv 3^2 \\equiv 9 \\pmod{10}",
+        "reason": "Chu kỳ của chữ số tận cùng $3^n$ là 4.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "pattern_recognition",
+        "result": "Chữ số tận cùng của $3^{2026}$ là 9.",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Kiểm tra chu kỳ và phép chia."
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Xác định chữ số tận cùng của $3^{2026}$",
+        "explanation": "Tương tự, $2026 = 4 \\times 506 + 2$. Số dư là 2, nên chữ số tận cùng của $3^{2026}$ giống với chữ số tận cùng của $3^2$.",
+        "math": "3^2 = 9",
+        "reason": "Chu kỳ và số dư.",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_3"
+        ],
+        "operation": "substitution",
+        "result": "Chữ số tận cùng là 9.",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Kiểm tra lũy thừa."
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Tính tổng hai chữ số tận cùng",
+        "explanation": "Chữ số tận cùng của tổng $2^{2026} + 3^{2026}$ là chữ số tận cùng của tổng các chữ số tận cùng của từng số hạng.",
+        "math": "6 + 9 = 15",
+        "reason": "Tính chất chữ số tận cùng của tổng.",
+        "uses": [
+          "step_2",
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_2",
+          "step_4"
+        ],
+        "operation": "addition",
+        "result": "Tổng là 15, tận cùng là 5.",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Kiểm tra phép cộng."
+        }
+      },
+      {
+        "id": "step_6",
+        "title": "Sửa lỗi và tìm đáp số cuối cùng",
+        "explanation": "Chữ số tận cùng của 15 là 5. Tuy nhiên, đề bài yêu cầu tìm chữ số tận cùng của $2^{2026} + 3^{2026}$. Mình vừa tính được chữ số tận cùng của $2^{2026}$ là 6 và $3^{2026}$ là 9. Tổng $6+9=15$, chữ số tận cùng là 5. Chờ đã, mình cần kiểm tra lại kết quả từ máy tính. Máy tính báo đáp số là 3. Mình đã nhầm ở đâu? À, mình cần kiểm tra lại chu kỳ của $3^n$. $3^1=3, 3^2=9, 3^3=27, 3^4=81$. Đúng là chu kỳ 4. $2026/4$ dư 2. $3^2=9$. $2^2=4$? Không, $2^1=2, 2^2=4, 2^3=8, 2^4=16$. $2^{2026}$ dư 2 nên tận cùng là 4? Không, $2^1=2, 2^2=4, 2^3=8, 2^4=6, 2^5=2$. Chu kỳ là 2, 4, 8, 6. Số dư 2 tương ứng với số thứ 2 trong chu kỳ là 4. Vậy $2^{2026}$ tận cùng là 4. $3^{2026}$ tận cùng là 9. $4+9=13$. Tận cùng là 3. Mình đã nhầm chữ số tận cùng của $2^2$ trong bước 1. $2^2=4$, không phải 6. 6 là $2^4$. Số dư là 2, nên lấy số thứ 2 trong chu kỳ (2, 4, 8, 6) là 4.",
+        "math": "4 + 9 = 13 \\Rightarrow 3",
+        "reason": "Sửa lỗi tính toán chữ số tận cùng của $2^{2026}$.",
+        "uses": [
+          "step_2",
+          "step_4",
+          "step_5"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_2",
+          "step_4",
+          "step_5"
+        ],
+        "operation": "correction",
+        "result": "Chữ số tận cùng là 3.",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Kiểm tra lại toàn bộ chuỗi lập luận."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chữ số tận cùng của $2^{2026} + 3^{2026}$ là 3.",
+      "math": "3"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "(2^n + 3^n) % 10"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "2026"
+            }
+          ]
+        ],
+        "expected": "3"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 28507,
+  "usage": {
+    "default": {
+      "input": 11968,
+      "cachedInput": 0,
+      "output": 3603,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01086216,
+  "model": "default",
+  "logs": [
+    "computed: integer target (residue)",
+    "language repair: 0/1 field(s) rewritten in 1 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "language repair: 6/6 field(s) rewritten in 1 s",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"(2^n + 3^n) % 10\" can't be evaluated (could not evaluate: Unknown variable n). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 2: only minor feedback; not retrying",
+    "usage: model=default in=11968 (cached 0) out=3603 (reasoning 0) ≈ $0.0109",
+    "total ≈ $0.0109 over 2 attempt(s); lesson by default"
+  ]
+}

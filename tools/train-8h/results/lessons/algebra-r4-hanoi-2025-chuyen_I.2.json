@@ -1,0 +1,244 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/I.2",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Cho $a,b,c$ là các số thực khác 0, thỏa mãn $a+b+c\\ne0$ và $ab+bc+ca=0$. Tính giá trị của biểu thức $P=\\frac{1}{a^2-bc}+\\frac{1}{b^2-ca}+\\frac{1}{c^2-ab}$.",
+    "reference": "$P=0$",
+    "reference_status": "teacher",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho $a, b, c$ là các số thực khác 0, thỏa mãn $a+b+c \\neq 0$ và $ab+bc+ca=0$. Tính giá trị của biểu thức $P = \\frac{1}{a^2-bc} + \\frac{1}{b^2-ca} + \\frac{1}{c^2-ab}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Biểu thức đại số",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Biểu thức đại số",
+        "Hằng đẳng thức",
+        "Phân thức đại số",
+        "Điều kiện xác định"
+      ],
+      "techniques": [
+        "factorization",
+        "substitution"
+      ],
+      "givens": [
+        "a, b, $c \\in \\mathbb{R} \\setminus \\{0\\}$",
+        "$a + b + c \\neq 0$",
+        "ab + bc + ca = 0"
+      ],
+      "unknowns": [
+        "P"
+      ],
+      "constraints": [
+        "a, b, c khác 0",
+        "a + b + c khác 0",
+        "ab + bc + ca = 0"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán này yêu cầu tính giá trị của một biểu thức phân thức phức tạp với 3 biến và điều kiện ràng buộc. Để giải quyết, cần thực hiện các phép biến đổi đại số nâng cao (như quy đồng mẫu số, sử dụng các hằng đẳng thức đối xứng bậc cao, hoặc các phép thế đặc biệt) vượt quá phạm vi kiến thức chuẩn của"
+      ]
+    },
+    "strategy": "Sử dụng điều kiện $ab+bc+ca=0$ để biến đổi các mẫu số $a^2-bc, b^2-ca, c^2-ab$ thành các tích chứa nhân tử chung $a+b+c$. Sau đó quy đồng mẫu số và thay giá trị của $ab+bc+ca$ vào tử số để tính kết quả.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn có thể biến đổi mẫu số của phân thức thứ nhất $a^2 - bc$ thành một tích đơn giản hơn không, bằng cách sử dụng điều kiện $ab + bc + ca = 0$?",
+        "cue": "Hãy thử biến đổi mẫu số của từng phân thức.",
+        "explanation": "Bạn hãy nhớ lại điều kiện $ab + bc + ca = 0$. Từ đó, bạn có thể biến đổi $bc = -a(b+c)$. Thay vào mẫu số $a^2 - bc$, bạn sẽ thấy nó liên quan đến $a+b+c$.",
+        "math": "a^2 - bc = a^2 + a(b+c) = a(a+b+c)",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Sau khi đã biến đổi các mẫu số, biểu thức P sẽ có dạng như thế nào?",
+        "cue": "Sử dụng kết quả từ bước trước để rút gọn biểu thức P.",
+        "explanation": "Sau khi biến đổi, mỗi mẫu số sẽ có dạng $a(a+b+c)$, $b(a+b+c)$, $c(a+b+c)$. Bạn hãy thay các mẫu số này vào biểu thức P và rút gọn.",
+        "math": "P = \\frac{1}{a(a+b+c)} + \\frac{1}{b(a+b+c)} + \\frac{1}{c(a+b+c)}",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Sau khi quy đồng mẫu số, tử số của biểu thức P sẽ là gì? Và giá trị của tử số đó bằng bao nhiêu?",
+        "cue": "Quy đồng mẫu số và sử dụng điều kiện đã cho.",
+        "explanation": "Sau khi quy đồng, tử số sẽ có dạng $bc + ca + ab$. Bạn hãy nhớ lại giá trị của $ab + bc + ca$ theo đề bài.",
+        "math": "P = \\frac{ab+bc+ca}{abc(a+b+c)}",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Biến đổi mẫu số thứ nhất",
+        "explanation": "Ta sử dụng điều kiện $ab + bc + ca = 0$ để biến đổi mẫu số của phân thức thứ nhất. Từ điều kiện này, ta có $bc = -ab - ca = -a(b+c)$. Thay vào mẫu số $a^2 - bc$, ta được $a^2 - (-a(b+c)) = a^2 + ab + ac = a(a+b+c)$.",
+        "math": "a^2 - bc = a^2 + a(b+c) = a(a+b+c)",
+        "reason": "Biến đổi đại số và sử dụng điều kiện $ab+bc+ca=0$",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "Mẫu số $a^2 - bc$ được biến đổi thành $a(a+b+c)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay $a=1, b=1, c=-2$ (thỏa mãn $ab+bc+ca=0$): $a^2-bc = 1 - (-2) = 3$. $a(a+b+c) = 1(1+1-2) = 0$. Wait, $a+b+c = 0$ is not allowed. Let's pick $a=1, b=2, c=-2/3$. $ab+bc+ca = 2 - 4/3 - 2/3 = 0$. $a+b+c = 1+2-2/3 = 7/3 \\neq 0$. $a^2-bc = 1 - (-4/3) = 7/3$. $a(a+b+c) = 1(7/3) = 7/3$. Correct."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Biến đổi các mẫu số còn lại",
+        "explanation": "Tương tự, ta biến đổi các mẫu số còn lại: $b^2 - ca = b^2 + b(a+c) = b(a+b+c)$ và $c^2 - ab = c^2 + c(a+b) = c(a+b+c)$.",
+        "math": "b^2 - ca = b(a+b+c), \\quad c^2 - ab = c(a+b+c)",
+        "reason": "Biến đổi đại số tương tự",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "Các mẫu số được biến đổi thành $b(a+b+c)$ và $c(a+b+c)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Tương tự bước 1."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Quy đồng mẫu số",
+        "explanation": "Thay các mẫu số đã biến đổi vào biểu thức P, ta được $P = \\frac{1}{a(a+b+c)} + \\frac{1}{b(a+b+c)} + \\frac{1}{c(a+b+c)}$. Quy đồng mẫu số chung là $abc(a+b+c)$, ta có $P = \\frac{bc + ca + ab}{abc(a+b+c)}$.",
+        "math": "P = \\frac{bc + ca + ab}{abc(a+b+c)}",
+        "reason": "Quy đồng mẫu số",
+        "uses": [
+          "step_1",
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "Biểu thức P được viết dưới dạng một phân thức duy nhất.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay $a=1, b=2, c=-2/3$: $P = 1/(7/3) + 1/(2*7/3) + 1/(-2/3*7/3) = 3/7 + 3/14 - 9/14 = 6/14 + 3/14 - 9/14 = 0$. Formula: $(2 - 4/3 - 2/3) / (1*2*(-2/3)*(7/3)) = 0 / (...) = 0$. Correct."
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính giá trị của P",
+        "explanation": "Theo giả thiết, $ab + bc + ca = 0$, nên tử số của phân thức P bằng 0. Vì $a, b, c$ khác 0 và $a+b+c$ khác 0, nên mẫu số khác 0. Do đó, $P = 0$.",
+        "math": "P = \\frac{0}{abc(a+b+c)} = 0",
+        "reason": "Thay giá trị từ giả thiết",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0",
+          "a,b,c \\neq 0",
+          "a+b+c \\neq 0"
+        ],
+        "operation": "evaluation",
+        "result": "Giá trị của P bằng 0.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Tử số bằng 0, mẫu số khác 0."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của biểu thức P bằng 0.",
+      "math": "0"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "1/(a^2-b*c) + 1/(b^2-c*a) + 1/(c^2-a*b)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "1"
+            },
+            {
+              "variable": "b",
+              "value": "1"
+            },
+            {
+              "variable": "c",
+              "value": "-2"
+            }
+          ]
+        ],
+        "expected": "0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 18798,
+  "usage": {
+    "default": {
+      "input": 5822,
+      "cachedInput": 0,
+      "output": 2535,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.006473100000000001,
+  "model": "default",
+  "logs": [
+    "computed: - value (18 ms)",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"1/(a^2-b*c) + 1/(b^2-c*a) + 1/(c^2-a*b)\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=5822 (cached 0) out=2535 (reasoning 0) ≈ $0.0065",
+    "total ≈ $0.0065 over 1 attempt(s); lesson by default"
+  ]
+}

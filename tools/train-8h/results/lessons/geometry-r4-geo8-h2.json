@@ -1,0 +1,195 @@
+{
+  "question": {
+    "id": "geo8-h2",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho đường tròn $(O)$ đường kính $AB$ và điểm $C$ thuộc đường tròn ($C$ khác $A$, $B$). Tiếp tuyến tại $C$ cắt các tiếp tuyến tại $A$ và $B$ lần lượt tại $M$ và $N$. Chứng minh $MN=AM+BN$ và $\\widehat{MON}=90^\\circ$.",
+    "reference": "Chứng minh: tính chất hai tiếp tuyến cắt nhau cho $MA=MC$, $NB=NC$ nên $MN=MC+CN=AM+BN$; $OM$, $ON$ là phân giác của hai góc kề bù $\\widehat{AOC}$, $\\widehat{COB}$ nên $\\widehat{MON}=90^\\circ$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn (O) đường kính AB và điểm C thuộc đường tròn. Tiếp tuyến tại C cắt các tiếp tuyến tại A và B lần lượt tại M và N. Chứng minh MN = AM + BN và góc MON = 90 độ.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Geometry",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Tiếp tuyến của đường tròn",
+        "Tính chất hai tiếp tuyến cắt nhau",
+        "Góc tạo bởi hai tiếp tuyến"
+      ],
+      "techniques": [
+        "congruent_triangles",
+        "angle_chasing"
+      ],
+      "givens": [
+        "Đường tròn (O) đường kính AB",
+        "C thuộc (O)",
+        "MA, MC là tiếp tuyến tại A, C",
+        "NB, NC là tiếp tuyến tại B, C"
+      ],
+      "unknowns": [
+        "MN = AM + BN",
+        "góc MON = 90 độ"
+      ],
+      "constraints": [
+        "C thuộc (O), C khác A, B",
+        "AB là đường kính"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu phương pháp chứng minh hình học không nằm trong phạm vi kiến thức."
+      ]
+    },
+    "strategy": "Sử dụng tính chất hai tiếp tuyến cắt nhau để chứng minh $MA = MC$, $NB = NC$ và $MO, NO$ là các tia phân giác. Từ đó suy ra $MN = AM + BN$ và tính được $\\text{góc } MON = 90^\\text{°}$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Dựa vào tính chất hai tiếp tuyến cắt nhau, bạn hãy so sánh độ dài MA với MC và NB với NC?",
+        "cue": "Tính chất hai tiếp tuyến cắt nhau",
+        "explanation": "Bạn hãy nhớ lại tính chất hai tiếp tuyến cắt nhau: từ một điểm nằm ngoài đường tròn, nếu kẻ hai tiếp tuyến thì đoạn thẳng từ điểm đó đến tiếp điểm bằng nhau, và tia nối điểm đó với tâm đường tròn là tia phân giác của góc tạo bởi hai tiếp tuyến.",
+        "math": "MA = MC, NB = NC",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Vì M, C, N cùng nằm trên một đường thẳng, hãy viết $MN$ dưới dạng tổng của hai đoạn $MC$ và $CN$, rồi thay các kết quả ở gợi ý 1 vào.",
+        "cue": "Cộng độ dài các đoạn thẳng",
+        "explanation": "Vì M, C, N thẳng hàng (do cùng nằm trên tiếp tuyến tại C), nên $MN = MC + CN$. Thay $MC = MA$ và $CN = NB$ vào, ta sẽ có điều phải chứng minh.",
+        "math": "MN = MC + CN = MA + BN",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Hãy chứng minh $MO$ và $NO$ lần lượt là tia phân giác của $\\text{góc } AMN$ và $\\text{góc } BNM$. Sau đó, sử dụng tính chất hai đường thẳng song song ($MA \\text{ song song } NB$) để tính tổng $\\text{góc } AMN + \\text{góc } BNM$ và suy ra $\\text{góc } MON$.",
+        "cue": "Tia phân giác và góc trong cùng phía",
+        "explanation": "Theo tính chất hai tiếp tuyến cắt nhau, $MO$ là phân giác của $\\text{góc } AMN$ và $NO$ là phân giác của $\\text{góc } BNM$. Vì $MA \\text{ vuông góc } AB$ và $NB \\text{ vuông góc } AB$ nên $MA \\text{ song song } NB$, dẫn đến $\\text{góc } AMN + \\text{góc } BNM = 180^\\text{°}$. Từ đó tính $\\text{góc } MON$.",
+        "math": "\\text{ góc MON } = 90°",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Chứng minh MA = MC và NB = NC",
+        "explanation": "Áp dụng tính chất hai tiếp tuyến cắt nhau tại $M$ và $N$.",
+        "math": "MA = MC, NB = NC",
+        "reason": "Tính chất hai tiếp tuyến cắt nhau",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "Tính chất hai tiếp tuyến cắt nhau",
+        "result": "MA = MC, NB = NC",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính chất hai tiếp tuyến cắt nhau"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Chứng minh MN = AM + BN",
+        "explanation": "Vì $M, C, N$ cùng nằm trên tiếp tuyến tại $C$ nên $M, C, N$ thẳng hàng. Do đó $MN = MC + CN$. Thay $MC = MA$ và $CN = NB$ (từ bước 1) vào, ta có điều phải chứng minh.",
+        "math": "MN = MC + CN = MA + BN",
+        "reason": "Tính chất cộng đoạn thẳng và thay thế",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1"
+        ],
+        "operation": "Cộng độ dài đoạn thẳng",
+        "result": "MN = MA + BN",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính chất cộng đoạn thẳng"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Chứng minh góc MON = 90°",
+        "explanation": "Theo tính chất hai tiếp tuyến cắt nhau, $MO$ là tia phân giác của $\\text{góc } AMN$ và $NO$ là tia phân giác của $\\text{góc } BNM$. Vì $MA \\text{ vuông góc } AB$ và $NB \\text{ vuông góc } AB$ nên $MA \\text{ song song } NB$. Hai góc trong cùng phía $\\text{góc } AMN$ và $\\text{góc } BNM$ bù nhau, tức là $\\text{góc } AMN + \\text{góc } BNM = 180^\\text{°}$. Do đó, $\\text{góc } MON = \\text{góc } MOC + \\text{góc } NOC = \\frac{1}{2}\\text{góc } AMN + \\frac{1}{2}\\text{góc } BNM = \\frac{1}{2}(\\text{góc } AMN + \\text{góc } BNM) = \\frac{1}{2} \\times 180^\\text{°} = 90^\\text{°}$.",
+        "math": "\\text{ góc MON } = 90°",
+        "reason": "Tính chất hai tiếp tuyến cắt nhau và tính chất hai đường thẳng song song",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1"
+        ],
+        "operation": "Tính chất phân giác và góc trong cùng phía",
+        "result": "góc MON = 90°",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính chất phân giác và góc trong cùng phía"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "a) $MN = AM + BN$\nb) $\\text{góc } MON = 90^\\text{°}$",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": "figure_invalid",
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 3,
+  "durationMs": 272888,
+  "usage": {
+    "default": {
+      "input": 9676,
+      "cachedInput": 0,
+      "output": 9266,
+      "reasoning": 3189
+    }
+  },
+  "costUsd": 0.01843852,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — points not constructed: M, N (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 0 s (507 chars)",
+    "attempt 1 failed (local model request timed out); trying again with a concise lesson",
+    "escalating to default",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 13 problem(s): figure: points O and M are drawn at the same place — give each its own exact construction from its definition (they are different points) | figure: points O and N are drawn at the same place — give each its own exact construction from its definition (they are different points) | figure: points M and N are drawn at the same place — give each its own exact construction from its definition (they are different points)",
+    "attempt 3 failed (local model request timed out); keeping attempt 2",
+    "usage: model=default in=9676 (cached 0) out=9266 (reasoning 3189) ≈ $0.0184",
+    "total ≈ $0.0184 over 3 attempt(s); lesson by default"
+  ]
+}

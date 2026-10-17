@@ -1,0 +1,468 @@
+{
+  "question": {
+    "id": "ptnk-2026-chuyen/2",
+    "split": "train",
+    "source": "exam ptnk-2026-chuyen",
+    "input": "Câu 2. Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+    "reference": "18",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Câu 2. Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Hình học phẳng, Bất đẳng thức",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Định lý Pythagore",
+        "Bất đẳng thức $(a-b)^2 \\ge 0$",
+        "Tứ giác có đường chéo vuông góc"
+      ],
+      "techniques": [
+        "pythagoras",
+        "complete_square",
+        "case_analysis"
+      ],
+      "givens": [
+        "BC = 7",
+        "DA = 1",
+        "$AC \\perp BD$"
+      ],
+      "unknowns": [
+        "Chu vi P = AB + BC + CD + DA"
+      ],
+      "constraints": [
+        "Tứ giác lồi",
+        "BC = 7, DA = 1, $AC \\perp BD$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán này cần phương pháp tọa độ hoặc giải tích để giải quyết tối ưu, nhưng các kiến thức này nằm ngoài chương trình Toán THCS."
+      ]
+    },
+    "strategy": "Sử dụng định lý Pythagore cho các tam giác vuông nhỏ tạo bởi hai đường chéo vuông góc để tìm mối liên hệ giữa các cạnh. Sau đó áp dụng bất đẳng thức $(a-b)^2 \\ge 0$ để tìm giá trị lớn nhất của tổng hai cạnh chưa biết, từ đó suy ra chu vi lớn nhất.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Khi hai đường chéo vuông góc với nhau, bốn tam giác nhỏ tạo thành có đặc điểm gì? Bạn có thể áp dụng định lý nào để liên hệ các cạnh của tứ giác với các đoạn trên đường chéo?",
+        "cue": "Định lý Pythagore",
+        "explanation": "Gọi $O$ là giao điểm của $AC$ và $BD$. Khi đó $\\triangle OAB, \\triangle OBC, \\triangle OCD, \\triangle ODA$ đều vuông tại $O$. Áp dụng định lý Pythagore, ta có $AB^2 = OA^2 + OB^2$, $CD^2 = OC^2 + OD^2$, v.v.",
+        "math": "AB^2 = OA^2 + OB^2, \\quad CD^2 = OC^2 + OD^2",
+        "stepId": "step_1",
+        "focus": [
+          "seg_AB",
+          "seg_CD",
+          "line_AC",
+          "line_BD"
+        ]
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Từ các đẳng thức trên, hãy tính tổng $AB^2 + CD^2$ theo $AD$ và $BC$. Bạn nhận thấy điều gì thú vị về tổng này?",
+        "cue": "Nhóm các hạng tử",
+        "explanation": "Cộng $AB^2 + CD^2$ lại, ta được tổng của bốn bình phương $OA^2, OB^2, OC^2, OD^2$. Nhóm lại theo cặp $(OA^2 + OD^2) + (OB^2 + OC^2)$ chính là $AD^2 + BC^2$. Vậy $AB^2 + CD^2 = AD^2 + BC^2$.",
+        "math": "AB^2 + CD^2 = AD^2 + BC^2 = 50",
+        "stepId": "step_2",
+        "focus": [
+          "seg_AB",
+          "seg_CD",
+          "seg_AD",
+          "seg_BC"
+        ]
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Biết $AB^2 + CD^2 = 50$, làm thế nào để tìm giá trị lớn nhất của $AB + CD$? Hãy nhớ lại bất đẳng thức liên quan đến bình phương của một hiệu hoặc bất đẳng thức Cô-si.",
+        "cue": "Bất đẳng thức $(a-b)^2 \\ge 0$",
+        "explanation": "Ta có $(AB - CD)^2 \\ge 0 \\Rightarrow AB^2 + CD^2 \\ge 2 AB \\cdot CD$. Do đó $(AB + CD)^2 = AB^2 + CD^2 + 2 AB \\cdot CD \\le 2(AB^2 + CD^2) = 100$. Suy ra $AB + CD \\le 10$.",
+        "math": "(AB + CD)^2 \\le 100 \\Rightarrow AB + CD \\le 10",
+        "stepId": "step_3",
+        "focus": [
+          "seg_AB",
+          "seg_CD"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Áp dụng định lý Pythagore cho các tam giác vuông",
+        "explanation": "Gọi $O$ là giao điểm của hai đường chéo $AC$ và $BD$. Vì $AC \\perp BD$, bốn tam giác $OAB, OBC, OCD, ODA$ đều vuông tại $O$. Áp dụng định lý Pythagore cho từng tam giác, ta có thể biểu diễn bình phương các cạnh của tứ giác qua các đoạn $OA, OB, OC, OD$.",
+        "math": "AB^2 = OA^2 + OB^2, \\quad BC^2 = OB^2 + OC^2, \\quad CD^2 = OC^2 + OD^2, \\quad DA^2 = OD^2 + OA^2",
+        "reason": "Định lý Pythagore trong tam giác vuông",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "line_AC",
+              "line_BD"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "line_AC",
+              "line_BD",
+              "seg_AB",
+              "seg_BC",
+              "seg_CD",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [],
+        "operation": "apply_pythagoras",
+        "result": "Biểu diễn các cạnh qua các đoạn trên đường chéo",
+        "verification": {
+          "status": "verified",
+          "method": "pythagoras",
+          "reason": "Định lý Pythagore trong tam giác vuông"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tìm mối liên hệ giữa các cạnh đối diện",
+        "explanation": "Ta tính tổng bình phương hai cặp cạnh đối diện. Nhận thấy tổng $AB^2 + CD^2$ và $AD^2 + BC^2$ đều bằng tổng của bốn bình phương đoạn $OA, OB, OC, OD$. Điều này cho phép ta tính được $AB^2 + CD^2$ khi biết $AD$ và $BC$.",
+        "math": "AB^2 + CD^2 = (OA^2 + OB^2) + (OC^2 + OD^2) = (OA^2 + OD^2) + (OB^2 + OC^2) = AD^2 + BC^2 = 1^2 + 7^2 = 50",
+        "reason": "Biến đổi đại số và thay số",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "seg_AD"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_DA",
+              "seg_BC",
+              "line_AC",
+              "line_BD"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "step_1"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "AB^2 + CD^2 = 50",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay số vào đẳng thức đã chứng minh"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Áp dụng bất đẳng thức để tìm giá trị lớn nhất của $AB + CD$",
+        "explanation": "Ta cần tìm giá trị lớn nhất của $AB + CD$ khi biết $AB^2 + CD^2 = 50$. Sử dụng bất đẳng thức $(AB - CD)^2 \\ge 0$, ta có $AB^2 + CD^2 \\ge 2 AB \\cdot CD$. Từ đó suy ra $(AB + CD)^2 = AB^2 + CD^2 + 2 AB \\cdot CD \\le 2(AB^2 + CD^2)$.",
+        "math": "(AB + CD)^2 \\le 2 \\times 50 = 100 \\Rightarrow AB + CD \\le 10",
+        "reason": "Hằng đẳng thức và bất đẳng thức $(a-b)^2 \\ge 0$",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "step_2"
+        ],
+        "operation": "inequality_application",
+        "result": "AB + CD \\le 10",
+        "verification": {
+          "status": "verified",
+          "method": "inequality_check",
+          "reason": "Áp dụng bất đẳng thức Cô-si (hoặc $(a-b)^2 \\ge 0$)"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính chu vi lớn nhất và kiểm tra tính khả thi",
+        "explanation": "Chu vi $P = AB + CD + BC + DA$. Thay các giá trị đã tìm được vào, ta được $P \\le 10 + 7 + 1 = 18$. Dấu bằng xảy ra khi $AB = CD = 5$. Để tứ giác tồn tại và lồi, ta cần các đoạn $OA, OB, OC, OD$ đều dương. Với $AB=CD=5$, ta có hệ phương trình $OA^2+OB^2=25$ và $OA^2+OD^2=1$, suy ra $OB^2-OD^2=24$. Chọn $OD = 0.5$ thì $OB = \\sqrt{24.25}$, $OA = \\sqrt{0.75}$, $OC = \\sqrt{24.75}$, tất cả đều dương nên tứ giác lồi tồn tại.",
+        "math": "P_{max} = 18 \\quad (\\text{khi } AB = CD = 5)",
+        "reason": "Thay số và xét điều kiện tồn tại",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA",
+              "line_AC",
+              "line_BD"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "step_3"
+        ],
+        "operation": "final_calculation",
+        "result": "P_{max} = 18",
+        "verification": {
+          "status": "verified",
+          "method": "existence_check",
+          "reason": "Kiểm tra điều kiện dương của các đoạn thẳng"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$.",
+      "math": "P_{max} = 18"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "5 + 5 + 7 + 1"
+        ],
+        "assignments": [],
+        "expected": "18"
+      }
+    ],
+    "figure": {
+      "scale": "schematic",
+      "points": [
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0.8,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": -4.2,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": -5.6000000000000005,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "kind": "free",
+          "refs": [],
+          "x": 0.6,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "intersection",
+          "refs": [
+            "A",
+            "C",
+            "B",
+            "D"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_CD",
+          "kind": "segment",
+          "from": "C",
+          "to": "D",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_DA",
+          "kind": "segment",
+          "from": "D",
+          "to": "A",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "line_AC",
+          "kind": "line",
+          "from": "A",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "line_BD",
+          "kind": "line",
+          "from": "B",
+          "to": "D",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_AD",
+          "kind": "segment",
+          "from": "A",
+          "to": "D",
+          "style": "construction",
+          "label": null
+        }
+      ],
+      "circles": [],
+      "angles": [
+        {
+          "id": "ang_AOB",
+          "from": "A",
+          "vertex": "O",
+          "to": "B",
+          "label": "90°",
+          "right": true,
+          "style": "given"
+        }
+      ],
+      "marks": [
+        {
+          "kind": "equal",
+          "targets": [
+            "seg_AB",
+            "seg_CD"
+          ],
+          "group": 1
+        }
+      ],
+      "checks": [
+        {
+          "kind": "perpendicular",
+          "refs": [
+            "A",
+            "C",
+            "B",
+            "D"
+          ],
+          "value": 5,
+          "role": "given"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "figure matches the givens",
+        "passed": true
+      },
+      {
+        "label": "5 + 5 + 7 + 1",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 183644,
+  "usage": {
+    "default": {
+      "input": 20313,
+      "cachedInput": 0,
+      "output": 23896,
+      "reasoning": 13128
+    }
+  },
+  "costUsd": 0.04546277,
+  "model": "default",
+  "logs": [
+    "proof planner: UNSOLVED_WITHIN_BOUNDARY — no proof goal (computation only) (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "language repair: 1/1 field(s) rewritten in 12 s",
+    "attempt 1: unverified, 1 problem(s): answer check \"sqrt(5^2+5^2) + 7 + 1\" failed: 15.071067811865476 vs 18",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=default in=20313 (cached 0) out=23896 (reasoning 13128) ≈ $0.0455",
+    "total ≈ $0.0455 over 2 attempt(s); lesson by default"
+  ]
+}

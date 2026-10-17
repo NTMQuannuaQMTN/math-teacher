@@ -1,0 +1,160 @@
+{
+  "type": "algebra",
+  "round": "1",
+  "split": "train",
+  "createdAt": "2026-10-14T09:44:31.235Z",
+  "spentTotalUsd": 0.11314727000000001,
+  "results": [
+    {
+      "id": "ptnk-2023-chuyen/1",
+      "ok": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 1,
+      "ms": 29367,
+      "finalAnswer": "Hệ phương trình có 4 nghiệm:\n(x; y) = (-1/2; 1/4)\n(x; y) = (-1/2; 1)\n(x; y) = (1/4; -1/2)\n(x; y) = (1; -1/2)",
+      "costUsd": 0.008
+    },
+    {
+      "id": "ptnk-2023-chuyen/2a",
+      "ok": true,
+      "producedBy": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 171311,
+      "finalAnswer": "Do đó, $\\frac{1}{\\sqrt a}+\\frac{1}{\\sqrt b}+\\frac{1}{\\sqrt c}\\le\\sqrt3$, với dấu bằng xảy ra khi $a=b=c=3$.",
+      "costUsd": 0
+    },
+    {
+      "id": "ptnk-2024-chuyen/1.1",
+      "ok": true,
+      "producedBy": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 53385,
+      "finalAnswer": "Các nghiệm của hệ là: (0,0,0); (√2/2, √2/2, √2/2); (-√2/2, -√2/2, -√2/2).",
+      "costUsd": 0.0032
+    },
+    {
+      "id": "ptnk-2024-chuyen/2",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 163440,
+      "logs": [
+        "computed: - inequality (240 ms)",
+        "attempt 1: not_checkable, 2 problem(s): interpretation note (\"sReason\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | the final answer states a value (\"Ta đã chứng minh được $3 \\le a+b+c \\le \\frac{2(ab+bc+ca)+3}{3}$ với mọi $a,b,c \\\") but no answerCheck re-derives it: add one (for a quantity that doesn't depend on parameters, a \"value\" check on one concrete choice of the parameters that satisfies all conditions)",
+        "attempt 2: not_checkable, 2 problem(s): interpretation note (\"sReason\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"3 <= a+b+c <= (2*(ab+bc+ca)+3)/3\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+        "usage: model=default in=13821 (cached 0) out=19652 (reasoning 10335) ≈ $0.0361",
+        "total ≈ $0.0361 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0361
+    },
+    {
+      "id": "hcm-2025-chuyen/1a",
+      "ok": true,
+      "producedBy": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 52501,
+      "finalAnswer": "Giá trị của biểu thức P là 8.",
+      "costUsd": 0.0034
+    },
+    {
+      "id": "hcm-2025-chuyen/1b",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 79168,
+      "logs": [
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "language repair: 2/3 field(s) rewritten in 39 s",
+        "attempt 2: unverified, 4 problem(s): hint hint3, step step2, step step6: foreign non-Latin letters in displayed fields; rewrite in Vietnamese | hint hint3 contain(s) Chinese/Japanese characters: write every student-facing text only in the problem's language | step step2 contain(s) Cyrillic/Russian text: rewrite every student-facing text in Vietnamese with full diacritics",
+        "usage: model=default in=5216 (cached 0) out=667 (reasoning 0) ≈ $0.0034",
+        "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=5740 (cached 0) out=4366 (reasoning 2522)",
+        "total ≈ $0.0034 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "costUsd": 0.0034
+    },
+    {
+      "id": "hcm-2025-chuyen/2a",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 85089,
+      "logs": [
+        "language repair: 1/1 field(s) rewritten in 4 s",
+        "attempt 1: not_checkable, 2 problem(s): subtopic (\"problem\"), hint h3 math (\"eTai\"), step s1 verification reason (\"the\"), step s2 verification reason (\"the\"), step s3 verification reason (\"the\"), step s4 verification reason (\"the\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"t\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+        "attempt 2: not_checkable, 2 problem(s): hint h3 math (\"eTai\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"14\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+        "usage: model=default in=16135 (cached 0) out=10483 (reasoning 0) ≈ $0.0232",
+        "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=184 (cached 0) out=289 (reasoning 260)",
+        "total ≈ $0.0232 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0232
+    },
+    {
+      "id": "hanoi-2025-chuyen/I.2",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 39830,
+      "logs": [
+        "computed: - value (23 ms)",
+        "attempt 1: not_checkable, 2 problem(s): interpretation note (\"The\"), step step_3 operation (\"and\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"1/(a^2-bc) + 1/(b^2-ca) + 1/(c^2-ab)\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+        "attempt 2: unverified, 2 problem(s): interpretation note (\"The\"), step step_3 operation (\"and\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"1/(a^2-bc) + 1/(b^2-ca) + 1/(c^2-ab)\" failed: 4 vs 0",
+        "usage: model=default in=13323 (cached 0) out=5134 (reasoning 0) ≈ $0.0138",
+        "total ≈ $0.0138 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0138
+    },
+    {
+      "id": "hanoi-2025-chuyen/III.1b",
+      "ok": false,
+      "error": "timeout",
+      "message": "solve deadline exceeded",
+      "ms": 681108,
+      "logs": [
+        "computed: - minimize (85 ms)",
+        "attempt 1 failed (local model request timed out); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "khtn-2025-vong2/I.1",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "empty model output",
+      "ms": 186185,
+      "logs": [
+        "computed: - equation (277 ms)",
+        "answer differs from the computation: final answer does not match the machine computation (x = 0; x = 1): 0, 1 missing — re-check the solution against it",
+        "attempt 1: unverified, 2 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods | final answer does not match the machine computation (x = 0; x = 1): 0, 1 missing — re-check the solution against it",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "costUsd": 0.0032
+    },
+    {
+      "id": "khtn-2025-vong2/I.2",
+      "ok": true,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 70141,
+      "finalAnswer": "Hệ phương trình có nghiệm duy nhất (x; y) = (1; 1).",
+      "costUsd": 0.0189
+    },
+    {
+      "id": "ptnk-2026-chuyen/1",
+      "ok": false,
+      "error": "timeout",
+      "message": "solve deadline exceeded",
+      "ms": 316115,
+      "logs": [
+        "attempt 1 failed (local model request timed out); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "costUsd": 0
+    }
+  ]
+}

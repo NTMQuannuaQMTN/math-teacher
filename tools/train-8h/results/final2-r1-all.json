@@ -1,0 +1,141 @@
+{
+  "type": "final2",
+  "round": "1",
+  "split": "all",
+  "createdAt": "2026-10-15T08:06:59.196Z",
+  "spentTotalUsd": 1.630067259999999,
+  "results": [
+    {
+      "id": "fin2-a1",
+      "ok": true,
+      "served": true,
+      "producedBy": "deterministic-algebra",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 56,
+      "finalAnswer": "Vậy phương trình có nghiệm duy nhất: $x=6$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin2-a2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 171239,
+      "finalAnswer": "Giá trị cần tìm là $m = 0$.",
+      "costUsd": 0.0156
+    },
+    {
+      "id": "fin2-a3",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 294741,
+      "finalAnswer": "Giá trị nhỏ nhất của $P$ là $12$, đạt được khi $x = 2$ và $y = 2$.",
+      "costUsd": 0.0056
+    },
+    {
+      "id": "fin2-g1",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-right-triangle",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 57,
+      "finalAnswer": "Vậy $BC=15\\text{ cm}$, $AH=\\frac{36}{5}\\text{ cm}$, $HC=\\frac{48}{5}\\text{ cm}$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin2-g2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 58843,
+      "finalAnswer": "Ta có:\n$\\widehat{B} = 105^\\circ$\n$\\widehat{C} = 70^\\circ$",
+      "costUsd": 0.0209
+    },
+    {
+      "id": "fin2-g3",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 80481,
+      "finalAnswer": "Chứng minh được AO là tia phân giác của góc BAC và AO vuông góc với BC.",
+      "costUsd": 0.0255
+    },
+    {
+      "id": "fin2-n1",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 29769,
+      "finalAnswer": "Số dư cần tìm là 6.",
+      "costUsd": 0.0124
+    },
+    {
+      "id": "fin2-n2",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-linear-divisor",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 15,
+      "finalAnswer": "Vậy $n\\in\\{-4;-2;0;2\\}$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin2-n3",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-consecutive-product",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 5,
+      "finalAnswer": "Vậy $n^3+11n$ chia hết cho $6$ với mọi số nguyên $n$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin2-c1",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-digit-numbers",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 8,
+      "finalAnswer": "Vậy lập được $48$ số.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin2-c2",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 31442,
+      "finalAnswer": "Xác suất cần tìm là 0.4 (hay 2/5).",
+      "costUsd": 0.0125
+    },
+    {
+      "id": "fin2-c3",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-pigeonhole-residue",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 8,
+      "finalAnswer": "Vậy trong $13$ số nguyên bất kì luôn có hai số có hiệu chia hết cho $12$.",
+      "costUsd": 0
+    }
+  ]
+}

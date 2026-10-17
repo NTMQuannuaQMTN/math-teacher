@@ -1,0 +1,244 @@
+{
+  "question": {
+    "id": "nt8-h1",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $2^x+3=y^2$.",
+    "reference": "Không có cặp nào (với $x\\ge2$: $y^2\\equiv3\\pmod4$ vô lí; $x=1$: $y^2=5$ không chính phương)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các cặp số nguyên dương $(x; y)$ thỏa mãn $2^x + 3 = y^2$.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Phương trình nghiệm nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Số chính phương",
+        "Đồng dư (mod 4)",
+        "Phản chứng"
+      ],
+      "techniques": [
+        "divisibility",
+        "remainders",
+        "perfect_squares"
+      ],
+      "givens": [
+        "Phương trình $2^x + 3 = y^2$"
+      ],
+      "unknowns": [
+        "x",
+        "y"
+      ],
+      "constraints": [
+        "x, y là số nguyên dương"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu chứng minh không có nghiệm nguyên dương. Phương pháp giải quyết bài toán này dựa trên lý thuyết đồng dư (mod 4) để chứng minh tính vô lý của phương trình khi $x \\ge 2$. Tuy nhiên, kiến thức về đồng dư (mod n) không nằm trong chương trình Toán lớp 9 (THCS) chuẩn. Do đó, bài toán này"
+      ]
+    },
+    "strategy": "Ta sẽ xét hai trường hợp của $x$: $x = 1$ và $x \\ge 2$. Với $x = 1$, ta thay trực tiếp vào phương trình. Với $x \\ge 2$, ta sử dụng tính chất đồng dư mod 4 để chứng minh phương trình vô nghiệm.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Bạn thử thay $x = 1$ vào phương trình xem có tìm được $y$ không?",
+        "cue": "Hãy thử xét giá trị của $2^x$ khi $x$ là số nguyên dương.",
+        "explanation": "Khi $x = 1$, $2^1 = 2$. Khi $x \\ge 2$, $2^x$ luôn chia hết cho 4. Bạn hãy thử thay $x = 1$ vào phương trình xem sao?",
+        "math": null,
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Khi $x \\ge 2$, $2^x$ chia hết cho 4. Vậy $y^2$ chia cho 4 sẽ dư bao nhiêu?",
+        "cue": "Hãy xét tính chia hết của $2^x$ khi $x \\ge 2$.",
+        "explanation": "Khi $x \\ge 2$, $2^x$ chia hết cho 4. Khi đó $y^2 = 2^x + 3$ sẽ có số dư là 3 khi chia cho 4. Bạn hãy nhớ lại số dư của một số chính phương khi chia cho 4 là bao nhiêu?",
+        "math": null,
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Số chính phương chia cho 4 chỉ có thể dư 0 hoặc 1. Vậy $y^2$ dư 3 có thể xảy ra không?",
+        "cue": "Số chính phương chia cho 4 chỉ có thể dư 0 hoặc 1.",
+        "explanation": "Bạn hãy kiểm tra lại: $y^2$ chia cho 4 chỉ có thể dư 0 hoặc 1. Nhưng từ bước trước, ta thấy $y^2$ dư 3. Điều này có mâu thuẫn không?",
+        "math": null,
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Thử $x = 1$",
+        "explanation": "Ta thử trường hợp nhỏ nhất là $x = 1$. Thay vào phương trình ta được $2^1 + 3 = y^2$, hay $5 = y^2$. Vì 5 không phải là số chính phương (không có số nguyên nào bình phương bằng 5), nên $x = 1$ không thỏa mãn.",
+        "math": "x = 1 \\Rightarrow y^2 = 5 \\quad (\\text{vô nghiệm})",
+        "reason": "Thử giá trị",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "x = 1"
+        ],
+        "operation": "substitution",
+        "result": "x = 1 không thỏa mãn",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay $x = 1$ vào phương trình $2^x + 3 = y^2$ ta được $2^1 + 3 = 5$. Vì 5 không phải là số chính phương nên $y$ không là số nguyên."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xét $x \\ge 2$",
+        "explanation": "Giả sử $x \\ge 2$. Khi đó $2^x$ chia hết cho 4 (vì $2^x = 4 \\cdot 2^{x-2}$). Từ phương trình $y^2 = 2^x + 3$, ta thấy $y^2$ chia cho 4 sẽ dư 3.",
+        "math": "x \\ge 2 \\Rightarrow 2^x \\vdots 4 \\Rightarrow y^2 \\equiv 3 \\pmod 4",
+        "reason": "Tính chất đồng dư",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "x >= 2"
+        ],
+        "operation": "suy luận",
+        "result": "y^2 dư 3 khi chia cho 4",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Với $x \\ge 2$, $2^x$ chia hết cho 4. Khi đó $y^2 = 2^x + 3$ chia cho 4 dư 3."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Phản chứng",
+        "explanation": "Ta biết rằng với mọi số nguyên $y$, $y^2$ chỉ có thể chia cho 4 dư 0 hoặc 1 (vì $y$ chẵn thì $y^2$ chia hết cho 4, $y$ lẻ thì $y^2$ chia cho 4 dư 1). Điều này mâu thuẫn với kết quả ở bước trên ($y^2$ dư 3). Vậy giả sử $x \\ge 2$ là sai.",
+        "math": "y^2 \\equiv 0, 1 \\pmod 4 \\quad (\\text{mâu thuẫn với } y^2 \\equiv 3 \\pmod 4)",
+        "reason": "Tính chất số chính phương",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "y^2 mod 4"
+        ],
+        "operation": "contradiction",
+        "result": "Không có $x \\ge 2$ nào thỏa mãn",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Số chính phương chia cho 4 chỉ dư 0 hoặc 1. Mâu thuẫn với $y^2$ dư 3."
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Kết luận",
+        "explanation": "Vì $x = 1$ không thỏa mãn và $x \\ge 2$ cũng không thỏa mãn, nên phương trình đã cho không có nghiệm nguyên dương nào.",
+        "math": "\\text{ Không có cặp }  (x; y)  \\text{ nguyên dương nào thỏa mãn. }",
+        "reason": "Tổng hợp các trường hợp",
+        "uses": [
+          "step_1",
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1",
+          "step_3"
+        ],
+        "operation": "conclusion",
+        "result": "Không có nghiệm",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Đã xét hết các trường hợp có thể của $x$ nguyên dương."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Không có cặp số nguyên dương nào thỏa mãn.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "2^x + 3 = y^2"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "1"
+            },
+            {
+              "variable": "y",
+              "value": "2"
+            }
+          ]
+        ],
+        "expected": "false"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "2^x + 3 = y^2",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 63599,
+  "usage": {
+    "default": {
+      "input": 14423,
+      "cachedInput": 0,
+      "output": 8365,
+      "reasoning": 3621
+    }
+  },
+  "costUsd": 0.01920515,
+  "model": "default",
+  "logs": [
+    "computed: - integer_solutions (35 ms)",
+    "outline in 28 s (385 chars)",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 1: unverified, 1 problem(s): answer check \"2^x + 3 = y^2\" failed: x=1, y=2 does not satisfy 2^x + 3 = y^2",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 2: unverified, 1 problem(s): answer check \"2^x + 3 = y^2\" failed: x=1, y=2 does not satisfy 2^x + 3 = y^2",
+    "usage: model=default in=14423 (cached 0) out=8365 (reasoning 3621) ≈ $0.0192",
+    "total ≈ $0.0192 over 2 attempt(s); lesson by default"
+  ]
+}

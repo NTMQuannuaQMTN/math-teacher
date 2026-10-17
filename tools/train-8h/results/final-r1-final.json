@@ -1,0 +1,141 @@
+{
+  "type": "final",
+  "round": "1",
+  "split": "final",
+  "createdAt": "2026-10-14T14:32:28.090Z",
+  "spentTotalUsd": 1.74185792,
+  "results": [
+    {
+      "id": "fin-a1",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 135423,
+      "finalAnswer": "Phương trình có tập nghiệm là $S = \\{1 - \\sqrt{6}; 1 + \\sqrt{6}\\}$.",
+      "costUsd": 0.0065
+    },
+    {
+      "id": "fin-a2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 44660,
+      "finalAnswer": "Giá trị nhỏ nhất của $P$ là $5$ khi và chỉ khi $x = 1$ và $y = 2$.",
+      "costUsd": 0.0118
+    },
+    {
+      "id": "fin-a3",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 51462,
+      "finalAnswer": "Giá trị cần tìm của $m$ là $m = 3$ hoặc $m = -2$.",
+      "costUsd": 0.0164
+    },
+    {
+      "id": "fin-g1",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-right-triangle",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 33,
+      "finalAnswer": "Vậy $AC=12\\text{ cm}$, $AH=\\frac{60}{13}\\text{ cm}$, $BH=\\frac{25}{13}\\text{ cm}$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin-g2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 59341,
+      "finalAnswer": "Số đo góc $AOB$ là $120^\\circ$.",
+      "costUsd": 0.0207
+    },
+    {
+      "id": "fin-g3",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 63830,
+      "finalAnswer": "Ta đã chứng minh được $DB = DC$ (đpcm).",
+      "costUsd": 0.0216
+    },
+    {
+      "id": "fin-n1",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 16642,
+      "finalAnswer": "Số dư cần tìm là 2.",
+      "costUsd": 0.0088
+    },
+    {
+      "id": "fin-n2",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-linear-divisor",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 14,
+      "finalAnswer": "Vậy $n\\in\\{-7;-4;-3;-2;0;1;2;5\\}$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin-n3",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-difference-of-squares",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 14,
+      "finalAnswer": "Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(5;1);\\ (7;5)$.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin-c1",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 32902,
+      "finalAnswer": "Số cách chia là 15 cách.",
+      "costUsd": 0.0122
+    },
+    {
+      "id": "fin-c2",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-digit-numbers",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 8,
+      "finalAnswer": "Vậy lập được $36$ số.",
+      "costUsd": 0
+    },
+    {
+      "id": "fin-c3",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "partial",
+      "attempts": 2,
+      "ms": 158835,
+      "finalAnswer": "Luôn tồn tại ít nhất một cặp điểm trong 5 điểm đã cho có khoảng cách không quá $\\sqrt{2}$.",
+      "costUsd": 0.0417
+    }
+  ]
+}

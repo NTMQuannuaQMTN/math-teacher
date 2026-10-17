@@ -1,0 +1,47 @@
+{
+  "type": "geometry",
+  "round": "4b",
+  "split": "all",
+  "createdAt": "2026-10-15T07:55:33.587Z",
+  "spentTotalUsd": 1.5375387999999992,
+  "results": [
+    {
+      "id": "hcm-2025-chuyen/3a",
+      "ok": false,
+      "error": "timeout",
+      "message": "local model request timed out",
+      "ms": 115117,
+      "logs": [
+        "outline in 0 s (910 chars)",
+        "language repair round 1: not accepted statusReason: still foreign",
+        "language repair round 2: not accepted statusReason: still foreign",
+        "language repair: 0/1 field(s) rewritten in 0 s",
+        "removed 1 optional metadata field(s) still not in Vietnamese",
+        "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "hanoi-2025-chuyen/IV.1",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "partial",
+      "attempts": 2,
+      "ms": 48763,
+      "finalAnswer": "Chứng minh được ba điểm $T, H, K$ thẳng hàng.",
+      "costUsd": 0.0162
+    },
+    {
+      "id": "ptnk-2026-chuyen/2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "partial",
+      "attempts": 2,
+      "ms": 33627,
+      "finalAnswer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18.",
+      "costUsd": 0.0126
+    }
+  ]
+}

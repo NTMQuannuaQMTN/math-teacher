@@ -1,0 +1,253 @@
+{
+  "question": {
+    "id": "alg8-h3",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho hai số thực dương $a,b$ thỏa mãn $a+b=2$. Tìm giá trị nhỏ nhất của biểu thức $P=\\frac{1}{a}+\\frac{4}{b}$.",
+    "reference": "$\\min P=\\frac92$, đạt khi $a=\\frac23$, $b=\\frac43$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho hai số thực dương $a, b$ thỏa mãn $a + b = 2$. Tìm giá trị nhỏ nhất của biểu thức $P = \\frac{1}{a} + \\frac{4}{b}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Bất đẳng thức và cực trị",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Bất đẳng thức Cô-si (Cô-si)",
+        "Cực trị của biểu thức đại số"
+      ],
+      "techniques": [
+        "am_gm",
+        "equality_case"
+      ],
+      "givens": [
+        "$a, b$ là hai số thực dương",
+        "$a + b = 2$"
+      ],
+      "unknowns": [
+        "P"
+      ],
+      "constraints": [
+        "$a, b > 0$",
+        "$a + b = 2$"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng bất đẳng thức Cô-si (Cô-si) kết hợp với việc nhân biểu thức với $a+b=2$ để tạo ra các cặp số nghịch đảo, từ đó tìm được giá trị nhỏ nhất chính xác.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Bạn có thể áp dụng bất đẳng thức Cô-si (Cô-si) cho hai số $\\frac{1}{a}$ và $\\frac{4}{b}$ để tìm một giá trị nhỏ nhất của $P$ không?",
+        "cue": "Bất đẳng thức Cô-si (Cô-si)",
+        "explanation": "Bạn hãy thử áp dụng bất đẳng thức Cô-si cho hai số dương $\\frac{1}{a}$ và $\\frac{4}{b}$ để tìm một cận dưới của $P$. Sau đó, hãy kiểm tra xem đẳng thức có xảy ra hay không.",
+        "math": "\\frac{x+y}{2} \\ge \\sqrt{xy}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "Khi nào thì dấu '=' trong bất đẳng thức Cô-si xảy ra? Bạn có thể tìm được $a$ và $b$ cụ thể từ điều kiện đó không?",
+        "cue": "Điều kiện dấu bằng",
+        "explanation": "Khi áp dụng Cô-si, dấu '=' xảy ra khi $\\frac{1}{a} = \\frac{4}{b}$. Kết hợp với điều kiện $a + b = 2$, bạn có thể giải hệ phương trình để tìm $a$ và $b$. Hãy thử xem bộ giá trị này có thỏa mãn $a, b > 0$ không.",
+        "math": "\\begin{cases} \\frac{1}{a} = \\frac{4}{b} \\\\ a + b = 2 \\end{cases}",
+        "stepId": "s2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Áp dụng bất đẳng thức Cô-si",
+        "explanation": "Áp dụng bất đẳng thức Cô-si (Cô-si) cho hai số dương $\\frac{1}{a}$ và $\\frac{4}{b}$, ta có: $\\frac{1}{a} + \\frac{4}{b} \\ge 2\\sqrt{\\frac{1}{a} \\cdot \\frac{4}{b}} = 2\\sqrt{\\frac{4}{ab}} = \\frac{4}{\\sqrt{ab}}$.",
+        "math": "\\frac{1}{a} + \\frac{4}{b} \\ge \\frac{4}{\\sqrt{ab}}",
+        "reason": "Bất đẳng thức Cô-si (Cô-si)",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given $a, b > 0$"
+        ],
+        "operation": "apply_am_gm",
+        "result": "P \\ge \\frac{4}{\\sqrt{ab}}",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "AM-GM được áp dụng đúng cho hai số dương. Kết quả đúng."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Tìm giá trị lớn nhất của $ab$",
+        "explanation": "Ta cần tìm giá trị nhỏ nhất của $\\frac{4}{\\sqrt{ab}}$. Để $P$ nhỏ nhất thì $\\sqrt{ab}$ phải lớn nhất, tức là $ab$ phải lớn nhất. Áp dụng lại bất đẳng thức Cô-si cho $a$ và $b$: $\\sqrt{ab} \\le \\frac{a+b}{2} = \\frac{2}{2} = 1$. Do đó $ab \\le 1$.",
+        "math": "\\sqrt{ab} \\le \\frac{a+b}{2} = 1",
+        "reason": "Bất đẳng thức Cô-si (Cô-si)",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given $a+b=2$"
+        ],
+        "operation": "apply_am_gm",
+        "result": "ab \\le 1",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "AM-GM cho a và b đúng. a+b=2 nên (a+b)/2 = 1. Đúng."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Phân tích cận dưới",
+        "explanation": "Từ $ab \\le 1$, ta có $\\sqrt{ab} \\le 1$, suy ra $\\frac{1}{\\sqrt{ab}} \\ge 1$, và $\\frac{4}{\\sqrt{ab}} \\ge 4$. Kết hợp với kết quả ở bước 1, ta có $P \\ge \\frac{4}{\\sqrt{ab}} \\ge 4$. Tuy nhiên, dấu '=' trong $P \\ge \\frac{4}{\\sqrt{ab}}$ xảy ra khi $\\frac{1}{a} = \\frac{4}{b}$, còn dấu '=' trong $\\sqrt{ab} \\le 1$ xảy ra khi $a = b$. Hai điều kiện này không thể cùng xảy ra (vì nếu $a=b$ thì $a=b=1$, khi đó $\\frac{1}{a} \\neq \\frac{4}{b}$). Do đó, $P$ không thể đạt giá trị 4. Ta cần một cách tiếp cận khác để tìm GTNN chính xác.",
+        "math": "P \\ge 4",
+        "reason": "Kết hợp các bất đẳng thức",
+        "uses": [
+          "s1",
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "s1",
+          "s2"
+        ],
+        "operation": "combine_inequalities",
+        "result": "P \\ge 4",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Phân tích đúng. Dấu bằng không đồng thời xảy ra. Cần cách khác."
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Tìm giá trị nhỏ nhất chính xác",
+        "explanation": "Ta biến đổi $P$ bằng cách nhân với $a+b=2$: $P = \\frac{1}{2}(a+b)(\\frac{1}{a} + \\frac{4}{b}) = \\frac{1}{2}(1 + \\frac{4a}{b} + \\frac{b}{a} + 4) = \\frac{1}{2}(5 + \\frac{4a}{b} + \\frac{b}{a})$. Áp dụng bất đẳng thức Cô-si cho $\\frac{4a}{b}$ và $\\frac{b}{a}$: $\\frac{4a}{b} + \\frac{b}{a} \\ge 2\\sqrt{\\frac{4a}{b} \\cdot \\frac{b}{a}} = 2\\sqrt{4} = 4$. Vậy $P \\ge \\frac{1}{2}(5 + 4) = \\frac{9}{2}$.",
+        "math": "P = \\frac{1}{2}(5 + \\frac{4a}{b} + \\frac{b}{a}) \\ge \\frac{1}{2}(5 + 4) = \\frac{9}{2}",
+        "reason": "Bất đẳng thức Cô-si (Cô-si)",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given $a+b=2$"
+        ],
+        "operation": "apply_am_gm",
+        "result": "P \\ge \\frac{9}{2}",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "Biến đổi đại số đúng. AM-GM cho 4a/b và b/a đúng. Kết quả 9/2."
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Xác định điều kiện dấu bằng",
+        "explanation": "Dấu '=' xảy ra khi $\\frac{4a}{b} = \\frac{b}{a}$, tức là $b^2 = 4a^2 \\Rightarrow b = 2a$ (do $a,b > 0$). Kết hợp với $a+b=2$, ta có $a+2a=2 \\Rightarrow 3a=2 \\Rightarrow a=\\frac{2}{3}$ và $b=\\frac{4}{3}$. Hai giá trị này đều dương, thỏa mãn điều kiện.",
+        "math": "\\begin{cases} b = 2a \\\\ a + b = 2 \\end{cases} \\Rightarrow \\begin{cases} a = \\frac{2}{3} \\\\ b = \\frac{4}{3} \\end{cases}",
+        "reason": "Giải hệ phương trình",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "s4"
+        ],
+        "operation": "giải hệ phương trình",
+        "result": "a = 2/3, b = 4/3",
+        "verification": {
+          "status": "verified",
+          "method": "sách hướng dẫn",
+          "reason": "b=2a thay vào a+b=2 => 3a=2 => a=2/3, b=4/3. Đúng."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị nhỏ nhất của $P$ là $\\frac{9}{2}$, đạt được khi $a = \\frac{2}{3}$ và $b = \\frac{4}{3}$.",
+      "math": "P_{min} = \\frac{9}{2}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "(1/a) + (4/b)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "2/3"
+            },
+            {
+              "variable": "b",
+              "value": "4/3"
+            }
+          ]
+        ],
+        "expected": "4.5"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "(1/a) + (4/b)",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 107406,
+  "usage": {
+    "default": {
+      "input": 6365,
+      "cachedInput": 0,
+      "output": 14710,
+      "reasoning": 3148
+    }
+  },
+  "costUsd": 0.02522345,
+  "model": "default",
+  "logs": [
+    "computed: - minimize (153 ms)",
+    "outline failed after 87 s (output truncated); writing the lesson without it",
+    "language repair: 6/6 field(s) rewritten in 1 s",
+    "attempt 1: verified, 0 problem(s)",
+    "usage: model=default in=6365 (cached 0) out=14710 (reasoning 3148) ≈ $0.0252",
+    "total ≈ $0.0252 over 1 attempt(s); lesson by default"
+  ]
+}

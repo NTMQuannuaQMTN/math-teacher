@@ -1,0 +1,212 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/V.1",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Hai trường trung học cơ sở $A$ và $B$ tổ chức chung một buổi liên hoan cho các học sinh tiêu biểu. Biết rằng trong buổi liên hoan này: (i) mỗi học sinh trường $A$ quen với đúng 5 học sinh khác cũng của trường $A$; (ii) mỗi học sinh trường $A$ quen với đúng 4 học sinh trường $B$; (iii) mỗi học sinh trường $B$ quen với đúng 3 học sinh trường $A$; (iv) tổng số học sinh của hai trường tham dự không vượt quá 80. Số học sinh trường $A$ tham dự buổi liên hoan có thể là 25 học sinh được không? Vì sao?",
+    "reference": "Không",
+    "reference_status": "teacher",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Hai trường A và B tham dự một buổi liên hoan. Mỗi học sinh trường A quen 5 bạn cùng trường A và 4 bạn trường B. Mỗi học sinh trường B quen 3 bạn trường A. Tổng số học sinh không quá 80. Hỏi số học sinh trường A có thể là 25 không?",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Bài toán có lời văn (Lập phương trình/hệ phương trình)",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Bài toán có lời văn liên quan đến hệ phương trình",
+        "Kiến thức cơ bản về lý thuyết đồ thị (định lý tổng bậc / bổ đề bắt tay)",
+        "Điều kiện nguyên và tính chia hết"
+      ],
+      "techniques": [
+        "substitution",
+        "domain_conditions",
+        "factorization"
+      ],
+      "givens": [
+        "Mỗi học sinh của Trường A biết 5 học sinh khác của Trường A.",
+        "Mỗi học sinh của Trường A biết 4 học sinh của Trường B.",
+        "Mỗi học sinh của Trường B biết 3 học sinh của Trường A.",
+        "Total students (A + B) <= 80."
+      ],
+      "unknowns": [
+        "x: số học sinh trường A",
+        "y: số học sinh trường B"
+      ],
+      "constraints": [
+        "Total students <= 80",
+        "Số học sinh phải là một số nguyên dương"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Đặt ẩn số học sinh hai trường, thiết lập phương trình dựa trên tổng số lần quen biết giữa hai trường, biểu diễn một ẩn theo ẩn kia, và kiểm tra tính nguyên của nghiệm khi thay giá trị cụ thể.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Nếu bạn gọi số học sinh trường A là x và trường B là y, bạn có thể viết phương trình nào liên hệ giữa x và y dựa trên số lần quen biết giữa hai trường?",
+        "cue": "Hãy đếm số lần quen biết giữa hai trường.",
+        "explanation": "Bạn hãy nhìn vào mối quan hệ giữa học sinh trường A và trường B. Mỗi học sinh trường A quen 4 bạn trường B, và mỗi học sinh trường B quen 3 bạn trường A. Tổng số lần quen biết này phải bằng nhau, bất kể bạn đếm từ phía A hay phía B.",
+        "math": "4x = 3y",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "Từ mối quan hệ đó, hãy biểu diễn $y$ theo $x$. Để $y$ là một số nguyên (số học sinh), $x$ cần thỏa mãn điều kiện gì?",
+        "cue": "Biểu diễn y theo x.",
+        "explanation": "Từ phương trình $4x = 3y$, bạn hãy biểu diễn $y$ theo $x$. Vì $x$ và $y$ đều là số học sinh nên chúng phải là các số nguyên dương. Điều này có nghĩa là $x$ phải chia hết cho 3 và $y$ phải chia hết cho 4.",
+        "math": "y = \\frac{4x}{3}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 4,
+        "question": "Giả sử $x = 25$. Bạn hãy tính giá trị của $y$ và kiểm tra xem tổng số học sinh $x + y$ có thỏa mãn điều kiện $\\le 80$ không? (Lưu ý: $y$ có phải là số nguyên không?)",
+        "cue": "Kiểm tra điều kiện tổng số học sinh.",
+        "explanation": "Bây giờ hãy thử $x = 25$. Tính xem $y$ là bao nhiêu. Sau đó, tính tổng $x + y$ và so sánh với điều kiện tổng số học sinh không vượt quá 80.",
+        "math": "x + y \\le 80",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Thiết lập phương trình liên hệ x và y",
+        "explanation": "Gọi $x$ là số học sinh trường A và $y$ là số học sinh trường B. Ta có thể đếm tổng số mối quan hệ quen biết giữa hai trường theo hai cách: từ phía A (mỗi bạn quen 4 bạn B) và từ phía B (mỗi bạn quen 3 bạn A). Tổng số này phải bằng nhau.",
+        "math": "4x = 3y",
+        "reason": "Đếm số cạnh trong đồ thị hai phía (Handshaking Lemma)",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Mối quan hệ quen biết là hai chiều và được đếm nhất quán."
+        ],
+        "operation": "set_up_equation",
+        "result": "4x = 3y",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại bước thiết lập phương trình."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Biểu diễn y theo x và điều kiện nguyên",
+        "explanation": "Từ phương trình $4x = 3y$, ta biểu diễn $y$ theo $x$. Vì $x$ và $y$ là số học sinh nên chúng phải là các số nguyên dương. Điều này có nghĩa là $3y$ chia hết cho 4, mà 3 và 4 nguyên tố cùng nhau nên $y$ phải chia hết cho 4. Tương tự, $x$ phải chia hết cho 3.",
+        "math": "y = \\frac{4x}{3}",
+        "reason": "Biến đổi đại số và điều kiện nguyên",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tính chất chia hết của số nguyên."
+        ],
+        "operation": "substitution",
+        "result": "y = 4x/3",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại bước biến đổi."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Kiểm tra trường hợp x = 25",
+        "explanation": "Bây giờ ta kiểm tra trường hợp $x = 25$. Thay $x = 25$ vào công thức $y = \\frac{4x}{3}$, ta được $y = \\frac{4 \\times 25}{3} = \\frac{100}{3}$. Kết quả này không phải là một số nguyên. Vì số học sinh phải là số tự nhiên, nên $x = 25$ không thể xảy ra.",
+        "math": "y = \\frac{100}{3} \\notin \\mathbb{N}",
+        "reason": "Thay giá trị và kiểm tra điều kiện nguyên",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Số học sinh phải là số nguyên."
+        ],
+        "operation": "substitution",
+        "result": "y = 100/3",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại phép tính."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Không, số học sinh trường A không thể là 25. Vì nếu x = 25 thì số học sinh trường B sẽ không phải là số nguyên (y = 100/3), trong khi số học sinh phải là số tự nhiên.",
+      "math": "x = 25 \\text{ không thể là số học sinh trường A}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "4 * x = 3 * y"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "25"
+            },
+            {
+              "variable": "y",
+              "value": "33.333"
+            }
+          ]
+        ],
+        "expected": "y is not an integer"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 17600,
+  "usage": {
+    "default": {
+      "input": 5558,
+      "cachedInput": 0,
+      "output": 2329,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.00604118,
+  "model": "default",
+  "logs": [
+    "language repair: 8/8 field(s) rewritten in 2 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"4 * x = 3 * y\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=5558 (cached 0) out=2329 (reasoning 0) ≈ $0.0060",
+    "total ≈ $0.0060 over 1 attempt(s); lesson by default"
+  ]
+}

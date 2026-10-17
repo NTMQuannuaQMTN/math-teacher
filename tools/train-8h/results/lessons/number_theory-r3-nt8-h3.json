@@ -1,0 +1,196 @@
+{
+  "question": {
+    "id": "nt8-h3",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm tất cả các số nguyên tố $p$ sao cho $p^2+2$ cũng là số nguyên tố.",
+    "reference": "$p=3$ (với $p\\ne3$: $p^2\\equiv1\\pmod3$ nên $3\\mid p^2+2>3$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các số nguyên tố $p$ sao cho $p^2+2$ cũng là số nguyên tố.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Lý thuyết số",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Số nguyên tố",
+        "Chia hết",
+        "Đồng dư (mod 3)"
+      ],
+      "techniques": [
+        "divisibility",
+        "perfect_squares",
+        "case_analysis"
+      ],
+      "givens": [
+        "p là số nguyên tố",
+        "$p^2 + 2$ là số nguyên tố"
+      ],
+      "unknowns": [
+        "p"
+      ],
+      "constraints": [
+        "p là số nguyên tố"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu sử dụng phép toán đồng dư (mod 3), nội dung này không nằm trong chương trình chuẩn lớp 9."
+      ]
+    },
+    "strategy": "Thử các số nguyên tố nhỏ, sau đó xét tính chia hết cho 3 của $p^2+2$ với $p > 3$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Bạn thử thay $p=2$ và $p=3$ vào biểu thức $p^2+2$ xem sao?",
+        "cue": "Các số nguyên tố nhỏ nhất",
+        "explanation": "Bạn hãy thử thay các số nguyên tố nhỏ nhất là $p=2$ và $p=3$ vào biểu thức $p^2+2$ xem kết quả có là số nguyên tố không nhé.",
+        "math": null,
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Với $p > 3$, bạn xét xem $p^2+2$ có chia hết cho 3 không?",
+        "cue": "Chia hết cho 3",
+        "explanation": "Với các số nguyên tố $p > 3$, $p$ không chia hết cho 3. Khi đó $p^2$ luôn chia 3 dư 1. Bạn hãy thử xét tính chia hết của $p^2+2$ cho 3 xem sao?",
+        "math": "p^2+2 \\vdots 3",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Thử các số nguyên tố nhỏ",
+        "explanation": "Bạn hãy thử thay các giá trị nguyên tố nhỏ nhất vào biểu thức để xem kết quả.",
+        "math": "p=2 \\Rightarrow p^2+2 = 6 \\text{ (loại)} \\\\ p=3 \\Rightarrow p^2+2 = 11 \\text{ (nhận)}",
+        "reason": "Kiểm tra các trường hợp đặc biệt",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "substitution",
+        "result": "p=3 là một nghiệm",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị vào biểu thức"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xét tính chia hết của $p^2$",
+        "explanation": "Với các số nguyên tố $p > 3$, $p$ không chia hết cho 3. Khi đó $p^2$ luôn chia 3 dư 1.",
+        "math": "p^2 \\equiv 1 \\pmod 3",
+        "reason": "Tính chất của số nguyên tố lớn hơn 3",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1"
+        ],
+        "operation": "phép toán đồng dư",
+        "result": "p^2 chia 3 dư 1",
+        "verification": {
+          "status": "verified",
+          "method": "phép toán đồng dư",
+          "reason": "p không chia hết cho 3"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Kết luận $p^2+2$ là hợp số",
+        "explanation": "Vì $p^2$ chia 3 dư 1, nên $p^2+2$ sẽ chia hết cho 3. Vì $p^2+2 > 3$, nên nó là hợp số.",
+        "math": "p^2+2 \\equiv 1+2 \\equiv 0 \\pmod 3",
+        "reason": "Tính chất chia hết",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_2"
+        ],
+        "operation": "phép toán đồng dư",
+        "result": "p^2+2 là hợp số",
+        "verification": {
+          "status": "verified",
+          "method": "phép toán đồng dư",
+          "reason": "p^2+2 chia hết cho 3"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy số nguyên tố cần tìm là $p = 3$.",
+      "math": "p=3"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "is_prime(p) and is_prime(p^2+2)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "p",
+              "value": "3"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 33474,
+  "usage": {
+    "default": {
+      "input": 14597,
+      "cachedInput": 0,
+      "output": 6903,
+      "reasoning": 2542
+    }
+  },
+  "costUsd": 0.01706121,
+  "model": "default",
+  "logs": [
+    "outline in 0 s (267 chars)",
+    "language repair: 6/6 field(s) rewritten in 2 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"is_prime(p) and is_prime(p^2+2)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "language repair: 6/6 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"is_prime(p) and is_prime(p^2+2)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=default in=14597 (cached 0) out=6903 (reasoning 2542) ≈ $0.0171",
+    "total ≈ $0.0171 over 2 attempt(s); lesson by default"
+  ]
+}

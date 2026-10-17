@@ -1,0 +1,318 @@
+{
+  "question": {
+    "id": "nt8-h2",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Chứng minh rằng với mọi số nguyên $n$, $n^2+n+1$ không chia hết cho $9$.",
+    "reference": "Chứng minh: nếu $9\\mid n^2+n+1$ thì $3\\mid n^2+n+1$ nên $n\\equiv1\\pmod3$; đặt $n=3k+1$ thì $n^2+n+1=9k^2+9k+3$ chia $9$ dư $3$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Chứng minh rằng với mọi số nguyên $n$, biểu thức $n^2+n+1$ không chia hết cho 9.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Chia hết và đồng dư",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Đồng dư thức (đồng dư)",
+        "Chia hết (Divisibility)",
+        "Biến đổi đại số (Algebraic manipulation)",
+        "Xét trường hợp theo số dư"
+      ],
+      "techniques": [
+        "remainders",
+        "divisibility",
+        "case_analysis"
+      ],
+      "givens": [
+        "Biểu thức $n^2+n+1$"
+      ],
+      "unknowns": [
+        "Tính chia hết của $n^2+n+1$ cho 9"
+      ],
+      "constraints": [
+        "n là số nguyên $(n \\in \\mathbb{Z})$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu chứng minh tính chất chia hết của một biểu thức đại số với mọi số nguyên. Để giải quyết bài toán này một cách chặt chẽ và phù hợp với chương trình THCS, chúng ta cần sử dụng kiến thức về đồng dư thức (khi chia cho). Tuy nhiên, theo quy định của hệ thống, các phương pháp đồng dư thức (rema"
+      ]
+    },
+    "strategy": "Xét tính chia hết cho 3 trước. Nếu biểu thức không chia hết cho 3 thì chắc chắn không chia hết cho 9. Nếu chia hết cho 3, ta xét trường hợp cụ thể để kiểm tra tính chia hết cho 9.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Bạn có nhận xét gì về mối liên hệ giữa tính chia hết cho 9 và tính chia hết cho 3 không?",
+        "cue": "Nếu một số chia hết cho 9 thì nó cũng phải chia hết cho 3.",
+        "explanation": "Đây là một tính chất rất quan trọng: nếu $A \\vdots 9$ thì $A \\vdots 3$. Ngược lại, nếu $A$ không chia hết cho 3 thì chắc chắn $A$ không chia hết cho 9. Chúng ta hãy thử xem $n^2+n+1$ có chia hết cho 3 không.",
+        "math": null,
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Bạn có thể xét 3 trường hợp của $n$ theo số dư khi chia cho 3 không?",
+        "cue": "Mọi số nguyên $n$ khi chia cho 3 đều có số dư là 0, 1 hoặc 2.",
+        "explanation": "Hãy thử thay $n$ bằng các dạng $3k$, $3k+1$, $3k+2$ (với $k$ là số nguyên) vào biểu thức $n^2+n+1$ và xem kết quả chia cho 3 dư bao nhiêu.",
+        "math": null,
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Hãy thử khai triển biểu thức $n^2+n+1$ trong trường hợp $n$ chia cho 3 dư 1.",
+        "cue": "Sử dụng hằng đẳng thức hoặc khai triển bình phương.",
+        "explanation": "Khi $n = 3k+1$, ta có $n^2+n+1 = (3k+1)^2 + (3k+1) + 1 = 9k^2 + 6k + 1 + 3k + 1 + 1 = 9k^2 + 9k + 3$. Biểu thức này chia cho 9 dư 3, nên không chia hết cho 9.",
+        "math": null,
+        "stepId": "step_4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xét $n^2+n+1 \\pmod{3}$",
+        "explanation": "Để chứng minh $n^2+n+1$ không chia hết cho 9, ta có thể xét tính chia hết cho 3 trước. Nếu biểu thức không chia hết cho 3 thì chắc chắn không chia hết cho 9.",
+        "math": "n^2+n+1 \\pmod 3",
+        "reason": "Tính chất chia hết: Nếu $A \\vdots 9 \\Rightarrow A \\vdots 3$. Do đó, nếu $A$ không chia hết cho 3 thì $A$ không chia hết cho 9.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "n là số nguyên"
+        ],
+        "operation": "Xét điều kiện cần",
+        "result": "Xét $n^2+n+1$ theo mod 3.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính chia hết cho 3"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xét các trường hợp của n",
+        "explanation": "Ta xét 3 trường hợp của $n$ khi chia cho 3: $n \\equiv 0, 1, 2 \\pmod 3$.",
+        "math": "n \\equiv 0, 1, 2 \\pmod 3",
+        "reason": "Mọi số nguyên khi chia cho 3 đều có số dư là 0, 1 hoặc 2.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "n là số nguyên"
+        ],
+        "operation": "Xét trường hợp",
+        "result": "Các trường hợp cần xét.",
+        "verification": {
+          "status": "verified",
+          "method": "phân tích theo trường hợp",
+          "reason": "Xét 3 trường hợp số dư"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Trường hợp n chia hết cho 3",
+        "explanation": "Nếu $n \\equiv 0 \\pmod 3$, thì $n^2+n+1 \\equiv 0^2+0+1 \\equiv 1 \\pmod 3$. Không chia hết cho 3.",
+        "math": "n^2+n+1 \\equiv 1 \\pmod 3",
+        "reason": "Thay $n=3k$ vào biểu thức.",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n \\equiv 0 \\pmod 3"
+        ],
+        "operation": "Thay thế",
+        "result": "Trường hợp 1: Không chia hết cho 3.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay n=3k"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Trường hợp n chia cho 3 dư 1",
+        "explanation": "Nếu $n \\equiv 1 \\pmod 3$, thì $n^2+n+1 \\equiv 1^2+1+1 \\equiv 3 \\equiv 0 \\pmod 3$. Trường hợp này chia hết cho 3.",
+        "math": "n^2+n+1 \\equiv 0 \\pmod 3",
+        "reason": "Thay $n=3k+1$ vào biểu thức.",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n \\equiv 1 \\pmod 3"
+        ],
+        "operation": "Thay thế",
+        "result": "Trường hợp 2: Chia hết cho 3.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay n=3k+1"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Trường hợp n chia cho 3 dư 2",
+        "explanation": "Nếu $n \\equiv 2 \\pmod 3$, thì $n^2+n+1 \\equiv 2^2+2+1 \\equiv 4+2+1 \\equiv 7 \\equiv 1 \\pmod 3$. Không chia hết cho 3.",
+        "math": "n^2+n+1 \\equiv 1 \\pmod 3",
+        "reason": "Thay $n=3k+2$ vào biểu thức.",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n \\equiv 2 \\pmod 3"
+        ],
+        "operation": "Thay thế",
+        "result": "Trường hợp 3: Không chia hết cho 3.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay n=3k+2"
+        }
+      },
+      {
+        "id": "step_6",
+        "title": "Biểu diễn n",
+        "explanation": "Chỉ có trường hợp $n \\equiv 1 \\pmod 3$ là $n^2+n+1$ chia hết cho 3. Ta cần kiểm tra xem trong trường hợp này, nó có chia hết cho 9 không.",
+        "math": "n = 3k+1",
+        "reason": "Từ $n \\equiv 1 \\pmod 3$, ta có $n = 3k+1$ với $k \\in \\mathbb{Z}$.",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n \\equiv 1 \\pmod 3"
+        ],
+        "operation": "Định nghĩa",
+        "result": "Biểu diễn n.",
+        "verification": {
+          "status": "verified",
+          "method": "định nghĩa",
+          "reason": "Định nghĩa đồng dư"
+        }
+      },
+      {
+        "id": "step_7",
+        "title": "Kiểm tra tính chia hết cho 9",
+        "explanation": "Thay $n=3k+1$ vào $n^2+n+1$: $(3k+1)^2 + (3k+1) + 1 = 9k^2+6k+1+3k+1+1 = 9k^2+9k+3 = 9(k^2+k)+3$. Biểu thức này chia cho 9 dư 3.",
+        "math": "n^2+n+1 = 9(k^2+k)+3",
+        "reason": "Khai triển và rút gọn.",
+        "uses": [
+          "step_6"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n = 3k+1"
+        ],
+        "operation": "Biến đổi đại số",
+        "result": "Biểu thức chia cho 9 dư 3.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay n=3k+1"
+        }
+      },
+      {
+        "id": "step_8",
+        "title": "Kết luận",
+        "explanation": "Vì $9(k^2+k)+3$ luôn chia cho 9 dư 3 (với mọi $k \\in \\mathbb{Z}$), nên $n^2+n+1$ không bao giờ chia hết cho 9.",
+        "math": "n^2+n+1 \\not\\vdots 9",
+        "reason": "Số dư khác 0.",
+        "uses": [
+          "step_7"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n^2+n+1 = 9(k^2+k)+3"
+        ],
+        "operation": "Kết luận",
+        "result": "Chứng minh hoàn tất.",
+        "verification": {
+          "status": "verified",
+          "method": "conclusion",
+          "reason": "Số dư khác 0"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chứng minh hoàn tất.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_6",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_7",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_8",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 62050,
+  "usage": {
+    "default": {
+      "input": 6122,
+      "cachedInput": 0,
+      "output": 8210,
+      "reasoning": 3495
+    }
+  },
+  "costUsd": 0.0152341,
+  "model": "default",
+  "logs": [
+    "outline in 37 s (510 chars)",
+    "language repair: 3/3 field(s) rewritten in 1 s",
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=default in=6122 (cached 0) out=8210 (reasoning 3495) ≈ $0.0152",
+    "total ≈ $0.0152 over 1 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,189 @@
+{
+  "question": {
+    "id": "comb8-h2",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Có bao nhiêu số tự nhiên có bốn chữ số mà các chữ số đều là số lẻ và đôi một khác nhau?",
+    "reference": "$120$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm số lượng các số tự nhiên có 4 chữ số khác nhau, trong đó tất cả các chữ số đều thuộc tập hợp các chữ số lẻ.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Combinatorics",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Permutations (Hoán vị)",
+        "Counting principles (Quy tắc đếm)"
+      ],
+      "techniques": [
+        "counting"
+      ],
+      "givens": [
+        "Tập hợp các chữ số lẻ: {1, 3, 5, 7, 9}"
+      ],
+      "unknowns": [
+        "Số lượng các số có 4 chữ số thỏa mãn điều kiện"
+      ],
+      "constraints": [
+        "4-digit number (số có 4 chữ số)",
+        "Các chữ số đều là chữ số lẻ",
+        "Các chữ số đôi một khác nhau"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Liệt kê các chữ số lẻ có sẵn, sau đó sử dụng quy tắc nhân để tính số cách chọn cho từng vị trí chữ số của số có 4 chữ số khác nhau.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 1,
+        "question": "Bạn hãy liệt kê tất cả các chữ số lẻ có thể dùng được. Có tất cả bao nhiêu chữ số như vậy?",
+        "cue": "Tập hợp các chữ số lẻ",
+        "explanation": "Trước hết, bạn hãy liệt kê xem có bao nhiêu chữ số lẻ khác nhau từ 0 đến 9. Tập hợp này sẽ là nguồn để chúng ta chọn chữ số cho số cần tìm.",
+        "math": null,
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Hãy tưởng tượng bạn đang điền lần lượt vào 4 ô trống: hàng nghìn, hàng trăm, hàng chục và hàng đơn vị. Với mỗi ô, bạn có bao nhiêu sự lựa chọn còn lại?",
+        "cue": "Quy tắc nhân",
+        "explanation": "Vì các chữ số phải khác nhau, khi bạn chọn xong chữ số hàng nghìn, bạn sẽ còn lại bao nhiêu chữ số để chọn cho hàng trăm? Tương tự cho hàng chục và hàng đơn vị. Hãy nhân các số lượng lựa chọn này lại với nhau.",
+        "math": null,
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 4,
+        "question": "Bây giờ, hãy thực hiện phép nhân các số lượng lựa chọn đó để tìm ra đáp án cuối cùng.",
+        "cue": "Phép tính",
+        "explanation": "Bạn chỉ cần thực hiện phép nhân các con số bạn đã tìm được ở bước trước.",
+        "math": "5 \\times 4 \\times 3 \\times 2",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Xác định tập chữ số",
+        "explanation": "Đầu tiên, chúng ta cần xác định tập hợp các chữ số có thể sử dụng. Đề bài yêu cầu các chữ số đều là số lẻ. Các chữ số lẻ từ 0 đến 9 là: 1, 3, 5, 7, 9. Vậy ta có 5 chữ số khác nhau để chọn.",
+        "math": "S = \\{1, 3, 5, 7, 9\\}",
+        "reason": "Định nghĩa về chữ số lẻ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tập hợp các chữ số lẻ là {1, 3, 5, 7, 9}."
+        ],
+        "operation": "identify",
+        "result": "5 available digits",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Kiểm tra định nghĩa cơ bản"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Áp dụng quy tắc nhân",
+        "explanation": "Số cần tìm có 4 chữ số. Vì các chữ số phải đôi một khác nhau, ta sẽ điền vào 4 vị trí (nghìn, trăm, chục, đơn vị) lần lượt:\n- Chữ số hàng nghìn: Có 5 cách chọn (vì có 5 chữ số lẻ).\n- Chữ số hàng trăm: Sau khi đã chọn 1 chữ số cho hàng nghìn, ta còn lại 4 chữ số, nên có 4 cách chọn.\n- Chữ số hàng chục: Sau khi đã chọn 2 chữ số, ta còn lại 3 chữ số, nên có 3 cách chọn.\n- Chữ số hàng đơn vị: Sau khi đã chọn 3 chữ số, ta còn lại 2 chữ số, nên có 2 cách chọn.",
+        "math": "5 \\times 4 \\times 3 \\times 2",
+        "reason": "Multiplication principle of counting",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Có 5 lựa chọn cho chữ số hàng nghìn",
+          "Có 4 lựa chọn cho chữ số hàng trăm",
+          "Có 3 lựa chọn cho chữ số hàng chục",
+          "Có 2 lựa chọn cho chữ số hàng đơn vị"
+        ],
+        "operation": "calculate",
+        "result": "120",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Kiểm tra phép tính"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Tính kết quả",
+        "explanation": "Thực hiện phép tính: $5 \\times 4 = 20$, $20 \\times 3 = 60$, và $60 \\times 2 = 120$. Vậy có tất cả 120 số thỏa mãn điều kiện đề bài.",
+        "math": "120",
+        "reason": "Phép tính",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "5 * 4 * 3 * 2 = 120"
+        ],
+        "operation": "calculate",
+        "result": "120",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Kiểm tra phép tính"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Có 120 số tự nhiên thỏa mãn đề bài.",
+      "math": "120"
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 17672,
+  "usage": {
+    "default": {
+      "input": 6229,
+      "cachedInput": 0,
+      "output": 2240,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.00620785,
+  "model": "default",
+  "logs": [
+    "language repair: 17/18 field(s) rewritten in 4 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=default in=6229 (cached 0) out=2240 (reasoning 0) ≈ $0.0062",
+    "total ≈ $0.0062 over 1 attempt(s); lesson by default"
+  ]
+}

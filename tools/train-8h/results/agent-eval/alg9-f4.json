@@ -1,0 +1,251 @@
+{
+  "id": "alg9-f4",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "verified",
+  "seconds": 53,
+  "costUsd": 0.0548,
+  "final": "Biểu thức đã rút gọn là $A = \\frac{x-1}{\\sqrt{x}}$.",
+  "hints": [
+    "Biến đổi mẫu thức $x - \\sqrt{x}$ thành $\\sqrt{x}(\\sqrt{x} - 1)$",
+    "Quy đồng và rút gọn biểu thức trong ngoặc thành $\\frac{x-1}{x-\\sqrt{x}}$",
+    "Thực hiện phép chia bằng cách nhân với phân thức đảo ngược"
+  ],
+  "reference": "$A=\\frac{x-1}{\\sqrt x}$",
+  "lesson": {
+    "analysis": {
+      "statement": "Rút gọn biểu thức $A=\\left(\\frac{\\sqrt x}{\\sqrt x-1}-\\frac{1}{x-\\sqrt x}\\right):\\frac{\\sqrt x+1}{x-1}$ với $x>0$, $x\\ne1$.",
+      "language": "vi",
+      "topic": "arithmetic",
+      "subtopic": "$rational_and_radical_expressions$",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "rút gọn biểu thức chứa căn",
+        "biến đổi mẫu thức",
+        "hằng đẳng thức",
+        "phép chia phân thức"
+      ],
+      "techniques": [
+        "factorization",
+        "substitution"
+      ],
+      "givens": [
+        "$A = \\left(\\frac{\\sqrt{x}}{\\sqrt{x}-1} - \\frac{1}{x-\\sqrt{x}}\\right) : \\frac{\\sqrt{x}+1}{x-1}$",
+        "$x > 0$, $x \\ne 1$"
+      ],
+      "unknowns": [
+        "Giá trị rút gọn của biểu thức $A$"
+      ],
+      "constraints": [
+        "$x > 0$",
+        "$x \\ne 1$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Biến đổi mẫu thức của các phân thức trong ngoặc về cùng mẫu thức $\\sqrt{x}(\\sqrt{x}-1)$, rút gọn tử số, rồi thực hiện phép chia với phân thức ngoài ngoặc bằng cách nhân với phân thức đảo ngược.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Biến đổi mẫu thức $x - \\sqrt{x}$ thành $\\sqrt{x}(\\sqrt{x} - 1)$",
+        "cue": "Đặt nhân tử chung",
+        "explanation": "Bạn để ý rằng $x - \\sqrt{x} = \\sqrt{x} \\cdot \\sqrt{x} - \\sqrt{x} \\cdot 1 = \\sqrt{x}(\\sqrt{x} - 1)$. Từ đó, hai phân thức trong ngoặc sẽ có cùng mẫu thức.",
+        "math": "x - \\sqrt{x} = \\sqrt{x}(\\sqrt{x} - 1)",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Quy đồng và rút gọn biểu thức trong ngoặc thành $\\frac{x-1}{x-\\sqrt{x}}$",
+        "cue": "Cộng các phân thức cùng mẫu",
+        "explanation": "Sau khi quy đồng, tử số sẽ là $\\sqrt{x} \\cdot \\sqrt{x} - 1 = x - 1$. Bạn hãy thử viết ra bước này và rút gọn phân thức thu được.",
+        "math": "\\frac{\\sqrt{x}}{\\sqrt{x}-1} - \\frac{1}{\\sqrt{x}(\\sqrt{x}-1)} = \\frac{x-1}{\\sqrt{x}(\\sqrt{x}-1)}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Thực hiện phép chia bằng cách nhân với phân thức đảo ngược",
+        "cue": "Phép chia phân thức",
+        "explanation": "Phép chia cho $\\frac{\\sqrt{x}+1}{x-1}$ tương đương với nhân với $\\frac{x-1}{\\sqrt{x}+1}$. Bạn hãy viết biểu thức sau khi nhân và thực hiện rút gọn.",
+        "math": "\\frac{x-1}{x-\\sqrt{x}} \\cdot \\frac{x-1}{\\sqrt{x}+1}",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định điều kiện và biến đổi mẫu thức",
+        "explanation": "Đầu tiên, ta xác định điều kiện xác định: $x > 0$ và $x \\ne 1$ (để mẫu thức khác 0). Tiếp theo, ta biến đổi mẫu thức $x - \\sqrt{x}$ để chuẩn bị quy đồng.",
+        "math": "x - \\sqrt{x} = \\sqrt{x}(\\sqrt{x} - 1)",
+        "reason": "Đặt nhân tử chung $\\sqrt{x}$",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "điều kiện xác định"
+        ],
+        "operation": "factorization",
+        "result": "x - \\sqrt{x} = \\sqrt{x}(\\sqrt{x} - 1)",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x = 4$: $4 - 2 = 2$ và $2(2-1) = 2$ (đúng)"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Quy đồng và rút gọn biểu thức trong ngoặc",
+        "explanation": "Ta quy đồng hai phân thức trong ngoặc với mẫu thức chung là $\\sqrt{x}(\\sqrt{x} - 1) = x - \\sqrt{x}$. Tử số trở thành $\\sqrt{x} \\cdot \\sqrt{x} - 1 = x - 1$. Phân thức thu được là $\\frac{x-1}{x-\\sqrt{x}}$.",
+        "math": "\\frac{\\sqrt{x}}{\\sqrt{x}-1} - \\frac{1}{x-\\sqrt{x}} = \\frac{x-1}{x-\\sqrt{x}}",
+        "reason": "Quy đồng mẫu thức và rút gọn tử số",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "phép trừ phân thức"
+        ],
+        "operation": "simplify",
+        "result": "\\frac{x-1}{x-\\sqrt{x}}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x = 4$: VT = $\\frac{2}{1} - \\frac{1}{2} = \\frac{3}{2}$; VP = $\\frac{3}{2}$ (đúng)"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Thực hiện phép chia",
+        "explanation": "Phép chia cho $\\frac{\\sqrt{x}+1}{x-1}$ tương đương với nhân với phân thức đảo ngược $\\frac{x-1}{\\sqrt{x}+1}$. Ta có biểu thức mới.",
+        "math": "\\frac{x-1}{x-\\sqrt{x}} : \\frac{\\sqrt{x}+1}{x-1} = \\frac{x-1}{x-\\sqrt{x}} \\cdot \\frac{x-1}{\\sqrt{x}+1}",
+        "reason": "Phép chia phân thức",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "phép chia phân thức"
+        ],
+        "operation": "multiply",
+        "result": "\\frac{(x-1)^2}{(x-\\sqrt{x})(\\sqrt{x}+1)}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x = 4$: VT = $\\frac{3}{2} : \\frac{3}{3} = \\frac{3}{2}$; VP = $\\frac{9}{2 \\cdot 3} = \\frac{3}{2}$ (đúng)"
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Rút gọn biểu thức cuối cùng",
+        "explanation": "Ta phân tích $x - 1 = (\\sqrt{x} - 1)(\\sqrt{x} + 1)$ và thay vào tử số. Mẫu thức là $\\sqrt{x}(\\sqrt{x} - 1)(\\sqrt{x} + 1)$. Các nhân tử $(\\sqrt{x} - 1)$ và $(\\sqrt{x} + 1)$ ở tử và mẫu sẽ triệt tiêu nhau.",
+        "math": "\\frac{(x-1)^2}{\\sqrt{x}(\\sqrt{x}-1)(\\sqrt{x}+1)} = \\frac{(\\sqrt{x}-1)^2(\\sqrt{x}+1)^2}{\\sqrt{x}(\\sqrt{x}-1)(\\sqrt{x}+1)} = \\frac{(\\sqrt{x}-1)(\\sqrt{x}+1)}{\\sqrt{x}} = \\frac{x-1}{\\sqrt{x}}",
+        "reason": "Hằng đẳng thức và rút gọn phân thức",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "hằng đẳng thức $a^2 - b^2$"
+        ],
+        "operation": "simplify",
+        "result": "\\frac{x-1}{\\sqrt{x}}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x = 4$: $\\frac{3}{2} = 1.5$ (khớp với kết quả tính toán trước)"
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Kết luận",
+        "explanation": "Biểu thức đã được rút gọn thành dạng đơn giản nhất. Kết quả là $\\frac{x-1}{\\sqrt{x}}$.",
+        "math": "A = \\frac{x-1}{\\sqrt{x}}",
+        "reason": "Kết quả rút gọn",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "conclude",
+        "result": "\\frac{x-1}{\\sqrt{x}}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Thay $x = 9$: $A = \\frac{8}{3} \\approx 2.667$ (khớp với kết quả tính toán trước)"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Biểu thức đã rút gọn là $A = \\frac{x-1}{\\sqrt{x}}$.",
+      "math": "\\frac{x-1}{\\sqrt{x}}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "(sqrt(x)/(sqrt(x)-1) - 1/(x-sqrt(x))) * (x-1)/(sqrt(x)+1)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "4"
+            }
+          ]
+        ],
+        "expected": "1.5"
+      },
+      {
+        "kind": "substitute",
+        "statements": [
+          "(sqrt(x)/(sqrt(x)-1) - 1/(x-sqrt(x))) * (x-1)/(sqrt(x)+1)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "9"
+            }
+          ]
+        ],
+        "expected": "2.6666666666666665"
+      },
+      {
+        "kind": "identity",
+        "statements": [
+          "(x-1)/sqrt(x) = (sqrt(x)/(sqrt(x)-1) - 1/(x-sqrt(x))) * (x-1)/(sqrt(x)+1)",
+          "x > 0",
+          "x != 1"
+        ],
+        "assignments": [],
+        "expected": null
+      }
+    ],
+    "figure": null
+  },
+  "failed": [],
+  "logs": [
+    "agent turn 1: compute → Không tính được: Unknown variable x",
+    "agent turn 2: compute → (sqrt(4)/(sqrt(4)-1) - 1/(4-sqrt(4)))*((4-1)/(sqrt(4)+1)) = 1.5",
+    "agent turn 3: compute → (sqrt(9)/(sqrt(9)-1) - 1/(9-sqrt(9)))*((9-1)/(sqrt(9)+1)) = 2.6666666666666665",
+    "agent turn 4: compute → (sqrt(9)/(sqrt(9)-1) - 1/(9-sqrt(9)))*(sqrt(9)+1)/(9-1) = 0.6666666666666666",
+    "agent turn 5: compute → (sqrt(9)/(sqrt(9)-1) - 1/(9-sqrt(9)))*(sqrt(9)+1)/(9-1) = 0.6666666666666666",
+    "agent turn 6: compute → (sqrt(9)/(sqrt(9)-1) - 1/(9-sqrt(9)))*(sqrt(9)+1)/(9-1) = 0.6666666666666666",
+    "agent turn 7: compute → (sqrt(9)/(sqrt(9)-1) - 1/(9-sqrt(3)))*(sqrt(9)+1)/(9-1) = 0.6812048025155841",
+    "agent turn 8: write_lesson → Không còn lỗi. Gọi finish.",
+    "agent: finished after 9 turn(s)",
+    "attempt 1: verified, 2 problem(s): answer check \"A = (sqrt(x)/(sqrt(x)-1) - 1/(x-sqrt(x))) * (x-1)/(sqrt(x)+1)\" can't be evaluated (could not evaluate: Unknown variable A). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | answer check \"A = (sqrt(x)/(sqrt(x)-1) - 1/(x-sqrt(x))) * (x-1)/(sqrt(x)+1)\" can't be evaluated (could not evaluate: Unknown variable A). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=default in=104941 (cached 0) out=4972 (reasoning 0) ≈ $0.0548",
+    "total ≈ $0.0548 over 2 attempt(s); lesson by default"
+  ]
+}

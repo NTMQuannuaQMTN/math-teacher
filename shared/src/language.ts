@@ -69,6 +69,13 @@ const WORD_GLOSSARY: [RegExp, string][] = [
   [/\bfor\b/giu, "cho"],
   [/\band\b/giu, "và"],
   [/\btherefore\b/giu, "suy ra"],
+  // Single connector words left by the model inside otherwise Vietnamese prose (training 2026-10-15: "then" in one hint
+  // discarded a whole lesson after two repair rounds).
+  [/\bthen\b/giu, "thì"],
+  [/\bwhen\b/giu, "khi"],
+  [/\bboth\b/giu, "cả hai"],
+  [/\bevery\b/giu, "mọi"],
+  [/\blogic\b/giu, "lập luận"],
   [/(?<!\p{L})so(?!\p{L})(?!\s+(?:sánh|với|đo|kè)(?!\p{L}))/giu, "do đó"],
   [/\bwe\s+have\b/giu, "ta có"],
   [/\bhas\b/giu, "có"],
@@ -99,6 +106,10 @@ const WORD_GLOSSARY: [RegExp, string][] = [
   [/\bdifférence\b/giu, "hiệu"],
   [/\bsynthesis\b/giu, "tổng hợp"],
   [/\bAM-GM\b/giu, "Cô-si"],
+  // Grade 9 has no matrices: a lesson that says "ma trận" means the board/table of the problem.
+  [/ma trận/giu, "bảng"],
+  // "Định thức" is a determinant; the discriminant Δ is "biệt thức".
+  [/định thức(?=\s*(?:\$\s*)?(?:Δ|\\Delta|\(Δ|của phương trình))/giu, "biệt thức"],
   [/nguyên lý phong bụ/giu, "nguyên lí Dirichlet"],
   [/hạng tử đồng loại/giu, "hạng tử đồng dạng"],
   [/\bphép mở rộng\b/giu, "khai triển"],
@@ -110,7 +121,7 @@ const FOREIGN_WORDS =
   /(?<![\p{L}\\])(?:razionale|rationale|rationalization|injective|surjective|bijective|strict(?:ly)?|with|where|therefore|hence|such that|increasing|decreasing|function|system|vs|against|substitute into formula|feit|diferen\p{L}*|vše)(?!\p{L})|\p{Ll}[A-Z][a-z]{2,}/u;
 
 /** Unambiguous English words in prose; avoid words shared with Vietnamese (An, do, so, to, ...). */
-const ENGLISH_PROSE = /(?<![\p{L}\\])(?:game|games|theory|winning|losing|positions?|strategy|induction|backward|reasoning|initial|states?|rules?|players?|turns?|each|choose|piles?|remove|integer|stones?|last|take|wins?|logical|deduction|arithmetic|transition|symmetry|argument|termination|manual|analysis|verified|proof|definition|moves?|parity|integers|grid|piece|starts?|adjacent|cell|right|cannot|loses?|board|size|condition|winner|problem|asks?|which|explicitly|covered|standard|curriculum|defined|knowledge|base|involves|specific|framework|impartial|sprague|grundy|often|considered|logic|puzzle|rather|the|are|and|then|that|this|you|your|after|before|when|only|both|every)(?!\p{L})/iu;
+const ENGLISH_PROSE = /(?<![\p{L}\\])(?:game|games|theory|winning|losing|positions?|strategy|induction|backward|reasoning|initial|states?|rules?|players?|turns?|each|choose|piles?|remove|integer|stones?|last|take|wins?|logical|deduction|arithmetic|transition|symmetry|argument|termination|manual|analysis|verified|proof|definition|moves?|parity|integers|grid|piece|starts?|adjacent|cell|right|cannot|loses?|board|size|condition|winner|problem|asks?|which|explicitly|covered|standard|curriculum|defined|knowledge|base|involves|specific|framework|impartial|sprague|grundy|often|considered|logic|puzzle|rather|the|are|and|then|that|this|you|your|after|before|when|only|both|every|concyclic|cyclic|collinear|orthocenter|orthocentre|circumcircle|circumcenter|incircle|incenter|midpoint|perpendicular|bisector|altitude|tangent|chord|similar|congruent|neuf)(?!\p{L})/iu;
 
 /** Streaming previews need the same script/word checks before a complete
  * typed lesson is available. Mathematical command names are not prose. */
@@ -175,14 +186,14 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   const vi = input.analysis.language === "vi";
   const fix = <T extends string | null>(t: T): T => (vi && t ? (simplifyNotation(patchVietnamese(t)) as T) : t);
   const fixMath = <T extends string | null>(t: T): T =>
-    vi && t ? (simplifyNotation(t.replace(/(vuông\s+ma\s+)?Lo\s*Shu/giu, "ma phương 3 × 3").replace(/\\text\{([^{}]*)\}/g, (_m,words:string)=>`\\text{${patchVietnamese(words).replace(/\bvs\b/giu,'và')}}`)) as T) : t;
+    vi && t ? (simplifyNotation(t.replace(/(vuông\s+ma\s+)?Lo\s*Shu/giu, "ma phương 3 × 3").replace(/\b(\d+)\s+choose\s+(\d+)\b/giu, "C_{$1}^{$2}").replace(/\\text\{([^{}]*)\}/g, (_m,words:string)=>`\\text{${patchVietnamese(words).replace(/\bvs\b/giu,'và')}}`)) as T) : t;
   const lesson: ModelLesson = vi
     ? {
         ...input,
         strategy: fix(input.strategy),
         finalAnswer: { ...input.finalAnswer, text: fix(input.finalAnswer.text), math: fixMath(input.finalAnswer.math) },
         hints: input.hints.map((h) => ({ ...h, question: fix(h.question), cue: fix(h.cue), explanation: fix(h.explanation), math: fixMath(h.math) })),
-        steps: input.steps.map((st) => ({ ...st, title: fix(st.title), explanation: fix(st.explanation), reason: fix(st.reason), math: fixMath(st.math) })),
+        steps: input.steps.map((st) => ({ ...st, title: fix(st.title), explanation: fix(st.explanation), reason: fix(st.reason), math: fixMath(st.math), ...(st.result !== undefined ? { result: fixMath(st.result ?? null) } : {}) })),
       }
     : input;
   const a = lesson.analysis;
@@ -249,7 +260,8 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   }
   // Prose outside $…$, plus the words inside \text{…} of the maths fields.
   const prose = (t: string) => t.replace(/\$[^$]*\$/g, " ");
-  const texts = (m: string | null) => [...(m ?? "").matchAll(/\\text\{([^{}]*)\}/g)].map((x) => x[1]).join(" ");
+  // Words inside \\text{} are checked too, except glued identifiers ("xeTai" = xe tải), which are names, not English.
+  const texts = (m: string | null) => [...(m ?? "").matchAll(/\\text\{([^{}]*)\}/g)].map((x) => x[1]!.replace(/\b\p{Ll}+\p{Lu}\p{L}*\b/gu, " ")).join(" ");
   const withMath: [string, string | null][] = [
     ...body,
     ...body.map(([where, t]): [string, string] => [where, texts(t)]),
@@ -259,7 +271,12 @@ export function cleanLanguage(input: ModelLesson): LanguageResult {
   ];
   const foreignLatin = vi ? [...new Set(withMath.filter(([, t]) => t && FOREIGN_LATIN.test(prose(t))).map(([where]) => where))] : [];
   if (foreignLatin.length) feedback.push(`${foreignLatin.join(", ")}: foreign Latin-script words in a Vietnamese lesson; rewrite in natural Vietnamese with full diacritics`);
-  const english = vi ? [...new Set(withMath.flatMap(([where, t]) => { const m = t ? FOREIGN_WORDS.exec(prose(t)) ?? ENGLISH_PROSE.exec(prose(t)) : null; return m ? [`${where} ("${m[0]}")`] : []; }))] : [];
+  // A formula field is LaTeX, not prose: its identifiers (v_{xeTai}) are not English; only its \\text{…} words count
+  // (they are in withMath through texts()).
+  const formulaField = (where: string) => / math$|result$/.test(where);
+  // A plain formula without any backslash ("2 d_{xeTai} - a") is still LaTeX: subscripted names are dropped before the check.
+  const formulaProse = (t: string) => t.replace(/_\{[^{}]*\}|_[A-Za-z0-9]+/g, " ");
+  const english = vi ? [...new Set(withMath.flatMap(([where, t]) => { if (formulaField(where) && t && !/^[^\\$]*$/.test(t)) return []; if (formulaField(where) && t) t = formulaProse(t); const m = t ? FOREIGN_WORDS.exec(prose(t)) ?? ENGLISH_PROSE.exec(prose(t)) : null; return m ? [`${where} ("${m[0]}")`] : []; }))] : [];
   if (english.length > 0) {
     feedback.push(`${english.join(", ")}: English or other foreign words in a Vietnamese lesson — write them in Vietnamese ("đồng biến", "tương ứng", "với"), using only terms a Grade 9 student knows`);
   }

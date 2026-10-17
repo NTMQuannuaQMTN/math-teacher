@@ -1,0 +1,447 @@
+{
+  "question": {
+    "id": "comb8-h5",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Có bao nhiêu tam giác vuông có ba đỉnh là ba trong sáu đỉnh của một lục giác đều?",
+    "reference": "$12$ (cạnh huyền là một trong $3$ đường chéo chính, mỗi đường chéo với $4$ đỉnh còn lại)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Có bao nhiêu tam giác vuông có ba đỉnh là ba trong sáu đỉnh của một lục giác đều?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Hình học phẳng kết hợp Đếm",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Lục giác đều",
+        "Đường tròn ngoại tiếp",
+        "Góc nội tiếp",
+        "Đường kính đường tròn",
+        "Đếm tổ hợp"
+      ],
+      "techniques": [
+        "inscribed_angle",
+        "counting"
+      ],
+      "givens": [
+        "Lục giác đều ABCDEF",
+        "6 đỉnh nằm trên một đường tròn"
+      ],
+      "unknowns": [
+        "Số lượng tam giác vuông"
+      ],
+      "constraints": [
+        "Ba đỉnh phải tạo thành tam giác vuông",
+        "Ba đỉnh chọn từ 6 đỉnh của lục giác đều"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu đếm các cấu hình hình học, thuộc về tổ hợp, nhưng kiến thức hình học cốt lõi (định lý Thales / góc nội tiếp chắn nửa đường tròn) nằm trong chương trình lớp 9. Tuy nhiên, đề bài nghiêm cấm sử dụng các phương pháp ngoài chương trình. Các bài toán đếm nằm trong chương trình."
+      ]
+    },
+    "strategy": "Sử dụng tính chất góc nội tiếp chắn nửa đường tròn: một tam giác nội tiếp là tam giác vuông khi và chỉ khi một cạnh của nó là đường kính. Trong lục giác đều, có 3 đường kính nối các đỉnh. Mỗi đường kính kết hợp với 1 trong 4 đỉnh còn lại tạo thành một tam giác vuông.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn hãy nhớ lại tính chất đặc biệt của góc nội tiếp chắn nửa đường tròn. Khi nào thì một tam giác nội tiếp trong một đường tròn là tam giác vuông?",
+        "cue": "Góc nội tiếp",
+        "explanation": "Một tam giác nội tiếp đường tròn là tam giác vuông khi và chỉ khi một cạnh của nó là đường kính của đường tròn đó. Điều này dựa vào định lý: Góc nội tiếp chắn nửa đường tròn (chắn cung 180°) thì bằng 90°.",
+        "math": "\\triangle XYZ \\text{ vuông} \\iff \\text{một cạnh của } \\triangle XYZ \\text{ là đường kính}",
+        "stepId": "step_1",
+        "focus": [
+          "seg_AD",
+          "seg_BE",
+          "seg_CF"
+        ]
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Trong lục giác đều ABCDEF, những đoạn thẳng nào nối hai đỉnh với nhau và đi qua tâm O (tức là là đường kính)?",
+        "cue": "Đường kính của lục giác đều",
+        "explanation": "Trong lục giác đều ABCDEF, các đường nối các đỉnh đối diện nhau (A với D, B với E, C với F) đều đi qua tâm O và là các đường kính của đường tròn ngoại tiếp lục giác.",
+        "math": "AD = BE = CF = 2R",
+        "stepId": "step_2",
+        "focus": [
+          "seg_AD",
+          "seg_BE",
+          "seg_CF"
+        ]
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Nếu bạn đã chọn được một đường kính (ví dụ AD), bạn có thể chọn thêm bao nhiêu đỉnh còn lại để tạo thành một tam giác vuông? Và tổng cộng có bao nhiêu đường kính?",
+        "cue": "Đếm tam giác",
+        "explanation": "Mỗi đường kính (ví dụ AD) cùng với bất kỳ đỉnh nào còn lại (B, C, E, F) sẽ tạo thành một tam giác vuông tại đỉnh đó. Ví dụ: AD là đường kính, chọn B ta được tam giác ABD vuông tại B. Mỗi đường kính tạo ra 4 tam giác vuông.",
+        "math": "4 \\times 3 = 12",
+        "stepId": "step_3",
+        "focus": [
+          "seg_AD"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xác định điều kiện để tam giác là tam giác vuông",
+        "explanation": "Để đếm số tam giác vuông, ta cần tìm điều kiện để 3 đỉnh của lục giác tạo thành một tam giác vuông. Lục giác đều ABCDEF nội tiếp trong đường tròn tâm O. Theo định lý về góc nội tiếp, một tam giác nội tiếp đường tròn là tam giác vuông khi và chỉ khi một cạnh của tam giác đó là đường kính của đường tròn.",
+        "math": "\\triangle XYZ \\text{ vuông} \\iff \\text{một cạnh của } \\triangle XYZ \\text{ là đường kính của (O)}",
+        "reason": "Định lý góc nội tiếp chắn nửa đường tròn",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "c_O"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "given"
+        ],
+        "operation": "suy luận",
+        "result": "Điều kiện cần và đủ để tam giác có 3 đỉnh là đỉnh của lục giác đều là tam giác vuông là một cạnh của nó phải là đường kính của đường tròn ngoại tiếp lục giác.",
+        "verification": {
+          "status": "verified",
+          "method": "geometric",
+          "reason": "Theorem: Inscribed angle subtending a diameter is 90 degrees."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xác định các đường kính của lục giác đều",
+        "explanation": "Trong lục giác đều ABCDEF, các cặp đỉnh đối diện nhau là (A, D), (B, E) và (C, F). Các đoạn thẳng nối các cặp đỉnh này là AD, BE và CF. Vì lục giác đều có tâm đối xứng O, nên AD, BE và CF đều đi qua O và là các đường kính của đường tròn ngoại tiếp.",
+        "math": "AD = BE = CF = 2R",
+        "reason": "Tính chất của lục giác đều",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "seg_AD",
+              "seg_BE",
+              "seg_CF"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AD",
+              "seg_BE",
+              "seg_CF"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "given"
+        ],
+        "operation": "suy luận",
+        "result": "Lục giác đều có đúng 3 đường kính nối các đỉnh với nhau: AD, BE, CF.",
+        "verification": {
+          "status": "verified",
+          "method": "geometric",
+          "reason": "Trong một lục giác đều, các đường chéo chính nối các đỉnh đối diện là các đường kính của đường tròn ngoại tiếp."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Đếm số tam giác vuông",
+        "explanation": "Ta sẽ đếm số tam giác vuông dựa trên các đường kính đã tìm được.\n- Với đường kính AD: Ta cần chọn thêm 1 đỉnh từ 4 đỉnh còn lại (B, C, E, F) để tạo thành tam giác. Mỗi cách chọn sẽ tạo ra một tam giác vuông tại đỉnh được chọn (ví dụ: chọn B thì tam giác ABD vuông tại B). Vậy có 4 tam giác vuông nhận AD là cạnh huyền.\n- Tương tự, với đường kính BE: Có 4 đỉnh còn lại (A, C, D, F) để chọn, tạo ra 4 tam giác vuông.\n- Với đường kính CF: Có 4 đỉnh còn lại (A, B, D, E) để chọn, tạo ra 4 tam giác vuông.\nTổng số tam giác vuông là 4 + 4 + 4 = 12.",
+        "math": "3 \\times 4 = 12",
+        "reason": "Nguyên lý đếm (Quy tắc nhân)",
+        "uses": [
+          "step_1",
+          "step_2"
+        ],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "seg_BD"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AD",
+              "seg_AB",
+              "seg_BD",
+              "seg_BE",
+              "seg_CF"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "step_1",
+          "step_2"
+        ],
+        "operation": "suy luận",
+        "result": "Tổng số tam giác vuông là 12.",
+        "verification": {
+          "status": "verified",
+          "method": "combinatorial",
+          "reason": "3 diameters * 4 remaining vertices = 12 triangles."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số tam giác vuông là 12.",
+      "math": "12"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "3 * 4"
+        ],
+        "assignments": [],
+        "expected": "12"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 5,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 2.5,
+          "y": 4.33,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": -2.5,
+          "y": 4.33,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "kind": "free",
+          "refs": [],
+          "x": -5,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "kind": "free",
+          "refs": [],
+          "x": -2.5,
+          "y": -4.33,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "F",
+          "label": "F",
+          "kind": "free",
+          "refs": [],
+          "x": 2.5,
+          "y": -4.33,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": "AB"
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": "BC"
+        },
+        {
+          "id": "seg_CD",
+          "kind": "segment",
+          "from": "C",
+          "to": "D",
+          "style": "given",
+          "label": "CD"
+        },
+        {
+          "id": "seg_DE",
+          "kind": "segment",
+          "from": "D",
+          "to": "E",
+          "style": "given",
+          "label": "DE"
+        },
+        {
+          "id": "seg_EF",
+          "kind": "segment",
+          "from": "E",
+          "to": "F",
+          "style": "given",
+          "label": "EF"
+        },
+        {
+          "id": "seg_FA",
+          "kind": "segment",
+          "from": "F",
+          "to": "A",
+          "style": "given",
+          "label": "FA"
+        },
+        {
+          "id": "seg_AD",
+          "kind": "segment",
+          "from": "A",
+          "to": "D",
+          "style": "construction",
+          "label": "AD"
+        },
+        {
+          "id": "seg_BE",
+          "kind": "segment",
+          "from": "B",
+          "to": "E",
+          "style": "construction",
+          "label": "BE"
+        },
+        {
+          "id": "seg_CF",
+          "kind": "segment",
+          "from": "C",
+          "to": "F",
+          "style": "construction",
+          "label": "CF"
+        },
+        {
+          "id": "seg_BD",
+          "kind": "segment",
+          "from": "B",
+          "to": "D",
+          "style": "construction",
+          "label": null
+        }
+      ],
+      "circles": [
+        {
+          "id": "c_O",
+          "center": "O",
+          "through": "A",
+          "radius": 5,
+          "style": "given",
+          "label": "(O)"
+        }
+      ],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "AD = BE",
+        "passed": true
+      },
+      {
+        "label": "3 * 4",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "checked",
+        "claims": 1
+      },
+      {
+        "stepId": "step_3",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 56432,
+  "usage": {
+    "default": {
+      "input": 20934,
+      "cachedInput": 0,
+      "output": 7457,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.020754940000000003,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "language repair: 5/5 field(s) rewritten in 2 s",
+    "attempt 1: unverified, 3 problem(s): the lesson states \"∠ACB = 90°\", but it is false in the constructed figure (measured 30.00°, expected 90°). Either that step's reasoning is wrong or the figure is built wrongly — re-derive it and fix whichever is wrong. | figure is missing circle (A), circle (B), circle (C), which the problem or solution names. The figure must show every point, line and circle from ALL parts of the problem and everything the solution uses (use circle_circle for an intersection of two circles, line_circle with value 1 for \"the second intersection\"). | answer check \"Number of right triangles with vertices from a regular hexagon\" can't be evaluated (could not evaluate: Unknown variable N). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "language repair: 5/5 field(s) rewritten in 0 s",
+    "attempt 2: verified, 1 problem(s): figure is missing circle (A), circle (B), circle (C), which the problem or solution names. The figure must show every point, line and circle from ALL parts of the problem and everything the solution uses (use circle_circle for an intersection of two circles, line_circle with value 1 for \"the second intersection\").",
+    "attempt 2: only minor feedback; not retrying",
+    "usage: model=default in=20934 (cached 0) out=7457 (reasoning 0) ≈ $0.0208",
+    "total ≈ $0.0208 over 2 attempt(s); lesson by default"
+  ]
+}

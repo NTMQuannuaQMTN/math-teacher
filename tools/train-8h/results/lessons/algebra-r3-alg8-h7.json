@@ -1,0 +1,206 @@
+{
+  "question": {
+    "id": "alg8-h7",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho phương trình $x^2-2mx+m^2-1=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=10$.",
+    "reference": "$m=\\pm2$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2 - 2mx + m^2 - 1 = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 10$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "algebra",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai một ẩn",
+        "Biệt thức Δ (Delta)",
+        "Hệ thức Vi-ét",
+        "Biến đổi biểu thức đối xứng của nghiệm"
+      ],
+      "techniques": [
+        "discriminant",
+        "vieta",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình: $x^2 - 2mx + m^2 - 1 = 0$",
+        "Tham số: $m$"
+      ],
+      "unknowns": [
+        "m"
+      ],
+      "constraints": [
+        "Phương trình phải có hai nghiệm phân biệt (Δ > 0)",
+        "Hai nghiệm phải thỏa mãn hệ thức $x_1^2 + x_2^2 = 10$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính biệt thức $\\Delta$ để xác định điều kiện có nghiệm. Sử dụng định lý Vi-ét để biểu diễn $x_1^2 + x_2^2$ theo $m$. Giải phương trình theo $m$ từ điều kiện đã cho.",
+    "hints": [
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Điều kiện để phương trình có hai nghiệm là gì?",
+        "cue": "Điều kiện để phương trình có hai nghiệm",
+        "explanation": "Để phương trình có hai nghiệm $x_1, x_2$, trước hết phương trình phải có nghiệm. Bạn hãy tính biệt thức $\\Delta$ và tìm điều kiện của $m$ để phương trình có nghiệm (hoặc hai nghiệm phân biệt).",
+        "math": "\\Delta = b^2 - 4ac",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint1",
+        "level": 2,
+        "question": "Bạn có thể biến đổi biểu thức $x_1^2 + x_2^2$ thành tổng và tích của hai nghiệm không?",
+        "cue": "Hệ thức Vi-ét",
+        "explanation": "Để tính $x_1^2 + x_2^2$, bạn có thể biến đổi thành $(x_1 + x_2)^2 - 2x_1x_2$. Theo Vi-ét, $x_1 + x_2$ và $x_1x_2$ đều được tính theo $m$. Bạn hãy viết lại biểu thức $x_1^2 + x_2^2$ theo $m$.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2",
+        "stepId": "step2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Xét điều kiện có nghiệm",
+        "explanation": "Trước hết, để phương trình có hai nghiệm $x_1, x_2$, ta cần xét biệt thức $\\Delta$. Phương trình đã cho có $a=1, b=-2m, c=m^2-1$. Ta có $\\Delta' = (-m)^2 - 1(m^2-1) = m^2 - m^2 + 1 = 1$. Vì $\\Delta' = 1 > 0$ với mọi $m$, nên phương trình luôn có hai nghiệm phân biệt với mọi $m$.",
+        "math": "\\Delta' = 1 > 0 \\quad \\forall m",
+        "reason": "Tính biệt thức phụ $\\Delta'$",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Discriminant of a quadratic equation"
+        ],
+        "operation": "calculate",
+        "result": "Phương trình luôn có hai nghiệm phân biệt với mọi $m$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại xem biệt thức Delta luôn dương hay không."
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Biểu diễn $x_1^2 + x_2^2$ theo $m$",
+        "explanation": "Áp dụng định lý Vi-ét, ta có tổng hai nghiệm $x_1 + x_2 = -\\frac{b}{a} = 2m$ và tích hai nghiệm $x_1x_2 = \\frac{c}{a} = m^2 - 1$. Ta biến đổi biểu thức $x_1^2 + x_2^2$ thành $(x_1 + x_2)^2 - 2x_1x_2$. Thay các giá trị theo $m$ vào, ta được $(2m)^2 - 2(m^2 - 1) = 4m^2 - 2m^2 + 2 = 2m^2 + 2$.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2 = (2m)^2 - 2(m^2 - 1) = 2m^2 + 2",
+        "reason": "Biến đổi biểu thức đối xứng của nghiệm",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Vieta's formulas",
+          "Algebraic identity"
+        ],
+        "operation": "calculate",
+        "result": "$x_1^2 + x_2^2 = 2m^2 + 2$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại các bước biến đổi đại số."
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Tìm $m$",
+        "explanation": "Theo đề bài, ta có $x_1^2 + x_2^2 = 10$. Thay biểu thức theo $m$ vào, ta được phương trình $2m^2 + 2 = 10$. Giải phương trình này: $2m^2 = 8 \\Rightarrow m^2 = 4 \\Rightarrow m = 2$ hoặc $m = -2$. Cả hai giá trị này đều thỏa mãn điều kiện phương trình luôn có hai nghiệm phân biệt.",
+        "math": "2m^2 + 2 = 10 \\Leftrightarrow m^2 = 4 \\Leftrightarrow \\left[ \\begin{array}{l} m = 2 \\ m = -2 \\end{array} \\right.",
+        "reason": "Giải phương trình theo $m$",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Solving quadratic equation"
+        ],
+        "operation": "calculate",
+        "result": "$m = 2$ hoặc $m = -2$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": null
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của $m$ là $m = 2$ hoặc $m = -2$.",
+      "math": "m = 2 \\text{ hoặc } m = -2"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "x^2 - 2mx + m^2 - 1 = 0",
+          "x1^2 + x2^2 = 10"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "2"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "-2"
+            }
+          ]
+        ],
+        "expected": "2"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 18933,
+  "usage": {
+    "default": {
+      "input": 5539,
+      "cachedInput": 0,
+      "output": 2418,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.0061679099999999995,
+  "model": "default",
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "language repair: 2/4 field(s) rewritten in 1 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"x^2 - 2mx + m^2 - 1 = 0\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=5539 (cached 0) out=2418 (reasoning 0) ≈ $0.0062",
+    "total ≈ $0.0062 over 1 attempt(s); lesson by default"
+  ]
+}

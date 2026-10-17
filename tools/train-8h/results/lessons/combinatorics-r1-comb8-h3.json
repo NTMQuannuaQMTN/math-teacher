@@ -1,0 +1,297 @@
+{
+  "question": {
+    "id": "comb8-h3",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Chứng minh rằng trong $10$ số tự nhiên bất kì luôn chọn được một số số (ít nhất một số) có tổng chia hết cho $10$.",
+    "reference": "Chứng minh: xét $10$ tổng $S_k=a_1+\\dots+a_k$; nếu có $S_k$ chia hết cho $10$ thì xong; nếu không, $10$ tổng chỉ có $9$ số dư khác $0$ nên có $S_i\\equiv S_j$ ($i<j$), khi đó $a_{i+1}+\\dots+a_j$ chia hết cho $10$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Chứng minh rằng trong 10 số tự nhiên bất kì luôn chọn được một số số (ít nhất một số) có tổng chia hết cho 10.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Tổ hợp và Xác suất",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Nguyên lý Dirichlet (Pigeonhole Principle)",
+        "Tổng riêng phần",
+        "Số dư khi chia hết"
+      ],
+      "techniques": [
+        "case_analysis"
+      ],
+      "givens": [
+        "Tập hợp gồm 10 số tự nhiên $a_1, a_2, ..., a_{10}$"
+      ],
+      "unknowns": [
+        "Tập hợp các số cần chọn"
+      ],
+      "constraints": [
+        "10 số tự nhiên bất kì",
+        "Tập con khác rỗng (ít nhất một số)"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán này yêu cầu sử dụng Nguyên lý Dirichlet (Pigeonhole Principle) để chứng minh sự tồn tại của một tập con có tổng chia hết. Đây là một bài toán tổ hợp kinh điển, thường xuất hiện trong các kỳ thi chọn học sinh giỏi hoặc các đề thi chuyên Toán, vượt ra ngoài phạm vi kiến thức chuẩn của chương"
+      ]
+    },
+    "strategy": "Xây dựng 10 tổng riêng phần $S_k$. Xét số dư của chúng khi chia cho 10. Nếu có tổng chia hết cho 10 thì xong. Nếu không, theo nguyên lý Dirichlet, phải có hai tổng có cùng số dư, hiệu của chúng sẽ chia hết cho 10.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Nếu ta lấy tổng của $k$ số đầu tiên ($S_k$) rồi chia cho 10, số dư có thể nhận những giá trị nào?",
+        "cue": "Nguyên lý Dirichlet",
+        "explanation": "Hãy xem xét 10 tổng riêng phần $S_1, S_2, ..., S_{10}$. Khi chia các tổng này cho 10, số dư có thể nhận bao nhiêu giá trị khác nhau?",
+        "math": "S_k = a_1 + ... + a_k",
+        "stepId": "step_3",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Nếu không có tổng nào trong 10 tổng riêng phần chia hết cho 10, thì theo nguyên lý Dirichlet, điều gì sẽ xảy ra với các số dư của chúng?",
+        "cue": "Nguyên lý Dirichlet",
+        "explanation": "Bạn có 10 tổng riêng phần ($S_1$ đến $S_{10}$) và chỉ có 10 số dư có thể xảy ra (từ 0 đến 9). Nếu không có tổng nào chia hết cho 10 (số dư khác 0), thì 10 tổng này sẽ rơi vào 9 nhóm số dư còn lại. Điều gì sẽ xảy ra?",
+        "math": null,
+        "stepId": "step_5",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Nếu hai tổng riêng phần $S_i$ và $S_j$ ($i < j$) có cùng số dư khi chia cho 10, thì hiệu $S_j - S_i$ sẽ chia hết cho 10. Hiệu này chính là tổng của những số nào?",
+        "cue": "Số dư",
+        "explanation": "Giả sử $S_i$ và $S_j$ ($i < j$) có cùng số dư khi chia cho 10. Khi đó hiệu $S_j - S_i$ sẽ chia hết cho 10. Hãy xem $S_j - S_i$ chính là tổng của những số nào trong dãy ban đầu.",
+        "math": "S_j - S_i = a_{i+1} + ... + a_j",
+        "stepId": "step_6",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Đặt ký hiệu",
+        "explanation": "Để giải quyết bài toán này, chúng ta sẽ xây dựng một dãy các tổng riêng phần từ 10 số đã cho. Gọi 10 số tự nhiên bất kì là $a_1, a_2, ..., a_{10}$.",
+        "math": "a_1, a_2, ..., a_{10}",
+        "reason": "Đặt ký hiệu",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "define",
+        "result": "Đặt 10 số tự nhiên là $a_1, a_2, ..., a_{10}$.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đặt ký hiệu"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xây dựng dãy tổng",
+        "explanation": "Ta xét 10 tổng riêng phần, mỗi tổng là tổng của $k$ số đầu tiên của dãy.",
+        "math": "S_k = a_1 + a_2 + ... + a_k \\quad (\\text{ với } k = 1, 2, ..., 10)",
+        "reason": "Xây dựng dãy tổng",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "define",
+        "result": "Xây dựng dãy tổng riêng phần $S_1, S_2, ..., S_{10}$.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Xây dựng dãy tổng"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Xét số dư",
+        "explanation": "Khi chia mỗi tổng $S_k$ cho 10, số dư của phép chia chỉ có thể nhận một trong 10 giá trị: $0, 1, 2, ..., 9$.",
+        "math": "S_k \\equiv r_k \\pmod{10} \\quad (r_k \\in \\{0, 1, ..., 9\\})",
+        "reason": "Số dư khi chia hết",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "define",
+        "result": "Số dư khi chia $S_k$ cho 10 thuộc tập $\\{0, 1, ..., 9\\}$.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Số dư khi chia hết"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Xét trường hợp",
+        "explanation": "Ta xét hai trường hợp có thể xảy ra đối với các số dư $r_1, r_2, ..., r_{10}$.",
+        "math": null,
+        "reason": "Xét trường hợp",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "define",
+        "result": "Xét hai trường hợp: có tổng chia hết cho 10 hoặc không có tổng nào chia hết cho 10.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Xét trường hợp"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Trường hợp 1",
+        "explanation": "Trường hợp 1: Nếu có ít nhất một tổng $S_i$ có số dư bằng 0 khi chia cho 10, nghĩa là $S_i$ chia hết cho 10. Khi đó, ta đã tìm được một tập hợp các số (từ $a_1$ đến $a_i$) có tổng chia hết cho 10. Điều phải chứng minh được thỏa mãn.",
+        "math": "S_i \\equiv 0 \\pmod{10}",
+        "reason": "Trường hợp 1",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "deduce",
+        "result": "Nếu $S_i \\vdots 10$, ta đã tìm được tập con cần tìm.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Trường hợp 1"
+        }
+      },
+      {
+        "id": "step_6",
+        "title": "Trường hợp 2",
+        "explanation": "Trường hợp 2: Nếu không có tổng nào trong 10 tổng trên chia hết cho 10, nghĩa là không có số dư nào bằng 0. Khi đó, 10 số dư $r_1, r_2, ..., r_{10}$ chỉ có thể nhận các giá trị trong tập $\\{1, 2, ..., 9\\}$ (có 9 giá trị). Theo nguyên lý Dirichlet, vì có 10 số dư nhưng chỉ có 9 giá trị có thể nhận, nên phải có ít nhất hai số dư bằng nhau. Giả sử $r_i = r_j$ với $i < j$.",
+        "math": "r_i = r_j \\quad (i < j)",
+        "reason": "Nguyên lý Dirichlet",
+        "uses": [
+          "step_4",
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "deduce",
+        "result": "Tồn tại $i < j$ sao cho $S_i$ và $S_j$ có cùng số dư khi chia cho 10.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Nguyên lý Dirichlet"
+        }
+      },
+      {
+        "id": "step_7",
+        "title": "Kết luận",
+        "explanation": "Vì $S_i$ và $S_j$ có cùng số dư khi chia cho 10, nên hiệu $S_j - S_i$ sẽ chia hết cho 10. Ta có: $S_j - S_i = (a_1 + ... + a_j) - (a_1 + ... + a_i) = a_{i+1} + ... + a_j$. Đây chính là tổng của các số từ $a_{i+1}$ đến $a_j$. Vì $i < j$, nên tập hợp các số này khác rỗng. Vậy ta đã tìm được một tập con các số có tổng chia hết cho 10.",
+        "math": "S_j - S_i = a_{i+1} + ... + a_j \\equiv 0 \\pmod{10}",
+        "reason": "Tính chất chia hết",
+        "uses": [
+          "step_6"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "deduce",
+        "result": "Tổng $a_{i+1} + ... + a_j$ chia hết cho 10.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Tính chất chia hết"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Đã chứng minh: Trong 10 số tự nhiên bất kì luôn tồn tại một tập con khác rỗng có tổng chia hết cho 10.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "10 số tự nhiên bất kì luôn chọn được một số số có tổng chia hết cho 10"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "1"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_6",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_7",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 79906,
+  "usage": {
+    "default": {
+      "input": 15310,
+      "cachedInput": 0,
+      "output": 10778,
+      "reasoning": 3960
+    }
+  },
+  "costUsd": 0.023272059999999997,
+  "model": "default",
+  "logs": [
+    "outline in 32 s (580 chars)",
+    "language repair: 7/7 field(s) rewritten in 2 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"10 số tự nhiên bất kì luôn chọn được một số số có tổng chia hết cho 10\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "language repair: 7/7 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"10 số tự nhiên bất kì luôn chọn được một số số có tổng chia hết cho 10\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=default in=15310 (cached 0) out=10778 (reasoning 3960) ≈ $0.0233",
+    "total ≈ $0.0233 over 2 attempt(s); lesson by default"
+  ]
+}

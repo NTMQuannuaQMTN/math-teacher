@@ -1,0 +1,250 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/III.1b",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Với các số thực $a,b,c$ thỏa mãn $a^2b+b^2c+c^2a+16=ab^2+bc^2+ca^2$. Tìm giá trị nhỏ nhất của biểu thức $P=a^2+b^2+c^2$.",
+    "reference": "8",
+    "reference_status": "teacher",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Với các số thực $a,b,c$ thỏa mãn $a^2b+b^2c+c^2a+16=ab^2+bc^2+ca^2$. Tìm giá trị nhỏ nhất của biểu thức $P=a^2+b^2+c^2$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Cực trị biểu thức đại số",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Hằng đẳng thức",
+        "Đặt ẩn phụ",
+        "Bất đẳng thức Cô-si",
+        "Cực trị"
+      ],
+      "techniques": [
+        "factorization",
+        "substitution",
+        "am_gm",
+        "equality_case"
+      ],
+      "givens": [
+        "$a^2b+b^2c+c^2a-ab^2-bc^2-ca^2 = -16$"
+      ],
+      "unknowns": [
+        "$P = a^2+b^2+c^2$"
+      ],
+      "constraints": [
+        "a, b, c là số thực",
+        "$a^2b+b^2c+c^2a+16=ab^2+bc^2+ca^2$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán đòi hỏi kỹ năng biến đổi đại số nâng cao và vận dụng bất đẳng thức Cô-si (Cô-si) để tìm cực trị, nằm ngoài chương trình chuẩn, nhưng có thể giải được bằng các phương pháp của chương trình chuyên Toán 9."
+      ]
+    },
+    "strategy": "Biến đổi điều kiện thành tích các hiệu, đặt ẩn phụ để đưa về bài toán cực trị một biến, sau đó áp dụng bất đẳng thức Cô-si (Cô-si) để tìm giá trị nhỏ nhất.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 1,
+        "question": "Bạn hãy thử phân tích vế trái của đẳng thức $a^2b+b^2c+c^2a-ab^2-bc^2-ca^2$ thành nhân tử xem sao?",
+        "cue": "Hằng đẳng thức $a^3+b^3+c^3-3abc$ hoặc khai triển $(a-b)(b-c)(c-a)$.",
+        "explanation": "Khai triển $(a-b)(b-c)(c-a)$ ta được $-a^2b + a^2c + ab^2 - ac^2 - b^2c + bc^2$. Vậy $a^2b+b^2c+c^2a-ab^2-bc^2-ca^2 = -(a-b)(b-c)(c-a)$. Điều kiện bài toán trở thành $(a-b)(b-c)(c-a) = 16$.",
+        "math": "(a-b)(b-c)(c-a) = 16",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 2,
+        "question": "Làm thế nào để liên hệ $a^2+b^2+c^2$ với các hiệu $a-b, b-c, c-a$?",
+        "cue": "Dịch chuyển $a,b,c$ cùng một lượng $k$ không làm thay đổi hiệu. Chọn $k$ sao cho $a+b+c=0$.",
+        "explanation": "Gọi $x=a-b, y=b-c, z=c-a$. Ta có $x+y+z=0$. Khi $a+b+c=0$, ta có $2(ab+bc+ca) = -(a^2+b^2+c^2)$. Khai triển $x^2+y^2+z^2$ sẽ ra $3(a^2+b^2+c^2)$.",
+        "math": "x^2 + y^2 + z^2 = 3(a^2 + b^2 + c^2)",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 3,
+        "question": "Làm sao để tìm GTNN của $S^2 + \\frac{16}{S}$ bằng bất đẳng thức Cô-si?",
+        "cue": "Chia $S^2$ và $\\frac{16}{S}$ thành nhiều số hạng sao cho tích các số hạng là hằng số.",
+        "explanation": "Ta chia $S^2$ thành hai phần $\\frac{S^2}{2}$ và $\\frac{16}{S}$ thành bốn phần $\\frac{4}{S}$. Áp dụng Cô-si cho 6 số dương này, tích sẽ triệt tiêu biến $S$, cho ra hằng số.",
+        "math": "\\frac{S^2}{2} + \\frac{S^2}{2} + \\frac{4}{S} + \\frac{4}{S} + \\frac{4}{S} + \\frac{4}{S} \\ge 12",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Biến đổi điều kiện đã cho",
+        "explanation": "Ta nhận thấy vế trái của đẳng thức có dạng đối xứng vòng quanh. Sử dụng hằng đẳng thức đã biết, ta có thể phân tích thành nhân tử để đơn giản hóa bài toán.",
+        "math": "a^2b + b^2c + c^2a - ab^2 - bc^2 - ca^2 = -(a-b)(b-c)(c-a)",
+        "reason": "Hằng đẳng thức đại số",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "a^2b+b^2c+c^2a-ab^2-bc^2-ca^2 = -(a-b)(b-c)(c-a)"
+        ],
+        "operation": "factorization",
+        "result": "Điều kiện bài toán trở thành $(a-b)(b-c)(c-a) = 16$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị vào phương trình ban đầu để kiểm tra tính đúng đắn của kết quả."
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Đặt ẩn phụ và liên hệ với $P$",
+        "explanation": "Đặt $x=a-b, y=b-c, z=c-a$. Khi đó $x+y+z=0$ và từ điều kiện bài toán suy ra $xyz=16$. Để $P=a^2+b^2+c^2$ nhỏ nhất, ta có thể dịch chuyển $a,b,c$ cùng một lượng $k$ mà không làm thay đổi $x,y,z$. Ta chọn $k$ sao cho $a+b+c=0$. Khi đó, ta có mối liên hệ đẹp giữa $x^2+y^2+z^2$ và $P$.",
+        "math": "x^2 + y^2 + z^2 = 3(a^2 + b^2 + c^2) = 3P \\Rightarrow P = \\frac{1}{3}(x^2 + y^2 + z^2)",
+        "reason": "Biến đổi đại số và tính chất $a+b+c=0$",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "x^2 + y^2 + z^2 = 3(a^2 + b^2 + c^2)"
+        ],
+        "operation": "substitution",
+        "result": "Biểu thức $P$ được liên hệ với $x,y,z$ qua $P = \\frac{1}{3}(x^2 + y^2 + z^2)$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị vào phương trình ban đầu để kiểm tra tính đúng đắn của kết quả."
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Tìm giá trị nhỏ nhất của biểu thức theo $S$",
+        "explanation": "Từ $z = -(x+y)$ và $xyz=16$, ta đặt $S=x+y$ và $Q=xy$. Khi đó $Q = -16/S$. Biểu thức $x^2+y^2+z^2$ được viết theo $S$ là $2(S^2 + 16/S)$. Áp dụng Cô-si cho 6 số hạng dương để chặn dưới biểu thức này.",
+        "math": "S^2 + \\frac{16}{S} = \\frac{S^2}{2} + \\frac{S^2}{2} + \\frac{4}{S} + \\frac{4}{S} + \\frac{4}{S} + \\frac{4}{S} \\ge 6\\sqrt[6]{\\frac{S^4}{4} \\cdot \\frac{256}{S^4}} = 12",
+        "reason": "Bất đẳng thức Cô-si (Cô-si)",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "S^2 + \\frac{16}{S} \\ge 12"
+        ],
+        "operation": "am_gm",
+        "result": "Giá trị nhỏ nhất của $S^2 + 16/S$ là $12$ khi $S=2$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị vào phương trình ban đầu để kiểm tra tính đúng đắn của kết quả."
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Tìm bộ số $(a,b,c)$ và kết luận",
+        "explanation": "Dấu \"=\" xảy ra khi $S=2$. Khi đó $Q=-8$, phương trình $t^2-2t-8=0$ cho ${4, -2}$. Giải hệ với $a+b+c=0$ ta tìm được bộ số cụ thể. Thay vào $P$ ta được kết quả.",
+        "math": "P_{min} = \\frac{1}{3} \\cdot 2 \\cdot 12 = 8 \\quad \\text{khi } (a,b,c) = (2,-2,0) \\text{ và các hoán vị cyclic}",
+        "reason": "Thay giá trị cực trị và giải hệ phương trình",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "P_{min} = 8"
+        ],
+        "operation": "equality_case",
+        "result": "Giá trị nhỏ nhất của $P$ là $8$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị vào phương trình ban đầu để kiểm tra tính đúng đắn của kết quả."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị nhỏ nhất của $P$ là $8$, đạt được khi $(a,b,c) = (2,-2,0)$ hoặc các hoán vị cyclic của bộ số này.",
+      "math": "P_{min} = 8"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "a^2*b + b^2*c + c^2*a + 16 = a*b^2 + b*c^2 + c*a^2"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "2"
+            },
+            {
+              "variable": "b",
+              "value": "-2"
+            },
+            {
+              "variable": "c",
+              "value": "0"
+            }
+          ]
+        ],
+        "expected": "True"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "a^2*b + b^2*c + c^2*a + 16 = a*b^2 + b*c^2 + c*a^2",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 7574,
+  "usage": {
+    "default": {
+      "input": 13861,
+      "cachedInput": 0,
+      "output": 27250,
+      "reasoning": 15788
+    }
+  },
+  "costUsd": 0.04765745,
+  "model": "default",
+  "logs": [
+    "computed: - minimize (139 ms)",
+    "topic \"combinatorics\" relabelled \"algebra\" (classifier)",
+    "language repair: 1/1 field(s) rewritten in 7 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"2^2 + (-2)^2 + 0^2\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=default in=13861 (cached 0) out=27250 (reasoning 15788) ≈ $0.0477",
+    "total ≈ $0.0477 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "fin-a1": {"verdict": "đúng", "score": 8, "notes": "x = 1 ± √6, máy kiểm chứng."},
+  "fin-a2": {"verdict": "đúng", "score": 8, "notes": "min P = 5 tại (1; 2)."},
+  "fin-a3": {"verdict": "đúng — bị giữ lại lúc chạy", "score": 7, "notes": "m ∈ {−2; 3} đúng; bước 5 dùng dấu “{” (và) thay vì “[” (hoặc) nên bị giữ lại. Sau đánh giá đã thêm sửa tự động #24 (không chạy lại bài kiểm tra cuối)."},
+  "fin-g1": {"verdict": "đúng", "score": 9, "notes": "Bộ giải xác định: AC = 12, AH = 60/13, BH = 25/13."},
+  "fin-g2": {"verdict": "đúng", "score": 8, "notes": "∠AOB = 120°."},
+  "fin-g3": {"verdict": "đúng", "score": 8, "notes": "Góc nội tiếp bằng nhau ⇒ cung bằng nhau ⇒ dây bằng nhau. Gọn, đúng."},
+  "fin-n1": {"verdict": "đúng", "score": 8, "notes": "2."},
+  "fin-n2": {"verdict": "đúng", "score": 9, "notes": "Bộ giải routine: n + 1 | 6 ⇒ 8 giá trị."},
+  "fin-n3": {"verdict": "đúng", "score": 9, "notes": "Bộ giải routine: (5;1), (7;5)."},
+  "fin-c1": {"verdict": "đúng", "score": 8, "notes": "15, máy kiểm chứng."},
+  "fin-c2": {"verdict": "đúng", "score": 9, "notes": "Bộ giải routine: 36."},
+  "fin-c3": {"verdict": "đúng", "score": 8, "notes": "Chia 4 hình vuông cạnh 1, Dirichlet, đường chéo √2."}
+}

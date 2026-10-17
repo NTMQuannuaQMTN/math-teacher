@@ -20,3 +20,15 @@ describe("template brackets around plain numbers", () => {
     expect(dropRepeatedLines("\\begin{gathered}a=1\\\\b=2\\end{gathered}")).toBe("\\begin{gathered}a=1\\\\b=2\\end{gathered}");
   });
 });
+
+import { bracketAlternatives } from "../../shared/src/latexTidy";
+describe("'or' written as a system brace", () => {
+  it("becomes the hoặc bracket when one variable gets several values", () => {
+    expect(bracketAlternatives("m^2-m-6=0 \\Leftrightarrow \\begin{cases} m = 3 \\\\ m = -2 \\end{cases}")).toBe("m^2-m-6=0 \\Leftrightarrow \\left[\\begin{array}{l}m = 3\\\\m = -2\\end{array}\\right.");
+  });
+  it("leaves real systems alone", () => {
+    const sys = "\\begin{cases} x + y = 5 \\\\ xy = 6 \\end{cases}";
+    expect(bracketAlternatives(sys)).toBe(sys);
+    expect(bracketAlternatives("\\begin{cases} x = 1 \\\\ y = 2 \\end{cases}")).toBe("\\begin{cases} x = 1 \\\\ y = 2 \\end{cases}");
+  });
+});

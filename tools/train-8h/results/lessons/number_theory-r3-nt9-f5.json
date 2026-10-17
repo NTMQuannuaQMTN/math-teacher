@@ -1,0 +1,143 @@
+{
+  "question": {
+    "id": "nt9-f5",
+    "split": "fresh",
+    "source": "authored 2026-10-15 11:00 before the second run's model calls (verified); never used for a fix",
+    "input": "Tìm hai chữ số tận cùng của $3^{100}$.",
+    "reference": "$01$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm hai chữ số tận cùng của $3^{100}$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Số dư của lũy thừa (chu kì số dư)",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Số dư của lũy thừa (chu kì số dư)"
+      ],
+      "techniques": [],
+      "givens": [
+        "$3^{100}$",
+        "chia cho $100$"
+      ],
+      "unknowns": [
+        "Chữ số tận cùng"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính số dư của các lũy thừa nhỏ để tìm chu kì, rồi chia số mũ cho chu kì.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Nhân số dư trước với $3$ rồi chia cho $100$, số dư nào xuất hiện lại đầu tiên?",
+        "cue": "Tính chất: nếu $a\\equiv b\\pmod m$ thì $ac\\equiv bc\\pmod m$",
+        "explanation": "Cần tìm hai chữ số tận cùng của $3^{100}$, tức là số dư khi chia $3^{100}$ cho $100$. Số mũ quá lớn để tính trực tiếp, nên ta tìm quy luật. Mỗi lũy thừa sau bằng lũy thừa trước nhân $3$, nên số dư của lũy thừa sau bằng số dư của (số dư trước $\\times 3$) khi chia cho $100$. Ta tính lần lượt cho đến khi một số dư lặp lại.",
+        "math": "3^{1}\\equiv 3,\\quad 3^{2}\\equiv 9,\\quad 3^{3}\\equiv 27,\\quad 3^{4}\\equiv 81,\\quad 3^{5}\\equiv 43,\\quad 3^{6}\\equiv 29,\\quad 3^{7}\\equiv 87,\\quad 3^{8}\\equiv 61,\\quad 3^{9}\\equiv 83,\\quad 3^{10}\\equiv 49,\\quad 3^{11}\\equiv 47,\\quad 3^{12}\\equiv 41,\\quad 3^{13}\\equiv 23,\\quad 3^{14}\\equiv 69,\\quad 3^{15}\\equiv 7,\\quad 3^{16}\\equiv 21,\\quad 3^{17}\\equiv 63,\\quad 3^{18}\\equiv 89,\\quad 3^{19}\\equiv 67,\\quad 3^{20}\\equiv 1\\pmod{100}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Số mũ $100$ chia cho $20$ dư bao nhiêu?",
+        "cue": "Phép chia có dư cho số mũ; nâng đồng dư lên lũy thừa",
+        "explanation": "Ta có $3^{20}\\equiv 1\\pmod{100}$. Chia số mũ $100$ cho $20$: $100=20\\cdot 5+0$. Do đó $3^{100}=(3^{20})^{5}\\cdot 3^{0}$. Vì $3^{20}\\equiv1$ nên $(3^{20})^{5}\\equiv 1^{5}=1\\pmod{100}$ (nâng hai vế đồng dư lên cùng lũy thừa).",
+        "math": "3^{100}=\\left(3^{20}\\right)^{5}\\cdot 3^{0}\\equiv 1\\cdot 3^{0}\\equiv 1\\pmod{100}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Đáp số là bao nhiêu?",
+        "cue": "Định nghĩa số dư",
+        "explanation": "Vậy hai chữ số tận cùng của $3^{100}$ là $01$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính số dư của các lũy thừa nhỏ",
+        "explanation": "Cần tìm hai chữ số tận cùng của $3^{100}$, tức là số dư khi chia $3^{100}$ cho $100$. Số mũ quá lớn để tính trực tiếp, nên ta tìm quy luật. Mỗi lũy thừa sau bằng lũy thừa trước nhân $3$, nên số dư của lũy thừa sau bằng số dư của (số dư trước $\\times 3$) khi chia cho $100$. Ta tính lần lượt cho đến khi một số dư lặp lại.",
+        "math": "3^{1}\\equiv 3,\\quad 3^{2}\\equiv 9,\\quad 3^{3}\\equiv 27,\\quad 3^{4}\\equiv 81,\\quad 3^{5}\\equiv 43,\\quad 3^{6}\\equiv 29,\\quad 3^{7}\\equiv 87,\\quad 3^{8}\\equiv 61,\\quad 3^{9}\\equiv 83,\\quad 3^{10}\\equiv 49,\\quad 3^{11}\\equiv 47,\\quad 3^{12}\\equiv 41,\\quad 3^{13}\\equiv 23,\\quad 3^{14}\\equiv 69,\\quad 3^{15}\\equiv 7,\\quad 3^{16}\\equiv 21,\\quad 3^{17}\\equiv 63,\\quad 3^{18}\\equiv 89,\\quad 3^{19}\\equiv 67,\\quad 3^{20}\\equiv 1\\pmod{100}",
+        "reason": "Tính chất: nếu $a\\equiv b\\pmod m$ thì $ac\\equiv bc\\pmod m$",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Viết số mũ theo chu kì 20",
+        "explanation": "Ta có $3^{20}\\equiv 1\\pmod{100}$. Chia số mũ $100$ cho $20$: $100=20\\cdot 5+0$. Do đó $3^{100}=(3^{20})^{5}\\cdot 3^{0}$. Vì $3^{20}\\equiv1$ nên $(3^{20})^{5}\\equiv 1^{5}=1\\pmod{100}$ (nâng hai vế đồng dư lên cùng lũy thừa).",
+        "math": "3^{100}=\\left(3^{20}\\right)^{5}\\cdot 3^{0}\\equiv 1\\cdot 3^{0}\\equiv 1\\pmod{100}",
+        "reason": "Phép chia có dư cho số mũ; nâng đồng dư lên lũy thừa",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vậy hai chữ số tận cùng của $3^{100}$ là $01$.",
+        "math": null,
+        "reason": "Định nghĩa số dư",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy hai chữ số tận cùng của $3^{100}$ là $01$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tính lại số dư bằng lũy thừa nhanh theo môđun (độc lập với chu kì)",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 35,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-power-residue",
+  "logs": [
+    "lesson by the routine solver (power-residue); no model call"
+  ]
+}

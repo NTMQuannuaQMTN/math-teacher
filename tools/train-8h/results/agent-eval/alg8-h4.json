@@ -1,0 +1,198 @@
+{
+  "id": "alg8-h4",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "not_checkable",
+  "seconds": 44,
+  "costUsd": 0.016,
+  "final": "Vậy $m = -1 + \\sqrt{3}$ hoặc $m = -1 - \\sqrt{3}$.",
+  "hints": [
+    "Tính biệt thức $\\Delta$ và tìm điều kiện để phương trình có hai nghiệm phân biệt.",
+    "Biến đổi $x_1^2+x_2^2$ thành $(x_1+x_2)^2 - 2x_1x_2$.",
+    "Thay tổng và tích nghiệm vào phương trình $x_1^2+x_2^2=6$."
+  ],
+  "reference": "$m=-1\\pm\\sqrt3$ (phương trình luôn có hai nghiệm phân biệt vì $\\Delta=m^2+4>0$)",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2-(m+2)x+m=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=6$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "phương trình bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "phương trình bậc hai một ẩn",
+        "điều kiện có hai nghiệm phân biệt ($\\Delta > 0$)",
+        "hệ thức Vi-ét",
+        "hằng đẳng thức đáng nhớ"
+      ],
+      "techniques": [
+        "vieta",
+        "factorization",
+        "equality_case"
+      ],
+      "givens": [
+        "Phương trình $x^2-(m+2)x+m=0$ có hai nghiệm $x_1, x_2$.",
+        "$x_1^2 + x_2^2 = 6$."
+      ],
+      "unknowns": [
+        "Giá trị của tham số $m$."
+      ],
+      "constraints": [
+        "Phương trình phải có hai nghiệm phân biệt ($\\Delta > 0$)."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng điều kiện $\\Delta > 0$ để tìm điều kiện của $m$ để phương trình có hai nghiệm phân biệt. Sau đó dùng hệ thức Vi-ét để biến đổi biểu thức $x_1^2+x_2^2$ về $m$, giải phương trình tìm $m$ và đối chiếu với điều kiện.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Tính biệt thức $\\Delta$ và tìm điều kiện để phương trình có hai nghiệm phân biệt.",
+        "cue": "Biệt thức $\\Delta$ của phương trình bậc hai",
+        "explanation": "Áp dụng công thức $\\Delta = b^2 - 4ac$ với $a=1, b=-(m+2), c=m$. Giải bất phương trình $\\Delta > 0$ để tìm tập giá trị của $m$.",
+        "math": "\\Delta = (m+2)^2 - 4m = m^2",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Biến đổi $x_1^2+x_2^2$ thành $(x_1+x_2)^2 - 2x_1x_2$.",
+        "cue": "Hằng đẳng thức đáng nhớ",
+        "explanation": "Sử dụng hằng đẳng thức $A^2+B^2 = (A+B)^2 - 2AB$ để viết lại biểu thức đã cho theo tổng và tích của hai nghiệm.",
+        "math": "x_1^2 + x_2^2 = (x_1+x_2)^2 - 2x_1x_2",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Thay tổng và tích nghiệm vào phương trình $x_1^2+x_2^2=6$.",
+        "cue": "Hệ thức Vi-ét",
+        "explanation": "Thay $x_1+x_2 = m+2$ và $x_1x_2 = m$ vào phương trình $(x_1+x_2)^2 - 2x_1x_2 = 6$. Giải phương trình bậc hai theo $m$ tìm được các giá trị cần xét.",
+        "math": "(m+2)^2 - 2m = 6",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tìm điều kiện để phương trình có hai nghiệm phân biệt",
+        "explanation": "Ta tính biệt thức $\\Delta$ của phương trình. Phương trình có hai nghiệm phân biệt khi và chỉ khi $\\Delta > 0$.",
+        "math": "\\begin{gathered}\\Delta = [-(m+2)]^2 - 4 \\cdot 1 \\cdot m = m^2 + 4m + 4 - 4m = m^2 \\\\ \\Delta > 0 \\Leftrightarrow m^2 > 0 \\Leftrightarrow m \\neq 0\\end{gathered}",
+        "reason": "Điều kiện để phương trình bậc hai có hai nghiệm phân biệt",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "compute",
+        "result": "m \\neq 0",
+        "verification": {
+          "status": "verified",
+          "method": "algebra",
+          "reason": "Delta calculation"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Biến đổi biểu thức $x_1^2+x_2^2$",
+        "explanation": "Sử dụng hằng đẳng thức đáng nhớ để biến đổi biểu thức đã cho về dạng chứa tổng và tích hai nghiệm.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2",
+        "reason": "Hằng đẳng thức $A^2+B^2 = (A+B)^2 - 2AB$",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "identity",
+        "result": "(x_1+x_2)^2 - 2x_1x_2",
+        "verification": {
+          "status": "verified",
+          "method": "identity",
+          "reason": "Algebraic identity"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Áp dụng hệ thức Vi-ét",
+        "explanation": "Theo hệ thức Vi-ét, ta có $x_1+x_2 = m+2$ và $x_1x_2 = m$. Thay vào biểu thức ở bước trên và giải phương trình theo $m$.",
+        "math": "\\begin{cases} x_1 + x_2 = m + 2 \\\\ x_1 x_2 = m \\end{cases}\n(x_1 + x_2)^2 - 2x_1x_2 = 6 \\Leftrightarrow (m+2)^2 - 2m = 6\n\\Leftrightarrow m^2 + 4m + 4 - 2m - 6 = 0 \\Leftrightarrow m^2 + 2m - 2 = 0",
+        "reason": "Hệ thức Vi-ét và biến đổi đại số",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "solve",
+        "result": "m^2 + 2m - 2 = 0",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Vieta substitution"
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Giải phương trình tìm $m$ và kết luận",
+        "explanation": "Giải phương trình $m^2+2m-2=0$ tìm được hai giá trị của $m$. Cả hai giá trị này đều khác 0 nên thỏa mãn điều kiện $m \\neq 0$.",
+        "math": "m^2 + 2m - 2 = 0 \\Leftrightarrow \\left[\\begin{array}{l}m = -1 + \\sqrt{3} \\\\ m = -1 - \\sqrt{3}\\end{array}\\right.\n(\\text{ Vì }  m \\neq 0  \\text{ nên cả hai giá trị trên đều thỏa mãn }).",
+        "reason": "Giải phương trình bậc hai và đối chiếu điều kiện",
+        "uses": [
+          "s3",
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "solve",
+        "result": "m = -1 \\pm \\sqrt{3}",
+        "verification": {
+          "status": "verified",
+          "method": "compute",
+          "reason": "Quadratic formula"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $m = -1 + \\sqrt{3}$ hoặc $m = -1 - \\sqrt{3}$.",
+      "math": "m = -1 \\pm \\sqrt{3}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2-(m+2)x+m=0",
+          "x_1^2+x_2^2=6"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "-1+sqrt(3)"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "-1-sqrt(3)"
+            }
+          ]
+        ],
+        "expected": null
+      }
+    ],
+    "figure": null
+  },
+  "failed": [],
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"x^2-(m+2)x+m=0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"(m+2)^2 - 2m = 6\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "usage: model=default in=21164 (cached 0) out=4243 (reasoning 0) ≈ $0.0160",
+    "total ≈ $0.0160 over 2 attempt(s); lesson by default"
+  ]
+}

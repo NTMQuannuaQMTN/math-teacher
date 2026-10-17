@@ -1,0 +1,199 @@
+{
+  "question": {
+    "id": "fin2-n1",
+    "split": "final2",
+    "source": "authored 2026-10-15 15:50, after all fixes of the second run; run once (final evaluation 2)",
+    "input": "Tìm số dư khi chia $2^{100}+3^{100}$ cho $7$.",
+    "reference": "$6$ ($2^{100}\\equiv2$, $3^{100}\\equiv4\\pmod7$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute",
+    "topic": "number_theory"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm số dư khi chia $2^{100} + 3^{100}$ cho $7$.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Số học",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Lũy thừa",
+        "Số dư",
+        "Đồng dư thức",
+        "Chu kỳ của lũy thừa"
+      ],
+      "techniques": [
+        "remainders"
+      ],
+      "givens": [
+        "Biểu thức $2^{100} + 3^{100}$"
+      ],
+      "unknowns": [
+        "Số dư"
+      ],
+      "constraints": [
+        "Chia cho 7"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu tìm số dư của một lũy thừa lớn khi chia cho một số nguyên (tính theo mô-đun). Đây là kiến thức chuyên sâu (số học), không nằm trong chương trình Toán lớp 9 chuẩn."
+      ]
+    },
+    "strategy": "Sử dụng tính chất đồng dư thức để tìm số dư của từng lũy thừa $2^{100}$ và $3^{100}$ khi chia cho 7, sau đó cộng hai số dư lại.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 1,
+        "question": "Bạn có nhận xét gì về số dư của các lũy thừa của 2 và 3 khi chia cho 7 không?",
+        "cue": "Lũy thừa theo mô-đun",
+        "explanation": "Bạn hãy thử tính các lũy thừa nhỏ của 2 và 3 để xem số dư khi chia cho 7 có quy luật gì không. Ví dụ: $2^1, 2^2, 2^3...$ chia 7 dư bao nhiêu?",
+        "math": null,
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Làm sao để biến đổi $2^{100}$ và $3^{100}$ về dạng có số mũ nhỏ hơn dựa trên quy luật bạn vừa tìm được?",
+        "cue": "Chu kỳ của số dư",
+        "explanation": "Bạn thấy rằng $2^3 = 8$ chia 7 dư 1, và $3^3 = 27$ chia 7 dư 6 (tức là -1). Điều này có nghĩa là cứ sau mỗi lũy thừa 3, số dư sẽ lặp lại hoặc biến đổi theo một quy luật cố định. Bạn có thể dùng tính chất này để hạ số mũ 100 xuống không?",
+        "math": null,
+        "stepId": "step2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Tìm số dư của $2^{100}$",
+        "explanation": "Để tìm số dư của $2^{100}$ khi chia cho 7, ta xét các lũy thừa của 2: $2^1 = 2$ (dư 2), $2^2 = 4$ (dư 4), $2^3 = 8$ (dư 1). Vì $2^3$ chia 7 dư 1, ta có thể viết $100 = 3 \\times 33 + 1$. Khi đó $2^{100} = (2^3)^{33} \\times 2^1$ chia 7 cũng dư $1^{33} \\times 2 = 2$.",
+        "math": "2^{100} \\equiv 2 \\pmod{7}",
+        "reason": "Tính chất đồng dư thức",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tính chất đồng dư thức: $a \\text{ đồng dư } b \\text{ (mod } n) \\text{ thì } a^k \\text{ đồng dư } b^k \\text{ (mod } n)$"
+        ],
+        "operation": "Tính số dư của $2^{100}$",
+        "result": "Số dư của $2^{100}$ khi chia cho 7 là 2.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại kết quả bằng cách thay giá trị vào biểu thức ban đầu"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Tìm số dư của $3^{100}$",
+        "explanation": "Tương tự, ta xét các lũy thừa của 3: $3^1 = 3$ (dư 3), $3^2 = 9$ (dư 2), $3^3 = 27$ (dư 6, hay còn gọi là -1). Vì $3^3$ chia 7 dư 6 (tức là -1), ta viết $100 = 3 \\times 33 + 1$. Khi đó $3^{100} = (3^3)^{33} \\times 3^1$ chia 7 cũng dư $(-1)^{33} \\times 3 = -1 \\times 3 = -3$. Số dư âm -3 tương đương với số dư dương $7 - 3 = 4$ khi chia cho 7.",
+        "math": "3^{100} \\equiv 4 \\pmod{7}",
+        "reason": "Tính chất đồng dư thức",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tính chất đồng dư thức"
+        ],
+        "operation": "Tính số dư của $3^{100}$",
+        "result": "Số dư của $3^{100}$ khi chia cho 7 là 4.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại kết quả bằng cách thay giá trị vào biểu thức ban đầu"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Tìm số dư của tổng",
+        "explanation": "Cuối cùng, ta cộng hai số dư lại: $2 + 4 = 6$. Vì $6 < 7$ nên số dư của tổng $2^{100} + 3^{100}$ khi chia cho 7 chính là 6.",
+        "math": "2^{100} + 3^{100} \\equiv 6 \\pmod{7}",
+        "reason": "Tính chất cộng của đồng dư thức",
+        "uses": [
+          "step1",
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tính chất cộng của đồng dư thức"
+        ],
+        "operation": "Cộng hai số dư",
+        "result": "Số dư cần tìm là 6.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại kết quả bằng cách thay giá trị vào biểu thức ban đầu"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số dư cần tìm là 6.",
+      "math": "6"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "(2^100 + 3^100) % 7"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "100"
+            }
+          ]
+        ],
+        "expected": "6"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "(2^100 + 3^100) % 7",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 29757,
+  "usage": {
+    "default": {
+      "input": 14475,
+      "cachedInput": 0,
+      "output": 3843,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01235511,
+  "model": "default",
+  "logs": [
+    "computed: integer target (residue)",
+    "attempt 1: unverified, 4 problem(s): answer check \"(2^100 + 3^100) % 7\" failed: NaN vs 6 | step 1: the formula \"2^{100} \\text{ đồng dư } 2 \\text{ \\pmod{} 7}\" doesn't render (Undefined control sequence: \\allowbreak at position 1: \\̲a̲l̲l̲o̲w̲b̲r̲e̲a̲k̲\\mathchoice{\\mk…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}. | step 2: the formula \"3^{100} \\text{ đồng dư } 4 \\text{ \\pmod{} 7}\" doesn't render (Undefined control sequence: \\allowbreak at position 1: \\̲a̲l̲l̲o̲w̲b̲r̲e̲a̲k̲\\mathchoice{\\mk…). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "attempt 2: unverified, 1 problem(s): answer check \"(2^100 + 3^100) % 7\" failed: NaN vs 6",
+    "usage: model=default in=14475 (cached 0) out=3843 (reasoning 0) ≈ $0.0124",
+    "total ≈ $0.0124 over 2 attempt(s); lesson by default"
+  ]
+}

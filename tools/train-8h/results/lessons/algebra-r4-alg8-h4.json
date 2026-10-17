@@ -1,0 +1,304 @@
+{
+  "question": {
+    "id": "alg8-h4",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho phương trình $x^2-(m+2)x+m=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=6$.",
+    "reference": "$m=-1\\pm\\sqrt3$ (phương trình luôn có hai nghiệm phân biệt vì $\\Delta=m^2+4>0$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2 - (m+2)x + m = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 6$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "phương trình bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai một ẩn",
+        "Biệt thức Delta ($\\Delta$)",
+        "Hệ thức Vi-ét",
+        "Hằng đẳng thức đáng nhớ"
+      ],
+      "techniques": [
+        "vieta",
+        "discriminant",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình: $x^2 - (m+2)x + m = 0$",
+        "Điều kiện nghiệm: $x_1^2 + x_2^2 = 6$"
+      ],
+      "unknowns": [
+        "Giá trị của tham số $m$"
+      ],
+      "constraints": [
+        "Phương trình phải có hai nghiệm phân biệt ($\\Delta > 0$)",
+        "Thỏa mãn điều kiện $x_1^2 + x_2^2 = 6$"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Tính biệt thức $\\Delta$ để xác định điều kiện có nghiệm. Sử dụng định lý Vi-ét để biểu diễn $x_1^2 + x_2^2$ theo $m$, giải phương trình tìm $m$, sau đó kiểm tra lại điều kiện có nghiệm phân biệt.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Bạn có thể biến đổi $x_1^2 + x_2^2$ về dạng chứa tổng và tích nghiệm $x_1 + x_2$ và $x_1 x_2$ được không?",
+        "cue": "Biểu thức $x_1^2 + x_2^2$ liên hệ với tổng và tích nghiệm.",
+        "explanation": "Bạn hãy dùng hằng đẳng thức $A^2 + B^2 = (A+B)^2 - 2AB$ để biến đổi $x_1^2 + x_2^2$ thành biểu thức chứa $(x_1 + x_2)$ và $x_1 x_2$. Sau đó thay các giá trị này bằng biểu thức theo $m$ từ định lý Vi-ét.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "Bạn đã tìm được giá trị $m$ thỏa mãn $x_1^2 + x_2^2 = 6$. Bây giờ hãy kiểm tra xem với các giá trị $m$ đó, phương trình có hai nghiệm phân biệt không?",
+        "cue": "Điều kiện để phương trình bậc hai có hai nghiệm phân biệt.",
+        "explanation": "Sau khi tìm được các giá trị $m$ thỏa mãn điều kiện về nghiệm, bạn cần kiểm tra lại xem với các giá trị $m$ đó, phương trình có thực sự có hai nghiệm phân biệt hay không. Điều này phụ thuộc vào dấu của biệt thức $\\Delta$.",
+        "math": "\\Delta > 0",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính biệt thức $\\Delta$",
+        "explanation": "Để phương trình có hai nghiệm phân biệt, biệt thức $\\Delta$ phải dương. Ta tính $\\Delta$ theo $m$.",
+        "math": "\\Delta = [-(m+2)]^2 - 4(1)(m) = m^2 + 4m + 4 - 4m = m^2 + 4",
+        "reason": "Công thức tính biệt thức",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Phương trình $ax^2 + bx + c = 0$ có $\\Delta = b^2 - 4ac$."
+        ],
+        "operation": "Tính Delta",
+        "result": "$\\Delta = m^2 + 4$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra dấu của Delta"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Xét điều kiện có nghiệm",
+        "explanation": "Vì $m^2 \\ge 0$ với mọi $m$, nên $\\Delta = m^2 + 4 \\ge 4 > 0$. Vậy phương trình luôn có hai nghiệm phân biệt với mọi $m$.",
+        "math": "\\Delta > 0 \\quad \\forall m",
+        "reason": "Tính chất của bình phương",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Bình phương của một số thực luôn không âm."
+        ],
+        "operation": "Xét dấu Delta",
+        "result": "Phương trình luôn có hai nghiệm phân biệt.",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "m^2 >= 0"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Áp dụng định lý Vi-ét",
+        "explanation": "Áp dụng định lý Vi-ét: tổng hai nghiệm $x_1 + x_2 = m+2$, tích hai nghiệm $x_1 x_2 = m$. Ta biến đổi biểu thức $x_1^2 + x_2^2$ theo $m$.",
+        "math": "\\begin{cases} x_1 + x_2 = m + 2 \\\\ x_1 x_2 = m \\end{cases}",
+        "reason": "Định lý Vi-ét",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định lý Vi-ét cho phương trình $x^2 + bx + c = 0$."
+        ],
+        "operation": "Áp dụng Vi-ét",
+        "result": "$x_1 + x_2 = m+2, x_1 x_2 = m$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "So sánh hệ số"
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Thiết lập phương trình theo m",
+        "explanation": "Ta có $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2$. Thay các biểu thức theo $m$ vào và giải phương trình theo $m$.",
+        "math": "(m+2)^2 - 2m = 6 \\Leftrightarrow m^2 + 4m + 4 - 2m - 6 = 0 \\Leftrightarrow m^2 + 2m - 2 = 0",
+        "reason": "Biến đổi đại số",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Hằng đẳng thức $A^2 + B^2 = (A+B)^2 - 2AB$."
+        ],
+        "operation": "Giải phương trình theo m",
+        "result": "m^2 + 2m - 2 = 0",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra biến đổi"
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Tìm giá trị của m",
+        "explanation": "Giải phương trình $m^2 + 2m - 2 = 0$. Ta có $a=1, b=2, c=-2$. Tính $\\Delta_m = 2^2 - 4(1)(-2) = 8$. Vậy $m = \\frac{-2 \\pm \\sqrt{8}}{2} = -1 \\pm \\sqrt{3}$.",
+        "math": "m = -1 + \\sqrt{3} \\quad \\text{hoặc} \\quad m = -1 - \\sqrt{3}",
+        "reason": "Công thức nghiệm",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Công thức nghiệm phương trình bậc hai."
+        ],
+        "operation": "Giải phương trình bậc hai theo m",
+        "result": "m = -1 \\pm \\sqrt{3}",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay m vào phương trình"
+        }
+      },
+      {
+        "id": "s6",
+        "title": "Kết luận",
+        "explanation": "Kiểm tra điều kiện $\\Delta > 0$ với các giá trị $m$ tìm được. Ta đã chứng minh ở bước 2 rằng $\\Delta = m^2 + 4 > 0$ với mọi $m$. Do đó, cả hai giá trị $m = -1 + \\sqrt{3}$ và $m = -1 - \\sqrt{3}$ đều thỏa mãn điều kiện phương trình có hai nghiệm phân biệt.",
+        "math": "\\Delta > 0 \\quad \\forall m \\in \\mathbb{R}",
+        "reason": "Tính chất của Delta",
+        "uses": [
+          "s2",
+          "s5"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Kết quả từ bước 2."
+        ],
+        "operation": "Kiểm tra điều kiện",
+        "result": "Hai giá trị m đều thỏa mãn.",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Delta luôn dương"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Không tồn tại giá trị $m$ nào thỏa mãn đề bài.",
+      "math": "\\text{ Vô nghiệm }"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "m^2 + 2m - 2 = 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "-1 + sqrt(3)"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "-1 - sqrt(3)"
+            }
+          ]
+        ],
+        "expected": "m = -1 + sqrt(3) hoặc m = -1 - sqrt(3)"
+      },
+      {
+        "kind": "value",
+        "statements": [
+          "Delta = m^2 + 2m + 4"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "-1 + sqrt(3)"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "-1 - sqrt(3)"
+            }
+          ]
+        ],
+        "expected": "Delta > 0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 27084,
+  "usage": {
+    "default": {
+      "input": 12751,
+      "cachedInput": 0,
+      "output": 3533,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.011108110000000001,
+  "model": "default",
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "language repair round 1: not accepted s1vm: still foreign, s5vm: still foreign",
+    "language repair round 2: not accepted s1vm: still foreign, s5vm: still foreign",
+    "language repair: 0/2 field(s) rewritten in 1 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 2: not_checkable, 2 problem(s): answer check \"m^2 + 2m - 2 = 0\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition | answer check \"Delta = m^2 + 2m + 4\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "usage: model=default in=12751 (cached 0) out=3533 (reasoning 0) ≈ $0.0111",
+    "total ≈ $0.0111 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -131,9 +131,12 @@ export function hostedModelOptions(problemText: string, s: HostedSettings = {}) 
 
 /**
  * SOCLAAS (qwen3.6:35b, ~120–330 tokens/s): more room than the free model's defaults — 12K truncated ordinary geometry
- * lessons (GEO-R1b: g3, g5, g6, g9), and a truncated request is paid for and wasted. The gateway ends a request at
- * ~240 s, so every tier stops at 230 s.
+ * lessons (GEO-R1b: g3, g5, g6, g9), and a truncated request is paid for and wasted.
+ * The gateway now ends every request at 120 s with HTTP 502 "provider request failed" (measured 2026-10-14: 120.1 s,
+ * unbilled), so requests stop at 115 s, and a geometry lesson (proof + figure, the longest output) is written without
+ * hidden thinking so that it fits; the deterministic planner's verified facts and the claim checker carry its proof.
  */
+export const SOCLAAS_REQUEST_LIMIT_MS = 115_000;
 const NEEDS_REASONING = /lớn nhất|nhỏ nhất|giá trị (?:lớn|nhỏ)|chứng minh|chứng tỏ|bất đẳng thức|tìm tất cả|\b(?:prove|show that|maximum|minimum|inequality)\b/iu;
 
 export function soclaasModelOptions(problemText: string) {
@@ -141,11 +144,29 @@ export function soclaasModelOptions(problemText: string) {
   // Thinking only where it pays off. Off for plain computations (g1–g6: same verified answers at ~¼ of the tokens);
   // on for hard problems and for anything that needs an argument — an extremum, a proof, an inequality (ch-2 "find the
   // largest perimeter" answered 16 instead of 18 without it). Thinking needs room: ch-2 with it truncated at 24K.
-  const thinking = tier === "complex" || NEEDS_REASONING.test(problemText.normalize("NFC"));
+  const thinking = (tier === "complex" || NEEDS_REASONING.test(problemText.normalize("NFC"))) && !looksLikeGeometry(problemText);
   return {
     ...hostedModelOptions(problemText),
-    maxTokens: thinking ? 40_000 : tier === "standard" ? 24_000 : 16_000,
-    requestTimeoutMs: 230_000,
+    maxTokens: thinking ? 24_000 : tier === "standard" ? 20_000 : 16_000,
+    requestTimeoutMs: SOCLAAS_REQUEST_LIMIT_MS,
     gatewayThinking: thinking,
   };
+}
+
+/**
+ * A problem that needs an argument (proof, extremum, "find all", or a complex problem). For SOCLAAS geometry the thinking
+ * goes into a separate outline request (short output, fits the 120 s gateway limit) and the lesson is written from it.
+ */
+export function soclaasNeedsThinking(problemText: string): boolean {
+  return problemTier(problemText) === "complex" || NEEDS_REASONING.test(problemText.normalize("NFC"));
+}
+
+/** Outline request for the two-stage solve: hidden thinking, short answer, within the gateway limit. */
+export function soclaasOutlineOptions(problemText: string) {
+  return { ...hostedModelOptions(problemText), maxTokens: 12_000, requestTimeoutMs: SOCLAAS_REQUEST_LIMIT_MS, gatewayThinking: true };
+}
+
+/** The same model without hidden thinking: the retry after a thinking request was cut off at the gateway limit. */
+export function soclaasDirectOptions(problemText: string) {
+  return { ...soclaasModelOptions(problemText), gatewayThinking: false, maxTokens: 20_000 };
 }

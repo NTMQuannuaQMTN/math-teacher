@@ -1,0 +1,132 @@
+{
+ "ptnk-2023-chuyen/4a": {
+  "verdict": "đúng",
+  "score": 6,
+  "notes": "Kết luận đúng (m(m−1) chẵn), nhưng bước 1 có đoạn tự hỏi rối ('…? Không, n ≠ −1 là do…'). Luật mới bắt kiểu '? Không,' để viết lại."
+ },
+ "ptnk-2024-chuyen/3b": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Mô-đun chứng nhận: truy hồi a_{n+2} = 4a_{n+1} − a_n, chu kỳ số dư; n lẻ. Dài nhưng chặt."
+ },
+ "ptnk-2024-chuyen/3c": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Như 3b; n = 8k+2 hoặc 8k+6 (= 4k+2)."
+ },
+ "ptnk-2025-chuyen/3a": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "m | 9, thử 3 ứng viên."
+ },
+ "ptnk-2025-chuyen/3b": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "m = kn, suy ra k = n, m = n²; (1;1), (4;2). Thiếu dấu cách ('tử3, tích1')."
+ },
+ "hcm-2025-chuyen/4a": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "11 = 2² + 7·1², 44 = 4² + 7·2²."
+ },
+ "hanoi-2025-chuyen/II.2": {
+  "verdict": "đúng",
+  "score": 6,
+  "notes": "Đáp số đúng 3 cặp; bước 3 viết sai phần dư (−5u+7) rồi 'theo dàn ý… Hãy cùng kiểm tra lại phép chia' mới ra u+7 — lộ dàn ý nội bộ. Luật mới chặn 'theo dàn ý'."
+ },
+ "khtn-2025-vong2/II.1": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Phương trình bậc hai theo 5^y, hai nghiệm 4^x+1 và 4x²+3x+3; (1;1), (2;2). Phần loại x ≥ 3 còn sơ lược."
+ },
+ "ptnk-2026-chuyen/3": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Mô-đun chứng nhận, đúng cả 3 câu; c) dùng bảng số dư mod 4 và mod 9 (khá dài)."
+ },
+ "nt8-h1": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Xét mod 4 rồi x = 1."
+ },
+ "nt8-h2": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Đúng hướng đáp án (n = 3k+1 → dư 3 khi chia 9); 7 bước hơi dài."
+ },
+ "nt8-h3": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Có xét p = 2, p = 3, p > 3 nhưng vẫn mở đầu 'Bạn hãy thử thay các giá trị nguyên tố nhỏ' — bạn muốn xét trực tiếp."
+ },
+ "nt8-h4": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "(k−n−2)(k+n+2) = 93 → n ∈ {12; 44}."
+ },
+ "nt8-h5": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "(2x+y)² + 3y² = 12, xét từng y và liệt kê đủ 6 cặp như bạn yêu cầu."
+ },
+ "nt8-h6": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Lần này đúng từ đầu đến cuối: chu kỳ 4, 2026 = 4·506 + 2, 4 + 9 = 13 → 3."
+ },
+ "nt8-h8": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "(k−n−1)(k+n+1) = 11, n ∈ {−6; 4}; vẫn qua ẩn phụ k (khó tránh với dạng này)."
+ },
+ "nt8-h9": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Mô-đun mới: n³+5n = (n−1)n(n+1) + 6n — đúng cách bạn muốn."
+ },
+ "nt8-h10": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "(x−3)(y−2) = 6, bảng ước có kẻ ô."
+ },
+ "nt9-f1": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "n ∈ {−6; −2; 0; 4} đúng, nhưng công thức ghi 'n+1 ⋮ 5' (ngược chiều; phải là 5 ⋮ (n+1)) dù lời văn nói đúng 'n+1 là ước của 5'."
+ },
+ "nt9-f2": {
+  "verdict": "đúng",
+  "score": 5,
+  "notes": "Đúng nhưng là bảng 30 số dư — quá dài (cùng lỗi bạn chê ở nt8-h9). ĐÃ SỬA SAU KHI CHẠY: mô-đun mới viết n⁵ − n = (n−2)(n−1)n(n+1)(n+2) + 5(n−1)n(n+1); bản này chưa được chạy lại trong vòng."
+ },
+ "nt9-f5": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "3²⁰ ≡ 1 (mod 100) → 01."
+ },
+ "hcm-2025-chuyen/4b": {
+  "verdict": "không hiển thị",
+  "score": 2,
+  "notes": "Câu MỚI (đề thi chưa dùng): công thức cuối n/11 = ((2a+7b)/11)² + 7((a−2b)/11)² là đúng hướng, nhưng bước 2 khẳng định sai 'a, b đều chia hết cho 11' và chưa chứng minh hai phân số là số nguyên. Bị chặn đúng."
+ },
+ "hanoi-2025-chuyen/II.1": {
+  "verdict": "một phần (không hiển thị)",
+  "score": 4,
+  "notes": "Chạy lại: loại 'cả ba lẻ' và '1 chẵn 2 lẻ' bằng mod 4 đúng hướng; trường hợp '2 chẵn 1 lẻ' còn dở. Bị chặn (lần đầu có 'Chờ đã')."
+ },
+ "nt8-h7": {
+  "verdict": "đúng (không hiển thị)",
+  "score": 4,
+  "notes": "Các bước đúng (3 + 5 = 8 ≡ 0), nhưng dòng 'Hướng giải' ghi sai '5^2025 chia 8 dư 3' → bị chặn (đúng luật 'đúng từ đầu đến cuối')."
+ },
+ "nt9-f3": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Chạy lại: p, p+2, p+4 có đủ 3 số dư khi chia 3 → một số bằng 3; xét trực tiếp 3 trường hợp. (Lần đầu: mất mạng.)"
+ },
+ "nt9-f4": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Chạy lại: (x−y−1)(x+y+1) = 12, cùng chẵn → (2;6) → (4;1)."
+ }
+}

@@ -1,0 +1,476 @@
+{
+  "question": {
+    "id": "comb8-h5",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Có bao nhiêu tam giác vuông có ba đỉnh là ba trong sáu đỉnh của một lục giác đều?",
+    "reference": "$12$ (cạnh huyền là một trong $3$ đường chéo chính, mỗi đường chéo với $4$ đỉnh còn lại)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Đếm số tam giác vuông có ba đỉnh là ba trong sáu đỉnh của một lục giác đều.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Geometry",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Hình học phẳng",
+        "Đếm tổ hợp",
+        "Lục giác đều",
+        "Góc nội tiếp"
+      ],
+      "techniques": [
+        "counting",
+        "angle_chasing"
+      ],
+      "givens": [
+        "Lục giác đều ABCDEF"
+      ],
+      "unknowns": [
+        "Số lượng tam giác vuông"
+      ],
+      "constraints": [
+        "Ba đỉnh phải là ba trong sáu đỉnh của lục giác đều"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu sử dụng các phương pháp nằm ngoài chương trình học."
+      ]
+    },
+    "strategy": "Sử dụng tính chất góc nội tiếp chắn nửa đường tròn để xác định các tam giác vuông. Lục giác đều có 3 đường chéo chính là đường kính, mỗi đường kính tạo ra 4 tam giác vuông.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 3,
+        "question": "Bạn có nhận xét gì về mối liên hệ giữa các đỉnh của lục giác đều và đường tròn ngoại tiếp của nó không?",
+        "cue": "Góc nội tiếp",
+        "explanation": "Một tam giác nội tiếp đường tròn là tam giác vuông khi và chỉ khi một cạnh của nó là đường kính của đường tròn đó. Lục giác đều có 3 đường chéo chính là 3 đường kính của đường tròn ngoại tiếp.",
+        "math": "\\text{ Góc nội tiếp chắn nửa đường tròn } = 90°",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 4,
+        "question": "Hãy đếm số tam giác vuông tạo thành từ các đường chéo chính này.",
+        "cue": "Đường chéo chính",
+        "explanation": "Lục giác đều ABCDEF có 3 đường chéo chính AD, BE, CF cắt nhau tại tâm O và là các đường kính. Mỗi đường kính tạo thành 4 tam giác vuông với các đỉnh còn lại.",
+        "math": "AD, BE, \\text{ CF là đường kính }",
+        "stepId": "s2",
+        "focus": [
+          "seg_AD",
+          "seg_BE",
+          "seg_CF"
+        ]
+      },
+      {
+        "id": "h3",
+        "level": 4,
+        "question": "Bạn có nghĩ rằng các tam giác vuông khác (không có cạnh là đường chéo chính) có thể tồn tại không?",
+        "cue": "Kiểm tra lại",
+        "explanation": "Bạn đã đếm đủ chưa? Hãy thử kiểm tra xem có tam giác vuông nào khác không có cạnh là đường chéo chính không. Ví dụ, xét tam giác ABC.",
+        "math": "\\text{ Góc ABC } = 120°",
+        "stepId": "s3",
+        "focus": [
+          "seg_AB",
+          "seg_BC",
+          "seg_AC"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định đường tròn ngoại tiếp",
+        "explanation": "Gọi lục giác đều là ABCDEF. Ta nhận thấy rằng 6 đỉnh này cùng nằm trên một đường tròn (đường tròn ngoại tiếp lục giác).",
+        "math": "\\text{ Đường tròn } (O) \\text{ ngoại tiếp lục giác đều ABCDEF }",
+        "reason": "Định nghĩa lục giác đều",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "Xác định đường tròn ngoại tiếp",
+        "result": "6 đỉnh cùng thuộc đường tròn (O)",
+        "verification": {
+          "status": "verified",
+          "method": "visual",
+          "reason": "Kiểm tra trực quan"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Xác định các đường kính",
+        "explanation": "Theo tính chất góc nội tiếp, một tam giác nội tiếp đường tròn là tam giác vuông khi và chỉ khi một cạnh của nó là đường kính của đường tròn đó. Lục giác đều có 3 đường chéo chính AD, BE, CF cắt nhau tại tâm O và là các đường kính.",
+        "math": "AD, BE, \\text{ CF là các đường kính của } (O)",
+        "reason": "Tính chất lục giác đều",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AD",
+              "seg_BE",
+              "seg_CF"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "s1"
+        ],
+        "operation": "Identify diameters",
+        "result": "3 đường chéo chính là đường kính",
+        "verification": {
+          "status": "verified",
+          "method": "visual",
+          "reason": "Kiểm tra trực quan"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Đếm số tam giác vuông",
+        "explanation": "Xét đường kính AD. Các đỉnh còn lại là B, C, E, F. Ta có các tam giác vuông tại B, C, E, F: ABD, ACD, AED, AFD. Tương tự với BE và CF. Mỗi đường kính tạo ra 4 tam giác vuông.",
+        "math": "4 \\text{ tam giác vuông trên mỗi đường kính }",
+        "reason": "Góc nội tiếp chắn nửa đường tròn",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AD",
+              "seg_BE",
+              "seg_CF",
+              "seg_AB",
+              "seg_BC",
+              "seg_AC"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "s2"
+        ],
+        "operation": "Count triangles",
+        "result": "12 tam giác vuông",
+        "verification": {
+          "status": "verified",
+          "method": "visual",
+          "reason": "Kiểm tra trực quan"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số tam giác vuông là 12.",
+      "math": "12"
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 1,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 1.5,
+          "y": 0.866,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "kind": "free",
+          "refs": [],
+          "x": 1,
+          "y": 1.732,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 1.732,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "F",
+          "label": "F",
+          "kind": "free",
+          "refs": [],
+          "x": -0.5,
+          "y": 0.866,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_CD",
+          "kind": "segment",
+          "from": "C",
+          "to": "D",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_DE",
+          "kind": "segment",
+          "from": "D",
+          "to": "E",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_EF",
+          "kind": "segment",
+          "from": "E",
+          "to": "F",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_FA",
+          "kind": "segment",
+          "from": "F",
+          "to": "A",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_AC",
+          "kind": "segment",
+          "from": "A",
+          "to": "C",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_AD",
+          "kind": "segment",
+          "from": "A",
+          "to": "D",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_AE",
+          "kind": "segment",
+          "from": "A",
+          "to": "E",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_BD",
+          "kind": "segment",
+          "from": "B",
+          "to": "D",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_BE",
+          "kind": "segment",
+          "from": "B",
+          "to": "E",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_BF",
+          "kind": "segment",
+          "from": "B",
+          "to": "F",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_CE",
+          "kind": "segment",
+          "from": "C",
+          "to": "E",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_CF",
+          "kind": "segment",
+          "from": "C",
+          "to": "F",
+          "style": "construction",
+          "label": ""
+        },
+        {
+          "id": "seg_DF",
+          "kind": "segment",
+          "from": "D",
+          "to": "F",
+          "style": "construction",
+          "label": ""
+        }
+      ],
+      "circles": [],
+      "angles": [
+        {
+          "id": "ang_FAB",
+          "from": "A",
+          "vertex": "A",
+          "to": "B",
+          "label": "120°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_ABC",
+          "from": "B",
+          "vertex": "B",
+          "to": "C",
+          "label": "120°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_BCD",
+          "from": "C",
+          "vertex": "C",
+          "to": "D",
+          "label": "120°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_CDE",
+          "from": "D",
+          "vertex": "D",
+          "to": "E",
+          "label": "120°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_DEF",
+          "from": "E",
+          "vertex": "E",
+          "to": "F",
+          "label": "120°",
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_EFA",
+          "from": "F",
+          "vertex": "F",
+          "to": "A",
+          "label": "120°",
+          "right": false,
+          "style": "given"
+        }
+      ],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 3,
+  "durationMs": 257982,
+  "usage": {
+    "default": {
+      "input": 9112,
+      "cachedInput": 0,
+      "output": 3388,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.00925016,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "attempt 1 failed (local model request timed out); trying again with a concise lesson",
+    "escalating to default",
+    "language repair: 2/2 field(s) rewritten in 1 s",
+    "attempt 2: not_checkable, 1 problem(s): figure is missing circle (O), which the problem or solution names. The figure must show every point, line and circle from ALL parts of the problem and everything the solution uses (use circle_circle for an intersection of two circles, line_circle with value 1 for \"the second intersection\").",
+    "attempt 3 failed (local model request timed out); keeping attempt 2",
+    "usage: model=default in=9112 (cached 0) out=3388 (reasoning 0) ≈ $0.0093",
+    "total ≈ $0.0093 over 3 attempt(s); lesson by default"
+  ]
+}

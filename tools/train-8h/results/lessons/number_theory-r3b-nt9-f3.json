@@ -1,0 +1,216 @@
+{
+  "question": {
+    "id": "nt9-f3",
+    "split": "fresh",
+    "source": "authored 2026-10-15 11:00 before the second run's model calls (verified); never used for a fix",
+    "input": "Tìm tất cả các số nguyên tố $p$ sao cho $p+2$ và $p+4$ cũng là các số nguyên tố.",
+    "reference": "$p=3$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các số nguyên tố $p$ sao cho $p+2$ và $p+4$ cũng là các số nguyên tố.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Lý thuyết số - Tính chia hết",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Số nguyên tố",
+        "Chia hết cho 3",
+        "Đồng dư",
+        "Xét trường hợp"
+      ],
+      "techniques": [
+        "divisibility",
+        "case_analysis",
+        "parity"
+      ],
+      "givens": [
+        "p, p+2, p+4 là các số nguyên tố"
+      ],
+      "unknowns": [
+        "p"
+      ],
+      "constraints": [
+        "p là số nguyên tố",
+        "p+2 là số nguyên tố",
+        "p+4 là số nguyên tố"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu sử dụng số học khi chia cho (mod 3), nội dung này không nằm trong chương trình chuẩn lớp 9. Tuy nhiên, khái niệm chia hết cho 3 là kiến thức cơ bản. Tôi sẽ giải quyết bài toán bằng cách sử dụng tính chất: trong bất kỳ ba số nguyên liên tiếp nào, luôn có một số chia hết cho 3, đây là mộ…"
+      ]
+    },
+    "strategy": "Xét tính chia hết cho 3 của ba số $p, p+2, p+4$. Vì một trong ba số này chia hết cho 3 và đều là số nguyên tố, nên số đó phải bằng 3. Từ đó tìm được $p$ và kiểm tra lại.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 2,
+        "question": "Trong ba số $p, p+2, p+4$, có số nào luôn chia hết cho 3 không? Hãy xét các số dư khi chia cho 3.",
+        "cue": "Tính chất chia hết cho 3",
+        "explanation": "Xét ba số liên tiếp $p, p+2, p+4$. Ta thấy $p, p+2, p+4$ không phải là ba số liên tiếp đúng nghĩa (thiếu $p+1, p+3$), nhưng ta có thể xét $p, p+2, p+4$ khi chia cho 3. Hoặc đơn giản hơn, xét ba số $p, p+2, p+4$. Ta thấy $p+2 = p + 2$ và $p+4 = p + 4$. Xét hiệu: $(p+4) - p = 4$. Không dễ thấy. Hãy xét ba số $p, p+2, p+4$. Ta thấy $p, p+2, p+4$ cách đều nhau 2 đơn vị. Xét $p, p+2, p+4$ khi chia cho 3. Các số dư khi chia cho 3 là 0, 1, 2. Vì $p, p+2, p+4$ là ba số có dạng $3k, 3k+2, 3k+4 \\text{ (tức } 3k+1)$. Ta thấy ba số dư này là $0, 2, 1$ (theo thứ tự nào đó). Vậy một trong ba số $p, p+2, p+4$ phải chia hết cho 3.",
+        "math": "p, p+2, p+4 \\pmod 3",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Vì $p, p+2, p+4$ đều là số nguyên tố, nên số nào trong ba số đó chia hết cho 3 thì số đó phải bằng bao nhiêu?",
+        "cue": "Số nguyên tố chia hết cho 3",
+        "explanation": "Vì $p, p+2, p+4$ đều là số nguyên tố, và một trong ba số đó chia hết cho 3, nên số đó phải bằng 3 (vì số nguyên tố duy nhất chia hết cho 3 là 3). Ta sẽ xét từng trường hợp: $p=3$, $p+2=3$, hoặc $p+4=3$.",
+        "math": "p=3 \\text{ hoặc } p+2=3 \\text{ hoặc } p+4=3",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 4,
+        "question": "Hãy kiểm tra xem với $p=3$ thì $p+2$ và $p+4$ có là số nguyên tố không?",
+        "cue": "Kiểm tra lại",
+        "explanation": "Với $p=3$, ta có $p+2=5$ và $p+4=7$. Cả ba số 3, 5, 7 đều là số nguyên tố. Vậy $p=3$ là nghiệm duy nhất.",
+        "math": "p=3 \\Rightarrow p+2=5, p+4=7",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Xét tính chia hết cho 3",
+        "explanation": "Xét ba số $p, p+2, p+4$. Khi chia cho 3, các số nguyên chỉ có thể có số dư là 0, 1 hoặc 2. Ta thấy $p+4 = p + 3 + 1$, nên $p+4 \\text{ và } p+1$ có cùng số dư khi chia cho 3. Do đó, ba số $p, p+2, p+4$ có số dư khi chia cho 3 lần lượt là $r, r+2, r+1$ (mod 3). Ba số dư này là một hoán vị của $\\text{0, 1, 2}$. Vậy luôn có một trong ba số $p, p+2, p+4$ chia hết cho 3.",
+        "math": "p, p+2, p+4 \\pmod 3 \\Rightarrow \\text{một số } \\equiv 0 \\pmod 3",
+        "reason": "Tính chất chia hết cho 3: Trong ba số nguyên liên tiếp (hoặc có dạng $3k, 3k+1, 3k+2$), luôn có một số chia hết cho 3.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "p, p+2, p+4 là số nguyên tố"
+        ],
+        "operation": "suy luận",
+        "result": "Một trong ba số $p, p+2, p+4$ chia hết cho 3.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": null
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Xác định giá trị của p",
+        "explanation": "Vì $p, p+2, p+4$ đều là số nguyên tố, nên nếu một số trong ba số đó chia hết cho 3, thì số đó phải bằng 3 (vì số nguyên tố duy nhất chia hết cho 3 là 3). Ta xét ba trường hợp:\n1. $p = 3$.\n2. $p+2 = 3 \\Rightarrow p = 1$ (loại vì 1 không là số nguyên tố).\n3. $p+4 = 3 \\Rightarrow p = -1$ (loại vì -1 không là số nguyên tố).\nVậy chỉ có trường hợp $p=3$ là thỏa mãn.",
+        "math": "p=3 \\text{ hoặc } p+2=3 \\text{ hoặc } p+4=3",
+        "reason": "Định nghĩa số nguyên tố và tính chất chia hết.",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "p, p+2, p+4 là số nguyên tố"
+        ],
+        "operation": "suy luận",
+        "result": "Chỉ có $p=3$ là thỏa mãn điều kiện chia hết cho 3.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Checked cases."
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Kiểm tra lại",
+        "explanation": "Thay $p=3$ vào đề bài: $p=3$ (nguyên tố), $p+2=5$ (nguyên tố), $p+4=7$ (nguyên tố). Vậy $p=3$ thỏa mãn đề bài.",
+        "math": "p=3 \\Rightarrow p+2=5, p+4=7",
+        "reason": "Kiểm tra lại nghiệm.",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "p=3"
+        ],
+        "operation": "suy luận",
+        "result": "p=3 là nghiệm duy nhất.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Checked primality of 3, 5, 7."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy số nguyên tố cần tìm là $p = 3$.",
+      "math": "p = 3"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "is_prime(p) and is_prime(p+2) and is_prime(p+4)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "p",
+              "value": "3"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 60882,
+  "usage": {
+    "default": {
+      "input": 16179,
+      "cachedInput": 0,
+      "output": 8399,
+      "reasoning": 2512
+    }
+  },
+  "costUsd": 0.02004703,
+  "model": "default",
+  "logs": [
+    "outline in 20 s (507 chars)",
+    "language repair round 1: not accepted s0vr: still foreign",
+    "language repair round 2: not accepted s0vr: still foreign",
+    "language repair: 8/9 field(s) rewritten in 3 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"is_prime(p) and is_prime(p+2) and is_prime(p+4)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "language repair round 1: not accepted s0vr: still foreign",
+    "language repair round 2: not accepted s0vr: still foreign",
+    "language repair: 8/9 field(s) rewritten in 0 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"3 % 3 == 0; 5 % 3 == 2; 7 % 3 == 1; is_prime(3); is_prime(5); is_prime(7)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=default in=16179 (cached 0) out=8399 (reasoning 2512) ≈ $0.0200",
+    "total ≈ $0.0200 over 2 attempt(s); lesson by default"
+  ]
+}

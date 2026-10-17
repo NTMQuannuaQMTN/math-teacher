@@ -1,0 +1,306 @@
+{
+  "question": {
+    "id": "fin-a3",
+    "split": "final",
+    "source": "authored 2026-10-14 22:25 after all fixes; run once (final evaluation)",
+    "input": "Cho phương trình $x^2-(2m-1)x+m^2-m=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=13$.",
+    "reference": "$m\\in\\{-2;3\\}$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute",
+    "topic": "algebra"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2 - (2m-1)x + m^2 - m = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 13$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Phương trình bậc hai một ẩn có tham số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai một ẩn",
+        "Biệt thức Delta (Δ)",
+        "Hệ thức Vi-ét",
+        "Biến đổi biểu thức chứa nghiệm"
+      ],
+      "techniques": [
+        "discriminant",
+        "vieta",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình: $x^2 - (2m-1)x + m^2 - m = 0$",
+        "Điều kiện nghiệm: $x_1^2 + x_2^2 = 13$"
+      ],
+      "unknowns": [
+        "m"
+      ],
+      "constraints": [
+        "Phương trình phải có hai nghiệm phân biệt (Δ > 0)",
+        "Biểu thức $x_1^2 + x_2^2$ được tính qua $S = x_1 + x_2$ và $P = x_1 x_2$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính biệt thức $Δ$ để xác định điều kiện có hai nghiệm phân biệt. Sử dụng hệ thức Vi-ét để biểu diễn $x_1^2 + x_2^2$ theo $m$, giải phương trình tìm $m$, và kiểm tra lại điều kiện $Δ > 0$.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 3,
+        "question": "Bạn hãy nhớ lại hệ thức Vi-ét và cách biến đổi $x_1^2 + x_2^2$ theo tổng và tích của hai nghiệm?",
+        "cue": "Hệ thức Vi-ét",
+        "explanation": "Đầu tiên, để phương trình có hai nghiệm, ta cần kiểm tra điều kiện $Δ > 0$. Sau đó, sử dụng hệ thức Vi-ét để biểu diễn $x_1 + x_2$ và $x_1 x_2$ theo $m$. Cuối cùng, biến đổi $x_1^2 + x_2^2$ thành $(x_1 + x_2)^2 - 2x_1 x_2$ và giải phương trình theo $m$.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 4,
+        "question": "Bạn đã tìm được các giá trị $m$ thỏa mãn $x_1^2 + x_2^2 = 13$. Bây giờ, bạn hãy kiểm tra xem với mỗi giá trị $m$ đó, phương trình có thực sự có hai nghiệm phân biệt không?",
+        "cue": "Điều kiện có nghiệm",
+        "explanation": "Sau khi tìm được các giá trị của $m$ từ điều kiện $x_1^2 + x_2^2 = 13$, bạn phải quay lại kiểm tra xem với mỗi giá trị $m$ đó, phương trình có thực sự có hai nghiệm phân biệt hay không bằng cách tính $Δ$. Chỉ giữ lại những giá trị $m$ làm cho $Δ > 0$.",
+        "math": "\\text{ Δ } > 0",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Tính biệt thức $Δ$",
+        "explanation": "Ta xét phương trình $x^2 - (2m-1)x + m^2 - m = 0$. Để phương trình có hai nghiệm phân biệt, biệt thức $Δ$ phải lớn hơn 0.",
+        "math": "\\Delta = [-(2m-1)]^2 - 4(1)(m^2 - m) = (2m-1)^2 - 4(m^2 - m) = 4m^2 - 4m + 1 - 4m^2 + 4m = 1",
+        "reason": "Tính biệt thức $Δ$ của phương trình bậc hai",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given equation"
+        ],
+        "operation": "Calculate discriminant",
+        "result": "$Δ = 1$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Verify discriminant calculation"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Xác định điều kiện có nghiệm",
+        "explanation": "Vì $Δ = 1 > 0$ với mọi $m$, nên phương trình luôn có hai nghiệm phân biệt với mọi giá trị của $m$.",
+        "math": "\\Delta = 1 > 0 \\quad \\forall m",
+        "reason": "Kết luận về số nghiệm của phương trình",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step1"
+        ],
+        "operation": "Analyze discriminant",
+        "result": "Phương trình luôn có hai nghiệm phân biệt",
+        "verification": {
+          "status": "verified",
+          "method": "lập luận",
+          "reason": "Discriminant is a positive constant"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Áp dụng hệ thức Vi-ét",
+        "explanation": "Áp dụng hệ thức Vi-ét, ta có tổng hai nghiệm $S = x_1 + x_2 = 2m - 1$ và tích hai nghiệm $P = x_1 x_2 = m^2 - m$. Ta biến đổi biểu thức $x_1^2 + x_2^2$ theo $S$ và $P$.",
+        "math": "\\begin{cases} x_1 + x_2 = 2m - 1 \\\\ x_1 x_2 = m^2 - m \\end{cases}",
+        "reason": "Hệ thức Vi-ét cho phương trình bậc hai",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step2"
+        ],
+        "operation": "Apply Vieta's formulas",
+        "result": "$x_1 + x_2 = 2m - 1$, $x_1 x_2 = m^2 - m$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Verify Vieta's formulas application"
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Giải phương trình theo $m$",
+        "explanation": "Ta có $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2$. Thay các giá trị theo $m$ vào và giải phương trình theo điều kiện $x_1^2 + x_2^2 = 13$.",
+        "math": "(2m - 1)^2 - 2(m^2 - m) = 13",
+        "reason": "Biến đổi biểu thức và giải phương trình",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step3"
+        ],
+        "operation": "Thay thế và giải phương trình",
+        "result": "m = 3 hoặc m = -2",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Verify solution for m"
+        }
+      },
+      {
+        "id": "step5",
+        "title": "Tìm giá trị của $m$",
+        "explanation": "Ta có phương trình $(2m - 1)^2 - 2(m^2 - m) = 13$. Khai triển: $4m^2 - 4m + 1 - 2m^2 + 2m = 13 \\Rightarrow 2m^2 - 2m - 12 = 0 \\Rightarrow m^2 - m - 6 = 0$. Phương trình này có $a + b + c = 1 - 1 - 6 = -6 \\neq 0$, nhưng $a - b + c = 1 - (-1) - 6 = -4 \\neq 0$. Ta giải bằng cách phân tích nhân tử: $(m - 3)(m + 2) = 0$. Vậy $m = 3$ hoặc $m = -2$.",
+        "math": "m^2 - m - 6 = 0 \\Leftrightarrow \\begin{cases} m = 3 \\\\ m = -2 \\end{cases}",
+        "reason": "Giải phương trình bậc hai",
+        "uses": [
+          "step4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step4"
+        ],
+        "operation": "Solve quadratic equation",
+        "result": "$m = 3$ hoặc $m = -2$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Verify roots of m"
+        }
+      },
+      {
+        "id": "step6",
+        "title": "Kết luận",
+        "explanation": "Vì phương trình luôn có hai nghiệm phân biệt với mọi $m$, nên cả hai giá trị $m = 3$ và $m = -2$ đều thỏa mãn điều kiện đề bài.",
+        "math": "m \\in \\{3; -2\\}",
+        "reason": "Kết luận dựa trên điều kiện có nghiệm",
+        "uses": [
+          "step2",
+          "step5"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step2",
+          "step5"
+        ],
+        "operation": "Conclude",
+        "result": "$m = 3$ hoặc $m = -2$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Final verification"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị cần tìm của $m$ là $m = 3$ hoặc $m = -2$.",
+      "math": "m = 3 \\text{ hoặc } m = -2"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 - 5*x + 6 = 0",
+          "x1 = 2, x2 = 3",
+          "2^2 + 3^2 = 13"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "3"
+            }
+          ]
+        ],
+        "expected": "true"
+      },
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 + 5*x + 6 = 0",
+          "x1 = -2, x2 = -3",
+          "(-2)^2 + (-3)^2 = 13"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "-2"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "step step5: derivation is consistent",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step5",
+        "status": "failed",
+        "claims": 0
+      },
+      {
+        "stepId": "step6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 50260,
+  "usage": {
+    "default": {
+      "input": 14494,
+      "cachedInput": 0,
+      "output": 6480,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.0163719,
+  "model": "default",
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "language repair: 3/4 field(s) rewritten in 2 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "answer differs from the computation: the values of m in the final answer do not match the condition solved numerically (Giải số điều kiện theo tham số (|m| ≤ 60): m ≈ -2; 3.) — missing: -2.0000; re-derive with Vi-ét and check the discrim",
+    "attempt 1: unverified, 4 problem(s): answer check \"x^2 - (2*3-1)*x + 3^2 - 3 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | answer check \"x^2 - (2*(-2)-1)*x + (-2)^2 - (-2) = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | step 5: \"m = 3\" ⇒ \"m = -2\" keeps the left side but the right side changed value (3 vs -2 at the same values of m): an arithmetic slip — recount the terms and rewrite this step correctly",
+    "language repair: 3/4 field(s) rewritten in 1 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 2: unverified, 3 problem(s): answer check \"x^2 - 5*x + 6 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | answer check \"x^2 + 5*x + 6 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | step 5: \"m = 3\" ⇒ \"m = -2\" keeps the left side but the right side changed value (3 vs -2 at the same values of m): an arithmetic slip — recount the terms and rewrite this step correctly",
+    "usage: model=default in=14494 (cached 0) out=6480 (reasoning 0) ≈ $0.0164",
+    "total ≈ $0.0164 over 2 attempt(s); lesson by default"
+  ]
+}

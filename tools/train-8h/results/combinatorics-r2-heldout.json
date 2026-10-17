@@ -1,0 +1,85 @@
+{
+  "type": "combinatorics",
+  "round": "1",
+  "split": "heldout",
+  "createdAt": "2026-10-14T14:16:36.201Z",
+  "spentTotalUsd": 1.52973399,
+  "results": [
+    {
+      "id": "comb8-h1",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson still contains broken mathematical formatting",
+      "ms": 28512,
+      "logs": [
+        "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+        "language repair: 1/2 field(s) rewritten in 1 s",
+        "removed 1 optional metadata field(s) still not in Vietnamese",
+        "attempt 2: unverified, 2 problem(s): answer check \"5! * 3! * P(6, 3)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition | step 3: the formula \"_ N _ N _ N _ N _ N _\" doesn't render (Double subscript at position 5: _ N _̲ N _ N _ N _ N …). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+        "usage: model=default in=12838 (cached 0) out=3521 (reasoning 0) ≈ $0.0111",
+        "total ≈ $0.0111 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0111
+    },
+    {
+      "id": "comb8-h2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 17677,
+      "finalAnswer": "Có 120 số tự nhiên thỏa mãn đề bài.",
+      "costUsd": 0.0062
+    },
+    {
+      "id": "comb8-h3",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 79912,
+      "finalAnswer": "Đã chứng minh: Trong 10 số tự nhiên bất kì luôn tồn tại một tập con khác rỗng có tổng chia hết cho 10.",
+      "costUsd": 0.0229
+    },
+    {
+      "id": "comb8-h4",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 34187,
+      "finalAnswer": "Không thể điền được các số $1, 2, \\text{...}, 9$ vào bảng $3 \\times 3$ sao cho tổng các số trên mỗi hàng đều là số chẵn.",
+      "costUsd": 0.0095
+    },
+    {
+      "id": "comb8-h5",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 56434,
+      "finalAnswer": "Số tam giác vuông là 12.",
+      "costUsd": 0.0203
+    },
+    {
+      "id": "comb8-h6",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 36288,
+      "logs": [
+        "removed 23 optional metadata field(s) still not in Vietnamese",
+        "attempt 1: not_checkable, 1 problem(s): given (\"Players\"), given (\"Each\"), given (\"The\"), unknown (\"Which\"), unknown (\"the\"), constraint (\"move\"), constraint (\"Last\"), step s2 (\"then\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows",
+        "removed 23 optional metadata field(s) still not in Vietnamese",
+        "attempt 2: not_checkable, 1 problem(s): given (\"Players\"), given (\"Each\"), given (\"The\"), unknown (\"Which\"), unknown (\"the\"), constraint (\"move\"), constraint (\"Last\"), step s2 (\"then\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows",
+        "usage: model=default in=14097 (cached 0) out=4762 (reasoning 0) ≈ $0.0136",
+        "total ≈ $0.0136 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0136
+    }
+  ]
+}

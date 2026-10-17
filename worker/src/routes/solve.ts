@@ -1,6 +1,7 @@
 import {conclusionConsistencyFeedback} from '../../../shared/src/conclusionConsistency';
 import {diameterOrthocenterDiagnosis} from '../solver/diameterOrthocenterDiagnosis';
 import {geometryHypothesisDiagnosis} from '../solver/geometryHypothesisDiagnosis';
+import { servable } from "../../../shared/src/servePolicy";
 import { SolveProgressSchema, SolveRequestSchema, VerificationSchema, ModelLessonSchema, type Solution, type SolutionResponse, type SolveProgress } from "../../../shared/src/solution";
 import { normalizeProblemText } from "../../../shared/src/mathText";
 import type { ErrorCode } from "../../../shared/src/contract";
@@ -23,7 +24,8 @@ import { latexFeedback } from "../solver/latexCheck";
 import { proofDependencyFeedback } from "../../../shared/src/proofDependencies";
 import { cleanLanguage } from "../../../shared/src/language";
 import { parseLesson, solveProblem } from "../solver/pipeline";
-import { hostedModelOptions, looksLikeGeometry, problemTier, selectSolverModelIds, soclaasModelOptions } from "../solver/routing";
+import { SoclaasAgentModel } from "../solver/agent";
+import { hostedModelOptions, looksLikeGeometry, problemTier, selectSolverModelIds, soclaasDirectOptions, soclaasModelOptions, soclaasNeedsThinking, soclaasOutlineOptions } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import {hiddenSearchFeedback} from '../../../shared/src/hiddenSearch';
 import { withinSignal } from "../solver/deadline";
@@ -62,7 +64,10 @@ export const MAX_SOLVE_WALL_CLOCK_MS = 30_000;
  * retry instead of being cut off. Development default 300 s; production default 26 s, because Cloudflare ends
  * waitUntil work about 30 s after the response (raise it only with a queue/Durable Object behind it).
  */
+export const agentOn = (env: Env) => (env.SOLVER_PROVIDER || "").toLowerCase() === "soclaas" && !!env.SOCLAAS_API_KEY && (env.SOLVER_AGENT || "on").toLowerCase() !== "off";
+export const agentMs = (env: Env) => Math.min(600_000, Math.max(30_000, intVar(env.SOLVER_AGENT_MS, 120_000)));
 export function backgroundSolveMs(env: Env): number {
+  if (agentOn(env)) return agentMs(env) + 5_000;
   const fallback = isDevelopment(env) ? 300_000 : 26_000;
   return Math.min(900_000, Math.max(26_000, intVar(env.SOLVE_BACKGROUND_MS, fallback)));
 }
@@ -176,19 +181,26 @@ export function createModels(env: Env, request: Request, problemText: string): {
     const name = env.SOCLAAS_MODEL || "qwen3.6:35b";
     const budget = Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
     const capped = (m: LocalJsonModel, maxTokens: number) => new BudgetedJsonModel(m, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), maxTokens,true);
+    // The solver as a tool-using agent (2026-10-16): compute / draw_figure / write_lesson (all checks at once) / revise /
+    // finish, inside a hard time limit. Certified modules and the pipeline's checks still run around it.
+    if (agentOn(env)) {
+      const agent = new SoclaasAgentModel(url, env.SOCLAAS_API_KEY, name, { problemText: normalizeProblemText(problemText), withFigure: looksLikeGeometry(problemText), deadline: Date.now() + agentMs(env) - 4_000, log: (m) => console.log(`[solve] ${m}`) });
+      return { model: new BudgetedJsonModel(agent, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), 12_000, true) };
+    }
     // A hard non-geometry problem needs more than one request's window (reasoning + a long lesson ≈ 40K tokens at
     // ~130 tokens/s > the gateway's 240 s): an outline request thinks, then the lesson is written without long thinking.
-    const twoStage = o.gatewayThinking && !looksLikeGeometry(problemText) && env.SOLVER_TWO_STAGE !== "off";
+    // Two stages for hard problems; for geometry always when it needs an argument (its lesson is written without thinking).
+    const twoStage = (o.gatewayThinking || (looksLikeGeometry(problemText) && soclaasNeedsThinking(problemText))) && env.SOLVER_TWO_STAGE !== "off";
     const soclaas = new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...o, ...(twoStage ? { gatewayThinking: false, maxTokens: 20_000 } : {}) });
     const model = capped(soclaas, twoStage ? 20_000 : (o.maxTokens ?? 12_000));
     const outlineModel = twoStage
-      ? capped(new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...o, gatewayThinking: true, maxTokens: 28_000, requestTimeoutMs: 230_000 }), 28_000)
+      ? capped(new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...soclaasOutlineOptions(problemText) }), 12_000)
       : undefined;
-    if (env.LOCAL_LLM_URL && env.LOCAL_LLM_API_KEY) {
-      const free = new LocalJsonModel(env.LOCAL_LLM_URL, env.LOCAL_SOLVER_MODEL || "local", { apiKey: env.LOCAL_LLM_API_KEY, thinking: false, ...hostedModelOptions(problemText) });
-      return { model, fallback: free, fallbackOnlyOnFailure: true, outlineModel };
-    }
-    return { model, outlineModel };
+    // A request cut off at the gateway's 120 s limit is retried on the same model without hidden thinking (a direct
+    // lesson fits the limit); the free model is weaker and slower, so it is not the retry for SOCLAAS.
+    const d = soclaasDirectOptions(problemText);
+    const direct = capped(new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...d }), d.maxTokens);
+    return { model, fallback: direct, fallbackOnlyOnFailure: true, outlineModel };
   }
 
   if (provider === "mock" && isDevelopment(env)) {
@@ -213,8 +225,9 @@ function toApiSolution(row: SolutionRow,problemText?:string): Solution {
   const lesson = row.lesson_json ? ModelLessonSchema.safeParse(JSON.parse(row.lesson_json)) : null;
   const verification = row.verification_json ? VerificationSchema.safeParse(JSON.parse(row.verification_json)) : null;
   const unsafe = lesson?.success && (latexFeedback(lesson.data).length || cleanLanguage(lesson.data).feedback.length || hiddenSearchFeedback(lesson.data,problemText??lesson.data.analysis.statement).length || proofDependencyFeedback(lesson.data,problemText??lesson.data.analysis.statement).length || conclusionConsistencyFeedback(lesson.data,problemText??lesson.data.analysis.statement).length ||
-    (diameterOrthocenterDiagnosis(problemText??lesson.data.analysis.statement)!==null && row.model!=="geometry-degeneracy-diagnosis") ||
-    (geometryHypothesisDiagnosis(problemText??lesson.data.analysis.statement)!==null && row.model!=="geometry-hypothesis-diagnosis"));
+    false);
+  // (Removed 2026-10-15: lessons for statements with a degenerate case are no longer hidden; the general solution is shown.)
+  void diameterOrthocenterDiagnosis; void geometryHypothesisDiagnosis;
   const status = row.status === "ready" && (!lesson?.success || unsafe) ? "failed" : row.status;
   return {
     id: row.id,
@@ -405,6 +418,8 @@ async function solveScanWithinDeadline(rc: RouteContext, scanId: string, questio
         fallback,
         fallbackOnlyOnFailure,
         outlineModel,
+        // SOCLAAS first: its fallback (the free model) is weaker, so a give-up is corrected on SOCLAAS itself.
+        escalateOnGiveUp: (env.SOLVER_PROVIDER || "").toLowerCase() !== "soclaas",
         signal: generationSignal,
         // Accuracy first: a corrective retry stays allowed for most of the background budget, not only the first 25 s.
         retryBudgetMs: Math.max(25_000, Math.round(backgroundMs * 0.6)),
@@ -412,6 +427,8 @@ async function solveScanWithinDeadline(rc: RouteContext, scanId: string, questio
         onProgress,
       });
       await writes;
+      // Accuracy first: a lesson in which a check found something false is never shown (servePolicy.ts).
+      if (!servable(result.verification)) throw new OcrFailure("incomplete", "every lesson found contains a step or answer the checks found false", true);
       // Never store a lesson the app can't read: it would surface as a generic failure on every reload.
       // A size slip introduced after parsing (a repair that made a text too long) is cut the same way as at parse time,
       // rather than failing a solve that has already been paid for.

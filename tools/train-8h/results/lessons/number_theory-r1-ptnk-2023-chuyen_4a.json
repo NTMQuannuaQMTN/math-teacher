@@ -1,0 +1,222 @@
+{
+  "question": {
+    "id": "ptnk-2023-chuyen/4a",
+    "split": "train",
+    "source": "exam ptnk-2023-chuyen",
+    "input": "Cho $m,n$ là các số nguyên không âm thỏa mãn $m^2-n=1$. Đặt $n^2-m=a$. Chứng minh rằng $a$ là số lẻ.",
+    "reference": "proof",
+    "reference_status": "official",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho $m,n$ là các số nguyên không âm thỏa mãn $m^2-n=1$. Đặt $n^2-m=a$. Chứng minh rằng $a$ là số lẻ.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Số học / Tính chẵn lẻ",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Biến đổi đại số",
+        "Tính chẵn lẻ của số nguyên",
+        "Tích hai số nguyên liên tiếp"
+      ],
+      "techniques": [
+        "factorization",
+        "parity"
+      ],
+      "givens": [
+        "$m, n \\in \\mathbb{N}$",
+        "$m^2 - n = 1$",
+        "$a = n^2 - m$"
+      ],
+      "unknowns": [
+        "Chứng minh $a$ là số lẻ"
+      ],
+      "constraints": [
+        "$m, n \\ge 0$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Đề bài thiếu điều kiện ràng buộc cụ thể cho $m, n$ ngoài $m^2 - n = 1$ và $m, n \\ge 0$. Tuy nhiên, với mọi cặp số nguyên không âm thỏa mãn phương trình này, ta luôn chứng minh được $a$ lẻ. Mình sẽ giải bài toán trong trường hợp tổng quát này."
+      ]
+    },
+    "strategy": "Mình sẽ biểu diễn $n$ theo $m$ từ phương trình đầu, thay vào biểu thức của $a$, sau đó nhóm các số hạng và xét tính chẵn lẻ của từng phần để chứng minh $a$ luôn lẻ.",
+    "hints": [
+      {
+        "id": "question",
+        "level": 1,
+        "question": "Từ điều kiện $m^2 - n = 1$, bạn có thể biểu diễn $n$ theo $m$ như thế nào?",
+        "cue": "Biến đổi phương trình bậc nhất theo $n$.",
+        "explanation": "Bạn chỉ cần chuyển vế là được $n = m^2 - 1$. Vì $n \\ge 0$ nên $m^2 \\ge 1$, tức là $m \\ge 1$.",
+        "math": "n = m^2 - 1",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Sau khi có $n$ theo $m$, bạn hãy thay vào biểu thức $a = n^2 - m$ và khai triển ra nhé.",
+        "cue": "Thay thế và khai triển $(A - B)^2$.",
+        "explanation": "Thay $n = m^2 - 1$ vào $a$ ta được $a = (m^2 - 1)^2 - m$. Áp dụng hằng đẳng thức $(A-B)^2 = A^2 - 2AB + B^2$ để khai triển.",
+        "math": "a = m^4 - 2m^2 + 1 - m",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Làm sao để chứng minh một biểu thức là số lẻ? Bạn thử nhóm $m^4 - m$ lại và phân tích thành nhân tử xem sao.",
+        "cue": "Tính chất chẵn lẻ của tích hai số liên tiếp.",
+        "explanation": "$m^4 - m = m(m^3 - 1) = m(m - 1)(m^2 + m + 1)$. Vì $m$ và $m - 1$ là hai số nguyên liên tiếp nên tích của chúng luôn chia hết cho 2 (tức là số chẵn).",
+        "math": "m^4 - m = m(m - 1)(m^2 + m + 1)",
+        "stepId": "step_3",
+        "focus": []
+      },
+      {
+        "id": "hint_4",
+        "level": 4,
+        "question": "Bây giờ bạn hãy xét tính chẵn lẻ của từng phần trong biểu thức $a = m(m - 1)(m^2 + m + 1) - 2m^2 + 1$ để đi đến kết luận.",
+        "cue": "Tổng (hiệu) các số chẵn là số chẵn.",
+        "explanation": "$m(m - 1)(m^2 + m + 1)$ chẵn, $2m^2$ chẵn. Vậy $a$ bằng số chẵn trừ số chẵn cộng $1$, suy ra $a$ lẻ.",
+        "math": "a = \\text{chẵn} - \\text{chẵn} + 1 \\Rightarrow a \\text{ lẻ}",
+        "stepId": "step_4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Biểu diễn $n$ theo $m$",
+        "explanation": "Từ phương trình $m^2 - n = 1$, bạn có thể dễ dàng tìm được $n$ theo $m$. Vì $m, n$ là số nguyên không âm, hãy xem $m$ phải thỏa mãn điều kiện gì nhé.",
+        "math": "n = m^2 - 1 \\quad (m \\ge 1)",
+        "reason": "Biến đổi đại số cơ bản",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "Biến đổi đại số cơ bản",
+        "result": "Biểu diễn $n$ theo $m$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Biến đổi đại số cơ bản"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Thay $n$ vào biểu thức của $a$",
+        "explanation": "Bây giờ bạn thay $n = m^2 - 1$ vào $a = n^2 - m$ để biểu diễn $a$ chỉ qua $m$.",
+        "math": "a = (m^2 - 1)^2 - m = m^4 - 2m^2 + 1 - m",
+        "reason": "Thay thế và khai triển hằng đẳng thức",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1"
+        ],
+        "operation": "Thay thế và khai triển hằng đẳng thức",
+        "result": "Thay $n$ vào biểu thức của $a$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay thế và khai triển hằng đẳng thức"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Nhóm các số hạng để xét tính chẵn lẻ",
+        "explanation": "Để chứng minh $a$ là số lẻ, mình sẽ nhóm $m^4 - m$ lại và viết lại $a$ thành tổng của các phần chẵn và phần lẻ.",
+        "math": "a = m(m^3 - 1) - 2m^2 + 1 = m(m - 1)(m^2 + m + 1) - 2m^2 + 1",
+        "reason": "Phân tích nhân tử và biến đổi đại số",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_2"
+        ],
+        "operation": "Phân tích nhân tử và biến đổi đại số",
+        "result": "Nhóm các số hạng để xét tính chẵn lẻ",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Phân tích nhân tử và biến đổi đại số"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Xét tính chẵn lẻ của từng phần",
+        "explanation": "Tích $m(m - 1)$ là tích của hai số nguyên liên tiếp nên luôn chẵn. Do đó $m(m - 1)(m^2 + m + 1)$ chẵn. $2m^2$ cũng chẵn. Vậy $a$ là hiệu của hai số chẵn cộng với $1$.",
+        "math": "a = \\text{số chẵn} - \\text{số chẵn} + 1 \\Rightarrow a \\text{ là số lẻ}",
+        "reason": "Tính chất chẵn lẻ của số nguyên",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_3"
+        ],
+        "operation": "Tính chất chẵn lẻ của số nguyên",
+        "result": "Xét tính chẵn lẻ của từng phần",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Tính chất chẵn lẻ của số nguyên"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Ta đã chứng minh được $a$ luôn là số lẻ với mọi cặp số nguyên không âm $m, n$ thỏa mãn đề bài.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 79740,
+  "usage": {
+    "default": {
+      "input": 5437,
+      "cachedInput": 0,
+      "output": 10817,
+      "reasoning": 8509
+    }
+  },
+  "costUsd": 0.01888849,
+  "model": "default",
+  "logs": [
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=default in=5437 (cached 0) out=10817 (reasoning 8509) ≈ $0.0189",
+    "total ≈ $0.0189 over 1 attempt(s); lesson by default"
+  ]
+}

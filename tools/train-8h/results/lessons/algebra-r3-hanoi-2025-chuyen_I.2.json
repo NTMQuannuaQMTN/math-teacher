@@ -1,0 +1,270 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/I.2",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Cho $a,b,c$ là các số thực khác 0, thỏa mãn $a+b+c\\ne0$ và $ab+bc+ca=0$. Tính giá trị của biểu thức $P=\\frac{1}{a^2-bc}+\\frac{1}{b^2-ca}+\\frac{1}{c^2-ab}$.",
+    "reference": "$P=0$",
+    "reference_status": "teacher",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho a, b, c là các số thực khác 0, thỏa mãn a + b + c ≠ 0 và ab + bc + ca = 0. Tính giá trị của biểu thức P = 1/(a² - bc) + 1/(b² - ca) + 1/(c² - ab).",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Algebraic Expressions",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Biến đổi biểu thức đại số",
+        "Hằng đẳng thức đáng nhớ",
+        "Phân tích nhân tử"
+      ],
+      "techniques": [
+        "factorization",
+        "substitution"
+      ],
+      "givens": [
+        "a, b, c là các số thực khác 0",
+        "a + b + c ≠ 0",
+        "ab + bc + ca = 0"
+      ],
+      "unknowns": [
+        "Giá trị của P"
+      ],
+      "constraints": [
+        "a, b, c khác 0",
+        "a + b + c khác 0",
+        "ab + bc + ca = 0"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Biến đổi các mẫu số của các phân thức trong P bằng cách sử dụng điều kiện ab + bc + ca = 0 để đưa về dạng nhân tử, sau đó thay vào P và rút gọn.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Nếu bạn quy đồng mẫu số các phân thức trong P, tử số mới sẽ trông như thế nào?",
+        "cue": "Hãy thử quy đồng mẫu số các phân thức trong P.",
+        "explanation": "Khi quy đồng mẫu số, mẫu số chung sẽ là tích của các mẫu số riêng lẻ. Tử số sẽ là tổng của các tích từng cặp. Hãy viết tử số đó ra và xem nó có liên quan gì đến điều kiện ab + bc + ca = 0 không.",
+        "math": "P = \\frac{(b^2-ca)(c^2-ab) + (a^2-bc)(c^2-ab) + (a^2-bc)(b^2-ca)}{(a^2-bc)(b^2-ca)(c^2-ab)}",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Bạn có thể biến đổi các mẫu số a² - bc, b² - ca, c² - ab thành dạng nhân tử không, dựa vào điều kiện ab + bc + ca = 0?",
+        "cue": "Sử dụng điều kiện ab + bc + ca = 0 để thay thế vào tử số.",
+        "explanation": "Từ điều kiện ab + bc + ca = 0, ta có thể suy ra các đẳng thức như a² - bc = a² + ab + ac = a(a+b+c). Tương tự cho b² - ca và c² - ab. Hãy thay các biểu thức này vào tử số của P.",
+        "math": "a^2 - bc = a(a+b+c)",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Sau khi thay các mẫu số đã biến đổi vào tử số, bạn có nhận xét gì về giá trị của tử số không?",
+        "cue": "Sau khi thay thế, hãy rút gọn tử số.",
+        "explanation": "Khi thay a² - bc = a(a+b+c) vào tử số, bạn sẽ thấy tử số có thể được viết lại dưới dạng một biểu thức đối xứng. Hãy thử khai triển và nhóm các hạng tử để xem tử số có bằng 0 không.",
+        "math": "\\text{ Tử số } = 0",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Biến đổi mẫu số thứ nhất",
+        "explanation": "Ta sẽ biến đổi các mẫu số của các phân thức trong P bằng cách sử dụng điều kiện ab + bc + ca = 0.",
+        "math": "a^2 - bc = a^2 + ab + ac = a(a + b + c)",
+        "reason": "Thay thế bc = -(ab + ac) vào biểu thức a² - bc",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "a^2 - bc = a(a + b + c)",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_check",
+          "reason": "Thay bc = -(ab+ac) vào a^2-bc ta được a^2+ab+ac=a(a+b+c)."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Biến đổi các mẫu số còn lại",
+        "explanation": "Tương tự, ta biến đổi các mẫu số còn lại.",
+        "math": "b^2 - ca = b(a + b + c) \\quad \\text{và} \\quad c^2 - ab = c(a + b + c)",
+        "reason": "Tương tự như bước 1",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "b^2 - ca = b(a + b + c), c^2 - ab = c(a + b + c)",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_check",
+          "reason": "Tương tự a^2-bc=b^2-ca=b(a+b+c)."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Thay thế vào P",
+        "explanation": "Thay các mẫu số đã biến đổi vào biểu thức P và rút gọn.",
+        "math": "P = \\frac{1}{a(a+b+c)} + \\frac{1}{b(a+b+c)} + \\frac{1}{c(a+b+c)} = \\frac{1}{a+b+c} \\left( \\frac{1}{a} + \\frac{1}{b} + \\frac{1}{c} \\right)",
+        "reason": "Thay thế và đặt nhân tử chung",
+        "uses": [
+          "step_1",
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_1",
+          "step_2"
+        ],
+        "operation": null,
+        "result": "P = \\frac{1}{a+b+c} \\left( \\frac{1}{a} + \\frac{1}{b} + \\frac{1}{c} \\right)",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_check",
+          "reason": "Thay các mẫu số đã biến đổi vào P."
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính tổng các phân thức",
+        "explanation": "Tính tổng trong ngoặc và sử dụng điều kiện đã cho.",
+        "math": "\\frac{1}{a} + \\frac{1}{b} + \\frac{1}{c} = \\frac{ab + bc + ca}{abc} = \\frac{0}{abc} = 0",
+        "reason": "Quy đồng mẫu số và thay điều kiện",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = 0"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "\\frac{1}{a} + \\frac{1}{b} + \\frac{1}{c} = 0",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_check",
+          "reason": "Quy đồng 1/a+1/b+1/c = (ab+bc+ca)/abc."
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Kết luận",
+        "explanation": "Kết luận giá trị của P.",
+        "math": "P = \\frac{1}{a+b+c} \\cdot 0 = 0",
+        "reason": "Thay kết quả từ bước 4 vào bước 3",
+        "uses": [
+          "step_3",
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_3",
+          "step_4"
+        ],
+        "operation": "final_calculation",
+        "result": "P = 0",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_check",
+          "reason": "P = 1/(a+b+c) * 0 = 0."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của biểu thức P bằng 0.",
+      "math": "0"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "1/(a^2-bc) + 1/(b^2-ca) + 1/(c^2-ab)"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "1"
+            },
+            {
+              "variable": "b",
+              "value": "-0.5"
+            },
+            {
+              "variable": "c",
+              "value": "-0.5"
+            }
+          ]
+        ],
+        "expected": "0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 1115,
+  "usage": {
+    "default": {
+      "input": 5523,
+      "cachedInput": 0,
+      "output": 2673,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.00654831,
+  "model": "default",
+  "logs": [
+    "computed: - value (17 ms)",
+    "language repair: 0/2 field(s) rewritten in 1 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"1/(a^2-bc) + 1/(b^2-ca) + 1/(c^2-ab)\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=5523 (cached 0) out=2673 (reasoning 0) ≈ $0.0065",
+    "total ≈ $0.0065 over 1 attempt(s); lesson by default"
+  ]
+}

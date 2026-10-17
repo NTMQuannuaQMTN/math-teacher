@@ -1,0 +1,227 @@
+{
+  "question": {
+    "id": "comb8-h1",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Có $5$ bạn nam và $3$ bạn nữ (các bạn đều khác nhau) xếp thành một hàng ngang sao cho không có hai bạn nữ nào đứng cạnh nhau. Hỏi có bao nhiêu cách xếp?",
+    "reference": "$14400$ ($5!\\cdot C_6^3\\cdot 3!$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Có 5 bạn nam và 3 bạn nữ (khác nhau) xếp thành một hàng ngang. Hỏi có bao nhiêu cách xếp sao cho không có hai bạn nữ nào đứng cạnh nhau?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "combinatorics",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Permutation (Hoán vị)",
+        "Sắp xếp có điều kiện",
+        "Gap method (Phương pháp chèn/ghép khoảng trống)"
+      ],
+      "techniques": [
+        "counting"
+      ],
+      "givens": [
+        "5 boys",
+        "3 girls",
+        "Total 8 students"
+      ],
+      "unknowns": [
+        "Number of valid arrangements"
+      ],
+      "constraints": [
+        "5 bạn nam là khác nhau",
+        "3 bạn nữ là khác nhau",
+        "Không có hai bạn nữ nào đứng cạnh nhau"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Xếp 5 bạn nam trước, sau đó xếp 3 bạn nữ vào các khoảng trống giữa các bạn nam để đảm bảo không có hai bạn nữ nào đứng cạnh nhau.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 2,
+        "question": "Để đảm bảo không có hai bạn nữ nào đứng cạnh nhau, bạn nghĩ chúng ta nên xếp những ai trước?",
+        "cue": "Phương pháp chèn (Gap method)",
+        "explanation": "Trước hết, hãy xếp 5 bạn nam vào hàng. Sau đó, các bạn nữ sẽ đứng vào các khoảng trống (khoảng trống ở đầu, cuối và giữa các bạn nam) để đảm bảo không ai đứng cạnh ai.",
+        "math": null,
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Sau khi xếp xong 5 bạn nam, có bao nhiêu vị trí trống (ở đầu, cuối và giữa các bạn nam) để các bạn nữ có thể đứng?",
+        "cue": "Số vị trí trống",
+        "explanation": "Khi 5 bạn nam đã đứng vào hàng, hãy đếm xem có bao nhiêu khoảng trống (ô trống) xung quanh họ mà các bạn nữ có thể đứng vào.",
+        "math": null,
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 4,
+        "question": "Có 6 vị trí trống và 3 bạn nữ. Bạn sẽ chọn và xếp 3 bạn nữ vào 3 trong số 6 vị trí đó như thế nào?",
+        "cue": "Chỉnh hợp (Arrangement)",
+        "explanation": "Bạn có 3 bạn nữ khác nhau và 6 vị trí trống khác nhau. Bạn cần chọn 3 vị trí trong 6 vị trí đó và xếp 3 bạn nữ vào đó. Số cách làm này là $A_6^3$.",
+        "math": "A_6^3",
+        "stepId": "step3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Xếp 5 bạn nam",
+        "explanation": "Để đảm bảo không có hai bạn nữ nào đứng cạnh nhau, ta sẽ xếp 5 bạn nam trước. Vì 5 bạn nam khác nhau, số cách xếp 5 bạn nam vào 5 vị trí là số hoán vị của 5 phần tử.",
+        "math": "5! = 120",
+        "reason": "Hoán vị",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "5 bạn nam là khác nhau"
+        ],
+        "operation": "Permutation",
+        "result": "120",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "5! = 120"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Đếm số khoảng trống",
+        "explanation": "Sau khi xếp 5 bạn nam, ta có các khoảng trống xung quanh họ. Hãy tưởng tượng 5 bạn nam đứng thành hàng: $\\_ N \\_ N \\_ N \\_ N \\_ N \\_$. Các dấu gạch dưới là các khoảng trống. Có 5 bạn nam nên sẽ có 4 khoảng trống ở giữa, cộng thêm 1 khoảng trống ở đầu và 1 khoảng trống ở cuối. Tổng cộng có 6 khoảng trống.",
+        "math": "6",
+        "reason": "Đếm khoảng trống",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "5 boys create 6 gaps"
+        ],
+        "operation": "Counting",
+        "result": "6",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "5 boys create 6 gaps"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Xếp 3 bạn nữ vào khoảng trống",
+        "explanation": "Ta có 3 bạn nữ khác nhau và 6 khoảng trống khác nhau. Ta cần chọn 3 khoảng trống trong 6 khoảng trống đó và xếp 3 bạn nữ vào đó. Số cách xếp là chỉnh hợp chập 3 của 6.",
+        "math": "A_6^3 = 6 \\times 5 \\times 4 = 120",
+        "reason": "Chỉnh hợp",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "3 bạn nữ là khác nhau",
+          "6 gaps available"
+        ],
+        "operation": "Arrangement",
+        "result": "120",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "A_6^3 = 120"
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Tính tổng số cách xếp",
+        "explanation": "Theo quy tắc nhân, số cách xếp tổng cộng là tích của số cách xếp nam và số cách xếp nữ.",
+        "math": "120 \\times 120 = 14400",
+        "reason": "Quy tắc nhân",
+        "uses": [
+          "step1",
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Quy tắc nhân"
+        ],
+        "operation": "Multiplication",
+        "result": "14400",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "120 * 120 = 14400"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số cách xếp là 14400 cách.",
+      "math": "14400"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "5! * A(6, 3)"
+        ],
+        "assignments": [],
+        "expected": "14400"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 31388,
+  "usage": {
+    "default": {
+      "input": 14705,
+      "cachedInput": 0,
+      "output": 4247,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01307269,
+  "model": "default",
+  "logs": [
+    "language repair: 7/7 field(s) rewritten in 2 s",
+    "attempt 1: unverified, 2 problem(s): answer check \"5! * 4! * 3! / 1\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition | step 2: the formula \"_ N _ N _ N _ N _ N _\" doesn't render (Double subscript at position 5: _ N _̲ N _ N _ N _ N …). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "language repair: 7/7 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"5! * A(6, 3)\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=default in=14705 (cached 0) out=4247 (reasoning 0) ≈ $0.0131",
+    "total ≈ $0.0131 over 2 attempt(s); lesson by default"
+  ]
+}

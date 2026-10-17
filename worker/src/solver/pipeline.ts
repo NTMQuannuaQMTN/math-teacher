@@ -37,11 +37,15 @@ import { describeStatementFigure } from "../../../shared/src/figureFromText";
 import { geometryLessonsPrompt } from "../../../shared/src/geometryLessons";
 import { planProof, type ProofPlan } from "../../../shared/src/proof/planner";
 import { answerMismatch, computeAnswers, type OracleResult } from "../../../shared/src/oracle";
+import { parameterAnswerFeedback, parameterRootCondition, type ParameterRoots } from "../../../shared/src/parameterRoots";
+import { integerTarget, integerTargetFeedback, type IntegerTarget } from "../../../shared/src/integerTargets";
+import { finalStepConflict } from "../../../shared/src/servePolicy";
+import { deadEndFeedback, hintFeedback, intersectionNotationFeedback, QUESTION_HINT, stepClaimFeedback } from "../../../shared/src/stepClaims";
 import { explainPlan, planReadability, verifiedFactsNote } from "../../../shared/src/proof/explain";
-import { latexFeedback, plainUnrenderable } from "./latexCheck";
+import { dropBrokenMetadata, latexFeedback, plainUnrenderable } from "./latexCheck";
 import { vietnameseMathText, containsVietnamese, normalizeProblemText, parseMathText, repairLatex, textifyProse, wrapBareLatex } from "../../../shared/src/mathText";
 import { verifyLesson } from "../../../shared/src/verify";
-import { dropRepeatedLines, tidyNumberBrackets, tidyNumberBracketsInText } from "../../../shared/src/latexTidy";
+import { bracketAlternatives, dropRepeatedLines, slotUnderscores, tidyNumberBrackets, tidyNumberBracketsInText } from "../../../shared/src/latexTidy";
 import { OcrFailure } from "../ocr/provider";
 import { withinSignal } from "./deadline";
 import { proofDependencyFeedback } from "../../../shared/src/proofDependencies";
@@ -51,15 +55,18 @@ import { takeAwayLesson, verifyGameCertificate } from "./takeAwayGame";
 import { certifiedCombinatoricsLesson } from "./certifiedCombinatorics";
 import {certifiedNumberTheoryLesson} from './certifiedNumberTheory';
 import { routineLesson } from './routine';
-import { repairLanguage, repairableLanguage } from './languageRepair';
-import { joinSystem, stripTaskLabel } from './routine/text';
+import { consecutiveProductLesson } from './routine/numberTheory';
+import { dropForeignMetadata, repairLanguage, repairableLanguage } from './languageRepair';
+import { fixJsonLatexEscapes, restoreLatexControls } from './jsonLatex';
+import { simplificationFeedback } from '../../../shared/src/simplification';
+import { joinSystem, stripTaskLabel, wrapBareNumbers } from './routine/text';
 import {certifiedAlgebraFamily} from './certifiedAlgebraFamilies';
 import {certifiedGeometryFamily} from './certifiedGeometryFamilies';
 import { cleanLanguage } from "../../../shared/src/language";
 import type { Curriculum } from "./curriculum";
 import { toGrammarJsonSchema, toStrictJsonSchema } from "./jsonSchema";
 import type { ChatMessage, JsonModel } from "./llm";
-import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage } from "./prompts";
+import { buildEscalationMessage, buildRetryMessage, buildSystemPrompt, buildUserMessage, CONCISE_RETRY } from "./prompts";
 import { looksLikeGeometry, problemTier } from "./routing";
 import { techniqueHints } from "./techniques";
 import { problemDomains } from "../../../shared/src/knowledgeBase";
@@ -135,6 +142,11 @@ export interface SolveOptions {
   computeFirst?: boolean;
   /** Exact algebra lessons before inference. Default on; disable only for provider-path audits. */
   exactAlgebra?: boolean;
+  /**
+   * When the model gives up on an in-curriculum problem, try the fallback (true, default: the fallback is the stronger
+   * model) or retry the same model with the corrective feedback (false: the fallback is weaker, e.g. SOCLAAS → free).
+   */
+  escalateOnGiveUp?: boolean;
   /** Certified routine-task lessons (./routine) before inference. Default on. */
   routine?: boolean;
 }
@@ -212,10 +224,12 @@ export function plannerLesson(
   return { plan, result: plannerResult(plan, statement, log), partial };
 }
 
+export { fixJsonLatexEscapes };
+
 export function parseLesson(text: string): { lesson: ModelLesson } | { problems: string[] } {
   let json: unknown;
   try {
-    json = JSON.parse(text);
+    json = JSON.parse(fixJsonLatexEscapes(text));
   } catch {
     return { problems: ["the response was not valid JSON"] };
   }
@@ -458,11 +472,51 @@ export function repairCircleRefs(figure: NonNullable<ModelLesson["figure"]>): No
 }
 
 /** Normalizes all student-facing strings (NFC for Vietnamese, no control characters). */
+/**
+ * A model stuck in a loop repeats the same step until the step limit (training 2026-10-15, PTNK 2023 1: steps 9–20 were
+ * two steps alternating). A step identical to an earlier one (same title, explanation and formula) is dropped; hints and
+ * step references that pointed to it point to the first copy.
+ */
+export function dropRepeatedSteps(lesson: ModelLesson): ModelLesson {
+  const first = new Map<string, string>(), alias = new Map<string, string>();
+  const steps = lesson.steps.filter((st) => {
+    const key = `${st.title}\u0000${st.explanation}\u0000${st.math ?? ""}`;
+    const seen = first.get(key);
+    if (seen) { alias.set(st.id, seen); return false; }
+    first.set(key, st.id);
+    return true;
+  });
+  if (!alias.size) return lesson;
+  const to = (id: string) => alias.get(id) ?? id;
+  return {
+    ...lesson,
+    steps: steps.map((st) => ({ ...st, uses: [...new Set((st.uses ?? []).map(to))].filter((u) => u !== st.id) })),
+    hints: lesson.hints.map((h) => ({ ...h, stepId: to(h.stepId) })),
+  };
+}
+
+/**
+ * Review 2026-10-16: a hint is a piece of the solution, not a question. A hint titled with a question (certified modules
+ * and older lessons write "Vì sao …?") takes the title of the step it belongs to, which states that step's idea.
+ */
+export function statementHints(lesson: ModelLesson): ModelLesson {
+  const byId = new Map(lesson.steps.map((s) => [s.id, s]));
+  return {
+    ...lesson,
+    hints: lesson.hints.map((h) => {
+      if (!QUESTION_HINT.test(h.question.trim())) return h;
+      const title = byId.get(h.stepId)?.title;
+      return title && !QUESTION_HINT.test(title.trim()) ? { ...h, question: title } : h;
+    }),
+  };
+}
+
 export function tidy(lesson: ModelLesson): ModelLesson {
+  lesson = statementHints(dropRepeatedSteps(lesson));
   // repairLatex first: a literal "\n" would otherwise look like a LaTeX command to wrapBareLatex.
   const t = (s: string) => vietnameseMathText(wrapBareLatex(fixDoubledEscapes(repairLatex(normalizeProblemText(s)))));
   const tn = (s: string | null) => (s === null ? null : t(s));
-  const stackMathLines = (m: string | null) => stackLines(m === null ? null : dropRepeatedLines(tidyNumberBrackets(divisibilityLatex(textifyProse(repairLatex(fixDoubledEscapes(parseMathText(m).map((s) => s.value).join(" "))))))));
+  const stackMathLines = (m: string | null) => stackLines(m === null ? null : slotUnderscores(bracketAlternatives(dropRepeatedLines(tidyNumberBrackets(divisibilityLatex(textifyProse(repairLatex(fixDoubledEscapes(parseMathText(m).map((s) => s.value).join(" "))))))))));
   // Solution prose: also drop template brackets around plain numbers inside its $…$ (the statement stays as written).
   const ts = (s: string) => tidyNumberBracketsInText(t(s));
   const tsn = (s: string | null) => (s === null ? null : ts(s));
@@ -505,9 +559,20 @@ const MINOR_FEEDBACK = [/can't be evaluated/, /points to unknown step/, /left ou
  * task itself, and the lesson keeps the student's own statement.
  */
 export async function solveProblem(model: JsonModel, curriculum: Curriculum, problemText: string, options: SolveOptions): Promise<SolveResult> {
-  const task = joinSystem(stripTaskLabel(problemText));
+  const task = joinSystem(wrapBareNumbers(stripTaskLabel(problemText)));
   const result = await solveTask(model, curriculum, task, options);
+  result.lesson = restoreLatexControls(result.lesson);
   if (task !== problemText && result.lesson.analysis.statement === task) result.lesson.analysis.statement = problemText;
+  // Safety net for EVERY lesson, deterministic ones included: an answer that an exact computation contradicts is marked
+  // unverified (and so never served). Training run 2026-10-14: a certified module read "3^{2025}+5^{2025} cho 8" as
+  // "3^{2025} cho 8" and served 3 as verified (the answer is 0).
+  const normalized = normalizeProblemText(task);
+  const finalText = `${result.lesson.finalAnswer.text} ${result.lesson.finalAnswer.math ?? ""}`;
+  const contradictions = [...integerTargetFeedback(normalized, finalText), ...parameterAnswerFeedback(normalized, finalText), ...simplificationFeedback(normalized, finalText), ...finalStepConflict(result.lesson), ...stepClaimFeedback(result.lesson)];
+  if (contradictions.length) {
+    options.log?.(`final answer contradicted by an exact computation: ${contradictions[0]!.slice(0, 160)}`);
+    return { ...result, verification: { ...result.verification, status: "unverified", checks: [...result.verification.checks, ...contradictions.map((c) => ({ label: c.slice(0, 200), passed: false }))].slice(0, 40) } };
+  }
   return result;
 }
 
@@ -534,9 +599,11 @@ async function solveTask(
     computeFirst = true,
     exactAlgebra = true,
     routine = true,
+    escalateOnGiveUp = true,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
+  let diagnosisNote: string | null = null;
   const vertices=vertexAssignmentLesson(problemText);
   if(vertices&&vertices.verify()) {
     const checked=verifyLesson(tidy(vertices.lesson),{problemText});
@@ -592,16 +659,13 @@ async function solveTask(
       lesson:checked.lesson,verification:{...checked.verification,status:'partial',checks:[...checked.verification.checks,{label:'Đã đối chiếu cấu hình; hai phép nội tiếp dựa trên bốn góc vuông, hai phép đồng dạng và thứ tự tia được chứng minh riêng. Chứng nhận cấu hình không thay thế chứng minh hình thức.',passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'geometry-orthic-midpoint-proof'
     };
   }
-  const hypothesisDiagnosis=proofPlanner ? geometryHypothesisDiagnosis(problemText) : null;
-  if(hypothesisDiagnosis && !latexFeedback(hypothesisDiagnosis).length && !cleanLanguage(hypothesisDiagnosis).feedback.length && !proofDependencyFeedback(hypothesisDiagnosis,problemText).length) return {
-    lesson:hypothesisDiagnosis,verification:{status:"partial",figureIssue:null,checks:[{label:"Ví dụ cụ thể kiểm tra điều kiện vị trí và đỉnh phân biệt; chưa chứng minh kết luận thiếu giả thiết",passed:true}]},
-    attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-hypothesis-diagnosis",
-  };
-  const diagnosis=proofPlanner ? diameterOrthocenterDiagnosis(problemText) : null;
-  if(diagnosis && !latexFeedback(diagnosis).length && !cleanLanguage(diagnosis).feedback.length && !proofDependencyFeedback(diagnosis,problemText).length) return {
-    lesson:diagnosis,verification:{status:"partial",figureIssue:null,checks:[{label:"Phản ví dụ tam giác đều: hai cặp đỉnh trùng nhau; chưa chứng minh kết luận tổng quát",passed:true}]},
-    attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"geometry-degeneracy-diagnosis",
-  };
+  // Reviewer 2026-10-15 (PTNK 2024 4a, 3/10): "Giải tổng quát, không cho ví dụ". A statement that also allows a
+  // degenerate configuration is no longer answered with that counterexample: the model solves the general case and the
+  // diagnosis becomes a note for it.
+  const diagnosisLessons = proofPlanner ? [geometryHypothesisDiagnosis(problemText), diameterOrthocenterDiagnosis(problemText)].filter((l): l is NonNullable<typeof l> => !!l) : [];
+  diagnosisNote = diagnosisLessons.length
+    ? "LƯU Ý VỀ GIẢ THIẾT: đề bài còn cho phép trường hợp suy biến sau — " + diagnosisLessons.map((l) => l.finalAnswer.text).join(" ") + " Hãy giải trường hợp tổng quát (không suy biến) đầy đủ; chỉ nhắc ngắn gọn trường hợp suy biến này ở phần lưu ý, không thay lời giải bằng ví dụ."
+    : null;
   const circleBisector = proofPlanner ? circleBisectorLesson(problemText) : null;
   if (circleBisector && verifyCircleBisectorCertificate(circleBisector.certificate)) {
     const checked=verifyLesson(tidy(circleBisector.lesson),{problemText});
@@ -654,6 +718,13 @@ async function solveTask(
   const tier = problemTier(problemText);
   // Only the knowledge-base sections relevant to this problem go into the prompt.
   const domains = problemDomains(problemText);
+  // Reviewer 2026-10-15: "P(n) chia hết cho m với mọi n" is taught with consecutive integers, not a residue table.
+  const consecutive = routine ? consecutiveProductLesson(problemText) : null;
+  if (consecutive && consecutive.verify()) {
+    const checked = verifyLesson(tidy(consecutive.lesson), { problemText });
+    if (checked.verification.status !== "unverified" && !latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length)
+      return { lesson: checked.lesson, verification: { ...checked.verification, status: "verified", checks: [...checked.verification.checks, { label: consecutive.label, passed: true }] }, attempts: 0, durationMs: Date.now() - started, usage: {}, costUsd: 0, model: "routine-consecutive-product" };
+  }
   const certifiedInteger = certifiedNumberTheoryLesson(problemText);
   if (certifiedInteger) {
     const valid = certifiedInteger.verify();
@@ -694,8 +765,13 @@ async function solveTask(
   }
   try {
     const result = await solveWithModel();
+    if (latexFeedback(result.lesson).length) result.lesson = dropBrokenMetadata(result.lesson);
     const leakage = cleanLanguage(result.lesson).feedback;
-    if (leakage.length) throw new OcrFailure("malformed_output", "lesson contains untranslated student-facing text", true);
+    if (leakage.length) {
+      log(`language check failed after repair: ${leakage.slice(0, 3).join(" | ").slice(0, 400)}`);
+      throw new OcrFailure("malformed_output", "lesson contains untranslated student-facing text", true);
+    }
+    if (latexFeedback(result.lesson).length) log(`formatting check failed: ${latexFeedback(result.lesson).slice(0, 3).join(" | ").slice(0, 400)}`);
     if (latexFeedback(result.lesson).length) throw new OcrFailure("malformed_output", "lesson still contains broken mathematical formatting", true);
     if(hiddenSearchFeedback(result.lesson,problemText).length)throw new OcrFailure('incomplete','the game strategy has no valid exhaustive query certificate',true);
     return result;
@@ -714,6 +790,8 @@ async function solveTask(
   // inequality checks) goes to the model as checked results, so it explains instead of searching.
   let computedNote: string | null = null;
   let computed: { part: string; result: OracleResult }[] = [];
+  let parameterRoots: ParameterRoots | null = null;
+  let integerCheck: IntegerTarget | null = null;
   if (computeFirst) {
     computed = computeAnswers(normalizeProblemText(problemText), 2500);
     if (computed.length) {
@@ -721,6 +799,18 @@ async function solveTask(
         "KẾT QUẢ TÍNH BẰNG MÁY (kiểm tra số trên máy, đáng tin; không phải chứng minh): đáp số trong bài giảng phải khớp với các kết quả này; lời giải vẫn phải chứng minh đầy đủ (vì sao đúng, vì sao không còn trường hợp khác).\n" +
         computed.map(({ part, result }) => `- ${part ? `Câu ${part}: ` : ""}${result.summary}`).join("\n");
       log(`computed: ${computed.map(({ part, result }) => `${part || "-"} ${result.formal.kind} (${result.ms} ms)`).join(", ")}`);
+    }
+    // Parametric "find m so that the roots satisfy …": the general oracle skips these; solve the condition numerically.
+    // Last digits / remainders of closed expressions (exact), and "find all n with P(n) square/prime" (checked).
+    integerCheck = integerTarget(normalizeProblemText(problemText));
+    if (integerCheck) {
+      computedNote = `${computedNote ?? "KẾT QUẢ TÍNH BẰNG MÁY (kiểm tra số trên máy, đáng tin; không phải chứng minh): đáp số phải khớp; lời giải vẫn phải chứng minh đầy đủ."}\n- ${integerCheck.summary}`;
+      log(`computed: integer target (${integerCheck.kind})`);
+    }
+    parameterRoots = parameterRootCondition(normalizeProblemText(problemText));
+    if (parameterRoots) {
+      computedNote = `${computedNote ?? "KẾT QUẢ TÍNH BẰNG MÁY (kiểm tra số trên máy, đáng tin; không phải chứng minh): đáp số phải khớp; lời giải vẫn phải chứng minh đầy đủ (Vi-ét, điều kiện của biệt thức)."}\n- ${parameterRoots.summary}`;
+      log(`computed: parameter condition (${parameterRoots.values.length} value(s))`);
     }
   }
   // Two stages for a hard problem: an outline from a thinking request, then the lesson from the outline.
@@ -739,7 +829,7 @@ async function solveTask(
         signal,
         onUsage: (u) => (usage[outlineModel.model] = addUsage(usage[outlineModel.model] ?? emptyUsage(), u)),
       }));
-      const parsed = OutlineSchema.safeParse(JSON.parse(text));
+      const parsed = OutlineSchema.safeParse(JSON.parse(fixJsonLatexEscapes(text)));
       if (parsed.success && parsed.data.outline.trim()) {
         outlineNote =
           "DÀN Ý LỜI GIẢI (đã được suy nghĩ kỹ ở bước trước — hãy viết bài giảng theo đúng dàn ý này, kiểm tra lại từng phép tính):\n" +
@@ -753,7 +843,7 @@ async function solveTask(
       log(`outline failed after ${Math.round((Date.now() - t0) / 1000)} s (${(err as Error).message.slice(0, 100)}); writing the lesson without it`);
     }
   }
-  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", plannerNote ?? "", computedNote ?? "", outlineNote ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
+  const methodHints = [withTechniques ? techniqueHints(problemText) : "", figureNotes ?? "", plannerNote ?? "", diagnosisNote ?? "", computedNote ?? "", outlineNote ?? "", withFigure ? geometryLessonsPrompt() : ""].filter(Boolean).join("\n\n");
   let messages: ChatMessage[] = [
     { role: "system", content: buildSystemPrompt(curriculum, { withFigure, domains }) },
     { role: "user", content: buildUserMessage(problemText, tier, methodHints) },
@@ -771,6 +861,8 @@ async function solveTask(
 
   /** The previous attempt produced no usable lesson (threw, or gave up). */
   let lastFailed = false;
+  /** The previous request ran out of time: ask for a shorter lesson. */
+  let concise = false;
   const modelFor = (attempt: number) => (attempt > 1 && fallback && (!fallbackOnlyOnFailure || lastFailed) ? fallback : model);
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const current = modelFor(attempt);
@@ -781,7 +873,7 @@ async function solveTask(
     let text: string;
     try {
       text = await withinSignal(signal, () => current.complete({
-        messages,
+        messages: concise ? [...messages, { role: "user", content: CONCISE_RETRY }] : messages,
         schema: current.grammarConstrained
           ? withFigure
             ? LESSON_GRAMMAR_SCHEMA
@@ -803,9 +895,13 @@ async function solveTask(
       if (signal.aborted && !best) throw err;
       // A failure-only fallback (a different, faster model) is worth trying even after a long failed attempt.
       const switching = !!fallback && current !== fallback;
+      // A timeout does not use up an attempt (once): the concise attempt replaces it, and a give-up or a mathematical
+      // error after it still gets its correction (training 2026-10-15: HCM 2a, 1b lost this way).
+      if (!signal.aborted && !best && !concise && err instanceof OcrFailure && err.kind === "timeout" && spent <= retryBudgetMs) maxAttempts++;
       if (!signal.aborted && !best && attempt < maxAttempts && err instanceof OcrFailure && (err.retryable || switching) && (spent <= retryBudgetMs || switching)) {
         lastFailed = true;
-        log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again`);
+        if (err.kind === "timeout") concise = true;
+        log(`attempt ${attempt} failed (${err.message.slice(0, 120)}); trying again${concise ? " with a concise lesson" : ""}`);
         continue;
       }
       if (!best && err instanceof OcrFailure && err.retryable && err.kind !== "quota_exhausted" && spent > retryBudgetMs) {
@@ -849,33 +945,46 @@ async function solveTask(
       // fields and cannot alter formulas or prose numbers (repairLanguage enforces both invariants).
       const language = cleanLanguage(candidate);
       if (vietnamese && language.feedback.length && repairableLanguage(language.lesson) && !signal.aborted) {
-        const repairModel = fallback ?? current;
+        // The stronger model: the fallback when it is the stronger one (escalateOnGiveUp), else the current model.
+        const repairModel = escalateOnGiveUp ? fallback ?? current : current;
         const repaired = await repairLanguage(language.lesson, repairModel, signal, (u) => (usage[repairModel.model] = addUsage(usage[repairModel.model] ?? emptyUsage(), u)), log);
-        if (repaired && !cleanLanguage(repaired).feedback.length) candidate = tidy(repaired);
+        // Partial repairs are kept: every accepted field is better than the original.
+        if (repaired) candidate = tidy(repaired);
+      }
+      // Optional metadata still not in Vietnamese is removed, not shown and not a reason to discard the lesson.
+      if (vietnamese && cleanLanguage(candidate).feedback.length) {
+        const { lesson: trimmed, dropped } = dropForeignMetadata(cleanLanguage(candidate).lesson);
+        if (dropped) {
+          log(`removed ${dropped} optional metadata field(s) still not in Vietnamese`);
+          candidate = tidy(trimmed);
+        }
       }
       const checked = verifyLesson(candidate, { problemText: normalizeProblemText(problemText) });
       // Formulas the app can't render go back to the model; whatever is left is shown as plain text.
       const latex = latexFeedback(checked.lesson);
       // The final answer must agree with what was computed (a wrong answer is a failed check, worth a retry).
-      const mismatch = computed.length ? answerMismatch(`${checked.lesson.finalAnswer.text} ${checked.lesson.finalAnswer.math ?? ""}`, computed) : [];
+      const finalText = `${checked.lesson.finalAnswer.text} ${checked.lesson.finalAnswer.math ?? ""}`;
+      const mismatch = [...(computed.length ? answerMismatch(finalText, computed) : []), ...(parameterRoots ? parameterAnswerFeedback(problemText, finalText, parameterRoots) : []), ...(integerCheck ? integerTargetFeedback(problemText, finalText, integerCheck) : []), ...finalStepConflict(checked.lesson), ...stepClaimFeedback(checked.lesson), ...simplificationFeedback(normalizeProblemText(problemText), finalText)];
       if (mismatch.length) log(`answer differs from the computation: ${mismatch.join(" | ").slice(0, 200)}`);
       const result = {
         ...checked,
         verification: mismatch.length || latex.length ? { ...checked.verification, status: "unverified" as const, checks: [...checked.verification.checks, ...mismatch.map((m) => ({ label: m.slice(0, 200), passed: false })), ...(latex.length ? [{ label: "Một số công thức chưa hiển thị đầy đủ; cần kiểm tra lại lời giải", passed: false }] : [])].slice(0, 40) } : checked.verification,
         lesson: latex.length ? plainUnrenderable(checked.lesson) : checked.lesson,
-        feedback: [...checked.feedback, ...latex, ...mismatch],
+        feedback: [...checked.feedback, ...latex, ...mismatch, ...deadEndFeedback(checked.lesson), ...hintFeedback(checked.lesson), ...(withFigure ? intersectionNotationFeedback(checked.lesson) : [])],
       };
       // "unsupported" for a problem that needs no outside method is the model giving up (e.g. after running out
       // of reasoning on a hard chuyên problem), not a property of the problem: it never wins over a real lesson.
       const gaveUp = unsupportedFeedback(result.lesson).length > 0;
-      lastFailed = gaveUp;
+      // A give-up on an in-curriculum problem goes to the fallback only when the fallback is the stronger model.
+      lastFailed = gaveUp && escalateOnGiveUp;
       const score = gaveUp
         ? 0
         : result.verification.status === "verified" ? 3 : result.verification.status === "partial" ? 2 : result.verification.status === "not_checkable" ? 2 : 1;
       // Same score: prefer the more complete figure, then the attempt with fewer remaining problems.
       const f = result.lesson.figure;
       const drawn = f ? f.points.length + f.circles.length + f.lines.length : 0;
-      const invalidNumericAssertion=numericDivisibilityFeedback(result.lesson).length>0;
+      // A false divisibility claim, or m values the numerical solution of the condition contradicts: never served.
+      const invalidNumericAssertion=numericDivisibilityFeedback(result.lesson).length>0||(parameterRoots!==null&&parameterAnswerFeedback(problemText,`${result.lesson.finalAnswer.text} ${result.lesson.finalAnswer.math ?? ""}`,parameterRoots).length>0)||(integerCheck!==null&&integerTargetFeedback(problemText,`${result.lesson.finalAnswer.text} ${result.lesson.finalAnswer.math ?? ""}`,integerCheck).length>0);
       const better =
         !best ||
         (best.invalidNumericAssertion&&!invalidNumericAssertion) ||

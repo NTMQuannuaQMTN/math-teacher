@@ -1,0 +1,186 @@
+{
+  "question": {
+    "id": "comb8-h4",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Điền các số $1,2,\\ldots,9$ vào bảng $3\\times3$, mỗi ô một số. Chứng minh không thể điền sao cho tổng các số trên mỗi hàng đều là số chẵn.",
+    "reference": "Chứng minh: tổng ba tổng hàng bằng $1+2+\\dots+9=45$ là số lẻ, còn tổng ba số chẵn là số chẵn — mâu thuẫn.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Điền các số $1, 2, \\text{...}, 9$ vào bảng $3 \\times 3$, mỗi ô một số. Chứng minh không thể điền sao cho tổng các số trên mỗi hàng đều là số chẵn.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Toán",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "tính chẵn lẻ của tổng",
+        "phương pháp phản chứng"
+      ],
+      "techniques": [
+        "contradiction"
+      ],
+      "givens": [
+        "bảng 3x3",
+        "các số 1, 2, ..., 9"
+      ],
+      "unknowns": [
+        "tính chẵn lẻ của tổng các hàng"
+      ],
+      "constraints": [
+        "sử dụng đúng 9 số từ 1 đến 9"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng phương pháp phản chứng: giả sử tổng mỗi hàng là số chẵn, suy ra tổng toàn bảng là số chẵn, nhưng tổng thực tế của các số từ 1 đến 9 là 45 (số lẻ) -> mâu thuẫn.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Tổng của tất cả các số từ 1 đến 9 là số chẵn hay số lẻ?",
+        "cue": "tính chẵn lẻ của tổng",
+        "explanation": "Bạn hãy thử tính tổng của tất cả 9 số từ 1 đến 9 xem tổng đó là số chẵn hay số lẻ nhé.",
+        "math": null,
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Nếu tổng mỗi hàng là số chẵn thì tổng toàn bộ các số trong bảng phải là số chẵn hay số lẻ?",
+        "cue": "tính chẵn lẻ của tổng",
+        "explanation": "Giả sử đề bài đúng, tức là tổng mỗi hàng đều là số chẵn. Vậy tổng của 3 hàng (tức là tổng toàn bộ các số trong bảng) sẽ là tổng của 3 số chẵn. Tổng của 3 số chẵn là số chẵn hay số lẻ?",
+        "math": null,
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Hai kết quả trên có mâu thuẫn với nhau không? Từ đó bạn có thể kết luận gì về giả thiết ban đầu?",
+        "cue": "phương pháp phản chứng",
+        "explanation": "Bạn hãy so sánh kết quả ở hai gợi ý trên. Một bên là tổng thực tế của các số (số lẻ), một bên là tổng suy ra từ giả thiết (số chẵn). Hai điều này có mâu thuẫn với nhau không?",
+        "math": null,
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Tính tổng các số trong bảng",
+        "explanation": "Đầu tiên, mình sẽ tính tổng của tất cả các số từ 1 đến 9 để xem tổng này là số chẵn hay số lẻ.",
+        "math": "S = 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45",
+        "reason": "tính chất cộng các số tự nhiên",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "tổng các số từ 1 đến 9"
+        ],
+        "operation": "tính tổng",
+        "result": "S = 45 (số lẻ)",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "kiểm tra tính chẵn lẻ"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Suy luận từ giả thiết",
+        "explanation": "Giả sử rằng ta có thể điền các số vào bảng sao cho tổng các số trên mỗi hàng đều là số chẵn. Khi đó, tổng của 3 hàng (tức là tổng toàn bộ các số trong bảng) sẽ bằng tổng của 3 số chẵn.",
+        "math": "S = C_1 + C_2 + C_3",
+        "reason": "tính chất cộng các số chẵn",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "tính chẵn lẻ của tổng"
+        ],
+        "operation": "giả thiết phản chứng",
+        "result": "S là số chẵn",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "kiểm tra tính chẵn lẻ"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Kết luận",
+        "explanation": "Ta thấy tổng thực tế của các số là 45 (số lẻ), nhưng từ giả thiết suy ra tổng phải là số chẵn. Điều này mâu thuẫn với nhau, nên giả thiết ban đầu là sai.",
+        "math": "45 \\text{ (lẻ)} \\neq \\text{chẵn}",
+        "reason": "phương pháp phản chứng",
+        "uses": [
+          "step_1",
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "tính chẵn lẻ của tổng",
+          "phương pháp phản chứng"
+        ],
+        "operation": "phản chứng",
+        "result": "Không thể điền được",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "kiểm tra tính chẵn lẻ"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Không thể điền được các số $1, 2, \\text{...}, 9$ vào bảng $3 \\times 3$ sao cho tổng các số trên mỗi hàng đều là số chẵn.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 34183,
+  "usage": {
+    "default": {
+      "input": 6091,
+      "cachedInput": 0,
+      "output": 4421,
+      "reasoning": 2284
+    }
+  },
+  "costUsd": 0.009460870000000001,
+  "model": "default",
+  "logs": [
+    "outline in 20 s (304 chars)",
+    "language repair: 0/2 field(s) rewritten in 1 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=default in=6091 (cached 0) out=4421 (reasoning 2284) ≈ $0.0095",
+    "total ≈ $0.0095 over 1 attempt(s); lesson by default"
+  ]
+}

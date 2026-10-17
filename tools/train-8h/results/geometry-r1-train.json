@@ -1,0 +1,132 @@
+{
+  "type": "geometry",
+  "round": "1",
+  "split": "train",
+  "createdAt": "2026-10-14T11:12:05.127Z",
+  "spentTotalUsd": 0.57003749,
+  "results": [
+    {
+      "id": "ptnk-2023-chuyen/5a",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "no structurally valid lesson after retries",
+      "ms": 155165,
+      "logs": [
+        "proof planner: PARSING_UNCERTAIN — no claim of the statement understood (0 ms, 0 facts; 0 steps, ≤0 cited)",
+        "attempt 1: invalid structure: step step_3: prove that ALHI is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion.",
+        "attempt 2: invalid structure: step step_3: prove that ALHI is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion."
+      ],
+      "costUsd": 0.039
+    },
+    {
+      "id": "ptnk-2023-chuyen/5b",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the model could not finish this problem in time (output truncated)",
+      "ms": 250115,
+      "logs": [
+        "proof planner: UNSOLVED_WITHIN_BOUNDARY — 0/1 goal(s) proved (9 ms, 68 facts; 0 steps, ≤0 cited)",
+        "attempt 1 failed (local model returned HTTP 502: {\"error\":\"provider request failed\"}\n); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "attempt 2 failed after 250 s (output truncated); not retrying"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "ptnk-2024-chuyen/4a",
+      "ok": true,
+      "producedBy": "geometry-degeneracy-diagnosis",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 43,
+      "finalAnswer": "Với đề hiện tại, $E=C$ và $K=H$ có thể xảy ra; vì vậy $CEHK$ không nhất thiết là một hình bình hành không suy biến. Cần xác nhận giả thiết loại trường hợp này trước khi chứng minh kết luận ấy. Ví dụ trên vẫn thỏa đẳng thức tích, nhưng chưa phải chứng minh đẳng thức trong mọi trường hợp.",
+      "costUsd": 0
+    },
+    {
+      "id": "ptnk-2024-chuyen/4b",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the model could not finish this problem in time (output truncated)",
+      "ms": 255529,
+      "logs": [
+        "proof planner: PARSING_UNCERTAIN — no claim of the statement understood (0 ms, 0 facts; 0 steps, ≤0 cited)",
+        "attempt 1 failed (local model returned HTTP 502: {\"error\":\"provider request failed\"}\n); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "attempt 2 failed after 256 s (output truncated); not retrying"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "ptnk-2025-chuyen/4a",
+      "ok": true,
+      "producedBy": "geometry-case-proof",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 55,
+      "finalAnswer": "Đường tròn qua $A,D,O$ chứa $E,F$; cả hai yêu cầu đã được chứng minh.",
+      "costUsd": 0
+    },
+    {
+      "id": "hcm-2025-chuyen/3a",
+      "ok": true,
+      "producedBy": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "partial",
+      "attempts": 2,
+      "ms": 263642,
+      "finalAnswer": "$\\angle AKE = \\angle AMB$ và A, K, D thẳng hàng",
+      "costUsd": 0
+    },
+    {
+      "id": "hanoi-2025-chuyen/IV.1",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the model could not finish this problem in time (output truncated)",
+      "ms": 234138,
+      "logs": [
+        "proof planner: UNSOLVED_WITHIN_BOUNDARY — 0/1 goal(s) proved (27 ms, 196 facts; 0 steps, ≤0 cited)",
+        "attempt 1 failed (local model returned HTTP 502: {\"error\":\"provider request failed\"}\n); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "attempt 2 failed after 234 s (output truncated); not retrying"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "hanoi-2025-chuyen/IV.2",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the model could not finish this problem in time (output truncated)",
+      "ms": 268715,
+      "logs": [
+        "proof planner: PARSING_UNCERTAIN — points not constructed: E, G, N (0 ms, 0 facts; 0 steps, ≤0 cited)",
+        "attempt 1 failed (local model returned HTTP 502: {\"error\":\"provider request failed\"}\n); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "attempt 2 failed after 269 s (output truncated); not retrying"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "khtn-2025-vong2/III.1",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the model could not finish this problem in time (output truncated)",
+      "ms": 283242,
+      "logs": [
+        "proof planner: PARSING_UNCERTAIN — points not constructed: R, Q, E, F, P, H, K, M, N (0 ms, 0 facts; 0 steps, ≤0 cited)",
+        "attempt 1 failed (local model returned HTTP 502: {\"error\":\"provider request failed\"}\n); trying again",
+        "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+        "attempt 2 failed after 283 s (output truncated); not retrying"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "ptnk-2026-chuyen/2",
+      "ok": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 183654,
+      "finalAnswer": "Giá trị lớn nhất của chu vi tứ giác $ABCD$ là $18$.",
+      "costUsd": 0.0429
+    }
+  ]
+}

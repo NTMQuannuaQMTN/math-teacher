@@ -1,0 +1,149 @@
+{
+  "question": {
+    "id": "ptnk-2025-chuyen/1a",
+    "split": "fresh",
+    "source": "exam ptnk-2025-chuyen",
+    "input": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh rằng với mọi $m$ phương trình luôn có hai nghiệm phân biệt $x_1,x_2$.",
+    "reference": "proof",
+    "reference_status": "derived",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2-2(m+1)x+2m=0$ ($m$ là tham số). Chứng minh rằng với mọi $m$ phương trình luôn có hai nghiệm phân biệt $x_1,x_2$.",
+      "language": "vi",
+      "topic": "equation",
+      "subtopic": "Biệt thức theo tham số và chứng minh với mọi giá trị",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Ẩn và tham số",
+        "Biệt thức",
+        "Hoàn thành bình phương"
+      ],
+      "techniques": [
+        "discriminant"
+      ],
+      "givens": [
+        "$x^2-2(m+1)x+2m=0$",
+        "$m\\in\\mathbb{R}$"
+      ],
+      "unknowns": [
+        "Hai nghiệm thực phân biệt với mọi giá trị tham số"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Xác định hệ số, tính biệt thức theo tham số, hoàn thành bình phương để xét dấu với mọi giá trị; nếu khẳng định sai thì chỉ ra phản ví dụ cụ thể.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Đang xét phương trình theo ẩn nào? Hệ số bậc hai có thể bằng không không?",
+        "cue": "Hệ số của phương trình bậc hai; phân biệt ẩn và tham số",
+        "explanation": "Xét phương trình theo ẩn $x$; $m$ là tham số. Hệ số bậc hai $a=1\\ne0$ không phụ thuộc tham số, nên ở mọi giá trị của tham số ta thực sự có phương trình bậc hai.",
+        "math": "a=1,\\quad b=-2m-2,\\quad c=2m",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Vì sao cần chứng minh biệt thức dương với mọi tham số, thay vì thử một vài giá trị?",
+        "cue": "Công thức biệt thức và điều kiện có hai nghiệm phân biệt",
+        "explanation": "Thay đúng hệ số bậc nhất và hạng tử tự do vào công thức biệt thức, khai triển bình phương rồi thu gọn. Điều kiện để có hai nghiệm thực phân biệt là biệt thức dương, chứ không phải chỉ không âm.",
+        "math": "\\begin{gathered}\\Delta=b^2-4ac=(-2m-2)^2-4(1)(2m)\\\\\\Delta=4m^{2}+4\\end{gathered}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Hoàn thành bình phương cho biệt thức. Hằng số còn lại có dương không?",
+        "cue": "Bình phương không âm; xét dấu hằng số",
+        "explanation": "Hoàn thành bình phương như biểu thức bên dưới. Bình phương luôn không âm, hệ số của nó dương, còn hằng số $4$ dương. Vì thế biệt thức luôn lớn hơn hoặc bằng hằng số dương này ở mọi số thực $m$.",
+        "math": "\\Delta=4m^{2}+4\\ge4>0",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Biệt thức dương và hệ số bậc hai khác không cho phép kết luận gì?",
+        "cue": "Phân loại nghiệm thực của phương trình bậc hai bằng biệt thức",
+        "explanation": "Hệ số bậc hai khác không và biệt thức dương đã được chứng minh cho mọi tham số, nên công thức nghiệm cho hai nghiệm thực phân biệt. Vậy với mọi số thực $m$, phương trình đã cho có hai nghiệm thực phân biệt.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định các hệ số và điều kiện dùng biệt thức",
+        "explanation": "Xét phương trình theo ẩn $x$; $m$ là tham số. Hệ số bậc hai $a=1\\ne0$ không phụ thuộc tham số, nên ở mọi giá trị của tham số ta thực sự có phương trình bậc hai.",
+        "math": "a=1,\\quad b=-2m-2,\\quad c=2m",
+        "reason": "Hệ số của phương trình bậc hai; phân biệt ẩn và tham số",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Tính biệt thức theo tham số",
+        "explanation": "Thay đúng hệ số bậc nhất và hạng tử tự do vào công thức biệt thức, khai triển bình phương rồi thu gọn. Điều kiện để có hai nghiệm thực phân biệt là biệt thức dương, chứ không phải chỉ không âm.",
+        "math": "\\begin{gathered}\\Delta=b^2-4ac=(-2m-2)^2-4(1)(2m)\\\\\\Delta=4m^{2}+4\\end{gathered}",
+        "reason": "Công thức biệt thức và điều kiện có hai nghiệm phân biệt",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Chứng minh dấu với mọi giá trị tham số",
+        "explanation": "Hoàn thành bình phương như biểu thức bên dưới. Bình phương luôn không âm, hệ số của nó dương, còn hằng số $4$ dương. Vì thế biệt thức luôn lớn hơn hoặc bằng hằng số dương này ở mọi số thực $m$.",
+        "math": "\\Delta=4m^{2}+4\\ge4>0",
+        "reason": "Bình phương không âm; xét dấu hằng số",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Áp dụng điều kiện nghiệm và kết luận",
+        "explanation": "Hệ số bậc hai khác không và biệt thức dương đã được chứng minh cho mọi tham số, nên công thức nghiệm cho hai nghiệm thực phân biệt. Vậy với mọi số thực $m$, phương trình đã cho có hai nghiệm thực phân biệt.",
+        "math": null,
+        "reason": "Phân loại nghiệm thực của phương trình bậc hai bằng biệt thức",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy với mọi số thực $m$, phương trình đã cho có hai nghiệm thực phân biệt.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "figureIssue": null,
+    "checks": [
+      {
+        "label": "Kiểm tra biến đổi đa thức, điều kiện xác định, toàn bộ nghiệm, bảng dấu hoặc biệt thức theo tham số bằng phép tính chính xác",
+        "passed": true
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 6,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-algebra",
+  "logs": []
+}

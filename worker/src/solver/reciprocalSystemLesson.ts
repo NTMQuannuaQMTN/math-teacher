@@ -25,7 +25,8 @@ function parse(text: string): Certificate | null {
   const body = /^\\begin\{cases\}([\s\S]+)\\end\{cases\}$/u.exec(maths[0]!.value.trim()); if (!body) return null;
   const equations = body[1]!.split(/\\\\|\\cr\b/u).map((s) => {
     const relation=splitRelation(s.replace(/&/g,"").replace(/^\s*,|,\s*$/g,""));if(!relation||relation.rel!=="=")return "";
-    return `${expressionSource(parseExpression(relation.sides[0]))}=${expressionSource(parseExpression(relation.sides[1]))}`;
+    // A system this module does not read (agent trial 2026-10-16: "1+12(x+y)=…" threw "Bad number") is declined, not a crash.
+    try { return `${expressionSource(parseExpression(relation.sides[0]))}=${expressionSource(parseExpression(relation.sides[1]))}`; } catch { return ""; }
   });
   if (equations.length !== 2) return null;
   const first = /^\(\(([a-z])\+([a-z])\)\*\((\d+)\+\(1\/\(\1\*\2\)\)\)\)=(-?\d+)$/iu.exec(equations[0]!); if (!first) return null;

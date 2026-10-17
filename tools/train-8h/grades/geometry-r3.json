@@ -1,0 +1,82 @@
+{
+ "ptnk-2023-chuyen/5a": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Mô hình lại dùng “ALHI nội tiếp” chưa chứng minh; bị loại đúng."
+ },
+ "ptnk-2023-chuyen/5b": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Không có lời giải hợp lệ về cấu trúc sau hai lần thử."
+ },
+ "ptnk-2024-chuyen/4a": {
+  "verdict": "chẩn đoán đề",
+  "score": 5,
+  "notes": "Như vòng 1: chỉ ra trường hợp suy biến hợp lệ, không phải lời giải tổng quát."
+ },
+ "ptnk-2024-chuyen/4b": {
+  "verdict": "SAI (lập luận) — nay không hiển thị",
+  "score": 1,
+  "notes": "Bộ kiểm tra đo trên hình: “E, C, F thẳng hàng”, “B, F, D thẳng hàng”, “∠BCF = ∠DCE” đều SAI. Trước đây vẫn hiển thị với nhãn “chưa kiểm chứng”; theo quy tắc mới (#12) không hiển thị cho học sinh."
+ },
+ "ptnk-2025-chuyen/4a": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Như vòng 1 (bộ xác định)."
+ },
+ "hcm-2025-chuyen/3a": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Hết giờ. Vòng 1 bài này là lời giải sai được hiển thị; nay không còn hiển thị lời giải sai."
+ },
+ "hanoi-2025-chuyen/IV.1": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Không xong trong giới hạn 120 s của cổng SoCLaaS."
+ },
+ "hanoi-2025-chuyen/IV.2": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Dùng “ABDE nội tiếp” chưa chứng minh; bị loại."
+ },
+ "khtn-2025-vong2/III.1": {
+  "verdict": "SAI (lập luận) — nay không hiển thị",
+  "score": 1,
+  "notes": "Bộ kiểm tra đo: “∠HOM = 20°”, “∠KON = 20°”, “OHM ∼ OKN” sai trên hình dựng; các bước khẳng định không chứng minh (OM = AF cos B dùng lượng giác). Không hiển thị theo quy tắc mới. Sau sửa #15 (kết luận của chính đề sai trên hình dựng ⇒ hình dựng sai, không dùng để bác bỏ): bài này lại được hiển thị là “máy không kiểm chứng được” — giới hạn: khi hình dựng sai, bộ kiểm tra không phát hiện được lập luận sai."
+ },
+ "ptnk-2026-chuyen/2": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Chu vi lớn nhất 18 (AB² + CD² = 50, AB + CD ≤ 10). Vòng 2 bài này thất bại (mô hình bỏ cuộc khi không suy nghĩ); nay có lời giải nhưng bước kiểm tra dấu bằng ngắn hơn vòng 1."
+ },
+ "geo8-h1": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Bộ lập kế hoạch chứng minh (xác định): AEHF nội tiếp và AE·AC = AF·AB; trạng thái một phần."
+ },
+ "geo8-h2": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "MN = AM + BN và ∠MON = 90°; trình bày “90^\\text{o}” chưa đẹp."
+ },
+ "geo8-h3": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Hết thời gian (tính chất đường phân giác chưa có bộ giải xác định)."
+ },
+ "geo8-h4": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "∠C = 100°, ∠D = 110°."
+ },
+ "geo8-h5": {
+  "verdict": "đúng (bị giữ lại nhầm, đã sửa)",
+  "score": 7,
+  "notes": "Lúc chạy bị quy tắc #13 giữ lại vì phép kiểm tra “MA^2 = MB*MC” của mô hình bị thử như đẳng thức đại số (M, A, B, C là số) — sai cách kiểm tra, không phải lời giải sai. Sửa #14: quan hệ giữa các đoạn thẳng không thử bằng đại số; nay được hiển thị."
+ },
+ "geo8-h6": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "7 cm (3 cm + 4 cm)."
+ }
+}

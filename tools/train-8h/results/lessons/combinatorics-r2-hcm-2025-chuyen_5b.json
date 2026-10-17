@@ -1,0 +1,228 @@
+{
+  "question": {
+    "id": "hcm-2025-chuyen/5b",
+    "split": "train",
+    "source": "exam hcm-2025-chuyen",
+    "input": "Cho tập hợp $A=\\{1;2;3;\\ldots;100\\}$ và tập hợp $B$ là tập hợp con chứa 11 phần tử của tập hợp $A$. Chứng minh rằng tập hợp $B$ luôn chứa ba số $a,b,c$ phân biệt sao cho $a,b,c$ là độ dài ba cạnh của một tam giác.",
+    "reference": "proof",
+    "reference_status": "official",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tập hợp $A = \\{1, 2, 3, \\ldots, 100\\}$ và tập hợp $B$ là tập con chứa 11 phần tử của tập hợp $A$. Chứng minh rằng tập hợp $B$ luôn chứa ba số $a, b, c$ phân biệt sao cho $a, b, c$ là độ dài ba cạnh của một tam giác.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Combinatorics",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Pigeonhole Principle (Nguyên lý Dirichlet)",
+        "Fibonacci sequence (Dãy Fibonacci)",
+        "Triangle inequality (Bất đẳng thức tam giác)",
+        "Phương pháp chứng minh phản chứng"
+      ],
+      "techniques": [
+        "pigeonhole",
+        "case_analysis",
+        "contradiction"
+      ],
+      "givens": [
+        "A = {1, 2, ..., 100}",
+        "B là tập con của A, |B| = 11"
+      ],
+      "unknowns": [
+        "ba số a, b, c"
+      ],
+      "constraints": [
+        "Tập hợp A có 100 phần tử",
+        "Tập hợp B có 11 phần tử",
+        "Các phần tử là số nguyên dương"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán này yêu cầu sử dụng Nguyên lý Dirichlet và phương pháp chứng minh phản chứng, nhưng các nội dung này không nằm trong chương trình Toán lớp 9."
+      ]
+    },
+    "strategy": "Sử dụng phương pháp phản chứng và nguyên lý Dirichlet. Giả sử $B$ không chứa ba số nào tạo thành tam giác, từ đó thiết lập được một dãy số tăng trưởng nhanh (dãy Fibonacci) và chứng minh phần tử lớn nhất của $B$ phải lớn hơn 100, mâu thuẫn với điều kiện $B \\subseteq A$.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 1,
+        "question": "Nếu bạn chọn ba số $a, b, c$ bất kỳ trong $B$ và sắp xếp chúng theo thứ tự $a < b < c$, điều kiện nào cần thỏa mãn để chúng tạo thành một tam giác?",
+        "cue": "Bất đẳng thức tam giác",
+        "explanation": "Để ba số $a, b, c$ (với $a < b < c$) là ba cạnh của một tam giác, ta cần $a + b > c$. Nếu không thỏa mãn, nghĩa là $a + b \\le c$.",
+        "math": "a + b > c",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 2,
+        "question": "Hãy thử chứng minh bằng phản chứng: Giả sử trong $B$ không có ba số nào tạo thành tam giác. Điều này có nghĩa là với mọi bộ ba số $a < b < c$ trong $B$, tổng hai số nhỏ hơn luôn nhỏ hơn hoặc bằng số lớn nhất.",
+        "cue": "Chứng minh phản chứng",
+        "explanation": "Giả sử ngược lại: trong $B$ không có ba số nào tạo thành tam giác. Khi đó, với mọi bộ ba số $a < b < c$ trong $B$, ta luôn có $a + b \\le c$.",
+        "math": "a + b \\le c",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 3,
+        "question": "Gọi các phần tử của $B$ theo thứ tự tăng dần là $x_1 < x_2 < \\ldots < x_{11}$. Dựa vào điều kiện $a + b \\le c$, bạn có thể thiết lập mối quan hệ giữa $x_k$ và hai số đứng trước nó là $x_{k-1}, x_{k-2}$ không?",
+        "cue": "Dãy Fibonacci",
+        "explanation": "Gọi các phần tử của $B$ theo thứ tự tăng dần là $x_1 < x_2 < \\ldots < x_{11}$. Từ giả thiết, ta có $x_3 \\ge x_1 + x_2$, $x_4 \\ge x_2 + x_3$, v.v. Đây chính là quy luật của dãy Fibonacci.",
+        "math": "x_k \\ge x_{k-1} + x_{k-2}",
+        "stepId": "step3",
+        "focus": []
+      },
+      {
+        "id": "hint4",
+        "level": 4,
+        "question": "Vì $x_1, x_2$ là hai số nguyên dương phân biệt nhỏ nhất trong $B$, giá trị nhỏ nhất của $x_1$ và $x_2$ là bao nhiêu? Từ đó, hãy tính giá trị nhỏ nhất có thể có của $x_{11}$.",
+        "cue": "Giá trị nhỏ nhất",
+        "explanation": "Vì $x_1, x_2$ là hai số nguyên dương phân biệt nhỏ nhất trong $B$, nên $x_1 \\ge 1$ và $x_2 \\ge 2$. Từ đó, bạn có thể tính ra giá trị nhỏ nhất có thể có của $x_{11}$.",
+        "math": "x_1 \\ge 1, x_2 \\ge 2",
+        "stepId": "step4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Giả sử phản chứng",
+        "explanation": "Để chứng minh điều này, mình sẽ sử dụng phương pháp phản chứng. Mình sẽ giả sử điều ngược lại xảy ra và tìm ra mâu thuẫn.",
+        "math": "\\text{ Giả sử  B  không chứa ba số nào tạo thành tam giác. }",
+        "reason": "Phương pháp phản chứng",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "Giả sử phản chứng",
+        "result": "Giả sử $B$ không chứa ba số nào tạo thành tam giác.",
+        "verification": {
+          "status": "verified",
+          "method": "chứng minh",
+          "reason": "Giả sử phản chứng là bước đầu tiên của phương pháp phản chứng."
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Thiết lập bất đẳng thức",
+        "explanation": "Gọi các phần tử của $B$ theo thứ tự tăng dần là $x_1 < x_2 < \\ldots < x_{11}$. Vì $B$ không chứa ba số nào tạo thành tam giác, nên với mọi bộ ba số $x_i < x_j < x_k$ trong $B$, ta luôn có $x_i + x_j \\le x_k$. Đặc biệt, với ba số liên tiếp $x_{k-2} < x_{k-1} < x_k$, ta có $x_{k-2} + x_{k-1} \\le x_k$.",
+        "math": "x_k \\ge x_{k-1} + x_{k-2}, \\quad \\forall k \\ge 3",
+        "reason": "Điều kiện không tạo thành tam giác",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step1"
+        ],
+        "operation": "Thiết lập bất đẳng thức",
+        "result": "Với mọi $k \\ge 3$, ta có $x_k \\ge x_{k-1} + x_{k-2}$.",
+        "verification": {
+          "status": "verified",
+          "method": "chứng minh",
+          "reason": "Từ giả thiết không có ba số nào tạo thành tam giác, với ba số liên tiếp $x_{k-2}, x_{k-1}, x_k$, ta có $x_{k-2} + x_{k-1} \\le x_k$."
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Tính giá trị nhỏ nhất",
+        "explanation": "Vì $x_1, x_2$ là hai số nguyên dương phân biệt nhỏ nhất trong $B$, nên $x_1 \\ge 1$ và $x_2 \\ge 2$. Từ đó, ta có thể tính ra giá trị nhỏ nhất có thể có của $x_{11}$ bằng cách thay lần lượt các giá trị nhỏ nhất vào bất đẳng thức $x_k \\ge x_{k-1} + x_{k-2}$.",
+        "math": "x_1 \\ge 1, x_2 \\ge 2, x_3 \\ge 3, x_4 \\ge 5, x_5 \\ge 8, x_6 \\ge 13, x_7 \\ge 21, x_8 \\ge 34, x_9 \\ge 55, x_{10} \\ge 89, x_{11} \\ge 144",
+        "reason": "Sử dụng bất đẳng thức và giá trị nhỏ nhất của số nguyên dương",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step2"
+        ],
+        "operation": "Tính giá trị nhỏ nhất",
+        "result": "Giá trị nhỏ nhất có thể có của $x_{11}$ là 144.",
+        "verification": {
+          "status": "verified",
+          "method": "calculation",
+          "reason": "Thay $x_1=1, x_2=2$ vào $x_k \\ge x_{k-1} + x_{k-2}$, ta có $x_3 \\ge 3, x_4 \\ge 5, x_5 \\ge 8, x_6 \\ge 13, x_7 \\ge 21, x_8 \\ge 34, x_9 \\ge 55, x_{10} \\ge 89, x_{11} \\ge 144$."
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Kết luận",
+        "explanation": "Tuy nhiên, vì $B$ là tập con của $A = \\{1, 2, \\ldots, 100\\}$, nên mọi phần tử của $B$ đều nhỏ hơn hoặc bằng 100. Điều này mâu thuẫn với $x_{11} \\ge 144$. Vậy giả sử ban đầu là sai, và $B$ luôn chứa ba số tạo thành tam giác.",
+        "math": "x_{11} \\le 100 \\text{ (mâu thuẫn với } x_{11} \\ge 144\\text{)}",
+        "reason": "Mâu thuẫn với điều kiện $B \\subseteq A$",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step3"
+        ],
+        "operation": "Kết luận",
+        "result": "Đpcm",
+        "verification": {
+          "status": "verified",
+          "method": "chứng minh",
+          "reason": "Từ $x_{11} \\ge 144$ và $x_{11} \\le 100$, ta có mâu thuẫn. Vậy giả sử ban đầu là sai."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Đpcm",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 17,
+  "usage": {
+    "default": {
+      "input": 9167,
+      "cachedInput": 0,
+      "output": 7319,
+      "reasoning": 3044
+    }
+  },
+  "costUsd": 0.015250030000000003,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 0 s (551 chars)",
+    "language repair: 5/5 field(s) rewritten in 0 s",
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=default in=9167 (cached 0) out=7319 (reasoning 3044) ≈ $0.0153",
+    "total ≈ $0.0153 over 1 attempt(s); lesson by default"
+  ]
+}

@@ -41,7 +41,7 @@ ${c.methods.map((m) => `- ${m}`).join("\n")}
 Use analysis.status = "unsupported" (withinCurriculum = false, reason in statusReason) ONLY when the problem itself requires a method from the "never use" list (e.g. it asks for a derivative). Every problem of a Grade 10 entrance exam, including the hardest chuyên geometry, number theory and combinatorics problems, is within the knowledge base: a problem being long or hard is never a reason for "unsupported" — solve it. Do not produce a fake elementary solution.`;
 }
 
-const LANGUAGE = `write every student-facing text (statement, concepts, givens, unknowns, constraints, interpretationNotes, statusReason, strategy, hint questions/cues/explanations, step titles/explanations/reasons, final answer) in the language of the problem: Vietnamese for Vietnamese problems (natural Vietnamese classroom wording and standard Vietnamese notation/terminology, e.g. "tam giác ABC cân tại A", "Δ", "(đvđd)"), English for English problems. Vietnamese always with full diacritics ("phương trình", "nghiệm", never "phuong trinh"). Never switch to another language mid-text: no Chinese, Russian/Cyrillic, English, or other foreign words inside a Vietnamese lesson. If a foreign phrase appears in the problem image, transcribe it only in the analysis statement when it is genuinely part of the problem; never copy it into hints, steps, reasons, or the final answer.
+const LANGUAGE = `write every student-facing text (statement, concepts, givens, unknowns, constraints, interpretationNotes, statusReason, strategy, hint titles/cues/explanations, step titles/explanations/reasons, final answer) in the language of the problem: Vietnamese for Vietnamese problems (natural Vietnamese classroom wording and standard Vietnamese notation/terminology, e.g. "tam giác ABC cân tại A", "Δ", "(đvđd)"), English for English problems. Vietnamese always with full diacritics ("phương trình", "nghiệm", never "phuong trinh"). Never switch to another language mid-text: no Chinese, Russian/Cyrillic, English, or other foreign words inside a Vietnamese lesson. If a foreign phrase appears in the problem image, transcribe it only in the analysis statement when it is genuinely part of the problem; never copy it into hints, steps, reasons, or the final answer.
 Voice: talk like a friend of the same age helping a classmate — warm, casual and encouraging, never like a teacher talking down. In Vietnamese address the student as "bạn" and refer to yourself as "mình" (or use "mình" for "we", e.g. "Mình thử xét…", "Bạn để ý…"); never use "em", "thầy", "cô" or "con". In English use a friendly "you" / "let's".`;
 
 const TEACHING = `Teaching design — the lesson is hint-first, never a solution dump:
@@ -49,18 +49,37 @@ const TEACHING = `Teaching design — the lesson is hint-first, never a solution
 2. strategy: one or two sentences giving the plan in plain words, without the numeric result.
 3. steps: the complete worked solution, one meaningful reasoning move per step (typically 2–8 steps). Every step must be reasonable on its own: state the new fact, show the calculation or deduction that establishes it, and explain why it follows from the givens or earlier steps. Do not create a step that merely announces a result. Each step: a short title, an explanation a Grade 9 student understands in at most two short sentences (say why, not the arithmetic again — the calculation itself goes only in "math"), the mathematical statement in "math" (LaTeX, no $ delimiters), "reason" = the property or theorem used, named as in the textbook, and "uses" = the ids of the earlier steps whose results this step relies on ([] when it starts from the givens). The last step reaches the answer naturally; do not add a separate summary-only step. Never skip a transformation the student would need to write. Show the work line by line: expand conjugate products before simplifying; establish positivity/nonzero denominators before division; write the equation after division before moving each term; show the intermediate expansion and factorization before concluding. A named identity or theorem alone is not a worked deduction. Do not compress a chain of algebra into “then simplify” or a single unexplained equivalence. Before using a cyclic quadrilateral (for example AEOF), prove it from explicit perpendicular/radius/angle facts or cite the exact earlier step that proved it; a diagram and the goal statement are not givens. State the concrete angle equations used in a cyclicity proof. For games, state legal moves and the terminal rule, distinguish taking the last object wins versus loses, prove your strategy against EVERY legal opponent reply, prove losing positions as well as winning positions, and show why the game terminates. One successful example play is not a proof. For every existence claim, name the witness or give an explicit rule for constructing or selecting it from the given objects; if the inputs are unspecified, give the selection rule rather than inventing numerical data. For a winning strategy, give the first move and a precise response rule for every later state (or a turn-by-turn table for a fixed schedule), specify whether each query occurs before or after the opponent moves, and prove that the rule covers every legal reply and respects the stated turn bound. Never stop at "there exists a strategy" or an unexplained claim that the opponent cannot escape.
    Proofs ("chứng minh", "tìm tất cả … và chứng minh"): write the proof as a student must write it in the exam — one deduction per step, each stating the claim AND why it holds (a given, a named theorem, or the earlier step it follows from, restating what that step proved). The two-sentence limit does not apply to proof steps; use as many steps as the argument needs. Never write "dễ thấy", "đã thấy", "hiển nhiên", "rõ ràng", "ta chứng minh được" or "từ các bước trên" in place of the argument. For "find all": prove the necessary condition, then show it is sufficient (a construction or a check), and say which is which.
-4. hints: the path to the solution as questions, from subtle to explicit. Usually 2–3 hints for easy problems, 4–6 for harder ones; never more than 6, never filler. Each hint must lead to the next concrete deduction, not reveal a distant final result. The last hint may guide the final computation, but no hint may skip all intermediate reasoning. Each hint:
-   - question: a guiding question that makes the student think about the NEXT idea without stating it ("What kind of triangle is ABC?", "What do you know about the base angles?"). Do not put the answer in the question.
-   - cue: optional short reminder of the relevant concept (or null).
-   - explanation: revealed only when the student asks — states the idea and how it applies here.
-   - math: optional LaTeX for the key relation (or null).
-   - level: 1 = pointing question, 2 = concept reminder, 3 = direct guidance, 4 = explicit setup. Levels never decrease by more than 1 from one hint to the next.
-   - stepId: the step this hint leads to.
-   Hints must follow the order of the steps and together lead all the way to the answer; the final computation may be the last hint.
+4. hints: pieces of the solution, from the first idea to the last, so the student can finish each part themselves. Usually 2–3 hints for easy problems, 4–6 for harder ones; never more than 6, never filler. Each hint gives ONE next idea of the solution as a statement — never a question, never a riddle, and never the final answer or a value the problem asks for (the student must find those). Each hint:
+   - question: the hint itself, a short statement of the next idea (it is shown as the hint title), e.g. "Biến đổi điều kiện về dạng tích $(n+1)(n+2)+3$", "Hai tam giác $AEI$ và $AFI$ bằng nhau", "Dùng hệ thức Vi-ét cho $x_1+x_2$ và $x_1x_2$". Never phrased as a question ("…không?", "Làm thế nào…", "Vì sao…"), never a vague prompt ("Hãy suy nghĩ…").
+   - cue: optional: the property or theorem used (or null).
+   - explanation: revealed on request — how to carry out that idea here, stopping before the result the problem asks for.
+   - math: optional LaTeX for the key relation of this idea (or null); not the final answer.
+   - level: 1 = first idea (which method), 2 = the key transformation or theorem, 3 = how to apply it here, 4 = the setup of the last computation. Levels never decrease by more than 1 from one hint to the next.
+   - stepId: the step this hint belongs to.
+   Hints follow the order of the steps and together cover the whole solution except the final answer itself.
 5. finalAnswer: the answer stated clearly (with units, and all solutions / the full solution set), in "text", plus "math" for the key result or null. This field is metadata: students see the conclusion in the last worked step, so include the complete conclusion there naturally. Keep a), b), c) subquestions on separate lines in every displayed field. For monic quadratics x²+Bx+C, (x+p)(x+q) requires p+q=B and pq=C; (x-p)(x-q) requires p+q=-B and pq=C. Keep hint notation and coefficient signs consistent with the solution.
 Style: warm, concise, precise. No "Great question!", no emojis, no meta-commentary.`;
 
-const FORMAT = `Text format: in ALL prose fields — including titles, reasons, hint questions/cues/explanations, strategy, and finalAnswer.text — write maths inline between $…$ using LaTeX (e.g. "Vì $AB = AC$ nên…"). Keep prose outside the dollar signs. "math" fields contain only LaTeX, without $. Use standard LaTeX: \\frac{}{}, \\sqrt{}, x^{2}, \\widehat{ABC}, \\triangle ABC, \\parallel, \\perp, \\Rightarrow, \\begin{cases}…\\end{cases}, ^{\\circ}.`;
+/** Rules from the teacher's review of 2026-10-15 (docs/training-8h/reviewed-2026-10-15): what made correct lessons hard to read. */
+const REVIEWER = `Rules from a Vietnamese teacher who rated earlier lessons:
+- Choose the shortest standard Grade 9 method and go straight to it (e.g. a quadrilateral with two opposite right angles is cyclic because those two angles sum to 180°; for the angle between two tangents use that the line from the centre bisects it). No roundabout constructions.
+- Use the seven "hằng đẳng thức đáng nhớ" whenever they shorten the work, instead of expanding everything: e.g. (n+4)^4 - n^4 = ((n+4)^2 - n^2)((n+4)^2 + n^2) = 8(n+2)(2n^2+8n+16) rather than expanding to 16n^3+96n^2+…; recognise a^2 - b^2, (a \pm b)^2, a^3 \pm b^3, (a \pm b)^3 to factor, simplify fractions and radicals, or complete a square. Expand only when no identity applies.
+- Divisibility (a ⋮ b, "a chia hết cho b") is only written when both a and b are integers: never divide a divisibility relation through by a variable to get fractions such as k^2 + k/n + 1 ⋮ k; keep integer relations (k^2n^2 + kn + n^2 ⋮ kn^2 ⇒ n^2 ⋮ k …).
+- Every step must already be correct when it is written: never write a wrong intermediate value and fix it later. Check each remainder or congruence before writing it — a remainder is smaller than the divisor.
+- Never include your own working, doubts or remarks about a computed result ("Chờ đã", "kiểm tra lại kết quả", "theo máy").
+- Explain why each non-obvious transformation follows: e.g. why multiplying by the conjugate leaves exactly the factor that gives the solutions; why an auxiliary expression is linked to the quantity being optimised.
+- List every solution explicitly. Never write "và các hoán vị", "hoán vị vòng quanh" or "tương tự" instead of the solutions.
+- Case analysis is explicit and exhaustive: write each case (p = 2, p = 3, p > 3 …), never "xét các số nguyên tố nhỏ" or "thử vài giá trị".
+- When a system gives the unknowns directly, solve for them directly; do not introduce an extra auxiliary unknown.
+- After a complete proof of an extremum, state the equality case; do not add a separate "kiểm tra lại" step.
+- Geometry: prove only what is asked (a right angle, a collinearity, a cyclic quadrilateral…). Do not prove configuration facts — that an angle is acute or obtuse, that points are not collinear, which side a point lies on, the order of points — use them as in the figure. Write "góc A chung" rather than proving two rays coincide.
+- Name an intersection in words: "Gọi P là giao điểm của AL và GJ", "AL và GJ cắt nhau tại P"; never set notation such as AL \\cap GJ = \\{P\\}.
+- Name a circle by its centre or by three of its points ("đường tròn (O)", "đường tròn ngoại tiếp tam giác AOD"); never Greek letters such as Γ.
+- Allowed: tỉ số lượng giác of acute angles (sin, cos, tan) in right triangles. Not allowed: conic sections (hyperbola, ellipse), graph theory (đồ thị G, đỉnh, cạnh, matching, đồ thị chính tắc), vectors, derivatives, geometric transformations (phép đối xứng / phép quay / phép tịnh tiến mapping one figure onto another) — use congruent or similar triangles instead.
+- For a board or a table (colouring cells, filling numbers), show the configuration in "math" as a table with \\begin{array}{|c|c|c|}\\hline … \\end{array} so the student can see it.
+- For alternatives use the "or" bracket \\left[\\begin{array}{l}x=a\\\\x=b\\end{array}\\right.; \\begin{cases} means "and".`;
+
+const FORMAT = `Text format: in ALL prose fields — including titles, reasons, hint titles/cues/explanations, strategy, and finalAnswer.text — write maths inline between $…$ using LaTeX (e.g. "Vì $AB = AC$ nên…"). Keep prose outside the dollar signs. "math" fields contain only LaTeX, without $. Use standard LaTeX: \\frac{}{}, \\sqrt{}, x^{2}, \\widehat{ABC}, \\triangle ABC, \\parallel, \\perp, \\Rightarrow, \\begin{cases}…\\end{cases}, ^{\\circ}.`;
 
 const GRADE9_NOTATION = `Divisibility: write b \\vdots a for "a divides b"; never a | b or a \\mid b. Preserve operand order when switching notation.
 Notation: use symbols and wording familiar from Vietnamese Grade 9 textbooks. Avoid inventing set equalities to describe an unordered list of values (for example do not write {b+c,d+a}={1,2,3} even if the values are unordered). Say "một trong các tổng bằng 3, hai tổng còn lại lần lượt bằng 1 và 2" or state the cases explicitly. Do not use calculus, advanced operators, or unexplained abstract notation.`;
@@ -140,11 +159,12 @@ export function buildSystemPrompt(
     specialistInstructions(domains),
     LANGUAGE,
     TEACHING,
+    REVIEWER,
     FORMAT,
     GRADE9_NOTATION,
     withFigure ? GEOMETRY : NO_FIGURE,
     VERIFICATION,
-    "Return only the JSON object required by the schema.",
+    "Return only the JSON object required by the schema, as compact JSON (no indentation or blank lines): the request has a hard time limit.",
   ].join("\n\n");
 }
 
@@ -178,3 +198,12 @@ export function buildRetryMessage(problems: string[]): string {
 ${problems.slice(0, 12).map((p) => `- ${p}`).join("\n")}
 Re-check the mathematics carefully, fix every problem, and return the complete corrected JSON lesson (all fields). If the figure could not be constructed, fix the construction so every given condition holds exactly.`;
 }
+
+/**
+ * After a request ran out of time (the SOCLAAS gateway cuts at 120 s; 2026-10-15 it generated ~75 tokens/s, so a
+ * 10 000-token lesson cannot finish), the next attempt asks for the same solution in less text instead of the same
+ * length again.
+ */
+export const CONCISE_RETRY = `LẦN TRƯỚC HẾT THỜI GIAN vì bài giảng quá dài. Viết lại NGẮN GỌN: tối đa 5 bước, tối đa 3 gợi ý, mỗi giải thích 1–3 câu;
+phần phân tích chỉ ghi điều cần thiết; các trường không bắt buộc để trống hoặc null (operation, factsUsed, verification, interpretationNotes);
+JSON gọn trên một dòng. Toán học vẫn phải đầy đủ và đúng từng bước.`;

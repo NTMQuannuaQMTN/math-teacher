@@ -1,0 +1,53 @@
+{
+  "type": "number_theory",
+  "round": "3b",
+  "split": "all",
+  "createdAt": "2026-10-15T07:52:15.278Z",
+  "spentTotalUsd": 1.508737219999999,
+  "results": [
+    {
+      "id": "hanoi-2025-chuyen/II.1",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 115326,
+      "finalAnswer": "Chứng minh được $abc$ chia hết cho 8.",
+      "costUsd": 0.0314
+    },
+    {
+      "id": "nt8-h7",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 27,
+      "finalAnswer": "Số dư cần tìm là 0.",
+      "costUsd": 0
+    },
+    {
+      "id": "nt9-f3",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 60891,
+      "finalAnswer": "Vậy số nguyên tố cần tìm là $p = 3$.",
+      "costUsd": 0.0193
+    },
+    {
+      "id": "nt9-f4",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 59309,
+      "finalAnswer": "Vậy cặp số nguyên dương cần tìm là $(x; y) = (4; 1)$.",
+      "costUsd": 0.0192
+    }
+  ]
+}

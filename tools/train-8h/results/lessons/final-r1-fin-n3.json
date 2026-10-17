@@ -1,0 +1,144 @@
+{
+  "question": {
+    "id": "fin-n3",
+    "split": "final",
+    "source": "authored 2026-10-14 22:25 after all fixes; run once (final evaluation)",
+    "input": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $x^2-y^2=24$.",
+    "reference": "$(x;y)\\in\\{(5;1),(7;5)\\}$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve",
+    "topic": "number_theory"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $x^2-y^2=24$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Phương trình nghiệm nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình nghiệm nguyên"
+      ],
+      "techniques": [],
+      "givens": [
+        "$x^2-y^2=24$",
+        "$x,y$ là số nguyên dương"
+      ],
+      "unknowns": [
+        "Tất cả các cặp $(x;y)$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Đưa phương trình về dạng tích hai số nguyên bằng một hằng số, rồi xét các cặp ước.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Viết vế trái thành tích như thế nào?",
+        "cue": "Hằng đẳng thức $a^2-b^2=(a-b)(a+b)$",
+        "explanation": "Dùng hằng đẳng thức hiệu hai bình phương: $x^2-y^2=(x-y)(x+y)$. Phương trình trở thành tích của hai số nguyên bằng $24$.",
+        "math": "(x-y)(x+y)=24",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Những cặp ước nào cùng tính chẵn lẻ?",
+        "cue": "Ước của một số nguyên; tính chẵn lẻ của tổng và hiệu",
+        "explanation": "$x-y$ và $x+y$ là hai số nguyên có tích bằng $24$, nên là một cặp ước của $24$. Ngoài ra $(x+y)+(x-y)=2x$ là số chẵn, nên hai thừa số phải cùng tính chẵn lẻ. Với mỗi cặp, giải hệ $x-y=u$, $x+y=w$ được $x=\\frac{u+w}{2}$, $y=\\frac{w-u}{2}$; chỉ giữ nghiệm là số nguyên dương.",
+        "math": "\\begin{array}{c|c|c}x-y&x+y&(x;y)\\\\\\hline 1&24&\\text{khác tính chẵn lẻ}\\\\-1&-24&\\text{khác tính chẵn lẻ}\\\\2&12&(7;5)\\\\-2&-12&(-7;-5)\\ \\text{(loại)}\\\\3&8&\\text{khác tính chẵn lẻ}\\\\-3&-8&\\text{khác tính chẵn lẻ}\\\\4&6&(5;1)\\\\-4&-6&(-5;-1)\\ \\text{(loại)}\\\\6&4&(5;-1)\\ \\text{(loại)}\\\\-6&-4&(-5;1)\\ \\text{(loại)}\\\\8&3&\\text{khác tính chẵn lẻ}\\\\-8&-3&\\text{khác tính chẵn lẻ}\\\\12&2&(7;-5)\\ \\text{(loại)}\\\\-12&-2&(-7;5)\\ \\text{(loại)}\\\\24&1&\\text{khác tính chẵn lẻ}\\\\-24&-1&\\text{khác tính chẵn lẻ}\\end{array}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Có bao nhiêu cặp nghiệm?",
+        "cue": "Đã xét hết các trường hợp",
+        "explanation": "Các trường hợp trên là tất cả các khả năng, nên không bỏ sót nghiệm. Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(5;1);\\ (7;5)$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Phân tích thành tích",
+        "explanation": "Dùng hằng đẳng thức hiệu hai bình phương: $x^2-y^2=(x-y)(x+y)$. Phương trình trở thành tích của hai số nguyên bằng $24$.",
+        "math": "(x-y)(x+y)=24",
+        "reason": "Hằng đẳng thức $a^2-b^2=(a-b)(a+b)$",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Xét các cặp ước",
+        "explanation": "$x-y$ và $x+y$ là hai số nguyên có tích bằng $24$, nên là một cặp ước của $24$. Ngoài ra $(x+y)+(x-y)=2x$ là số chẵn, nên hai thừa số phải cùng tính chẵn lẻ. Với mỗi cặp, giải hệ $x-y=u$, $x+y=w$ được $x=\\frac{u+w}{2}$, $y=\\frac{w-u}{2}$; chỉ giữ nghiệm là số nguyên dương.",
+        "math": "\\begin{array}{c|c|c}x-y&x+y&(x;y)\\\\\\hline 1&24&\\text{khác tính chẵn lẻ}\\\\-1&-24&\\text{khác tính chẵn lẻ}\\\\2&12&(7;5)\\\\-2&-12&(-7;-5)\\ \\text{(loại)}\\\\3&8&\\text{khác tính chẵn lẻ}\\\\-3&-8&\\text{khác tính chẵn lẻ}\\\\4&6&(5;1)\\\\-4&-6&(-5;-1)\\ \\text{(loại)}\\\\6&4&(5;-1)\\ \\text{(loại)}\\\\-6&-4&(-5;1)\\ \\text{(loại)}\\\\8&3&\\text{khác tính chẵn lẻ}\\\\-8&-3&\\text{khác tính chẵn lẻ}\\\\12&2&(7;-5)\\ \\text{(loại)}\\\\-12&-2&(-7;5)\\ \\text{(loại)}\\\\24&1&\\text{khác tính chẵn lẻ}\\\\-24&-1&\\text{khác tính chẵn lẻ}\\end{array}",
+        "reason": "Ước của một số nguyên; tính chẵn lẻ của tổng và hiệu",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Các trường hợp trên là tất cả các khả năng, nên không bỏ sót nghiệm. Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(5;1);\\ (7;5)$.",
+        "math": null,
+        "reason": "Đã xét hết các trường hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(5;1);\\ (7;5)$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tìm kiếm vét cạn độc lập trên miền đã chứng minh là chứa mọi nghiệm",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 14,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-difference-of-squares",
+  "logs": [
+    "lesson by the routine solver (difference-of-squares); no model call"
+  ]
+}

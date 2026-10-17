@@ -1,0 +1,164 @@
+{
+  "question": {
+    "id": "nt8-h7",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm số dư khi chia $3^{2025}+5^{2025}$ cho $8$.",
+    "reference": "$0$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm số dư khi chia $3^{2025}+5^{2025}$ cho $8$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chu kỳ số dư của lũy thừa",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chu kỳ số dư của lũy thừa"
+      ],
+      "techniques": [],
+      "givens": [],
+      "unknowns": [
+        "Kết luận cần chứng minh và các trường hợp phải xét"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tính một chu kỳ đầy đủ, chia số mũ theo độ dài chu kỳ rồi đối chiếu số dư; không thay số lớn trực tiếp.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Chu kỳ trở lại số dư 1 sau bao nhiêu bước?",
+        "cue": "Nếu hai số có cùng số dư thì nhân cùng một số vẫn cho cùng số dư",
+        "explanation": "Nhân lần lượt với $3$ và lấy số dư khi chia cho $8$. Lần đầu trở lại $1$ sau $2$ bước, nên phép nhân tiếp tục lặp lại đúng dãy này.",
+        "math": "3^{1}\\equiv3\\pmod{8},\\quad 3^{2}\\equiv1\\pmod{8}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Số mũ để lại vị trí nào trong chu kỳ?",
+        "cue": "Phép chia có dư của số mũ và quy tắc nhân lũy thừa",
+        "explanation": "Ta có $2025=2\\cdot1012+1$. Mỗi khối $2$ lũy thừa đóng góp số dư $1$.",
+        "math": "3^{2}\\equiv1\\pmod{8}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Số dư ở vị trí cần tìm là bao nhiêu?",
+        "cue": "Tính chất đồng dư khi nhân và nâng lũy thừa",
+        "explanation": "Do đó $3^{2025}=(3^{2})^{1012}\\cdot3^{1}$ có cùng số dư với vị trí $1$ của chu kỳ.",
+        "math": "3^{2025}\\equiv3\\pmod{8}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Số dư cuối cùng có nằm trong khoảng chuẩn không?",
+        "cue": "Định nghĩa số dư trong phép chia có dư",
+        "explanation": "Số $3$ nằm từ $0$ đến $7$, nên đây là số dư duy nhất khi chia cho $8$.",
+        "math": "0\\le3<8",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính các số dư cho đến khi chu kỳ khép lại",
+        "explanation": "Nhân lần lượt với $3$ và lấy số dư khi chia cho $8$. Lần đầu trở lại $1$ sau $2$ bước, nên phép nhân tiếp tục lặp lại đúng dãy này.",
+        "math": "3^{1}\\equiv3\\pmod{8},\\quad 3^{2}\\equiv1\\pmod{8}",
+        "reason": "Nếu hai số có cùng số dư thì nhân cùng một số vẫn cho cùng số dư",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Chia số mũ theo độ dài chu kỳ",
+        "explanation": "Ta có $2025=2\\cdot1012+1$. Mỗi khối $2$ lũy thừa đóng góp số dư $1$.",
+        "math": "3^{2}\\equiv1\\pmod{8}",
+        "reason": "Phép chia có dư của số mũ và quy tắc nhân lũy thừa",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Rút lũy thừa về vị trí trong chu kỳ",
+        "explanation": "Do đó $3^{2025}=(3^{2})^{1012}\\cdot3^{1}$ có cùng số dư với vị trí $1$ của chu kỳ.",
+        "math": "3^{2025}\\equiv3\\pmod{8}",
+        "reason": "Tính chất đồng dư khi nhân và nâng lũy thừa",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận bằng số dư chuẩn",
+        "explanation": "Số $3$ nằm từ $0$ đến $7$, nên đây là số dư duy nhất khi chia cho $8$.",
+        "math": "0\\le3<8",
+        "reason": "Định nghĩa số dư trong phép chia có dư",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy số dư cần tìm là $3$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra độc lập số dư bằng lũy thừa nhanh, Euclid trên số nguyên lớn, liệt kê hữu hạn hoặc phân tích thập phân",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "deterministic-number-theory",
+  "logs": []
+}

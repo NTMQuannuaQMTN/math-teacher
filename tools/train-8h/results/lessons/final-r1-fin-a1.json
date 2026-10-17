@@ -1,0 +1,221 @@
+{
+  "question": {
+    "id": "fin-a1",
+    "split": "final",
+    "source": "authored 2026-10-14 22:25 after all fixes; run once (final evaluation)",
+    "input": "Giải phương trình $x^2-2x-\\sqrt{x^2-2x+4}=2$.",
+    "reference": "$x=1\\pm\\sqrt6$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve",
+    "topic": "algebra"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Giải phương trình $x^2 - 2x - \\sqrt{x^2 - 2x + 4} = 2$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "algebra",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình chứa căn thức bậc hai",
+        "Đặt ẩn phụ",
+        "Hệ phương trình đối xứng loại 1",
+        "Định lý Viète"
+      ],
+      "techniques": [
+        "substitution",
+        "vieta",
+        "domain_conditions"
+      ],
+      "givens": [
+        "Phương trình: $x^2 - 2x - \\sqrt{x^2 - 2x + 4} = 2$"
+      ],
+      "unknowns": [
+        "x"
+      ],
+      "constraints": [
+        "Điều kiện xác định của căn thức: $x^2 - 2x + 4 \\ge 0$ (luôn đúng với mọi $x$ vì $\\Delta' < 0$ và hệ số $a > 0$)."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu giải phương trình chứa căn thức bậc hai với biểu thức dưới dấu căn là một tam thức bậc hai ($x^2-2x+4$). Phương pháp giải chuẩn trong chương trình lớp 9 là đặt ẩn phụ để đưa về hệ phương trình đối xứng hoặc phương trình bậc hai. Tuy nhiên, việc giải hệ phương trình đối xứng loại 1 t"
+      ]
+    },
+    "strategy": "Đặt ẩn phụ $y = \\sqrt{x^2 - 2x + 4}$ để biến đổi phương trình chứa căn thành phương trình bậc hai theo $y$. Giải phương trình theo $y$ để tìm giá trị của $y$, sau đó thay ngược lại để giải phương trình bậc hai theo $x$.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Bạn có nhận xét gì về sự xuất hiện của biểu thức $x^2 - 2x$ trong phương trình không?",
+        "cue": "Nhìn thấy $x^2 - 2x$ lặp lại ở cả phần đa thức và trong căn thức.",
+        "explanation": "Bạn hãy thử đặt $t = x^2 - 2x$. Khi đó phương trình sẽ trở nên đơn giản hơn rất nhiều, chỉ còn ẩn $t$ và $\\sqrt{t+4}$.",
+        "math": "t = x^2 - 2x",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Sau khi đặt ẩn phụ, liệu chúng ta có thể biến đổi phương trình thành một hệ phương trình đối xứng không?",
+        "cue": "Đặt $y = \\sqrt{x^2 - 2x + 4}$.",
+        "explanation": "Nếu đặt $y = \\sqrt{x^2 - 2x + 4}$ (với $y \\ge 0$), ta có $y^2 = x^2 - 2x + 4$, hay $x^2 - 2x = y^2 - 4$. Thay vào phương trình ban đầu, bạn sẽ có một hệ phương trình đối xứng loại 1 giữa $x$ và $y$ (hoặc giữa $x^2-2x$ và $y$).",
+        "math": "y = \\sqrt{x^2 - 2x + 4}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Khi đã có hệ phương trình, bạn sẽ xử lý nó như thế nào để tìm ra nghiệm?",
+        "cue": "Trừ vế theo vế hai phương trình của hệ.",
+        "explanation": "Khi có hệ phương trình đối xứng, cách làm quen thuộc là trừ vế theo vế hai phương trình để tạo thành nhân tử chung $(x-y)$ hoặc $(t-y)$, từ đó phân tích thành nhân tử và giải các phương trình bậc nhất hoặc bậc hai đơn giản.",
+        "math": "(x^2 - 2x) - y = 2 \\quad \\text{và} \\quad y^2 - y = x^2 - 2x",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định điều kiện xác định",
+        "explanation": "Đầu tiên, ta xác định điều kiện xác định. Biểu thức dưới dấu căn là $x^2 - 2x + 4 = (x-1)^2 + 3$. Vì $(x-1)^2 \\ge 0$ với mọi $x$, nên $(x-1)^2 + 3 \\ge 3 > 0$. Vậy phương trình luôn xác định với mọi $x \\in \\mathbb{R}$.",
+        "math": "x^2 - 2x + 4 = (x-1)^2 + 3 > 0, \\quad \\forall x \\in \\mathbb{R}",
+        "reason": "Biểu thức dưới căn thức luôn dương.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "domain_conditions"
+        ],
+        "operation": "domain_check",
+        "result": "PTXĐ: $x \\in \\mathbb{R}$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra điều kiện xác định của căn thức."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Đặt ẩn phụ và giải phương trình theo $y$",
+        "explanation": "Ta đặt ẩn phụ để đưa phương trình về dạng dễ giải hơn. Đặt $y = \\sqrt{x^2 - 2x + 4}$ với điều kiện $y \\ge 0$. Khi đó, bình phương hai vế ta được $y^2 = x^2 - 2x + 4$, hay $x^2 - 2x = y^2 - 4$.\nThay $x^2 - 2x = y^2 - 4$ vào phương trình ban đầu $x^2 - 2x - \\sqrt{x^2 - 2x + 4} = 2$, ta được:\n$(y^2 - 4) - y = 2$\n$y^2 - y - 6 = 0$.\nĐây là phương trình bậc hai theo $y$.",
+        "math": "\\begin{cases} y = \\sqrt{x^2 - 2x + 4} \\ge 0 \\\\ y^2 - y - 6 = 0 \\end{cases}",
+        "reason": "Đặt ẩn phụ và giải phương trình bậc hai theo $y$.",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "substitution",
+          "discriminant"
+        ],
+        "operation": "solve_quadratic",
+        "result": "Phương trình $y^2 - y - 6 = 0$ có $\\Delta = (-1)^2 - 4(1)(-6) = 25 > 0$. Phương trình có hai nghiệm $y_1 = \\frac{1 + 5}{2} = 3$ và $y_2 = \\frac{1 - 5}{2} = -2$.\nDo điều kiện $y \\ge 0$, nên ta chỉ nhận $y = 3$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra nghiệm của phương trình bậc hai theo y."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Giải phương trình tìm $x$ và kết luận",
+        "explanation": "Với $y = 3$, ta thay ngược lại vào định nghĩa của $y$:\n$\\sqrt{x^2 - 2x + 4} = 3$\nBình phương hai vế (hai vế đều dương nên tương đương):\n$x^2 - 2x + 4 = 9$\n$x^2 - 2x - 5 = 0$.\nGiải phương trình bậc hai này theo $x$:\n$\\Delta' = (-1)^2 - 1(-5) = 1 + 5 = 6 > 0$.\nPhương trình có hai nghiệm phân biệt:\n$x_1 = 1 - \\sqrt{6}$\n$x_2 = 1 + \\sqrt{6}$.\nCả hai nghiệm này đều thỏa mãn điều kiện xác định của phương trình ban đầu.",
+        "math": "\\begin{cases} x^2 - 2x - 5 = 0 \\\\ \\Delta' = 6 \\\\ x = 1 \\pm \\sqrt{6} \\end{cases}",
+        "reason": "Giải phương trình bậc hai theo $x$ sau khi đã tìm được giá trị của $y$.",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "discriminant",
+          "domain_conditions"
+        ],
+        "operation": "solve_quadratic",
+        "result": "Tập nghiệm của phương trình là $S = \\{1 - \\sqrt{6}; 1 + \\sqrt{6}\\}$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra nghiệm cuối cùng."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Phương trình có tập nghiệm là $S = \\{1 - \\sqrt{6}; 1 + \\sqrt{6}\\}$.",
+      "math": "S = \\{1 - \\sqrt{6}; 1 + \\sqrt{6}\\}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 - 2x - sqrt(x^2 - 2x + 4) = 2"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "1 - sqrt(6)"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "1 + sqrt(6)"
+            }
+          ]
+        ],
+        "expected": "1 - sqrt(6); 1 + sqrt(6)"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "x^2 - 2x - sqrt(x^2 - 2x + 4) = 2",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 135412,
+  "usage": {
+    "default": {
+      "input": 5263,
+      "cachedInput": 0,
+      "output": 2705,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.006479950000000001,
+  "model": "default",
+  "logs": [
+    "computed: - equation (54 ms)",
+    "attempt 1 failed (local model request timed out); trying again",
+    "escalating to default",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=default in=5263 (cached 0) out=2705 (reasoning 0) ≈ $0.0065",
+    "total ≈ $0.0065 over 2 attempt(s); lesson by default"
+  ]
+}

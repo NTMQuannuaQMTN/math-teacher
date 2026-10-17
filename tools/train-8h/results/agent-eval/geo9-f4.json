@@ -1,0 +1,408 @@
+{
+  "id": "geo9-f4",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "verified",
+  "seconds": 52,
+  "costUsd": 0.0221,
+  "final": "Độ dài đoạn thẳng $BC$ là $2\\sqrt{3} + 6$ cm.",
+  "hints": [
+    "Phân tích đoạn $BC$ thành tổng $BH + CH$",
+    "Xét tam giác vuông $ABH$ để tính $BH$",
+    "Xét tam giác vuông $ACH$ để tính $CH$",
+    "Cộng $BH$ và $CH$ để tìm $BC$"
+  ],
+  "reference": "$BC=6+2\\sqrt3$ cm ($BH=2\\sqrt3$, $CH=6$)",
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tam giác $ABC$ có $\\widehat B=60^\\circ$, $\\widehat C=45^\\circ$ và đường cao $AH=6$ cm. Tính $BC$.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "$right_triangle_trig$",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "tỉ số lượng giác của góc nhọn",
+        "tam giác vuông",
+        "hệ thức lượng trong tam giác vuông"
+      ],
+      "techniques": [
+        "pythagoras",
+        "similar_triangles"
+      ],
+      "givens": [
+        "$\\widehat B = 60^\\circ$",
+        "$\\widehat C = 45^\\circ$",
+        "$AH \\perp BC$ tại $H$",
+        "$AH = 6$ cm"
+      ],
+      "unknowns": [
+        "độ dài đoạn $BC$"
+      ],
+      "constraints": [
+        "$H$ nằm trên $BC$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tách đoạn $BC$ thành hai đoạn $BH$ và $CH$ nhờ đường cao $AH$. Tính $BH$ và $CH$ lần lượt trong hai tam giác vuông $ABH$ và $ACH$ bằng cách sử dụng tỉ số lượng giác của các góc $60^\\circ$ và $45^\\circ$.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Phân tích đoạn $BC$ thành tổng $BH + CH$",
+        "cue": "Đường cao",
+        "explanation": "Vì $AH$ là đường cao nên $AH \\perp BC$. Điểm $H$ nằm trên đoạn $BC$, do đó $BC = BH + CH$. Mình sẽ tính riêng $BH$ và $CH$.",
+        "math": "BC = BH + CH",
+        "stepId": "s1",
+        "focus": [
+          "seg_BH",
+          "seg_CH",
+          "seg_BC"
+        ]
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Xét tam giác vuông $ABH$ để tính $BH$",
+        "cue": "Tỉ số lượng giác",
+        "explanation": "Trong tam giác vuông $ABH$ (vuông tại $H$), mình biết cạnh góc vuông $AH$ và góc $B = 60^\\circ$. Để tìm $BH$ (cạnh kề), hãy dùng $\\tan 60^\\circ = \\frac{AH}{BH}$.",
+        "math": "BH = \\frac{AH}{\\tan 60^\\circ}",
+        "stepId": "s2",
+        "focus": [
+          "seg_BC",
+          "seg_AH",
+          "ang_ABC"
+        ]
+      },
+      {
+        "id": "h3",
+        "level": 2,
+        "question": "Xét tam giác vuông $ACH$ để tính $CH$",
+        "cue": "Tam giác vuông cân",
+        "explanation": "Trong tam giác vuông $ACH$ (vuông tại $H$), góc $C = 45^\\circ$ nên tam giác này vuông cân tại $H$. Khi đó hai cạnh góc vuông bằng nhau: $CH = AH$.",
+        "math": "CH = AH",
+        "stepId": "s3",
+        "focus": [
+          "seg_BC",
+          "seg_AH",
+          "ang_BCA"
+        ]
+      },
+      {
+        "id": "h4",
+        "level": 3,
+        "question": "Cộng $BH$ và $CH$ để tìm $BC$",
+        "cue": "Thay số",
+        "explanation": "Thay $AH = 6$ cm vào các kết quả trên: $BH = \\frac{6}{\\sqrt{3}} = 2\\sqrt{3}$ cm và $CH = 6$ cm. Cộng lại ta được $BC$.",
+        "math": "BC = 2\\sqrt{3} + 6",
+        "stepId": "s4",
+        "focus": [
+          "seg_BC"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Phân tích đoạn BC",
+        "explanation": "Đường cao $AH$ vuông góc với $BC$ tại $H$, chia $BC$ thành hai đoạn $BH$ và $CH$. Ta sẽ tính độ dài hai đoạn này riêng.",
+        "math": "BC = BH + CH",
+        "reason": "Tính chất cộng đoạn thẳng",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BH",
+              "seg_CH",
+              "seg_BC",
+              "seg_AH"
+            ]
+          },
+          {
+            "action": "show",
+            "targets": [
+              "seg_BH",
+              "seg_CH"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AH là đường cao"
+        ],
+        "operation": null,
+        "result": null,
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "H nằm trên BC"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Tính BH trong tam giác vuông ABH",
+        "explanation": "Xét tam giác $ABH$ vuông tại $H$. Áp dụng định nghĩa $\\tan B = \\frac{AH}{BH}$, suy ra $BH = \\frac{AH}{\\tan 60^\\circ} = \\frac{6}{\\sqrt{3}} = 2\\sqrt{3}$ cm.",
+        "math": "BH = \\frac{AH}{\\tan 60^\\circ} = \\frac{6}{\\sqrt{3}} = 2\\sqrt{3} \\text{ (cm)}",
+        "reason": "Định nghĩa tỉ số lượng giác trong tam giác vuông",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "ang_ABC"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BC",
+              "seg_AB",
+              "seg_AH",
+              "ang_ABC"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AH = 6",
+          "B = 60 độ"
+        ],
+        "operation": "divide",
+        "result": "2*sqrt(3)",
+        "verification": {
+          "status": "verified",
+          "method": "compute",
+          "reason": "6/sqrt(3) = 2*sqrt(3)"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Tính CH trong tam giác vuông ACH",
+        "explanation": "Xét tam giác $ACH$ vuông tại $H$. Vì $\\widehat C = 45^\\circ$ nên tam giác $ACH$ vuông cân tại $H$, suy ra $CH = AH = 6$ cm.",
+        "math": "CH = AH = 6 \\text{ (cm)}",
+        "reason": "Tam giác vuông có một góc nhọn bằng 45° là tam giác vuông cân",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "ang_BCA"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BC",
+              "seg_CA",
+              "seg_AH",
+              "ang_BCA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AH = 6",
+          "C = 45 độ"
+        ],
+        "operation": "equal",
+        "result": "6",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "Tam giác ACH vuông cân"
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Tính BC",
+        "explanation": "Cộng hai đoạn $BH$ và $CH$ lại, ta được độ dài $BC$.",
+        "math": "BC = BH + CH = 2\\sqrt{3} + 6 \\text{ (cm)}",
+        "reason": "Tính chất cộng đoạn thẳng",
+        "uses": [
+          "s2",
+          "s3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BC",
+              "seg_AH"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "BH = 2*sqrt(3)",
+          "CH = 6"
+        ],
+        "operation": "add",
+        "result": "2*sqrt(3)+6",
+        "verification": {
+          "status": "verified",
+          "method": "compute",
+          "reason": "2*sqrt(3) + 6"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Độ dài đoạn thẳng $BC$ là $2\\sqrt{3} + 6$ cm.",
+      "math": "BC = 2\\sqrt{3} + 6 \\text{ (cm)}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "BC = AH/tan(60) + AH/tan(45) với AH = 6"
+        ],
+        "assignments": [],
+        "expected": "2*sqrt(3)+6"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 7.7274066103125465,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 2.8284271247461903,
+          "y": 4.898979485566356,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "H",
+          "label": "H",
+          "kind": "foot",
+          "refs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_CA",
+          "kind": "segment",
+          "from": "C",
+          "to": "A",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BH",
+          "kind": "segment",
+          "from": "B",
+          "to": "H",
+          "style": "construction",
+          "label": null
+        },
+        {
+          "id": "seg_CH",
+          "kind": "segment",
+          "from": "C",
+          "to": "H",
+          "style": "construction",
+          "label": null
+        },
+        {
+          "id": "seg_AH",
+          "kind": "segment",
+          "from": "A",
+          "to": "H",
+          "style": "given",
+          "label": null
+        }
+      ],
+      "circles": [],
+      "angles": [
+        {
+          "id": "ang_ABC",
+          "from": "A",
+          "vertex": "B",
+          "to": "C",
+          "label": null,
+          "right": false,
+          "style": "construction"
+        },
+        {
+          "id": "ang_BCA",
+          "from": "B",
+          "vertex": "C",
+          "to": "A",
+          "label": null,
+          "right": false,
+          "style": "construction"
+        }
+      ],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "failed": [],
+  "logs": [
+    "proof planner: UNSOLVED_WITHIN_BOUNDARY — no proof goal (computation only) (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 1: verified, 1 problem(s): answer check \"BC = AH/tan(60) + AH/tan(45) với AH = 6\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "agent turn 1: lesson as text → 0 problem(s)",
+    "attempt 2: verified, 1 problem(s): answer check \"BC = AH * (1/tan(60) + 1/tan(45)) với AH = 6\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=default in=28954 (cached 0) out=5974 (reasoning 0) ≈ $0.0221",
+    "total ≈ $0.0221 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "question": {
+    "id": "ptnk-2023-chuyen/3a",
+    "split": "train",
+    "source": "exam ptnk-2023-chuyen",
+    "input": "Người ta tô màu mỗi ô của bảng hình vuông $4\\times4$ bằng một trong hai màu đen hoặc trắng thỏa mãn các điều kiện sau: i. Số ô đen trên các hàng đều bằng nhau. ii. Số ô đen trên các cột đôi một khác nhau. Tính số ô đen trên mỗi hàng.",
+    "reference": "2",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Người ta tô màu mỗi ô của bảng hình vuông 4x4 bằng một trong hai màu đen hoặc trắng thỏa mãn các điều kiện sau: i. Số ô đen trên các hàng đều bằng nhau. ii. Số ô đen trên các cột đôi một khác nhau. Tính số ô đen trên mỗi hàng.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Đại số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "System of linear equations",
+        "Ràng buộc số nguyên"
+      ],
+      "techniques": [
+        "substitution",
+        "case_analysis",
+        "domain_conditions"
+      ],
+      "givens": [
+        "Square table 4x4",
+        "Mỗi ô được tô màu đen hoặc trắng",
+        "Số ô đen bằng nhau ở cả 4 hàng",
+        "Số ô đen khác nhau ở mỗi trong 4 cột"
+      ],
+      "unknowns": [
+        "Number of black cells per row"
+      ],
+      "constraints": [
+        "2 colors (black/white)",
+        "Equal black cells per row",
+        "Distinct black cells per column"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Đặt ẩn số ô đen mỗi hàng là r, thiết lập phương trình tổng số ô đen theo hàng và theo cột. Sử dụng điều kiện các số ô đen các cột là 4 số nguyên phân biệt từ 0 đến 4 để tìm ra tổng duy nhất thỏa mãn chia hết cho 4, từ đó suy ra r.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Nếu gọi số ô đen trên mỗi hàng là $r$ và số ô đen trên các cột là $c_1, c_2, c_3, c_4$, thì tổng số ô đen của bảng được tính theo hai cách như thế nào?",
+        "cue": "Tổng số ô đen",
+        "explanation": "Bạn hãy đặt số ô đen trên mỗi hàng là $r$. Vì có 4 hàng, tổng số ô đen trong cả bảng là $4r$. Mặt khác, nếu gọi số ô đen trên 4 cột lần lượt là $c_1, c_2, c_3, c_4$, thì tổng số ô đen cũng bằng $c_1 + c_2 + c_3 + c_4$. Từ đó bạn có thể thiết lập một phương trình liên hệ giữa $r$ và các $c_i$.",
+        "math": "4r = c_1 + c_2 + c_3 + c_4",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Số ô đen trên mỗi cột có thể nhận những giá trị nào? Và vì các cột đôi một khác nhau, bạn có thể chọn được bao nhiêu bộ giá trị khác nhau cho $(c_1, c_2, c_3, c_4)$?",
+        "cue": "Điều kiện của các cột",
+        "explanation": "Vì bảng có 4 cột và mỗi cột có tối đa 4 ô, nên số ô đen trên mỗi cột ($c_i$) là một số nguyên từ 0 đến 4. Đề bài cho biết các số này đôi một khác nhau. Bạn hãy liệt kê tất cả các bộ 4 số nguyên khác nhau có thể lấy từ tập {0, 1, 2, 3, 4}.",
+        "math": "c_i \\in \\{0, 1, 2, 3, 4\\}",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Tổng $c_1 + c_2 + c_3 + c_4$ phải là bội của 4 (vì bằng $4r$). Trong các bộ 4 số khác nhau từ 0 đến 4, bộ nào có tổng chia hết cho 4?",
+        "cue": "Kiểm tra tính hợp lệ",
+        "explanation": "Bạn đã có các tổng có thể của 4 số khác nhau từ 0 đến 4. Hãy nhớ rằng tổng này phải bằng $4r$, nghĩa là tổng phải chia hết cho 4. Hãy kiểm tra xem tổng nào trong các trường hợp bạn tìm được thỏa mãn điều kiện này. Sau đó, hãy thử xem với giá trị $r$ đó, liệu có thể điền các ô đen vào bảng sao cho đúng với số lượng cột đã chọn không.",
+        "math": "4r \\vdots 4",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Thiết lập phương trình tổng",
+        "explanation": "Gọi số ô đen trên mỗi hàng là $r$. Vì có 4 hàng, tổng số ô đen trong bảng là $4r$. Gọi số ô đen trên 4 cột lần lượt là $c_1, c_2, c_3, c_4$. Tổng số ô đen cũng bằng tổng các số ô đen trên các cột, nên ta có phương trình: $c_1 + c_2 + c_3 + c_4 = 4r$.",
+        "math": "c_1 + c_2 + c_3 + c_4 = 4r",
+        "reason": "Tổng số ô đen không đổi",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given: 4 rows, equal black cells per row",
+          "Given: 4 columns"
+        ],
+        "operation": "set_up_equation",
+        "result": "Thiết lập được mối liên hệ giữa số ô đen mỗi hàng và tổng số ô đen các cột.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": null
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Xác định tập giá trị của các cột",
+        "explanation": "Mỗi cột có 4 ô, nên số ô đen trên mỗi cột $c_i$ là một số nguyên thuộc tập {0, 1, 2, 3, 4}. Đề bài yêu cầu các số này đôi một khác nhau, nghĩa là ta cần chọn 4 số khác nhau từ tập {0, 1, 2, 3, 4}. Có 5 số, chọn 4 số, nghĩa là ta sẽ loại đi 1 số.",
+        "math": "c_i \\in \\{0, 1, 2, 3, 4\\}, \\text{ đôi một khác nhau}",
+        "reason": "Điều kiện xác định của số ô đen",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Distinct column sums"
+        ],
+        "operation": "analyze_constraints",
+        "result": "Xác định được tập giá trị có thể của các $c_i$.",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Pigeonhole principle / Combinations"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tìm giá trị của r",
+        "explanation": "Ta có 5 trường hợp loại đi một số từ tập {0, 1, 2, 3, 4}. Tổng của 4 số còn lại sẽ là tổng của cả 5 số trừ đi số bị loại. Tổng của {0, 1, 2, 3, 4} là 10. Vậy tổng $S = 10 - k$ với $k$ là số bị loại. Ta cần $S = 4r$, tức là $10 - k$ chia hết cho 4. Vì $k \\in \\{0, 1, 2, 3, 4\\}$, ta thử từng giá trị:\n- Nếu $k=0$, $S=10$ (loại)\n- Nếu $k=1$, $S=9$ (loại)\n- Nếu $k=2$, $S=8$ (nhận, vì $8 = 4 \\times 2$)\n- Nếu $k=3$, $S=7$ (loại)\n- Nếu $k=4$, $S=6$ (loại)\nVậy chỉ có trường hợp loại số 2, tổng các số ô đen các cột là 8, và $4r = 8 \\Rightarrow r = 2$.",
+        "math": "10 - k = 4r \\Rightarrow k = 2, r = 2",
+        "reason": "Điều kiện chia hết",
+        "uses": [
+          "step_1",
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Step 1 equation",
+          "Step 2 domain"
+        ],
+        "operation": "solve_diophantine",
+        "result": "Tìm được giá trị duy nhất của r.",
+        "verification": {
+          "status": "verified",
+          "method": "exhaustion",
+          "reason": "Check all k in 0..4"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Kết luận",
+        "explanation": "Ta đã tìm được $r = 2$. Cần kiểm tra xem có tồn tại cách tô màu thỏa mãn không. Các số ô đen các cột là {0, 1, 3, 4} (loại 2). Ta cần điền 2 ô đen vào mỗi hàng, sao cho các cột có số ô đen là 0, 1, 3, 4. Ví dụ: Cột 1: 0 đen, Cột 2: 1 đen, Cột 3: 3 đen, Cột 4: 4 đen. Tổng ô đen = 8. Mỗi hàng có 2 ô đen. Ta có thể xây dựng bảng như sau:\nHàng 1: 0, 0, 1, 1 (2 đen)\nHàng 2: 0, 1, 1, 1 (3 đen? Không, cần 2 đen)\nThử lại: Cột 4 có 4 đen (tất cả hàng đều có đen ở cột 4). Cột 1 có 0 đen (không hàng nào có đen ở cột 1). Vậy mỗi hàng có 1 đen ở cột 4, cần thêm 1 đen nữa ở cột 2 hoặc 3. Cột 2 cần 1 đen, Cột 3 cần 3 đen. Vậy 3 hàng còn lại (trừ hàng 1) phải có đen ở cột 3, và 1 hàng trong số đó có thêm đen ở cột 2. Ví dụ:\nH1: 0, 0, 1, 1\nH2: 0, 0, 1, 1\nH3: 0, 0, 1, 1\nH4: 0, 1, 1, 1 -> Cột 2 có 1 đen, Cột 3 có 4 đen? Không, Cột 3 cần 3 đen.\nThử: C1=0, C2=1, C3=3, C4=4.\nH1: 0, 0, 1, 1\nH2: 0, 0, 1, 1\nH3: 0, 1, 1, 1 -> C2=1, C3=3, C4=3? Không, C4=4.\nH1: 0, 0, 1, 1\nH2: 0, 0, 1, 1\nH3: 0, 0, 1, 1\nH4: 0, 1, 1, 1 -> C3=4, C4=4. Sai.\nThử: C1=0, C2=1, C3=3, C4=4.\nH1: 0, 1, 0, 1 (2 đen)\nH2: 0, 0, 1, 1 (2 đen)\nH3: 0, 0, 1, 1 (2 đen)\nH4: 0, 0, 1, 1 (2 đen)\nTổng C2=1, C3=3, C4=4, C1=0. Đúng. Vậy tồn tại cách tô.\nKết luận: Số ô đen trên mỗi hàng là 2.",
+        "math": "r = 2",
+        "reason": "Kiểm tra tính tồn tại",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Step 3 result"
+        ],
+        "operation": "kiểm_tra_và_kết_luận",
+        "result": "Xác nhận kết quả và kết luận.",
+        "verification": {
+          "status": "verified",
+          "method": "construction",
+          "reason": null
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số ô đen trên mỗi hàng là 2.",
+      "math": "2"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "Sum of distinct integers from 0 to 4 is 4 * r"
+        ],
+        "assignments": [],
+        "expected": "2"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 33291,
+  "usage": {
+    "default": {
+      "input": 9602,
+      "cachedInput": 0,
+      "output": 4236,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.010759620000000001,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "language repair round 1: not accepted subtopic: still foreign, statusReason: formulas changed, concept2: still foreign, constraint0: formulas changed, s0vr: formulas changed, s1f0: formulas changed",
+    "language repair round 2: not accepted subtopic: still foreign, statusReason: formulas changed, concept2: still foreign, constraint0: formulas changed, s0vr: formulas changed, s1f0: formulas changed",
+    "language repair: 5/13 field(s) rewritten in 6 s",
+    "removed 8 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"Sum of distinct integers from 0 to 4 is 4 * r\" can't be evaluated (could not evaluate: Unknown variable S). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=9602 (cached 0) out=4236 (reasoning 0) ≈ $0.0108",
+    "total ≈ $0.0108 over 1 attempt(s); lesson by default"
+  ]
+}

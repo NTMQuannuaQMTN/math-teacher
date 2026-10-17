@@ -1,0 +1,545 @@
+{
+  "question": {
+    "id": "ptnk-2026-chuyen/2",
+    "split": "train",
+    "source": "exam ptnk-2026-chuyen",
+    "input": "Câu 2. Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+    "reference": "18",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tứ giác lồi ABCD có hai đường chéo vuông góc với nhau, biết BC = 7 và DA = 1. Tìm giá trị lớn nhất của chu vi tứ giác ABCD.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Geometry optimization",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tứ giác có hai đường chéo vuông góc",
+        "Định lý Pythagore",
+        "Bất đẳng thức Cô-si (Cô-si) hoặc hằng đẳng thức"
+      ],
+      "techniques": [
+        "pythagoras",
+        "am_gm",
+        "equality_case"
+      ],
+      "givens": [
+        "Tứ giác lồi ABCD",
+        "BC = 7",
+        "DA = 1",
+        "AC ❢ BD"
+      ],
+      "unknowns": [
+        "Max perimeter P"
+      ],
+      "constraints": [
+        "Tứ giác lồi",
+        "BC = 7, DA = 1",
+        "AC vuông góc BD"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu tìm chu vi lớn nhất của một tứ giác lồi có hai đường chéo vuông góc với nhau và hai cạnh đối diện có độ dài cố định (BC=7, DA=1). Mặc dù đẳng thức AB² + CD² = BC² + DA² luôn đúng, việc tìm chu vi lớn nhất P = AB + CD + BC + DA tương đương với việc tìm giá trị lớn nhất của AB + CD…"
+      ]
+    },
+    "strategy": "Sử dụng tính chất hai đường chéo vuông góc để thiết lập mối liên hệ giữa các cạnh đối diện thông qua định lý Pythagore. Sau đó, sử dụng bất đẳng thức Cô-si để tìm giá trị lớn nhất của tổng hai cạnh còn lại, từ đó suy ra giá trị lớn nhất của chu vi.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Gọi O là giao điểm của AC và BD. Hãy tính tổng AB² + CD² theo BC và DA.",
+        "cue": "Định lý Pythagore",
+        "explanation": "Giao điểm của hai đường chéo là O. Khi đó, ta có 4 tam giác vuông tại O. Áp dụng định lý Pythagore cho từng tam giác, ta có thể tìm được mối liên hệ giữa các cạnh đối diện.",
+        "math": "AB^2 + CD^2 = BC^2 + DA^2",
+        "stepId": "step_1",
+        "focus": [
+          "seg_AC",
+          "seg_BD",
+          "O"
+        ]
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Biết tổng AB² + CD², làm thế nào để tìm giá trị lớn nhất của AB + CD?",
+        "cue": "Bất đẳng thức Cô-si (Cô-si)",
+        "explanation": "Ta đã có tổng bình phương AB² + CD². Để tìm giá trị lớn nhất của tổng AB + CD, ta có thể sử dụng bất đẳng thức liên hệ giữa tổng và tổng bình phương: (a+b)² ≤ 2(a²+b²).",
+        "math": "(AB + CD)^2 \\le 2(AB^2 + CD^2)",
+        "stepId": "step_2",
+        "focus": [
+          "seg_AB",
+          "seg_CD"
+        ]
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Chu vi P được tính như thế nào? Hãy thay các giá trị đã tìm được vào.",
+        "cue": "Chu vi tứ giác",
+        "explanation": "Chu vi P = AB + CD + BC + DA. Ta đã tìm được max(AB + CD), và BC, DA đã biết. Chỉ cần cộng lại.",
+        "math": "P = AB + CD + BC + DA",
+        "stepId": "step_3",
+        "focus": [
+          "seg_AB",
+          "seg_BC",
+          "seg_CD",
+          "seg_DA"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Thiết lập mối liên hệ giữa các cạnh",
+        "explanation": "Gọi O là giao điểm của hai đường chéo AC và BD. Vì AC ❢ BD nên bốn tam giác OAB, OBC, OCD, ODA đều vuông tại O.",
+        "math": "AB^2 + CD^2 = (OA^2 + OB^2) + (OC^2 + OD^2) = (OB^2 + OC^2) + (OA^2 + OD^2) = BC^2 + DA^2",
+        "reason": "Định lý Pythagore trong các tam giác vuông OAB, OBC, OCD, ODA.",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "show",
+            "targets": [
+              "seg_AC",
+              "seg_BD",
+              "O"
+            ]
+          },
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AC",
+              "seg_BD",
+              "seg_AB",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AC ❢ BD"
+        ],
+        "operation": "algebra",
+        "result": "AB^2 + CD^2 = BC^2 + DA^2",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic",
+          "reason": "Pythagorean theorem application is correct."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tính tổng bình phương hai cạnh",
+        "explanation": "Thay các giá trị BC = 7 và DA = 1 vào đẳng thức trên.",
+        "math": "AB^2 + CD^2 = 7^2 + 1^2 = 50",
+        "reason": "Thay số.",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BC",
+              "seg_DA",
+              "seg_AB",
+              "seg_CD"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "BC = 7",
+          "DA = 1"
+        ],
+        "operation": "algebra",
+        "result": "AB^2 + CD^2 = 50",
+        "verification": {
+          "status": "verified",
+          "method": "trung bình cộng",
+          "reason": "7^2 + 1^2 = 49 + 1 = 50."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tìm giá trị lớn nhất của tổng hai cạnh",
+        "explanation": "Sử dụng bất đẳng thức (a + b)² ≤ 2(a² + b²) để tìm giá trị lớn nhất của AB + CD.",
+        "math": "(AB + CD)^2 \\le 2(AB^2 + CD^2) = 2 \\cdot 50 = 100 \\Rightarrow AB + CD \\le 10",
+        "reason": "Bất đẳng thức Cô-si (Cô-si) hoặc hằng đẳng thức (a-b)² ≥ 0.",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AB^2 + CD^2 = 50"
+        ],
+        "operation": "algebra",
+        "result": "AB + CD \\le 10",
+        "verification": {
+          "status": "verified",
+          "method": "inequality",
+          "reason": "(AB+CD)^2 <= 2(AB^2+CD^2) là một bất đẳng thức quen thuộc."
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính giá trị lớn nhất của chu vi",
+        "explanation": "Chu vi P = AB + CD + BC + DA. Thay các giá trị đã biết và kết quả tìm được.",
+        "math": "P = AB + CD + BC + DA \\le 10 + 7 + 1 = 18",
+        "reason": "Định nghĩa chu vi và bất đẳng thức đã chứng minh.",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AB + CD \\le 10",
+          "BC = 7",
+          "DA = 1"
+        ],
+        "operation": "algebra",
+        "result": "P \\le 18",
+        "verification": {
+          "status": "verified",
+          "method": "trung bình cộng",
+          "reason": "10 + 7 + 1 = 18."
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Xét điều kiện dấu bằng",
+        "explanation": "Dấu bằng xảy ra khi AB = CD. Khi đó AB = CD = 5. Tuy nhiên, với AB = CD và AC ❢ BD, tứ giác ABCD là hình thang cân hoặc hình chữ nhật, suy ra BC = DA. Nhưng đề bài cho BC = 7, DA = 1 (7 ≠ 1), nên dấu bằng không thể xảy ra trong tứ giác lồi thực sự. Giá trị lớn nhất 18 là cận trên đúng (supremum). Trong các bài toán trắc nghiệm hoặc tìm GTLN/GTNN dạng này, đáp án thường là giá trị cận trên đó.",
+        "math": "AB = CD = 5 \\Rightarrow BC = DA \\text{ (mâu thuẫn với } BC=7, DA=1\\text{)}",
+        "reason": "Phân tích điều kiện dấu bằng.",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_AC",
+              "seg_BD",
+              "seg_BC",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AB = CD",
+          "BC \\neq DA"
+        ],
+        "operation": null,
+        "result": "GTNN không đạt được, nhưng cận trên là 18.",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Tứ giác nội tiếp hình thang cân có hai đường chéo vuông góc thì có hai cạnh đối diện bằng nhau."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18.",
+      "math": "18"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "AB^2 + CD^2 = BC^2 + DA^2 = 7^2 + 1^2 = 50",
+          "(AB + CD)^2 <= 2(AB^2 + CD^2) = 100",
+          "AB + CD <= 10",
+          "P = AB + CD + BC + DA <= 10 + 7 + 1 = 18"
+        ],
+        "assignments": [],
+        "expected": "18"
+      }
+    ],
+    "figure": {
+      "scale": "schematic",
+      "points": [
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0.8,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": -4.2,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": -5.6000000000000005,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "kind": "free",
+          "refs": [],
+          "x": 0.6,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "intersection",
+          "refs": [
+            "A",
+            "C",
+            "B",
+            "D"
+          ],
+          "x": 5,
+          "y": 5,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": "7"
+        },
+        {
+          "id": "seg_CD",
+          "kind": "segment",
+          "from": "C",
+          "to": "D",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_DA",
+          "kind": "segment",
+          "from": "D",
+          "to": "A",
+          "style": "given",
+          "label": "1"
+        },
+        {
+          "id": "seg_AC",
+          "kind": "segment",
+          "from": "A",
+          "to": "C",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BD",
+          "kind": "segment",
+          "from": "B",
+          "to": "D",
+          "style": "given",
+          "label": null
+        }
+      ],
+      "circles": [],
+      "angles": [
+        {
+          "id": "ang_DAB",
+          "from": "A",
+          "vertex": "A",
+          "to": "B",
+          "label": null,
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_ABC",
+          "from": "B",
+          "vertex": "B",
+          "to": "C",
+          "label": null,
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_BCD",
+          "from": "C",
+          "vertex": "C",
+          "to": "D",
+          "label": null,
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_CDA",
+          "from": "D",
+          "vertex": "D",
+          "to": "A",
+          "label": null,
+          "right": false,
+          "style": "given"
+        },
+        {
+          "id": "ang_AOB",
+          "from": "A",
+          "vertex": "O",
+          "to": "B",
+          "label": "90°",
+          "right": true,
+          "style": "given"
+        }
+      ],
+      "marks": [],
+      "checks": [
+        {
+          "kind": "length_value",
+          "refs": [
+            "B",
+            "C"
+          ],
+          "value": 7,
+          "role": "given"
+        },
+        {
+          "kind": "length_value",
+          "refs": [
+            "D",
+            "A"
+          ],
+          "value": 1,
+          "role": "given"
+        },
+        {
+          "kind": "perpendicular",
+          "refs": [
+            "A",
+            "C",
+            "B",
+            "D"
+          ],
+          "value": 90,
+          "role": "given"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "status": "partial",
+    "checks": [
+      {
+        "label": "figure matches the givens",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 37369,
+  "usage": {
+    "default": {
+      "input": 9649,
+      "cachedInput": 0,
+      "output": 8877,
+      "reasoning": 3022
+    }
+  },
+  "costUsd": 0.01783509,
+  "model": "default",
+  "logs": [
+    "proof planner: UNSOLVED_WITHIN_BOUNDARY — no proof goal (computation only) (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 0 s (738 chars)",
+    "language repair round 1: not accepted s4o: still foreign, s4vm: still foreign",
+    "language repair round 2: not accepted s4o: still foreign, s4vm: still foreign",
+    "language repair: 5/7 field(s) rewritten in 3 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: partial, 1 problem(s): answer check \"AB^2 + CD^2 = BC^2 + DA^2 = 7^2 + 1^2 = 50\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=9649 (cached 0) out=8877 (reasoning 3022) ≈ $0.0178",
+    "total ≈ $0.0178 over 1 attempt(s); lesson by default"
+  ]
+}

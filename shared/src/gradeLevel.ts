@@ -37,13 +37,22 @@ const FORBIDDEN: Marker[] = [
   { re: /ma trận|định thức|\bmatrices\b|\bmatrix (multiplication|of)|determinant|số phức|complex number/iu, label: "matrices or complex numbers" },
   // Students combine remainder conditions by hand (n = 9k + 7, k lẻ ⇒ n = 18l + 16), not by citing this theorem.
   { re: /chinese remainder|số dư (trung hoa|trung quốc|china)|định l[íý] (số dư )?(trung hoa|china)|\bCRT\b/iu, label: "the Chinese remainder theorem" },
+  // Review 2026-10-15: transformation arguments ("phép đối xứng qua AI biến D thành P") are not Grade 9 methods. Defining a
+  // point as "điểm đối xứng của D qua AI" stays allowed; mapping figures onto each other is not.
+  { re: /phép (?:đối xứng|quay|tịnh tiến|biến hình)|đối xứng (?:trục|tâm) biến|(?:qua phép|phép) [^.;]{0,40}\bbiến\b[^.;]{0,40}\bthành\b|reflection maps|rotation maps|\btranslation maps/iu, label: "geometric transformations (phép đối xứng, phép quay, phép tịnh tiến)" },
   // Outside the agreed knowledge base (docs/CURRICULUM_KNOWLEDGE_BASE.md). Ceva, Menelaus, Simson, homothety,
   // spiral similarity and radical axis are INSIDE it (B2, B5) — advisory below, not forbidden.
   {
-    re: /antiparallel|đối song|inversion|phép nghịch đảo|\bpolar\b|đường đối cực|harmonic (division|range|conjugate)|hàng điểm điều hòa|chùm điều hòa|cross[- ]ratio|tỉ số kép|nine[- ]point|đường tròn chín điểm|đường thẳng euler|euler line/iu,
+    re: /antiparallel|(?<!cạnh )đối song(?! song)|inversion|phép nghịch đảo|\bpolar\b|đường đối cực|harmonic (division|range|conjugate)|hàng điểm điều hòa|chùm điều hòa|cross[- ]ratio|tỉ số kép|nine[- ]point|đường tròn chín điểm|đường thẳng euler|euler line/iu,
     label: "geometry tools outside the knowledge base (antiparallel, inversion, pole/polar, harmonic division, cross-ratio, nine-point circle, Euler line)",
   },
   { re: /jensen|schur|h[oö]lder|minkowski/iu, label: "olympiad-only inequalities (Jensen, Schur, Hölder, Minkowski)" },
+  // Reviewer 2026-10-15: "Hyperbol, elipse … chưa học ở lớp 9". Parabolas (y = ax²) are Grade 9 and stay allowed.
+  { re: /hyperbol|hypebol|\belip\b|elíp|ellipse|đường cônic|\bconic/iu, label: "conic sections (hyperbola, ellipse)" },
+  // Reviewer 2026-10-15: "Đồ thị 5-chính tắc là gì"; "matching" — graph theory. "Đồ thị hàm số" stays allowed.
+  // "đồ thị G" / "đồ thị $G$" (a named graph) is case-sensitive: "đồ thị nếu cần" is a function graph remark.
+  { re: /[đĐ]ồ thị\s*(?:\$\s*[A-Z]\s*\$|[A-Z](?!\p{L}))/u, label: "graph theory" },
+  { re: /đồ thị\s*(?:(?:\d+\s*-\s*)?chính tắc|đầy đủ|lưỡng phân|hai phía|quen biết|có hướng)|\bmatching\b|bipartite|graph theory|l[ýí] thuyết đồ thị|bậc của (?:mỗi |một )?đỉnh|counting edges|independent sets?|tập độc lập/iu, label: "graph theory" },
   { re: /logarit|\\log\b|\\ln\b|\blogarithm/iu, label: "logarithms" },
 ];
 

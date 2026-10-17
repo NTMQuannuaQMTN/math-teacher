@@ -1,0 +1,107 @@
+{
+ "ptnk-2023-chuyen/3a": {
+  "verdict": "đúng",
+  "score": 5,
+  "notes": "Đáp số 2 đúng (loại số 2 khỏi {0,…,4}), nhưng bước 4 tự sửa giữa chừng ('3 đen? Không, cần 2 đen… Thử lại') và không vẽ được bảng ví dụ như bạn yêu cầu. Luật mới bắt đoạn này để viết lại."
+ },
+ "ptnk-2024-chuyen/5a": {
+  "verdict": "một phần",
+  "score": 5,
+  "notes": "Kết quả a₁ ≥ 226 đúng nhưng lập luận chỉ xét trường hợp dãy cách đều 1 ('trường hợp cách đều nhất') thay vì chứng minh a_{16+k} ≥ a_{k+1} + 15 cho mọi dãy."
+ },
+ "hcm-2025-chuyen/5a": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Δ = k², (a−4−k)(a−4+k) = 56, chọn cặp cùng chẵn → 4 giá trị, xác suất 4/201."
+ },
+ "hcm-2025-chuyen/5b": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Phản chứng với dãy kiểu Fibonacci: x₁₁ ≥ 144 > 100."
+ },
+ "hanoi-2025-chuyen/V.1": {
+  "verdict": "không hiển thị",
+  "score": 3,
+  "notes": "Đếm hai cách 4x = 3y → x chia hết cho 3 nên x ≠ 25 — đúng. Bị chặn vì phần lí do ghi 'Counting edges in a bipartite graph' (tiếng Anh + lí thuyết đồ thị) — đúng luật bạn đặt."
+ },
+ "hanoi-2025-chuyen/V.2": {
+  "verdict": "sai",
+  "score": 0,
+  "notes": "Các bước ra 77, kết luận ghi 80 — cả hai sai (đáp án 70: còn điều kiện 5x chẵn từ (i) nên x chẵn, k chẵn). Bị chặn, không hiển thị."
+ },
+ "ptnk-2026-chuyen/5": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Có vẽ bảng 3×3 (dạng bảng có kẻ ô); b) cộng d = k−5 vào mỗi ô; c) S = 3n ≥ 45 và 4n = S + 3c."
+ },
+ "comb8-h1": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Xếp nam trước, 6 khoảng trống, A₆³ — 14400. Lỗi gạch dưới '_ N _' đã hết."
+ },
+ "comb8-h3": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Tổng riêng phần + Dirichlet, đúng; hơi dài (8 bước)."
+ },
+ "comb8-h5": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "3 đường kính × 4 = 12."
+ },
+ "comb8-h6": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "Bình thắng, lấy 4 − x. Lỗi tiếng Anh vòng trước đã hết."
+ },
+ "comb9-f1": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Mô-đun chứng nhận: 3·5·4 = 60, nhưng văn mẫu thừa ('chữ số đầu khác 0', 'cộng hai trường hợp: 60 = 60') vì đề không có chữ số 0."
+ },
+ "comb9-f4": {
+  "verdict": "đúng",
+  "score": 9,
+  "notes": "C₇² = 21, C₇³ = 35."
+ },
+ "comb9-f5": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Trò chơi hai đống sỏi: mô hình không viết được chứng nhận chiến lược hợp lệ (đáp án: người đi sau thắng bằng cách giữ hai đống bằng nhau)."
+ },
+ "ptnk-2025-chuyen/5a": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Trò chơi: không có chứng nhận chiến lược hợp lệ (như vòng trước)."
+ },
+ "ptnk-2025-chuyen/5b": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Câu MỚI (đề thi chưa dùng): mô hình dùng lí thuyết đồ thị rồi không hoàn thành chứng nhận."
+ },
+ "ptnk-2023-chuyen/3b": {
+  "verdict": "đúng",
+  "score": 6,
+  "notes": "Chạy lại: 4 (theo cột) và 11 (theo hàng) — đúng, có cấu hình 3 hàng xen kẽ + 1 hàng B-W-W-B. Vẫn chưa vẽ bảng minh họa như bạn yêu cầu; một chỗ lỗi định dạng '\\Rightarrow' bị tách dòng. (Lần đầu: hết thời gian.)"
+ },
+ "ptnk-2024-chuyen/5b": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Mô hình bỏ cuộc ở mọi lần thử (vòng trước bạn chấm 3 — 'quá phức tạp')."
+ },
+ "comb8-h2": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Vẫn bị loại vì chữ 'choose' trong ô kết quả (lần chạy lại dùng lại phản hồi đã lưu nên chưa áp dụng sửa 38)."
+ },
+ "comb8-h4": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Chạy lại: tổng 45 lẻ, ba tổng chẵn → mâu thuẫn. Đúng, hơi dài (6 bước). Chữ 'logic' đã hết."
+ },
+ "comb9-f2": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Chạy lại: 12 × 2 = 24 < 30 → mâu thuẫn. Đúng; bước 1 thừa."
+ }
+}

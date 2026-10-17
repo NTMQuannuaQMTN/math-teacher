@@ -1,0 +1,78 @@
+{
+  "type": "geometry",
+  "round": "3",
+  "split": "heldout",
+  "createdAt": "2026-10-14T13:22:47.960Z",
+  "spentTotalUsd": 1.0011516100000002,
+  "results": [
+    {
+      "id": "geo8-h1",
+      "ok": true,
+      "served": true,
+      "producedBy": "proof-planner",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 124,
+      "finalAnswer": "Đã chứng minh: tứ giác AEHF nội tiếp; AE· AC = AF· AB.",
+      "costUsd": 0
+    },
+    {
+      "id": "geo8-h2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "partial",
+      "attempts": 2,
+      "ms": 151105,
+      "finalAnswer": "a) $MN = AM + BN$\nb) $\\boxed{\\text{góc } MON = 90^\\text{o}}$",
+      "costUsd": 0.0395
+    },
+    {
+      "id": "geo8-h3",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the model could not finish this problem in time (local model request timed out)",
+      "ms": 230025,
+      "logs": [
+        "proof planner: PARSING_UNCERTAIN — points not constructed: D (0 ms, 0 facts; 0 steps, ≤0 cited)",
+        "attempt 1 failed (local model request timed out); trying again",
+        "escalating to default",
+        "attempt 2 failed after 230 s (local model request timed out); not retrying"
+      ],
+      "costUsd": 0
+    },
+    {
+      "id": "geo8-h4",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 37233,
+      "finalAnswer": "Ta có:\n$\\widehat{C} = 100^\\circ$\n$\\widehat{D} = 110^\\circ$",
+      "costUsd": 0.0154
+    },
+    {
+      "id": "geo8-h5",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 167486,
+      "finalAnswer": "Ta đã chứng minh được $MA^2 = MB \\cdot MC$ (đpcm).",
+      "costUsd": 0.0143
+    },
+    {
+      "id": "geo8-h6",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 66258,
+      "finalAnswer": "Khoảng cách giữa hai dây AB và CD là 7 cm.",
+      "costUsd": 0.0221
+    }
+  ]
+}

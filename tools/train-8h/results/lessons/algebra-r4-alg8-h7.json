@@ -1,0 +1,204 @@
+{
+  "question": {
+    "id": "alg8-h7",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho phương trình $x^2-2mx+m^2-1=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=10$.",
+    "reference": "$m=\\pm2$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2 - 2mx + m^2 - 1 = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 10$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Phương trình bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai một ẩn",
+        "Hệ thức Vi-ét",
+        "Biệt thức Δ"
+      ],
+      "techniques": [
+        "vieta",
+        "discriminant",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình $x^2 - 2mx + m^2 - 1 = 0$",
+        "Điều kiện $x_1^2 + x_2^2 = 10$"
+      ],
+      "unknowns": [
+        "m"
+      ],
+      "constraints": [
+        "Phương trình có hai nghiệm phân biệt ($\\Delta > 0$)"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Không thể giải quyết do thiếu thông tin về điều kiện xác định hoặc các ràng buộc khác."
+      ]
+    },
+    "strategy": "Sử dụng hệ thức Vi-ét để biểu diễn $x_1^2 + x_2^2$ theo $m$, sau đó giải phương trình tìm $m$ và kiểm tra điều kiện $\\Delta \\ge 0$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 3,
+        "question": "Bạn hãy tính biệt thức $\\Delta$ và áp dụng hệ thức Vi-ét để biểu diễn $x_1^2 + x_2^2$ theo $m$.",
+        "cue": "Biệt thức $\\Delta$ và hệ thức Vi-ét",
+        "explanation": "Trước hết, để phương trình có hai nghiệm $x_1, x_2$, ta cần $\\Delta \\ge 0$. Sau đó, áp dụng hệ thức Vi-ét để tính $x_1 + x_2$ và $x_1 \\cdot x_2$ theo $m$. Cuối cùng, biến đổi $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2$ thành phương trình theo $m$.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 4,
+        "question": "Giải phương trình $m^2 = 4$ tìm $m$ và kiểm tra lại điều kiện $\\Delta \\ge 0$.",
+        "cue": "Giải phương trình bậc hai theo $m$",
+        "explanation": "Phương trình $m^2 = 4$ sẽ cho ta hai giá trị của $m$. Bạn cần kiểm tra xem hai giá trị này có thỏa mãn điều kiện $\\Delta \\ge 0$ hay không.",
+        "math": "m^2 = 4",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Tính biệt thức $\\Delta$",
+        "explanation": "Ta có phương trình $x^2 - 2mx + m^2 - 1 = 0$. Để phương trình có hai nghiệm $x_1, x_2$, ta cần $\\Delta \\ge 0$. Ta có $\\Delta = (-2m)^2 - 4(m^2 - 1) = 4m^2 - 4m^2 + 4 = 4 > 0$. Vậy phương trình luôn có hai nghiệm phân biệt với mọi $m$.",
+        "math": "\\Delta = 4 > 0",
+        "reason": "Điều kiện để phương trình bậc hai có nghiệm",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "discriminant",
+        "result": "Phương trình luôn có hai nghiệm phân biệt.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra điều kiện nghiệm"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Áp dụng hệ thức Vi-ét",
+        "explanation": "Áp dụng hệ thức Vi-ét, ta có $x_1 + x_2 = 2m$ và $x_1 \\cdot x_2 = m^2 - 1$. Ta biến đổi $x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1x_2 = (2m)^2 - 2(m^2 - 1) = 4m^2 - 2m^2 + 2 = 2m^2 + 2$. Theo đề bài, $x_1^2 + x_2^2 = 10$, nên $2m^2 + 2 = 10$.",
+        "math": "2m^2 + 2 = 10",
+        "reason": "Hệ thức Vi-ét và hằng đẳng thức",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "vieta",
+        "result": "Phương trình theo $m$ là $2m^2 + 2 = 10$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra điều kiện nghiệm"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Giải phương trình tìm $m$",
+        "explanation": "Giải phương trình $2m^2 + 2 = 10 \\Leftrightarrow 2m^2 = 8 \\Leftrightarrow m^2 = 4 \\Leftrightarrow m = 2$ hoặc $m = -2$. Vì $\\Delta = 4 > 0$ với mọi $m$, nên cả hai giá trị $m = 2$ và $m = -2$ đều thỏa mãn điều kiện để phương trình có hai nghiệm phân biệt.",
+        "math": "m = 2 \\text{ hoặc } m = -2",
+        "reason": "Giải phương trình bậc hai",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "solve",
+        "result": "Giá trị của $m$ là $2$ hoặc $-2$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra điều kiện nghiệm"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $m = 2$ hoặc $m = -2$.",
+      "math": "m = 2 \\text{ hoặc } m = -2"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 - 2mx + m^2 - 1 = 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "2"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "-2"
+            }
+          ]
+        ],
+        "expected": "10"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 3,
+  "durationMs": 151207,
+  "usage": {
+    "default": {
+      "input": 12447,
+      "cachedInput": 0,
+      "output": 4549,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.012515630000000002,
+  "model": "default",
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "attempt 1 failed (local model request timed out); trying again with a concise lesson",
+    "escalating to default",
+    "language repair round 1: not accepted statusReason: still foreign",
+    "language repair round 2: not accepted statusReason: still foreign",
+    "language repair: 3/4 field(s) rewritten in 3 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "answer differs from the computation: the values of m in the final answer do not match the condition solved numerically (Giải số điều kiện theo tham số (|m| ≤ 60): m ≈ -2; 2.) — not solutions: 3.0000, -3.0000 — missing: -2.0000, 2.0000; r",
+    "attempt 2: unverified, 2 problem(s): answer check \"x^2 - 2mx + m^2 - 1 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | the values of m in the final answer do not match the condition solved numerically (Giải số điều kiện theo tham số (|m| ≤ 60): m ≈ -2; 2.) — not solutions: 3.0000, -3.0000 — missing: -2.0000, 2.0000; re-derive with Vi-ét and check the discriminant condition",
+    "attempt 3: not_checkable, 1 problem(s): answer check \"x^2 - 2mx + m^2 - 1 = 0\" can't be evaluated (could not evaluate: Unknown variable x). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 3: only minor feedback; not retrying",
+    "usage: model=default in=12447 (cached 0) out=4549 (reasoning 0) ≈ $0.0125",
+    "total ≈ $0.0125 over 3 attempt(s); lesson by default"
+  ]
+}

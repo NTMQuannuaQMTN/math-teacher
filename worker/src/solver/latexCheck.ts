@@ -93,3 +93,25 @@ export function plainUnrenderable(lesson: ModelLesson): ModelLesson {
     })(),
   };
 }
+
+/**
+ * Optional analysis metadata whose formatting is broken (training 2026-10-15, alg8-h8: an interpretation note
+ * "\$\Del…" discarded a lesson whose solution was fine) is removed. The statement, steps, hints and answer are not
+ * touched: broken formatting there still rejects the lesson.
+ */
+export function dropBrokenMetadata(lesson: ModelLesson): ModelLesson {
+  const ok = (t: string) => latexFeedback({ ...lesson, analysis: { ...lesson.analysis, statement: t, subtopic: "", statusReason: null, givens: [], unknowns: [], constraints: [], concepts: [], interpretationNotes: [] }, strategy: "", hints: [], steps: [], finalAnswer: { text: "", math: null } } as ModelLesson).length === 0;
+  const a = lesson.analysis;
+  return {
+    ...lesson,
+    analysis: {
+      ...a,
+      statusReason: a.statusReason && !ok(a.statusReason) ? null : a.statusReason,
+      givens: a.givens.filter(ok),
+      unknowns: a.unknowns.filter(ok),
+      constraints: a.constraints.filter(ok),
+      concepts: a.concepts.filter(ok),
+      interpretationNotes: a.interpretationNotes.filter(ok),
+    },
+  };
+}

@@ -1,0 +1,184 @@
+{
+  "question": {
+    "id": "comb8-h6",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Có $20$ viên bi. Hai bạn An và Bình lần lượt lấy bi, An lấy trước; mỗi lượt phải lấy $1$, $2$ hoặc $3$ viên. Ai lấy được viên bi cuối cùng thì thắng. Ai có chiến lược thắng? Hãy nêu chiến lược.",
+    "reference": "Bình (người đi sau) thắng: sau mỗi lượt của An lấy $k$ viên, Bình lấy $4-k$ viên, giữ số bi còn lại chia hết cho $4$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Có 20 viên bi. Hai bạn An và Bình lần lượt lấy bi, An lấy trước; mỗi lượt phải lấy 1, 2 hoặc 3 viên. Ai lấy được viên bi cuối cùng thì thắng. Ai có chiến lược thắng? Hãy nêu chiến lược.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Lý thuyết trò chơi",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Lý thuyết trò chơi",
+        "Vị trí thắng và vị trí thua",
+        "Chiến lược"
+      ],
+      "techniques": [
+        "case_analysis",
+        "invariant"
+      ],
+      "givens": [
+        "20 bi",
+        "Lấy 1, 2 hoặc 3 viên mỗi lượt",
+        "An lấy trước"
+      ],
+      "unknowns": [
+        "Người thắng",
+        "Chiến lược"
+      ],
+      "constraints": [
+        "Total items: 20",
+        "Người chơi: An (đi trước), Bình (đi sau)",
+        "Luật đi: lấy 1, 2 hoặc 3 vật",
+        "Điều kiện thắng: lấy vật cuối cùng"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu sử dụng các khái niệm lý thuyết trò chơi (vị trí thắng/thua) không nằm trong chương trình chuẩn lớp 9."
+      ]
+    },
+    "strategy": "Phân tích trò chơi bằng cách tìm quy luật từ các trường hợp đơn giản (số bi nhỏ). Xác định rằng người đi sau có thể thắng nếu số bi ban đầu là bội số của (số lượng tối đa + 1). Áp dụng quy luật này cho 20 viên bi để xác định người thắng và chiến lược cụ thể.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Nếu số bi ban đầu là 4, ai sẽ thắng?",
+        "cue": "Chiến thuật tổng bằng $k+1$",
+        "explanation": "Hãy thử tìm quy luật với số bi ít hơn. Nếu có 4 viên bi, người đi trước sẽ lấy 1, 2 hoặc 3 viên. Người đi sau có thể lấy bao nhiêu để lấy hết số bi còn lại và thắng không?",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "20 có phải là bội số của 4 không? Nếu Bình luôn đảm bảo sau mỗi lượt của mình, tổng số bi đã lấy là bội số của 4, thì Bình sẽ thắng khi nào?",
+        "cue": "Nhóm bi",
+        "explanation": "Bạn thấy rằng nếu số bi ban đầu là bội số của 4 (như 4, 8, 12...), người đi sau luôn có thể thắng bằng cách bù vào 4. Bây giờ hãy áp dụng điều này cho 20 viên bi. 20 có chia hết cho 4 không?",
+        "math": null,
+        "stepId": "s2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Phân tích trường hợp cơ sở",
+        "explanation": "Hãy cùng phân tích trò chơi với số bi ít hơn để tìm ra quy luật. Giả sử chỉ có 4 viên bi. An đi trước, An có thể lấy 1, 2 hoặc 3 viên. Dù An lấy bao nhiêu, Bình đều có thể lấy số viên bi còn lại (vì số bi còn lại là 3, 2 hoặc 1, đều nhỏ hơn hoặc bằng 3) và lấy được viên bi cuối cùng. Vậy với 4 viên bi, người đi sau (Bình) sẽ thắng.",
+        "math": "4 \\text{ viên bi} \\Rightarrow \\text{Người đi sau thắng}",
+        "reason": "Phân tích trường hợp cơ sở",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Quy tắc di chuyển"
+        ],
+        "operation": "phân tích",
+        "result": "Với 4 viên bi, người đi sau thắng.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Lý thuyết trò chơi"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Xây dựng chiến lược",
+        "explanation": "Từ kết quả trên, ta thấy chiến lược của người đi sau là: bất cứ An lấy bao nhiêu viên (gọi là $x$), Bình sẽ lấy $4 - x$ viên. Khi đó, sau lượt của Bình, tổng số viên bi đã lấy đi là $x + (4 - x) = 4$ viên. Nếu số bi ban đầu là 8, sau 2 vòng (An-Bình, An-Bình), số bi đã lấy đi là $4 + 4 = 8$ viên, Bình lại thắng. Quy luật này đúng cho mọi số bi là bội số của 4.",
+        "math": "x + (4 - x) = 4",
+        "reason": "Chiến lược bù vào 4",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Chiến lược thắng"
+        ],
+        "operation": "suy luận",
+        "result": "Nếu số bi ban đầu là bội số của 4, người đi sau thắng.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Lý thuyết trò chơi"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Áp dụng cho 20 viên bi",
+        "explanation": "Bây giờ áp dụng vào bài toán với 20 viên bi. Ta thấy $20 = 4 \\times 5$, tức là 20 là bội số của 4. Vì An đi trước, Bình là người đi sau. Bình sẽ áp dụng chiến lược: sau mỗi lượt của An, Bình lấy số viên bi sao cho tổng số viên bi hai người đã lấy trong một vòng bằng 4. Sau 5 vòng như vậy, tổng số bi đã lấy đi là $5 \\times 4 = 20$ viên. Viên bi cuối cùng sẽ do Bình lấy.",
+        "math": "20 \\vdots 4",
+        "reason": "Áp dụng quy luật cho số bi cụ thể",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Divisibility"
+        ],
+        "operation": "application",
+        "result": "Bình thắng.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Lý thuyết trò chơi"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Bạn Bình có chiến lược thắng. Chiến lược: Sau mỗi lượt của An, Bình lấy số viên bi sao cho tổng số viên bi hai người đã lấy trong một vòng (2 lượt) bằng 4.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 17836,
+  "usage": {
+    "default": {
+      "input": 6950,
+      "cachedInput": 0,
+      "output": 2278,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.006590059999999999,
+  "model": "default",
+  "logs": [
+    "language repair round 1: not accepted s0vr: still foreign, s1vr: still foreign, s2vr: still foreign",
+    "language repair: 20/20 field(s) rewritten in 4 s",
+    "attempt 1: not_checkable, 0 problem(s)",
+    "usage: model=default in=6950 (cached 0) out=2278 (reasoning 0) ≈ $0.0066",
+    "total ≈ $0.0066 over 1 attempt(s); lesson by default"
+  ]
+}

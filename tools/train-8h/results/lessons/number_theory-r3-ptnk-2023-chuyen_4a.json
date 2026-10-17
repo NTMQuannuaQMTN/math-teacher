@@ -1,0 +1,209 @@
+{
+  "question": {
+    "id": "ptnk-2023-chuyen/4a",
+    "split": "train",
+    "source": "exam ptnk-2023-chuyen",
+    "input": "Cho $m,n$ là các số nguyên không âm thỏa mãn $m^2-n=1$. Đặt $n^2-m=a$. Chứng minh rằng $a$ là số lẻ.",
+    "reference": "proof",
+    "reference_status": "official",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho $m, n$ là các số nguyên không âm thỏa mãn $m^2 - n = 1$. Đặt $a = n^2 - m$. Chứng minh rằng $a$ là số lẻ.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Lý thuyết số / Đại số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Biểu thức đại số",
+        "Số chẵn, số lẻ",
+        "Tính chất chia hết"
+      ],
+      "techniques": [
+        "factorization",
+        "parity"
+      ],
+      "givens": [
+        "m, n là các số nguyên không âm",
+        "$m^2 - n = 1$",
+        "$n^2 - m = a$"
+      ],
+      "unknowns": [
+        "a"
+      ],
+      "constraints": [
+        "m, n là các số nguyên không âm",
+        "$m^2 - n = 1$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu chứng minh một tính chất của biểu thức nguyên. Tuy nhiên, phát biểu sai với nghiệm hợp lệ $m=0, n=0$ (thỏa mãn $m^2-n=1$ là sai, chờ đã. $0^2-0=0 \\neq 1$. Hãy kiểm tra $m=1, n=0$. $1^2-0=1$. Khi đó $a = 0^2-1 = -1$, là số lẻ. Hãy kiểm tra $m=2, n=3$. $2^2-3=1$. Cái"
+      ]
+    },
+    "strategy": "Biểu diễn $n$ theo $m$ từ phương trình đã cho, thay vào biểu thức $a$ để $a$ chỉ còn phụ thuộc vào $m$. Sau đó, phân tích nhân tử và xét tính chẵn lẻ của các thành phần trong biểu thức để chứng minh $a$ là số lẻ.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Bạn có thể biểu diễn $n$ theo $m$ từ phương trình đã cho không?",
+        "cue": "Biểu thức $a$ chứa $n$, nhưng ta có mối liên hệ giữa $m$ và $n$.",
+        "explanation": "Từ phương trình $m^2 - n = 1$, bạn có thể biểu diễn $n$ theo $m$. Hãy thay biểu thức của $n$ vào công thức tính $a$ để $a$ chỉ còn phụ thuộc vào $m$.",
+        "math": "n = m^2 - 1",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Sau khi thay $n$ vào $a$, biểu thức của $a$ theo $m$ sẽ như thế nào?",
+        "cue": "Phân tích nhân tử",
+        "explanation": "Khi thay $n = m^2 - 1$ vào $a = n^2 - m$, bạn sẽ được $a = (m^2 - 1)^2 - m$. Hãy khai triển và nhóm các số hạng để tách phần chứa $m(m^3 - 1)$ và phần còn lại.",
+        "math": "a = m^4 - 2m^2 - m + 1",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Hãy xét tính chẵn lẻ của các phần $m(m^3 - 1)$ và $2m^2$ trong biểu thức $a = m(m^3 - 1) - 2m^2 + 1$.",
+        "cue": "Số chẵn, số lẻ",
+        "explanation": "Ta có $m^3 - 1 = (m - 1)(m^2 + m + 1)$. Vậy $m(m^3 - 1) = m(m - 1)(m^2 + m + 1)$. Tích $m(m - 1)$ là tích của hai số tự nhiên liên tiếp, nên luôn chẵn. Do đó $m(m^3 - 1)$ chẵn. Phần $2m^2$ cũng chẵn. Vậy $a$ là hiệu của hai số chẵn cộng với 1.",
+        "math": "m(m - 1) \\text{ chẵn}",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Biểu diễn $n$ theo $m$",
+        "explanation": "Từ phương trình $m^2 - n = 1$, ta suy ra $n = m^2 - 1$. Vì $n$ là số nguyên không âm nên $m^2 - 1 \\neq -1$ (nếu $n=-1$ thì không thỏa mãn điều kiện $n \\neq -1$? Không, $n \\neq -1$ là do $n \\neq -1$ vì $n \\neq -1$ là điều kiện để $m \\neq 0$. Thực ra, nếu $m=0$ thì $n=-1$ (loại). Vậy $m \\neq 0$. Ta có $n = m^2 - 1$.",
+        "math": "n = m^2 - 1",
+        "reason": "Biến đổi đại số",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "m^2 - n = 1"
+        ],
+        "operation": "substitution",
+        "result": "n = m^2 - 1",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay $n = m^2 - 1$ vào $m^2 - n = 1$ ta được $m^2 - (m^2 - 1) = 1$ (đúng)."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Biểu diễn $a$ theo $m$",
+        "explanation": "Thay $n = m^2 - 1$ vào biểu thức $a = n^2 - m$, ta được $a = (m^2 - 1)^2 - m$. Khai triển $(m^2 - 1)^2 = m^4 - 2m^2 + 1$, nên $a = m^4 - 2m^2 + 1 - m$. Nhóm các số hạng lại, ta có $a = m^4 - m - 2m^2 + 1 = m(m^3 - 1) - 2m^2 + 1$.",
+        "math": "a = m(m^3 - 1) - 2m^2 + 1",
+        "reason": "Biến đổi đại số",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "n = m^2 - 1",
+          "a = n^2 - m"
+        ],
+        "operation": "factorization",
+        "result": "a = m(m^3 - 1) - 2m^2 + 1",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay $m=2$ vào $a = (2^2-1)^2 - 2 = 9 - 2 = 7$. Thay $m=2$ vào $a = 2(8-1) - 2(4) + 1 = 14 - 8 + 1 = 7$ (đúng)."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Chứng minh $a$ là số lẻ",
+        "explanation": "Ta có $m^3 - 1 = (m - 1)(m^2 + m + 1)$. Do đó $m(m^3 - 1) = m(m - 1)(m^2 + m + 1)$. Vì $m$ và $m - 1$ là hai số tự nhiên liên tiếp nên tích $m(m - 1)$ luôn chia hết cho 2 (tức là số chẵn). Suy ra $m(m^3 - 1)$ là số chẵn. Mặt khác, $2m^2$ cũng là số chẵn. Vậy $a = \\text{chẵn} - \\text{chẵn} + 1$ là số lẻ.",
+        "math": "a = \\text{số lẻ}",
+        "reason": "Tính chất số chẵn, số lẻ",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "a = m(m^3 - 1) - 2m^2 + 1"
+        ],
+        "operation": "tính chẵn lẻ",
+        "result": "a là số lẻ",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Với $m=1$, $a = 1(0) - 2 + 1 = -1$ (lẻ). Với $m=2$, $a = 2(7) - 8 + 1 = 7$ (lẻ). Với $m=3$, $a = 3(26) - 18 + 1 = 61$ (lẻ)."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chứng minh: $a$ là số lẻ.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "a = (m^2 - 1)^2 - m"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "1"
+            }
+          ]
+        ],
+        "expected": "-1"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 53538,
+  "usage": {
+    "default": {
+      "input": 6751,
+      "cachedInput": 0,
+      "output": 6614,
+      "reasoning": 2607
+    }
+  },
+  "costUsd": 0.01309123,
+  "model": "default",
+  "logs": [
+    "outline in 29 s (474 chars)",
+    "language repair: 3/3 field(s) rewritten in 2 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"a = (m^2 - 1)^2 - m\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=6751 (cached 0) out=6614 (reasoning 2607) ≈ $0.0131",
+    "total ≈ $0.0131 over 1 attempt(s); lesson by default"
+  ]
+}

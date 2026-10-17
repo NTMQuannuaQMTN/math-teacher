@@ -1,0 +1,287 @@
+{
+  "question": {
+    "id": "fin-g3",
+    "split": "final",
+    "source": "authored 2026-10-14 22:25 after all fixes; run once (final evaluation)",
+    "input": "Cho tam giác $ABC$ nội tiếp đường tròn $(O)$. Tia phân giác của góc $BAC$ cắt đường tròn $(O)$ tại $D$ ($D$ khác $A$). Chứng minh $DB=DC$.",
+    "reference": "Chứng minh: $\\widehat{BAD}=\\widehat{DAC}$ nên hai cung $BD$, $DC$ (không chứa $A$) bằng nhau, do đó hai dây $DB=DC$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove",
+    "topic": "geometry"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tam giác ABC nội tiếp đường tròn (O). Tia phân giác của góc BAC cắt đường tròn (O) tại D (D khác A). Chứng minh DB = DC.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Hình học phẳng - Đường tròn",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Đường tròn",
+        "Góc nội tiếp",
+        "Cung và dây cung",
+        "Tia phân giác"
+      ],
+      "techniques": [
+        "angle_chasing",
+        "inscribed_angle",
+        "cyclic_quadrilateral"
+      ],
+      "givens": [
+        "Tam giác ABC nội tiếp (O)",
+        "AD là tia phân giác góc BAC",
+        "D là giao điểm của tia phân giác với đường tròn (O)"
+      ],
+      "unknowns": [
+        "Chứng minh DB = DC"
+      ],
+      "constraints": [
+        "Tam giác ABC nội tiếp đường tròn (O)",
+        "AD là tia phân giác của góc BAC",
+        "D thuộc (O) và D khác A"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng tính chất của góc nội tiếp và mối liên hệ giữa góc nội tiếp, cung bị chắn và dây cung. Cụ thể, ta sẽ chứng minh hai góc nội tiếp bằng nhau, suy ra hai cung bằng nhau, và từ đó suy ra hai dây cung bằng nhau.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "AD là tia phân giác của góc BAC, vậy hai góc BAD và CAD có mối quan hệ gì với nhau? Và hai góc này lần lượt chắn những cung nào trên đường tròn (O)?",
+        "cue": "Góc nội tiếp",
+        "explanation": "Bạn hãy nhớ lại định lý về góc nội tiếp: Số đo của góc nội tiếp bằng nửa số đo của cung bị chắn. Vì AD là tia phân giác, nên hai góc $\\text{BAD}$ và $\\text{CAD}$ bằng nhau. Hai góc này lần lượt chắn những cung nào?",
+        "math": "\\text{sđ cung } BD = 2 \\times \\text{góc } \\text{ BAD  và }  \\text{sđ cung } CD = 2 \\times \\text{góc } CAD",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Từ việc hai cung BD và CD bằng nhau, bạn có thể suy ra điều gì về độ dài của hai dây cung DB và DC?",
+        "cue": "Cung và dây cung",
+        "explanation": "Trong một đường tròn, nếu hai cung bằng nhau thì hai dây cung tương ứng với chúng cũng bằng nhau. Vì hai cung BD và CD bằng nhau, điều này dẫn đến điều gì về hai đoạn thẳng DB và DC?",
+        "math": "\\text{ Nếu }  \\text{sđ cung } BD = \\text{sđ cung } CD \\text{ thì } DB = DC",
+        "stepId": "s2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Sử dụng tính chất tia phân giác",
+        "explanation": "Vì AD là tia phân giác của góc BAC, nên nó chia góc đó thành hai góc bằng nhau. Hai góc này đều là các góc nội tiếp trong đường tròn (O).",
+        "math": "\\text{góc } BAD = \\text{góc } CAD",
+        "reason": "Định nghĩa tia phân giác",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "AD là tia phân giác góc BAC"
+        ],
+        "operation": "định nghĩa",
+        "result": "Hai góc nội tiếp bằng nhau",
+        "verification": {
+          "status": "verified",
+          "method": "angle_chasing",
+          "reason": "Góc nội tiếp chắn cung"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Chứng minh hai cung bằng nhau",
+        "explanation": "Trong đường tròn (O), góc BAD chắn cung BD và góc CAD chắn cung CD. Vì hai góc nội tiếp này bằng nhau, nên số đo của hai cung bị chắn cũng bằng nhau.",
+        "math": "\\text{sđ cung } BD = \\text{sđ cung } CD",
+        "reason": "Góc nội tiếp bằng nhau thì chắn các cung bằng nhau",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "góc BAD = góc CAD"
+        ],
+        "operation": "suy luận",
+        "result": "Hai cung bằng nhau",
+        "verification": {
+          "status": "verified",
+          "method": "angle_chasing",
+          "reason": "Góc nội tiếp chắn cung"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Trong cùng một đường tròn, nếu hai cung bằng nhau thì hai dây cung tương ứng với chúng cũng bằng nhau. Vì cung BD bằng cung CD, nên dây DB bằng dây DC.",
+        "math": "DB = DC",
+        "reason": "Hai cung bằng nhau thì căng hai dây bằng nhau",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "sđ cung BD = sđ cung CD"
+        ],
+        "operation": "suy luận",
+        "result": "DB = DC",
+        "verification": {
+          "status": "verified",
+          "method": "angle_chasing",
+          "reason": "Góc nội tiếp chắn cung"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Ta đã chứng minh được $DB = DC$ (đpcm).",
+      "math": "DB = DC"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "inequality",
+        "statements": [
+          "DB = DC"
+        ],
+        "assignments": [],
+        "expected": "DB = DC"
+      }
+    ],
+    "figure": {
+      "scale": "schematic",
+      "points": [
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_AC",
+          "kind": "segment",
+          "from": "A",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": ""
+        }
+      ],
+      "circles": [],
+      "angles": [
+        {
+          "id": "ang_BAC",
+          "from": "A",
+          "vertex": "A",
+          "to": "C",
+          "label": "?",
+          "right": false,
+          "style": "given"
+        }
+      ],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 63827,
+  "usage": {
+    "default": {
+      "input": 20584,
+      "cachedInput": 0,
+      "output": 8214,
+      "reasoning": 1899
+    }
+  },
+  "costUsd": 0.021748080000000003,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — no claim of the statement understood (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 17 s (172 chars)",
+    "language repair: 3/3 field(s) rewritten in 1 s",
+    "attempt 1: not_checkable, 11 problem(s): figure: point D (intersection) could not be constructed (left out of the figure) | figure: circle c_O could not be constructed (left out of the figure) | figure: points A and B are drawn at the same place — give each its own exact construction from its definition (they are different points)",
+    "language repair: 3/3 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 6 problem(s): figure: figure does not satisfy the given DB = 0 (measured 8.325, expected 0) | figure: figure does not satisfy the given DC = 0 (measured 0.620, expected 0) | figure: figure does not satisfy the given B on c_O (distance 4.472 vs radius 5.000)",
+    "usage: model=default in=20584 (cached 0) out=8214 (reasoning 1899) ≈ $0.0217",
+    "total ≈ $0.0217 over 2 attempt(s); lesson by default"
+  ]
+}

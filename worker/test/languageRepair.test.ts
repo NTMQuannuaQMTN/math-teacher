@@ -41,3 +41,20 @@ describe("language repair keeps the mathematics", () => {
     expect(await repairLanguage(lesson(), answering((t) => t), signal)).toBeNull();
   });
 });
+
+import { dropForeignMetadata } from "../src/solver/languageRepair";
+describe("leftover foreign metadata", () => {
+  it("removes optional labels and restated statement data, never the solution text", () => {
+    const l = lesson();
+    l.analysis.concepts = ["Phương trình bậc hai", "Definition of roots"];
+    l.analysis.givens = ["$x^2-5x+6=0$ where x is real"];
+    l.steps[0]!.operation = "analysis";
+    const { lesson: out, dropped } = dropForeignMetadata(l);
+    expect(dropped).toBe(3);
+    expect(out.analysis.concepts).toEqual(["Phương trình bậc hai"]);
+    expect(out.steps[0]!.operation).toBeNull();
+    // The statement is shown verbatim; a restated given still in English is dropped, not used to discard the lesson.
+    expect(out.analysis.givens).toEqual([]);
+    expect(out.steps[0]!.explanation).toBe(l.steps[0]!.explanation);
+  });
+});

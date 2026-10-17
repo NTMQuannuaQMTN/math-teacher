@@ -1,0 +1,215 @@
+{
+  "question": {
+    "id": "alg8-h5",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho các số thực $a,b,c$ thỏa mãn $a+b+c=0$ và $a^2+b^2+c^2=6$. Tính $a^4+b^4+c^4$.",
+    "reference": "$18$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho các số thực $a, b, c$ thỏa mãn $a + b + c = 0$ và $a^2 + b^2 + c^2 = 6$. Tính giá trị của biểu thức $a^4 + b^4 + c^4$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Biểu thức đại số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hằng đẳng thức đáng nhớ",
+        "Biến đổi biểu thức đối xứng"
+      ],
+      "techniques": [
+        "factorization"
+      ],
+      "givens": [
+        "$a + b + c = 0$",
+        "$a^2 + b^2 + c^2 = 6$"
+      ],
+      "unknowns": [
+        "Giá trị của $a^4 + b^4 + c^4$"
+      ],
+      "constraints": [
+        "$a, b, c$ là các số thực",
+        "$a + b + c = 0$",
+        "$a^2 + b^2 + c^2 = 6$"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng hằng đẳng thức bình phương của một tổng để biến đổi các biểu thức đối xứng. Đầu tiên tìm $ab+bc+ca$ từ $a+b+c$ và $a^2+b^2+c^2$, sau đó tìm $a^2b^2+b^2c^2+c^2a^2$ từ $ab+bc+ca$, cuối cùng tính $a^4+b^4+c^4$ từ $a^2+b^2+c^2$ và $a^2b^2+b^2c^2+c^2a^2$.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Bạn hãy bình phương hai vế của đẳng thức $a + b + c = 0$ để tìm mối liên hệ giữa $ab + bc + ca$ và $a^2 + b^2 + c^2$.",
+        "cue": "Bình phương của một tổng ba số.",
+        "explanation": "Bạn hãy bình phương vế trái của đẳng thức $a + b + c = 0$. Ta có $(a + b + c)^2 = a^2 + b^2 + c^2 + 2(ab + bc + ca)$. Vì $a + b + c = 0$ nên tổng này bằng 0.",
+        "math": "(a + b + c)^2 = a^2 + b^2 + c^2 + 2(ab + bc + ca)",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Bạn hãy bình phương hai vế của đẳng thức $a^2 + b^2 + c^2 = 6$ để biểu diễn $a^4 + b^4 + c^4$ theo $a^2b^2 + b^2c^2 + c^2a^2$.",
+        "cue": "Bình phương của $a^2 + b^2 + c^2$.",
+        "explanation": "Tương tự, bạn hãy bình phương vế trái của đẳng thức $a^2 + b^2 + c^2 = 6$. Khi đó, ta sẽ có $(a^2 + b^2 + c^2)^2 = a^4 + b^4 + c^4 + 2(a^2b^2 + b^2c^2 + c^2a^2)$. Để tìm $a^4 + b^4 + c^4$, bạn cần tính được $a^2b^2 + b^2c^2 + c^2a^2$.",
+        "math": "(a^2 + b^2 + c^2)^2 = a^4 + b^4 + c^4 + 2(a^2b^2 + b^2c^2 + c^2a^2)",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 4,
+        "question": "Bạn hãy bình phương hai vế của biểu thức $ab + bc + ca$ để tìm giá trị của $a^2b^2 + b^2c^2 + c^2a^2$.",
+        "cue": "Bình phương của $ab + bc + ca$.",
+        "explanation": "Bạn hãy bình phương biểu thức $ab + bc + ca$ mà bạn đã tìm được ở bước 1. Kết quả sẽ là $(ab + bc + ca)^2 = a^2b^2 + b^2c^2 + c^2a^2 + 2abc(a + b + c)$. Vì $a + b + c = 0$ nên số hạng cuối cùng bằng 0, giúp bạn tìm ra $a^2b^2 + b^2c^2 + c^2a^2$.",
+        "math": "(ab + bc + ca)^2 = a^2b^2 + b^2c^2 + c^2a^2 + 2abc(a + b + c)",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Tìm giá trị của $ab + bc + ca$",
+        "explanation": "Ta bình phương hai vế của đẳng thức $a + b + c = 0$. Sử dụng hằng đẳng thức $(a + b + c)^2 = a^2 + b^2 + c^2 + 2(ab + bc + ca)$, ta có $0 = 6 + 2(ab + bc + ca)$, suy ra $ab + bc + ca = -3$.",
+        "math": "ab + bc + ca = -3",
+        "reason": "Hằng đẳng thức $(a + b + c)^2$ và thay giá trị đã biết.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "a + b + c = 0",
+          "a^2 + b^2 + c^2 = 6"
+        ],
+        "operation": "Khai triển và rút gọn",
+        "result": "ab + bc + ca = -3",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay $a=\\sqrt{3}, b=-\\sqrt{3}, c=0$ vào $a+b+c=0$ và $a^2+b^2+c^2=6$ thỏa mãn. Khi đó $ab+bc+ca = -3 + 0 + 0 = -3$."
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Tìm giá trị của $a^2b^2 + b^2c^2 + c^2a^2$",
+        "explanation": "Ta bình phương hai vế của biểu thức $ab + bc + ca = -3$. Sử dụng hằng đẳng thức $(x + y + z)^2 = x^2 + y^2 + z^2 + 2(xy + yz + zx)$ với $x=ab, y=bc, z=ca$, ta có $(ab + bc + ca)^2 = a^2b^2 + b^2c^2 + c^2a^2 + 2abc(a + b + c)$. Thay $ab + bc + ca = -3$ và $a + b + c = 0$, ta được $(-3)^2 = a^2b^2 + b^2c^2 + c^2a^2 + 0$, suy ra $a^2b^2 + b^2c^2 + c^2a^2 = 9$.",
+        "math": "a^2b^2 + b^2c^2 + c^2a^2 = 9",
+        "reason": "Hằng đẳng thức $(ab + bc + ca)^2$ và thay giá trị đã biết.",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "ab + bc + ca = -3",
+          "a + b + c = 0"
+        ],
+        "operation": "Khai triển và rút gọn",
+        "result": "a^2b^2 + b^2c^2 + c^2a^2 = 9",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Với $a=\\sqrt{3}, b=-\\sqrt{3}, c=0$, ta có $a^2b^2 + b^2c^2 + c^2a^2 = 9 + 0 + 0 = 9$."
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tính giá trị của $a^4 + b^4 + c^4$",
+        "explanation": "Ta bình phương hai vế của đẳng thức $a^2 + b^2 + c^2 = 6$. Sử dụng hằng đẳng thức $(a^2 + b^2 + c^2)^2 = a^4 + b^4 + c^4 + 2(a^2b^2 + b^2c^2 + c^2a^2)$, ta có $6^2 = a^4 + b^4 + c^4 + 2(9)$. Suy ra $36 = a^4 + b^4 + c^4 + 18$, từ đó $a^4 + b^4 + c^4 = 18$.",
+        "math": "a^4 + b^4 + c^4 = 18",
+        "reason": "Hằng đẳng thức $(a^2 + b^2 + c^2)^2$ và thay giá trị đã biết.",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "a^2 + b^2 + c^2 = 6",
+          "a^2b^2 + b^2c^2 + c^2a^2 = 9"
+        ],
+        "operation": "Khai triển và rút gọn",
+        "result": "a^4 + b^4 + c^4 = 18",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Với $a=\\sqrt{3}, b=-\\sqrt{3}, c=0$, ta có $a^4 + b^4 + c^4 = 9 + 9 + 0 = 18$."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của biểu thức $a^4 + b^4 + c^4$ là $18$.",
+      "math": "18"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "a^4 + b^4 + c^4"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "0"
+            },
+            {
+              "variable": "b",
+              "value": "0"
+            },
+            {
+              "variable": "c",
+              "value": "0"
+            }
+          ]
+        ],
+        "expected": "18"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 28188,
+  "usage": {
+    "default": {
+      "input": 11474,
+      "cachedInput": 0,
+      "output": 3701,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01078882,
+  "model": "default",
+  "logs": [
+    "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "language repair: 3/3 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"a^4 + b^4 + c^4\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 2: only minor feedback; not retrying",
+    "usage: model=default in=11474 (cached 0) out=3701 (reasoning 0) ≈ $0.0108",
+    "total ≈ $0.0108 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -203,3 +203,19 @@ export function joinSystem(text: string): string {
   const tex = parts.map((p) => p.replace(/−/g, "-").replace(/²/g, "^2").replace(/³/g, "^3").replace(/\s+/g, ""));
   return `${m[1]!.trimEnd()} $\\begin{cases}${tex.join("\\\\")}\\end{cases}$.`;
 }
+
+const SUPERSCRIPT: Record<string, string> = { "⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9" };
+/**
+ * Scanned papers write numbers outside $…$ and powers with Unicode superscripts: "chia hết cho 16", "chia hết cho 24²"
+ * (PTNK 2026 Câu 3 from a photo, 2026-10-15: the certified solver handles "$16$" / "$24^{2}$" but not these, so the
+ * model was asked instead and failed). Outside formulas, "a²" becomes "$a^{2}$" and a bare number after a divisibility
+ * or remainder phrase becomes "$n$". The student still sees the statement as scanned.
+ */
+export function wrapBareNumbers(text: string): string {
+  return text.replace(/(\$[^$]*\$)|([^$]+)/g, (whole, math: string | undefined, prose: string | undefined) => {
+    if (math) return whole;
+    return prose!
+      .replace(/(\d+|[A-Za-z])([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/gu, (_m, b: string, sup: string) => `$${b}^{${[...sup].map((c) => SUPERSCRIPT[c]).join("")}}$`)
+      .replace(/(chia hết cho|chia cho|không chia hết cho|bội của|ước của|dư)\s+(\d+)(?![\d$^]|\s*[⁰¹²³⁴⁵⁶⁷⁸⁹])/giu, "$1 $$$2$$");
+  });
+}

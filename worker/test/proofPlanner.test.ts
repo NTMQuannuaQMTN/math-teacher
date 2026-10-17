@@ -298,7 +298,9 @@ describe("explanation", () => {
     expect(at("A, G, D thẳng hàng")).toBe(-1);
     expect(at("AL, GJ cắt nhau")).toBe(-1);
     expect(at("ID²")).toBeLessThan(at("△IJD"));
-    expect(lesson.steps.map(s=>s.explanation).join('\n')).toContain('chân đường cao nằm trong cạnh huyền');
+    // Review 2026-10-15: a shared angle is "góc I chung", not a proof that the foot lies inside the hypotenuse.
+    expect(lesson.steps.map(s=>s.explanation).join('\n')).toContain('góc I chung');
+    expect(lesson.steps.map(s=>s.explanation).join('\n')).not.toContain('chân đường cao nằm trong cạnh huyền');
     // No step leaps with "cộng, trừ các góc" without the chain of equalities.
     for (const s of lesson.steps) expect(s.explanation).not.toMatch(/\(cộng, trừ các góc\)\.$/m);
   }, 20000);

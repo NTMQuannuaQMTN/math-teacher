@@ -40,9 +40,10 @@ describe('missing geometry hypotheses require explicit constructive diagnoses',(
   if(s===rename(angles))expect(l.steps[0]!.explanation).toContain('$PM=PN=2$');
  });
  it.each([feet+' Tính diện tích tam giác ABC.',feet.replace('tam giác $ABC$,','tam giác $ABC$ nhọn,'),angles.replace('thỏa mãn','nằm cùng phía so với AB, thỏa mãn')])('does not silently drop an extra condition or question',s=>expect(geometryHypothesisDiagnosis(s)).toBeNull());
- it.each([feet,angles])('serves an honest diagnosis without inference',async s=>{
-  const model={name:'local',model:'unavailable',complete:async()=>{throw Error('must not call');}};
-  const r=await solveProblem(model,VN_GRADE_9,s,{signal:AbortSignal.timeout(1000)});
-  expect(r.model).toBe('geometry-hypothesis-diagnosis');expect(r.verification.status).toBe('partial');expect(r.attempts).toBe(0);
+ it.each([feet,angles])('gives the diagnosis to the model as a note instead of serving it (review 2026-10-15)',async s=>{
+  const seen:string[]=[];
+  const model={name:'local',model:'unavailable',complete:async(a:{messages:{content:string}[]})=>{seen.push(a.messages.map(m=>m.content).join('\n'));throw Error('offline');}};
+  await expect(solveProblem(model as never,VN_GRADE_9,s,{signal:AbortSignal.timeout(5000),maxAttempts:1})).rejects.toThrow();
+  expect(seen[0]).toMatch(/LƯU Ý VỀ GIẢ THIẾT/);
  });
 });

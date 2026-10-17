@@ -1,0 +1,303 @@
+{
+  "question": {
+    "id": "ptnk-2024-chuyen/1.1",
+    "split": "train",
+    "source": "exam ptnk-2024-chuyen",
+    "input": "Giải hệ phương trình $\\begin{cases}x^3+z^3=y\\\\ y^3+x^3=z\\\\ z^3+y^3=x\\end{cases}$.",
+    "reference": "$x=y=z\\in\\{0;\\tfrac{1}{\\sqrt2};-\\tfrac{1}{\\sqrt2}\\}$",
+    "reference_status": "official",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Giải hệ phương trình: $\\begin{cases}x^3+z^3=y\\\\ y^3+x^3=z\\\\ z^3+y^3=x\\end{cases}$",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Hệ phương trình",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Hệ phương trình đối xứng",
+        "Hằng đẳng thức đáng nhớ",
+        "Bất đẳng thức",
+        "Xét trường hợp"
+      ],
+      "techniques": [
+        "subtract_equations",
+        "factorization",
+        "case_analysis"
+      ],
+      "givens": [
+        "Hệ phương trình: $x^3+z^3=y$, $y^3+x^3=z$, $z^3+y^3=x$"
+      ],
+      "unknowns": [
+        "x, y, z"
+      ],
+      "constraints": [
+        "x, y, z là các số thực"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Trừ vế theo vế các phương trình trong hệ để tìm mối liên hệ giữa các biến, chứng minh rằng $x=y=z$, sau đó thay vào một phương trình để giải tìm nghiệm.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 2,
+        "question": "Nếu trừ vế theo vế các phương trình trong hệ, bạn sẽ thu được điều gì?",
+        "cue": "Trừ vế theo vế các phương trình trong hệ.",
+        "explanation": "Bạn hãy lấy phương trình (1) trừ (2), (2) trừ (3) và (3) trừ (1). Sau đó phân tích nhân tử các biểu thức thu được để tìm mối liên hệ giữa x, y, z.",
+        "math": "(x^3+z^3) - (y^3+x^3) = y - z",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Từ các hệ thức trên, bạn có thể chứng minh được điều gì về mối quan hệ giữa x, y và z không?",
+        "cue": "Sử dụng hằng đẳng thức $a^3 - b^3 = (a-b)(a^2+ab+b^2)$.",
+        "explanation": "Khi phân tích nhân tử, bạn sẽ thấy các nhân tử $(x-y)$, $(y-z)$, $(z-x)$. Nếu một trong các hiệu này khác 0, bạn có thể chia để tìm mối liên hệ giữa các biến. Hãy thử chứng minh rằng $x=y=z$.",
+        "math": "(x-y)(x^2+xy+y^2) = -(y-z)",
+        "stepId": "step3",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 4,
+        "question": "Giả sử $x=y=z$, phương trình đầu tiên của hệ trở thành phương trình nào?",
+        "cue": "Thay $y=x$ và $z=x$ vào phương trình đầu tiên.",
+        "explanation": "Khi đã có $x=y=z$, bài toán trở thành giải một phương trình một ẩn. Hãy thay vào phương trình $x^3+z^3=y$ để tìm giá trị của x.",
+        "math": "x^3+x^3=x \\Rightarrow 2x^3-x=0",
+        "stepId": "step4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Trừ vế theo vế",
+        "explanation": "Trừ vế theo vế phương trình (1) và (2) để loại bỏ $x^3$ và tìm mối liên hệ giữa $y$ và $z$.",
+        "math": "(x^3+z^3) - (y^3+x^3) = y - z \\Rightarrow z^3 - y^3 = y - z",
+        "reason": "Trừ vế theo vế",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given equations"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "z^3 - y^3 = y - z",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại phép trừ vế theo vế"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Phân tích nhân tử",
+        "explanation": "Phân tích nhân tử để đưa về dạng tích, từ đó suy ra $x=y=z$.",
+        "math": "(z-y)(z^2+zy+y^2) = -(z-y)",
+        "reason": "Hằng đẳng thức $a^3-b^3$ và biến đổi đại số",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step1",
+          "step2"
+        ],
+        "operation": "factorization",
+        "result": "(z-y)(z^2+zy+y^2+1) = 0",
+        "verification": {
+          "status": "verified",
+          "method": "algebraic_expansion",
+          "reason": "Kiểm tra lại phép phân tích nhân tử"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Chứng minh x=y=z",
+        "explanation": "Chứng minh $x=y=z$ bằng cách xét các trường hợp.",
+        "math": "x=y=z",
+        "reason": "Xét trường hợp $z=y$ và $z \\neq y$ để suy ra $x=y=z$",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step2"
+        ],
+        "operation": "phân tích trường hợp",
+        "result": "x=y=z",
+        "verification": {
+          "status": "verified",
+          "method": null,
+          "reason": "Kiểm tra lại lập luận chứng minh x=y=z"
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Giải phương trình một ẩn",
+        "explanation": "Thay $y=x$ và $z=x$ vào phương trình đầu tiên để giải phương trình một ẩn.",
+        "math": "x^3+x^3=x \\Rightarrow 2x^3-x=0 \\Rightarrow x(2x^2-1)=0",
+        "reason": "Thay thế và giải phương trình bậc hai",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step3"
+        ],
+        "operation": "solving_equation",
+        "result": "x=0, x=\\frac{\\sqrt{2}}{2}, x=-\\frac{\\sqrt{2}}{2}",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại các nghiệm của phương trình"
+        }
+      },
+      {
+        "id": "step5",
+        "title": "Kết luận",
+        "explanation": "Kết luận các nghiệm của hệ phương trình.",
+        "math": "(0; 0; 0); \\left(\\frac{\\sqrt{2}}{2}; \\frac{\\sqrt{2}}{2}; \\frac{\\sqrt{2}}{2}\\right); \\left(-\\frac{\\sqrt{2}}{2}; -\\frac{\\sqrt{2}}{2}; -\\frac{\\sqrt{2}}{2}\\right)",
+        "reason": "Tổng hợp các nghiệm tìm được",
+        "uses": [
+          "step4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step4"
+        ],
+        "operation": "conclusion",
+        "result": "Hệ có 3 nghiệm như trên",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra lại các nghiệm với hệ phương trình ban đầu"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Hệ phương trình có 3 nghiệm:\n(0; 0; 0)\n$\\left(\\frac{\\sqrt{2}}{2}; \\frac{\\sqrt{2}}{2}; \\frac{\\sqrt{2}}{2}\\right)$\n$\\left(-\\frac{\\sqrt{2}}{2}; -\\frac{\\sqrt{2}}{2}; -\\frac{\\sqrt{2}}{2}\\right)$",
+      "math": "(0; 0; 0); \\left(\\frac{\\sqrt{2}}{2}; \\frac{\\sqrt{2}}{2}; \\frac{\\sqrt{2}}{2}\\right); \\left(-\\frac{\\sqrt{2}}{2}; -\\frac{\\sqrt{2}}{2}; -\\frac{\\sqrt{2}}{2}\\right)"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^3+z^3=y",
+          "y^3+x^3=z",
+          "z^3+y^3=x"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "0"
+            },
+            {
+              "variable": "y",
+              "value": "0"
+            },
+            {
+              "variable": "z",
+              "value": "0"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "0.7071067811865476"
+            },
+            {
+              "variable": "y",
+              "value": "0.7071067811865476"
+            },
+            {
+              "variable": "z",
+              "value": "0.7071067811865476"
+            }
+          ],
+          [
+            {
+              "variable": "x",
+              "value": "-0.7071067811865476"
+            },
+            {
+              "variable": "y",
+              "value": "-0.7071067811865476"
+            },
+            {
+              "variable": "z",
+              "value": "-0.7071067811865476"
+            }
+          ]
+        ],
+        "expected": "true"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "x^3+z^3=y",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step5",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 702,
+  "usage": {
+    "default": {
+      "input": 11566,
+      "cachedInput": 0,
+      "output": 3214,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01008998,
+  "model": "default",
+  "logs": [
+    "computed: - system (38 ms)",
+    "answer differs from the computation: final answer does not match the machine computation ((x, y, z) = ((-√2)/2; (-√2)/2; (-√2)/2); (x, y, z) = (0; 0; 0); (x, y, z) = ((√2)/2; (√2)/2; (√2)/2)): 0 missing — re-check the solution against it",
+    "attempt 1: unverified, 2 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods | final answer does not match the machine computation ((x, y, z) = ((-√2)/2; (-√2)/2; (-√2)/2); (x, y, z) = (0; 0; 0); (x, y, z) = ((√2)/2; (√2)/2; (√2)/2)): 0 missing — re-check the solution against it",
+    "language repair: 1/2 field(s) rewritten in 1 s",
+    "removed 1 optional metadata field(s) still not in Vietnamese",
+    "attempt 2: verified, 0 problem(s)",
+    "usage: model=default in=11566 (cached 0) out=3214 (reasoning 0) ≈ $0.0101",
+    "total ≈ $0.0101 over 2 attempt(s); lesson by default"
+  ]
+}

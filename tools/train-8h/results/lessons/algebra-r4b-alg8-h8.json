@@ -1,0 +1,301 @@
+{
+  "question": {
+    "id": "alg8-h8",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho phương trình $x^2-(2m+1)x+m^2+m=0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1,x_2$ thỏa mãn $x_1^2+x_2^2=13$.",
+    "reference": "$m\\in\\{-3;2\\}$ (hai nghiệm là $m$ và $m+1$)",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho phương trình $x^2 - (2m+1)x + m^2 + m = 0$ ($m$ là tham số). Tìm $m$ để phương trình có hai nghiệm $x_1, x_2$ thỏa mãn $x_1^2 + x_2^2 = 13$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Phương trình bậc hai",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình bậc hai một ẩn",
+        "Biệt thức Δ và điều kiện có hai nghiệm phân biệt",
+        "Định lý Vi-ét",
+        "Biến đổi biểu thức đối xứng của nghiệm"
+      ],
+      "techniques": [
+        "vieta",
+        "discriminant",
+        "domain_conditions"
+      ],
+      "givens": [
+        "Phương trình: $x^2 - (2m+1)x + m^2 + m = 0$",
+        "Tham số $m$"
+      ],
+      "unknowns": [
+        "Giá trị của $m$"
+      ],
+      "constraints": [
+        "Phương trình phải có hai nghiệm phân biệt ($\\Delta > 0$)",
+        "Hai nghiệm phải thỏa mãn $x_1^2 + x_2^2 = 13$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng định lý Vi-ét để biểu diễn $x_1^2 + x_2^2$ theo tham số $m$, sau đó giải phương trình theo $m$ và kiểm tra điều kiện có hai nghiệm phân biệt.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Bạn có thể biến đổi biểu thức $x_1^2 + x_2^2$ thành biểu thức chứa tổng $x_1 + x_2$ và tích $x_1 x_2$ không?",
+        "cue": "Biểu thức $x_1^2 + x_2^2$ có thể viết qua $x_1 + x_2$ và $x_1 x_2$.",
+        "explanation": "Bạn hãy nhớ lại hằng đẳng thức đáng nhớ liên quan đến bình phương của một tổng. Từ đó, biểu diễn $x_1^2 + x_2^2$ theo tổng và tích của hai nghiệm.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "Làm thế nào để tìm $x_1 + x_2$ và $x_1 x_2$ theo $m$ từ phương trình đã cho?",
+        "cue": "Định lý Vi-ét cho phương trình $ax^2 + bx + c = 0$.",
+        "explanation": "Áp dụng định lý Vi-ét cho phương trình đã cho để tìm $x_1 + x_2$ và $x_1 x_2$ theo $m$. Sau đó thay vào biểu thức ở bước trước để lập phương trình theo $m$.",
+        "math": "x_1 + x_2 = -\\frac{b}{a}, \\quad x_1 x_2 = \\frac{c}{a}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 4,
+        "question": "Sau khi tìm được $m$, bạn đã nhớ kiểm tra điều kiện để phương trình có hai nghiệm phân biệt chưa?",
+        "cue": "Điều kiện để phương trình bậc hai có hai nghiệm phân biệt là $\\Delta > 0$.",
+        "explanation": "Sau khi tìm được các giá trị $m$ từ điều kiện $x_1^2 + x_2^2 = 13$, bạn cần kiểm tra xem với những giá trị $m$ đó, phương trình có thực sự có hai nghiệm phân biệt hay không bằng cách tính $\\Delta$.",
+        "math": "\\Delta > 0",
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tính biệt thức $\\Delta$",
+        "explanation": "Trước hết, để phương trình có hai nghiệm phân biệt, biệt thức $\\Delta$ phải lớn hơn 0.",
+        "math": "\\Delta = [-(2m+1)]^2 - 4(1)(m^2+m) = (2m+1)^2 - 4(m^2+m) = 4m^2 + 4m + 1 - 4m^2 - 4m = 1",
+        "reason": "Tính biệt thức $\\Delta$ của phương trình bậc hai.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Điều kiện xác định của nghiệm"
+        ],
+        "operation": "compute",
+        "result": "\\Delta = 1",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Delta calculation is straightforward algebra."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Xét điều kiện có hai nghiệm phân biệt",
+        "explanation": "Vì $\\Delta = 1 > 0$ với mọi $m$, nên phương trình luôn có hai nghiệm phân biệt với mọi giá trị của $m$.",
+        "math": "\\Delta = 1 > 0 \\quad \\forall m",
+        "reason": "Từ $\\Delta = 1$, suy ra phương trình luôn có hai nghiệm phân biệt.",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Kết quả bước s1"
+        ],
+        "operation": "deduce",
+        "result": "Phương trình luôn có hai nghiệm phân biệt.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "1 is always positive."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Áp dụng định lý Vi-ét",
+        "explanation": "Áp dụng định lý Vi-ét, ta có tổng và tích của hai nghiệm theo $m$. Sau đó, biến đổi $x_1^2 + x_2^2$ thành $(x_1 + x_2)^2 - 2x_1 x_2$.",
+        "math": "\\begin{cases} x_1 + x_2 = 2m + 1 \\\\ x_1 x_2 = m^2 + m \\end{cases}",
+        "reason": "Áp dụng định lý Vi-ét cho phương trình $x^2 - (2m+1)x + m^2 + m = 0$.",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định lý Vi-ét",
+          "Hằng đẳng thức"
+        ],
+        "operation": "deduce",
+        "result": "x_1 + x_2 = 2m + 1, \\quad x_1 x_2 = m^2 + m",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Định lý Vi-ét là kiến thức chuẩn."
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Biểu diễn $x_1^2 + x_2^2$ theo $m$",
+        "explanation": "Thay các biểu thức theo $m$ vào điều kiện $x_1^2 + x_2^2 = 13$ để tìm $m$.",
+        "math": "x_1^2 + x_2^2 = (x_1 + x_2)^2 - 2x_1 x_2 = (2m+1)^2 - 2(m^2+m) = 4m^2 + 4m + 1 - 2m^2 - 2m = 2m^2 + 2m + 1",
+        "reason": "Biến đổi biểu thức $x_1^2 + x_2^2$ theo $m$.",
+        "uses": [
+          "s2",
+          "s3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Kết quả bước s2",
+          "Kết quả bước s3"
+        ],
+        "operation": "compute",
+        "result": "x_1^2 + x_2^2 = 2m^2 + 2m + 1",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Algebraic expansion is correct."
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Lập và giải phương trình theo $m$",
+        "explanation": "Giải phương trình $2m^2 + 2m + 1 = 13$ để tìm $m$.",
+        "math": "2m^2 + 2m + 1 = 13 \\Leftrightarrow 2m^2 + 2m - 12 = 0 \\Leftrightarrow m^2 + m - 6 = 0",
+        "reason": "Giải phương trình bậc hai theo $m$.",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Kết quả bước s4"
+        ],
+        "operation": "solve",
+        "result": "m^2 + m - 6 = 0",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Solving quadratic equation."
+        }
+      },
+      {
+        "id": "s6",
+        "title": "Tìm giá trị của $m$",
+        "explanation": "Phương trình $m^2 + m - 6 = 0$ có $a+b+c = 1+1-6 \\neq 0$ và $a-b+c = 1-1-6 \\neq 0$, nhưng ta có thể phân tích nhân tử: $m^2 + m - 6 = (m-2)(m+3) = 0$. Vậy $m = 2$ hoặc $m = -3$. Cả hai giá trị này đều thỏa mãn điều kiện $\\Delta > 0$.",
+        "math": "\\left[ \\begin{array}{l} m = 2 \\\\ m = -3 \\end{array} \\right.",
+        "reason": "Giải phương trình $m^2 + m - 6 = 0$.",
+        "uses": [
+          "s5",
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Kết quả bước s5",
+          "Điều kiện bước s2"
+        ],
+        "operation": "solve",
+        "result": "m = 2 \\text{ hoặc } m = -3",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Factoring is correct."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của $m$ là $2$ hoặc $-3$.",
+      "math": "m = 2 \\text{ hoặc } m = -3"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "x^2 - (2m+1)x + m^2 + m = 0",
+          "x1^2 + x2^2 = 13"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "2"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "-3"
+            }
+          ]
+        ],
+        "expected": "m = 2 hoặc m = -3"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "Một số công thức chưa hiển thị đầy đủ; cần kiểm tra lại lời giải",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 59,
+  "usage": {
+    "default": {
+      "input": 15610,
+      "cachedInput": 0,
+      "output": 6857,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.01744714,
+  "model": "default",
+  "logs": [
+    "computed: parameter condition (2 value(s))",
+    "language repair: 8/8 field(s) rewritten in 0 s",
+    "attempt 1: unverified, 2 problem(s): answer check \"x^2 - (2m+1)x + m^2 + m = 0\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | interpretationNotes: the formula \"\\$\\Del\" doesn't render (Undefined control sequence: \\Del at position 3: \\$\\̲D̲e̲l̲). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "language repair: 8/8 field(s) rewritten in 0 s",
+    "attempt 2: unverified, 2 problem(s): answer check \"x^2 - (2m+1)x + m^2 + m = 0\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | interpretationNotes: the formula \"\\$\\Del\" doesn't render (Undefined control sequence: \\Del at position 3: \\$\\̲D̲e̲l̲). Write valid KaTeX: no \"\\n\" inside strings, no \"\\[…\\]\" delimiters or spacing arguments, prose only inside \\text{…}.",
+    "usage: model=default in=15610 (cached 0) out=6857 (reasoning 0) ≈ $0.0174",
+    "total ≈ $0.0174 over 2 attempt(s); lesson by default"
+  ]
+}

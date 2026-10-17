@@ -21,10 +21,10 @@ describe('generated standard LaTeX delimiters', () => {
   });
   it('normalizes model fields without dropping parentheses or changing the formula', () => {
     const l=mockAlgebraLesson();
-    l.hints[0]!.question=String.raw`Bạn có thể dùng \(x_1+\sqrt{x_1^2+1}\) như thế nào?`;
+    l.hints[0]!.question=String.raw`Dùng \(x_1+\sqrt{x_1^2+1}\) để nhân liên hợp`;
     l.steps[0]!.math=String.raw`\[\frac{1}{2}+\frac{1}{2}=1\]`;
     const normalized=tidy(l);
-    expect(normalized.hints[0]!.question).toBe(String.raw`Bạn có thể dùng $x_1+\sqrt{x_1^2+1}$ như thế nào?`);
+    expect(normalized.hints[0]!.question).toBe(String.raw`Dùng $x_1+\sqrt{x_1^2+1}$ để nhân liên hợp`);
     expect(normalized.steps[0]!.math).toBe(String.raw`\frac{1}{2}+\frac{1}{2}=1`);
     expect(latexFeedback(normalized)).toEqual([]);
     expect(wrapBareLatex(String.raw`Điều kiện \(x>0\).`)).toBe('Điều kiện $x>0$.');

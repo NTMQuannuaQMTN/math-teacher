@@ -1,0 +1,193 @@
+{
+  "question": {
+    "id": "nt8-h6",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm chữ số tận cùng của $2^{2026}+3^{2026}$.",
+    "reference": "$3$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm chữ số tận cùng của $2^{2026} + 3^{2026}$.",
+      "language": "vi",
+      "topic": "system",
+      "subtopic": "Số học",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Chữ số tận cùng",
+        "Lũy thừa",
+        "Chu kỳ của chữ số tận cùng"
+      ],
+      "techniques": [],
+      "givens": [
+        "Số $2^{2026}$",
+        "Số $3^{2026}$"
+      ],
+      "unknowns": [
+        "Chữ số tận cùng của tổng"
+      ],
+      "constraints": [
+        "Tìm chữ số tận cùng của tổng $2^{2026} + 3^{2026}$"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Phương pháp tính lũy thừa theo mô-đun (mod) không nằm trong chương trình Toán lớp 9."
+      ]
+    },
+    "strategy": "Tìm chữ số tận cùng của $2^{2026}$ và $3^{2026}$ bằng cách sử dụng chu kỳ của chữ số tận cùng, sau đó cộng hai chữ số tận cùng này lại.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 3,
+        "question": "Bạn có nhận xét gì về sự lặp lại của chữ số tận cùng khi tăng số mũ của 2 và 3 lên?",
+        "cue": "Chu kỳ chữ số tận cùng",
+        "explanation": "Chữ số tận cùng của các lũy thừa $2^n$ lặp lại theo chu kỳ 4: 2, 4, 8, 6. Chữ số tận cùng của $3^n$ cũng lặp lại theo chu kỳ 4: 3, 9, 7, 1. Để tìm chữ số tận cùng của $2^{2026}$ và $3^{2026}$, bạn chỉ cần biết số dư của 2026 khi chia cho 4.",
+        "math": "2026 \\div 4 = 506 \\text{ dư } 2",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 4,
+        "question": "Số dư của 2026 khi chia cho 4 là bao nhiêu?",
+        "cue": "Phép chia hết",
+        "explanation": "Hãy chia 2026 cho 4. Số dư là 2, nghĩa là $2026 = 4 \\times 506 + 2$. Điều này có nghĩa là chữ số tận cùng của $2^{2026}$ giống với chữ số tận cùng của $2^2$, và chữ số tận cùng của $3^{2026}$ giống với chữ số tận cùng của $3^2$.",
+        "math": "2026 = 4 \\times 506 + 2",
+        "stepId": "step2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Xác định chữ số tận cùng của từng lũy thừa",
+        "explanation": "Chữ số tận cùng của $2^n$ lặp lại theo chu kỳ 4: $2^1=2$, $2^2=4$, $2^3=8$, $2^4=16$ (tận cùng 6), $2^5=32$ (tận cùng 2). Tương tự, chữ số tận cùng của $3^n$ cũng lặp lại theo chu kỳ 4: $3^1=3$, $3^2=9$, $3^3=27$, $3^4=81$ (tận cùng 1), $3^5=243$ (tận cùng 3).",
+        "math": "2^{2026} \\equiv 2^2 \\pmod{10} \\quad \\text{và} \\quad 3^{2026} \\equiv 3^2 \\pmod{10}",
+        "reason": "Chu kỳ của chữ số tận cùng",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Chu kỳ của chữ số tận cùng"
+        ],
+        "operation": "Chu kỳ",
+        "result": "Chữ số tận cùng của $2^{2026}$ là 4, của $3^{2026}$ là 9.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của chu kỳ"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Tìm số dư của số mũ",
+        "explanation": "Vì $2026 = 4 \\times 506 + 2$, nên $2026$ chia cho $4$ dư $2$. Do đó, chữ số tận cùng của $2^{2026}$ giống với chữ số tận cùng của $2^2 = 4$. Tương tự, chữ số tận cùng của $3^{2026}$ giống với chữ số tận cùng của $3^2 = 9$.",
+        "math": "2026 \\div 4 = 506 \\text{ dư } 2",
+        "reason": "Phép chia hết",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Phép chia hết"
+        ],
+        "operation": "Chia",
+        "result": "Chữ số tận cùng của $2^{2026}$ là 4, của $3^{2026}$ là 9.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của phép chia"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Tính chữ số tận cùng của tổng",
+        "explanation": "Chữ số tận cùng của tổng $2^{2026} + 3^{2026}$ là chữ số tận cùng của tổng các chữ số tận cùng của từng số, tức là $4 + 9 = 13$. Chữ số tận cùng của 13 là 3.",
+        "math": "4 + 9 = 13 \\Rightarrow \\text{chữ số tận cùng là } 3",
+        "reason": "Phép cộng",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Phép cộng"
+        ],
+        "operation": "Cộng",
+        "result": "Chữ số tận cùng của $2^{2026} + 3^{2026}$ là 3.",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Kiểm tra tính đúng đắn của phép cộng"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chữ số tận cùng của $2^{2026} + 3^{2026}$ là 3.",
+      "math": "3"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "(2^n + 3^n) % 10"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "2026"
+            }
+          ]
+        ],
+        "expected": "3"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 34121,
+  "usage": {
+    "default": {
+      "input": 14078,
+      "cachedInput": 0,
+      "output": 3806,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.012120220000000001,
+  "model": "default",
+  "logs": [
+    "computed: integer target (residue)",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"Chữ số tận cùng của $2^n + 3^n$\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"(2^n + 3^n) % 10\" can't be evaluated (could not evaluate: Unknown variable n). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 2: only minor feedback; not retrying",
+    "usage: model=default in=14078 (cached 0) out=3806 (reasoning 0) ≈ $0.0121",
+    "total ≈ $0.0121 over 2 attempt(s); lesson by default"
+  ]
+}

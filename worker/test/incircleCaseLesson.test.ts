@@ -17,8 +17,10 @@ describe('complete incircle configuration has an explicit intersection witness',
   expect(proofDependencyFeedback(l,text)).toEqual([]);
   const checked=verifyLesson(l,{problemText:text});expect(checked.feedback).toEqual([]);
   expect(l.steps.at(-1)!.explanation).toContain('điểm $P$ thuộc $(I)$');
-  expect(l.steps[6]!.explanation).toContain('ở cùng phía');
-  expect(l.steps[9]!.explanation).toContain('đối xứng');
+  // Review 2026-10-15: prove what is asked directly — no configuration proofs, no symmetry mapping, no "∩" notation.
+  expect(l.steps[6]!.explanation).toContain('thẳng hàng');expect(l.steps[6]!.explanation).not.toContain('Nếu');
+  expect(l.steps.map(s=>s.explanation+(s.math??'')).join('\n')).not.toMatch(/đối xứng|\\cap|∩|không thẳng hàng|nằm trong đoạn/);
+  expect(l.steps[10]!.explanation).toContain('là giao điểm của hai đường thẳng');
   expect(l.hints).toHaveLength(8);
  });
  it('checks the actual dependent figure under diverse admissible acute triangles',()=>{
@@ -39,7 +41,7 @@ describe('complete incircle configuration has an explicit intersection witness',
   const map:Record<string,string>={A:'M',B:'N',C:'R',I:'O',D:'X',E:'Y',F:'Z',J:'T',K:'U',H:'V',L:'W',G:'P',S:'Q'};
   const renamed=text.replace(/(?<![\p{L}])[A-Z]{1,4}(?![\p{L}])/gu,t=>[...t].map(q=>map[q]??q).join(''));
   const l=incircleCaseLesson(renamed)!.lesson;
-  expect(l.steps[9]!.title).toContain('$S$');
+  expect(l.steps[8]!.explanation).toContain('Gọi $S$ là giao điểm thứ hai');
   expect(auditLesson(l)).toMatchObject({schemaValid:true,latexErrors:[],languageErrors:[]});
   expect(proofDependencyFeedback(l,renamed)).toEqual([]);
  });

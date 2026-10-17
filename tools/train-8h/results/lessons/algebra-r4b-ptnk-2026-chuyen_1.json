@@ -1,0 +1,340 @@
+{
+  "question": {
+    "id": "ptnk-2026-chuyen/1",
+    "split": "train",
+    "source": "exam ptnk-2026-chuyen",
+    "input": "Câu 1. Cho các phương trình $x^{2}+2ax+3b=0$ và $x^{2}+2bx+3a=0$, trong đó $a$ và $b$ là hai tham số. Biết các phương trình này đều có hai nghiệm phân biệt.\na) Chứng minh $\\left(a-\\frac{3}{2}\\right)^{2}+\\left(b-\\frac{3}{2}\\right)^{2}>\\frac{9}{2}$.\nb) Giả sử hai phương trình trên có đúng một nghiệm chung. Gọi $r$ là nghiệm còn lại của phương trình thứ nhất và $s$ là nghiệm còn lại của phương trình thứ hai. Chứng minh $r+s$ không phụ thuộc vào $a$ và $b$.",
+    "reference": "a) (chứng minh) b) r + s = −3/2.",
+    "reference_status": "official",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho hai phương trình $x^2 + 2ax + 3b = 0$ và $x^2 + 2bx + 3a = 0$ với $a, b$ là các tham số. Biết hai phương trình này đều có hai nghiệm phân biệt. a) Chứng minh $(a - \\frac{3}{2})^2 + (b - \\frac{3}{2})^2 > \\frac{9}{2}$. b) Giả sử hai phương trình có đúng một nghiệm chung. Gọi $r$ là nghiệm còn lại của phương trình thứ nhất và $s$ là nghiệm còn lại của phương trình thứ hai. Chứng minh $r + s$ không phụ thuộc vào $a$ và $b$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Quadratic equations và parameters",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Discriminant of a quadratic equation",
+        "Vieta's formulas",
+        "Common root of two quadratic equations",
+        "Bất đẳng thức đại số và phương pháp hoàn thành bình phương"
+      ],
+      "techniques": [
+        "discriminant",
+        "vieta",
+        "subtract_equations",
+        "complete_square"
+      ],
+      "givens": [
+        "Equation 1: $x^2 + 2ax + 3b = 0$",
+        "Equation 2: $x^2 + 2bx + 3a = 0$",
+        "Parameters $a, b$"
+      ],
+      "unknowns": [
+        "a, b (parameters)",
+        "r, s (remaining roots)"
+      ],
+      "constraints": [
+        "cả hai equations have two distinct roots ($\\Delta > 0$)",
+        "Exactly one common root"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán là một bài đại số lớp 9 tiêu chuẩn, liên quan đến biệt thức delta, định lý Vi-ét và biến đổi đại số. Bài toán hoàn toàn nằm trong chương trình học."
+      ]
+    },
+    "strategy": "Câu a: Tính biệt thức $\\Delta$ của hai phương trình, sử dụng điều kiện $\\Delta > 0$ để thiết lập bất đẳng thức liên hệ giữa $a$ và $b$, sau đó biến đổi vế trái của bất đẳng thức cần chứng minh để áp dụng kết quả đó. Câu b: Gọi $x_0$ là nghiệm chung, thay vào hai phương trình rồi trừ vế theo vế để tìm $x_0$. Dùng định lý Vi-ét để biểu diễn $r$ và $s$ theo $a, b$ và $x_0$, sau đó tính tổng $r + s$.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Để chứng minh bất đẳng thức ở câu a, trước hết bạn hãy viết điều kiện để hai phương trình có hai nghiệm phân biệt theo $a$ và $b$.",
+        "cue": "Điều kiện để phương trình bậc hai có hai nghiệm phân biệt.",
+        "explanation": "Bạn hãy tính biệt thức $\\Delta$ của từng phương trình. Vì đề bài cho biết cả hai phương trình đều có hai nghiệm phân biệt, nên $\\Delta_1 > 0$ và $\\Delta_2 > 0$. Từ đó, bạn sẽ có được hai bất đẳng thức liên quan đến $a$ và $b$.",
+        "math": "\\Delta_1 = 4(a^2 - 3b) > 0 \\quad \\text{và} \\quad \\Delta_2 = 4(b^2 - 3a) > 0",
+        "stepId": "1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Sau khi có hai bất đẳng thức từ điều kiện nghiệm phân biệt, bạn thử cộng vế theo vế chúng lại xem sao?",
+        "cue": "Phép cộng vế theo vế các bất đẳng thức cùng chiều.",
+        "explanation": "Bạn hãy cộng hai bất đẳng thức $a^2 > 3b$ và $b^2 > 3a$ lại với nhau. Kết quả thu được sẽ là $a^2 + b^2 > 3(a + b)$. Đây chính là bước thì chốt để liên hệ với vế trái của bất đẳng thức cần chứng minh.",
+        "math": "a^2 + b^2 > 3(a + b)",
+        "stepId": "2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 2,
+        "question": "Bây giờ, bạn hãy khai triển vế trái của bất đẳng thức cần chứng minh và biến đổi nó để xuất hiện biểu thức $a^2 + b^2 - 3(a + b)$.",
+        "cue": "Hằng đẳng thức đáng nhớ: $(A - B)^2 = A^2 - 2AB + B^2$.",
+        "explanation": "Bạn hãy khai triển vế trái của bất đẳng thức cần chứng minh: $(a - \\frac{3}{2})^2 + (b - \\frac{3}{2})^2$. Sau đó, nhóm các hạng tử lại để xuất hiện biểu thức $a^2 + b^2 - 3(a + b)$ mà bạn đã tìm được ở bước trước.",
+        "math": "\\left(a - \\frac{3}{2}\\right)^2 + \\left(b - \\frac{3}{2}\\right)^2 = a^2 + b^2 - 3(a + b) + \\frac{9}{2}",
+        "stepId": "3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 2,
+        "question": "Ở câu b, giả sử hai phương trình có đúng một nghiệm chung là $x_0$. Bạn hãy thay $x_0$ vào cả hai phương trình rồi trừ vế theo vế chúng để tìm mối liên hệ giữa $x_0$ và $a, b$.",
+        "cue": "Tính chất của nghiệm chung.",
+        "explanation": "Gọi $x_0$ là nghiệm chung. Vì $x_0$ là nghiệm của cả hai phương trình, nên nó thỏa mãn cả hai phương trình. Bạn hãy viết ra hai phương trình đó với ẩn $x_0$, rồi trừ vế theo vế phương trình thứ nhất cho phương trình thứ hai.",
+        "math": "\\begin{cases} x_0^2 + 2ax_0 + 3b = 0 \\ x_0^2 + 2bx_0 + 3a = 0 \\end{cases}",
+        "stepId": "4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 3,
+        "question": "Khi đã tìm được giá trị của $x_0$, bạn hãy dùng định lý Vi-ét để biểu diễn các nghiệm còn lại $r$ và $s$ theo $a, b$ và $x_0$.",
+        "cue": "Định lý Vi-ét.",
+        "explanation": "Sau khi tìm được $x_0$, bạn hãy dùng định lý Vi-ét cho phương trình thứ nhất để tìm $r$ theo $a$ và $x_0$, và tương tự tìm $s$ theo $b$ và $x_0$. Sau đó tính tổng $r + s$.",
+        "math": "r = -2a - x_0 \\quad \\text{và} \\quad s = -2b - x_0",
+        "stepId": "5",
+        "focus": []
+      },
+      {
+        "id": "h6",
+        "level": 4,
+        "question": "Cuối cùng, bạn hãy thay các giá trị tìm được vào biểu thức của $r + s$ để tính kết quả cụ thể.",
+        "cue": "Thay giá trị đã tìm được vào biểu thức tổng.",
+        "explanation": "Bạn hãy thay giá trị của $a + b$ (tìm được từ việc thay $x_0$ vào phương trình) và giá trị của $x_0$ vào biểu thức $r + s = -2(a + b) - 2x_0$. Kết quả thu được sẽ là một hằng số.",
+        "math": "r + s = -2(a + b) - 2x_0",
+        "stepId": "6",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "1",
+        "title": "Tính biệt thức $\\Delta$ của hai phương trình",
+        "explanation": "Để phương trình bậc hai có hai nghiệm phân biệt, biệt thức $\\Delta$ phải lớn hơn 0. Ta tính $\\Delta$ cho từng phương trình.",
+        "math": "\\begin{gathered}\\Delta_1 = (2a)^2 - 4(3b) = 4(a^2 - 3b) \\\\ \\Delta_2 = (2b)^2 - 4(3a) = 4(b^2 - 3a)\\end{gathered}",
+        "reason": "Định nghĩa biệt thức delta",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given"
+        ],
+        "operation": "Calculate discriminants",
+        "result": "\\Delta_1 = 4(a^2 - 3b), \\Delta_2 = 4(b^2 - 3a)",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Định nghĩa biệt thức delta"
+        }
+      },
+      {
+        "id": "2",
+        "title": "Thiết lập bất đẳng thức liên hệ giữa $a$ và $b$",
+        "explanation": "Vì hai phương trình đều có hai nghiệm phân biệt nên $\\Delta_1 > 0$ và $\\Delta_2 > 0$. Từ đó suy ra $a^2 > 3b$ và $b^2 > 3a$. Cộng vế theo vế hai bất đẳng thức cùng chiều này, ta được $a^2 + b^2 > 3(a + b)$.",
+        "math": "a^2 > 3b \\quad \\text{và} \\quad b^2 > 3a \\Rightarrow a^2 + b^2 > 3(a + b)",
+        "reason": "Property of inequalities",
+        "uses": [
+          "1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "1"
+        ],
+        "operation": "Add inequalities",
+        "result": "a^2 + b^2 > 3(a + b)",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Property of inequalities"
+        }
+      },
+      {
+        "id": "3",
+        "title": "Chứng minh bất đẳng thức",
+        "explanation": "Ta biến đổi vế trái của bất đẳng thức cần chứng minh bằng cách khai triển hằng đẳng thức $(A-B)^2$. Sau đó thay bất đẳng thức $a^2 + b^2 > 3(a + b)$ từ bước trước vào để hoàn tất chứng minh.",
+        "math": "\\begin{gathered}\\left(a - \\frac{3}{2}\\right)^2 + \\left(b - \\frac{3}{2}\\right)^2 = a^2 - 3a + \\frac{9}{4} + b^2 - 3b + \\frac{9}{4} \\\\ = (a^2 + b^2) - 3(a + b) + \\frac{9}{2} \\\\ > 3(a + b) - 3(a + b) + \\frac{9}{2} = \\frac{9}{2}\\end{gathered}",
+        "reason": "Algebraic identities và inequality substitution",
+        "uses": [
+          "2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "2"
+        ],
+        "operation": "Algebraic manipulation",
+        "result": "\\left(a - \\frac{3}{2}\\right)^2 + \\left(b - \\frac{3}{2}\\right)^2 > \\frac{9}{2}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Algebraic identities"
+        }
+      },
+      {
+        "id": "4",
+        "title": "Tìm nghiệm chung $x_0$",
+        "explanation": "Gọi $x_0$ là nghiệm chung. Thay $x_0$ vào cả hai phương trình rồi trừ vế theo vế, ta được $(a - b)(2x_0 - 3) = 0$. Vì hai phương trình có đúng một nghiệm chung nên $a \\neq b$ (nếu $a=b$ thì hai phương trình trùng nhau và có hai nghiệm chung). Do đó $2x_0 - 3 = 0 \\Rightarrow x_0 = \\frac{3}{2}$.",
+        "math": "\\begin{cases} x_0^2 + 2ax_0 + 3b = 0 \\ 1 \\ x_0^2 + 2bx_0 + 3a = 0 \\ (2) \\end{cases}\n1 - 2 \\Rightarrow 2(a - b)x_0 + 3(b - a) = 0 \\Rightarrow (a - b)(2x_0 - 3) = 0\n\\text{Vì } a \\neq b \\Rightarrow x_0 = \\frac{3}{2}",
+        "reason": "Định nghĩa nghiệm chung",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Given"
+        ],
+        "operation": "Subtract equations",
+        "result": "x_0 = \\frac{3}{2}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Định nghĩa nghiệm chung"
+        }
+      },
+      {
+        "id": "5",
+        "title": "Tìm tổng $a + b$",
+        "explanation": "Thay $x_0 = \\frac{3}{2}$ vào phương trình thứ nhất: $(\\frac{3}{2})^2 + 2a(\\frac{3}{2}) + 3b = 0 \\Rightarrow \\frac{9}{4} + 3a + 3b = 0 \\Rightarrow a + b = -\\frac{3}{4}$.",
+        "math": "\\left(\\frac{3}{2}\\right)^2 + 2a\\left(\\frac{3}{2}\\right) + 3b = 0 \\Rightarrow \\frac{9}{4} + 3(a + b) = 0 \\Rightarrow a + b = -\\frac{3}{4}",
+        "reason": "Định nghĩa nghiệm",
+        "uses": [
+          "4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "4"
+        ],
+        "operation": "Substitute root",
+        "result": "a + b = -\\frac{3}{4}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Định nghĩa nghiệm"
+        }
+      },
+      {
+        "id": "6",
+        "title": "Tính $r + s$ và kết luận",
+        "explanation": "Theo định lý Vi-ét, tổng hai nghiệm của phương trình thứ nhất là $-2a$, nên $r + x_0 = -2a \\Rightarrow r = -2a - x_0$. Tương tự, $s = -2b - x_0$. Tính $r + s = -2(a + b) - 2x_0$. Thay $a + b = -\\frac{3}{4}$ và $x_0 = \\frac{3}{2}$, ta có $r + s = -2(-\\frac{3}{4}) - 2(\\frac{3}{2}) = \\frac{3}{2} - 3 = -\\frac{3}{2}$. Kết quả này không chứa $a$ và $b$.",
+        "math": "\\begin{gathered}r = -2a - x_0, \\quad s = -2b - x_0 \\\\ r + s = -2(a + b) - 2x_0 = -2\\left(-\\frac{3}{4}\\right) - 2\\left(\\frac{3}{2}\\right) = \\frac{3}{2} - 3 = -\\frac{3}{2}\\end{gathered}",
+        "reason": "Vieta's formulas",
+        "uses": [
+          "4",
+          "5"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "4",
+          "5"
+        ],
+        "operation": "Apply Vieta's formulas",
+        "result": "r + s = -\\frac{3}{2}",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Vieta's formulas"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "a) Đã chứng minh bất đẳng thức đúng.\nb) $r + s = -\\frac{3}{2}$ (không phụ thuộc vào $a$ và $b$).",
+      "math": "r + s = -\\frac{3}{2}"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "(a - 3/2)^2 + (b - 3/2)^2 > 9/2"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "2"
+            },
+            {
+              "variable": "b",
+              "value": "2"
+            }
+          ]
+        ],
+        "expected": "1"
+      },
+      {
+        "kind": "substitute",
+        "statements": [
+          "x^2 + 2ax + 3b = 0",
+          "x^2 + 2bx + 3a = 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "x",
+              "value": "3/2"
+            }
+          ]
+        ],
+        "expected": "0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 2247,
+  "usage": {
+    "default": {
+      "input": 6761,
+      "cachedInput": 0,
+      "output": 10416,
+      "reasoning": 3871
+    }
+  },
+  "costUsd": 0.01887477,
+  "model": "default",
+  "logs": [
+    "outline in 0 s (444 chars)",
+    "language repair: 8/8 field(s) rewritten in 2 s",
+    "attempt 1: not_checkable, 2 problem(s): answer check \"(a - 3/2)^2 + (b - 3/2)^2 > 9/2\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds. | answer check \"x^2 + 2ax + 3b = 0\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=6761 (cached 0) out=10416 (reasoning 3871) ≈ $0.0189",
+    "total ≈ $0.0189 over 1 attempt(s); lesson by default"
+  ]
+}

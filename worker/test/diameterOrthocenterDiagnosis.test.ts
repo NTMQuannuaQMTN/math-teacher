@@ -32,9 +32,12 @@ describe('a purported parallelogram needs four distinct vertices',()=>{
   expect(diameterOrthocenterDiagnosis(text.replace('là tam giác nhọn','là tam giác nhọn với AB khác AD'))).toBeNull();
   expect(diameterOrthocenterDiagnosis(text+' Tính diện tích tam giác ABD.')).toBeNull();
  });
- it('gives an honest renderable diagnosis without spending on inference',async()=>{
-  const model={name:'local',model:'unavailable',complete:async()=>{throw Error('must not call');}};
-  const r=await solveProblem(model,VN_GRADE_9,text,{signal:AbortSignal.timeout(1000)});
-  expect(r.model).toBe('geometry-degeneracy-diagnosis');expect(r.verification.status).toBe('partial');expect(r.attempts).toBe(0);
+ it('asks the model for the general solution and tells it about the degenerate case (review 2026-10-15)',async()=>{
+  const seen:string[]=[];
+  const model={name:'local',model:'unavailable',complete:async(a:{messages:{content:string}[]})=>{seen.push(a.messages.map(m=>m.content).join('\n'));throw Error('offline');}};
+  const r=await solveProblem(model as never,VN_GRADE_9,text,{signal:AbortSignal.timeout(5000),maxAttempts:1});
+  // the model was asked for the general case (with the note), and when it fails the planner's general partial proof is served
+  expect(seen[0]).toMatch(/LƯU Ý VỀ GIẢ THIẾT/);expect(seen[0]).toMatch(/trường hợp tổng quát/);
+  expect(r.model).toBe('proof-planner');expect(r.lesson.finalAnswer.text).toMatch(/CEHK là hình bình hành/);
  });
 });

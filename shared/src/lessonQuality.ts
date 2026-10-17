@@ -5,7 +5,7 @@ import {hiddenSearchFeedback} from './hiddenSearch';
 
 /** Changes to proof/presentation safety invalidate session answers as well as
  * server solve caches. Archived reports retain their original version. */
-export const CURRENT_LESSON_VERSION='solver-v2.40';
+export const CURRENT_LESSON_VERSION='solver-v2.46';
 export function lessonDisplayFeedback(solution:Solution):string[] {
  if(!solution.lesson)return ['Missing lesson'];
  return [...cleanLanguage(solution.lesson).feedback,...proofDependencyFeedback(solution.lesson,solution.lesson.analysis.statement),...hiddenSearchFeedback(solution.lesson,solution.lesson.analysis.statement)];

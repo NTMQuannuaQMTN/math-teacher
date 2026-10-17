@@ -1,0 +1,140 @@
+{
+  "question": {
+    "id": "nt8-h9",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Chứng minh rằng với mọi số nguyên $n$, $n^3+5n$ chia hết cho $6$.",
+    "reference": "Chứng minh: $n^3+5n=(n-1)n(n+1)+6n$, tích ba số nguyên liên tiếp chia hết cho $6$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Chứng minh rằng với mọi số nguyên $n$, $n^3+5n$ chia hết cho $6$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chứng minh chia hết với mọi số nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chứng minh chia hết với mọi số nguyên"
+      ],
+      "techniques": [],
+      "givens": [
+        "$n$ là số nguyên"
+      ],
+      "unknowns": [
+        "Chứng minh $n^3+5n$ chia hết cho $6$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Viết biểu thức thành tích các số nguyên liên tiếp cộng với một bội của số chia.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Có thể viết biểu thức thành tích của các số nguyên liên tiếp không?",
+        "cue": "Khai triển và nhóm hạng tử",
+        "explanation": "Ta viết $n^3+5n$ thành một tích của 3 số nguyên liên tiếp cộng với một bội của $6$. Khai triển vế phải để kiểm tra lại.",
+        "math": "n^3+5n=(n-1)n(n+1)+6n",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Vì sao tích 3 số nguyên liên tiếp chia hết cho $6$?",
+        "cue": "Tính chất chia hết của tích các số nguyên liên tiếp",
+        "explanation": "Trong ba số nguyên liên tiếp luôn có một số chẵn và một số chia hết cho $3$; vì $2$ và $3$ nguyên tố cùng nhau nên tích chia hết cho $6$.",
+        "math": "(n-1)n(n+1)\\ \\vdots\\ 6",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Tổng của hai số chia hết cho một số thì sao?",
+        "cue": "Tính chất chia hết của một tổng",
+        "explanation": "Vì $6$ (nhân với $1$) chia hết cho $6$ nên số hạng thứ nhất chia hết cho $6$; số hạng thứ hai là bội của $6$. Tổng hai số chia hết cho $6$ thì chia hết cho $6$. Vậy $n^3+5n$ chia hết cho $6$ với mọi số nguyên $n$.",
+        "math": "n^3+5n\\ \\vdots\\ 6",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tách thành tích các số nguyên liên tiếp",
+        "explanation": "Ta viết $n^3+5n$ thành một tích của 3 số nguyên liên tiếp cộng với một bội của $6$. Khai triển vế phải để kiểm tra lại.",
+        "math": "n^3+5n=(n-1)n(n+1)+6n",
+        "reason": "Khai triển và nhóm hạng tử",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Tích các số nguyên liên tiếp",
+        "explanation": "Trong ba số nguyên liên tiếp luôn có một số chẵn và một số chia hết cho $3$; vì $2$ và $3$ nguyên tố cùng nhau nên tích chia hết cho $6$.",
+        "math": "(n-1)n(n+1)\\ \\vdots\\ 6",
+        "reason": "Tính chất chia hết của tích các số nguyên liên tiếp",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Vì $6$ (nhân với $1$) chia hết cho $6$ nên số hạng thứ nhất chia hết cho $6$; số hạng thứ hai là bội của $6$. Tổng hai số chia hết cho $6$ thì chia hết cho $6$. Vậy $n^3+5n$ chia hết cho $6$ với mọi số nguyên $n$.",
+        "math": "n^3+5n\\ \\vdots\\ 6",
+        "reason": "Tính chất chia hết của một tổng",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $n^3+5n$ chia hết cho $6$ với mọi số nguyên $n$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Kiểm tra đẳng thức khai triển và tính chia hết trên mọi giá trị |n| ≤ 200",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 7,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-consecutive-product",
+  "logs": []
+}

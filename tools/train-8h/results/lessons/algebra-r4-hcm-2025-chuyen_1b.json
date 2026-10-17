@@ -1,0 +1,244 @@
+{
+  "question": {
+    "id": "hcm-2025-chuyen/1b",
+    "split": "train",
+    "source": "exam hcm-2025-chuyen",
+    "input": "Biết $a,b$ là hai nghiệm thực của phương trình $x^2-4x+c=0$ và $-a$ là một nghiệm thực của phương trình $11x^2-x+2c=0$ với $c$ là một số thực khác 0. Tính giá trị của biểu thức $a^{2025}+b^{2025}+c^{2025}$.",
+    "reference": "$-1$",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho $a, b$ là hai nghiệm của $x^2-4x+c=0$ và $-a$ là nghiệm của $11x^2-x+2c=0$ ($c \\neq 0$). Tính $a^{2025}+b^{2025}+c^{2025}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "$phuong_trinh_bac_hai$",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Định lý Vi-ét",
+        "Hệ phương trình",
+        "Lũy thừa"
+      ],
+      "techniques": [
+        "vieta",
+        "substitution",
+        "factorization"
+      ],
+      "givens": [
+        "Phương trình 1: $x^2-4x+c=0$ có nghiệm $a, b$",
+        "Phương trình 2: $11x^2-x+2c=0$ có nghiệm $-a$"
+      ],
+      "unknowns": [
+        "a",
+        "b",
+        "c"
+      ],
+      "constraints": [
+        "a, b là nghiệm của $x^2-4x+c=0$",
+        "-a là nghiệm của $11x^2-x+2c=0$",
+        "$c \\neq 0$"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng định lý Vi-ét để thiết lập hệ thức giữa $a, b, c$. Thay $-a$ vào phương trình thứ hai để tìm thêm một phương trình. Giải hệ để tìm $a, b, c$. Cuối cùng thay vào biểu thức cần tính.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Bạn hãy viết ra các hệ thức liên hệ giữa $a, b$ và $c$ từ phương trình $x^2-4x+c=0$ theo định lý Vi-ét. Sau đó, thay $-a$ vào phương trình $11x^2-x+2c=0$ để tìm thêm một phương trình liên hệ với $a$ và $c$.",
+        "cue": "Định lý Vi-ét",
+        "explanation": "Bạn hãy viết ra các hệ thức liên hệ giữa $a, b$ và $c$ từ phương trình $x^2-4x+c=0$ theo định lý Vi-ét. Sau đó, thay $-a$ vào phương trình $11x^2-x+2c=0$ để tìm thêm một phương trình liên hệ với $a$ và $c$.",
+        "math": "a + b = 4; a \\cdot b = c; 11(-a)^2 - (-a) + 2c = 0",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Thay $c = ab$ vào phương trình $11a^2 + a + 2c = 0$, bạn sẽ được phương trình nào chỉ chứa $a$ và $b$? Hãy giải hệ phương trình với $a+b=4$ để tìm $a$ và $b$.",
+        "cue": "Thay thế và giải hệ",
+        "explanation": "Từ $a+b=4$ và $ab=c$, ta có thể biểu diễn $c$ theo $a$ và $b$. Thay $c = ab$ vào phương trình $11a^2 + a + 2c = 0$ (sau khi thay $-a$ vào pt2), ta được một phương trình chỉ chứa $a$ và $b$. Kết hợp với $a+b=4$, bạn có thể giải để tìm $a$ và $b$.",
+        "math": "11a^2 + a + 2ab = 0",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Bây giờ bạn đã có giá trị của $a, b, c$. Hãy thay vào biểu thức $a^{2025}+b^{2025}+c^{2025}$ và tính kết quả.",
+        "cue": "Tính giá trị biểu thức",
+        "explanation": "Sau khi tìm được $a=2, b=2, c=4$, bạn chỉ cần thay vào biểu thức $a^{2025}+b^{2025}+c^{2025}$ và tính toán.",
+        "math": "2^{2025} + 2^{2025} + 4^{2025}",
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Thiết lập hệ thức",
+        "explanation": "Áp dụng định lý Vi-ét cho phương trình $x^2-4x+c=0$ có hai nghiệm $a, b$, ta có tổng và tích của nghiệm. Đồng thời, vì $-a$ là nghiệm của $11x^2-x+2c=0$, ta thay $x=-a$ vào phương trình này.",
+        "math": "a + b = 4 \\quad (1) \\\\ a \\cdot b = c \\quad (2) \\\\ 11(-a)^2 - (-a) + 2c = 0 \\Rightarrow 11a^2 + a + 2c = 0 \\quad (3)",
+        "reason": "Định lý Vi-ét và định nghĩa nghiệm",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định lý Vi-ét",
+          "Nghiệm của phương trình"
+        ],
+        "operation": "substitution",
+        "result": "Hệ phương trình (1), (2), (3)",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Đơn giản hóa phương trình",
+        "explanation": "Thay $c = ab$ từ (2) vào (3), ta được $11a^2 + a + 2ab = 0$. Vì $c \\neq 0$ nên $a \\neq 0$ và $b \\neq 0$. Ta có thể chia cả hai vế cho $a$ để đơn giản hóa.",
+        "math": "11a^2 + a + 2ab = 0 \\\\ a(11a + 1 + 2b) = 0 \\\\ \\text{Vì } a \\neq 0 \\Rightarrow 11a + 1 + 2b = 0 \\quad (4)",
+        "reason": "Nhân tử chung và điều kiện $c \\neq 0$",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Thay thế",
+          "Giải phương trình"
+        ],
+        "operation": "factorization",
+        "result": "Phương trình (4)",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Tìm nghiệm",
+        "explanation": "Giải hệ phương trình gồm (1) và (4). Từ (1) suy ra $b = 4-a$. Thay vào (4) để tìm $a$, sau đó tìm $b$ và $c$.",
+        "math": "11a + 1 + 2(4-a) = 0 \\\\ 11a + 1 + 8 - 2a = 0 \\\\ 9a + 9 = 0 \\\\ a = -1 \\\\ b = 4 - (-1) = 5 \\\\ c = a \\cdot b = -1 \\cdot 5 = -5",
+        "reason": "Giải hệ phương trình bậc nhất hai ẩn",
+        "uses": [
+          "s1",
+          "s2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giải hệ phương trình"
+        ],
+        "operation": "substitution",
+        "result": "$a = -1, b = 5, c = -5$",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu"
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Tính giá trị biểu thức",
+        "explanation": "Thay $a = -1, b = 5, c = -5$ vào biểu thức cần tính. Lưu ý rằng $(-1)^{2025} = -1$ vì 2025 là số lẻ.",
+        "math": "a^{2025} + b^{2025} + c^{2025} = (-1)^{2025} + 5^{2025} + (-5)^{2025} \\\\ = -1 + 5^{2025} - 5^{2025} \\\\ = -1",
+        "reason": "Tính chất lũy thừa",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tính lũy thừa"
+        ],
+        "operation": "evaluation",
+        "result": "-1",
+        "verification": {
+          "status": "verified",
+          "method": "substitution",
+          "reason": "Thay giá trị tìm được vào phương trình ban đầu"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của biểu thức là 0.",
+      "math": "0"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "a^2025 + b^2025 + c^2025"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "2"
+            },
+            {
+              "variable": "b",
+              "value": "2"
+            },
+            {
+              "variable": "c",
+              "value": "4"
+            }
+          ]
+        ],
+        "expected": "0"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 19812,
+  "usage": {
+    "default": {
+      "input": 5751,
+      "cachedInput": 0,
+      "output": 2666,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.00664027,
+  "model": "default",
+  "logs": [
+    "attempt 1: not_checkable, 1 problem(s): answer check \"a^2025 + b^2025 + c^2025\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=5751 (cached 0) out=2666 (reasoning 0) ≈ $0.0066",
+    "total ≈ $0.0066 over 1 attempt(s); lesson by default"
+  ]
+}

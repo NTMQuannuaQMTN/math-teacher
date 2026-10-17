@@ -1,0 +1,82 @@
+{
+ "ptnk-2023-chuyen/4a": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "n = m² − 1 (nên m ≥ 1), a = m(m − 1)(m² + m + 1) − 2m² + 1; m(m − 1) chẵn nên a lẻ. Gọn, đúng."
+ },
+ "ptnk-2024-chuyen/3b": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Bộ xác định (đã kiểm chứng): n lẻ."
+ },
+ "ptnk-2024-chuyen/3c": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Bộ xác định: n = 8k + 2 hoặc 8k + 6 (tức n = 4k + 2)."
+ },
+ "ptnk-2025-chuyen/3a": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Bộ xác định: không tồn tại khi n = 3."
+ },
+ "ptnk-2025-chuyen/3b": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Bộ xác định: (1,1), (4,2); trạng thái một phần."
+ },
+ "hcm-2025-chuyen/4a": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "11 = 2² + 7·1², 44 = 4² + 7·2²."
+ },
+ "hanoi-2025-chuyen/II.1": {
+  "verdict": "đúng",
+  "score": 7,
+  "notes": "Đưa về a² + bc ⋮ 4…, loại trường hợp cả ba lẻ bằng (abc)² ≡ 3 (mod 4). Thiếu: trường hợp “đúng một hoặc hai số chẵn” chỉ khẳng định, chưa xét cụ thể."
+ },
+ "hanoi-2025-chuyen/II.2": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Ba cặp (−7; −14), (−2; −3), (4; 7); máy kiểm chứng."
+ },
+ "khtn-2025-vong2/II.1": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "(1; 1), (2; 2); máy kiểm chứng."
+ },
+ "ptnk-2026-chuyen/3": {
+  "verdict": "đúng",
+  "score": 8,
+  "notes": "Bộ xác định: b) n = 3k + 1, c) n = 18k + 16."
+ },
+ "nt8-h1": {
+  "verdict": "đúng — nhưng bị giữ lại nhầm",
+  "score": 6,
+  "notes": "Đáp số đúng (vô nghiệm) nhưng không hiển thị: phép kiểm tra hai biến của mô hình bị tính là “sai” thay vì “không đánh giá được”. Sửa #16."
+ },
+ "nt8-h2": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Yêu cầu có suy nghĩ quá 115 s; lần thử lại không suy nghĩ thì mô hình bỏ cuộc."
+ },
+ "nt8-h3": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Như h2."
+ },
+ "nt8-h4": {
+  "verdict": "SAI — đã hiển thị",
+  "score": 0,
+  "notes": "Ứng dụng nói n = 0 và n = 3; đúng là n ∈ {12; 44} (n = 0 cho 97, không chính phương). Hiển thị là “máy không kiểm chứng được”. Sửa #17: thay lại từng giá trị và tìm vét cạn."
+ },
+ "nt8-h5": {
+  "verdict": "không có lời giải",
+  "score": 0,
+  "notes": "Hết thời gian cả hai lần (115 s mỗi lần)."
+ },
+ "nt8-h6": {
+  "verdict": "SAI — đã hiển thị",
+  "score": 0,
+  "notes": "Ứng dụng nói 9; đúng là 3. Sửa #17: tính chính xác chữ số tận cùng/số dư của mọi biểu thức lũy thừa."
+ }
+}

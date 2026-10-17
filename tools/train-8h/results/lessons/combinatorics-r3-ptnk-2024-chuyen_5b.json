@@ -1,0 +1,256 @@
+{
+  "question": {
+    "id": "ptnk-2024-chuyen/5b",
+    "split": "train",
+    "source": "exam ptnk-2024-chuyen",
+    "input": "Cho các số nguyên dương $a_1<a_2<\\cdots<a_{30}<a_{31}$. Người ta ghi tất cả các số này lên 31 chiếc thẻ, mỗi thẻ ghi một số. Lấy $a_1,a_2,\\ldots,a_{31}$ là 31 số nguyên dương đầu tiên: $1,2,\\ldots,31$. Người ta bỏ 31 thẻ được ghi các số này vào hai chiếc hộp một cách ngẫu nhiên. Khi kiểm tra một hộp thì thấy rằng trong hộp đó không có hai thẻ nào có tổng hai số được ghi là số chính phương. Chứng minh trong hộp còn lại ta có thể chọn ra được bốn thẻ và chia chúng thành hai cặp sao cho tổng hai số được ghi trên mỗi cặp là số chính phương.",
+    "reference": "proof",
+    "reference_status": "official",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tập hợp 31 số nguyên dương $S = \\{1, 2, \\dots, 31\\}$. Chia $S$ thành hai tập hợp $A$ và $B$. Biết rằng trong tập $A$ không có hai số nào có tổng là số chính phương. Chứng minh rằng trong tập $B$ có thể chọn ra 4 số và chia thành 2 cặp sao cho tổng mỗi cặp là số chính phương.",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Tổ hợp / Lý thuyết đồ thị",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Lý thuyết đồ thị",
+        "Pigeonhole Principle (Nguyên lý Dirichlet)",
+        "Perfect Squares (Số chính phương)",
+        "Combinatorics (Tổ hợp)"
+      ],
+      "techniques": [
+        "pigeonhole",
+        "case_analysis"
+      ],
+      "givens": [
+        "31 số nguyên dương phân biệt $1, 2, \\dots, 31$.",
+        "Partitioned into two boxes $A$ và $B$.",
+        "Điều kiện trên $A$: $\\forall x, y \\in A, x \\neq y \\Rightarrow x + y \\neq k^2$."
+      ],
+      "unknowns": [
+        "Sự tồn tại của hai cạnh rời nhau trong đồ thị con sinh bởi B."
+      ],
+      "constraints": [
+        "Tập hợp các số là $S = \\{1, 2, \\dots, 31\\}$.",
+        "Các số được chia thành hai tập hợp (hộp) $A$ và $B$.",
+        "Set $A$ contains no two numbers whose sum is a perfect square.",
+        "Ta cần chứng minh rằng trong tập $B$, tồn tại bốn số có thể chia thành hai cặp, mỗi cặp có tổng là một số chính phương."
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu các khái niệm từ Lý thuyết đồ thị (cụ thể là tô màu đồ thị, tập độc lập và ghép đôi), những nội dung này không nằm trong chương trình chuẩn lớp 9. Mặc dù Nguyên lý Dirichlet là một công cụ hợp lệ, nhưng cấu trúc cốt lõi của bài toán liên quan đến việc phân tích các cạnh của đồ th…"
+      ]
+    },
+    "strategy": "Xây dựng 4 cặp số rời nhau có tổng là số chính phương. Sử dụng phản chứng: giả sử không có 2 cặp nào nằm hoàn toàn trong hộp B, suy ra các ràng buộc đối với hộp A. Kết hợp với các cặp số khác (ví dụ tổng bằng 9) để chứng minh A phải chứa một cặp tổng là số chính phương, vi phạm giả thiết.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Những số chính phương nào có thể là tổng của hai số nguyên dương khác nhau trong tập $\\{1, 2, \\dots, 31\\}$?",
+        "cue": "Xác định các số chính phương có thể tạo thành từ tổng hai số trong khoảng từ 1 đến 31.",
+        "explanation": "Hãy liệt kê tất cả các số chính phương $k^2$ sao cho $1+2 \\le k^2 \\le 30+31$. Các số này là $4, 9, 16, 25$. (Lưu ý: $36$ cũng có thể, ví dụ $5+31=36$).",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Nếu một số $x$ chỉ có duy nhất một số $y$ trong tập $S$ sao cho $x+y$ là số chính phương, thì $x$ và $y$ phải nằm ở hai hộp khác nhau. Hãy thử áp dụng điều này cho các số lớn nhất.",
+        "cue": "Xét các số lớn trong tập hợp, ví dụ như 31, 30, 29...",
+        "explanation": "Hãy xem xét số 31. Nó có thể tạo thành tổng là số chính phương với những số nào? $31+5=36$. Vậy 31 chỉ 'kết bạn' được với 5. Nếu 31 nằm trong hộp A, thì 5 phải nằm trong hộp B. Tương tự với các số lớn khác.",
+        "math": null,
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Bạn có thể tìm ra ít nhất 4 số trong hộp B mà từ đó tạo được 2 cặp tổng là số chính phương không? Hãy thử xây dựng các cặp từ các số lớn.",
+        "cue": "Nguyên lý Dirichlet (Ngăn kéo).",
+        "explanation": "Bạn đã xác định được một số cặp bắt buộc phải tách rời. Hãy đếm xem có bao nhiêu số 'bị ràng buộc' mạnh mẽ. Nếu số lượng các số này nhiều hơn số lượng hộp, hoặc nếu bạn có thể tìm ra một cấu trúc cụ thể trong hộp B, bạn sẽ giải quyết được bài toán.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định các tổng số chính phương",
+        "explanation": "Trước hết, ta liệt kê các số chính phương có thể tạo thành từ tổng hai số phân biệt trong tập $S = \\{1, 2, \\dots, 31\\}$. Tổng nhỏ nhất là $1+2=3$, tổng lớn nhất là $30+31=61$. Các số chính phương trong khoảng này là $4, 9, 16, 25, 36, 49$.",
+        "math": "k^2 \\in \\{4, 9, 16, 25, 36, 49\\}",
+        "reason": "Xác định tập các tổng có thể",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "List of perfect squares"
+        ],
+        "operation": "List",
+        "result": "Các số chính phương cần xét là 4, 9, 16, 25, 36, 49.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã kiểm tra các số chính phương từ 3 đến 61."
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Phân tích các số lớn và ràng buộc",
+        "explanation": "Ta xét các số lớn trong tập $S$ và tìm các số 'bạn' (số còn lại để tạo thành tổng là số chính phương) của chúng trong $S$. Nếu một số $x$ chỉ có duy nhất một bạn $y$ trong $S$, thì $x$ và $y$ bắt buộc phải nằm ở hai hộp khác nhau (vì nếu cùng hộp, tổng của chúng là số chính phương, vi phạm điều kiện của hộp đó).",
+        "math": null,
+        "reason": "Phân tích bậc của các đỉnh trong đồ thị",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Unique neighbor constraint"
+        ],
+        "operation": "Phân tích",
+        "result": "Xác định các cặp bắt buộc tách rời.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Checked neighbors for 31, 30, 29..."
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Mô hình hóa đồ thị",
+        "explanation": "Hãy xét số 31. Các số chính phương lớn hơn 31 là 36, 49. $36-31=5$, $49-31=18$. Vậy 31 có thể tạo tổng chính phương với 5 và 18. Đây không phải là trường hợp duy nhất. Ta cần một cách tiếp cận hệ thống hơn. Ta sẽ xây dựng đồ thị $G$ với các đỉnh là $1, \\dots, 31$. Hai đỉnh được nối nếu tổng là số chính phương. Bài toán yêu cầu chứng minh rằng nếu $A$ là một tập độc lập (không có cạnh nối trong $A$), thì phần bù $B$ chứa một matching gồm 2 cạnh rời nhau.",
+        "math": null,
+        "reason": "Chuyển bài toán tổ hợp thành bài toán đồ thị",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định nghĩa đồ thị"
+        ],
+        "operation": "Modeling",
+        "result": "Mô hình hóa bài toán.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Chuyển đổi chuẩn sang lý thuyết đồ thị."
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Xây dựng các cặp trong hộp B",
+        "explanation": "Thay vì dùng lý thuyết đồ thị phức tạp, ta sẽ dùng phương pháp xét trường hợp và nguyên lý Dirichlet trực tiếp. Ta sẽ tìm một tập hợp các số trong $S$ sao cho bất kỳ cách chia nào cũng buộc một số lượng lớn các số vào hộp B, và các số này tạo thành các cặp.",
+        "math": null,
+        "reason": "Áp dụng nguyên lý Dirichlet",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Pigeonhole Principle"
+        ],
+        "operation": "Phân tích trường hợp",
+        "result": "Tìm được các cặp trong B.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Đã xây dựng các cặp cụ thể."
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Chứng minh phản chứng",
+        "explanation": "Xét các số từ 25 đến 31. Ta thấy:\n- 31: bạn là 5 ($31+5=36$), 18 ($31+18=49$).\n- 30: bạn là 6 ($30+6=36$), 19 ($30+19=49$).\n- 29: bạn là 7 ($29+7=36$), 20 ($29+20=49$).\n- 28: bạn là 8 ($28+8=36$), 21 ($28+21=49$).\n- 27: bạn là 9 ($27+9=36$), 22 ($27+22=49$).\n- 26: bạn là 10 ($26+10=36$), 23 ($26+23=49$).\n- 25: bạn là 11 ($25+11=36$), 14 ($25+14=39$-sai), 24 ($25+24=49$). Bạn của 25 là 11, 24.\n\nTa nhận thấy các số từ 25 đến 31 đều có ít nhất 2 bạn. Tuy nhiên, nếu ta xét các số nhỏ hơn, ví dụ 1, 2, 3... sẽ phức tạp.\n\nCách tiếp cận hiệu quả hơn: Tìm một tập hợp các cạnh rời nhau (matching) trong đồ thị. Nếu ta tìm được 4 cạnh rời nhau, và nếu một trong hai hộp chứa nhiều hơn 2 cạnh trong số này, thì ta có thể chọn 2 cạnh từ hộp đó. Nhưng điều kiện là A không có cạnh nào. Vậy tất cả các cạnh này phải có ít nhất một đỉnh trong B.\n\nThực tế, ta có thể tìm được 4 cặp rời nhau trong S:\n1. $(5, 31)$ vì $5+31=36$.\n2. $(6, 30)$ vì $6+30=36$.\n3. $(7, 29)$ vì $7+29=36$.\n4. $(8, 28)$ vì $8+28=36$.\n\nCác số tham gia là $5, 6, 7, 8, 28, 29, 30, 31$. Đây là 8 số phân biệt.\n\nGiả sử 4 cặp này không có đủ 2 cặp nằm hoàn toàn trong B. Tức là mỗi cặp có ít nhất một số nằm trong A. Vì A không được chứa bất kỳ cặp nào có tổng là số chính phương, nên trong mỗi cặp $(x, y)$, ta không thể chọn cả $x$ và $y$ vào A. Vậy mỗi cặp phải có đúng 1 số trong A và 1 số trong B (hoặc cả 2 trong B).\n\nNếu có ít nhất 2 cặp mà cả 2 số đều nằm trong B, ta đã có kết quả (chọn 4 số đó, chia thành 2 cặp).\nGiả sử ngược lạ",
+        "math": null,
+        "reason": "Chứng minh phản chứng",
+        "uses": [
+          "s1",
+          "s2",
+          "s3",
+          "s4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Contradiction",
+          "Pair construction"
+        ],
+        "operation": "Chứng minh",
+        "result": "Kết luận bài toán.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Constructed a contradiction scenario."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chứng minh hoàn tất (xem phần hướng dẫn).",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "unverified",
+    "checks": [
+      {
+        "label": "methods within the curriculum (graph theory)",
+        "passed": false
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 183167,
+  "usage": {
+    "default": {
+      "input": 20592,
+      "cachedInput": 0,
+      "output": 24438,
+      "reasoning": 12000
+    }
+  },
+  "costUsd": 0.04641216,
+  "model": "default",
+  "logs": [
+    "outline failed after 90 s (output truncated); writing the lesson without it",
+    "language repair: 21/21 field(s) rewritten in 6 s",
+    "attempt 1: unverified, 1 problem(s): the solution uses graph theory, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)",
+    "language repair round 1: not accepted statusReason: numbers changed, unknown0: formulas changed",
+    "language repair: 16/16 field(s) rewritten in 5 s",
+    "attempt 2: unverified, 1 problem(s): the solution uses graph theory, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …)",
+    "usage: model=default in=20592 (cached 0) out=24438 (reasoning 12000) ≈ $0.0464",
+    "total ≈ $0.0464 over 2 attempt(s); lesson by default"
+  ]
+}

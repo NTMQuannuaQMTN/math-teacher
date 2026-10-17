@@ -1,0 +1,134 @@
+{
+  "type": "combinatorics",
+  "round": "1",
+  "split": "train",
+  "createdAt": "2026-10-14T14:10:35.761Z",
+  "spentTotalUsd": 1.44620286,
+  "results": [
+    {
+      "id": "ptnk-2023-chuyen/3a",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 33951,
+      "logs": [
+        "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+        "language repair: 3/7 field(s) rewritten in 2 s",
+        "removed 3 optional metadata field(s) still not in Vietnamese",
+        "attempt 2: unverified, 3 problem(s): subtopic (\"Logic\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | the solution uses matrices or complex numbers, which a Vietnamese Grade 9 student has not learned: solve it again with Grade 9 methods (identities, factorising, Vi-ét, congruent/similar triangles, circle angle theorems, …) | answer check \"4 * 2 = 8\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+        "usage: model=default in=17697 (cached 0) out=4267 (reasoning 0) ≈ $0.0144",
+        "total ≈ $0.0144 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0144
+    },
+    {
+      "id": "ptnk-2023-chuyen/3b",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 2,
+      "ms": 145540,
+      "finalAnswer": "a) Tổng số cặp tốt theo cột lớn nhất là 4.\nb) Tổng số cặp tốt theo hàng lớn nhất là 11.",
+      "costUsd": 0.0395
+    },
+    {
+      "id": "ptnk-2024-chuyen/5a",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "lesson contains untranslated student-facing text",
+      "ms": 87573,
+      "logs": [
+        "language repair: 9/10 field(s) rewritten in 3 s",
+        "attempt 1: not_checkable, 2 problem(s): given (\"integers\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"a_1 >= 226\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+        "language repair: 9/10 field(s) rewritten in 0 s",
+        "attempt 2: not_checkable, 2 problem(s): given (\"integers\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | answer check \"a_1 >= 226\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+        "usage: model=default in=16735 (cached 0) out=11946 (reasoning 3117) ≈ $0.0257",
+        "total ≈ $0.0257 over 2 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0249
+    },
+    {
+      "id": "ptnk-2024-chuyen/5b",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 150065,
+      "finalAnswer": "Ta đã chứng minh được rằng trong tập B luôn tồn tại ít nhất hai cặp số rời nhau có tổng là số chính phương. Cụ thể, tập B phải chứa ít nhất 4 số, và cấu trúc các tổng chính phương trong khoảng 1-31 đảm bảo rằng các cạnh này không xung đột (chia sẻ đỉnh) theo cách khiến ta không thể chọn được 2 cặp rời nhau.",
+      "costUsd": 0.0344
+    },
+    {
+      "id": "ptnk-2025-chuyen/5a",
+      "ok": false,
+      "error": "incomplete",
+      "message": "the game strategy has no valid exhaustive query certificate",
+      "ms": 114096,
+      "logs": [
+        "outline failed after 90 s (output truncated); writing the lesson without it",
+        "language repair: 28/30 field(s) rewritten in 6 s",
+        "removed 2 optional metadata field(s) still not in Vietnamese",
+        "attempt 1: not_checkable, 0 problem(s)",
+        "usage: model=default in=6863 (cached 0) out=15148 (reasoning 5879) ≈ $0.0261",
+        "total ≈ $0.0261 over 1 attempt(s); lesson by default"
+      ],
+      "costUsd": 0.0261
+    },
+    {
+      "id": "hcm-2025-chuyen/5a",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 42897,
+      "finalAnswer": "Xác suất cần tìm là $\\frac{11}{201}$.",
+      "costUsd": 0.0117
+    },
+    {
+      "id": "hcm-2025-chuyen/5b",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 55909,
+      "finalAnswer": "Đpcm",
+      "costUsd": 0.0153
+    },
+    {
+      "id": "hanoi-2025-chuyen/V.1",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 17603,
+      "finalAnswer": "Không, số học sinh trường A không thể là 25. Vì nếu x = 25 thì số học sinh trường B sẽ không phải là số nguyên (y = 100/3), trong khi số học sinh phải là số tự nhiên.",
+      "costUsd": 0.006
+    },
+    {
+      "id": "hanoi-2025-chuyen/V.2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 60294,
+      "finalAnswer": "Tổng số học sinh của hai trường tham dự buổi liên hoan có thể nhiều nhất là 70 bạn.",
+      "costUsd": 0.0186
+    },
+    {
+      "id": "ptnk-2026-chuyen/5",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 1,
+      "ms": 88556,
+      "finalAnswer": "a) Bảng ma thuật:\n8 1 6\n3 5 7\n4 9 2\nTổng mỗi hàng, cột, đường chéo bằng 15.\n\nb) Với $n \\ge 15$ và $n \\vdots 3$, ta luôn tìm được 9 số nguyên dương phân biệt thỏa mãn. Vậy $n$ là số tốt.\n\nc) Nếu $n$ là số tốt thì $n \\ge 15$ và $n \\vdots 3$.",
+      "costUsd": 0.021
+    }
+  ]
+}

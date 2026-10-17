@@ -1,0 +1,481 @@
+{
+  "question": {
+    "id": "geo8-h2",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Cho đường tròn $(O)$ đường kính $AB$ và điểm $C$ thuộc đường tròn ($C$ khác $A$, $B$). Tiếp tuyến tại $C$ cắt các tiếp tuyến tại $A$ và $B$ lần lượt tại $M$ và $N$. Chứng minh $MN=AM+BN$ và $\\widehat{MON}=90^\\circ$.",
+    "reference": "Chứng minh: tính chất hai tiếp tuyến cắt nhau cho $MA=MC$, $NB=NC$ nên $MN=MC+CN=AM+BN$; $OM$, $ON$ là phân giác của hai góc kề bù $\\widehat{AOC}$, $\\widehat{COB}$ nên $\\widehat{MON}=90^\\circ$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn (O) đường kính AB và điểm C thuộc đường tròn (C khác A, B). Tiếp tuyến tại C cắt các tiếp tuyến tại A và B lần lượt tại M và N. Chứng minh MN = AM + BN và góc MON = 90 độ.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Geometry - Circles",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tiếp tuyến của đường tròn",
+        "Tính chất hai tiếp tuyến cắt nhau",
+        "Góc tạo bởi tiếp tuyến và dây cung",
+        "Góc nội tiếp chắn nửa đường tròn",
+        "Tổng ba góc trong một tam giác"
+      ],
+      "techniques": [
+        "congruent_triangles",
+        "angle_chasing",
+        "similar_triangles"
+      ],
+      "givens": [
+        "Đường tròn (O) đường kính AB",
+        "C thuộc (O)",
+        "AM, BN là tiếp tuyến tại A, B",
+        "MC, NC là tiếp tuyến tại C",
+        "M = AM giao MC, N = BN giao NC"
+      ],
+      "unknowns": [
+        "Chứng minh MN = AM + BN",
+        "Chứng minh góc MON = 90 độ"
+      ],
+      "constraints": [
+        "C thuộc đường tròn (O), C khác A và B",
+        "AB là đường kính"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Đề bài yêu cầu chứng minh MN = AM + BN và góc MON = 90 độ. Tuy nhiên, phác thảo lời giải được cung cấp chứa một lỗi hình học cơ bản: nó khẳng định MA vuông góc với AB. Thực tế, vì AB là đường kính, tiếp tuyến tại A vuông góc với bán kính OA (nằm trên AB), nên"
+      ]
+    },
+    "strategy": "Để chứng minh MN = AM + BN, ta sử dụng tính chất hai tiếp tuyến cắt nhau để suy ra MA = MC và NB = NC, sau đó thay vào đẳng thức MN = MC + CN. Để chứng minh góc MON = 90 độ, ta cũng dùng tính chất hai tiếp tuyến cắt nhau để suy ra MO và NO lần lượt là phân giác của góc AMN và góc BNM. Vì MA và NB cùng vuông góc với AB nên MA song song với NB, dẫn đến tổng góc AMN và BNM bằng 180 độ. Từ đó tính được góc MON = 90 độ.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 2,
+        "question": "Từ điểm M và N, ta có những cặp tiếp tuyến nào với đường tròn (O)?",
+        "cue": "Tính chất hai tiếp tuyến cắt nhau",
+        "explanation": "Bạn hãy nhớ lại tính chất của hai tiếp tuyến cắt nhau tại một điểm. Từ điểm M, ta có hai tiếp tuyến MA và MC của đường tròn (O). Tương tự với điểm N. Tính chất này cho ta điều gì về độ dài các đoạn thẳng?",
+        "math": "MA = MC, NB = NC",
+        "stepId": "step_1",
+        "focus": [
+          "c_O"
+        ]
+      },
+      {
+        "id": "hint_2",
+        "level": 3,
+        "question": "Điểm C có nằm trên đoạn thẳng MN không? Nếu có, ta có thể viết MN dưới dạng tổng của hai đoạn thẳng nào?",
+        "cue": "Điểm C nằm trên đoạn thẳng MN",
+        "explanation": "Vì M, C, N thẳng hàng (do cùng nằm trên tiếp tuyến tại C), nên độ dài đoạn MN bằng tổng độ dài hai đoạn MC và CN. Kết hợp với kết quả ở câu hỏi trước, bạn hãy thay thế MC bằng MA và CN bằng BN để suy ra điều phải chứng minh.",
+        "math": "MN = MC + CN = MA + BN",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "MO và NO có phải là tia phân giác của những góc nào trong hình không?",
+        "cue": "Tính chất hai tiếp tuyến cắt nhau",
+        "explanation": "Tiếp tục sử dụng tính chất hai tiếp tuyến cắt nhau: đường thẳng nối từ giao điểm hai tiếp tuyến đến tâm đường tròn là tia phân giác của góc tạo bởi hai tiếp tuyến đó. Vậy MO và NO lần lượt là phân giác của những góc nào?",
+        "math": "\\text{ MO là phân giác góc AMN }, \\text{ NO là phân giác góc BNM }",
+        "stepId": "step_3",
+        "focus": []
+      },
+      {
+        "id": "hint_4",
+        "level": 3,
+        "question": "MA và NB cùng vuông góc với đường thẳng nào? Từ đó suy ra MA và NB song song với nhau đúng không?",
+        "cue": "Hai đường thẳng cùng vuông góc với một đường thẳng thứ ba thì song song",
+        "explanation": "Vì MA và NB đều là tiếp tuyến của đường tròn (O) tại hai đầu mút của đường kính AB, nên chúng cùng vuông góc với AB. Từ đó, MA và NB có vị trí tương đối thế nào với nhau?",
+        "math": "MA \\parallel NB",
+        "stepId": "step_4",
+        "focus": [
+          "seg_AB"
+        ]
+      },
+      {
+        "id": "hint_5",
+        "level": 3,
+        "question": "Vì MA song song với NB, tổng hai góc trong cùng phía AMN và BNM bằng bao nhiêu?",
+        "cue": "Hai góc trong cùng phía",
+        "explanation": "Khi hai đường thẳng song song (MA và NB) bị cắt bởi một đường thẳng thứ ba (MN), thì hai góc trong cùng phía (góc AMN và góc BNM) có tổng bằng bao nhiêu?",
+        "math": "\\text{ góc }_AMN + \\text{ góc }_BNM = 180^\\circ",
+        "stepId": "step_5",
+        "focus": []
+      },
+      {
+        "id": "hint_6",
+        "level": 4,
+        "question": "Bây giờ bạn đã có góc OMN và ONM theo góc AMN và BNM. Hãy tính tổng góc OMN + ONM, rồi suy ra góc MON.",
+        "cue": "Tổng các góc trong tam giác MON",
+        "explanation": "Trong tam giác MON, tổng ba góc bằng 180 độ. Góc MON = 180 - (góc OMN + góc ONM). Mà góc OMN = 1/2 góc AMN và góc ONM = 1/2 góc BNM. Hãy thay vào và sử dụng kết quả tổng góc AMN + BNM = 180 độ để tính góc MON.",
+        "math": "\\text{ góc }_MON = 90^\\circ",
+        "stepId": "step_6",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Chứng minh MA = MC và NB = NC",
+        "explanation": "Ta xét điểm M. MA và MC là hai tiếp tuyến của đường tròn (O) cắt nhau tại M. Theo tính chất hai tiếp tuyến cắt nhau, ta có MA = MC. Tương tự, NB và NC là hai tiếp tuyến của đường tròn (O) cắt nhau tại N, nên NB = NC.",
+        "math": "MA = MC, NB = NC",
+        "reason": "Tính chất hai tiếp tuyến cắt nhau",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "c_O"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "giả thiết MA là tiếp tuyến",
+          "giả thiết MC là tiếp tuyến",
+          "giả thiết NB là tiếp tuyến",
+          "giả thiết NC là tiếp tuyến"
+        ],
+        "operation": "tinh_chat_tiep_tuyen_cat_nhau",
+        "result": "MA = MC, NB = NC",
+        "verification": {
+          "status": "verified",
+          "method": "length_value",
+          "reason": "MA = 4, MC = 4, NB = 6, NC = 6"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Chứng minh MN = AM + BN",
+        "explanation": "Vì M, C, N cùng nằm trên tiếp tuyến tại C của đường tròn (O), nên ba điểm M, C, N thẳng hàng. Do đó, độ dài đoạn thẳng MN bằng tổng độ dài hai đoạn thẳng MC và CN: MN = MC + CN. Thay MC = MA và CN = NB (theo kết quả câu 1), ta được MN = MA + BN.",
+        "math": "MN = MC + CN = MA + BN",
+        "reason": "Tính chất cộng độ dài đoạn thẳng và kết quả câu 1",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "c_O"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "step_1_MA_MC",
+          "step_1_NB_NC",
+          "giả thiết M, C, N thẳng hàng"
+        ],
+        "operation": "cong_do_dai",
+        "result": "MN = MA + BN",
+        "verification": {
+          "status": "verified",
+          "method": "length_value",
+          "reason": "MN = 10, MA + NB = 4 + 6 = 10"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Chứng minh MO và NO là các tia phân giác",
+        "explanation": "Tiếp tục sử dụng tính chất hai tiếp tuyến cắt nhau: đường thẳng nối giao điểm hai tiếp tuyến với tâm đường tròn là tia phân giác của góc tạo bởi hai tiếp tuyến đó. Vì MA và MC là hai tiếp tuyến cắt nhau tại M, nên MO là tia phân giác của góc AMN, hay góc AMO = góc CMN = 1/2 góc AMN. Tương tự, vì NB và NC là hai tiếp tuyến cắt nhau tại N, nên NO là tia phân giác của góc BNM, hay góc BNO = góc CNO = 1/2 góc BNM.",
+        "math": "\\text{ góc }_AMO = \\text{ góc }_CMN = \\frac{1}{2}\\text{ góc }_AMN, \\text{ góc }_BNO = \\text{ góc }_CNO = \\frac{1}{2}\\text{ góc }_BNM",
+        "reason": "Tính chất hai tiếp tuyến cắt nhau",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "giả thiết MA là tiếp tuyến",
+          "giả thiết MC là tiếp tuyến",
+          "giả thiết NB là tiếp tuyến",
+          "giả thiết NC là tiếp tuyến"
+        ],
+        "operation": "tinh_chat_tiep_tuyen_cat_nhau",
+        "result": "MO là phân giác góc AMN, NO là phân giác góc BNM",
+        "verification": {
+          "status": "verified",
+          "method": "angle_value",
+          "reason": "góc_AMN = 53.13, góc_AMO = 26.57, góc_CMN = 26.57. góc_BNM = 126.87, góc_BNO = 63.43, góc_CNO = 63.43"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Chứng minh MA song song với NB",
+        "explanation": "Vì MA là tiếp tuyến của đường tròn (O) tại A, nên MA vuông góc với bán kính OA (hay AB). Do đó, góc MAB = 90 độ. Tương tự, vì NB là tiếp tuyến của đường tròn (O) tại B, nên NB vuông góc với bán kính OB (hay AB). Do đó, góc NBA = 90 độ. Vì MA và NB cùng vuông góc với đường thẳng AB nên MA song song với NB.",
+        "math": "MA \\perp AB, NB \\perp AB \\Rightarrow MA \\parallel NB",
+        "reason": "Tính chất tiếp tuyến và dấu hiệu nhận biết hai đường thẳng song song",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "c_O"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "giả thiết MA là tiếp tuyến",
+          "giả thiết NB là tiếp tuyến",
+          "given_AB_diameter"
+        ],
+        "operation": "song_song",
+        "result": "MA song song với NB",
+        "verification": {
+          "status": "verified",
+          "method": "parallel",
+          "reason": "MA và NB đều vuông góc với AB"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Chứng minh tổng góc AMN và BNM bằng 180 độ",
+        "explanation": "Vì MA song song với NB, nên hai góc trong cùng phía tạo bởi cát tuyến MN là góc AMN và góc BNM có tổng bằng 180 độ. Tức là góc AMN + góc BNM = 180 độ.",
+        "math": "\\text{ góc }_AMN + \\text{ góc }_BNM = 180^\\circ",
+        "reason": "Tính chất hai đường thẳng song song",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step_4_MA_NB_song_song"
+        ],
+        "operation": "goc_trong_cung_phia",
+        "result": "góc_AMN + góc_BNM = 180 độ",
+        "verification": {
+          "status": "verified",
+          "method": "angle_value",
+          "reason": "góc_AMN + góc_BNM = 53.13 + 126.87 = 180"
+        }
+      },
+      {
+        "id": "step_6",
+        "title": "Chứng minh góc MON = 90 độ",
+        "explanation": "Xét tam giác MON. Tổng ba góc trong một tam giác bằng 180 độ, nên góc MON = 180 độ - (góc OMN + góc ONM). Từ câu 3, ta có góc OMN = 1/2 góc AMN và góc ONM = 1/2 góc BNM. Do đó, góc OMN + góc ONM = 1/2 góc AMN + 1/2 góc BNM = 1/2 (góc AMN + góc BNM). Thay góc AMN + góc BNM = 180 độ (theo câu 5), ta được góc OMN + góc ONM = 1/2 . 180 độ = 90 độ. Vậy góc MON = 180 độ - 90 độ = 90 độ.",
+        "math": "\\text{ góc }_MON = 180^\\circ - (\\text{ góc }_OMN + \\text{ góc }_ONM) = 180^\\circ - \\frac{1}{2}(\\text{ góc }_AMN + \\text{ góc }_BNM) = 180^\\circ - 90^\\circ = 90^\\circ",
+        "reason": "Tổng ba góc trong tam giác và kết quả câu 3, 5",
+        "uses": [
+          "step_3",
+          "step_5"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "bước 3 MO, NO là phân giác",
+          "bước 5 tổng góc AMN và BNM"
+        ],
+        "operation": "tính góc",
+        "result": "góc_MON = 90 độ",
+        "verification": {
+          "status": "verified",
+          "method": "angle_value",
+          "reason": "góc_MON = 90"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "a) $MN = AM + BN$\nb) $\\boxed{\\text{góc } MON = 90^\\text{o}}$",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "identity",
+        "statements": [
+          "MN = MC + CN",
+          "MA = MC",
+          "NB = NC"
+        ],
+        "assignments": [],
+        "expected": "MN = AM + BN"
+      },
+      {
+        "kind": "value",
+        "statements": [
+          "goc_MON = 90"
+        ],
+        "assignments": [],
+        "expected": "90"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": -5,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": 5,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "on_circle",
+          "refs": [
+            "c_O"
+          ],
+          "x": -2.5,
+          "y": 4.33,
+          "value": 120,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": "đường kính"
+        },
+        {
+          "id": "seg_OC",
+          "kind": "segment",
+          "from": "O",
+          "to": "C",
+          "style": "construction",
+          "label": ""
+        }
+      ],
+      "circles": [
+        {
+          "id": "c_O",
+          "center": "O",
+          "through": "A",
+          "radius": 5,
+          "style": "given",
+          "label": "(O)"
+        }
+      ],
+      "angles": [
+        {
+          "id": "ang_MAB",
+          "from": "A",
+          "vertex": "A",
+          "to": "B",
+          "label": "90°",
+          "right": true,
+          "style": "given"
+        },
+        {
+          "id": "ang_NBA",
+          "from": "B",
+          "vertex": "B",
+          "to": "A",
+          "label": "90°",
+          "right": true,
+          "style": "given"
+        }
+      ],
+      "marks": [],
+      "checks": [
+        {
+          "kind": "collinear",
+          "refs": [
+            "A",
+            "O",
+            "B"
+          ],
+          "value": 180,
+          "role": "given"
+        }
+      ]
+    }
+  },
+  "verification": {
+    "status": "partial",
+    "checks": [
+      {
+        "label": "figure matches the givens",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_6",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 151099,
+  "usage": {
+    "default": {
+      "input": 25604,
+      "cachedInput": 0,
+      "output": 18431,
+      "reasoning": 3189
+    }
+  },
+  "costUsd": 0.039536919999999996,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — points not constructed: M, N (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 29 s (507 chars)",
+    "language repair: 17/17 field(s) rewritten in 5 s",
+    "attempt 1: partial, 8 problem(s): hint hint_5 math, step step_3 math, step step_5 math is Vietnamese without diacritics: write Vietnamese with full diacritics (\"phương trình\", never \"phuong trinh\") | figure: cycle at point M (left out of the figure) | figure: point M (intersection) could not be constructed (left out of the figure)",
+    "language repair: 15/15 field(s) rewritten in 4 s",
+    "attempt 2: partial, 7 problem(s): figure: cycle at point M (left out of the figure) | figure: point M (intersection) could not be constructed (left out of the figure) | figure: point N (intersection) could not be constructed (left out of the figure)",
+    "usage: model=default in=25604 (cached 0) out=18431 (reasoning 3189) ≈ $0.0395",
+    "total ≈ $0.0395 over 2 attempt(s); lesson by default"
+  ]
+}

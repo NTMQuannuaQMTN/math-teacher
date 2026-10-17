@@ -1,0 +1,320 @@
+{
+  "question": {
+    "id": "fin2-g3",
+    "split": "final2",
+    "source": "authored 2026-10-15 15:50, after all fixes of the second run; run once (final evaluation 2)",
+    "input": "Cho đường tròn $(O)$ và điểm $A$ nằm ngoài đường tròn. Kẻ các tiếp tuyến $AB$, $AC$ ($B$, $C$ là các tiếp điểm). Chứng minh $AO$ là tia phân giác của góc $BAC$ và $AO\\perp BC$.",
+    "reference": "Chứng minh: $\\triangle ABO=\\triangle ACO$ (cạnh huyền – cạnh góc vuông) nên $\\widehat{BAO}=\\widehat{CAO}$; $AB=AC$, $OB=OC$ nên $AO$ là trung trực của $BC$.",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove",
+    "topic": "geometry"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn (O) và điểm A nằm ngoài đường tròn. Kẻ các tiếp tuyến AB, AC (B, C là các tiếp điểm). Chứng minh AO là tia phân giác của góc BAC và AO vuông góc với BC.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Geometry - Circle Tangents và Isosceles Triangles",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tiếp tuyến của đường tròn",
+        "Tính chất hai tiếp tuyến cắt nhau",
+        "Tam giác cân",
+        "Tam giác bằng nhau (c.c.c)",
+        "Tính chất đường trung tuyến - phân giác - đường cao trong tam giác cân"
+      ],
+      "techniques": [
+        "congruent_triangles",
+        "similar_triangles",
+        "cyclic_quadrilateral",
+        "angle_chasing",
+        "pythagoras"
+      ],
+      "givens": [
+        "Đường tròn (O)",
+        "Điểm A nằm ngoài (O)",
+        "AB, AC là các tiếp tuyến với (O) tại B, C"
+      ],
+      "unknowns": [
+        "AO là tia phân giác của góc BAC",
+        "AO vuông góc với BC"
+      ],
+      "constraints": [
+        "A nằm ngoài đường tròn (O)",
+        "AB, AC là các tiếp tuyến tại B, C"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán thuộc hình học lớp 9 chuẩn (tính chất tiếp tuyến, tam giác bằng nhau, tính chất tam giác cân). Hoàn toàn nằm trong chương trình."
+      ]
+    },
+    "strategy": "Sử dụng tính chất hai tiếp tuyến cắt nhau để chứng minh AB = AC, sau đó chứng minh hai tam giác ABO và ACO bằng nhau để suy ra các góc bằng nhau. Cuối cùng, sử dụng tính chất tam giác cân để kết luận AO vuông góc với BC.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Dựa vào tính chất của hai tiếp tuyến cắt nhau, em hãy cho biết mối quan hệ giữa độ dài đoạn thẳng AB và AC?",
+        "cue": "Tính chất hai tiếp tuyến cắt nhau",
+        "explanation": "Khi hai tiếp tuyến của một đường tròn cắt nhau tại một điểm, thì điểm đó cách đều hai tiếp điểm. Tức là AB = AC.",
+        "math": "AB = AC",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Xét hai tam giác ABO và ACO. Em hãy tìm các cạnh bằng nhau của chúng để chứng minh hai tam giác này bằng nhau?",
+        "cue": "Tam giác bằng nhau (c.c.c)",
+        "explanation": "Xét hai tam giác ABO và ACO. Ta đã có AB = AC. Ngoài ra, OB và OC đều là bán kính của đường tròn (O) nên OB = OC. Cạnh AO là cạnh chung. Vậy hai tam giác này bằng nhau theo trường hợp cạnh - cạnh - cạnh.",
+        "math": "\\triangle ABO = \\triangle ACO (c.c.c)",
+        "stepId": "step_2",
+        "focus": [
+          "seg_AO"
+        ]
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Từ kết quả hai tam giác ABO và ACO bằng nhau, em suy ra điều gì về hai góc BAO và CAO?",
+        "cue": "Góc tương ứng của hai tam giác bằng nhau",
+        "explanation": "Vì hai tam giác ABO và ACO bằng nhau, nên các góc tương ứng của chúng cũng bằng nhau. Cụ thể, góc BAO bằng góc CAO. Điều này có nghĩa là AO chia góc BAC thành hai phần bằng nhau.",
+        "math": "\\widehat{BAO} = \\widehat{CAO}",
+        "stepId": "step_3",
+        "focus": [
+          "seg_AO"
+        ]
+      },
+      {
+        "id": "hint_4",
+        "level": 4,
+        "question": "Tam giác ABC có đặc điểm gì đặc biệt? Trong tam giác cân, đường phân giác xuất phát từ đỉnh có tính chất gì?",
+        "cue": "Tính chất tam giác cân",
+        "explanation": "Vì AB = AC (chứng minh ở bước 1) nên tam giác ABC cân tại A. Trong tam giác cân, đường phân giác xuất phát từ đỉnh đồng thời là đường cao. Do đó, AO vừa là phân giác vừa vuông góc với cạnh đáy BC.",
+        "math": "AO \\perp BC",
+        "stepId": "step_4",
+        "focus": [
+          "seg_AO"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Chứng minh AB = AC",
+        "explanation": "Theo tính chất hai tiếp tuyến cắt nhau, khoảng cách từ giao điểm của hai tiếp tuyến đến hai tiếp điểm là bằng nhau.",
+        "math": "AB = AC",
+        "reason": "Tính chất hai tiếp tuyến cắt nhau",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "AB = AC"
+        ],
+        "operation": "suy luận",
+        "result": "AB = AC",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "AB = AC theo tính chất tiếp tuyến"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Chứng minh tam giác ABO bằng tam giác ACO",
+        "explanation": "Xét hai tam giác ABO và ACO. Ta có AB = AC (chứng minh trên), OB = OC (bán kính đường tròn (O)), và AO là cạnh chung. Do đó, hai tam giác này bằng nhau theo trường hợp cạnh - cạnh - cạnh.",
+        "math": "\\triangle ABO = \\triangle ACO (c.c.c)",
+        "reason": "Trường hợp cạnh - cạnh - cạnh (c.c.c)",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AO"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AB = AC",
+          "OB = OC",
+          "AO chung"
+        ],
+        "operation": "suy luận",
+        "result": "\\triangle ABO = \\triangle ACO",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "AB=AC, OB=OC, AO chung"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Chứng minh AO là tia phân giác của góc BAC",
+        "explanation": "Vì hai tam giác ABO và ACO bằng nhau, nên các góc tương ứng của chúng bằng nhau. Cụ thể, góc BAO bằng góc CAO.",
+        "math": "\\widehat{BAO} = \\widehat{CAO}",
+        "reason": "Góc tương ứng của hai tam giác bằng nhau",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AO"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "\\triangle ABO = \\triangle ACO"
+        ],
+        "operation": "suy luận",
+        "result": "\\widehat{BAO} = \\widehat{CAO}",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "\\widehat{BAO} = \\widehat{CAO} do tam giác bằng nhau"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Chứng minh AO vuông góc với BC",
+        "explanation": "Vì AB = AC nên tam giác ABC cân tại A. Trong tam giác cân, đường phân giác xuất phát từ đỉnh đồng thời là đường cao hạ xuống cạnh đáy. Do đó, AO vuông góc với BC.",
+        "math": "AO \\perp BC",
+        "reason": "Tính chất tam giác cân (phân giác đồng thời là đường cao)",
+        "uses": [
+          "step_1",
+          "step_3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AO"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AB = AC",
+          "\\widehat{BAO} = \\widehat{CAO}"
+        ],
+        "operation": "suy luận",
+        "result": "AO \\perp BC",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "AO là phân giác của tam giác cân ABC nên AO vuông góc với BC"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Chứng minh được AO là tia phân giác của góc BAC và AO vuông góc với BC.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "identity",
+        "statements": [
+          "AO là tia phân giác của góc BAC",
+          "AO vuông góc với BC"
+        ],
+        "assignments": [],
+        "expected": "AO là tia phân giác của góc BAC và AO vuông góc với BC"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 5,
+          "value": 0,
+          "value2": 0,
+          "draggable": true,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AO",
+          "kind": "segment",
+          "from": "A",
+          "to": "O",
+          "style": "given",
+          "label": "AO"
+        }
+      ],
+      "circles": [],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 80475,
+  "usage": {
+    "default": {
+      "input": 22184,
+      "cachedInput": 0,
+      "output": 10403,
+      "reasoning": 2427
+    }
+  },
+  "costUsd": 0.02579536,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 21 s (231 chars)",
+    "language repair: 5/5 field(s) rewritten in 1 s",
+    "attempt 1: not_checkable, 8 problem(s): figure: cycle at point B (left out of the figure) | figure: circle c_O could not be constructed (left out of the figure) | figure: point B (tangent) could not be constructed (left out of the figure)",
+    "language repair: 5/5 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 8 problem(s): figure: cycle at point B (left out of the figure) | figure: circle c_O could not be constructed (left out of the figure) | figure: point B (tangent) could not be constructed (left out of the figure)",
+    "usage: model=default in=22184 (cached 0) out=10403 (reasoning 2427) ≈ $0.0258",
+    "total ≈ $0.0258 over 2 attempt(s); lesson by default"
+  ]
+}

@@ -15,7 +15,8 @@ const powMod=(base:number,exponent:number,modulus:number)=>{let a=BigInt(base%mo
 function parse(input:string):Task|null {
  const text=normalizeProblemText(input),p=plain(input);let m:RegExpExecArray|null;
  if(/\b(?:biết|giả sử|cho) thêm\b/iu.test(p))return null;
- m=/(?:chia\s+)?(\d+)\^\{?(\d+)\}?[^.]{0,45}(?:cho|chia cho|mod)\s*(\d+)/iu.exec(p);
+ // Only words may sit between the power and "cho": "3^{2025}+5^{2025} cho 8" is a different task (it was read as 3^{2025}).
+ m=/(?:chia\s+)?(?<![+\-*·×^)]\s*)(?<!\d)(\d+)\^\{?(\d+)\}?[^.+\-*^·×\d]{0,45}(?:cho|chia cho|mod)\s*(\d+)/iu.exec(p);
  if(m){const base=Number(m[1]),exponent=Number(m[2]),modulus=Number(m[3]);if(base<1||base>1000||exponent<1||exponent>1e7||modulus<2||modulus>1000||gcd(base,modulus)!==1)return null;const cycle:number[]=[];let value=1;for(let i=1;i<=modulus;i++){value=value*base%modulus;cycle.push(value);if(value===1)break;}if(cycle.at(-1)!==1)return null;return {kind:'power',text,base,exponent,modulus,remainder:powMod(base,exponent,modulus),cycle};}
  const powers=[...p.matchAll(/(\d+)\^\{?(\d+)\}?\s*-\s*1/gu)];
  if(powers.length===2&&/(?:\\gcd|UCLN|ước chung lớn nhất)/iu.test(p)&&powers[0]![1]===powers[1]![1]){const base=Number(powers[0]![1]),first=Number(powers[0]![2]),second=Number(powers[1]![2]);if(base<2||base>20||first<1||second<1||first>60||second>60)return null;const g=gcd(first,second),answer=BigInt(base)**BigInt(g)-1n;return {kind:'gcdPowers',text,base,first,second,g,answer};}

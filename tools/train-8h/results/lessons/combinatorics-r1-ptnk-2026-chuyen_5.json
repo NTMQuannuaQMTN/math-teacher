@@ -1,0 +1,472 @@
+{
+  "question": {
+    "id": "ptnk-2026-chuyen/5",
+    "split": "train",
+    "source": "exam ptnk-2026-chuyen",
+    "input": "Câu 5. Cho bảng ô vuông kích thước $3 \\times 3$ gồm 3 hàng, 3 cột và 2 đường chéo. Một số nguyên dương $n$ được gọi là số tốt nếu ta tìm được 9 số nguyên dương phân biệt và điền vào các ô của bảng, mỗi ô một số, sao cho tổng các số trên mỗi hàng, mỗi cột và mỗi đường chéo đều bằng $n$.\na) Hãy chỉ ra một cách điền các số nguyên dương từ 1 đến 9 vào các ô của bảng sao cho tổng các số trên mỗi hàng, mỗi cột và mỗi đường chéo đều bằng nhau.\nb) Chứng minh nếu $n \\ge 15$ và $n$ chia hết cho 3 thì $n$ là số tốt.\nc) Chứng minh nếu $n$ là số tốt thì $n \\ge 15$ và $n$ chia hết cho 3.",
+    "reference": "a) ví dụ 2 7 6 / 9 5 1 / 4 3 8. b), c) (chứng minh)",
+    "reference_status": "official",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho bảng ô vuông kích thước $3 \\times 3$ gồm 3 hàng, 3 cột và 2 đường chéo. Một số nguyên dương $n$ được gọi là số tốt nếu ta tìm được 9 số nguyên dương phân biệt và điền vào các ô của bảng, mỗi ô một số, sao cho tổng các số trên mỗi hàng, mỗi cột và mỗi đường chéo đều bằng $n$. a) Hãy chỉ ra một cách điền các số nguyên dương từ 1 đến 9 vào các ô của bảng sao cho tổng các số trên mỗi hàng, mỗi cột và mỗi đường chéo đều bằng nhau. b) Chứng minh nếu $n \\ge 15$ và $n$ chia hết cho 3 thì $n$ là số tốt. c) Chứng minh nếu $n$ là số tốt thì $n \\ge 15$ và $n$ chia hết cho 3.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Lý thuyết số và Tổ hợp",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Magic square (bảng ma thuật)",
+        "Tổng cấp số cộng",
+        "Algebraic substitution (Đặt ẩn phụ)",
+        "Inequalities (Bất đẳng thức)",
+        "Divisibility (Tính chia hết)"
+      ],
+      "techniques": [
+        "substitution",
+        "complete_square",
+        "divisibility",
+        "bounding"
+      ],
+      "givens": [
+        "Một lưới 3x3 với 3 hàng, 3 cột, và 2 đường chéo",
+        "n là một 'số tốt' nếu tồn tại lưới như vậy"
+      ],
+      "unknowns": [
+        "Sự sắp xếp các số trong lưới",
+        "Giá trị của n",
+        "Chứng minh sự tồn tại với một số n nhất định"
+      ],
+      "constraints": [
+        "9 số nguyên dương phân biệt",
+        "Tổng mỗi hàng, cột, và đường chéo bằng n"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán yêu cầu kiến thức về hình ma phương thuật và các tính chất của lưới 3x3 không được đề cập rõ ràng trong chương trình chuẩn lớp 9 (THCS). Mặc dù các phép biến đổi số học và đại số nằm trong tầm với, nhưng các tính chất hình học/tổ hợp cụ thể của hình ma phương thuật (như tâm"
+      ]
+    },
+    "strategy": "Câu a: Tính tổng 9 số từ 1 đến 9, chia cho 3 để tìm tổng mỗi hàng, sau đó điền bảng ma thuật cơ bản. Câu b: Dùng bảng ma thuật cơ bản, cộng thêm một hằng số $d$ vào mỗi ô để tăng tổng từ 15 lên $n$. Câu c: Dùng tổng của 9 số để chặn dưới $n$, và dùng tổng của 4 đường qua tâm để chứng minh $n$ chia hết cho 3.",
+    "hints": [
+      {
+        "id": "hint_a_1",
+        "level": 1,
+        "question": "Tổng của 9 số từ 1 đến 9 là bao nhiêu, và nó liên hệ thế nào với tổng của 3 hàng?",
+        "cue": "Tổng của các số từ 1 đến 9",
+        "explanation": "Bạn hãy tính tổng của 9 số nguyên dương từ 1 đến 9. Tổng này sẽ bằng tổng của 3 hàng. Từ đó, bạn có thể tìm được tổng của mỗi hàng (tức là giá trị của $n$).",
+        "math": null,
+        "stepId": "step_a_1",
+        "focus": []
+      },
+      {
+        "id": "hint_a_2",
+        "level": 2,
+        "question": "Nếu đặt số 5 vào ô chính giữa, bạn có thể tìm được các cặp số đối diện qua tâm không?",
+        "cue": "Số ở chính giữa",
+        "explanation": "Hãy thử điền số 5 vào ô chính giữa. Vì tổng mỗi hàng, cột, đường chéo là 15, số đối diện với 5 qua tâm phải cộng với 5 bằng 15, tức là bằng 10. Bạn hãy thử tìm các cặp số còn lại sao cho tổng của chúng bằng 10.",
+        "math": null,
+        "stepId": "step_a_2",
+        "focus": []
+      },
+      {
+        "id": "hint_b_1",
+        "level": 2,
+        "question": "Làm thế nào để biến đổi bảng ma thuật cơ bản (tổng 15) để được tổng mới là $n$?",
+        "cue": "Biểu diễn n",
+        "explanation": "Vì $n$ chia hết cho 3, bạn có thể đặt $n = 3k$. Khi đó, bạn cần tìm 9 số nguyên dương phân biệt sao cho tổng mỗi hàng là $3k$. Hãy thử bắt đầu từ bảng ma thuật cơ bản (tổng 15) và cộng thêm một số hằng số $d$ vào mỗi ô.",
+        "math": "n = 3k",
+        "stepId": "step_b_1",
+        "focus": []
+      },
+      {
+        "id": "hint_b_2",
+        "level": 3,
+        "question": "Giá trị của $d$ phải như thế nào để 9 số mới vẫn là các số nguyên dương phân biệt?",
+        "cue": "Điều kiện của các số",
+        "explanation": "Khi cộng thêm $d$ vào mỗi ô, các số mới sẽ là $1+d, 2+d, \\dots, 9+d$. Để các số này vẫn là nguyên dương và phân biệt, $d$ cần thỏa mãn điều kiện gì? Từ đó, bạn sẽ tìm được điều kiện của $k$ (và do đó là $n$).",
+        "math": "d = k - 5",
+        "stepId": "step_b_2",
+        "focus": []
+      },
+      {
+        "id": "hint_c_1",
+        "level": 1,
+        "question": "Tổng của 9 số trong bảng liên hệ thế nào với $n$, và tổng nhỏ nhất có thể của 9 số nguyên dương phân biệt là bao nhiêu?",
+        "cue": "Tổng của 9 số",
+        "explanation": "Gọi tổng của 9 số trong bảng là $S$. Vì có 3 hàng và mỗi hàng có tổng là $n$, nên $S = 3n$. Mặt khác, vì 9 số là các số nguyên dương phân biệt, tổng nhỏ nhất của chúng là tổng của 9 số nguyên dương nhỏ nhất (1 đến 9).",
+        "math": "S = 3n",
+        "stepId": "step_c_1",
+        "focus": []
+      },
+      {
+        "id": "hint_c_2",
+        "level": 3,
+        "question": "Nếu gọi số ở tâm là $c$, bạn có thể thiết lập mối liên hệ giữa $n$ và $c$ bằng cách xét tổng của các đường đi qua tâm không?",
+        "cue": "Số ở tâm",
+        "explanation": "Gọi số ở ô chính giữa là $c$. Xét tổng của 4 đường (2 đường chéo và 2 đường trung bình) đi qua tâm. Tổng này bằng $4n$. Đồng thời, tổng này cũng bằng tổng của 9 số trong bảng cộng thêm 3 lần số ở tâm (vì số tâm bị tính 4 lần, trong khi các số khác chỉ tính 1 lần trong tổng 9 số).",
+        "math": "4n = S + 3c",
+        "stepId": "step_c_2",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_a_1",
+        "title": "Tính tổng các số",
+        "explanation": "Để giải câu a, trước hết ta tính tổng của 9 số nguyên dương từ 1 đến 9. Tổng này chính là tổng của tất cả các số trong bảng.",
+        "math": "1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 = 45",
+        "reason": "Tính tổng cấp số cộng",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Tổng các số nguyên từ 1 đến 9"
+        ],
+        "operation": "addition",
+        "result": "Tổng các số trong bảng là 45.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Sum of 1..9 is 45."
+        }
+      },
+      {
+        "id": "step_a_2",
+        "title": "Tìm giá trị của n",
+        "explanation": "Bảng có 3 hàng, và tổng các số trên mỗi hàng đều bằng nhau (gọi là $n$). Do đó, tổng của 3 hàng bằng $3n$. Ta có $3n = 45$, suy ra $n = 15$. Đây chính là tổng cần tìm.",
+        "math": "3n = 45 \\Rightarrow n = 15",
+        "reason": "Tính chất của tổng các hàng",
+        "uses": [
+          "step_a_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định nghĩa 'số tốt'"
+        ],
+        "operation": "division",
+        "result": "Tổng mỗi hàng, cột, đường chéo là 15.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "45 / 3 = 15."
+        }
+      },
+      {
+        "id": "step_a_3",
+        "title": "Điền bảng",
+        "explanation": "Ta cần điền 9 số từ 1 đến 9 vào bảng sao cho tổng mỗi hàng, cột, đường chéo bằng 15. Số ở chính giữa thường là số trung bình, tức là 5. Các cặp số đối diện qua tâm phải có tổng bằng 10 (vì $5 + 10 = 15$). Các cặp đó là (1,9), (2,8), (3,7), (4,6).",
+        "math": null,
+        "reason": "Điền bảng ma thuật",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Properties of magic squares"
+        ],
+        "operation": "construction",
+        "result": "Bảng ma thuật cơ bản.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Hình vuông ma thuật 3x3 tiêu chuẩn."
+        }
+      },
+      {
+        "id": "step_a_4",
+        "title": "Hoàn thành câu a",
+        "explanation": "Một cách điền cụ thể như sau (có thể hoán đổi hàng/cột hoặc xoay bảng):\nHàng 1: 8, 1, 6\nHàng 2: 3, 5, 7\nHàng 3: 4, 9, 2\nKiểm tra:\n- Hàng: 8+1+6=15; 3+5+7=15; 4+9+2=15.\n- Cột: 8+3+4=15; 1+5+9=15; 6+7+2=15.\n- Đường chéo: 8+5+2=15; 6+5+4=15.\nVậy bảng này thỏa mãn.",
+        "math": null,
+        "reason": "Kiểm tra lại tổng",
+        "uses": [
+          "step_a_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Verification of sums"
+        ],
+        "operation": "verification",
+        "result": "Bảng đã điền thỏa mãn yêu cầu.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Tất cả các tổng đều bằng 15."
+        }
+      },
+      {
+        "id": "step_b_1",
+        "title": "Đặt ẩn phụ",
+        "explanation": "Câu b: Giả sử $n \\ge 15$ và $n$ chia hết cho 3. Đặt $n = 3k$. Vì $n \\ge 15$ nên $3k \\ge 15 \\Rightarrow k \\ge 5$. Ta cần tìm 9 số nguyên dương phân biệt có tổng mỗi hàng là $3k$.",
+        "math": "n = 3k, \\quad k \\ge 5",
+        "reason": "Đặt ẩn phụ",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Algebraic substitution"
+        ],
+        "operation": "substitution",
+        "result": "Biểu diễn n dưới dạng 3k.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "n is a multiple of 3."
+        }
+      },
+      {
+        "id": "step_b_2",
+        "title": "Tìm giá trị cần cộng thêm",
+        "explanation": "Xét bảng ma thuật cơ bản ở câu a, tổng mỗi hàng là 15. Nếu ta cộng thêm một số nguyên dương $d$ vào mỗi ô của bảng này, thì tổng mỗi hàng, cột, đường chéo sẽ tăng thêm $3d$. Tổng mới sẽ là $15 + 3d$. Ta muốn tổng mới bằng $n = 3k$, nên $15 + 3d = 3k \\Rightarrow 3d = 3k - 15 \\Rightarrow d = k - 5$.",
+        "math": "d = k - 5",
+        "reason": "Tìm giá trị d",
+        "uses": [
+          "step_b_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Properties of sums"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "Giá trị cần cộng thêm vào mỗi ô là d = k - 5.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "15 + 3(k-5) = 15 + 3k - 15 = 3k = n."
+        }
+      },
+      {
+        "id": "step_b_3",
+        "title": "Kết luận câu b",
+        "explanation": "Vì $k \\ge 5$ nên $d = k - 5 \\ge 0$. Nếu $d = 0$, các số là 1..9 (nguyên dương). Nếu $d > 0$, các số mới là $1+d, 2+d, \\dots, 9+d$. Vì $d \\ge 0$ nên các số này đều là số nguyên dương. Hơn nữa, vì các số ban đầu phân biệt, các số mới cũng phân biệt. Vậy với mọi $n \\ge 15$ và $n \\vdots 3$, ta luôn tìm được 9 số nguyên dương phân biệt thỏa mãn. Do đó $n$ là số tốt.",
+        "math": null,
+        "reason": "Kiểm tra điều kiện",
+        "uses": [
+          "step_b_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Định nghĩa số nguyên dương"
+        ],
+        "operation": "verification",
+        "result": "Chứng minh n là số tốt.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "d >= 0 đảm bảo các số nguyên dương."
+        }
+      },
+      {
+        "id": "step_c_1",
+        "title": "Tìm chặn dưới của n",
+        "explanation": "Câu c: Giả sử $n$ là số tốt. Gọi tổng của 9 số trong bảng là $S$. Vì có 3 hàng và mỗi hàng có tổng là $n$, nên $S = 3n$. Mặt khác, 9 số trong bảng là các số nguyên dương phân biệt. Tổng nhỏ nhất của 9 số nguyên dương phân biệt là tổng của 9 số nguyên dương nhỏ nhất, tức là $1+2+\\dots+9 = 45$. Do đó $S \\ge 45$.",
+        "math": "S = 3n \\ge 45",
+        "reason": "Bất đẳng thức",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Inequalities"
+        ],
+        "operation": "inequality",
+        "result": "3n >= 45.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Sum of 1..9 is 45."
+        }
+      },
+      {
+        "id": "step_c_2",
+        "title": "Kết luận n >= 15",
+        "explanation": "Từ $3n \\ge 45$, ta suy ra $n \\ge 15$. Đây là điều kiện thứ nhất cần chứng minh.",
+        "math": "n \\ge 15",
+        "reason": "Giải bất phương trình",
+        "uses": [
+          "step_c_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Algebraic manipulation"
+        ],
+        "operation": "division",
+        "result": "n >= 15.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "45 / 3 = 15."
+        }
+      },
+      {
+        "id": "step_c_3",
+        "title": "Thiết lập mối liên hệ với số tâm",
+        "explanation": "Gọi số ở ô chính giữa của bảng là $c$. Xét tổng của 4 đường đi qua tâm: 2 đường chéo và 2 đường trung bình (đi qua tâm và song song với cạnh). Tổng của 4 đường này là $4n$. Mặt khác, nếu ta cộng tổng các số trong 4 đường này, mỗi số trong bảng được tính đúng 1 lần, riêng số ở tâm $c$ được tính 4 lần (vì nó thuộc cả 4 đường). Do đó, tổng của 4 đường này bằng tổng của 9 số trong bảng ($S$) cộng thêm 3 lần số ở tâm ($3c$).",
+        "math": "4n = S + 3c",
+        "reason": "Tính tổng các đường qua tâm",
+        "uses": [
+          "step_c_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Properties of sums"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "4n = S + 3c.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Tính chất hình vuông ma thuật tiêu chuẩn."
+        }
+      },
+      {
+        "id": "step_c_4",
+        "title": "Kết luận n chia hết cho 3",
+        "explanation": "Ta có $S = 3n$. Thay vào phương trình trên: $4n = 3n + 3c \\Rightarrow n = 3c$. Vì $c$ là một số nguyên (số điền vào ô), nên $n$ chia hết cho 3. Đây là điều kiện thứ hai cần chứng minh.",
+        "math": "n = 3c",
+        "reason": "Thay thế và kết luận",
+        "uses": [
+          "step_c_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Divisibility"
+        ],
+        "operation": "substitution",
+        "result": "n chia hết cho 3.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "4n - 3n = 3c => n = 3c."
+        }
+      },
+      {
+        "id": "step_c_5",
+        "title": "Kết luận câu c",
+        "explanation": "Vậy ta đã chứng minh được: nếu $n$ là số tốt thì $n \\ge 15$ và $n$ chia hết cho 3.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "step_c_2",
+          "step_c_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Conclusion"
+        ],
+        "operation": "conclusion",
+        "result": "Chứng minh hoàn tất.",
+        "verification": {
+          "status": "verified",
+          "method": "thủ công",
+          "reason": "Cả hai điều kiện đều đã được chứng minh."
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "a) Bảng ma thuật:\n8 1 6\n3 5 7\n4 9 2\nTổng mỗi hàng, cột, đường chéo bằng 15.\n\nb) Với $n \\ge 15$ và $n \\vdots 3$, ta luôn tìm được 9 số nguyên dương phân biệt thỏa mãn. Vậy $n$ là số tốt.\n\nc) Nếu $n$ là số tốt thì $n \\ge 15$ và $n \\vdots 3$.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "Sum of numbers 1 to 9 is 45. 45 / 3 = 15."
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "15"
+            }
+          ]
+        ],
+        "expected": "15"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_a_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_a_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_a_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_a_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_b_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_b_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_b_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_c_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_c_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_c_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_c_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_c_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 88550,
+  "usage": {
+    "default": {
+      "input": 7260,
+      "cachedInput": 0,
+      "output": 11688,
+      "reasoning": 4239
+    }
+  },
+  "costUsd": 0.021032759999999998,
+  "model": "default",
+  "logs": [
+    "outline in 43 s (581 chars)",
+    "language repair: 30/30 field(s) rewritten in 6 s",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"Sum of numbers 1 to 9 is 45. 45 / 3 = 15.\" can't be evaluated (could not evaluate: Unexpected trailing input). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=7260 (cached 0) out=11688 (reasoning 4239) ≈ $0.0210",
+    "total ≈ $0.0210 over 1 attempt(s); lesson by default"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "question": {
+    "id": "nt8-h10",
+    "split": "heldout",
+    "source": "authored 2026-10-14 (verified)",
+    "input": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $xy=2x+3y$.",
+    "reference": "$(x;y)\\in\\{(4;8),(5;5),(6;4),(9;3)\\}$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "solve"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các cặp số nguyên dương $(x;y)$ thỏa mãn $xy=2x+3y$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Phương trình nghiệm nguyên",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Phương trình nghiệm nguyên"
+      ],
+      "techniques": [],
+      "givens": [
+        "$xy=2x+3y$",
+        "$x,y$ là số nguyên dương"
+      ],
+      "unknowns": [
+        "Tất cả các cặp $(x;y)$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Đưa phương trình về dạng tích hai số nguyên bằng một hằng số, rồi xét các cặp ước.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Cần cộng thêm số nào để vế trái phân tích được thành tích?",
+        "cue": "Nhóm hạng tử, đặt nhân tử chung",
+        "explanation": "Nhóm các hạng tử và thêm bớt hằng số để vế trái thành tích: cộng $6$ vào hai vế. Khai triển vế trái để kiểm tra lại.",
+        "math": "(x-3)(y-2)=6",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "$6$ có những ước nguyên nào?",
+        "cue": "Ước của một số nguyên",
+        "explanation": "$x-3$ và $y-2$ là hai số nguyên có tích bằng $6$, nên $x-3$ là một ước của $6$. Xét mọi ước (cả âm), tính $x,y$ và giữ nghiệm là số nguyên dương.",
+        "math": "\\begin{array}{c|c|c}x-3&y-2&(x;y)\\\\\\hline 1&6&(4;8)\\\\-1&-6&(2;-4)\\ \\text{(loại)}\\\\2&3&(5;5)\\\\-2&-3&(1;-1)\\ \\text{(loại)}\\\\3&2&(6;4)\\\\-3&-2&(0;0)\\ \\text{(loại)}\\\\6&1&(9;3)\\\\-6&-1&(-3;1)\\ \\text{(loại)}\\end{array}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Có bao nhiêu cặp nghiệm?",
+        "cue": "Đã xét hết các trường hợp",
+        "explanation": "Các trường hợp trên là tất cả các khả năng, nên không bỏ sót nghiệm. Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(4;8);\\ (5;5);\\ (6;4);\\ (9;3)$.",
+        "math": null,
+        "stepId": "s3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Đưa về dạng tích",
+        "explanation": "Nhóm các hạng tử và thêm bớt hằng số để vế trái thành tích: cộng $6$ vào hai vế. Khai triển vế trái để kiểm tra lại.",
+        "math": "(x-3)(y-2)=6",
+        "reason": "Nhóm hạng tử, đặt nhân tử chung",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Xét các cặp ước",
+        "explanation": "$x-3$ và $y-2$ là hai số nguyên có tích bằng $6$, nên $x-3$ là một ước của $6$. Xét mọi ước (cả âm), tính $x,y$ và giữ nghiệm là số nguyên dương.",
+        "math": "\\begin{array}{c|c|c}x-3&y-2&(x;y)\\\\\\hline 1&6&(4;8)\\\\-1&-6&(2;-4)\\ \\text{(loại)}\\\\2&3&(5;5)\\\\-2&-3&(1;-1)\\ \\text{(loại)}\\\\3&2&(6;4)\\\\-3&-2&(0;0)\\ \\text{(loại)}\\\\6&1&(9;3)\\\\-6&-1&(-3;1)\\ \\text{(loại)}\\end{array}",
+        "reason": "Ước của một số nguyên",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Kết luận",
+        "explanation": "Các trường hợp trên là tất cả các khả năng, nên không bỏ sót nghiệm. Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(4;8);\\ (5;5);\\ (6;4);\\ (9;3)$.",
+        "math": null,
+        "reason": "Đã xét hết các trường hợp",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy các cặp số nguyên dương $(x;y)$ thỏa mãn là: $(4;8);\\ (5;5);\\ (6;4);\\ (9;3)$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "Tìm kiếm vét cạn độc lập trên miền đã chứng minh là chứa mọi nghiệm",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 0,
+  "durationMs": 15,
+  "usage": {},
+  "costUsd": 0,
+  "model": "routine-factorable-xy",
+  "logs": [
+    "lesson by the routine solver (factorable-xy); no model call"
+  ]
+}

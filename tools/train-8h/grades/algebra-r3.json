@@ -1,0 +1,22 @@
+{
+  "ptnk-2023-chuyen/1": {"verdict": "đúng", "score": 8, "notes": "Như vòng 1 (lấy từ bộ nhớ đệm): đúng 4 nghiệm, lập luận đủ."},
+  "ptnk-2023-chuyen/2a": {"verdict": "đúng", "score": 7, "notes": "Chứng minh đúng; trạng thái “một phần”. Cần bạn xem còn dùng chữ “vectơ” hay không."},
+  "ptnk-2024-chuyen/1.1": {"verdict": "đúng", "score": 8, "notes": "Đúng ba nghiệm, máy kiểm chứng; không còn bị gắn cờ “định thức” sai (sửa #3)."},
+  "ptnk-2024-chuyen/2": {"verdict": "đúng", "score": 8, "notes": "Vòng 1 không có lời giải. Nay: S² + 3 = 4P, (S − 3)² ≥ 0 cho vế phải, ab + bc + ca ≥ 3 cho vế trái, dấu bằng a = b = c = 1. Lỗi trình bày: chữ “P. Thay vào giả thiết” nằm trong công thức."},
+  "hcm-2025-chuyen/1a": {"verdict": "đúng", "score": 8, "notes": "P = 8, máy kiểm chứng."},
+  "hcm-2025-chuyen/1b": {"verdict": "không có lời giải", "score": 0, "notes": "Bước giải còn từ “where” trong lời giải chính (không được phép xoá) sau khi sửa ngôn ngữ 5/6 trường."},
+  "hcm-2025-chuyen/2a": {"verdict": "không có lời giải", "score": 0, "notes": "Bị loại vì tên biến “xeTai” trong công thức bị coi là tiếng Anh — đã sửa (#8) sau vòng này."},
+  "hanoi-2025-chuyen/I.2": {"verdict": "đúng", "score": 8, "notes": "Vòng 1 không có lời giải. Nay: a² − bc = a(a + b + c) nhờ ab + bc + ca = 0, rồi 1/a + 1/b + 1/c = 0 nên P = 0. Có thể nói rõ hơn vì sao −bc = ab + ac."},
+  "hanoi-2025-chuyen/III.1b": {"verdict": "đúng", "score": 8, "notes": "Vòng 1 hết giờ. Nay: GTNN 8, máy kiểm chứng, đạt tại (2, −2, 0) và hoán vị vòng."},
+  "khtn-2025-vong2/I.1": {"verdict": "đúng (đáp số)", "score": 6, "notes": "Vòng 1 không có lời giải. Nay đáp số {0; 1} đúng; máy không kiểm chứng được chứng minh — cần bạn đọc lập luận."},
+  "khtn-2025-vong2/I.2": {"verdict": "một phần", "score": 4, "notes": "Đáp số (1; 1) đúng nhưng vẫn dùng đạo hàm (ngoài chương trình) sau lần sửa; ứng dụng hiển thị là “chưa kiểm chứng”."},
+  "ptnk-2026-chuyen/1": {"verdict": "đúng", "score": 7, "notes": "Vòng 1 hết giờ. Nay: a) cộng hai điều kiện Δ rồi hoàn thành bình phương; b) nghiệm chung x₀ = 3/2, r + s = −3/2. Lỗi hiển thị “rac{3}{2}” ở kết luận (\\frac bị hỏng trong JSON) — đã sửa (#9)."},
+  "alg8-h1": {"verdict": "đúng", "score": 9, "notes": "x = 4, bộ giải xác định, máy kiểm chứng."},
+  "alg8-h2": {"verdict": "đúng", "score": 8, "notes": "(1; 3), (3; 1)."},
+  "alg8-h3": {"verdict": "đúng", "score": 8, "notes": "Vòng 2 không có lời giải. Nay min P = 9/2 tại a = 2/3, b = 4/3, máy kiểm chứng."},
+  "alg8-h4": {"verdict": "đúng", "score": 8, "notes": "Vòng 2 SAI (m = 1 hoặc −5). Nay m = −1 ± √3 nhờ bộ kiểm tra tham số (#7). Lưu ý: câu này đã lộ lỗi nên không còn là câu kiểm tra mới."},
+  "alg8-h5": {"verdict": "đúng", "score": 8, "notes": "18."},
+  "alg8-h6": {"verdict": "đúng", "score": 8, "notes": "12 km/h."},
+  "alg8-h7": {"verdict": "đúng", "score": 8, "notes": "Câu mới sau khi sửa #7: m = ±2."},
+  "alg8-h8": {"verdict": "đúng", "score": 8, "notes": "Câu mới sau khi sửa #7: m ∈ {−3; 2}."}
+}

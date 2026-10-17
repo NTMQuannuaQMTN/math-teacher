@@ -1,0 +1,276 @@
+{
+  "question": {
+    "id": "fin-g2",
+    "split": "final",
+    "source": "authored 2026-10-14 22:25 after all fixes; run once (final evaluation)",
+    "input": "Cho đường tròn $(O;R)$ và dây $AB=R\\sqrt3$. Tính số đo góc $AOB$.",
+    "reference": "$\\widehat{AOB}=120^\\circ$",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "compute",
+    "topic": "geometry"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho đường tròn (O; R) và dây AB = R√3. Tính số đo góc AOB.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Hình học - Đường tròn",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Góc ở tâm",
+        "Tam giác đều",
+        "Tính chất đường tròn"
+      ],
+      "techniques": [
+        "pythagoras",
+        "similar_triangles",
+        "angle_chasing"
+      ],
+      "givens": [
+        "Đường tròn (O) bán kính R",
+        "Dây cung AB có độ dài R√3"
+      ],
+      "unknowns": [
+        "Số đo góc AOB"
+      ],
+      "constraints": [
+        "Đường tròn (O; R)",
+        "Dây AB = R√3"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Độ dài dây AB = R√3 lớn hơn đường kính 2R (vì √3 ≈ 1.732, nên R√3 ≈ 1.732R < 2R). Tuy nhiên, trong đường tròn, dây cung lớn nhất là đường kính. Dây AB = R√3 là hợp lệ. Nhưng góc ở tâm chắn dây này sẽ không phải là góc đặc biệt dễ tính bằng hình học thuần túy (như 30, 60, 90) nếu không dùng lượng giá"
+      ]
+    },
+    "strategy": "Hạ đường cao OM từ O xuống AB. Sử dụng tính chất tam giác cân để tìm AM, sau đó dùng định lý Pythagore để tìm OM. Cuối cùng, dùng tỉ số lượng giác trong tam giác vuông OMA để tìm góc AOM, từ đó suy ra góc AOB.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Tam giác $OAB$ có đặc điểm gì đặc biệt về các cạnh?",
+        "cue": "Tam giác $OAB$ có $OA = OB = R$.",
+        "explanation": "Vì $OA$ và $OB$ đều là bán kính của đường tròn $(O)$, nên $OA = OB = R$. Điều này có nghĩa là tam giác $OAB$ là tam giác cân tại $O$. Trong tam giác cân, đường cao hạ từ đỉnh cân cũng là đường trung tuyến và đường phân giác.",
+        "math": "OA = OB = R",
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Nếu hạ đường cao $OM$ từ $O$ xuống $AB$, thì $M$ là điểm nào của $AB$ và độ dài $AM$ bằng bao nhiêu?",
+        "cue": "Hạ đường cao $OM$ từ $O$ xuống $AB$.",
+        "explanation": "Bạn hãy hạ đường cao $OM$ từ $O$ xuống cạnh $AB$ (với $M$ thuộc $AB$). Vì tam giác $OAB$ cân tại $O$, nên $M$ chính là trung điểm của $AB$. Khi đó, $AM = \\frac{AB}{2} = \\frac{R\\sqrt{3}}{2}$. Tam giác $OMA$ là tam giác vuông tại $M$.",
+        "math": "AM = \\frac{AB}{2}",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Trong tam giác vuông $OMA$, hãy tính độ dài $OM$ và so sánh nó với $OA$. Từ đó, bạn có thể suy ra số đo góc $AOM$ không?",
+        "cue": "Xét tam giác vuông $OMA$.",
+        "explanation": "Trong tam giác vuông $OMA$, bạn biết độ dài cạnh huyền $OA = R$ và cạnh góc vuông $AM = \\frac{R\\sqrt{3}}{2}$. Bạn có thể tính được $OM$ bằng định lý Pythagore, hoặc tính tỉ số lượng giác của góc $AOM$. Hãy thử tính $OM$ trước: $OM^2 = OA^2 - AM^2$. Sau đó so sánh $OM$ với $OA$ để tìm số đo góc $AOM$.",
+        "math": "OM^2 = OA^2 - AM^2",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xác định tam giác OAB cân",
+        "explanation": "Vì $OA$ và $OB$ đều là bán kính của đường tròn $(O)$ nên $OA = OB = R$. Do đó, tam giác $OAB$ cân tại $O$.",
+        "math": "OA = OB = R \\Rightarrow \\triangle OAB \\text{ cân tại } O",
+        "reason": "Định nghĩa bán kính và tam giác cân",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "OA = R",
+          "OB = R"
+        ],
+        "operation": "identify",
+        "result": "Tam giác OAB cân tại O",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "OA=OB=R"
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Hạ đường cao và tính AM",
+        "explanation": "Hạ $OM \\perp AB$ tại $M$. Vì $\\triangle OAB$ cân tại $O$, nên $OM$ vừa là đường cao, vừa là đường trung tuyến. Do đó, $M$ là trung điểm của $AB$ và $AM = \\frac{AB}{2} = \\frac{R\\sqrt{3}}{2}$.",
+        "math": "AM = \\frac{AB}{2} = \\frac{R\\sqrt{3}}{2}",
+        "reason": "Tính chất tam giác cân",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "OM \\perp AB",
+          "AM = AB/2"
+        ],
+        "operation": "construct",
+        "result": "AM = R√3/2",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "M là trung điểm AB"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tính độ dài OM",
+        "explanation": "Xét tam giác vuông $OMA$ tại $M$. Áp dụng định lý Pythagore: $OM^2 = OA^2 - AM^2 = R^2 - \\left(\\frac{R\\sqrt{3}}{2}\\right)^2 = R^2 - \\frac{3R^2}{4} = \\frac{R^2}{4}$. Suy ra $OM = \\frac{R}{2}$.",
+        "math": "OM = \\frac{R}{2}",
+        "reason": "Định lý Pythagore",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "OM = R/2"
+        ],
+        "operation": "calculate",
+        "result": "OM = R/2",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "OM = R/2"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Tính góc AOM",
+        "explanation": "Trong tam giác vuông $OMA$, ta có $OM = \\frac{R}{2}$ và $OA = R$, nên $OM = \\frac{1}{2} OA$. Điều này có nghĩa là $\\cos(\\angle AOM) = \\frac{OM}{OA} = \\frac{1}{2}$. Vậy $\\angle AOM = 60^\\circ$.",
+        "math": "\\angle AOM = 60^\\circ",
+        "reason": "Tỉ số lượng giác",
+        "uses": [
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "angle_AOM = 60"
+        ],
+        "operation": "calculate",
+        "result": "Góc AOM = 60 độ",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "Góc AOM = 60 độ"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Tính góc AOB",
+        "explanation": "Vì $OM$ là đường phân giác của góc $AOB$ (do tam giác $OAB$ cân tại $O$), nên $\\angle AOB = 2 \\cdot \\angle AOM = 2 \\cdot 60^\\circ = 120^\\circ$.",
+        "math": "\\angle AOB = 120^\\circ",
+        "reason": "Tính chất tam giác cân",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "angle_AOB = 120"
+        ],
+        "operation": "calculate",
+        "result": "Góc AOB = 120 độ",
+        "verification": {
+          "status": "verified",
+          "method": "figure_check",
+          "reason": "Góc AOB = 120 độ"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Số đo góc $AOB$ là $120^\\circ$.",
+      "math": "120^\\circ"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "Góc AOB"
+        ],
+        "assignments": [],
+        "expected": "120"
+      }
+    ],
+    "figure": {
+      "scale": "exact",
+      "points": [
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0,
+          "value": 0,
+          "value2": 0,
+          "draggable": true,
+          "hidden": false
+        }
+      ],
+      "lines": [],
+      "circles": [],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 59336,
+  "usage": {
+    "default": {
+      "input": 20230,
+      "cachedInput": 0,
+      "output": 7609,
+      "reasoning": 0
+    }
+  },
+  "costUsd": 0.02066918,
+  "model": "default",
+  "logs": [
+    "proof planner: PARSING_UNCERTAIN — the statement's figure could not be constructed (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "attempt 1: not_checkable, 8 problem(s): figure: cycle at point A (left out of the figure) | figure: circle c_O could not be constructed (left out of the figure) | figure: point A (on_circle) could not be constructed (left out of the figure)",
+    "attempt 2: not_checkable, 8 problem(s): figure: cycle at point A (left out of the figure) | figure: circle c_O could not be constructed (left out of the figure) | figure: point A (on_circle) could not be constructed (left out of the figure)",
+    "usage: model=default in=20230 (cached 0) out=7609 (reasoning 0) ≈ $0.0207",
+    "total ≈ $0.0207 over 2 attempt(s); lesson by default"
+  ]
+}

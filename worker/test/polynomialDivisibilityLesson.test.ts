@@ -34,6 +34,7 @@ describe('multipart polynomial divisibility reduces moduli without losing condit
   const text=source.replace(/\$([^$]+)\$/g,(_,math:string)=>`$${math.replace(/n/g,'k').replace(/f/g,'Q')}$`),r=polynomialDivisibilityLesson(text)!;
   expect(r.lesson.finalAnswer.text).toContain('18t+16');expect(r.lesson.steps.some(s=>s.explanation.includes('$G(k)='))).toBe(true);expect(verifyPolynomialDivisibilityCertificate(r.certificate)).toBe(true);expect(latexFeedback(r.lesson)).toEqual([]);
   const renamed=source.replace(/\$([^$]+)\$/g,(_,math:string)=>`$${math.replace(/n/g,'r')}$`),other=polynomialDivisibilityLesson(renamed)!;
-  expect(other.lesson.steps.some(s=>s.math?.includes('Q(r)\\equiv Q(s)'))).toBe(true);expect(latexFeedback(other.lesson)).toEqual([]);
+  // factored form (review 2026-10-15): the remainder table is of Q(s)=(s+2)(s^2+4s+8), no expansion
+  expect(other.lesson.steps.some(s=>s.explanation.includes('Q(s)=(s+2)'))).toBe(true);expect(other.lesson.steps.some(s=>/1\(16/.test(s.math??''))).toBe(false);expect(latexFeedback(other.lesson)).toEqual([]);
  });
 });

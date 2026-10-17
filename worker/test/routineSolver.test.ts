@@ -39,8 +39,11 @@ describe("routine solver: the same task in different wordings", () => {
     expect(solved("Tìm các cặp số nguyên dương (x; y) thỏa mãn x² − y² = 21").answer).toMatch(/\(5;2\).*\(11;10\)/);
     expect(solved("Tìm nghiệm nguyên của phương trình $x^2+y^2=25$ (cặp số $(x;y)$).").answer.match(/\(/g)!.length).toBe(13);
   });
-  it("for-all divisibility proofs in either word order reuse the residue-class lesson", () => {
-    expect(solved("Chứng minh rằng $n^3-n$ chia hết cho $6$ với mọi số nguyên $n$.").family).toBe("residue-classes");
+  it("for-all divisibility proofs use consecutive integers when possible, residue classes otherwise", () => {
+    expect(solved("Chứng minh rằng $n^3-n$ chia hết cho $6$ với mọi số nguyên $n$.").family).toBe("consecutive-product");
+    // n⁴ − n² = (n−1)n(n+1)(n+2) − 2(n−1)n(n+1): a sum of consecutive products (review 2026-10-15: tables are too long)
+    expect(solved("Chứng minh rằng $n^4-n^2$ chia hết cho $12$ với mọi số nguyên $n$.").family).toBe("consecutive-product");
+    expect(solved("Chứng minh rằng $n^4+2$ chia hết cho $3$ với mọi số nguyên $n$.").family).not.toBe("consecutive-product");
   });
   it("smallest number with given remainders", () => {
     expect(solved("Tìm số tự nhiên nhỏ nhất chia cho $4$ dư $3$, chia cho $5$ dư $4$ và chia cho $6$ dư $5$.").answer).toContain("$59$");

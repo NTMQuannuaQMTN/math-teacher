@@ -1,0 +1,288 @@
+{
+  "question": {
+    "id": "hanoi-2025-chuyen/III.1b",
+    "split": "train",
+    "source": "exam hanoi-2025-chuyen",
+    "input": "Với các số thực $a,b,c$ thỏa mãn $a^2b+b^2c+c^2a+16=ab^2+bc^2+ca^2$. Tìm giá trị nhỏ nhất của biểu thức $P=a^2+b^2+c^2$.",
+    "reference": "8",
+    "reference_status": "teacher",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Với các số thực a, b, c thỏa mãn $a^2b + b^2c + c^2a + 16 = ab^2 + bc^2 + ca^2$, tìm giá trị nhỏ nhất của $P = a^2 + b^2 + c^2$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Cực trị biểu thức đại số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Biến đổi đại số",
+        "Hằng đẳng thức",
+        "Đặt ẩn phụ",
+        "Bất đẳng thức Cô-si (Cô-si)",
+        "Cực trị"
+      ],
+      "techniques": [
+        "factorization",
+        "substitution",
+        "am_gm",
+        "equality_case"
+      ],
+      "givens": [
+        "$a^2b + b^2c + c^2a + 16 = ab^2 + bc^2 + ca^2$"
+      ],
+      "unknowns": [
+        "$P_min$"
+      ],
+      "constraints": [
+        "a, b, c là số thực"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Biến đổi điều kiện đề bài thành tích $(a-b)(b-c)(c-a)=16$, đặt ẩn phụ $x=a-b, y=b-c, z=c-a$, sau đó biểu diễn $P$ qua $x, y, z$ và tìm cực trị bằng bất đẳng thức Cô-si.",
+    "hints": [
+      {
+        "id": "hint1",
+        "level": 2,
+        "question": "Biểu thức $a^2b+b^2c+c^2a-ab^2-bc^2-ca^2$ có liên hệ gì với tích $(a-b)(b-c)(c-a)$ không?",
+        "cue": "Hằng đẳng thức $(a-b)(b-c)(c-a)$",
+        "explanation": "Bạn hãy thử khai triển biểu thức $(a-b)(b-c)(c-a)$ ra xem nó liên hệ thế nào với điều kiện đề bài đã cho. Kết quả sẽ giúp ta tìm được một tích rất đẹp.",
+        "math": "(a-b)(b-c)(c-a) = a^2b + b^2c + c^2a - ab^2 - bc^2 - ca^2",
+        "stepId": "step1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 3,
+        "question": "Nếu đặt $x=a-b, y=b-c, z=c-a$, thì $P$ liên hệ thế nào với $(a+b+c)^2$ và $x^2+y^2+z^2$?",
+        "cue": "Đặt $x=a-b, y=b-c, z=c-a$",
+        "explanation": "Đặt $x=a-b, y=b-c, z=c-a$. Ta có $x+y+z=0$ và $xyz=16$. Bây giờ hãy biểu diễn $P = a^2+b^2+c^2$ qua $x, y, z$ bằng cách sử dụng đẳng thức $3(a^2+b^2+c^2) = (a+b+c)^2 + (a-b)^2 + (b-c)^2 + (c-a)^2$.",
+        "math": "3P = (a+b+c)^2 + x^2 + y^2 + z^2",
+        "stepId": "step2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 4,
+        "question": "Khi $a+b+c=0$, hãy tìm min của $x^2+y^2+z^2$ với $x+y+z=0$ và $xyz=16$.",
+        "cue": "Bất đẳng thức Cô-si (Cô-si)",
+        "explanation": "Để $P$ nhỏ nhất, ta cần $(a+b+c)^2$ nhỏ nhất (tức là bằng 0). Khi đó $P = \\frac{1}{3}(x^2+y^2+z^2)$. Với $z = -(x+y)$ và $xy = -16/(x+y)$, hãy đặt $u = x+y$ để tìm min của $u^2 + \\frac{16}{u}$ bằng bất đẳng thức Cô-si.",
+        "math": "P = \\frac{1}{3}(x^2+y^2+z^2) \\ge \\frac{1}{3} \\cdot 3\\sqrt[3]{x^2y^2z^2} = \\frac{1}{3} \\cdot 3\\sqrt[3]{256} \\text{ (không đúng vì dấu)}",
+        "stepId": "step4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step1",
+        "title": "Biến đổi điều kiện",
+        "explanation": "Ta biến đổi điều kiện đề bài thành một tích đẹp. Biểu thức $a^2b+b^2c+c^2a-ab^2-bc^2-ca^2$ chính là khai triển của $(a-b)(b-c)(c-a)$.",
+        "math": "(a-b)(b-c)(c-a) = 16",
+        "reason": "Hằng đẳng thức đại số",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "factorization",
+        "result": "Đặt $x=a-b, y=b-c, z=c-a$, ta có $xyz=16$ và $x+y+z=0$.",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại đẳng thức nhân tử"
+        }
+      },
+      {
+        "id": "step2",
+        "title": "Biểu diễn P qua x, y, z",
+        "explanation": "Ta biểu diễn $P$ qua $x, y, z$. Sử dụng đẳng thức $3(a^2+b^2+c^2) = (a+b+c)^2 + (a-b)^2 + (b-c)^2 + (c-a)^2$.",
+        "math": "3P = (a+b+c)^2 + x^2 + y^2 + z^2",
+        "reason": "Biến đổi đại số",
+        "uses": [
+          "step1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step1"
+        ],
+        "operation": "substitution",
+        "result": "$3P = (a+b+c)^2 + x^2 + y^2 + z^2$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại đẳng thức"
+        }
+      },
+      {
+        "id": "step3",
+        "title": "Điều kiện để P nhỏ nhất",
+        "explanation": "Vì $(a+b+c)^2 \\ge 0$ nên $P$ đạt min khi $a+b+c=0$. Khi đó $3P = x^2+y^2+z^2$. Ta cần tìm min của $S = x^2+y^2+z^2$ với $x+y+z=0$ và $xyz=16$.",
+        "math": "a+b+c=0 \\Rightarrow 3P = x^2+y^2+z^2",
+        "reason": "Bất đẳng thức $(a+b+c)^2 \\ge 0$",
+        "uses": [
+          "step2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step2"
+        ],
+        "operation": "complete_square",
+        "result": "$3P = x^2+y^2+z^2$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại điều kiện"
+        }
+      },
+      {
+        "id": "step4",
+        "title": "Biểu diễn S theo u",
+        "explanation": "Thay $z = -(x+y)$ vào $xyz=16$, ta được $xy = -\\frac{16}{x+y}$. Đặt $u = x+y$, khi đó $xy = -\\frac{16}{u}$. Ta có $S = x^2+y^2+z^2 = (x+y)^2 - 2xy + (x+y)^2 = 2(u^2 - xy) = 2(u^2 + \\frac{16}{u})$.",
+        "math": "S = 2\\left(u^2 + \\frac{16}{u}\\right)",
+        "reason": "Thay thế và rút gọn",
+        "uses": [
+          "step3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step3"
+        ],
+        "operation": "substitution",
+        "result": "$S = 2(u^2 + \\frac{16}{u})$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại biểu thức"
+        }
+      },
+      {
+        "id": "step5",
+        "title": "Tìm min của P",
+        "explanation": "Ta cần tìm min của $f(u) = 2(u^2 + \\frac{16}{u})$. Điều kiện để $x, y$ là số thực là $\\Delta = u^2 - 4(-\\frac{16}{u}) \\ge 0 \\Rightarrow u^3 + 64 \\ge 0 \\Rightarrow u \\ge -4$. Với $u > 0$, dùng Cô-si: $u^2 + \\frac{8}{u} + \\frac{8}{u} \\ge 3\\sqrt[3]{u^2 \\cdot \\frac{8}{u} \\cdot \\frac{8}{u}} = 12$. Vậy $u^2 + \\frac{16}{u} \\ge 12$, suy ra $S \\ge 24$. Dấu bằng xảy ra khi $u^2 = \\frac{8}{u} \\Rightarrow u=2$. Với $u \\in [-4, 0)$, hàm số đồng biến nên min tại $u=-4$ là $S = 2(16 - 4) = 24$. Vậy $S_{min} = 24$.",
+        "math": "P_{min} = \\frac{24}{3} = 8",
+        "reason": "Bất đẳng thức Cô-si",
+        "uses": [
+          "step4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "step4"
+        ],
+        "operation": "am_gm",
+        "result": "$P_{min} = 8$",
+        "verification": {
+          "status": "verified",
+          "method": "substitute",
+          "reason": "Kiểm tra lại kết quả"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị nhỏ nhất của P là 8.",
+      "math": "8"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "substitute",
+        "statements": [
+          "a^2*b + b^2*c + c^2*a + 16 = a*b^2 + b*c^2 + c*a^2"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "a",
+              "value": "0"
+            },
+            {
+              "variable": "b",
+              "value": "2"
+            },
+            {
+              "variable": "c",
+              "value": "-2"
+            }
+          ]
+        ],
+        "expected": "true"
+      },
+      {
+        "kind": "substitute",
+        "statements": [
+          "a^2 + b^2 + c^2"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "P",
+              "value": "8"
+            }
+          ]
+        ],
+        "expected": "8"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "verified",
+    "checks": [
+      {
+        "label": "a^2*b + b^2*c + c^2*a + 16 = a*b^2 + b*c^2 + c*a^2",
+        "passed": true
+      }
+    ],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step5",
+        "status": "answer",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 3,
+  "durationMs": 220645,
+  "usage": {
+    "default": {
+      "input": 13302,
+      "cachedInput": 0,
+      "output": 10190,
+      "reasoning": 4069
+    }
+  },
+  "costUsd": 0.0214747,
+  "model": "default",
+  "logs": [
+    "computed: - minimize (388 ms)",
+    "outline in 61 s (916 chars)",
+    "attempt 1 failed (local model request timed out); trying again with a concise lesson",
+    "escalating to default",
+    "attempt 2: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "attempt 3: verified, 1 problem(s): answer check \"a^2 + b^2 + c^2\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 3: only minor feedback; not retrying",
+    "usage: model=default in=13302 (cached 0) out=10190 (reasoning 4069) ≈ $0.0215",
+    "total ≈ $0.0215 over 3 attempt(s); lesson by default"
+  ]
+}

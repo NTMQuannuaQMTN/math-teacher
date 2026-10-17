@@ -1,0 +1,270 @@
+{
+  "type": "geometry",
+  "round": "4",
+  "split": "all",
+  "createdAt": "2026-10-15T07:33:11.471Z",
+  "spentTotalUsd": 1.3138677699999994,
+  "results": [
+    {
+      "id": "ptnk-2023-chuyen/5a",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "no structurally valid lesson after retries",
+      "ms": 60281,
+      "logs": [
+        "proof planner: PARSING_UNCERTAIN — no claim of the statement understood (0 ms, 0 facts; 0 steps, ≤0 cited)",
+        "outline in 0 s (371 chars)",
+        "attempt 1: invalid structure: step step_3: prove that ALHI is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | step step_4: prove that ALHI is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | hint hint_1: cyclicity of ALHI needs a proof before it can be used as a premise.",
+        "attempt 2: invalid structure: step step_3: prove that ALHI is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | step step_4: prove that ALHI is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | hint hint_1: cyclicity of ALHI needs a proof before it can be used as a premise."
+      ],
+      "costUsd": 0.0221
+    },
+    {
+      "id": "ptnk-2023-chuyen/5b",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "no structurally valid lesson after retries",
+      "ms": 131856,
+      "logs": [
+        "proof planner: UNSOLVED_WITHIN_BOUNDARY — 0/1 goal(s) proved (6 ms, 68 facts; 0 steps, ≤0 cited)",
+        "outline in 61 s (391 chars)",
+        "attempt 1: invalid structure: step step_3: prove that AILM is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | step step_4: prove that AILM is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | hint hint_3: cyclicity of AILM needs a proof before it can be used as a premise.",
+        "attempt 2: invalid structure: step step_3: prove that AILM is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | step step_4: prove that AILM is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion. | hint hint_3: cyclicity of AILM needs a proof before it can be used as a premise."
+      ],
+      "costUsd": 0.0365
+    },
+    {
+      "id": "ptnk-2024-chuyen/4a",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 191741,
+      "finalAnswer": "Chứng minh được $CEHK$ là hình bình hành và $IB^2 = ID^2 = IA \\text{.} IK$.",
+      "costUsd": 0.0508
+    },
+    {
+      "id": "ptnk-2024-chuyen/4b",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 106389,
+      "finalAnswer": "K và F đối xứng nhau qua đường thẳng BD.",
+      "costUsd": 0.0323
+    },
+    {
+      "id": "ptnk-2025-chuyen/4a",
+      "ok": true,
+      "served": true,
+      "producedBy": "geometry-case-proof",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 29,
+      "finalAnswer": "Đường tròn qua $A,D,O$ chứa $E,F$; cả hai yêu cầu đã được chứng minh.",
+      "costUsd": 0
+    },
+    {
+      "id": "hcm-2025-chuyen/3a",
+      "ok": false,
+      "error": "timeout",
+      "message": "local model request timed out",
+      "ms": 199566,
+      "logs": [
+        "outline in 75 s (910 chars)",
+        "language repair round 1: not accepted statusReason: still foreign",
+        "language repair round 2: not accepted statusReason: still foreign",
+        "language repair: 0/1 field(s) rewritten in 1 s",
+        "removed 1 optional metadata field(s) still not in Vietnamese",
+        "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods"
+      ],
+      "costUsd": 0.0212
+    },
+    {
+      "id": "hanoi-2025-chuyen/IV.1",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 99168,
+      "finalAnswer": "Chứng minh được ba điểm $T, H, K$ thẳng hàng.",
+      "costUsd": 0.0303
+    },
+    {
+      "id": "hanoi-2025-chuyen/IV.2",
+      "ok": false,
+      "error": "malformed_output",
+      "message": "no structurally valid lesson after retries",
+      "ms": 192534,
+      "logs": [
+        "outline in 0 s (377 chars)",
+        "attempt 1 failed (local model request timed out); trying again with a concise lesson",
+        "escalating to default",
+        "attempt 2: invalid structure: step s5: prove that ANDE is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion.",
+        "escalating to default",
+        "attempt 3: invalid structure: step s5: prove that ANDE is cyclic before using it; it is not a confirmed given or an earlier proved fact. State the concrete angle/radius deductions, not just the cyclic assertion."
+      ],
+      "costUsd": 0.0261
+    },
+    {
+      "id": "khtn-2025-vong2/III.1",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 142448,
+      "finalAnswer": "Chứng minh được hai tam giác $OHM$ và $OKN$ đồng dạng với nhau, và tỉ số $\\frac{OK}{OH} = \\frac{AE}{AF}$.",
+      "costUsd": 0.0411
+    },
+    {
+      "id": "ptnk-2026-chuyen/2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "partial",
+      "attempts": 1,
+      "ms": 37375,
+      "finalAnswer": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18.",
+      "costUsd": 0.0114
+    },
+    {
+      "id": "geo8-h1",
+      "ok": true,
+      "served": true,
+      "producedBy": "proof-planner",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 23,
+      "finalAnswer": "Đã chứng minh: tứ giác AEHF nội tiếp; AE· AC = AF· AB.",
+      "costUsd": 0
+    },
+    {
+      "id": "geo8-h2",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 3,
+      "ms": 272908,
+      "finalAnswer": "a) $MN = AM + BN$\nb) $\\text{góc } MON = 90^\\text{°}$",
+      "costUsd": 0.0125
+    },
+    {
+      "id": "geo8-h3",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 48212,
+      "finalAnswer": "BD = 4.5 cm\nDC = 6 cm",
+      "costUsd": 0.0185
+    },
+    {
+      "id": "geo8-h4",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 58045,
+      "finalAnswer": "Góc $C$ bằng $110^\\text{o}$ và góc $D$ bằng $100^\\text{o}$.",
+      "costUsd": 0.0214
+    },
+    {
+      "id": "geo8-h5",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 35739,
+      "finalAnswer": "Ta đã chứng minh được $MA^2 = MB \\cdot MC$.",
+      "costUsd": 0.0154
+    },
+    {
+      "id": "geo8-h6",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "verified",
+      "attempts": 1,
+      "ms": 33649,
+      "finalAnswer": "Khoảng cách giữa hai dây AB và CD là 7 cm.",
+      "costUsd": 0.0107
+    },
+    {
+      "id": "geo9-f1",
+      "ok": true,
+      "served": true,
+      "producedBy": "routine-right-triangle",
+      "status": "verified",
+      "attempts": 0,
+      "ms": 17,
+      "finalAnswer": "Vậy $AH=6\\text{ cm}$, $AB=2\\sqrt{13}\\text{ cm}$, $AC=3\\sqrt{13}\\text{ cm}$.",
+      "costUsd": 0
+    },
+    {
+      "id": "geo9-f2",
+      "ok": true,
+      "served": true,
+      "producedBy": "proof-planner",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 11,
+      "finalAnswer": "Đã chứng minh: tứ giác MAOB nội tiếp; OM ⊥ AB.",
+      "costUsd": 0
+    },
+    {
+      "id": "geo9-f3",
+      "ok": true,
+      "served": true,
+      "producedBy": "proof-planner",
+      "status": "partial",
+      "attempts": 0,
+      "ms": 10,
+      "finalAnswer": "Đã chứng minh: tứ giác BFEC nội tiếp; ∠AEF = ∠ABC.",
+      "costUsd": 0
+    },
+    {
+      "id": "geo9-f4",
+      "ok": true,
+      "served": false,
+      "producedBy": "default",
+      "status": "unverified",
+      "attempts": 2,
+      "ms": 54142,
+      "finalAnswer": "Độ dài đoạn thẳng $BC$ là $6(1 + \\sqrt{3})$ cm.",
+      "costUsd": 0.0201
+    },
+    {
+      "id": "geo9-f5",
+      "ok": true,
+      "served": true,
+      "producedBy": "default",
+      "status": "not_checkable",
+      "attempts": 2,
+      "ms": 47100,
+      "finalAnswer": "Ta có:\n$AC = R\\sqrt{3}$\n$BC = R$\n$S_{ABC} = \\frac{R^2\\sqrt{3}}{2}$",
+      "costUsd": 0.0185
+    },
+    {
+      "id": "hcm-2025-chuyen/3b",
+      "ok": false,
+      "error": "timeout",
+      "message": "solve deadline exceeded",
+      "ms": 300007,
+      "logs": [
+        "proof planner: UNSOLVED_WITHIN_BOUNDARY — 0/1 goal(s) proved (13 ms, 70 facts; 0 steps, ≤0 cited)",
+        "outline failed after 87 s (output truncated); writing the lesson without it",
+        "attempt 1 failed (local model request timed out); trying again with a concise lesson",
+        "escalating to default"
+      ],
+      "costUsd": 0.0184
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+{
+  "question": {
+    "id": "comb9-f2",
+    "split": "fresh",
+    "source": "authored 2026-10-15 11:00 before the second run's model calls (verified); never used for a fix",
+    "input": "Một lớp có $30$ học sinh. Chứng minh rằng có ít nhất $3$ học sinh có sinh nhật trong cùng một tháng.",
+    "reference": "Chứng minh: nếu mỗi tháng có nhiều nhất $2$ học sinh thì lớp có nhiều nhất $24<30$ học sinh — mâu thuẫn (nguyên lí Dirichlet).",
+    "reference_status": "verified by SymPy/enumeration",
+    "kind": "prove"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Một lớp có 30 học sinh. Chứng minh rằng có ít nhất 3 học sinh có sinh nhật trong cùng một tháng.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "Xác suất và thống kê",
+      "gradeLevel": 9,
+      "withinCurriculum": false,
+      "concepts": [
+        "Nguyên lý Dirichlet (Pigeonhole Principle)",
+        "Xác suất và thống kê cơ bản"
+      ],
+      "techniques": [
+        "case_analysis"
+      ],
+      "givens": [
+        "Lớp có 30 học sinh.",
+        "Mỗi học sinh có sinh nhật trong một tháng cụ thể."
+      ],
+      "unknowns": [
+        "Số lượng học sinh tối thiểu có cùng tháng sinh"
+      ],
+      "constraints": [
+        "Số học sinh: 30",
+        "Số tháng trong năm: 12"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": [
+        "Bài toán này yêu cầu sử dụng Nguyên lý Dirichlet (Pigeonhole Principle) hoặc phương pháp phản chứng, vốn không nằm trong chương trình Toán lớp 9 chuẩn (THCS) tại Việt Nam. Chương trình lớp 9 chỉ bao gồm các kiến thức về đại số, hàm số, phương trình, hệ phương trình, hình học phẳng và xác suất cổ điể"
+      ]
+    },
+    "strategy": "Sử dụng phương pháp phản chứng: giả sử mỗi tháng có tối đa 2 học sinh sinh nhật, tính tổng số học sinh tối đa và so sánh với số học sinh thực tế để tìm ra mâu thuẫn.",
+    "hints": [
+      {
+        "id": "hint_1",
+        "level": 1,
+        "question": "Nếu bạn chia đều 30 học sinh vào 12 tháng, mỗi tháng sẽ có bao nhiêu bạn?",
+        "cue": "Nguyên lý Dirichlet",
+        "explanation": "Bạn hãy tưởng tượng 12 tháng là 12 cái hộp (ngăn). Bạn có 30 học sinh (30 vật) cần xếp vào các hộp này. Nguyên lý Dirichlet nói rằng nếu bạn xếp nhiều vật hơn số hộp, thì sẽ có ít nhất một hộp chứa nhiều vật hơn số trung bình.",
+        "math": null,
+        "stepId": "step_1",
+        "focus": []
+      },
+      {
+        "id": "hint_2",
+        "level": 2,
+        "question": "Phép chia 30 cho 12 cho kết quả là bao nhiêu?",
+        "cue": "Phép chia có dư",
+        "explanation": "Hãy thực hiện phép chia 30 cho 12. Thương số cho biết số học sinh tối thiểu trong mỗi tháng nếu chia đều, và số dư cho biết số học sinh còn lại cần được xếp vào các tháng.",
+        "math": "30 = 12 \\times 2 + 6",
+        "stepId": "step_2",
+        "focus": []
+      },
+      {
+        "id": "hint_3",
+        "level": 3,
+        "question": "Vậy nếu chia đều rồi, số học sinh tối thiểu trong một tháng là bao nhiêu?",
+        "cue": "Xét trường hợp xấu nhất",
+        "explanation": "Sau khi chia đều, mỗi tháng đã có 2 bạn. Còn lại 6 bạn nữa. Dù bạn xếp 6 bạn này vào tháng nào đi nữa, thì sẽ có ít nhất một tháng nhận thêm 1 bạn nữa, làm tổng số bạn trong tháng đó là 2 + 1 = 3.",
+        "math": "2 + 1 = 3",
+        "stepId": "step_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "step_1",
+        "title": "Xác định các đối tượng",
+        "explanation": "Để chứng minh điều này, chúng ta sẽ sử dụng một phương pháp lập luận đơn giản: giả sử điều ngược lại xảy ra và xem điều gì sẽ xảy ra.",
+        "math": null,
+        "reason": "Xác định bài toán",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [
+          "Số học sinh: 30",
+          "Số tháng: 12"
+        ],
+        "operation": "setup",
+        "result": "30 học sinh, 12 tháng",
+        "verification": {
+          "status": "verified",
+          "method": "tự làm",
+          "reason": null
+        }
+      },
+      {
+        "id": "step_2",
+        "title": "Giả sử điều ngược lại",
+        "explanation": "Giả sử rằng không có tháng nào có 3 học sinh sinh nhật trở lên. Điều này có nghĩa là mỗi tháng có tối đa 2 học sinh sinh nhật.",
+        "math": null,
+        "reason": "Phương pháp phản chứng",
+        "uses": [
+          "step_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Giả sử phản chứng"
+        ],
+        "operation": "assumption",
+        "result": "Mỗi tháng có tối đa 2 học sinh",
+        "verification": {
+          "status": "verified",
+          "method": "tự làm",
+          "reason": "Thiết lập giả thiết phản chứng"
+        }
+      },
+      {
+        "id": "step_3",
+        "title": "Tính tổng số học sinh tối đa",
+        "explanation": "Nếu mỗi tháng có tối đa 2 học sinh, thì tổng số học sinh của lớp sẽ không vượt quá 12 tháng nhân với 2 học sinh/tháng.",
+        "math": "12 \\times 2 = 24",
+        "reason": "Phép nhân",
+        "uses": [
+          "step_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Số tháng: 12",
+          "Tối đa 2 học sinh/tháng"
+        ],
+        "operation": "calculation",
+        "result": "24",
+        "verification": {
+          "status": "verified",
+          "method": "tự làm",
+          "reason": "Kiểm tra phép tính"
+        }
+      },
+      {
+        "id": "step_4",
+        "title": "Phát hiện mâu thuẫn",
+        "explanation": "Tuy nhiên, đề bài cho biết lớp có 30 học sinh. Số 30 lớn hơn 24, điều này mâu thuẫn với giả thiết ban đầu.",
+        "math": "30 > 24",
+        "reason": "So sánh",
+        "uses": [
+          "step_1",
+          "step_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Số học sinh thực tế: 30",
+          "Tổng số học sinh tối đa theo giả thiết: 24"
+        ],
+        "operation": "comparison",
+        "result": "Mâu thuẫn",
+        "verification": {
+          "status": "verified",
+          "method": "tự làm",
+          "reason": "Kiểm tra so sánh"
+        }
+      },
+      {
+        "id": "step_5",
+        "title": "Kết luận",
+        "explanation": "Vì giả sử mỗi tháng có tối đa 2 học sinh dẫn đến mâu thuẫn, nên giả thiết đó sai. Do đó, phải có ít nhất một tháng có nhiều hơn 2 học sinh, tức là có ít nhất 3 học sinh.",
+        "math": null,
+        "reason": "Kết luận phản chứng",
+        "uses": [
+          "step_4"
+        ],
+        "geometryActions": [],
+        "factsUsed": [
+          "Mâu thuẫn từ bước trước"
+        ],
+        "operation": "conclusion",
+        "result": "Có ít nhất 3 học sinh có sinh nhật trong cùng một tháng",
+        "verification": {
+          "status": "verified",
+          "method": "tự làm",
+          "reason": null
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Kết luận: Trong lớp có ít nhất 3 học sinh có sinh nhật trong cùng một tháng.",
+      "math": null
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "floor(30 / 12) + 1"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "n",
+              "value": "30"
+            }
+          ]
+        ],
+        "expected": "3"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "step_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "step_5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 1,
+  "durationMs": 2153,
+  "usage": {
+    "default": {
+      "input": 6456,
+      "cachedInput": 0,
+      "output": 5513,
+      "reasoning": 2966
+    }
+  },
+  "costUsd": 0.01128496,
+  "model": "default",
+  "logs": [
+    "outline in 0 s (296 chars)",
+    "topic \"combinatorics\" relabelled \"algebra\" (classifier)",
+    "language repair round 1: not accepted s0vr: still foreign, s4vr: still foreign",
+    "language repair round 2: not accepted s0vr: still foreign, s4vr: still foreign",
+    "language repair: 5/7 field(s) rewritten in 2 s",
+    "removed 2 optional metadata field(s) still not in Vietnamese",
+    "attempt 1: not_checkable, 1 problem(s): answer check \"floor(30 / 12) + 1\" can't be evaluated (could not evaluate: Unknown variable f). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 1: only minor feedback; not retrying",
+    "usage: model=default in=6456 (cached 0) out=5513 (reasoning 2966) ≈ $0.0113",
+    "total ≈ $0.0113 over 1 attempt(s); lesson by default"
+  ]
+}

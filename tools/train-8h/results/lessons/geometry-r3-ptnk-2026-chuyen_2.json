@@ -1,0 +1,447 @@
+{
+  "question": {
+    "id": "ptnk-2026-chuyen/2",
+    "split": "train",
+    "source": "exam ptnk-2026-chuyen",
+    "input": "Câu 2. Cho tứ giác lồi $ABCD$ có các cạnh $BC = 7$, $DA = 1$, và hai đường chéo $AC$ và $BD$ vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.",
+    "reference": "18",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Cho tứ giác lồi ABCD có các cạnh BC = 7, DA = 1, và hai đường chéo AC và BD vuông góc với nhau. Tìm giá trị lớn nhất của chu vi tứ giác ABCD.",
+      "language": "vi",
+      "topic": "geometry",
+      "subtopic": "Geometry optimization",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tứ giác có hai đường chéo vuông góc",
+        "Định lý Pythagore",
+        "Bất đẳng thức Cô-si (Cô-si) hoặc hằng đẳng thức $(a+b)^2 \\le 2(a^2+b^2)$"
+      ],
+      "techniques": [
+        "pythagoras",
+        "am_gm",
+        "equality_case"
+      ],
+      "givens": [
+        "Tứ giác ABCD lồi",
+        "BC = 7",
+        "DA = 1",
+        "$AC \\perp BD$"
+      ],
+      "unknowns": [
+        "Max perimeter"
+      ],
+      "constraints": [
+        "Tứ giác lồi",
+        "BC = 7",
+        "DA = 1",
+        "$AC \\perp BD$"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Sử dụng tính chất $AB^2 + CD^2 = BC^2 + DA^2$ của tứ giác có hai đường chéo vuông góc để tìm tổng bình phương hai cạnh còn lại. Sau đó dùng bất đẳng thức $(a+b)^2 \\le 2(a^2+b^2)$ để tìm giá trị lớn nhất của tổng hai cạnh này, từ đó suy ra giá trị lớn nhất của chu vi.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 2,
+        "question": "Khi hai đường chéo vuông góc, mối liên hệ giữa các cạnh và các đoạn trên đường chéo là gì?",
+        "cue": "Giao điểm của hai đường chéo",
+        "explanation": "Gọi O là giao điểm của AC và BD. Vì AC vuông góc BD, ta có 4 tam giác vuông tại O là OAB, OBC, OCD, ODA. Bạn hãy áp dụng định lý Pythagore để biểu diễn bình phương các cạnh AB, BC, CD, DA theo các đoạn OA, OB, OC, OD.",
+        "math": "AB^2 = OA^2 + OB^2, \\quad BC^2 = OB^2 + OC^2, \\quad CD^2 = OC^2 + OD^2, \\quad DA^2 = OD^2 + OA^2",
+        "stepId": "s1",
+        "focus": [
+          "seg_AC",
+          "seg_BD"
+        ]
+      },
+      {
+        "id": "h2",
+        "level": 3,
+        "question": "Nếu thay các biểu thức Pythagore vào tổng $AB^2 + CD^2$, bạn nhận thấy điều gì đặc biệt so với $BC^2 + DA^2$?",
+        "cue": "Tổng bình phương hai cặp cạnh đối diện",
+        "explanation": "Hãy tính tổng $AB^2 + CD^2$ và so sánh với $BC^2 + DA^2$. Bạn sẽ thấy một đẳng thức rất đẹp giữa các cạnh của tứ giác có đường chéo vuông góc.",
+        "math": "AB^2 + CD^2 = BC^2 + DA^2",
+        "stepId": "s2",
+        "focus": [
+          "seg_AB",
+          "seg_CD",
+          "seg_BC",
+          "seg_DA"
+        ]
+      },
+      {
+        "id": "h3",
+        "level": 4,
+        "question": "Làm thế nào để tìm giá trị lớn nhất của $AB + CD$ khi biết tổng bình phương của chúng?",
+        "cue": "Bất đẳng thức liên hệ tổng và tổng bình phương",
+        "explanation": "Bạn đã có $AB^2 + CD^2 = 50$. Để tìm giá trị lớn nhất của $AB + CD$, hãy nhớ lại bất đẳng thức $(a+b)^2 \\le 2(a^2+b^2)$ (đây là hệ quả của $(a-b)^2 \\ge 0$ hoặc bất đẳng thức Cô-si). Áp dụng vào $AB$ và $CD$ để chặn giá trị của $AB+CD$.",
+        "math": "(AB + CD)^2 \\le 2(AB^2 + CD^2)",
+        "stepId": "s4",
+        "focus": [
+          "seg_AB",
+          "seg_CD"
+        ]
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Xác định các tam giác vuông",
+        "explanation": "Gọi O là giao điểm của hai đường chéo AC và BD. Vì AC vuông góc với BD, bốn tam giác OAB, OBC, OCD, ODA đều là tam giác vuông tại O.",
+        "math": "\\triangle OAB, \\triangle OBC, \\triangle OCD, \\triangle ODA \\text{ vuông tại } O",
+        "reason": "Định nghĩa hai đường thẳng vuông góc",
+        "uses": [],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AC",
+              "seg_BD",
+              "seg_AB",
+              "seg_BC",
+              "seg_CD",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "AC \\perp BD"
+        ],
+        "operation": "định nghĩa",
+        "result": "s1",
+        "verification": {
+          "status": "verified",
+          "method": "pythagoras",
+          "reason": "Định lý Pythagore trong tam giác vuông"
+        }
+      },
+      {
+        "id": "s2",
+        "title": "Chứng minh đẳng thức giữa các cạnh",
+        "explanation": "Áp dụng định lý Pythagore cho từng tam giác vuông, ta có:\n$AB^2 = OA^2 + OB^2$\n$CD^2 = OC^2 + OD^2$\n$BC^2 = OB^2 + OC^2$\n$DA^2 = OD^2 + OA^2$\n\nTính tổng $AB^2 + CD^2$:\n$AB^2 + CD^2 = (OA^2 + OB^2) + (OC^2 + OD^2) = OA^2 + OB^2 + OC^2 + OD^2$\n\nTính tổng $BC^2 + DA^2$:\n$BC^2 + DA^2 = (OB^2 + OC^2) + (OD^2 + OA^2) = OA^2 + OB^2 + OC^2 + OD^2$\n\nSuy ra: $AB^2 + CD^2 = BC^2 + DA^2$.",
+        "math": "AB^2 + CD^2 = BC^2 + DA^2",
+        "reason": "Định lý Pythagore và tính chất cộng đại số",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_AC",
+              "seg_BD",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "s1"
+        ],
+        "operation": "algebraic_manipulation",
+        "result": "s2",
+        "verification": {
+          "status": "verified",
+          "method": "algebra",
+          "reason": "Thay số và rút gọn"
+        }
+      },
+      {
+        "id": "s3",
+        "title": "Tính tổng bình phương hai cạnh",
+        "explanation": "Thay các giá trị đã biết $BC = 7$ và $DA = 1$ vào đẳng thức trên:\n$AB^2 + CD^2 = 7^2 + 1^2 = 49 + 1 = 50$.",
+        "math": "AB^2 + CD^2 = 50",
+        "reason": "Thay số vào đẳng thức đã chứng minh",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_BC",
+              "seg_DA",
+              "seg_AB",
+              "seg_CD"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "s2"
+        ],
+        "operation": "substitution",
+        "result": "s3",
+        "verification": {
+          "status": "verified",
+          "method": "số học",
+          "reason": "Phép tính số học"
+        }
+      },
+      {
+        "id": "s4",
+        "title": "Chặn giá trị của tổng hai cạnh",
+        "explanation": "Ta cần tìm giá trị lớn nhất của chu vi $P = AB + CD + BC + DA = AB + CD + 8$. Để $P$ lớn nhất thì $AB + CD$ phải lớn nhất.\n\nÁp dụng bất đẳng thức $(a - b)^2 \\ge 0 \\Rightarrow a^2 + b^2 \\ge 2ab \\Rightarrow 2(a^2 + b^2) \\ge a^2 + b^2 + 2ab = (a + b)^2$.\n\nVới $a = AB$ và $b = CD$, ta có:\n$(AB + CD)^2 \\le 2(AB^2 + CD^2)$\n\nThay $AB^2 + CD^2 = 50$:\n$(AB + CD)^2 \\le 2 \\times 50 = 100$\n\nSuy ra $AB + CD \\le \\sqrt{100} = 10$ (vì độ dài luôn dương).",
+        "math": "AB + CD \\le 10",
+        "reason": "Bất đẳng thức $(a+b)^2 \\le 2(a^2+b^2)$",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "s3"
+        ],
+        "operation": "inequality_application",
+        "result": "s4",
+        "verification": {
+          "status": "verified",
+          "method": "inequality",
+          "reason": "Bất đẳng thức Cô-si / Hằng đẳng thức"
+        }
+      },
+      {
+        "id": "s5",
+        "title": "Tính giá trị lớn nhất của chu vi",
+        "explanation": "Dấu bằng xảy ra khi $AB = CD$. Khi đó $AB^2 + AB^2 = 50 \\Rightarrow 2AB^2 = 50 \\Rightarrow AB^2 = 25 \\Rightarrow AB = 5$. Vậy $AB = CD = 5$.\n\nGiá trị lớn nhất của chu vi là:\n$P_{max} = (AB + CD)_{max} + BC + DA = 10 + 7 + 1 = 18$.\n\nTa cần kiểm tra xem có tồn tại tứ giác lồi ABCD với $AB=CD=5, BC=7, DA=1$ và $AC \\perp BD$ không.\nGọi O là giao điểm. $OA^2+OB^2=25, OB^2+OC^2=49, OC^2+OD^2=25, OD^2+OA^2=1$.\nTừ $OA^2+OB^2=25$ và $OD^2+OA^2=1$, suy ra $OB^2 - OD^2 = 24$.\nTừ $OB^2+OC^2=49$ và $OC^2+OD^2=25$, suy ra $OB^2 - OD^2 = 24$ (thỏa mãn).\nChọn $OD=0$ (không được vì O nằm trong tứ giác lồi, các đoạn phải dương).\nThử chọn $OA=3, OB=4 \\Rightarrow AB=5$. $OD^2 = 1-9 = -8$ (vô lý).\nThử chọn $OA=1, OB=\\sqrt{24} \\Rightarrow AB=5$. $OD^2 = 1-1=0$ (O trùng D, không phải tứ giác lồi).\nThử chọn $OA=0.5$. $OB^2 = 25 - 0.25 = 24.75$. $OD^2 = 1 - 0.25 = 0.75$. $OC^2 = 25 - 0.75 = 24.25$. $BC^2 = 24.75 + 24.25 = 49 \\Rightarrow BC=7$.\nCác độ dài $OA, OB, OC, OD$ đều dương, nên O nằm trong tứ giác. Tứ giác tồn tại và lồi.\nVậy giá trị lớn nhất là 18.",
+        "math": "P_{max} = 18",
+        "reason": "Thay giá trị lớn nhất vào công thức chu vi",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": [
+          {
+            "action": "highlight",
+            "targets": [
+              "seg_AB",
+              "seg_CD",
+              "seg_BC",
+              "seg_DA",
+              "seg_AC",
+              "seg_BD"
+            ]
+          }
+        ],
+        "factsUsed": [
+          "s4"
+        ],
+        "operation": "calculation",
+        "result": "s5",
+        "verification": {
+          "status": "verified",
+          "method": "existence_check",
+          "reason": "Kiểm tra sự tồn tại của hình học"
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị lớn nhất của chu vi tứ giác ABCD là 18.",
+      "math": "18"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "Max perimeter of convex quadrilateral with BC=7, DA=1, AC perp BD"
+        ],
+        "assignments": [],
+        "expected": "18"
+      }
+    ],
+    "figure": {
+      "scale": "schematic",
+      "points": [
+        {
+          "id": "A",
+          "label": "A",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": 0.8,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "kind": "free",
+          "refs": [],
+          "x": -4.2,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "kind": "free",
+          "refs": [],
+          "x": 0,
+          "y": -5.6000000000000005,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "kind": "free",
+          "refs": [],
+          "x": 0.6,
+          "y": 0,
+          "value": null,
+          "value2": null,
+          "draggable": true,
+          "hidden": false
+        },
+        {
+          "id": "O",
+          "label": "O",
+          "kind": "intersection",
+          "refs": [
+            "A",
+            "C",
+            "B",
+            "D"
+          ],
+          "x": null,
+          "y": null,
+          "value": null,
+          "value2": null,
+          "draggable": false,
+          "hidden": false
+        }
+      ],
+      "lines": [
+        {
+          "id": "seg_AB",
+          "kind": "segment",
+          "from": "A",
+          "to": "B",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BC",
+          "kind": "segment",
+          "from": "B",
+          "to": "C",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_CD",
+          "kind": "segment",
+          "from": "C",
+          "to": "D",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_DA",
+          "kind": "segment",
+          "from": "D",
+          "to": "A",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_AC",
+          "kind": "segment",
+          "from": "A",
+          "to": "C",
+          "style": "given",
+          "label": null
+        },
+        {
+          "id": "seg_BD",
+          "kind": "segment",
+          "from": "B",
+          "to": "D",
+          "style": "given",
+          "label": null
+        }
+      ],
+      "circles": [],
+      "angles": [],
+      "marks": [],
+      "checks": []
+    }
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "s1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s4",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "s5",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 25957,
+  "usage": {
+    "default": {
+      "input": 18434,
+      "cachedInput": 0,
+      "output": 8448,
+      "reasoning": 3022
+    }
+  },
+  "costUsd": 0.02113626,
+  "model": "default",
+  "logs": [
+    "proof planner: UNSOLVED_WITHIN_BOUNDARY — no proof goal (computation only) (0 ms, 0 facts; 0 steps, ≤0 cited)",
+    "outline in 0 s (727 chars)",
+    "language repair: 1/1 field(s) rewritten in 0 s",
+    "attempt 1: not_checkable, 1 problem(s): this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods",
+    "language repair: 2/2 field(s) rewritten in 0 s",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"Max perimeter of convex quadrilateral with BC=7, DA=1, AC perp BD\" only restates the answer; write a check that recomputes the answer from the problem's givens or substitutes it into the original equation/condition",
+    "usage: model=default in=18434 (cached 0) out=8448 (reasoning 3022) ≈ $0.0211",
+    "total ≈ $0.0211 over 2 attempt(s); lesson by default"
+  ]
+}

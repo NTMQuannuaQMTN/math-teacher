@@ -1,0 +1,229 @@
+{
+  "question": {
+    "id": "hcm-2025-chuyen/1a",
+    "split": "train",
+    "source": "exam hcm-2025-chuyen",
+    "input": "Với $a,b$ là các số thực dương thỏa mãn $(a+b)(a-b)=1$. Tính giá trị của biểu thức $P=\\sqrt{(4a+5)^2+(3b)^2}-\\sqrt{(4a-5)^2+(3b)^2}$.",
+    "reference": "$P=8$",
+    "reference_status": "official",
+    "kind": "compute"
+  },
+  "lesson": {
+    "analysis": {
+      "statement": "Với $a,b$ là các số thực dương thỏa mãn $(a+b)(a-b)=1$. Tính giá trị của biểu thức $P=\\sqrt{(4a+5)^2+(3b)^2}-\\sqrt{(4a-5)^2+(3b)^2}$.",
+      "language": "vi",
+      "topic": "algebra",
+      "subtopic": "simplifying radicals using algebraic identities",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "hằng đẳng thức $(x+y)(x-y)=x^2 - y^2$",
+        "tính chất $sqrt(u^2)=|u|$",
+        "phương trình $a^2 - b^2 = 1$"
+      ],
+      "techniques": [
+        "factorization",
+        "substitution",
+        "domain_conditions"
+      ],
+      "givens": [
+        "a, b là số thực dương",
+        "(a+b)(a-b)=1"
+      ],
+      "unknowns": [
+        "giá trị của biểu thức $P = sqrt((4a+5)^2+(3b)^2) - sqrt((4a-5)^2+(3b)^2)$"
+      ],
+      "constraints": [
+        "a>0, b>0",
+        "từ $(a+b)(a-b)=1$ suy ra $a^2 - b^2 = 1$",
+        "do đó a ≥ 1"
+      ],
+      "status": "solvable",
+      "statusReason": "",
+      "interpretationNotes": []
+    },
+    "strategy": "Ta dùng điều kiện đã cho để viết $b^2$ theo $a^2$, rồi thay vào từng radicand để nhận ra chúng là bình phương hoàn chỉnh $(5a±4)^2$. Vì $a≥1$ nên dấu trong căn luôn dương, sau đó trừ hai căn để có kết quả hằng số 8.",
+    "hints": [
+      {
+        "id": "hints_1",
+        "level": 1,
+        "question": "Từ $(a+b)(a-b)=1$ bạn có thể suy ra mối quan hệ nào giữa $a^2$ và $b^2$?",
+        "cue": "hằng đẳng thức $(x+y)(x-y)=x^2 - y^2$",
+        "explanation": "Nhân vế trái ra được $a^2 - b^2 = 1$, từ đó $b^2 = a^2 - 1$.",
+        "math": "a^2 - b^2 = 1",
+        "stepId": "B_c_1",
+        "focus": []
+      },
+      {
+        "id": "hint2",
+        "level": 2,
+        "question": "Sau khi thay $b^2 = a^2 - 1$ vào biểu thức dưới dấu căn, mỗi radicand có thể viết dưới dạng gì?",
+        "cue": "nhóm các hạng tử để nhận dạng bình phương hoàn chỉnh",
+        "explanation": "Thay $b^2$ vào $(4a±5)^2 + (3b)^2$, ta được $25a^2$ ± 40a + 16, chính là (5a ± $4)^2$.",
+        "math": "(4a+5)^2+(3b)^2 = (5a+4)^2,\\quad (4a-5)^2+(3b)^2 = (5a-4)^2",
+        "stepId": "B_c_2",
+        "focus": []
+      },
+      {
+        "id": "hint3",
+        "level": 3,
+        "question": "Vì a thỏa mãn điều kiện gì, nên biểu thức 5a-4 luôn dương? Khi đó $sqrt((5a±4)^2)$ bằng gì?",
+        "cue": "từ $a^2 - b^2 = 1$ và $a,b>0$ suy ra $a≥1$",
+        "explanation": "Vì $a^2 = 1 + b^2 ≥ 1$ nên a ≥ 1, do đó 5a-4 > 0. Vậy $sqrt((5a+4)^2)=5a+4$ và $sqrt((5a-4)^2)=5a-4$.",
+        "math": "a ≥ 1 \\Rightarrow 5a-4 > 0",
+        "stepId": "B_c_3",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "B_c_1",
+        "title": "Suy ra $a^2 - b^2 = 1$ từ điều kiện đã cho",
+        "explanation": "Áp dụng hằng đẳng thức $(x+y)(x-y)=x^2 - y^2$ với $x=a$, $y=b$.",
+        "math": "(a+b)(a-b)=a^2-b^2=1",
+        "reason": "hằng đẳng thức $(x+y)(x-y)=x^2 - y^2$",
+        "uses": [],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "",
+        "result": "",
+        "verification": {
+          "status": "verified",
+          "method": "direct",
+          "reason": ""
+        }
+      },
+      {
+        "id": "B_c_2",
+        "title": "Thay $b^2 = a^2 - 1$ vào các radicand và rút gọn",
+        "explanation": "Thay $b^2$ vào từng biểu thức dưới dấu căn, sau đó nhóm các hạng tử để nhận dạng bình phương hoàn chỉnh.",
+        "math": "\\begin{aligned}&(4a+5)^2+(3b)^2 = 16a^2+40a+25+9b^2 \\\\&= 16a^2+40a+25+9(a^2-1) = 25a^2+40a+16 = (5a+4)^2,\\\\&(4a-5)^2+(3b)^2 = 16a^2-40a+25+9b^2 \\\\&= 16a^2-40a+25+9(a^2-1) = 25a^2-40a+16 = (5a-4)^2.\\end{aligned}",
+        "reason": "thay thế và nhóm các hạng tử; hằng đẳng thức $(p±q)^2 = p^2$ ± $2pq + q^2$",
+        "uses": [
+          "B_c_1"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "",
+        "result": "",
+        "verification": {
+          "status": "verified",
+          "method": "direct",
+          "reason": ""
+        }
+      },
+      {
+        "id": "B_c_3",
+        "title": "Xác định dấu của các biểu thức trong căn để bỏ dấu tuyệt đối",
+        "explanation": "Từ $a^2 - b^2 = 1$ và $a,b>0$ suy ra $a^2 ≥ 1$, vì $a>0$ nên a ≥ 1. Do đó 5a-4 > 0 và 5a+4 > 0.",
+        "math": "a^2 = 1+b^2 \\ge 1 \\Rightarrow a \\ge 1 \\Rightarrow 5a-4 > 0",
+        "reason": "tính chất của căn bậc hai: $sqrt(u^2)=|u|$ và dấu của u",
+        "uses": [
+          "B_c_2"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "",
+        "result": "",
+        "verification": {
+          "status": "verified",
+          "method": "direct",
+          "reason": ""
+        }
+      },
+      {
+        "id": "B_c_4",
+        "title": "Tính giá trị của P",
+        "explanation": "Với các dấu xác định, ta có $sqrt((5a+4)^2)=5a+4$ và $sqrt((5a-4)^2)=5a-4$. Do đó $P = (5a+4)-(5a-4)=8$.",
+        "math": "P = \\sqrt{(5a+4)^2} - \\sqrt{(5a-4)^2} = (5a+4)-(5a-4)=8",
+        "reason": "biểu thức đã rút gọn và tính trực tiếp",
+        "uses": [
+          "B_c_3"
+        ],
+        "geometryActions": [],
+        "factsUsed": [],
+        "operation": "",
+        "result": "",
+        "verification": {
+          "status": "verified",
+          "method": "direct",
+          "reason": ""
+        }
+      }
+    ],
+    "finalAnswer": {
+      "text": "Giá trị của biểu thức P là 8.",
+      "math": "P=8"
+    },
+    "gamePlans": [],
+    "answerChecks": [
+      {
+        "kind": "value",
+        "statements": [
+          "\\sqrt{(4a+5)^2+(3b)^2}-\\sqrt{(4a-5)^2+(3b)^2}"
+        ],
+        "assignments": [],
+        "expected": "8"
+      }
+    ],
+    "figure": null
+  },
+  "verification": {
+    "status": "not_checkable",
+    "checks": [],
+    "figureIssue": null,
+    "steps": [
+      {
+        "stepId": "B_c_1",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "B_c_2",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "B_c_3",
+        "status": "not_checked",
+        "claims": 0
+      },
+      {
+        "stepId": "B_c_4",
+        "status": "not_checked",
+        "claims": 0
+      }
+    ]
+  },
+  "attempts": 2,
+  "durationMs": 52496,
+  "usage": {
+    "default": {
+      "input": 5273,
+      "cachedInput": 0,
+      "output": 646,
+      "reasoning": 0
+    },
+    "nvidia/nemotron-3-super-120b-a12b:free": {
+      "input": 5861,
+      "cachedInput": 0,
+      "output": 4856,
+      "reasoning": 2828
+    }
+  },
+  "costUsd": 0.00335477,
+  "model": "nvidia/nemotron-3-super-120b-a12b:free",
+  "logs": [
+    "computed: - value (149 ms)",
+    "language repair: 3/3 field(s) rewritten in 12 s",
+    "answer differs from the computation: final answer does not match the machine computation (8): 8 missing — re-check the solution against it",
+    "attempt 1: unverified, 3 problem(s): status reason (\"where\"), concept (\"Definition\"), constraint (\"are\"), strategy (\"The\"): English or other foreign words in a Vietnamese lesson — write them in Vietnamese (\"đồng biến\", \"tương ứng\", \"với\"), using only terms a Grade 9 student knows | this problem is within the Vietnamese Grade 9 / Grade 10 entrance-exam curriculum (systems, quadratics and Vi-ét, y = ax², simplifying expressions, word problems, right-triangle relations, statistics, probability, cylinder/cone/sphere, circle geometry, inequalities and extremum problems): set status \"solvable\", withinCurriculum true, and solve it with those methods | final answer does not match the machine computation (8): 8 missing — re-check the solution against it",
+    "escalating to nvidia/nemotron-3-super-120b-a12b:free",
+    "topic \"combinatorics\" relabelled \"algebra\" (classifier)",
+    "attempt 2: not_checkable, 1 problem(s): answer check \"\\sqrt{(4a+5)^2+(3b)^2}-\\sqrt{(4a-5)^2+(3b)^2}\" can't be evaluated (could not evaluate: Unknown variable a). Checks must be self-contained arithmetic (no unknown letters in \"value\" checks; substitute concrete values), or use the \"integers\"/\"substitute\" kinds.",
+    "attempt 2: only minor feedback; not retrying",
+    "usage: model=default in=5273 (cached 0) out=646 (reasoning 0) ≈ $0.0034",
+    "usage: model=nvidia/nemotron-3-super-120b-a12b:free in=5861 (cached 0) out=4856 (reasoning 2828)",
+    "total ≈ $0.0034 over 2 attempt(s); lesson by nvidia/nemotron-3-super-120b-a12b:free"
+  ]
+}
