@@ -149,6 +149,11 @@ export interface SolveOptions {
   escalateOnGiveUp?: boolean;
   /** Certified routine-task lessons (./routine) before inference. Default on. */
   routine?: boolean;
+  /**
+   * false = no built-in solver answers on its own (certified families, proof planner, routine and exact modules): every
+   * lesson is written by the model (2026-10-17: "SoCLaaS for everything"). The checks still run on what it writes.
+   */
+  certified?: boolean;
 }
 
 /** Stage 1 of a two-stage solve: the solution's outline only. */
@@ -599,17 +604,19 @@ async function solveTask(
     computeFirst = true,
     exactAlgebra = true,
     routine = true,
+    certified = true,
     escalateOnGiveUp = true,
   }: SolveOptions,
 ): Promise<SolveResult> {
   const started = Date.now();
+  if (!certified) { exactAlgebra = false; proofPlanner = false; routine = false; }
   let diagnosisNote: string | null = null;
-  const vertices=vertexAssignmentLesson(problemText);
+  const vertices=certified?vertexAssignmentLesson(problemText):null;
   if(vertices&&vertices.verify()) {
     const checked=verifyLesson(tidy(vertices.lesson),{problemText});
     if(!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&checked.verification.status!=='unverified')return {lesson:checked.lesson,verification:{...checked.verification,status:'verified'},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-vertex-assignment'};
   }
-  const multipart=multipartLesson(problemText);
+  const multipart=certified?multipartLesson(problemText):null;
   if(multipart&&multipart.verify()) {
     const checked=verifyLesson(tidy(multipart.lesson),{problemText});
     if(!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length&&checked.verification.status!=='unverified')return {lesson:checked.lesson,verification:{...checked.verification,status:multipart.coverage==='complete'?'verified':'partial'},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-multipart'};
@@ -689,7 +696,7 @@ async function solveTask(
       lesson:checked.lesson,verification:{status:'verified',figureIssue:null,checks:[{label:'Đẳng thức tích được suy ra từ hai cặp góc và tam giác đồng dạng; phép tính độ dài dùng phân số chính xác',passed:true}]},attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:'certified-circle-power'
     };
   }
-  const board = boardSearchLesson(problemText);
+  const board = certified ? boardSearchLesson(problemText) : null;
   if (board && board.certificates.every((c,i)=>verifyBoardSearch(c,i===0?4:2))) {
     const lesson = tidy(board.lesson);
     if (!latexFeedback(lesson).length && !cleanLanguage(lesson).feedback.length) return {
@@ -697,7 +704,7 @@ async function solveTask(
       attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"deterministic-board-search",
     };
   }
-  const combinatorics=certifiedCombinatoricsLesson(problemText);
+  const combinatorics=certified?certifiedCombinatoricsLesson(problemText):null;
   if(combinatorics&&combinatorics.verify()) {
     const checked=verifyLesson(tidy(combinatorics.lesson),{problemText});
     if(checked.verification.status!=="unverified"&&!latexFeedback(checked.lesson).length&&!cleanLanguage(checked.lesson).feedback.length) return {
@@ -705,7 +712,7 @@ async function solveTask(
       attempts:0,durationMs:Date.now()-started,usage:{},costUsd:0,model:"certified-combinatorics",
     };
   }
-  const game = takeAwayLesson(problemText);
+  const game = certified ? takeAwayLesson(problemText) : null;
   if (game && verifyGameCertificate(game.certificate)) {
     const checked = verifyLesson(tidy(game.lesson), { problemText });
     if (!latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length) {
@@ -725,7 +732,7 @@ async function solveTask(
     if (checked.verification.status !== "unverified" && !latexFeedback(checked.lesson).length && !cleanLanguage(checked.lesson).feedback.length)
       return { lesson: checked.lesson, verification: { ...checked.verification, status: "verified", checks: [...checked.verification.checks, { label: consecutive.label, passed: true }] }, attempts: 0, durationMs: Date.now() - started, usage: {}, costUsd: 0, model: "routine-consecutive-product" };
   }
-  const certifiedInteger = certifiedNumberTheoryLesson(problemText);
+  const certifiedInteger = certified ? certifiedNumberTheoryLesson(problemText) : null;
   if (certifiedInteger) {
     const valid = certifiedInteger.verify();
     const checked = verifyLesson(tidy(certifiedInteger.lesson), { problemText });

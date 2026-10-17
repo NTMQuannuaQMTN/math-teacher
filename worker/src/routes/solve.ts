@@ -424,6 +424,8 @@ async function solveScanWithinDeadline(rc: RouteContext, scanId: string, questio
   const work = (async () => {
     try {
       const result = await solveProblem(model, VN_GRADE_9, problemText, {
+        // SoCLaaS for everything (2026-10-17): with the agent, no built-in solver answers on its own.
+        certified: !agentOn(env),
         fallback,
         fallbackOnlyOnFailure,
         outlineModel,

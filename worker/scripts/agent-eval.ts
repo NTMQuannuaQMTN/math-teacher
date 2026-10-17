@@ -26,7 +26,7 @@ async function run(r: { id: string; input: string; reference: string }) {
   const model = new SoclaasAgentModel(vars.SOCLAAS_BASE_URL!, vars.SOCLAAS_API_KEY!, vars.SOCLAAS_MODEL || "default", { problemText: normalizeProblemText(r.input), withFigure: looksLikeGeometry(r.input), deadline: t0 + LIMIT - 4_000, log: (m) => logs.push(m) });
   let entry: Record<string, unknown>;
   try {
-    const res = await solveProblem(model, VN_GRADE_9, r.input, { signal: AbortSignal.timeout(LIMIT), retryBudgetMs: LIMIT, log: (m) => logs.push(m) });
+    const res = await solveProblem(model, VN_GRADE_9, r.input, { signal: AbortSignal.timeout(LIMIT), retryBudgetMs: LIMIT, certified: false, log: (m) => logs.push(m) });
     const cost = Object.entries(res.usage).reduce((s, [n, u]) => s + (estimateCost(n, u) ?? estimateCost("qwen3.6:35b", u) ?? 0), 0);
     entry = { id: r.id, ok: true, served: servable(res.verification), producedBy: res.model, status: res.verification.status, seconds: Math.round((Date.now() - t0) / 1000), costUsd: +cost.toFixed(4), final: res.lesson.finalAnswer.text, hints: res.lesson.hints.map((h) => h.question), reference: r.reference, lesson: res.lesson, failed: res.verification.checks.filter((c) => !c.passed).map((c) => c.label), logs };
   } catch (err) {

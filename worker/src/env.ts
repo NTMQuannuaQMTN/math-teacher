@@ -50,6 +50,8 @@ export interface Env {
   SOLVER_TWO_STAGE?: string;
   /** SOCLAAS tool-using agent (default on with SOLVER_PROVIDER=soclaas); "off" = one-request lessons. */
   SOLVER_AGENT?: string;
+  /** Vision model for OCR_PROVIDER=soclaas (default qwen3-vl:32b). */
+  SOCLAAS_OCR_MODEL?: string;
   /** Hard limit for one solve with the agent, in ms (default 120000). */
   SOLVER_AGENT_MS?: string;
   SOLVE_LIMIT_PER_DEVICE_PER_HOUR: string;

@@ -56,6 +56,11 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
         env.OCR_OUTPUT_FORMAT === "full" || env.OCR_OUTPUT_FORMAT === "text" ? env.OCR_OUTPUT_FORMAT : "compact",
         env.LOCAL_OCR_PROMPT || "OCR:",
       );
+    case "soclaas":
+      // SoCLaaS vision model (2026-10-17: every AI call goes to SoCLaaS). Compact JSON: the text and the problems split
+      // per exercise, sub-questions a), b), c) kept with their exercise.
+      if (!env.SOCLAAS_API_KEY) break;
+      return new LocalOcrProvider(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1", env.SOCLAAS_OCR_MODEL || "qwen3-vl:32b", env.SOCLAAS_API_KEY, "compact");
     case "anthropic":
       if (!env.ANTHROPIC_API_KEY) break;
       return new AnthropicOcrProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL || "claude-opus-5");

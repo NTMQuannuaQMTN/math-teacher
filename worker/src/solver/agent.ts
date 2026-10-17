@@ -1,20 +1,18 @@
-import { resolveFigure, evaluateFigureCheck } from "../../../shared/src/geometry";
 import { figureFromStatement } from "../../../shared/src/figureFromText";
-import { exactArithmeticIdentity } from "../../../shared/src/polynomialIdentity";
-import { evalExpression } from "../../../shared/src/expr";
-import { expressionMod } from "../../../shared/src/integerTargets";
 import { cleanLanguage } from "../../../shared/src/language";
 import { proofDependencyFeedback } from "../../../shared/src/proofDependencies";
-import { FigureCheckSchema, FigureSchema, type Figure, type ModelLesson } from "../../../shared/src/solution";
+import { type Figure, type ModelLesson } from "../../../shared/src/solution";
 import { deadEndFeedback, hintFeedback, intersectionNotationFeedback, stepClaimFeedback } from "../../../shared/src/stepClaims";
 import { verifyLesson } from "../../../shared/src/verify";
 import { simplificationFeedback } from "../../../shared/src/simplification";
 import { OcrFailure } from "../ocr/provider";
-import { toStrictJsonSchema } from "./jsonSchema";
 import { fixJsonLatexEscapes } from "./jsonLatex";
 import { latexFeedback } from "./latexCheck";
 import type { JsonModel } from "./llm";
 import { parseLesson, tidy } from "./pipeline";
+import { GeometryBoard, PROBLEM_TYPES, runTypeTool, toolsFor, type ProblemType } from "./agentTools";
+import { looksLikeGeometry } from "./routing";
+import { problemDomains } from "../../../shared/src/knowledgeBase";
 import { dropForeignMetadata } from "./languageRepair";
 import type { Usage } from "./pricing";
 
@@ -35,21 +33,18 @@ type Msg =
   | { role: "tool"; tool_call_id: string; content: string };
 interface ToolCall { id: string; type: "function"; function: { name: string; arguments: string } }
 
-const AGENT_RULES = `Bạn làm việc như một tác tử có công cụ (tools). Quy trình:
-1. Nếu cần tính toán (lũy thừa lớn, số dư, kiểm tra một đẳng thức, một giá trị), gọi compute thay vì tự nhẩm.
-2. Bài hình: gọi draw_figure (không cần tham số để dựng hình từ đề) và kiểm tra các khẳng định quan trọng (thẳng hàng, vuông góc, nội tiếp…) bằng "checks" trước khi đưa vào lời giải.
-3. Gọi write_lesson với toàn bộ bài giảng (đúng schema). Công cụ trả về danh sách lỗi.
-4. Sửa lỗi bằng revise (chỉ các trường cần sửa) — không viết lại cả bài trừ khi lời giải sai từ gốc.
-5. Khi không còn lỗi (hoặc gần hết thời gian), gọi finish.
+const TYPE_NAME: Record<ProblemType, string> = { algebra: "Đại số", geometry: "Hình học", number_theory: "Số học", combinatorics: "Tổ hợp" };
+const agentRules = (type: ProblemType) => `Bài này thuộc dạng ${TYPE_NAME[type]}. Bạn làm việc như một tác tử có công cụ (tools) của dạng này.
+Quy trình:
+1. Dùng công cụ của dạng ${TYPE_NAME[type]} để tính, kiểm tra${type === "geometry" ? ", và dựng hình: gọi figure_from_statement trước, rồi thêm điểm/đoạn/đa giác/đường tròn cần cho lời giải (add_point, add_line, add_polygon, add_circle) và đo các tính chất quan trọng bằng check_property trước khi đưa vào chứng minh" : ""}. Không tự nhẩm những gì công cụ tính được.
+2. Gọi write_lesson với toàn bộ bài giảng (đúng schema). Công cụ trả về danh sách lỗi.
+3. Sửa lỗi bằng revise (chỉ các trường cần sửa) — chỉ viết lại cả bài khi lời giải sai từ gốc.
+4. Khi không còn lỗi (hoặc gần hết thời gian), gọi finish.
 Thời gian có hạn (khoảng 2 phút cho cả bài): đi thẳng vào lời giải, ít lượt gọi công cụ.`;
 
-const figureSchema = toStrictJsonSchema(FigureSchema);
-const checkSchema = toStrictJsonSchema(FigureCheckSchema);
 
-function tools(lessonSchema: Record<string, unknown>) {
+function lessonTools(lessonSchema: Record<string, unknown>) {
   return [
-    { type: "function", function: { name: "compute", description: "Tính chính xác: giá trị biểu thức (LaTeX hoặc a^b, *, /), số dư khi chia cho modulus (lũy thừa lớn được), hoặc kiểm tra một đẳng thức 'trái = phải' (đúng với mọi giá trị của biến).", parameters: { type: "object", properties: { expression: { type: "string" }, modulus: { type: ["integer", "null"] } }, required: ["expression", "modulus"], additionalProperties: false } } },
-    { type: "function", function: { name: "draw_figure", description: "Dựng hình. figure = null: dựng từ đề bài. Trả về lỗi dựng hình, tọa độ các điểm và kết quả đo của từng check (collinear, perpendicular, concyclic, equal_angle, angle_value…).", parameters: { type: "object", properties: { figure: { anyOf: [figureSchema, { type: "null" }] }, checks: { type: "array", items: checkSchema } }, required: ["figure", "checks"], additionalProperties: false } } },
     { type: "function", function: { name: "write_lesson", description: "Nộp bản nháp bài giảng đầy đủ; trả về mọi lỗi tìm được.", parameters: { type: "object", properties: { lesson: lessonSchema }, required: ["lesson"], additionalProperties: false } } },
     { type: "function", function: { name: "revise", description: "Sửa từng trường của bản nháp hiện tại; trả về lỗi còn lại.", parameters: { type: "object", properties: { edits: { type: "array", items: { type: "object", properties: { target: { type: "string", enum: ["step", "hint", "final", "strategy"] }, index: { type: "integer" }, field: { type: "string", enum: ["title", "explanation", "math", "reason", "question", "cue", "text"] }, value: { type: ["string", "null"] } }, required: ["target", "index", "field", "value"], additionalProperties: false } } }, required: ["edits"], additionalProperties: false } } },
     { type: "function", function: { name: "finish", description: "Hoàn tất: dùng bản nháp hiện tại làm bài giảng.", parameters: { type: "object", properties: {}, additionalProperties: false } } },
@@ -78,13 +73,14 @@ function withDefaults(json: unknown): unknown {
   return l;
 }
 
-export function draftFeedback(json: unknown, problemText: string, withFigure: boolean): { lesson: ModelLesson | null; problems: string[] } {
+export function draftFeedback(json: unknown, problemText: string, withFigure: boolean, boardFigure: Figure | null = null): { lesson: ModelLesson | null; problems: string[] } {
   const parsed = parseLesson(JSON.stringify(withDefaults(json)));
   if (!("lesson" in parsed)) return { lesson: null, problems: parsed.problems };
   if (!parsed.lesson.analysis.statement.trim()) parsed.lesson.analysis.statement = problemText;
   // The figure built from the statement is exact; a model's own construction can misplace points (agent trial
   // 2026-10-16: B = 60°, C = 45°, AH = 6 drawn wrongly, so a correct BC failed on it). Prefer the built one.
-  if (withFigure) { const built = figureFromStatement(problemText)?.figure; if (built) parsed.lesson.figure = { ...built, checks: [...built.checks, ...(parsed.lesson.figure?.checks ?? []).filter((c) => c.role === "derived")].slice(0, 16) }; }
+  // The figure the agent built with the geometry tools comes first, then the one built from the statement.
+  if (withFigure) { const built = boardFigure?.points.length ? boardFigure : figureFromStatement(problemText)?.figure; if (built) parsed.lesson.figure = { ...built, checks: [...built.checks, ...(parsed.lesson.figure?.checks ?? []).filter((c) => c.role === "derived")].slice(0, 16) }; }
   // Hidden audit fields still in English are removed, not sent back for a rewrite (revise cannot reach them).
   const lesson = tidy(dropForeignMetadata(tidy(parsed.lesson)).lesson);
   const checked = verifyLesson(lesson, { problemText });
@@ -104,42 +100,6 @@ export function draftFeedback(json: unknown, problemText: string, withFigure: bo
   return { lesson: checked.lesson, problems: [...new Set(problems)].filter((p) => !minor.test(p)).slice(0, 20) };
 }
 
-function compute(expression: string, modulus: number | null): string {
-  const e = expression.trim();
-  try {
-    if (modulus && modulus > 1) {
-      const r = expressionMod(e, BigInt(modulus));
-      return r === null ? "Không đọc được biểu thức (chỉ số nguyên, + - * ^ và ngoặc)." : `${e} chia ${modulus} dư ${r}.`;
-    }
-    const eq = e.split("=");
-    if (eq.length === 2) {
-      const id = exactArithmeticIdentity(eq[0]!, eq[1]!);
-      if (id) return id.valid ? "Đẳng thức đúng (với mọi giá trị của biến)." : "Đẳng thức SAI.";
-      const l = evalExpression(eq[0]!, {}), r = evalExpression(eq[1]!, {});
-      return Math.abs(l - r) <= 1e-9 * Math.max(1, Math.abs(l)) ? `Đúng: hai vế bằng ${l}.` : `SAI: vế trái = ${l}, vế phải = ${r}.`;
-    }
-    return `${e} = ${evalExpression(e, {})}`;
-  } catch (err) {
-    return `Không tính được: ${(err as Error).message.slice(0, 120)}`;
-  }
-}
-
-function drawFigure(figure: Figure | null, checks: unknown[], problemText: string): { text: string; figure: Figure | null } {
-  const f = figure ?? figureFromStatement(problemText)?.figure ?? null;
-  if (!f) return { text: "Không dựng được hình từ đề bài; hãy gửi figure (cách dựng từng điểm).", figure: null };
-  const parsed = FigureSchema.safeParse({ ...f, checks: [] });
-  if (!parsed.success) return { text: `Hình không hợp lệ: ${parsed.error.issues.slice(0, 3).map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`, figure: null };
-  const resolved = resolveFigure(parsed.data);
-  const points = Object.entries(resolved.points).map(([id, p]) => `${id}(${p.x.toFixed(2)}; ${p.y.toFixed(2)})`).join(", ");
-  const results = checks.map((c) => {
-    const check = FigureCheckSchema.safeParse(c);
-    if (!check.success) return `check không hợp lệ: ${JSON.stringify(c).slice(0, 80)}`;
-    const r = evaluateFigureCheck(check.data, resolved);
-    return `${check.data.kind} ${check.data.refs.join(",")}: ${r.passed ? "ĐÚNG" : "SAI"}${r.detail ? ` (${r.detail})` : ""}`;
-  });
-  return { text: [resolved.errors.length ? `Lỗi dựng hình: ${resolved.errors.slice(0, 5).join("; ")}` : "Dựng hình thành công.", `Tọa độ: ${points}`, ...results].join("\n"), figure: parsed.data };
-}
-
 function applyEdits(lesson: ModelLesson, edits: { target: string; index: number; field: string; value: string | null }[]): string[] {
   const done: string[] = [];
   for (const e of edits) {
@@ -156,6 +116,9 @@ function applyEdits(lesson: ModelLesson, edits: { target: string; index: number;
 export class SoclaasAgentModel implements JsonModel {
   readonly name = "soclaas-agent";
   readonly model: string;
+  /** Kept across the pipeline's attempts: one classification and one figure per solve. */
+  private type: ProblemType | null = null;
+  private readonly board = new GeometryBoard();
   constructor(
     private readonly baseUrl: string,
     private readonly apiKey: string,
@@ -168,10 +131,16 @@ export class SoclaasAgentModel implements JsonModel {
   async complete({ messages, schema, schemaName, signal, onUsage }: Parameters<JsonModel["complete"]>[0]): Promise<string> {
     const log = this.options.log ?? (() => undefined);
     if (schemaName !== "lesson") return this.plain(messages, schema, schemaName, signal, onUsage);
-    const chat: Msg[] = [...messages.map((m) => ({ role: m.role, content: m.content }) as Msg), { role: "system", content: AGENT_RULES }];
+    // Classify once per solve (Đại số / Hình học / Số học / Tổ hợp), then work with that type's tools.
+    this.type ??= await this.classify(signal, onUsage);
+    const type = this.type;
+    const withFigure = this.options.withFigure || type === "geometry";
+    log(`agent: classified as ${type}`);
+    const chat: Msg[] = [...messages.map((m) => ({ role: m.role, content: m.content }) as Msg), { role: "system", content: agentRules(type) }];
     let draft: ModelLesson | null = null;
-    let lastFigure: Figure | null = null;
-    const toolList = tools(schema);
+    const board = this.board;
+    const toolList = [...toolsFor(type), ...lessonTools(schema)];
+    const boardFigure = () => (board.figure.points.length ? board.figure : null);
     for (let turn = 0; turn < (this.options.maxTurns ?? 10); turn++) {
       const left = this.options.deadline - Date.now();
       if (left < 8_000 || signal.aborted) break;
@@ -206,7 +175,7 @@ export class SoclaasAgentModel implements JsonModel {
         const candidate = obj && "lesson" in obj ? obj.lesson : obj;
         chat.push({ role: "assistant", content: text.slice(0, 2000) });
         if (candidate && typeof candidate === "object" && "steps" in candidate) {
-          const fb = draftFeedback(candidate, this.options.problemText, this.options.withFigure);
+          const fb = draftFeedback(candidate, this.options.problemText, withFigure, boardFigure());
           if (fb.lesson) draft = fb.lesson;
           log(`agent turn ${turn + 1}: lesson as text → ${fb.problems.length} problem(s)${fb.problems.length ? `: ${fb.problems.slice(0, 2).join(" | ").slice(0, 200)}` : ""}`);
           if (fb.lesson && !fb.problems.length) return JSON.stringify(fb.lesson);
@@ -220,8 +189,8 @@ export class SoclaasAgentModel implements JsonModel {
         try { args = JSON.parse(fixJsonLatexEscapes(call.function.arguments || "{}")); } catch { /* reported below */ }
         let result: string;
         const name = call.function.name;
-        if (name === "compute") result = compute(String(args.expression ?? ""), typeof args.modulus === "number" ? args.modulus : null);
-        else if (name === "draw_figure") { const d = drawFigure((args.figure as Figure | null) ?? null, (args.checks as unknown[]) ?? [], this.options.problemText); lastFigure = d.figure ?? lastFigure; result = d.text; }
+        const typeResult = runTypeTool(name, args, { board, problemText: this.options.problemText });
+        if (typeResult !== null) result = typeResult;
         else if (name === "write_lesson" || name === "revise") {
           if (name === "write_lesson") {
             let lesson = args.lesson as ModelLesson | string | undefined;
@@ -229,14 +198,13 @@ export class SoclaasAgentModel implements JsonModel {
               const text = lesson;
               try { lesson = JSON.parse(fixJsonLatexEscapes(text)) as ModelLesson; } catch { try { lesson = JSON.parse(text) as ModelLesson; } catch { lesson = undefined; } }
             }
-            if (lesson && typeof lesson === "object" && this.options.withFigure && !lesson.figure && lastFigure) lesson.figure = lastFigure;
-            const fb = lesson && typeof lesson === "object" ? draftFeedback(lesson, this.options.problemText, this.options.withFigure) : { lesson: null, problems: ['"lesson" phải là một đối tượng JSON (không phải chuỗi); gửi lại write_lesson với lesson là object đúng schema.'] };
+            const fb = lesson && typeof lesson === "object" ? draftFeedback(lesson, this.options.problemText, withFigure, boardFigure()) : { lesson: null, problems: ['"lesson" phải là một đối tượng JSON (không phải chuỗi); gửi lại write_lesson với lesson là object đúng schema.'] };
             if (fb.lesson) draft = fb.lesson;
             result = fb.problems.length ? `Còn ${fb.problems.length} lỗi:\n- ${fb.problems.join("\n- ")}` : "Không còn lỗi. Gọi finish.";
           } else if (!draft) result = "Chưa có bản nháp: gọi write_lesson trước.";
           else {
             const done = applyEdits(draft, (args.edits as never) ?? []);
-            const fb = draftFeedback(draft, this.options.problemText, this.options.withFigure);
+            const fb = draftFeedback(draft, this.options.problemText, withFigure, boardFigure());
             if (fb.lesson) draft = fb.lesson;
             result = `Đã sửa: ${done.join(", ") || "không có gì"}. ` + (fb.problems.length ? `Còn ${fb.problems.length} lỗi:\n- ${fb.problems.join("\n- ")}` : "Không còn lỗi. Gọi finish.");
           }
@@ -250,6 +218,28 @@ export class SoclaasAgentModel implements JsonModel {
     }
     if (draft) { log("agent: out of time; using the current draft"); return JSON.stringify(draft); }
     throw new OcrFailure("timeout", "agent ran out of time without a draft", true);
+  }
+
+  /** Đại số / Hình học / Số học / Tổ hợp, from one short SOCLAAS request; the keyword classifier if it fails. */
+  private async classify(signal: AbortSignal, onUsage?: (u: Usage) => void): Promise<ProblemType> {
+    const text = this.options.problemText;
+    try {
+      const out = await this.plain(
+        [
+          { role: "system", content: "Phân loại bài toán lớp 9 (thi chuyên) vào đúng một dạng: algebra (Đại số: phương trình, hệ, bất đẳng thức, GTLN/GTNN, biểu thức, Vi-ét, hàm số), geometry (Hình học: tam giác, đường tròn, tứ giác, độ dài, góc, chứng minh hình), number_theory (Số học: chia hết, số dư, số nguyên tố, phương trình nghiệm nguyên, chữ số tận cùng), combinatorics (Tổ hợp: đếm, xác suất, nguyên lí Dirichlet, bảng ô vuông, trò chơi). Trả về JSON." },
+          { role: "user", content: text },
+        ],
+        { type: "object", properties: { type: { type: "string", enum: PROBLEM_TYPES } }, required: ["type"], additionalProperties: false },
+        "problem_type",
+        AbortSignal.any([signal, AbortSignal.timeout(20_000)]),
+        onUsage,
+      );
+      const type = (JSON.parse(out) as { type?: string }).type;
+      if (PROBLEM_TYPES.includes(type as ProblemType)) return type as ProblemType;
+    } catch { /* keyword classifier below */ }
+    if (looksLikeGeometry(text)) return "geometry";
+    const d = problemDomains(text).find((x) => x !== "algebra");
+    return d === "number_theory" || d === "combinatorics" ? d : "algebra";
   }
 
   /** Small structured requests of the pipeline (language repair…): one JSON-schema request, no tools. */
