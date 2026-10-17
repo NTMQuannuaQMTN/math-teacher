@@ -235,7 +235,9 @@ function toApiSolution(row: SolutionRow,problemText?:string): Solution {
     questionId: row.question_id,
     status,
     createdAt: row.created_at,
-    lesson: status === "ready" && lesson?.success ? lesson.data : null,
+    // The student sees the whole question exactly as confirmed (2026-10-17: the solution view showed the solver's
+    // shortened restatement, different from the question view).
+    lesson: status === "ready" && lesson?.success ? (problemText ? { ...lesson.data, analysis: { ...lesson.data.analysis, statement: problemText } } : lesson.data) : null,
     verification: verification?.success ? verification.data : null,
     // A ready lesson with an error code is the previous lesson kept after a failed regenerate.
     error:
@@ -268,7 +270,10 @@ export async function getSolution(rc: RouteContext, scanId: string, questionId =
   if (!row) throw new ApiError(404, "not_found", "No solution yet.");
   // A pending row whose generator died is reported as a retryable failure.
   const effective = row.status === "pending" && !isFresh(row, rc.env) ? { ...row, status: "failed" as const, error_code: "solve_timeout" } : row;
-  return json({ solution: toApiSolution(effective) } satisfies SolutionResponse, effective.status === "pending" ? 202 : 200);
+  const scan = await new ScanRepository(rc.env.DB).findOwned(rc.ownerId, scanId);
+  const question = scan ? questionsOf(scan).find((q) => q.id === questionId) : undefined;
+  const problemText = question ? normalizeProblemText(question.text) || undefined : undefined;
+  return json({ solution: toApiSolution(effective, problemText) } satisfies SolutionResponse, effective.status === "pending" ? 202 : 200);
 }
 
 /**
@@ -316,8 +321,10 @@ async function solveScanWithinDeadline(rc: RouteContext, scanId: string, questio
   const problemHash = await sha256Hex(`${PROMPT_VERSION}\n${problemText}`);
 
   const existing = await findSolution(env.DB, ownerId, scanId, questionId);
+  // Already being solved (a second tap, or the app re-posting): answer "still working" so the app keeps polling the
+  // running solve, instead of a 409 the browser reports as an error.
   if (existing && isFresh(existing, env)) {
-    throw new ApiError(409, "solve_in_progress", "This problem is already being solved.", true);
+    return json({ solution: toApiSolution(existing, problemText) } satisfies SolutionResponse, 202);
   }
   const key = await problemKey(problemText);
   // The student's own finished lesson for the same text is kept across prompt versions: re-solving it
@@ -376,6 +383,8 @@ async function solveScanWithinDeadline(rc: RouteContext, scanId: string, questio
     .bind(id, scanId, questionId, ownerId, problemHash, model.model, PROMPT_VERSION, ts, ts, ts, staleBefore)
     .run();
   if ((lock.meta.changes ?? 0) === 0) {
+    const running = await findSolution(env.DB, ownerId, scanId, questionId);
+    if (running?.status === "pending") return json({ solution: toApiSolution(running, problemText) } satisfies SolutionResponse, 202);
     throw new ApiError(409, "solve_in_progress", "This problem is already being solved.", true);
   }
 
