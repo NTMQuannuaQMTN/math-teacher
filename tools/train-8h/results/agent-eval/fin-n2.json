@@ -1,0 +1,143 @@
+{
+  "id": "fin-n2",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "not_checkable",
+  "seconds": 0,
+  "costUsd": 0.0001,
+  "final": "Vậy $n\\in\\{-7;-4;-3;-2;0;1;2;5\\}$.",
+  "hints": [
+    "Tách phần chia hết",
+    "Suy ra $n+1$ là ước của $6$",
+    "Tìm các giá trị và thử lại",
+    "Kết luận"
+  ],
+  "reference": "$n\\in\\{-7;-4;-3;-2;0;1;2;5\\}$",
+  "lesson": {
+    "analysis": {
+      "statement": "Tìm tất cả các số nguyên $n$ sao cho $n^2+5$ chia hết cho $n+1$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Tìm số nguyên để biểu thức chia hết",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Tìm số nguyên để biểu thức chia hết"
+      ],
+      "techniques": [],
+      "givens": [
+        "$n^2+5\\ \\vdots\\ n+1$",
+        "$n$ là số nguyên"
+      ],
+      "unknowns": [
+        "Tất cả giá trị của $n$"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Tách phần chia hết để đưa về bài toán tìm ước của một số.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Tách phần chia hết",
+        "cue": "Phép chia đa thức cho đa thức bậc nhất",
+        "explanation": "Ta viết $n^2+5$ thành một bội của $n+1$ cộng với một số nguyên. Kiểm tra lại bằng cách khai triển vế phải.",
+        "math": "n^2+5=(n+1)(n-1)+6",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Suy ra $n+1$ là ước của $6$",
+        "cue": "Tính chất chia hết của hiệu",
+        "explanation": "Vì $(n+1)(n-1)$ là bội của $n+1$, nên $n^2+5$ chia hết cho $n+1$ khi và chỉ khi $6$ chia hết cho $n+1$, tức $n+1$ là ước của $6$. Ước của một số khác $0$ luôn khác $0$, nên mẫu $n+1\\ne0$.",
+        "math": "n+1\\in\\{\\pm1;\\pm2;\\pm3;\\pm6\\}",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Tìm các giá trị và thử lại",
+        "cue": "Thử lại trong đề gốc; điều kiện của ẩn",
+        "explanation": "Giải $n+1$ bằng từng ước, chỉ giữ giá trị nguyên của $n$, rồi thay lại vào đề để kiểm tra (bắt buộc).",
+        "math": "\\begin{array}{c|cccccccc}n&-7&-4&-3&-2&0&1&2&5\\\\\\hline \\text{thỏa?}&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark\\end{array}",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Kết luận",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy $n\\in\\{-7;-4;-3;-2;0;1;2;5\\}$.",
+        "math": null,
+        "stepId": "s4",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Tách phần chia hết",
+        "explanation": "Ta viết $n^2+5$ thành một bội của $n+1$ cộng với một số nguyên. Kiểm tra lại bằng cách khai triển vế phải.",
+        "math": "n^2+5=(n+1)(n-1)+6",
+        "reason": "Phép chia đa thức cho đa thức bậc nhất",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Suy ra $n+1$ là ước của $6$",
+        "explanation": "Vì $(n+1)(n-1)$ là bội của $n+1$, nên $n^2+5$ chia hết cho $n+1$ khi và chỉ khi $6$ chia hết cho $n+1$, tức $n+1$ là ước của $6$. Ước của một số khác $0$ luôn khác $0$, nên mẫu $n+1\\ne0$.",
+        "math": "n+1\\in\\{\\pm1;\\pm2;\\pm3;\\pm6\\}",
+        "reason": "Tính chất chia hết của hiệu",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Tìm các giá trị và thử lại",
+        "explanation": "Giải $n+1$ bằng từng ước, chỉ giữ giá trị nguyên của $n$, rồi thay lại vào đề để kiểm tra (bắt buộc).",
+        "math": "\\begin{array}{c|cccccccc}n&-7&-4&-3&-2&0&1&2&5\\\\\\hline \\text{thỏa?}&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark&\\checkmark\\end{array}",
+        "reason": "Thử lại trong đề gốc; điều kiện của ẩn",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Kết luận",
+        "explanation": "Vậy $n\\in\\{-7;-4;-3;-2;0;1;2;5\\}$.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy $n\\in\\{-7;-4;-3;-2;0;1;2;5\\}$.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "failed": [],
+  "logs": [
+    "3ms computed: - integer_solutions (3 ms)",
+    "392ms agent tool: routine_linear-divisor returned a certified lesson",
+    "403ms attempt 1: not_checkable, 0 problem(s)",
+    "403ms usage: model=default in=171 (cached 0) out=14 (reasoning 0) ≈ $0.0001",
+    "403ms total ≈ $0.0001 over 1 attempt(s); lesson by default"
+  ]
+}

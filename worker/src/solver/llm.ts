@@ -18,6 +18,8 @@ export interface JsonModel {
   readonly model: string;
   /** True for grammar-constrained decoders (llama.cpp…), which get the fuller schema (toGrammarJsonSchema). */
   readonly grammarConstrained?: boolean;
+  /** Independent deterministic certificate for the lesson returned by the latest complete() call. */
+  readonly certificate?: { label: string } | null;
   /** Returns the JSON text; reports token usage through `onUsage` when the provider gives it. */
   complete(input: {
     messages: ChatMessage[];

@@ -12,21 +12,26 @@ import { looksLikeGeometry } from "../src/solver/routing";
 import { normalizeProblemText } from "../../shared/src/mathText";
 import { estimateCost } from "../src/solver/pricing";
 
-const root = new URL("../../", import.meta.url).pathname;
+const root = process.env.MATH_TEACHER_ROOT || new URL("../../", import.meta.url).pathname;
 const vars = Object.fromEntries(readFileSync(`${root}worker/.dev.vars`, "utf8").split("\n").filter((l) => /^[A-Z_]+=/.test(l)).map((l) => [l.slice(0, l.indexOf("=")), l.slice(l.indexOf("=") + 1)]));
-const LIMIT = 120_000;
+const configuredLimit = Number(process.env.AGENT_EVAL_LIMIT_MS ?? "120000");
+const LIMIT = Number.isFinite(configuredLimit) ? Math.min(600_000, Math.max(30_000, configuredLimit)) : 120_000;
 const all = ["algebra", "geometry", "number_theory", "combinatorics", "final", "final2"].flatMap((t) => readFileSync(`${root}data/train-8h/${t}.jsonl`, "utf8").trim().split("\n").map((l) => ({ ...JSON.parse(l), type: t })));
 const only = process.argv[2]?.split(",");
-const rows = only ? only.map((id) => all.find((r) => r.id === id && (r.type !== "final" || id.startsWith("fin-")))!).filter(Boolean) : [];
+const inputFile = process.env.AGENT_EVAL_INPUT_FILE;
+const rows = inputFile
+  ? [{ id: process.env.AGENT_EVAL_ID || "custom", input: readFileSync(inputFile, "utf8").trim(), reference: "manual review", type: "custom" }]
+  : only ? only.map((id) => all.find((r) => r.id === id && (r.type !== "final" || id.startsWith("fin-")))!).filter(Boolean) : [];
 const out = `${root}tools/train-8h/results/agent-eval/`;
 mkdirSync(out, { recursive: true });
 
 async function run(r: { id: string; input: string; reference: string }) {
   const t0 = Date.now(), logs: string[] = [];
-  const model = new SoclaasAgentModel(vars.SOCLAAS_BASE_URL!, vars.SOCLAAS_API_KEY!, vars.SOCLAAS_MODEL || "default", { problemText: normalizeProblemText(r.input), withFigure: looksLikeGeometry(r.input), deadline: t0 + LIMIT - 4_000, log: (m) => logs.push(m) });
+  const timedLog = (message: string) => logs.push(`${Date.now() - t0}ms ${message}`);
+  const model = new SoclaasAgentModel(vars.SOCLAAS_BASE_URL!, vars.SOCLAAS_API_KEY!, process.env.AGENT_EVAL_MODEL || vars.SOCLAAS_MODEL || "default", { problemText: normalizeProblemText(r.input), withFigure: looksLikeGeometry(r.input), deadline: t0 + LIMIT - 4_000, log: timedLog });
   let entry: Record<string, unknown>;
   try {
-    const res = await solveProblem(model, VN_GRADE_9, r.input, { signal: AbortSignal.timeout(LIMIT), retryBudgetMs: LIMIT, certified: false, log: (m) => logs.push(m) });
+    const res = await solveProblem(model, VN_GRADE_9, r.input, { signal: AbortSignal.timeout(LIMIT), retryBudgetMs: LIMIT, certified: false, log: timedLog });
     const cost = Object.entries(res.usage).reduce((s, [n, u]) => s + (estimateCost(n, u) ?? estimateCost("qwen3.6:35b", u) ?? 0), 0);
     entry = { id: r.id, ok: true, served: servable(res.verification), producedBy: res.model, status: res.verification.status, seconds: Math.round((Date.now() - t0) / 1000), costUsd: +cost.toFixed(4), final: res.lesson.finalAnswer.text, hints: res.lesson.hints.map((h) => h.question), reference: r.reference, lesson: res.lesson, failed: res.verification.checks.filter((c) => !c.passed).map((c) => c.label), logs };
   } catch (err) {

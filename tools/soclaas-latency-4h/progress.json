@@ -1,0 +1,26 @@
+{
+  "objective": "Measure real SocLaas solve latency and, only if it exceeds 2–3 minutes, optimize for up to four active engineering hours without reducing correctness.",
+  "startedAt": "2026-10-18T12:44:56+08:00",
+  "activeElapsedSeconds": 1500,
+  "activeBudgetSeconds": 14400,
+  "phase": "optimization",
+  "phaseStartedAt": "2026-10-18T12:54:00+08:00",
+  "heldOutIds": [
+    "fin-a1"
+  ],
+  "status": "running",
+  "checkpoints": [
+    {
+      "at": "2026-10-18T12:44:56+08:00",
+      "note": "Started baseline. Application remains capped at 30 seconds; benchmark allows up to four minutes to measure uncapped provider latency."
+    },
+    {
+      "at": "2026-10-18T12:54:00+08:00",
+      "note": "Baseline threshold triggered: exact Q3 took 233 seconds and still failed; fin-a1 23 seconds; fin-n2 22 seconds and failed. Began optimization."
+    },
+    {
+      "at": "2026-10-18T13:14:00+08:00",
+      "note": "SocLaas classification plus certified specialist paths: Q3 about 0.6 seconds; held-out geometry/counting/number-theory about 0.4 seconds. Continuing accuracy guards, exact algebra and geometry figure repair. Idle provider waits excluded from active time."
+    }
+  ]
+}

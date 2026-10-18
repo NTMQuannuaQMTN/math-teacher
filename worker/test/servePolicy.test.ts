@@ -27,4 +27,8 @@ describe("a final answer that contradicts the last step", () => {
     expect(finalStepConflict(lesson("(2x+2)^2 = 0", "S = {(1;1)}"))).toEqual([]);
     expect(finalStepConflict(lesson("y = \\pm 2: (2x \\pm 2)^2 = 0", "S = {(1;1)}"))).toEqual([]);
   });
+  it("catches a counting conclusion that changes the computed total", () => {
+    expect(finalStepConflict(lesson("20+16=36\\text{ (số)}", "Vậy lập được 28 số."))).toHaveLength(1);
+    expect(finalStepConflict(lesson("20+16=36\\text{ (số)}", "Vậy lập được 36 số."))).toEqual([]);
+  });
 });

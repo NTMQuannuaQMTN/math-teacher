@@ -125,8 +125,8 @@ function triangleSpec(t: string): TriangleSpec | null {
     if (idx(s[1]!) >= 0 && idx(s[2]!) >= 0) sides.set([s[1], s[2]].sort().join(""), Number(s[3]!.replace(",", ".")));
   }
   if (sides.size >= 2 && right) {
-    const [u, v] = [...sides.entries()];
-    const legs = [u!, v!].filter(([k]) => k.includes(right));
+    const entries = [...sides.entries()];
+    const legs = entries.filter(([k]) => k.includes(right));
     if (legs.length === 2) {
       // Both legs given: the angles follow from them.
       const [l1, l2] = legs as [[string, number], [string, number]];
@@ -136,6 +136,19 @@ function triangleSpec(t: string): TriangleSpec | null {
       angles[at1] = (Math.atan2(l2[1], l1[1]) * 180) / Math.PI;
       angles[at2] = 90 - angles[at1]!;
       scale = Math.hypot(l1[1], l2[1]);
+    } else if (legs.length === 1) {
+      // One leg and the hypotenuse also fix a right triangle.  For example
+      // AB=5, BC=13 in a triangle right at A gives angle C=asin(5/13),
+      // rather than the schematic 53°/37° pair.
+      const hyp = entries.find(([k]) => !k.includes(right));
+      if (hyp && hyp[1] > legs[0]![1]) {
+        const [legKey, legLength] = legs[0]!;
+        const far = legKey.replace(right, "");
+        const opposite = names.find((name) => name !== right && name !== far)!;
+        angles[idx(opposite)] = (Math.asin(legLength / hyp[1]) * 180) / Math.PI;
+        angles[idx(far)] = 90 - angles[idx(opposite)]!;
+        scale = hyp[1];
+      }
     }
   }
   if (!scale && sides.size >= 1) {

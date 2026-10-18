@@ -66,4 +66,43 @@ describe("SocLaas-only specialist architecture", () => {
     expect(board.figure.circles).toHaveLength(1);
     expect(board.figure.checks).toEqual([expect.objectContaining({ kind: "perpendicular", role: "derived" })]);
   });
+
+  it("uses the trained number-theory tool immediately after SocLaas classification", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(JSON.stringify({ choices: [{ message: { content: '{"type":"number_theory"}' } }] }), { status: 200 }),
+    );
+    const problem = `Cho các số nguyên dương $m,n$ thỏa mãn $m^2+m+n^2$ chia hết cho tích $mn$.
+a) Chứng minh không tồn tại khi $n=3$.
+b) Tìm $m,n$ biết $m$ chia hết cho $n$.
+c) Đặt $d$ là ước chung lớn nhất của $m,n$. Chứng minh $m=d^2$.`;
+    const model = new SoclaasAgentModel("https://soclaas.example/v1", "key", "model", { problemText: problem, withFigure: false, deadline: Date.now() + 20_000 });
+    const raw = await model.complete({ messages: [{ role: "user", content: problem }], schema: {}, schemaName: "lesson", signal: new AbortController().signal });
+    const lesson = JSON.parse(raw) as { finalAnswer: { text: string } };
+    expect(lesson.finalAnswer.text).toContain("(4,2)");
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("uses a certified routine tool after classification for an unseen counting instance", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(JSON.stringify({ choices: [{ message: { content: '{"type":"combinatorics"}' } }] }), { status: 200 }),
+    );
+    const problem = "Từ các chữ số $0,1,2,3,4,5$ lập được bao nhiêu số tự nhiên có ba chữ số đôi một khác nhau và chia hết cho $5$?";
+    const model = new SoclaasAgentModel("https://soclaas.example/v1", "key", "model", { problemText: problem, withFigure: false, deadline: Date.now() + 20_000 });
+    const raw = await model.complete({ messages: [{ role: "user", content: problem }], schema: {}, schemaName: "lesson", signal: new AbortController().signal });
+    const lesson = JSON.parse(raw) as { finalAnswer: { text: string } };
+    expect(lesson.finalAnswer.text).toContain("36");
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
+
+  it("uses the exact radical-equation tool immediately after SocLaas classification", async () => {
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(JSON.stringify({ choices: [{ message: { content: '{"type":"algebra"}' } }] }), { status: 200 }),
+    );
+    const problem = "Giải phương trình $x^2-2x-\\sqrt{x^2-2x+4}=2$.";
+    const model = new SoclaasAgentModel("https://soclaas.example/v1", "key", "model", { problemText: problem, withFigure: false, deadline: Date.now() + 20_000 });
+    const raw = await model.complete({ messages: [{ role: "user", content: problem }], schema: {}, schemaName: "lesson", signal: new AbortController().signal });
+    const lesson = JSON.parse(raw) as { finalAnswer: { text: string } };
+    expect(lesson.finalAnswer.text).toContain("\\sqrt{6}");
+    expect(fetchMock).toHaveBeenCalledOnce();
+  });
 });

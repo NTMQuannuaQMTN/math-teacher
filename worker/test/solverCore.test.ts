@@ -702,6 +702,17 @@ describe("statement figures honour given lengths (geometry loop)", () => {
     const P = figureFromStatement("Cho tam giác $ABC$ vuông tại $A$ có $AB = 6$ cm, $AC = 8$ cm. Tính $BC$ và đường cao $AH$.")!.resolved.points;
     expect([len(P, "A", "B"), len(P, "A", "C"), len(P, "B", "C"), len(P, "A", "H")].map((x) => +x.toFixed(6))).toEqual([6, 8, 10, 4.8]);
   });
+
+  it("right triangle with a leg and hypotenuse: AB = 5, BC = 13 gives the 5-12-13 shape", () => {
+    const P = figureFromStatement("Cho tam giác $ABC$ vuông tại $A$, $AB=5$, $BC=13$.")!.resolved.points;
+    const d = (u: string, v: string) => Math.hypot(P[u]!.x - P[v]!.x, P[u]!.y - P[v]!.y);
+    expect(d("A", "B")).toBeCloseTo(5, 8);
+    expect(d("A", "C")).toBeCloseTo(12, 8);
+    expect(d("B", "C")).toBeCloseTo(13, 8);
+    const ab = { x: P.B!.x - P.A!.x, y: P.B!.y - P.A!.y };
+    const ac = { x: P.C!.x - P.A!.x, y: P.C!.y - P.A!.y };
+    expect(ab.x * ac.x + ab.y * ac.y).toBeCloseTo(0, 8);
+  });
   it("Thales: D on AB at AD = 4, DB = 2, E on AC with DE ∥ BC, BC = 9 → DE = 6", () => {
     const P = figureFromStatement("Cho tam giác $ABC$, điểm $D$ thuộc cạnh $AB$, điểm $E$ thuộc cạnh $AC$ sao cho $DE \\parallel BC$. Biết $AD = 4$ cm, $DB = 2$ cm, $BC = 9$ cm. Tính $DE$.")!.resolved.points;
     expect([len(P, "A", "D"), len(P, "D", "B"), len(P, "B", "C"), len(P, "D", "E")].map((x) => +x.toFixed(6))).toEqual([4, 2, 9, 6]);

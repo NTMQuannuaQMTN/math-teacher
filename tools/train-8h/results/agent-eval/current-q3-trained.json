@@ -1,0 +1,266 @@
+{
+  "id": "current-q3-trained",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "partial",
+  "seconds": 1,
+  "costUsd": 0.0001,
+  "final": "a) Không tồn tại cặp số nguyên dương khi $n=3$.\nb) $(m,n)=(1,1)$ hoặc $(4,2)$.\nc) Ta có $m=d^2$.",
+  "hints": [
+    "Câu a: suy ra $m$ là ước của $9$",
+    "Câu a: kiểm tra đủ ba khả năng",
+    "Câu b: đặt $m=kn$",
+    "Câu b: trở lại $(m,n)$ và kiểm tra",
+    "Câu c: chứng minh $d \\vdots x$",
+    "Câu c: kết luận"
+  ],
+  "reference": "manual review",
+  "lesson": {
+    "analysis": {
+      "statement": "Câu 3 (2 điểm). Cho các số nguyên dương $m, n$ thỏa mãn: $m^2 + m + n^2$ chia hết cho tích $mn$ (1).\n\na) Chứng minh không tồn tại $m, n$ thỏa mãn (1) khi $n = 3$.\n\nb) Tìm $m, n$ thỏa mãn (1) biết $m$ chia hết cho $n$.\n\nc) Ký hiệu $d$ là ước chung lớn nhất của $m$ và $n$. Chứng minh nếu $m, n$ thỏa mãn (1) thì $m = d^2$.",
+      "language": "vi",
+      "topic": "number_theory",
+      "subtopic": "Chia hết và tách ước chung lớn nhất",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Chia hết và tách ước chung lớn nhất"
+      ],
+      "techniques": [],
+      "givens": [
+        "$m,n$ là số nguyên dương",
+        "$(m^2+m+n^2)\\vdots mn$"
+      ],
+      "unknowns": [
+        "Giải lần lượt các câu a), b), c)"
+      ],
+      "constraints": [
+        "Chỉ dùng phương pháp lớp 9 và bổ đề Euclid"
+      ],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Dùng điều kiện chia hết để thu hẹp hữu hạn ở câu a, đặt $m=kn$ ở câu b, rồi đặt $m=dx,n=dy$ và khai thác tính nguyên tố cùng nhau ở câu c.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Câu a: suy ra $m$ là ước của $9$",
+        "cue": "Nếu một tổng và một số hạng chia hết cho $m$ thì hiệu của chúng chia hết cho $m$",
+        "explanation": "Khi $n=3$, điều kiện cho $(m^2+m+9)\\vdots 3m$. Vì thế biểu thức cũng chia hết cho $m$. Hai số hạng đầu chia hết cho $m$, nên $9$ chia hết cho $m$.",
+        "math": "m^2+m+9\\vdots m\\Rightarrow 9\\vdots m\\Rightarrow m\\in\\{1,3,9\\}",
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Câu a: kiểm tra đủ ba khả năng",
+        "cue": "Kiểm tra trực tiếp danh sách hữu hạn đã chứng minh là đầy đủ",
+        "explanation": "Thay lần lượt $m=1,3,9$. Các số $m^2+m+9$ tương ứng là $11,21,99$, còn $3m$ là $3,9,27$; không trường hợp nào chia hết.",
+        "math": "11\\not\\vdots3,\\qquad21\\not\\vdots9,\\qquad99\\not\\vdots27",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Câu b: đặt $m=kn$",
+        "cue": "Định nghĩa chia hết và phép thế $m=kn$",
+        "explanation": "Vì $m$ chia hết cho $n$, đặt $m=kn$ với $k$ nguyên dương. Chia thương nguyên trong điều kiện ban đầu cho $mn=kn^2$.",
+        "math": "\\frac{m^2+m+n^2}{mn}=k+\\frac1n+\\frac1k\\in\\mathbb Z",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Câu b: trở lại $(m,n)$ và kiểm tra",
+        "cue": "Phép thế tương đương và kiểm tra trực tiếp",
+        "explanation": "Với $m=kn$, hai cặp trên cho $(m,n)=(1,1)$ và $(4,2)$. Thay lại cho thấy cả hai đều thỏa điều kiện, nên danh sách là đầy đủ.",
+        "math": "(m,n)\\in\\{(1,1),(4,2)\\}",
+        "stepId": "s5",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Câu c: chứng minh $d \\vdots x$",
+        "cue": "Bổ đề Euclid",
+        "explanation": "Vế phải cũng chia hết cho $x$. Hai số hạng đầu chia hết cho $x$, do đó $dy^2 \\vdots x$. Vì $\\gcd(x,y)=1$ nên $\\gcd(x,y^2)=1$; theo bổ đề Euclid, $d \\vdots x$.",
+        "math": "dy^2 \\vdots x,\\quad\\gcd(x,y^2)=1\\Rightarrow x\\mid d",
+        "stepId": "s8",
+        "focus": []
+      },
+      {
+        "id": "h6",
+        "level": 4,
+        "question": "Câu c: kết luận",
+        "cue": "Hai số nguyên dương chia hết cho nhau thì bằng nhau",
+        "explanation": "Hai số nguyên dương $d,x$ chia hết cho nhau nên $d=x$. Bởi vậy $m=dx=d^2$, đúng điều phải chứng minh.",
+        "math": "d=x\\Rightarrow m=dx=d^2",
+        "stepId": "s9",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Câu a: suy ra $m$ là ước của $9$",
+        "explanation": "Khi $n=3$, điều kiện cho $(m^2+m+9)\\vdots 3m$. Vì thế biểu thức cũng chia hết cho $m$. Hai số hạng đầu chia hết cho $m$, nên $9$ chia hết cho $m$.",
+        "math": "m^2+m+9\\vdots m\\Rightarrow 9\\vdots m\\Rightarrow m\\in\\{1,3,9\\}",
+        "reason": "Nếu một tổng và một số hạng chia hết cho $m$ thì hiệu của chúng chia hết cho $m$",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Câu a: kiểm tra đủ ba khả năng",
+        "explanation": "Thay lần lượt $m=1,3,9$. Các số $m^2+m+9$ tương ứng là $11,21,99$, còn $3m$ là $3,9,27$; không trường hợp nào chia hết.",
+        "math": "11\\not\\vdots3,\\qquad21\\not\\vdots9,\\qquad99\\not\\vdots27",
+        "reason": "Kiểm tra trực tiếp danh sách hữu hạn đã chứng minh là đầy đủ",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Câu b: đặt $m=kn$",
+        "explanation": "Vì $m$ chia hết cho $n$, đặt $m=kn$ với $k$ nguyên dương. Chia thương nguyên trong điều kiện ban đầu cho $mn=kn^2$.",
+        "math": "\\frac{m^2+m+n^2}{mn}=k+\\frac1n+\\frac1k\\in\\mathbb Z",
+        "reason": "Định nghĩa chia hết và phép thế $m=kn$",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Câu b: giải phương trình phân số nguyên",
+        "explanation": "Do $k$ đã nguyên, nên $1/n+1/k$ là số nguyên dương và không vượt quá $2$. Nếu tổng bằng $2$ thì $k=n=1$. Nếu tổng bằng $1$, nhân với $kn$ được $k+n=kn$, hay $(k-1)(n-1)=1$, nên $k=n=2$.",
+        "math": "\\frac1n+\\frac1k\\in\\{1,2\\}\\Rightarrow(k,n)\\in\\{(1,1),(2,2)\\}",
+        "reason": "Chặn số nguyên dương và phân tích thành nhân tử",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Câu b: trở lại $(m,n)$ và kiểm tra",
+        "explanation": "Với $m=kn$, hai cặp trên cho $(m,n)=(1,1)$ và $(4,2)$. Thay lại cho thấy cả hai đều thỏa điều kiện, nên danh sách là đầy đủ.",
+        "math": "(m,n)\\in\\{(1,1),(4,2)\\}",
+        "reason": "Phép thế tương đương và kiểm tra trực tiếp",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s6",
+        "title": "Câu c: tách ước chung lớn nhất",
+        "explanation": "Đặt $m=dx$, $n=dy$ với $x,y$ nguyên dương và $\\gcd(x,y)=1$. Sau khi chia cả số bị chia và số chia cho $d$, điều kiện trở thành quan hệ nguyên sau.",
+        "math": "dx^2+x+dy^2 \\vdots dxy",
+        "reason": "Định nghĩa ước chung lớn nhất và rút nhân tử chung $d$",
+        "uses": [
+          "s5"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s7",
+        "title": "Câu c: chứng minh $x \\vdots d$",
+        "explanation": "Vế phải chia hết cho $d$. Hai số hạng $dx^2$ và $dy^2$ đã chia hết cho $d$, nên số hạng còn lại $x$ cũng chia hết cho $d$.",
+        "math": "x \\vdots d",
+        "reason": "Tính chất chia hết của hiệu",
+        "uses": [
+          "s6"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s8",
+        "title": "Câu c: chứng minh $d \\vdots x$",
+        "explanation": "Vế phải cũng chia hết cho $x$. Hai số hạng đầu chia hết cho $x$, do đó $dy^2 \\vdots x$. Vì $\\gcd(x,y)=1$ nên $\\gcd(x,y^2)=1$; theo bổ đề Euclid, $d \\vdots x$.",
+        "math": "dy^2 \\vdots x,\\quad\\gcd(x,y^2)=1\\Rightarrow x\\mid d",
+        "reason": "Bổ đề Euclid",
+        "uses": [
+          "s7"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s9",
+        "title": "Câu c: kết luận",
+        "explanation": "Hai số nguyên dương $d,x$ chia hết cho nhau nên $d=x$. Bởi vậy $m=dx=d^2$, đúng điều phải chứng minh.",
+        "math": "d=x\\Rightarrow m=dx=d^2",
+        "reason": "Hai số nguyên dương chia hết cho nhau thì bằng nhau",
+        "uses": [
+          "s8"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "a) Không tồn tại cặp số nguyên dương khi $n=3$.\nb) $(m,n)=(1,1)$ hoặc $(4,2)$.\nc) Ta có $m=d^2$.",
+      "math": null
+    },
+    "answerChecks": [
+      {
+        "kind": "integers",
+        "statements": [
+          "((m^2+m+9) % (3*m)) = 0",
+          "m > 0"
+        ],
+        "assignments": [],
+        "expected": "none"
+      },
+      {
+        "kind": "substitute",
+        "statements": [
+          "((m^2+m+n^2) % (m*n)) = 0",
+          "(m % n) = 0",
+          "m > 0",
+          "n > 0"
+        ],
+        "assignments": [
+          [
+            {
+              "variable": "m",
+              "value": "1"
+            },
+            {
+              "variable": "n",
+              "value": "1"
+            }
+          ],
+          [
+            {
+              "variable": "m",
+              "value": "4"
+            },
+            {
+              "variable": "n",
+              "value": "2"
+            }
+          ]
+        ],
+        "expected": null
+      }
+    ],
+    "figure": null
+  },
+  "failed": [],
+  "logs": [
+    "13ms computed: b integer_solutions (9 ms)",
+    "493ms agent tool: trained_number_theory_proof returned a certified lesson",
+    "556ms attempt 1: partial, 1 problem(s): hint h4: shows the final answer ((1); a hint gives the next idea, the student finds the answer",
+    "556ms agent tool: trained_number_theory_proof returned a certified lesson",
+    "568ms attempt 2: partial, 1 problem(s): hint h4: shows the final answer ((1); a hint gives the next idea, the student finds the answer",
+    "569ms usage: model=default in=277 (cached 0) out=14 (reasoning 0) ≈ $0.0001",
+    "569ms total ≈ $0.0001 over 2 attempt(s); lesson by default"
+  ]
+}

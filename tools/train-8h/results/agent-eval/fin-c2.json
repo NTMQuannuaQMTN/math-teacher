@@ -1,0 +1,163 @@
+{
+  "id": "fin-c2",
+  "ok": true,
+  "served": true,
+  "producedBy": "default",
+  "status": "not_checkable",
+  "seconds": 0,
+  "costUsd": 0.0001,
+  "final": "Vậy lập được $36$ số.",
+  "hints": [
+    "Nhận dạng các điều kiện",
+    "Trường hợp chữ số cuối là 0",
+    "Trường hợp chữ số cuối khác 0",
+    "Cộng hai trường hợp",
+    "Kết luận"
+  ],
+  "reference": "$36$",
+  "lesson": {
+    "analysis": {
+      "statement": "Từ các chữ số $0,1,2,3,4,5$ lập được bao nhiêu số tự nhiên có ba chữ số đôi một khác nhau và chia hết cho $5$?",
+      "language": "vi",
+      "topic": "combinatorics",
+      "subtopic": "Lập số từ các chữ số",
+      "gradeLevel": 9,
+      "withinCurriculum": true,
+      "concepts": [
+        "Lập số từ các chữ số"
+      ],
+      "techniques": [],
+      "givens": [
+        "Chữ số thuộc $\\{0,1,2,3,4,5\\}$"
+      ],
+      "unknowns": [
+        "Số các số lập được"
+      ],
+      "constraints": [],
+      "status": "solvable",
+      "statusReason": null,
+      "interpretationNotes": []
+    },
+    "strategy": "Chọn lần lượt từng chữ số, xét riêng chữ số có điều kiện (đầu khác 0, cuối theo tính chẵn lẻ) trước.",
+    "hints": [
+      {
+        "id": "h1",
+        "level": 1,
+        "question": "Nhận dạng các điều kiện",
+        "cue": "Phân tích đề",
+        "explanation": "Các chữ số lấy từ tập $\\{0,1,2,3,4,5\\}$; số có $3$ chữ số nên chữ số đầu khác $0$; các chữ số đôi một khác nhau; điều kiện chia hết cho 5 chỉ phụ thuộc chữ số cuối.",
+        "math": null,
+        "stepId": "s1",
+        "focus": []
+      },
+      {
+        "id": "h2",
+        "level": 2,
+        "question": "Trường hợp chữ số cuối là 0",
+        "cue": "Quy tắc nhân",
+        "explanation": "Chữ số cuối là $0$ (thỏa điều kiện chia hết cho 5). Các chữ số còn lại chọn trong $5$ chữ số khác $0$, đôi một khác nhau; chữ số đầu tự động khác $0$.",
+        "math": "5\\cdot 4=20",
+        "stepId": "s2",
+        "focus": []
+      },
+      {
+        "id": "h3",
+        "level": 3,
+        "question": "Trường hợp chữ số cuối khác 0",
+        "cue": "Quy tắc nhân; chữ số đầu khác 0",
+        "explanation": "Chữ số cuối thuộc $\\{5\\}$: $1$ cách. Chữ số đầu khác $0$ và khác chữ số cuối: $4$ cách. Các chữ số ở giữa chọn trong các chữ số còn lại: $4$ cách.",
+        "math": "1\\cdot 4\\cdot 4=16",
+        "stepId": "s3",
+        "focus": []
+      },
+      {
+        "id": "h4",
+        "level": 4,
+        "question": "Cộng hai trường hợp",
+        "cue": "Quy tắc cộng: các trường hợp rời nhau, đầy đủ",
+        "explanation": "Hai trường hợp không trùng nhau (chữ số cuối khác nhau) và bao quát mọi số thỏa đề, nên cộng lại.",
+        "math": "20+16=36",
+        "stepId": "s4",
+        "focus": []
+      },
+      {
+        "id": "h5",
+        "level": 4,
+        "question": "Kết luận",
+        "cue": "Tổng hợp",
+        "explanation": "Vậy lập được $36$ số.",
+        "math": null,
+        "stepId": "s5",
+        "focus": []
+      }
+    ],
+    "steps": [
+      {
+        "id": "s1",
+        "title": "Nhận dạng các điều kiện",
+        "explanation": "Các chữ số lấy từ tập $\\{0,1,2,3,4,5\\}$; số có $3$ chữ số nên chữ số đầu khác $0$; các chữ số đôi một khác nhau; điều kiện chia hết cho 5 chỉ phụ thuộc chữ số cuối.",
+        "math": null,
+        "reason": "Phân tích đề",
+        "uses": [],
+        "geometryActions": []
+      },
+      {
+        "id": "s2",
+        "title": "Trường hợp chữ số cuối là 0",
+        "explanation": "Chữ số cuối là $0$ (thỏa điều kiện chia hết cho 5). Các chữ số còn lại chọn trong $5$ chữ số khác $0$, đôi một khác nhau; chữ số đầu tự động khác $0$.",
+        "math": "5\\cdot 4=20",
+        "reason": "Quy tắc nhân",
+        "uses": [
+          "s1"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s3",
+        "title": "Trường hợp chữ số cuối khác 0",
+        "explanation": "Chữ số cuối thuộc $\\{5\\}$: $1$ cách. Chữ số đầu khác $0$ và khác chữ số cuối: $4$ cách. Các chữ số ở giữa chọn trong các chữ số còn lại: $4$ cách.",
+        "math": "1\\cdot 4\\cdot 4=16",
+        "reason": "Quy tắc nhân; chữ số đầu khác 0",
+        "uses": [
+          "s2"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s4",
+        "title": "Cộng hai trường hợp",
+        "explanation": "Hai trường hợp không trùng nhau (chữ số cuối khác nhau) và bao quát mọi số thỏa đề, nên cộng lại.",
+        "math": "20+16=36",
+        "reason": "Quy tắc cộng: các trường hợp rời nhau, đầy đủ",
+        "uses": [
+          "s3"
+        ],
+        "geometryActions": []
+      },
+      {
+        "id": "s5",
+        "title": "Kết luận",
+        "explanation": "Vậy lập được $36$ số.",
+        "math": null,
+        "reason": "Tổng hợp",
+        "uses": [
+          "s4"
+        ],
+        "geometryActions": []
+      }
+    ],
+    "finalAnswer": {
+      "text": "Vậy lập được $36$ số.",
+      "math": null
+    },
+    "answerChecks": [],
+    "figure": null
+  },
+  "failed": [],
+  "logs": [
+    "347ms agent tool: routine_digit-numbers returned a certified lesson",
+    "383ms attempt 1: not_checkable, 0 problem(s)",
+    "383ms usage: model=default in=185 (cached 0) out=15 (reasoning 0) ≈ $0.0001",
+    "383ms total ≈ $0.0001 over 1 attempt(s); lesson by default"
+  ]
+}

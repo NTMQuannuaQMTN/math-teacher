@@ -1,0 +1,17 @@
+{
+  "id": "current-q3-core",
+  "ok": false,
+  "seconds": 113,
+  "error": "agent ran out of time without a draft",
+  "reference": "manual review",
+  "logs": [
+    "13ms computed: b integer_solutions (9 ms)",
+    "394ms agent: classified as number_theory",
+    "93471ms agent turn 2: lesson as text → 6 problem(s): hints.0.question: Invalid input: expected string, received object | hints.1.question: Invalid input: expected string, received object",
+    "113003ms agent turn 3: request ended (The operation was aborted due to timeout)",
+    "113003ms attempt 1 failed (agent ran out of time without a draft); trying again with a concise lesson",
+    "113004ms agent: classified as number_theory",
+    "113004ms attempt 2 failed (agent ran out of time without a draft); trying again with a concise lesson",
+    "113004ms agent: classified as number_theory"
+  ]
+}

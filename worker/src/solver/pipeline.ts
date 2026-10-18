@@ -966,7 +966,21 @@ async function solveTask(
           candidate = tidy(trimmed);
         }
       }
-      const checked = verifyLesson(candidate, { problemText: normalizeProblemText(problemText) });
+      let checked = verifyLesson(candidate, { problemText: normalizeProblemText(problemText) });
+      // Certified specialist routines re-run an exhaustive/exact computation before returning the lesson. Preserve
+      // that evidence after the JSON boundary instead of downgrading a correct deterministic result to not_checkable.
+      const certificate = current.certificate;
+      const certificateOnlyGap = checked.feedback.every((f) => /no answerCheck re-derives it/.test(f));
+      if (certificate && certificateOnlyGap && !checked.verification.checks.some((c) => !c.passed)) {
+        checked = {
+          ...checked,
+          verification: {
+            ...checked.verification,
+            status: "verified",
+            checks: [...checked.verification.checks, { label: certificate.label, passed: true }].slice(0, 40),
+          },
+        };
+      }
       // Formulas the app can't render go back to the model; whatever is left is shown as plain text.
       const latex = latexFeedback(checked.lesson);
       // The final answer must agree with what was computed (a wrong answer is a failed check, worth a retry).

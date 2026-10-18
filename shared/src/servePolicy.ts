@@ -43,6 +43,6 @@ export function finalStepConflict(lesson: { steps: { math: string | null }[]; fi
   if (stated.length === 0 || stated.some((v) => Math.abs(v - target) < 1e-9)) return [];
   // A bare arithmetic line ("84 - 10 - 4 = 70") is the answer only when the answer is one number (a game's last move
   // "21 - 1 = 20" is not the answer "người đi trước thắng").
-  if (arithmetic && (new Set(stated).size !== 1 || !/(?:có|là|bằng|=)\s*\$?\s*-?\d/iu.test(answer))) return [];
+  if (arithmetic && (new Set(stated).size !== 1 || !/(?:có|là|bằng|được|=)\s*\$?\s*-?\d/iu.test(answer))) return [];
   return [`the final answer contradicts the last step of the solution (the last step gives ${m[1]!.trim()}); make them agree`];
 }

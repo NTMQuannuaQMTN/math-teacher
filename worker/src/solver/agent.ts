@@ -13,6 +13,10 @@ import { parseLesson, tidy } from "./pipeline";
 import { GeometryBoard, PROBLEM_TYPES, runTypeTool, toolsFor, type ProblemType } from "./agentTools";
 import { dropForeignMetadata } from "./languageRepair";
 import type { Usage } from "./pricing";
+import { trainedDivisibilityGcdLesson } from "./trainedNumberTheory";
+import { routineLesson } from "./routine";
+import { unaryEquationLesson } from "./unaryEquation";
+import { radicalSubstitutionEquationLesson } from "./radicalSubstitutionEquation";
 
 /**
  * The solver as an agent on SOCLAAS (2026-10-16): instead of writing a whole lesson in one request and being told what
@@ -32,18 +36,80 @@ type Msg =
 interface ToolCall { id: string; type: "function"; function: { name: string; arguments: string } }
 
 const TYPE_NAME: Record<ProblemType, string> = { algebra: "Đại số", geometry: "Hình học", number_theory: "Số học", combinatorics: "Tổ hợp" };
+const COMPACT_LESSON_SCHEMA = {
+  type: "object",
+  properties: {
+    strategy: { type: "string" },
+    steps: {
+      type: "array", minItems: 1, maxItems: 16,
+      items: {
+        type: "object",
+        properties: {
+          title: { type: "string" }, explanation: { type: "string" }, math: { type: ["string", "null"] },
+          reason: { type: ["string", "null"] }, hint: { type: "string" },
+        },
+        required: ["title", "explanation", "math", "reason", "hint"], additionalProperties: false,
+      },
+    },
+    finalAnswer: {
+      type: "object", properties: { text: { type: "string" }, math: { type: ["string", "null"] } },
+      required: ["text", "math"], additionalProperties: false,
+    },
+  },
+  required: ["strategy", "steps", "finalAnswer"], additionalProperties: false,
+} as const;
+
+type CompactLesson = {
+  strategy: string;
+  steps: { title: string; explanation: string; math: string | null; reason: string | null; hint: string }[];
+  finalAnswer: { text: string; math: string | null };
+};
+
+function expandCompactLesson(value: unknown, type: ProblemType, problemText: string): unknown {
+  if (!value || typeof value !== "object" || "analysis" in value) return value;
+  const compact = value as Partial<CompactLesson>;
+  if (!Array.isArray(compact.steps) || typeof compact.strategy !== "string" || !compact.finalAnswer) return value;
+  const steps = compact.steps.map((step, index) => ({
+    id: `s${index + 1}`, title: step.title, explanation: step.explanation, math: step.math ?? null,
+    reason: step.reason ?? null, uses: index ? [`s${index}`] : [], geometryActions: [],
+  }));
+  const hintIndexes = [...new Set([0, Math.floor((steps.length - 1) / 3), Math.floor((2 * (steps.length - 1)) / 3), steps.length - 1])].slice(0, 4);
+  return {
+    analysis: {
+      statement: problemText, language: "vi", topic: type, subtopic: TYPE_NAME[type], gradeLevel: 9,
+      withinCurriculum: true, concepts: [], techniques: [], givens: [], unknowns: [], constraints: [],
+      status: "solvable", statusReason: null, interpretationNotes: [],
+    },
+    strategy: compact.strategy,
+    hints: hintIndexes.map((stepIndex, level) => {
+      const source = compact.steps![stepIndex]!;
+      return {
+        id: `h${level + 1}`, level: Math.min(4, level + 1), question: source.hint,
+        cue: source.reason ?? null, explanation: source.explanation, math: source.math ?? null,
+        stepId: `s${stepIndex + 1}`, focus: [],
+      };
+    }),
+    steps,
+    finalAnswer: compact.finalAnswer,
+    answerChecks: [], figure: null,
+  };
+}
+
 const agentRules = (type: ProblemType) => `Bài này thuộc dạng ${TYPE_NAME[type]}. Bạn làm việc như một tác tử có công cụ (tools) của dạng này.
 Quy trình:
-1. Dùng công cụ của dạng ${TYPE_NAME[type]} để tính, kiểm tra${type === "geometry" ? ", và dựng hình: gọi figure_from_statement trước, rồi gọi build_figure với các danh sách points, lines, polygons, circles, properties; dùng check_property để đo lại tính chất quan trọng trước khi đưa vào chứng minh" : ""}. Không tự nhẩm những gì công cụ tính được.
-2. Gọi write_lesson với toàn bộ bài giảng (đúng schema). Công cụ trả về danh sách lỗi.
+1. Gọi nhiều nhất 2 công cụ của dạng ${TYPE_NAME[type]} để tính, kiểm tra${type === "geometry" ? ", và dựng hình: gọi figure_from_statement, rồi build_figure với các danh sách points, lines, polygons, circles, properties" : ""}. Không lặp lại cùng một phép vét cạn với miền lớn hơn.
+2. Gọi write_lesson với bài giải lõi ngắn đúng schema của công cụ. Máy chủ tự tạo analysis, hints, dependency, answerChecks và figure; không tự viết các trường ấy. Công cụ trả về danh sách lỗi.
 3. Sửa lỗi bằng revise (chỉ các trường cần sửa) — chỉ viết lại cả bài khi lời giải sai từ gốc.
 4. Khi không còn lỗi (hoặc gần hết thời gian), gọi finish.
-Thời gian có hạn (không quá 30 giây cho cả bài): đi thẳng vào lời giải, ít lượt gọi công cụ.`;
+Thời gian có hạn (không quá 30 giây cho cả bài): đi thẳng vào lời giải, ít lượt gọi công cụ.
+Giới hạn độ dài: tối đa 4 gợi ý và 12 bước, nhưng phải giải đủ từng ý a), b), c) trên các dòng riêng. Không lặp lại đề trong lời giải.
+Chỉ tạo answerChecks khi đó là phép kiểm tra số cụ thể, tự đủ dữ kiện và máy có thể tính trực tiếp; bài chứng minh có thể để answerChecks rỗng.
+${type === "number_theory" ? "Mọi quan hệ chia hết phải có hai vế nguyên; không viết phân thức chứa biến với ký hiệu chia hết. Khi vét cạn, giữ đúng miền số nguyên dương của đề." : ""}`;
 
 
-function lessonTools(lessonSchema: Record<string, unknown>) {
+function lessonTools() {
   return [
-    { type: "function", function: { name: "write_lesson", description: "Nộp bản nháp bài giảng đầy đủ; trả về mọi lỗi tìm được.", parameters: { type: "object", properties: { lesson: lessonSchema }, required: ["lesson"], additionalProperties: false } } },
+    { type: "function", function: { name: "write_lesson", description: "Nộp bài giải lõi ngắn; máy chủ tự mở rộng thành bài giảng đầy đủ và trả về mọi lỗi.", parameters: { type: "object", properties: { lesson: COMPACT_LESSON_SCHEMA }, required: ["lesson"], additionalProperties: false } } },
     { type: "function", function: { name: "revise", description: "Sửa từng trường của bản nháp hiện tại; trả về lỗi còn lại.", parameters: { type: "object", properties: { edits: { type: "array", items: { type: "object", properties: { target: { type: "string", enum: ["step", "hint", "final", "strategy"] }, index: { type: "integer" }, field: { type: "string", enum: ["title", "explanation", "math", "reason", "question", "cue", "text"] }, value: { type: ["string", "null"] } }, required: ["target", "index", "field", "value"], additionalProperties: false } } }, required: ["edits"], additionalProperties: false } } },
     { type: "function", function: { name: "finish", description: "Hoàn tất: dùng bản nháp hiện tại làm bài giảng.", parameters: { type: "object", properties: {}, additionalProperties: false } } },
   ];
@@ -116,6 +182,8 @@ export class SoclaasAgentModel implements JsonModel {
   readonly model: string;
   /** Kept across the pipeline's attempts: one classification and one figure per solve. */
   private type: ProblemType | null = null;
+  private latestCertificate: { label: string } | null = null;
+  get certificate(): { label: string } | null { return this.latestCertificate; }
   private readonly board = new GeometryBoard();
   constructor(
     private readonly baseUrl: string,
@@ -127,17 +195,41 @@ export class SoclaasAgentModel implements JsonModel {
   }
 
   async complete({ messages, schema, schemaName, signal, onUsage }: Parameters<JsonModel["complete"]>[0]): Promise<string> {
+    this.latestCertificate = null;
     const log = this.options.log ?? (() => undefined);
     if (schemaName !== "lesson") return this.plain(messages, schema, schemaName, signal, onUsage);
     // Classify once per solve (Đại số / Hình học / Số học / Tổ hợp), then work with that type's tools.
     this.type ??= await this.classify(signal, onUsage);
     const type = this.type;
+    const trained = type === "number_theory" ? trainedDivisibilityGcdLesson(this.options.problemText) : null;
+    if (trained) {
+      log("agent tool: trained_number_theory_proof returned a certified lesson");
+      return JSON.stringify(trained);
+    }
+    const exactAlgebra = type === "algebra" ? unaryEquationLesson(this.options.problemText)?.lesson ?? radicalSubstitutionEquationLesson(this.options.problemText) : null;
+    if (exactAlgebra) {
+      this.latestCertificate = { label: "Bộ giải đại số chính xác đã dựng và kiểm tra lại mọi nghiệm" };
+      log("agent tool: exact_unary_equation returned a certified lesson");
+      return JSON.stringify(exactAlgebra);
+    }
+    const routine = routineLesson(this.options.problemText);
+    if (routine?.verify()) {
+      this.latestCertificate = { label: routine.label };
+      if (type === "geometry" && !routine.lesson.figure) {
+        const built = figureFromStatement(this.options.problemText);
+        if (built && built.resolved.errors.length === 0 && built.unbuilt.length === 0) routine.lesson.figure = built.figure;
+      }
+      log(`agent tool: routine_${routine.family} returned a certified lesson`);
+      return JSON.stringify(routine.lesson);
+    }
     const withFigure = this.options.withFigure || type === "geometry";
     log(`agent: classified as ${type}`);
     const chat: Msg[] = [...messages.map((m) => ({ role: m.role, content: m.content }) as Msg), { role: "system", content: agentRules(type) }];
     let draft: ModelLesson | null = null;
     const board = this.board;
-    const toolList = [...toolsFor(type), ...lessonTools(schema)];
+    const specialistTools = toolsFor(type);
+    const outputTools = lessonTools();
+    let specialistCalls = 0;
     const boardFigure = () => (board.figure.points.length ? board.figure : null);
     for (let turn = 0; turn < (this.options.maxTurns ?? 10); turn++) {
       const left = this.options.deadline - Date.now();
@@ -148,7 +240,7 @@ export class SoclaasAgentModel implements JsonModel {
         response = await fetch(`${this.baseUrl.replace(/\/$/, "").replace(/\/v1$/, "")}/v1/chat/completions`, {
           method: "POST",
           headers: { "content-type": "application/json", authorization: `Bearer ${this.apiKey}` },
-          body: JSON.stringify({ model: this.model, messages: chat, tools: toolList, tool_choice: "auto", max_tokens: 12_000, temperature: 0.2, chat_template_kwargs: { enable_thinking: false } }),
+          body: JSON.stringify({ model: this.model, messages: chat, tools: [...(specialistCalls < 2 ? specialistTools : []), ...outputTools], tool_choice: "required", max_tokens: 4_000, temperature: 0.1, chat_template_kwargs: { enable_thinking: false } }),
           signal: timeout,
         });
       } catch (err) {
@@ -170,7 +262,7 @@ export class SoclaasAgentModel implements JsonModel {
         const text = message?.content ?? "";
         let obj: Record<string, unknown> | null = null;
         try { const m = /\{[\s\S]*\}/.exec(text); obj = m ? JSON.parse(fixJsonLatexEscapes(m[0])) : null; } catch { obj = null; }
-        const candidate = obj && "lesson" in obj ? obj.lesson : obj;
+        const candidate = expandCompactLesson(obj && "lesson" in obj ? obj.lesson : obj, type, this.options.problemText);
         chat.push({ role: "assistant", content: text.slice(0, 2000) });
         if (candidate && typeof candidate === "object" && "steps" in candidate) {
           const fb = draftFeedback(candidate, this.options.problemText, withFigure, boardFigure());
@@ -188,7 +280,7 @@ export class SoclaasAgentModel implements JsonModel {
         let result: string;
         const name = call.function.name;
         const typeResult = runTypeTool(name, args, { board, problemText: this.options.problemText });
-        if (typeResult !== null) result = typeResult;
+        if (typeResult !== null) { result = typeResult; specialistCalls++; }
         else if (name === "write_lesson" || name === "revise") {
           if (name === "write_lesson") {
             let lesson = args.lesson as ModelLesson | string | undefined;
@@ -196,6 +288,7 @@ export class SoclaasAgentModel implements JsonModel {
               const text = lesson;
               try { lesson = JSON.parse(fixJsonLatexEscapes(text)) as ModelLesson; } catch { try { lesson = JSON.parse(text) as ModelLesson; } catch { lesson = undefined; } }
             }
+            lesson = expandCompactLesson(lesson, type, this.options.problemText) as ModelLesson;
             const fb = lesson && typeof lesson === "object" ? draftFeedback(lesson, this.options.problemText, withFigure, boardFigure()) : { lesson: null, problems: ['"lesson" phải là một đối tượng JSON (không phải chuỗi); gửi lại write_lesson với lesson là object đúng schema.'] };
             if (fb.lesson) draft = fb.lesson;
             result = fb.problems.length ? `Còn ${fb.problems.length} lỗi:\n- ${fb.problems.join("\n- ")}` : "Không còn lỗi. Gọi finish.";

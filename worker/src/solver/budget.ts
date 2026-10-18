@@ -34,6 +34,10 @@ export class BudgetedJsonModel implements JsonModel {
     return this.inner.model;
   }
 
+  get certificate(): { label: string } | null | undefined {
+    return this.inner.certificate;
+  }
+
   async complete(input: Parameters<JsonModel["complete"]>[0]): Promise<string> {
     const inputTokens = input.messages.reduce((n, m) => n + new TextEncoder().encode(m.content).byteLength, 2048);
     const reserve = toMicro(estimateCost(this.model, { input: inputTokens, cachedInput: 0, output: this.worstCaseOutput, reasoning: 0 }) ?? 1);

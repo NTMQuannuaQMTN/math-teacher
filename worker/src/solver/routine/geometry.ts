@@ -148,6 +148,7 @@ export function rightTriangleLesson(text: string): RoutineResult | null {
   details.unshift({ title: "Xác định tam giác vuông và các yếu tố đã biết", explanation: `Tam giác $${tri[1]}${tri[2]}${tri[3]}$ vuông tại $${R}$, cạnh huyền $${P}${Qv}$${H ? `, đường cao $${R}${H}$ (nên $${H}$ nằm giữa $${P}$ và $${Qv}$, các tam giác $${R}${H}${P}$, $${R}${H}${Qv}$ vuông tại $${H}$)` : ""}. Đã biết: ${[...given.entries()].map(([k2, v]) => `$${show(k2)}=${rootLatex(v)}$`).join(", ")}.`, math: null, reason: "Phân tích giả thiết", question: "Cạnh huyền là cạnh nào?" });
   details.push({ title: "Kết luận", explanation: final, math: null, reason: "Tổng hợp", question: "Đáp số?" });
   const lesson = lessonOf(text, "Hệ thức lượng trong tam giác vuông", "Dùng định lí Pythagore và các hệ thức lượng, tính dần từ các đoạn đã biết.", details, final, { givens: [...given.entries()].map(([k2, v]) => `$${show(k2)}=${rootLatex(v)}$`), unknowns: asked.map((a) => `$${a}$`) });
+  if (lesson) lesson.hints = lesson.hints.filter((hint) => hint.stepId !== `s${details.length}`);
   return lesson ? { lesson, verify, label: "Dựng tam giác bằng tọa độ và đo lại mọi độ dài đã cho và đã tính", family: "right-triangle" } : null;
 }
 
