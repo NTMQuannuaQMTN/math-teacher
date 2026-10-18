@@ -48,11 +48,11 @@ export interface Env {
   SOLVE_BACKGROUND_MS?: string;
   /** "off" disables the two-stage solve (outline request, then lesson) for hard non-geometry problems. */
   SOLVER_TWO_STAGE?: string;
-  /** SOCLAAS tool-using agent (default on with SOLVER_PROVIDER=soclaas); "off" = one-request lessons. */
+  /** Legacy flag retained for deployment compatibility; production solving always uses the SocLaas agent. */
   SOLVER_AGENT?: string;
   /** Vision model for OCR_PROVIDER=soclaas (default qwen3-vl:32b). */
   SOCLAAS_OCR_MODEL?: string;
-  /** Hard limit for one solve with the agent, in ms (default 120000). */
+  /** Hard limit for one solve with the agent, capped at 30000 ms. */
   SOLVER_AGENT_MS?: string;
   SOLVE_LIMIT_PER_DEVICE_PER_HOUR: string;
   SOLVE_LIMIT_PER_IP_PER_HOUR: string;

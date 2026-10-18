@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import {diameterOrthocenterDiagnosis} from '../src/solver/diameterOrthocenterDiagnosis';
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {AttemptBudgetJsonModel} from '../src/solver/attemptBudget';
-import {getSolution,createModels} from '../src/routes/solve';
+import {agentMs,backgroundSolveMs,getSolution,createModels} from '../src/routes/solve';
 import {solveProblem as solveWithModel} from '../src/solver/pipeline';
 import {VN_GRADE_9} from '../src/solver/curriculum';
 import {mockAlgebraLesson} from '../src/solver/mock';
@@ -14,7 +14,7 @@ import type {Env} from '../src/env';
 // These tests exercise inference, retries and hygiene; exact algebra is tested separately.
 const solveProblem:typeof solveWithModel=(model,curriculum,text,options)=>solveWithModel(model,curriculum,text,{...options,exactAlgebra:false});
 afterEach(()=>{vi.restoreAllMocks();vi.useRealTimers();});
-describe('current text and SocLaas fallback',()=>{
+describe('current text and SocLaas-only routing',()=>{
  it('legacy reread endpoint refuses OCR without touching any resource',async()=>{
   const rc=new Proxy({} as RouteContext,{get:()=>{throw Error('must not access resources');}});
   await expect(retryOcr(rc,'scan')).rejects.toMatchObject({status:400,code:'bad_request'});
@@ -23,12 +23,19 @@ describe('current text and SocLaas fallback',()=>{
   const row={problem_text:'Bản sửa mới',questions_json:JSON.stringify([{id:'q1',label:'',text:'Đề hiện tại đã sửa'}]),ocr_text:'Ảnh cũ sai'};
   expect(questionsOf(row)[0]!.text).toBe('Đề hiện tại đã sửa');
  });
- it('requires explicit SocLaas opt-in and a key; other paid fallback stays disabled',()=>{
+ it('routes a stale production provider setting to SocLaas with no alternate fallback',()=>{
   const env={SOLVER_PROVIDER:'local',LOCAL_LLM_URL:'https://openrouter.ai/api/v1',LOCAL_SOLVER_MODEL:'free:free',SOCLAAS_API_KEY:'test-only',SOLVER_GEMINI_FALLBACK:'off'} as Env;
   const request=new Request('http://localhost');
-  expect(createModels(env,request,'Giải phương trình.').fallback).toBeUndefined();
-  const enabled=createModels({...env,SOLVER_SOCLAAS_FALLBACK:'on'},request,'Giải phương trình.');
-  expect(enabled.model).toBeInstanceOf(AttemptBudgetJsonModel);expect(enabled.fallback).toBeDefined();expect(enabled.fallbackOnlyOnFailure).toBe(false);
+  const selected=createModels(env,request,'Giải phương trình.');
+  expect(selected.model.name).toBe('soclaas-agent');
+  expect(selected.fallback).toBeUndefined();
+ });
+ it('keeps the explicit off switch as a controlled failure',()=>{
+  expect(()=>createModels({SOLVER_PROVIDER:'off',SOCLAAS_API_KEY:'test-only'} as Env,new Request('http://localhost'),'Giải phương trình.')).toThrowError(/tạm dừng/i);
+ });
+ it('caps the complete SocLaas solve at 30 seconds even when an old setting is larger',()=>{
+  const env={SOLVER_PROVIDER:'soclaas',SOCLAAS_API_KEY:'test-only',SOLVER_AGENT_MS:'120000'} as Env;
+  expect(agentMs(env)).toBe(30000);expect(backgroundSolveMs(env)).toBe(30000);
  });
  it('reserves fallback time when the primary ignores cancellation',async()=>{
   vi.useFakeTimers();vi.spyOn(AbortSignal,'timeout').mockImplementation(ms=>{const c=new AbortController();setTimeout(()=>c.abort(),ms);return c.signal;});

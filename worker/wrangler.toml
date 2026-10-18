@@ -24,32 +24,19 @@ bucket_name = "math-teacher-images"
 [vars]
 # "production" disables the mock OCR provider and dev-only behaviour.
 ENVIRONMENT = "production"
-# "gemini" | "openai" | "anthropic" | "mock" (mock only in development)
-OCR_PROVIDER = "gemini"
-# Cheap vision model for OCR. Re-run `npm run ocr:eval` after changing.
-GEMINI_OCR_MODEL = "gemini-3.1-flash-lite"
-OPENAI_MODEL = "gpt-4.1-mini"
-ANTHROPIC_MODEL = "claude-opus-5"
+# Production OCR always uses the SocLaas vision endpoint. `mock` remains available only in development tests.
+OCR_PROVIDER = "soclaas"
+SOCLAAS_OCR_MODEL = "qwen3-vl:32b"
 OCR_TIMEOUT_MS = "20000"
 # Per-device and per-IP budgets for OCR calls (new uploads only), per hour.
 OCR_LIMIT_PER_DEVICE_PER_HOUR = "40"
 OCR_LIMIT_PER_IP_PER_HOUR = "120"
-# Solver: free inference first; user-authorized SocLaas only when generation/checks fail.
-# gemini-2.5-* is closed to new API keys (404). Efforts are Gemini 3 thinking levels.
-# OCR retains its existing provider; solving uses only the current confirmed question.
-SOLVER_PROVIDER = "local"
-LOCAL_LLM_URL = "https://openrouter.ai/api/v1"
-LOCAL_SOLVER_MODEL = "nvidia/nemotron-3-super-120b-a12b:free"
-SOLVER_SOCLAAS_FALLBACK = "on"
+# Solving always uses SocLaas: classify the confirmed question, then expose only that specialist's tools.
+SOLVER_PROVIDER = "soclaas"
+SOLVER_AGENT = "on"
+SOCLAAS_MODEL = "qwen3.6:35b"
 SOLVER_DAILY_BUDGET_USD = "1"
-SOLVER_GEMINI_FALLBACK = "off"
-SOLVER_TWO_STAGE = "off"
-SOLVER_MODEL = "gemini-3.5-flash-lite"
-SOLVER_REASONING_EFFORT = "low"
-SOLVER_GEOMETRY_MODEL = "gemini-3.5-flash-lite"
-SOLVER_GEOMETRY_REASONING_EFFORT = "medium"
-SOLVER_FALLBACK_MODEL = "gemini-3.5-flash"
-SOLVER_FALLBACK_REASONING_EFFORT = "medium"
+SOLVER_AGENT_MS = "30000"
 SOLVE_TIMEOUT_MS = "30000"
 SOLVE_LIMIT_PER_DEVICE_PER_HOUR = "30"
 SOLVE_LIMIT_PER_IP_PER_HOUR = "90"
@@ -60,6 +47,4 @@ ALLOWED_ORIGINS = "http://localhost:8081,http://127.0.0.1:8081"
 
 # Secrets — set with `wrangler secret put <NAME>`; never commit them:
 #   IMAGE_URL_SECRET    (required) HMAC key for signed image URLs, 32+ random chars
-#   GEMINI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "gemini")
-#   OPENAI_API_KEY      (when OCR_PROVIDER or SOLVER_PROVIDER = "openai")
-#   ANTHROPIC_API_KEY   (when OCR_PROVIDER = "anthropic")
+#   SOCLAAS_API_KEY     (required for OCR and solving)

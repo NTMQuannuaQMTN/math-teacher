@@ -5,19 +5,10 @@ OCR_PROVIDER=mock
 SOLVER_PROVIDER=mock
 ALLOWED_ORIGINS=http://localhost:8081
 IMAGE_URL_SECRET=dev-only-change-me-0123456789abcdef
-# GEMINI_API_KEY=...
-# OPENAI_API_KEY=sk-...
-# ANTHROPIC_API_KEY=sk-ant-...
-# Real Gemini OCR+solve: OCR_PROVIDER=gemini SOLVER_PROVIDER=gemini and set GEMINI_API_KEY.
-
-# Free inference + user-authorized SocLaas fallback (never enable other paid fallbacks).
-# SOLVER_PROVIDER=local
-# LOCAL_LLM_URL=https://openrouter.ai/api/v1
-# LOCAL_SOLVER_MODEL=nvidia/nemotron-3-super-120b-a12b:free
-# LOCAL_LLM_API_KEY=...
-# SOLVER_SOCLAAS_FALLBACK=on
+# Real OCR + solve: both production paths require SocLaas.
+# OCR_PROVIDER=soclaas
+# SOLVER_PROVIDER=soclaas
 # SOCLAAS_API_KEY=...
-# SOCLAAS_MODEL=default
+# SOCLAAS_OCR_MODEL=qwen3-vl:32b
+# SOCLAAS_MODEL=qwen3.6:35b
 # SOLVER_DAILY_BUDGET_USD=1
-# SOLVER_GEMINI_FALLBACK=off
-# SOLVER_TWO_STAGE=off

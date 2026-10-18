@@ -11,8 +11,6 @@ import { latexFeedback } from "./latexCheck";
 import type { JsonModel } from "./llm";
 import { parseLesson, tidy } from "./pipeline";
 import { GeometryBoard, PROBLEM_TYPES, runTypeTool, toolsFor, type ProblemType } from "./agentTools";
-import { looksLikeGeometry } from "./routing";
-import { problemDomains } from "../../../shared/src/knowledgeBase";
 import { dropForeignMetadata } from "./languageRepair";
 import type { Usage } from "./pricing";
 
@@ -25,7 +23,7 @@ import type { Usage } from "./pricing";
  *   revise        patches single steps / hints / the final answer without rewriting the lesson;
  *   finish        hands the draft to the pipeline, which runs the full checks again before anything is served.
  * It implements JsonModel, so the pipeline (certified modules first, safety net, retries) is unchanged. The whole solve
- * has a hard wall-clock limit (the deadline passed in, 120 s by default).
+ * shares the route's hard 30-second wall-clock limit.
  */
 type Msg =
   | { role: "system" | "user"; content: string }
@@ -36,11 +34,11 @@ interface ToolCall { id: string; type: "function"; function: { name: string; arg
 const TYPE_NAME: Record<ProblemType, string> = { algebra: "Đại số", geometry: "Hình học", number_theory: "Số học", combinatorics: "Tổ hợp" };
 const agentRules = (type: ProblemType) => `Bài này thuộc dạng ${TYPE_NAME[type]}. Bạn làm việc như một tác tử có công cụ (tools) của dạng này.
 Quy trình:
-1. Dùng công cụ của dạng ${TYPE_NAME[type]} để tính, kiểm tra${type === "geometry" ? ", và dựng hình: gọi figure_from_statement trước, rồi thêm điểm/đoạn/đa giác/đường tròn cần cho lời giải (add_point, add_line, add_polygon, add_circle) và đo các tính chất quan trọng bằng check_property trước khi đưa vào chứng minh" : ""}. Không tự nhẩm những gì công cụ tính được.
+1. Dùng công cụ của dạng ${TYPE_NAME[type]} để tính, kiểm tra${type === "geometry" ? ", và dựng hình: gọi figure_from_statement trước, rồi gọi build_figure với các danh sách points, lines, polygons, circles, properties; dùng check_property để đo lại tính chất quan trọng trước khi đưa vào chứng minh" : ""}. Không tự nhẩm những gì công cụ tính được.
 2. Gọi write_lesson với toàn bộ bài giảng (đúng schema). Công cụ trả về danh sách lỗi.
 3. Sửa lỗi bằng revise (chỉ các trường cần sửa) — chỉ viết lại cả bài khi lời giải sai từ gốc.
 4. Khi không còn lỗi (hoặc gần hết thời gian), gọi finish.
-Thời gian có hạn (khoảng 2 phút cho cả bài): đi thẳng vào lời giải, ít lượt gọi công cụ.`;
+Thời gian có hạn (không quá 30 giây cho cả bài): đi thẳng vào lời giải, ít lượt gọi công cụ.`;
 
 
 function lessonTools(lessonSchema: Record<string, unknown>) {
@@ -220,26 +218,24 @@ export class SoclaasAgentModel implements JsonModel {
     throw new OcrFailure("timeout", "agent ran out of time without a draft", true);
   }
 
-  /** Đại số / Hình học / Số học / Tổ hợp, from one short SOCLAAS request; the keyword classifier if it fails. */
+  /** Đại số / Hình học / Số học / Tổ hợp, from one short SocLaas request. */
   private async classify(signal: AbortSignal, onUsage?: (u: Usage) => void): Promise<ProblemType> {
     const text = this.options.problemText;
-    try {
-      const out = await this.plain(
-        [
-          { role: "system", content: "Phân loại bài toán lớp 9 (thi chuyên) vào đúng một dạng: algebra (Đại số: phương trình, hệ, bất đẳng thức, GTLN/GTNN, biểu thức, Vi-ét, hàm số), geometry (Hình học: tam giác, đường tròn, tứ giác, độ dài, góc, chứng minh hình), number_theory (Số học: chia hết, số dư, số nguyên tố, phương trình nghiệm nguyên, chữ số tận cùng), combinatorics (Tổ hợp: đếm, xác suất, nguyên lí Dirichlet, bảng ô vuông, trò chơi). Trả về JSON." },
-          { role: "user", content: text },
-        ],
-        { type: "object", properties: { type: { type: "string", enum: PROBLEM_TYPES } }, required: ["type"], additionalProperties: false },
-        "problem_type",
-        AbortSignal.any([signal, AbortSignal.timeout(20_000)]),
-        onUsage,
-      );
-      const type = (JSON.parse(out) as { type?: string }).type;
-      if (PROBLEM_TYPES.includes(type as ProblemType)) return type as ProblemType;
-    } catch { /* keyword classifier below */ }
-    if (looksLikeGeometry(text)) return "geometry";
-    const d = problemDomains(text).find((x) => x !== "algebra");
-    return d === "number_theory" || d === "combinatorics" ? d : "algebra";
+    const out = await this.plain(
+      [
+        { role: "system", content: "Phân loại bài toán lớp 9 (thi chuyên) vào đúng một dạng: algebra (Đại số: phương trình, hệ, bất đẳng thức, GTLN/GTNN, biểu thức, Vi-ét, hàm số), geometry (Hình học: tam giác, đường tròn, tứ giác, độ dài, góc, chứng minh hình), number_theory (Số học: chia hết, số dư, số nguyên tố, phương trình nghiệm nguyên, chữ số tận cùng), combinatorics (Tổ hợp: đếm, xác suất, nguyên lí Dirichlet, bảng ô vuông, trò chơi). Trả về JSON." },
+        { role: "user", content: text },
+      ],
+      { type: "object", properties: { type: { type: "string", enum: PROBLEM_TYPES } }, required: ["type"], additionalProperties: false },
+      "problem_type",
+      AbortSignal.any([signal, AbortSignal.timeout(5_000)]),
+      onUsage,
+    );
+    let type: string | undefined;
+    try { type = (JSON.parse(out) as { type?: string }).type; }
+    catch { throw new OcrFailure("malformed_output", "SocLaas returned malformed classification JSON", true); }
+    if (PROBLEM_TYPES.includes(type as ProblemType)) return type as ProblemType;
+    throw new OcrFailure("malformed_output", "SocLaas returned an invalid problem type", true);
   }
 
   /** Small structured requests of the pipeline (language repair…): one JSON-schema request, no tools. */

@@ -3,7 +3,7 @@
  * OpenAI: developers.openai.com/api/docs/pricing (checked 2026-09-29).
  * Gemini: ai.google.dev/gemini-api/docs/pricing (checked 2026-09-29).
  *
- * Default solve path is Gemini: flash first, pro on verify failure. OCR stays on OpenAI.
+ * Production OCR and solving use SocLaas; historical provider prices remain for old evaluation data.
  */
 const PRICES: Record<string, { input: number; cached: number; output: number }> = {
   // OpenAI

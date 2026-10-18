@@ -1,13 +1,10 @@
 import type { AllowedImageType, OcrResult } from "../../../shared/src/contract";
 import { intVar, isDevelopment, type Env } from "../env";
 import { ApiError } from "../http";
-import { AnthropicOcrProvider } from "./anthropic";
-import { GeminiOcrProvider } from "./gemini";
 import { LocalOcrProvider } from "./local";
 import { isAbort } from "./httpErrors";
 import { MOCK_SCENARIOS, MockOcrProvider, type MockScenario } from "./mock";
 import { normalizeOcrOutput } from "./normalize";
-import { OpenAiOcrProvider } from "./openai";
 import { OcrFailure, type OcrProvider } from "./provider";
 import {withinSignal} from '../solver/deadline';
 
@@ -37,33 +34,15 @@ export class FallbackOcrProvider implements OcrProvider {
   }
 }
 
-/** Picks the provider from configuration (plus optional OCR_FALLBACK_PROVIDER). Misconfiguration is a server error, never a crash. */
+/** Production accepts only SocLaas; the deterministic mock is available in development tests. */
 export function createOcrProvider(env: Env, request?: Request): OcrProvider {
-  const name = (env.OCR_PROVIDER || "gemini").toLowerCase();
+  const name = (env.OCR_PROVIDER || "soclaas").toLowerCase();
   switch (name) {
-    case "gemini":
-      if (!env.GEMINI_API_KEY) break;
-      return new GeminiOcrProvider(env.GEMINI_API_KEY, env.GEMINI_OCR_MODEL || "gemini-3.1-flash-lite");
-    case "openai":
-      if (!env.OPENAI_API_KEY) break;
-      return new OpenAiOcrProvider(env.OPENAI_API_KEY, env.OPENAI_MODEL || "gpt-4.1-mini");
-    case "local":
-      return new LocalOcrProvider(
-        env.LOCAL_OCR_URL || env.LOCAL_LLM_URL || "http://127.0.0.1:8080",
-        env.LOCAL_OCR_MODEL || "local",
-        // A separate OCR server (LOCAL_OCR_URL) doesn't get the solver's API key.
-        env.LOCAL_OCR_URL ? undefined : env.LOCAL_LLM_API_KEY,
-        env.OCR_OUTPUT_FORMAT === "full" || env.OCR_OUTPUT_FORMAT === "text" ? env.OCR_OUTPUT_FORMAT : "compact",
-        env.LOCAL_OCR_PROMPT || "OCR:",
-      );
     case "soclaas":
-      // SoCLaaS vision model (2026-10-17: every AI call goes to SoCLaaS). Compact JSON: the text and the problems split
-      // per exercise, sub-questions a), b), c) kept with their exercise.
+      // OCR is only an upload-time operation. The compact result contains the test text and one entry per question;
+      // solving later reads the student's current confirmed question and never sends the image again.
       if (!env.SOCLAAS_API_KEY) break;
-      return new LocalOcrProvider(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1", env.SOCLAAS_OCR_MODEL || "qwen3-vl:32b", env.SOCLAAS_API_KEY, "compact");
-    case "anthropic":
-      if (!env.ANTHROPIC_API_KEY) break;
-      return new AnthropicOcrProvider(env.ANTHROPIC_API_KEY, env.ANTHROPIC_MODEL || "claude-opus-5");
+      return new LocalOcrProvider(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1", env.SOCLAAS_OCR_MODEL || "qwen3-vl:32b", env.SOCLAAS_API_KEY, "compact", "OCR:", "soclaas");
     case "mock": {
       if (!isDevelopment(env)) break;
       const requested = request?.headers.get("x-mock-scenario");
@@ -71,8 +50,8 @@ export function createOcrProvider(env: Env, request?: Request): OcrProvider {
       return new MockOcrProvider(scenario);
     }
   }
-  console.error(`OCR provider "${name}" is not usable (missing key, unknown name, or mock outside development)`);
-  throw new ApiError(503, "ocr_not_configured", "Text recognition is temporarily unavailable.", true);
+  console.error(`OCR provider "${name}" is not usable (SocLaas key missing, or mock outside development)`);
+  throw new ApiError(503, "ocr_not_configured", "Dịch vụ nhận dạng đề bài tạm thời chưa sẵn sàng.", true);
 }
 
 const FAILURE_TO_ERROR: Record<OcrFailure["kind"], ApiError["code"]> = {
@@ -85,12 +64,12 @@ const FAILURE_TO_ERROR: Record<OcrFailure["kind"], ApiError["code"]> = {
 };
 
 const FAILURE_MESSAGES: Record<OcrFailure["kind"], string> = {
-  timeout: "Reading the image took too long. Please try again.",
-  provider_error: "The text recognition service had a problem. Please try again.",
-  refused: "This image couldn't be processed. Try a photo that shows only the maths problem.",
-  malformed_output: "We couldn't read the problem clearly. Please try again or retake the photo.",
-  quota_exhausted: "The text recognition service's daily quota is used up. Please try again later.",
-  incomplete: "We couldn't read the problem clearly. Please try again or retake the photo.",
+  timeout: "Nhận dạng ảnh mất quá nhiều thời gian. Vui lòng thử lại.",
+  provider_error: "Dịch vụ nhận dạng đề bài gặp sự cố. Vui lòng thử lại.",
+  refused: "Không thể xử lý ảnh này. Hãy chụp ảnh chỉ chứa đề toán.",
+  malformed_output: "Không thể đọc rõ đề bài. Hãy thử lại hoặc chụp ảnh khác.",
+  quota_exhausted: "Hạn mức nhận dạng đề bài hôm nay đã hết. Vui lòng thử lại sau.",
+  incomplete: "Không thể đọc đầy đủ đề bài. Hãy thử lại hoặc chụp ảnh khác.",
 };
 
 export function ocrFailureToApiError(failure: OcrFailure): ApiError {

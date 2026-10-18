@@ -58,7 +58,16 @@ export class BudgetedJsonModel implements JsonModel {
     }
     let actual: Usage | null = null;
     try {
-      return await this.inner.complete({ ...input, onUsage: (u) => ((actual = u), input.onUsage?.(u)) });
+      return await this.inner.complete({
+        ...input,
+        // An agent makes several provider requests (classification plus tool turns). Charge their combined usage.
+        onUsage: (u) => {
+          actual = actual
+            ? { input: actual.input + u.input, cachedInput: actual.cachedInput + u.cachedInput, output: actual.output + u.output, reasoning: actual.reasoning + u.reasoning }
+            : { ...u };
+          input.onUsage?.(u);
+        },
+      });
     } finally {
       // Correct the reservation to what the call reported; a call without usage keeps the worst case.
       const used = actual ? toMicro(estimateCost(this.model, actual) ?? 0) : reserve;

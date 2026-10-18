@@ -17,7 +17,7 @@ export function meanLogprob(tokens: { logprob?: number }[] | undefined): number 
  * normalisation as the other providers; output is constrained to the OCR JSON schema.
  */
 export class LocalOcrProvider implements OcrProvider {
-  readonly name = "local";
+  readonly name: string;
 
   constructor(
     private readonly baseUrl: string,
@@ -31,7 +31,8 @@ export class LocalOcrProvider implements OcrProvider {
      */
     private readonly format: "compact" | "full" | "text" = "compact",
     private readonly textPrompt = "OCR:",
-  ) {}
+    providerName = "local",
+  ) { this.name = providerName; }
 
   async extract({ bytes, contentType, signal }: OcrInput): Promise<ProviderOutput> {
     let response: Response;

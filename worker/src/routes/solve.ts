@@ -13,11 +13,8 @@ import { isAbort } from "../ocr/httpErrors";
 import { OcrFailure } from "../ocr/provider";
 import { consumeRateLimit } from "../rateLimits";
 import { VN_GRADE_9 } from "../solver/curriculum";
-import { GeminiJsonModel } from "../solver/geminiModel";
-import { OpenAiJsonModel, type JsonModel } from "../solver/llm";
+import type { JsonModel } from "../solver/llm";
 import { BudgetedJsonModel } from "../solver/budget";
-import { FailoverJsonModel } from "../solver/failover";
-import { LocalJsonModel, type LocalModelOptions } from "../solver/localModel";
 import { problemKey } from "../solver/problemKey";
 import { MOCK_SOLVE_SCENARIOS, MockJsonModel, type MockSolveScenario } from "../solver/mock";
 import { latexFeedback } from "../solver/latexCheck";
@@ -25,11 +22,10 @@ import { proofDependencyFeedback } from "../../../shared/src/proofDependencies";
 import { cleanLanguage } from "../../../shared/src/language";
 import { parseLesson, solveProblem } from "../solver/pipeline";
 import { SoclaasAgentModel } from "../solver/agent";
-import { hostedModelOptions, looksLikeGeometry, problemTier, selectSolverModelIds, soclaasDirectOptions, soclaasModelOptions, soclaasNeedsThinking, soclaasOutlineOptions } from "../solver/routing";
+import { looksLikeGeometry } from "../solver/routing";
 import { PROMPT_VERSION } from "../solver/prompts";
 import {hiddenSearchFeedback} from '../../../shared/src/hiddenSearch';
 import { withinSignal } from "../solver/deadline";
-import { AttemptBudgetJsonModel } from "../solver/attemptBudget";
 import type { RouteContext } from "./scans";
 
 interface SolutionRow {
@@ -59,15 +55,17 @@ const HOUR = 3600;
 export const MAX_SOLVE_WALL_CLOCK_MS = 30_000;
 
 /**
- * How long a solve may keep working after the HTTP reply (the reply itself always comes within 26 s: the lesson, or
- * "pending" for the app to poll). Accuracy first: a hard problem gets the full verified pipeline with its corrective
- * retry instead of being cut off. Development default 300 s; production default 26 s, because Cloudflare ends
- * waitUntil work about 30 s after the response (raise it only with a queue/Durable Object behind it).
+ * How long a solve may keep working after the HTTP reply (the reply itself comes within 26 s: the lesson or a pending
+ * response for polling). SocLaas classification, tool use, verification and persistence share the 30-second cap.
  */
-export const agentOn = (env: Env) => (env.SOLVER_PROVIDER || "").toLowerCase() === "soclaas" && !!env.SOCLAAS_API_KEY && (env.SOLVER_AGENT || "on").toLowerCase() !== "off";
-export const agentMs = (env: Env) => Math.min(600_000, Math.max(30_000, intVar(env.SOLVER_AGENT_MS, 120_000)));
+export const agentOn = (env: Env) => {
+  const provider = (env.SOLVER_PROVIDER || "soclaas").toLowerCase();
+  return !!env.SOCLAAS_API_KEY && provider !== "off" && !(provider === "mock" && isDevelopment(env));
+};
+/** OCR + classification + specialist solving must end in a result or controlled failure within 30 seconds. */
+export const agentMs = (env: Env) => Math.min(MAX_SOLVE_WALL_CLOCK_MS, Math.max(1_000, intVar(env.SOLVER_AGENT_MS, MAX_SOLVE_WALL_CLOCK_MS)));
 export function backgroundSolveMs(env: Env): number {
-  if (agentOn(env)) return agentMs(env) + 5_000;
+  if (agentOn(env)) return agentMs(env);
   const fallback = isDevelopment(env) ? 300_000 : 26_000;
   return Math.min(900_000, Math.max(26_000, intVar(env.SOLVE_BACKGROUND_MS, fallback)));
 }
@@ -77,139 +75,31 @@ function solveTimeoutMs(env: Env): number {
   return Math.min(MAX_SOLVE_WALL_CLOCK_MS, Math.max(1_000, intVar(env.SOLVE_TIMEOUT_MS, MAX_SOLVE_WALL_CLOCK_MS)));
 }
 
-/**
- * Cheap/mid primary plus an optional stronger fallback used only when checks fail.
- * Default provider is Gemini (flash → pro). OpenAI remains available via SOLVER_PROVIDER=openai.
- */
-// Opt-in (it cost ≈ $1.5 in one evening of testing): SOLVER_GEMINI_FALLBACK=on.
-const geminiFallbackOn = (env: Env) => !!env.GEMINI_API_KEY && (env.SOLVER_GEMINI_FALLBACK || "off").toLowerCase() === "on";
-
 export function createModels(env: Env, request: Request, problemText: string): { model: JsonModel; fallback?: JsonModel; fallbackOnlyOnFailure?: boolean; outlineModel?: JsonModel } {
-  const provider = (env.SOLVER_PROVIDER || "gemini").toLowerCase();
-
-  if (provider === "gemini" && env.GEMINI_API_KEY) {
-    const key = env.GEMINI_API_KEY;
-    // Efforts are Gemini 3 thinking levels: minimal | low | medium | high.
-    // (gemini-2.5-* is closed to new API keys and returns 404.)
-    const choice = selectSolverModelIds(problemText, {
-      cheap: env.SOLVER_MODEL || "gemini-3.5-flash-lite",
-      cheapEffort: env.SOLVER_REASONING_EFFORT || "low",
-      strong: env.SOLVER_FALLBACK_MODEL || "gemini-3.5-flash",
-      strongEffort: env.SOLVER_FALLBACK_REASONING_EFFORT || "medium",
-      // Geometry also starts on the cheap model; escalate only when checks fail.
-      geometry: env.SOLVER_GEOMETRY_MODEL || env.SOLVER_MODEL || "gemini-3.5-flash-lite",
-      geometryEffort: env.SOLVER_GEOMETRY_REASONING_EFFORT || "medium",
-    });
-    const model = new GeminiJsonModel(key, choice.primary, choice.primaryEffort);
-    const fallback =
-      choice.fallback && (choice.fallback !== choice.primary || choice.fallbackEffort !== choice.primaryEffort)
-        ? new GeminiJsonModel(key, choice.fallback, choice.fallbackEffort || "medium")
-        : undefined;
-    return { model, fallback };
-  }
-
-  if (provider === "openai" && env.OPENAI_API_KEY) {
-    const key = env.OPENAI_API_KEY;
-    const choice = selectSolverModelIds(problemText, {
-      cheap: env.SOLVER_MODEL || "gpt-5.4-mini",
-      cheapEffort: env.SOLVER_REASONING_EFFORT || "low",
-      strong: env.SOLVER_FALLBACK_MODEL,
-      strongEffort: env.SOLVER_FALLBACK_REASONING_EFFORT || "medium",
-      geometry: env.SOLVER_GEOMETRY_MODEL || "gpt-5.4",
-      geometryEffort: env.SOLVER_GEOMETRY_REASONING_EFFORT || "medium",
-    });
-    const model = new OpenAiJsonModel(key, choice.primary, choice.primaryEffort);
-    const fallback =
-      choice.fallback && choice.fallback !== choice.primary
-        ? new OpenAiJsonModel(key, choice.fallback, choice.fallbackEffort || "medium")
-        : undefined;
-    return { model, fallback };
-  }
-
-  if (provider === "local") {
-    const freeHosted = !!env.LOCAL_LLM_URL && new URL(env.LOCAL_LLM_URL).hostname === "openrouter.ai" && !!env.LOCAL_SOLVER_MODEL?.endsWith(":free");
-    // Open model behind an OpenAI-compatible server; no API cost when self-hosted.
-    // Adaptive reasoning (hosted reasoning models): hidden reasoning is most of the latency, and a simple
-    // problem doesn't need much of it. Local llama.cpp models ignore this (thinking stays off).
-    const model = new LocalJsonModel(env.LOCAL_LLM_URL || "http://127.0.0.1:8080", env.LOCAL_SOLVER_MODEL || "local", {
-      apiKey: env.LOCAL_LLM_API_KEY,
-      thinking: false,
-      ...hostedModelOptions(problemText, {
-        simpleEffort: env.LOCAL_SIMPLE_REASONING_EFFORT || (freeHosted ? "minimal" : undefined),
-        effort: env.LOCAL_REASONING_EFFORT || (freeHosted ? "minimal" : undefined),
-        complexMaxTokens: intVar(env.LOCAL_COMPLEX_MAX_TOKENS, freeHosted ? 6_000 : 24_000),
-        // With the Gemini fallback on, stop the free model sooner so the fallback (Gemini 3.5 Flash, medium thinking: 145–190 s on a 3-part chuyên geometry proof) still fits; "low" thinking was measured and gave unusable lessons.
-        complexRequestTimeoutMs: intVar(env.LOCAL_COMPLEX_REQUEST_TIMEOUT_MS, geminiFallbackOn(env) ? 120_000 : 240_000),
-      }),
-    });
-    if (env.SOLVER_SOCLAAS_FALLBACK === "on" && env.SOCLAAS_API_KEY) {
-      const name=env.SOCLAAS_MODEL || "qwen3.6:35b";
-      const paid=new LocalJsonModel(env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1",name,{
-        apiKey:env.SOCLAAS_API_KEY,thinking:false,gatewayThinking:false,maxTokens:3600,requestTimeoutMs:20_000,
-      });
-      const configured=Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
-      const budget=Number.isFinite(configured) && configured>=0 ? configured : 1;
-      return {
-        model:new AttemptBudgetJsonModel(model,6000),
-        fallback:new BudgetedJsonModel(paid,env.DB,budget, m=>console.log(`[solve] ${m}`),3600,true),
-        // Unrenderable/invalid proofs also deserve a fallback, not just provider outages.
-        fallbackOnlyOnFailure:false,
-      };
-    }
-    if (env.SOLVER_FAILOVER_URL) {
-      const failover = new LocalJsonModel(env.SOLVER_FAILOVER_URL, env.SOLVER_FAILOVER_MODEL || "local", { apiKey: env.SOLVER_FAILOVER_API_KEY, thinking: false });
-      return { model: new FailoverJsonModel(model, failover, (m) => console.log(`[solve] ${m}`)) };
-    }
-    // Temporary (2026-10-06, user decision): Gemini takes over only when the free model fails outright — a timeout,
-    // truncated or empty output, a give-up, or an exhausted daily quota. Corrective retries stay on the free model.
-    // On with SOLVER_GEMINI_FALLBACK=on (and GEMINI_API_KEY).
-    if (geminiFallbackOn(env)) {
-      // gemini-3.8-flash: $3.75/M output tokens vs $9 for 3.5-flash. A daily cap bounds the spend (default $0.50/day).
-      const gemini = new GeminiJsonModel(env.GEMINI_API_KEY!, env.SOLVER_FALLBACK_MODEL || "gemini-3.8-flash", env.SOLVER_FALLBACK_REASONING_EFFORT || "medium");
-      const budget = Number(env.SOLVER_GEMINI_DAILY_BUDGET_USD ?? "0.5");
-      const capped = new BudgetedJsonModel(gemini, env.DB, Number.isFinite(budget) ? budget : 0.5, (m) => console.log(`[solve] ${m}`));
-      return { model, fallback: capped, fallbackOnlyOnFailure: true };
-    }
-    return { model };
-  }
-
-  // SOCLAAS (NUS, OpenAI-compatible, paid per token): qwen3.6:35b ("default") solved 13/13 PTNK 2025 parts at
-  // ≈ $0.03 each (PTNK25-S2). Daily spending cap; on an outright failure the free OpenRouter model gets a turn.
-  if (provider === "soclaas" && env.SOCLAAS_API_KEY) {
-    const o = soclaasModelOptions(problemText);
-    const url = env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1";
-    const name = env.SOCLAAS_MODEL || "qwen3.6:35b";
-    const budget = Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
-    const capped = (m: LocalJsonModel, maxTokens: number) => new BudgetedJsonModel(m, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), maxTokens,true);
-    // The solver as a tool-using agent (2026-10-16): compute / draw_figure / write_lesson (all checks at once) / revise /
-    // finish, inside a hard time limit. Certified modules and the pipeline's checks still run around it.
-    if (agentOn(env)) {
-      const agent = new SoclaasAgentModel(url, env.SOCLAAS_API_KEY, name, { problemText: normalizeProblemText(problemText), withFigure: looksLikeGeometry(problemText), deadline: Date.now() + agentMs(env) - 4_000, log: (m) => console.log(`[solve] ${m}`) });
-      return { model: new BudgetedJsonModel(agent, env.DB, Number.isFinite(budget) ? budget : 1, (x) => console.log(`[solve] ${x}`), 12_000, true) };
-    }
-    // A hard non-geometry problem needs more than one request's window (reasoning + a long lesson ≈ 40K tokens at
-    // ~130 tokens/s > the gateway's 240 s): an outline request thinks, then the lesson is written without long thinking.
-    // Two stages for hard problems; for geometry always when it needs an argument (its lesson is written without thinking).
-    const twoStage = (o.gatewayThinking || (looksLikeGeometry(problemText) && soclaasNeedsThinking(problemText))) && env.SOLVER_TWO_STAGE !== "off";
-    const soclaas = new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...o, ...(twoStage ? { gatewayThinking: false, maxTokens: 20_000 } : {}) });
-    const model = capped(soclaas, twoStage ? 20_000 : (o.maxTokens ?? 12_000));
-    const outlineModel = twoStage
-      ? capped(new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...soclaasOutlineOptions(problemText) }), 12_000)
-      : undefined;
-    // A request cut off at the gateway's 120 s limit is retried on the same model without hidden thinking (a direct
-    // lesson fits the limit); the free model is weaker and slower, so it is not the retry for SOCLAAS.
-    const d = soclaasDirectOptions(problemText);
-    const direct = capped(new LocalJsonModel(url, name, { apiKey: env.SOCLAAS_API_KEY, thinking: false, ...d }), d.maxTokens);
-    return { model, fallback: direct, fallbackOnlyOnFailure: true, outlineModel };
-  }
-
-  if (provider === "mock" && isDevelopment(env)) {
+  const configured = (env.SOLVER_PROVIDER || "soclaas").toLowerCase();
+  if (configured === "mock" && isDevelopment(env)) {
     const requested = request.headers.get("x-mock-scenario");
     const scenario = MOCK_SOLVE_SCENARIOS.includes(requested as MockSolveScenario) ? (requested as MockSolveScenario) : null;
     return { model: new MockJsonModel(scenario, problemText) };
   }
-  console.error(`Solver provider "${provider}" is not usable (missing key, unknown, or mock outside development)`);
-  throw new ApiError(503, "solve_not_configured", "Solving is temporarily unavailable.", true);
+  if (configured === "off") throw new ApiError(503, "solve_not_configured", "Dịch vụ giải bài đang tạm dừng.", true);
+  if (!env.SOCLAAS_API_KEY) {
+    console.error("SocLaas solver is not usable because SOCLAAS_API_KEY is missing");
+    throw new ApiError(503, "solve_not_configured", "Dịch vụ giải bài tạm thời chưa sẵn sàng.", true);
+  }
+
+  const url = env.SOCLAAS_BASE_URL || "https://soclaas-api.comp.nus.edu.sg/v1";
+  const name = env.SOCLAAS_MODEL || "qwen3.6:35b";
+  const configuredBudget = Number(env.SOLVER_DAILY_BUDGET_USD ?? "1");
+  const budget = Number.isFinite(configuredBudget) && configuredBudget >= 0 ? configuredBudget : 1;
+  // SocLaas first classifies the current confirmed question, then receives only the selected specialist's tools.
+  const agent = new SoclaasAgentModel(url, env.SOCLAAS_API_KEY, name, {
+    problemText: normalizeProblemText(problemText),
+    withFigure: looksLikeGeometry(problemText),
+    deadline: Date.now() + agentMs(env) - 4_000,
+    log: (message) => console.log(`[solve] ${message}`),
+  });
+  return { model: new BudgetedJsonModel(agent, env.DB, budget, (message) => console.log(`[solve] ${message}`), 12_000, true) };
 }
 
 function failureCode(err: unknown): ErrorCode {

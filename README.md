@@ -81,12 +81,13 @@ npm run dev:mobile                 # Expo dev server: press i (iOS), a (Android)
 ```
 
 In development the app finds the API automatically at `http://<metro-host>:8787`, so the
-simulator and a phone on the same Wi-Fi both work without configuration. To use a real OCR
-provider locally, put a key in `worker/.dev.vars`:
+simulator and a phone on the same Wi-Fi both work without configuration. To use real OCR and
+solving locally, put the SocLaas key in `worker/.dev.vars`:
 
 ```bash
-OCR_PROVIDER=openai          # or anthropic
-OPENAI_API_KEY=sk-...        # or ANTHROPIC_API_KEY=...
+OCR_PROVIDER=soclaas
+SOLVER_PROVIDER=soclaas
+SOCLAAS_API_KEY=...
 ```
 
 Camera capture needs a real device; the iOS Simulator has no camera, and the app shows a "camera
@@ -112,22 +113,19 @@ cd mobile && npm run export   # production bundles for iOS, Android and web
 | Name | Purpose | Default |
 |---|---|---|
 | `ENVIRONMENT` | `production` or `development` (the mock provider only works in development) | `production` |
-| `OCR_PROVIDER` | `gemini`, `openai`, `anthropic`, or `mock` | `gemini` |
-| `GEMINI_OCR_MODEL` | Gemini vision model for OCR | `gemini-2.5-flash` |
-| `OPENAI_MODEL` / `ANTHROPIC_MODEL` | OpenAI / Anthropic OCR model ids | `gpt-4.1-mini` / `claude-opus-5` |
-| `OCR_TIMEOUT_MS` | hard timeout per OCR call | `45000` |
+| `OCR_PROVIDER` | `soclaas`, or `mock` in development | `soclaas` |
+| `SOCLAAS_OCR_MODEL` | SocLaas vision model used only for an uploaded image | `qwen3-vl:32b` |
+| `OCR_TIMEOUT_MS` | hard timeout per OCR call | `20000` |
 | `OCR_LIMIT_PER_DEVICE_PER_HOUR` / `OCR_LIMIT_PER_IP_PER_HOUR` | abuse limits | `40` / `120` |
-| `SOLVER_PROVIDER` | `gemini`, `openai`, or `mock` (mock only in development) | `gemini` |
-| `SOLVER_MODEL` / `SOLVER_REASONING_EFFORT` | cheap primary for algebra / word problems | `gemini-2.5-flash` / `low` |
-| `SOLVER_GEOMETRY_MODEL` / `SOLVER_GEOMETRY_REASONING_EFFORT` | geometry primary (escalates on verify failure) | `gemini-2.5-flash` / `medium` |
-| `SOLVER_FALLBACK_MODEL` / `SOLVER_FALLBACK_REASONING_EFFORT` | strong model used only when checks fail | `gemini-2.5-pro` / `medium` |
-| `SOLVE_TIMEOUT_MS` | total budget per solve, including one retry | `170000` |
+| `SOLVER_PROVIDER` | `soclaas`, or `mock` in development | `soclaas` |
+| `SOCLAAS_MODEL` | SocLaas model that classifies and solves the confirmed question | `qwen3.6:35b` |
+| `SOLVER_DAILY_BUDGET_USD` | shared daily SocLaas solve cap | `1` |
+| `SOLVE_TIMEOUT_MS` / `SOLVER_AGENT_MS` | solve and agent caps, clamped to 30 seconds | `30000` / `30000` |
 | `SOLVE_LIMIT_PER_DEVICE_PER_HOUR` / `SOLVE_LIMIT_PER_IP_PER_HOUR` | solve abuse limits | `30` / `90` |
 | `DRAFT_RETENTION_DAYS` | unconfirmed scans older than this are deleted nightly | `7` |
 | `ALLOWED_ORIGINS` | CORS origins (only needed for Expo web) | empty |
 | `IMAGE_URL_SECRET` (secret) | HMAC key for signed image URLs, 32+ random chars | **required** |
-| `GEMINI_API_KEY` (secret) | Gemini key when `SOLVER_PROVIDER=gemini` | — |
-| `OPENAI_API_KEY` / `ANTHROPIC_API_KEY` (secret) | OCR and/or OpenAI solver | — |
+| `SOCLAAS_API_KEY` (secret) | required by production OCR and solving | **required** |
 
 **Mobile:** `EXPO_PUBLIC_API_URL` is the Worker URL. It is required for production builds and
 optional in development. It is not a secret; no keys ever ship in the app.
@@ -142,7 +140,7 @@ optional in development. It is not a secret; no keys ever ship in the app.
    - A fixed system prompt tells the model to transcribe only. Text inside the image is data,
      never instructions.
    - Output is constrained to a JSON schema.
-   - The hard timeout is 45 s, and malformed output gets one automatic retry.
+   - The hard timeout is 20 s, and malformed output gets one automatic retry within that limit.
 5. **Normalization** (`worker/src/ocr/normalize.ts`) is the single trust boundary for model
    output. It:
    - validates the shape strictly;
@@ -159,17 +157,18 @@ optional in development. It is not a secret; no keys ever ship in the app.
 7. **The student verifies.** The confirmed text is stored separately from the raw OCR, along with
    whether it was edited.
 
-To swap providers, implement `OcrProvider` (one method) and register it in
-`worker/src/ocr/service.ts`.
+Production provider selection is fixed in `worker/src/ocr/service.ts`; only the development mock is
+allowed as an alternative.
 
 ## Solver
 
 The design is in [ARCHITECTURE.md → Solver V1](ARCHITECTURE.md#solver-v1-milestone-2). In short:
 
-**Pipeline.** One strict-JSON model call returns the whole lesson. zod then validates it, and
-deterministic checks (no AI) verify its structure, figure, and answer. If a check fails, there is
-one corrective retry with the exact failures. The result is stored per problem and reused, so
-revealing hints never re-solves.
+**Pipeline.** Upload OCR uses SocLaas vision once to extract the test into questions. Solving reads
+only the current confirmed question, asks SocLaas to classify it as algebra, geometry, number theory
+or combinatorics, and exposes exactly three tools for that specialist. The agent submits a strict-JSON
+lesson; zod and deterministic checks verify its structure, figure and answer. The result is stored per
+problem and reused, so revealing hints never re-solves.
 
 **Endpoints.**
 - `POST /v1/scans/:id/questions/:qid/solve` with `{ regenerate?: boolean }` (`qid` = `q1`, `q2`, …;
@@ -192,16 +191,8 @@ intersection, tangent, …), never pixels.
 
 ## Cost
 
-Measured per lesson (see PROGRESS.md, 2026-09-29):
-
-| Problem type | Route | Cost per lesson |
-|---|---|---|
-| Algebra, equations, word problems | `gemini-2.5-flash` (low thinking); escalates to `gemini-2.5-pro` if checks fail | typically well under $0.01 (often ~$0.001–0.003) |
-| Geometry (detected from the wording) | `gemini-2.5-flash` (medium) first; escalates to `gemini-2.5-pro` only if checks fail | typically ~$0.002–0.01 when flash verifies; higher if escalated to pro |
-| Reading a photo (OCR, `gemini-2.5-flash`, ≤1280 px) | | typically ~$0.0005–0.002 (cheaper than `gpt-4.1-mini`) |
-
-- OCR and solving both default to **Gemini** (`OCR_PROVIDER=gemini`, `SOLVER_PROVIDER=gemini`).
-  One `GEMINI_API_KEY` covers both. Set either provider to `openai` to use GPT instead.
+- OCR and solving both use **SocLaas**. Solving is guarded by `SOLVER_DAILY_BUDGET_USD`; reaching
+  the cap produces a controlled failure and never switches to another provider.
 - Every AI call logs its tokens and estimated cost (`[ocr] usage:` and `[solve …] usage:` lines).
   Prices are in `worker/src/solver/pricing.ts`.
 - **Shared lesson library.** When a student asks to solve a problem, a verified lesson that any
@@ -209,12 +200,10 @@ Measured per lesson (see PROGRESS.md, 2026-09-29):
   instead of solving again: no AI call, no cost. Unverified lessons are never shared, and
   "Create a new lesson" bypasses the library.
 - Lessons are stored per question and are never regenerated when hints are revealed.
-- **Input tokens.** Non-geometry problems get a prompt and schema without the figure rules
-  (2.6K instead of 4.4K tokens). An escalated retry sends only the list of failures, not the
-  rejected lesson. Repeated instructions are served from OpenAI's prompt cache.
+- **Input tokens.** Each solve receives only the three tools for its classified specialist.
 - Solving on save is off by default (`PREFETCH_SOLVE_ON_SAVE`).
-- Local development uses the free mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
-  `worker/.dev.vars`). For real Gemini OCR/solves, set both providers to `gemini` and `GEMINI_API_KEY`.
+- Local development uses the mock AI (`OCR_PROVIDER=mock`, `SOLVER_PROVIDER=mock` in
+  `worker/.dev.vars`). For real OCR/solves, set both providers to `soclaas` and provide `SOCLAAS_API_KEY`.
 
 ## Database & storage
 

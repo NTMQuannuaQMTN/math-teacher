@@ -212,11 +212,29 @@ export class GeometryBoard {
     const r = this.resolve();
     return r.circles?.[id] ? `Đã thêm đường tròn ${id}.` : `Đường tròn ${id}: ${r.errors.slice(-1)[0] ?? "kiểm tra tâm/điểm"}.`;
   }
-  check(kind: string, refs: string[], value: number | null): string {
-    const c = FigureCheckSchema.safeParse({ kind, refs, value, role: "derived" });
+  check(kind: string, refs: string[], value: number | null, role: "given" | "derived" = "derived"): string {
+    const c = FigureCheckSchema.safeParse({ kind, refs, value, role });
     if (!c.success) return `Thuộc tính không hợp lệ (${c.error.issues[0]?.message}); kind: ${FigureCheckSchema.shape.kind.options.join(", ")}.`;
+    this.figure.checks = [...this.figure.checks.filter((x) => x.kind !== c.data.kind || x.refs.join("|") !== c.data.refs.join("|")), c.data].slice(-16);
     const r = evaluateFigureCheck(c.data, this.resolve());
     return `${kind} ${refs.join(",")}: ${r.passed ? "ĐÚNG trên hình" : "SAI trên hình"} (${r.detail}). Đo trên hình chỉ là kiểm tra, lời giải vẫn phải chứng minh.`;
+  }
+
+  /** Adds a complete construction from structured lists, then resolves and checks it as one tool call. */
+  build(input: {
+    points?: { id: string; kind: string; refs: string[]; x: number | null; y: number | null; value: number | null; value2: number | null }[];
+    lines?: { from: string; to: string; kind: "segment" | "line" | "ray"; given: boolean }[];
+    polygons?: { vertices: string[]; given: boolean }[];
+    circles?: { id: string; center: string; through: string | null; radius: number | null; given: boolean }[];
+    properties?: { kind: string; refs: string[]; value: number | null; role: "given" | "derived" }[];
+  }): string {
+    const results: string[] = [];
+    for (const p of input.points ?? []) results.push(this.addPoint(p));
+    for (const l of input.lines ?? []) results.push(this.addLine(l.from, l.to, l.kind, l.given));
+    for (const p of input.polygons ?? []) results.push(this.addPolygon(p.vertices, p.given));
+    for (const c of input.circles ?? []) results.push(this.addCircle(c.id, c.center, c.through, c.radius, c.given));
+    for (const p of input.properties ?? []) results.push(this.check(p.kind, p.refs, p.value, p.role));
+    return `${results.join("\n")}\n${this.summary()}`.trim();
   }
 }
 
@@ -241,10 +259,13 @@ export function toolsFor(type: ProblemType): ToolDef[] {
   );
   if (type === "geometry") common.push(
     fn("figure_from_statement", "Dựng hình tự động từ đề bài (nên gọi đầu tiên). Trả về các điểm, đường, đường tròn đã dựng.", {}),
-    fn("add_point", `Thêm hoặc sửa một điểm. kind: free (x, y), polar (refs [P], value = góc độ, value2 = khoảng cách), midpoint [A,B], on_segment [A,B] value t, foot [P,A,B], intersection [A,B,C,D], line_circle [A,B,circleId] value 0|1, circle_circle [c1,c2] value 0|1, on_circle [circleId] value góc, tangent [P,circleId] value 0|1, reflect [P,A,B], centroid/circumcenter/incenter/orthocenter [A,B,C]. Các trường không dùng để null.`, { id: str, kind: { type: "string", enum: PointKindSchema.options }, refs: { type: "array", items: str }, x: nullableNum, y: nullableNum, value: nullableNum, value2: nullableNum }),
-    fn("add_line", "Thêm đoạn thẳng, đường thẳng hoặc tia nối hai điểm.", { from: str, to: str, kind: { type: "string", enum: ["segment", "line", "ray"] }, given: { type: "boolean" } }),
-    fn("add_polygon", "Thêm đa giác (tam giác, tứ giác…) bằng danh sách đỉnh theo thứ tự.", { vertices: { type: "array", items: str }, given: { type: "boolean" } }),
-    fn("add_circle", "Thêm đường tròn tâm center đi qua điểm through, hoặc có bán kính radius (through = null).", { id: str, center: str, through: { type: ["string", "null"] }, radius: nullableNum, given: { type: "boolean" } }),
+    fn("build_figure", `Dựng hoặc bổ sung hình trong một lần gọi bằng năm danh sách: points, lines, polygons, circles, properties. Điểm hỗ trợ free, polar, midpoint, on_segment, foot, intersection, line_circle, circle_circle, on_circle, tangent, reflect, rotate, translate, centroid, circumcenter, incenter, orthocenter. Thuộc tính hỗ trợ ${FigureCheckSchema.shape.kind.options.join(", ")}.`, {
+      points: { type: "array", items: { type: "object", properties: { id: str, kind: { type: "string", enum: PointKindSchema.options }, refs: { type: "array", items: str }, x: nullableNum, y: nullableNum, value: nullableNum, value2: nullableNum }, required: ["id", "kind", "refs", "x", "y", "value", "value2"], additionalProperties: false } },
+      lines: { type: "array", items: { type: "object", properties: { from: str, to: str, kind: { type: "string", enum: ["segment", "line", "ray"] }, given: { type: "boolean" } }, required: ["from", "to", "kind", "given"], additionalProperties: false } },
+      polygons: { type: "array", items: { type: "object", properties: { vertices: { type: "array", items: str }, given: { type: "boolean" } }, required: ["vertices", "given"], additionalProperties: false } },
+      circles: { type: "array", items: { type: "object", properties: { id: str, center: str, through: { type: ["string", "null"] }, radius: nullableNum, given: { type: "boolean" } }, required: ["id", "center", "through", "radius", "given"], additionalProperties: false } },
+      properties: { type: "array", items: { type: "object", properties: { kind: { type: "string", enum: FigureCheckSchema.shape.kind.options }, refs: { type: "array", items: str }, value: nullableNum, role: { type: "string", enum: ["given", "derived"] } }, required: ["kind", "refs", "value", "role"], additionalProperties: false } },
+    }),
     fn("check_property", `Đo một tính chất trên hình: ${FigureCheckSchema.shape.kind.options.join(", ")} (refs theo thứ tự điểm, ví dụ collinear [A,G,D], perpendicular [A,B,C,D] là AB ⊥ CD, angle_value [A,V,B] value độ, concyclic [A,B,C,D], on_circle [P, circleId]).`, { kind: { type: "string", enum: FigureCheckSchema.shape.kind.options }, refs: { type: "array", items: str }, value: nullableNum }),
   );
   return common;
@@ -265,6 +286,7 @@ export function runTypeTool(name: string, args: Record<string, unknown>, ctx: { 
     case "enumerate_count": return enumerateCount(((args.items as unknown[]) ?? []).map(Number), n("length"), b("ordered"), b("repetition"), s("condition"));
     case "take_away_game": return takeAway(n("stones"), ((args.moves as unknown[]) ?? []).map(Number), b("last_loses"));
     case "figure_from_statement": return ctx.board.fromStatement(ctx.problemText);
+    case "build_figure": return ctx.board.build(args as Parameters<GeometryBoard["build"]>[0]);
     case "add_point": return ctx.board.addPoint({ id: s("id"), kind: s("kind"), refs: ((args.refs as unknown[]) ?? []).map(String), x: nullable("x"), y: nullable("y"), value: nullable("value"), value2: nullable("value2") });
     case "add_line": return ctx.board.addLine(s("from"), s("to"), (s("kind") || "segment") as "segment" | "line" | "ray", b("given"));
     case "add_polygon": return ctx.board.addPolygon(((args.vertices as unknown[]) ?? []).map(String), b("given"));

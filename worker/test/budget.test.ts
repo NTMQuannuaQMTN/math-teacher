@@ -46,6 +46,21 @@ describe("daily budget for the paid fallback", () => {
     expect(spent).toBeCloseTo((7000 * 0.75 + 30_000 * 3.75) / 1e6, 4);
   });
 
+  it("adds usage from classification and all agent turns", async () => {
+    const db = fakeDb();
+    const agent: JsonModel = {
+      name: "agent", model: "gemini-3.8-flash",
+      complete: async ({ onUsage }) => {
+        onUsage?.({ input: 1000, cachedInput: 100, output: 200, reasoning: 0 });
+        onUsage?.({ input: 3000, cachedInput: 200, output: 800, reasoning: 50 });
+        return "{}";
+      },
+    };
+    await new BudgetedJsonModel(agent, db, 0.5).complete(input);
+    const spent = [...db.rows.values()][0]! / 1e6;
+    expect(spent).toBeCloseTo(((4000 - 300) * 0.75 + 300 * 0.075 + 1000 * 3.75) / 1e6, 6);
+  });
+
   it("keeps the worst case for a call that fails without usage", async () => {
     const db = fakeDb();
     await expect(new BudgetedJsonModel(gemini(null), db, 0.5).complete(input)).rejects.toThrow();
