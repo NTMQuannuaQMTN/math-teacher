@@ -1,8 +1,0 @@
-{
-  "createdAt": "2026-10-14T06:54:27.851Z",
-  "bundleSha256": "d0705a42b9d5782a858e2a32e6cba3a515b6af382283468afc1ac6492dc2bb72",
-  "port": 8804,
-  "ocrProvider": "mock",
-  "externalInference": "disabled",
-  "state": "isolated"
-}

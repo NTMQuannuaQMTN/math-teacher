@@ -1,6 +1,0 @@
-{
-  "recordedAt": "2026-10-12T01:25:16.933595+00:00",
-  "userConfirmation": "Yes, it has been sleeping",
-  "accounting": "Do not charge sleeping or unknown-continuity gaps. Bounded actual workloads and explicit timestamps; no fabricated eight hours.",
-  "latency": "A process cannot return while host asleep. Deadline tests and awake actual measurements recorded separately; stale completion rejection does not erase observed violations."
-}
