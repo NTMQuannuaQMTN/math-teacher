@@ -1,0 +1,30 @@
+{
+  "provider": "soclaas",
+  "_comment": "Copy to config/models.json. Model ids MUST be checked against GET /v1/models for your key (scripts/soclaas_probe.py). Prices are never assumed: a model with pricing=null cannot be called. SoCLaaS publishes no price list; if your key is free, set prices to 0 explicitly after confirming.",
+  "models": [
+    {
+      "id": "qwen3.8:27b",
+      "vision": true,
+      "structured_output": "json_schema",
+      "max_output_tokens": 8192,
+      "context_window": 32768,
+      "image_patch_px": 28,
+      "pricing": null,
+      "notes": "Vision model used in public SoCLaaS labs (lab 112). Unverified for this key."
+    },
+    {
+      "id": "qwen3.6:35b",
+      "vision": false,
+      "structured_output": "json_schema",
+      "max_output_tokens": 8192,
+      "context_window": 32768,
+      "pricing": null,
+      "notes": "Seen in public projects using SoCLaaS. Unverified for this key."
+    }
+  ],
+  "routing": {
+    "ocr": "qwen3.8:27b",
+    "fast": "qwen3.6:35b",
+    "reasoning": "qwen3.6:35b"
+  }
+}

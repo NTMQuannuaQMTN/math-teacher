@@ -1,0 +1,10 @@
+.venv
+var
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.hypothesis
+__pycache__
+tests
+.env
+config/models.json

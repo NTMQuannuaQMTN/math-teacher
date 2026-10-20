@@ -1,0 +1,8 @@
+{
+  "page_kind": "handwritten",
+  "language": "vi",
+  "items": [
+    {"kind": "question", "number": null, "continues_previous_page": true, "stem": "", "subquestions": [{"label": "c)", "content": "Tìm giá trị nhỏ nhất của $P = x^2 + y^2$."}], "confidence": 0.7},
+    {"kind": "question", "number": "Bài 6", "stem": "Có bao nhiêu cách xếp $5$ học sinh thành một hàng?", "confidence": 0.9}
+  ]
+}

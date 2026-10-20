@@ -1,0 +1,73 @@
+[project]
+name = "math-tutor-api"
+version = "0.2.0"
+description = "AI Math Tutor API (Vietnamese Grade 10 specialised mathematics entrance preparation)"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "fastapi>=0.120,<1",
+  "pydantic>=2.11,<3",
+  "pydantic-settings>=2.10,<3",
+  "uvicorn[standard]>=0.35,<1",
+  "python-multipart>=0.0.20",
+  "sqlalchemy[asyncio]>=2.0.40,<2.1",
+  "asyncpg>=0.30,<1",
+  "alembic>=1.16,<2",
+  "httpx>=0.28,<1",
+  "pillow>=11.3",
+  "pypdfium2>=4.30,<6",
+  "boto3>=1.40,<2",
+  "pyjwt[crypto]>=2.10,<3",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4,<10",
+  "pytest-asyncio>=1.1,<2",
+  "hypothesis>=6.135",
+  "ruff>=0.12",
+  "mypy>=1.17",
+  "boto3-stubs[s3]>=1.40",
+  "matplotlib>=3.10",
+  "pypdf>=6.21.1",
+]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+markers = [
+  "live: calls the real SoCLaaS API (requires SOCLAAS_API_KEY and a model catalogue)",
+  "s3: requires the MinIO service from docker-compose",
+]
+addopts = "-m 'not live'"
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "S", "RUF"]
+ignore = ["S101", "RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B"]
+"scripts/**" = ["S"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["migrations/"]
+
+[[tool.mypy.overrides]]
+module = ["pypdfium2.*"]
+ignore_missing_imports = true

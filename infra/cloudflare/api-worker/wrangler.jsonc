@@ -1,0 +1,26 @@
+// Python API on Cloudflare Containers (Workers Paid plan). Deploy is a Phase 7 task; this file is
+// validated with `npx wrangler deploy --dry-run` but not deployed in Phase 1/2.
+// Secrets (wrangler secret put <NAME>): DATABASE_URL, GATEWAY_SECRET, TURNSTILE_SECRET_KEY, SOCLAAS_API_KEY,
+// MODEL_CATALOG_JSON, CF_ACCESS_TEAM_DOMAIN, CF_ACCESS_AUDIENCE, S3_ENDPOINT_URL, S3_ACCESS_KEY_ID,
+// S3_SECRET_ACCESS_KEY. S3_* point at Cloudflare R2's S3 API (https://<account_id>.r2.cloudflarestorage.com).
+{
+  "$schema": "../../../apps/web/node_modules/wrangler/config-schema.json",
+  "name": "math-tutor-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-20",
+  "observability": { "enabled": true },
+  "vars": { "S3_BUCKET": "math-tutor" },
+  "containers": [
+    {
+      "class_name": "ApiContainer",
+      "image": "../../../services/api/Dockerfile",
+      // standard-1: 1/2 vCPU, 4 GiB RAM, 8 GB disk (enough for SymPy/PDF rendering; disk is not durable).
+      "instance_type": "standard-1",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "API_CONTAINER", "class_name": "ApiContainer" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ApiContainer"] }]
+}

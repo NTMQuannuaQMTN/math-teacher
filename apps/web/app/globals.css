@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+@theme {
+  --color-ink: #172033;
+  --color-muted: #5b6478;
+  --color-brand: #2f5bea;
+  --color-brand-soft: #eef2ff;
+  --color-paper: #ffffff;
+  --color-wash: #f5f7fb;
+  --color-line: #e3e7ef;
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-wash);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.math-text .katex {
+  font-size: 1.08em;
+}
+
+.math-text .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.math-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 4px;
+  padding: 0 3px;
+  font-family: ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+mark.unclear {
+  background: #fde68a;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}

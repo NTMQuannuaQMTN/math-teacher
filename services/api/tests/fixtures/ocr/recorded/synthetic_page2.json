@@ -1,0 +1,7 @@
+{
+  "page_kind": "printed",
+  "language": "vi",
+  "items": [
+    {"kind": "question", "number": "Câu 5", "stem": "Cho tam giác $ABC$ nội tiếp đường tròn $(O)$. Gọi $M$ là trung điểm của $BC$.\nChứng minh rằng $OM \\perp BC$.", "bbox": [70, 40, 860, 110], "has_figure": true, "figure_bbox": [300, 350, 700, 650], "confidence": 0.94}
+  ]
+}

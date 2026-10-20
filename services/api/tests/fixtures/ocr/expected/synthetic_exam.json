@@ -1,0 +1,39 @@
+{
+  "synthetic": true,
+  "questions": [
+    {
+      "number": "Câu 1",
+      "latex": "Giải phương trình $x^2 - 5x + 6 = 0$.",
+      "subquestions": []
+    },
+    {
+      "number": "Câu 2",
+      "latex": "Cho $a, b > 0$ thỏa mãn $a + b = 2$. Chứng minh rằng $\\frac{1}{a} + \\frac{1}{b} \\ge 2$.",
+      "subquestions": []
+    },
+    {
+      "number": "Câu 3",
+      "latex": "Tìm tất cả số nguyên $n$ sao cho $n^2 + 1$ chia hết cho $5$.",
+      "subquestions": []
+    },
+    {
+      "number": "Câu 4",
+      "latex": "Cho hệ phương trình $x + y = 5$ và $xy = 6$.",
+      "subquestions": [
+        {
+          "label": "a)",
+          "latex": "Tính $x^2 + y^2$."
+        },
+        {
+          "label": "b)",
+          "latex": "Tính $\\sqrt{x} + \\sqrt{y}$ khi $x \\le y$."
+        }
+      ]
+    },
+    {
+      "number": "Câu 5",
+      "latex": "Cho tam giác $ABC$ nội tiếp đường tròn $(O)$. Gọi $M$ là trung điểm của $BC$.\nChứng minh rằng $OM \\perp BC$.",
+      "subquestions": []
+    }
+  ]
+}

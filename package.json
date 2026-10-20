@@ -1,0 +1,11 @@
+{
+  "name": "ai-math-tutor",
+  "private": true,
+  "scripts": {
+    "web:dev": "npm --prefix apps/web run dev",
+    "web:build": "npm --prefix apps/web run build",
+    "web:build:cf": "npm --prefix apps/web run build:vinext",
+    "web:typecheck": "npm --prefix apps/web run typecheck",
+    "web:e2e": "npm --prefix apps/web run test:e2e"
+  }
+}
