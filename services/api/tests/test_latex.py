@@ -102,3 +102,11 @@ def test_backslash_before_converted_symbol_does_not_escape_dollar(raw: str) -> N
     report = normalize_latex(raw)
     assert "unclosed_math" not in [i.code for i in report.issues]
     assert normalize_latex(report.text).text == report.text
+
+
+@pytest.mark.parametrize("raw", ["\\\\(a\\)", "\\\\(\\(\\)\\)"])
+def test_line_break_before_a_parenthesis_is_not_inline_maths(raw: str) -> None:
+    # Found by Hypothesis: "\\(" is a \\ line break and "(", not the \( opener; normalising must be idempotent.
+    once = normalize_latex(raw)
+    assert normalize_latex(once.text).text == once.text
+    assert not normalize_latex(once.text).has_errors

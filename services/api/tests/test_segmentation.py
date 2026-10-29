@@ -41,6 +41,27 @@ def test_synthetic_exam_golden() -> None:
     assert q5.figure_regions[0].bbox == (0.3, 0.35, 0.7, 0.65)
 
 
+def _question(**kwargs: object) -> OcrItem:
+    return OcrItem.model_validate({"kind": "question", "number": "Câu 5", "confidence": 0.95, **kwargs})
+
+
+def test_model_topics_win_over_keywords() -> None:
+    # A magic-square problem full of "chia hết" / "số nguyên dương": keywords say number theory.
+    item = _question(stem="Một số nguyên dương $n$ được gọi là số tốt nếu điền được 9 số nguyên dương phân biệt "
+                          "vào bảng ô vuông $3 \\times 3$ ... Chứng minh nếu $n$ chia hết cho 3 thì ... "
+                          "chia hết cho 3.",
+                     topics=["combinatorics", "number_theory", "combinatorics", "algebra"])
+    (q,) = build_questions([(1, OcrPage(page_kind="printed", items=[item]))])
+    assert q.topics == ["combinatorics", "number_theory"]  # deduplicated, main topic first, at most two
+    assert q.topic_source == "ai"
+
+
+def test_keywords_are_the_fallback_without_model_topics() -> None:
+    item = _question(stem="Cho tam giác $ABC$ nội tiếp đường tròn.")
+    (q,) = build_questions([(1, OcrPage(page_kind="printed", items=[item]))])
+    assert q.topics == ["geometry"] and q.topic_source == "heuristic"
+
+
 def test_header_items_are_dropped() -> None:
     questions = build_questions([(1, recorded("synthetic_page1"))])
     assert all("ĐỀ LUYỆN TẬP" not in q.latex for q in questions)

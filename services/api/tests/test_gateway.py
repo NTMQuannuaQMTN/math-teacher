@@ -13,7 +13,14 @@ from app.errors import BudgetExceeded
 from app.models import LlmCall
 from app.providers.base import ChatMessage, ChatRequest, ChatResult, ProviderError, Usage
 from app.providers.catalog import ModelCatalog, ModelNotConfigured, cost_sgd
-from app.providers.gateway import CallContext, InvalidModelOutput, LLMGateway, ModelCallFailed, extract_json
+from app.providers.gateway import (
+    CallContext,
+    InvalidModelOutput,
+    LLMGateway,
+    ModelCallFailed,
+    extract_json,
+    require_all_fields,
+)
 from tests.conftest import ScriptedProvider, make_catalog
 
 
@@ -72,6 +79,35 @@ async def test_structured_success_records_actual_cost(container: Container, prov
     status = await container.budget.status()
     assert status.spent_sgd == Decimal("0.0004") and status.reserved_sgd == 0
     assert provider.requests[0].structured_mode == "json_object"
+    # json_object mode does not send the schema to the provider, so it must be in the prompt.
+    system = provider.requests[0].messages[0]
+    assert system.role == "system" and isinstance(system.content, str) and '"value"' in system.content
+
+
+class Page(BaseModel):
+    kind: str
+    items: list[Answer] = []
+    note: str | None = None
+
+
+def test_schema_requires_every_field() -> None:
+    # Optional fields let constrained decoders return `{"kind": ...}` with no items (seen live on SoCLaaS).
+    schema = require_all_fields(Page.model_json_schema())
+    assert schema["required"] == ["kind", "items", "note"] and schema["additionalProperties"] is False
+    assert schema["$defs"]["Answer"]["required"] == ["value"]
+    assert Page.model_json_schema()["required"] == ["kind"]
+
+
+async def test_schema_mode_sends_strict_schema_without_prompt_copy(container: Container,
+                                                                   provider: ScriptedProvider) -> None:
+    provider.push('{"kind": "x", "items": [{"value": 1}], "note": null}')
+    assert container.gateway is not None
+    await container.gateway.structured(tier="ocr", ctx=CTX, messages=MSG, output=Page, max_tokens=500,
+                                       schema_name="page")
+    request = provider.requests[0]
+    assert request.structured_mode == "json_schema"
+    assert request.response_schema is not None and request.response_schema["required"] == ["kind", "items", "note"]
+    assert request.messages == MSG
 
 
 async def test_invalid_output_gets_one_metered_repair(container: Container, provider: ScriptedProvider) -> None:
@@ -191,3 +227,32 @@ async def test_reservation_covers_image_estimate(container: Container) -> None:
 def test_request_schema_serialises() -> None:
     req = ChatRequest(model="m", messages=MSG, max_tokens=5, response_schema=Answer.model_json_schema())
     assert json.loads(req.model_dump_json())["max_tokens"] == 5
+
+
+async def test_json_repair_after_thinking_runs_without_thinking(container: Container, provider: ScriptedProvider
+                                                                ) -> None:
+    provider.push("not json")
+    provider.push('{"value": 3}')
+    assert container.gateway is not None
+    result = await container.gateway.structured(tier="reasoning", ctx=CTX, messages=MSG, output=Answer,
+                                                max_tokens=500, schema_name="answer", thinking=True)
+    assert result.value.value == 3
+    first, repair = provider.requests
+    assert (first.thinking, first.max_tokens, first.timeout_seconds) == (True, 12000, 300)
+    assert (repair.thinking, repair.max_tokens, repair.timeout_seconds) == (False, 8000, None)
+
+
+async def test_thinking_flag_not_sent_by_default(container: Container, provider: ScriptedProvider) -> None:
+    provider.push('{"value": 1}')
+    assert container.gateway is not None
+    await container.gateway.structured(tier="reasoning", ctx=CTX, messages=MSG, output=Answer, max_tokens=500,
+                                       schema_name="answer")
+    assert provider.requests[0].thinking is None  # e.g. OCR keeps the provider's default behaviour
+
+
+def test_thinking_payload_shape() -> None:
+    from app.providers.soclaas import SoclaasProvider
+    payload = SoclaasProvider.build_payload(ChatRequest(model="m", messages=MSG, max_tokens=5, thinking=False))
+    assert payload["chat_template_kwargs"] == {"enable_thinking": False}
+    assert "chat_template_kwargs" not in SoclaasProvider.build_payload(ChatRequest(model="m", messages=MSG,
+                                                                                   max_tokens=5))

@@ -151,7 +151,7 @@ async def run_ocr_job(c: Container, job: Job) -> dict[str, Any]:
                 subquestions=[s.model_dump() for s in q.subquestions],
                 ocr_subquestions=[s.model_dump() for s in q.subquestions],
                 source_pages=q.source_pages, regions=[r.model_dump(mode="json") for r in q.regions],
-                topics=q.topics, topic_source="heuristic", review_status=review_status_for(q.flags),
+                topics=q.topics, topic_source=q.topic_source, review_status=review_status_for(q.flags),
                 flags=[f.model_dump() for f in q.flags], ocr_confidence=q.confidence, origin="ocr", version=1,
             )
             session.add(question)

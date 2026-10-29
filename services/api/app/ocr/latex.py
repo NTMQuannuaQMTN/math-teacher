@@ -72,6 +72,9 @@ _SUPERSCRIPTS = {"⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵":
 _SUBSCRIPTS = {"₀": "0", "₁": "1", "₂": "2", "₃": "3", "₄": "4", "₅": "5", "₆": "6", "₇": "7", "₈": "8",
                "₉": "9", "ₙ": "n"}
 
+_ATOM_COMMANDS = {"pi", "alpha", "beta", "gamma", "delta", "varepsilon", "theta", "lambda", "mu", "varphi",
+                  "omega", "infty"}
+
 ALLOWED_ENVIRONMENTS = {
     "cases", "dcases", "rcases", "array", "matrix", "pmatrix", "bmatrix", "vmatrix", "Vmatrix", "aligned",
     "alignedat", "gathered", "split", "align", "align*", "gather", "gather*", "equation", "equation*",
@@ -145,7 +148,10 @@ def _convert_sqrt(math: str, issues: list[LatexIssue]) -> str:
                 i = k + 1
                 continue
         else:
-            m = re.match(r"\d+(?:[.,]\d+)?|[A-Za-z]|\\[A-Za-z]+", math[j:])
+            m = re.match(r"\d+(?:[.,]\d+)?|[A-Za-z](?![A-Za-z])|\\[A-Za-z]+", math[j:])
+            # A command is a valid operand only if it is a single symbol (\pi, \alpha), not one taking arguments.
+            if m and m.group(0).startswith("\\") and m.group(0)[1:] not in _ATOM_COMMANDS:
+                m = None
             if m:
                 out.append(r"\sqrt{" + m.group(0) + "}")
                 i = j + len(m.group(0))
@@ -158,9 +164,12 @@ def _convert_sqrt(math: str, issues: list[LatexIssue]) -> str:
 
 
 def _normalize_math(math: str, issues: list[LatexIssue]) -> str:
+    if re.search(r"(?<!\\)\$", math):
+        # A bare "$" inside \(…\) would end the formula early once written as $…$.
+        math = re.sub(r"(?<!\\)\$", r"\\$", math)
+        issues.append(LatexIssue("dollar_in_math", "warning", "Có ký hiệu $ bên trong công thức."))
     math = _replace_scripts(math, _SUPERSCRIPTS, "^")
     math = _replace_scripts(math, _SUBSCRIPTS, "_")
-    math = _convert_sqrt(math, issues)
     out: list[str] = []
     i = 0
     while i < len(math):
@@ -178,7 +187,8 @@ def _normalize_math(math: str, issues: list[LatexIssue]) -> str:
             nxt = math[i + 1] if i + 1 < len(math) else ""
             out.append(repl + (" " if repl[-1].isalpha() and (nxt.isalnum()) else ""))
         i += 1
-    return re.sub(r"[ \t]+", " ", "".join(out)).strip()
+    # √ is converted after the symbols so that a converted symbol (√≤ → √\le) is read the same way every pass.
+    return _convert_sqrt(re.sub(r"[ \t]+", " ", "".join(out)).strip(), issues)
 
 
 def split_segments(text: str) -> tuple[list[Segment], list[LatexIssue]]:
@@ -196,7 +206,8 @@ def split_segments(text: str) -> tuple[list[Segment], list[LatexIssue]]:
 
     while i < n:
         ch = text[i]
-        if ch == "\\" and i + 1 < n and text[i + 1] in "$%":
+        # \$ and \% are literal; a \\ line break is one unit, so "\\(" never opens inline maths.
+        if ch == "\\" and i + 1 < n and text[i + 1] in "$%\\":
             buf.append(text[i:i + 2])
             i += 2
             continue
@@ -301,6 +312,10 @@ def normalize_latex(raw: str) -> LatexReport:
         if segment.kind == "math":
             math = _normalize_math(segment.content, issues)
             _check_math(math, issues)
+            if not math:
+                # An empty formula is dropped: "$" + "$" would re-read as an unclosed "$$".
+                issues.append(LatexIssue("empty_math", "warning", "Có công thức rỗng."))
+                continue
             parts.append(f"$${math}$$" if segment.display else f"${math}$")
             continue
         content = segment.content

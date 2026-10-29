@@ -62,13 +62,18 @@ class SoclaasProvider:
             }
         elif request.structured_mode == "json_object":
             payload["response_format"] = {"type": "json_object"}
+        if request.thinking is not None:
+            # Verified on SoCLaaS (2026-10-21): toggles Qwen 3.x hidden reasoning ("reasoning" in the reply).
+            payload["chat_template_kwargs"] = {"enable_thinking": request.thinking}
         return payload
 
     async def chat(self, request: ChatRequest) -> ChatResult:
         payload = self.build_payload(request)
         started = time.monotonic()
         try:
-            response = await self._client.post("chat/completions", json=payload)
+            timeout = httpx.Timeout(request.timeout_seconds, connect=10.0) if request.timeout_seconds else None
+            response = await (self._client.post("chat/completions", json=payload, timeout=timeout) if timeout
+                              else self._client.post("chat/completions", json=payload))
         except httpx.ConnectError as exc:
             raise ProviderError("connection", "Cannot connect to SoCLaaS", request_sent=False) from exc
         except httpx.TimeoutException as exc:

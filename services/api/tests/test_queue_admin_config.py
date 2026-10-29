@@ -170,3 +170,35 @@ async def test_s3_store_against_seaweedfs(settings: Settings) -> None:
     assert await store.delete_prefix("users/u/documents/d") == 2
     with pytest.raises(StorageError):
         await store.get("users/u/documents/d/pages/1.png")
+
+
+def test_llm_fixture_provider_refused_in_production() -> None:
+    with pytest.raises(ValidationError, match="LLM_PROVIDER"):
+        _prod(llm_provider="fixture")
+
+
+def test_production_requires_tls_database() -> None:
+    with pytest.raises(ValidationError, match="TLS"):
+        _prod(database_url="postgresql+asyncpg://u:p@db.example.com:5432/x")
+    _prod(database_url="postgresql+asyncpg://u:p@db.example.com:5432/x?ssl=require")
+
+
+async def test_budget_alert_webhook_is_called_on_state_change(container: Container) -> None:
+    from app.billing import budget as budget_module
+    sent: list[dict[str, object]] = []
+
+    class Recorder:
+        def __init__(self, **_: object) -> None: ...
+        async def __aenter__(self) -> Recorder: return self
+        async def __aexit__(self, *_: object) -> None: ...
+        async def post(self, url: str, json: dict[str, object]) -> None: sent.append({"url": url, **json})
+
+    container.settings.alert_webhook_url = SecretStr("https://hooks.example.com/x")
+    original = budget_module.httpx.AsyncClient
+    budget_module.httpx.AsyncClient = Recorder  # type: ignore[misc, assignment]
+    try:
+        await container.budget.reserve(amount_sgd=Decimal("7.5"), purpose="t", provider="soclaas", model="m",
+                                       tier="fast", user_id=None)
+    finally:
+        budget_module.httpx.AsyncClient = original  # type: ignore[misc]
+    assert len(sent) == 1 and "cảnh báo" in str(sent[0]["text"])

@@ -13,14 +13,19 @@ from typing import Any
 from ..container import Container
 from ..logging_setup import job_id_var
 from ..models import Job
+from .figure_job import mark_figure_failed, run_figure_job
 from .ocr_job import JobError, mark_document_failed, run_ocr_job
+from .solve_job import mark_solution_failed, run_solve_job
 
 logger = logging.getLogger(__name__)
 
 Handler = Callable[[Container, Job], Awaitable[dict[str, Any]]]
-HANDLERS: dict[str, Handler] = {"ocr_document": run_ocr_job}
+HANDLERS: dict[str, Handler] = {"ocr_document": run_ocr_job, "solve_question": run_solve_job,
+                                "figure_question": run_figure_job}
 FAILURE_HOOKS: dict[str, Callable[[Container, Job, str, str], Awaitable[None]]] = {
     "ocr_document": mark_document_failed,
+    "solve_question": mark_solution_failed,
+    "figure_question": mark_figure_failed,
 }
 
 

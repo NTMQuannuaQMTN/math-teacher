@@ -1,0 +1,23 @@
+{
+ "approach_vi": "Em phân tích vế trái thành nhân tử.",
+ "variable": "x",
+ "steps": [
+  {
+   "text": "$x^2 - 5x + 6 = 0$",
+   "math": "x^2-5*x+6=0",
+   "status": "correct",
+   "note_vi": null
+  },
+  {
+   "text": "$(x-2)(x-3) = 0$",
+   "math": "(x-2)*(x-3)=0",
+   "status": "correct",
+   "note_vi": null
+  }
+ ],
+ "first_error_index": null,
+ "error_explanation_vi": null,
+ "next_hint_vi": "Một tích bằng $0$ khi nào? Em hãy xét từng nhân tử.",
+ "student_reached_answer": false,
+ "encouragement_vi": "Em đang đi đúng hướng!"
+}

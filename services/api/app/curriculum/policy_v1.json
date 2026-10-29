@@ -1,0 +1,427 @@
+{
+  "version": "curriculum-2026.10-v1.1",
+  "description": "Methods allowed in student-facing solutions for Toán chuyên vào 10: Vietnamese Grade 9 and below, plus elementary Olympiad techniques. Prohibited items fail the solution; discouraged items are reported as warnings.",
+  "allowed": [
+    {
+      "id": "algebraic_identities",
+      "name_vi": "Hằng đẳng thức đáng nhớ, phân tích đa thức thành nhân tử",
+      "topic": "algebra"
+    },
+    {
+      "id": "linear_quadratic_equations",
+      "name_vi": "Phương trình bậc nhất, bậc hai, công thức nghiệm, biệt thức Δ",
+      "topic": "algebra"
+    },
+    {
+      "id": "vieta",
+      "name_vi": "Hệ thức Vi-ét",
+      "topic": "algebra"
+    },
+    {
+      "id": "systems_of_equations",
+      "name_vi": "Hệ phương trình (thế, cộng đại số, đặt ẩn phụ, hệ đối xứng)",
+      "topic": "algebra"
+    },
+    {
+      "id": "radicals",
+      "name_vi": "Căn thức, trục căn thức, điều kiện xác định",
+      "topic": "algebra"
+    },
+    {
+      "id": "substitution",
+      "name_vi": "Đặt ẩn phụ",
+      "topic": "algebra"
+    },
+    {
+      "id": "inequality_basic",
+      "name_vi": "Biến đổi tương đương, bình phương không âm",
+      "topic": "algebra"
+    },
+    {
+      "id": "am_gm",
+      "name_vi": "Bất đẳng thức Cô-si (AM-GM)",
+      "topic": "algebra"
+    },
+    {
+      "id": "cauchy_schwarz",
+      "name_vi": "Bất đẳng thức Bunhiacopxki (Cauchy–Schwarz), dạng Engel (Svac-xơ)",
+      "topic": "algebra"
+    },
+    {
+      "id": "functions_grade9",
+      "name_vi": "Hàm số bậc nhất, hàm số y = ax², đồ thị, parabol và đường thẳng",
+      "topic": "algebra"
+    },
+    {
+      "id": "extremum_elementary",
+      "name_vi": "Tìm giá trị lớn nhất, nhỏ nhất bằng biến đổi sơ cấp",
+      "topic": "algebra"
+    },
+    {
+      "id": "divisibility",
+      "name_vi": "Chia hết, số nguyên tố, ước và bội",
+      "topic": "number_theory"
+    },
+    {
+      "id": "gcd_lcm",
+      "name_vi": "ƯCLN, BCNN, thuật toán Euclid",
+      "topic": "number_theory"
+    },
+    {
+      "id": "congruence",
+      "name_vi": "Đồng dư thức, xét số dư",
+      "topic": "number_theory"
+    },
+    {
+      "id": "parity",
+      "name_vi": "Tính chẵn lẻ",
+      "topic": "number_theory"
+    },
+    {
+      "id": "perfect_squares",
+      "name_vi": "Số chính phương, kẹp giữa hai bình phương liên tiếp",
+      "topic": "number_theory"
+    },
+    {
+      "id": "diophantine_elementary",
+      "name_vi": "Phương trình nghiệm nguyên (phân tích, đánh giá, chặn)",
+      "topic": "number_theory"
+    },
+    {
+      "id": "counting",
+      "name_vi": "Quy tắc cộng, quy tắc nhân, đếm trực tiếp",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "permutations_combinations",
+      "name_vi": "Hoán vị, chỉnh hợp, tổ hợp",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "pigeonhole",
+      "name_vi": "Nguyên lý Dirichlet",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "invariants",
+      "name_vi": "Bất biến, đơn biến",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "extremal_principle",
+      "name_vi": "Nguyên lý cực hạn",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "case_analysis",
+      "name_vi": "Xét trường hợp",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "induction",
+      "name_vi": "Quy nạp toán học",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "coloring",
+      "name_vi": "Tô màu, bảng ô vuông",
+      "topic": "combinatorics"
+    },
+    {
+      "id": "congruent_triangles",
+      "name_vi": "Tam giác bằng nhau",
+      "topic": "geometry"
+    },
+    {
+      "id": "similar_triangles",
+      "name_vi": "Tam giác đồng dạng",
+      "topic": "geometry"
+    },
+    {
+      "id": "thales",
+      "name_vi": "Định lí Ta-lét, đường trung bình",
+      "topic": "geometry"
+    },
+    {
+      "id": "pythagoras",
+      "name_vi": "Định lí Py-ta-go, hệ thức lượng trong tam giác vuông",
+      "topic": "geometry"
+    },
+    {
+      "id": "trig_ratios",
+      "name_vi": "Tỉ số lượng giác của góc nhọn",
+      "topic": "geometry"
+    },
+    {
+      "id": "angle_chasing",
+      "name_vi": "Biến đổi góc, góc nội tiếp, góc tạo bởi tiếp tuyến và dây",
+      "topic": "geometry"
+    },
+    {
+      "id": "cyclic_quadrilateral",
+      "name_vi": "Tứ giác nội tiếp",
+      "topic": "geometry"
+    },
+    {
+      "id": "tangents",
+      "name_vi": "Tiếp tuyến, tính chất hai tiếp tuyến cắt nhau",
+      "topic": "geometry"
+    },
+    {
+      "id": "power_of_point",
+      "name_vi": "Hệ thức tích các đoạn thẳng (cát tuyến, tiếp tuyến)",
+      "topic": "geometry"
+    },
+    {
+      "id": "angle_bisector_theorem",
+      "name_vi": "Tính chất đường phân giác",
+      "topic": "geometry"
+    },
+    {
+      "id": "area_method",
+      "name_vi": "Phương pháp diện tích",
+      "topic": "geometry"
+    },
+    {
+      "id": "ceva_menelaus",
+      "name_vi": "Định lí Xê-va, Mê-nê-la-uýt (Olympic sơ cấp)",
+      "topic": "geometry"
+    },
+    {
+      "id": "ptolemy",
+      "name_vi": "Định lí Ptô-lê-mê (Olympic sơ cấp)",
+      "topic": "geometry"
+    }
+  ],
+  "discouraged": [
+    {
+      "id": "fermat_little",
+      "name_vi": "Định lí Fermat nhỏ",
+      "patterns": [
+        "Fermat nhỏ",
+        "Fermat's little"
+      ],
+      "reason_vi": "Nên dùng xét số dư trực tiếp."
+    },
+    {
+      "id": "euler_theorem",
+      "name_vi": "Định lí Euler (số học)",
+      "patterns": [
+        "định lí Euler",
+        "định lý Euler",
+        "phi hàm Euler",
+        "\\\\varphi\\(n\\)"
+      ],
+      "reason_vi": "Vượt chương trình lớp 9."
+    },
+    {
+      "id": "chinese_remainder",
+      "name_vi": "Định lí số dư Trung Hoa",
+      "patterns": [
+        "số dư Trung Hoa",
+        "Chinese remainder"
+      ],
+      "reason_vi": "Vượt chương trình lớp 9."
+    },
+    {
+      "id": "schur_jensen",
+      "name_vi": "Bất đẳng thức Schur, Jensen, Karamata",
+      "patterns": [
+        "Schur",
+        "Jensen",
+        "Karamata",
+        "Muirhead"
+      ],
+      "reason_vi": "Bất đẳng thức Olympic nâng cao; nên dùng Cô-si hoặc biến đổi tương đương."
+    },
+    {
+      "id": "cyclic_shortcut",
+      "name_vi": "Viết tắt 'hoán vị vòng quanh'",
+      "patterns": [
+        "hoán vị vòng quanh"
+      ],
+      "reason_vi": "Phải liệt kê đầy đủ các nghiệm."
+    }
+  ],
+  "prohibited": [
+    {
+      "id": "calculus",
+      "name_vi": "Đạo hàm, tích phân, giới hạn",
+      "patterns": [
+        "đạo hàm",
+        "tích phân",
+        "\\\\int(?![A-Za-z])",
+        "\\\\lim(?![A-Za-z])",
+        "\\\\frac\\{d[^}]*\\}\\{d",
+        "f'\\(",
+        "f\\^\\{\\\\prime\\}",
+        "\\\\partial",
+        "derivative"
+      ]
+    },
+    {
+      "id": "vectors",
+      "name_vi": "Véc-tơ",
+      "patterns": [
+        "vect[ơo]",
+        "véc-?tơ",
+        "\\\\vec(?![A-Za-z])",
+        "tích vô hướng"
+      ]
+    },
+    {
+      "id": "complex_numbers",
+      "name_vi": "Số phức",
+      "patterns": [
+        "số phức",
+        "i\\^2\\s*=\\s*-1",
+        "phần ảo",
+        "phần thực(?!\\s*hiện)"
+      ]
+    },
+    {
+      "id": "linear_algebra",
+      "name_vi": "Ma trận, định thức",
+      "patterns": [
+        "ma trận",
+        "định thức",
+        "\\\\begin\\{(p|b|v)matrix\\}",
+        "\\\\det(?![A-Za-z])"
+      ]
+    },
+    {
+      "id": "coordinates_analytic",
+      "name_vi": "Hình học giải tích (tọa độ hóa bài hình)",
+      "patterns": [
+        "hệ trục tọa độ Oxy cho tam giác",
+        "gắn hệ trục",
+        "tọa độ hóa"
+      ]
+    },
+    {
+      "id": "conics",
+      "name_vi": "Elip, hypebol",
+      "patterns": [
+        "\\belip\\b",
+        "hype?bol\\b"
+      ]
+    },
+    {
+      "id": "graph_theory",
+      "name_vi": "Lý thuyết đồ thị",
+      "patterns": [
+        "lý thuyết đồ thị",
+        "đồ thị đầy đủ",
+        "bậc của đỉnh",
+        "đồ thị Euler",
+        "chu trình Hamilton"
+      ]
+    },
+    {
+      "id": "geometric_transformations",
+      "name_vi": "Phép biến hình (quay, tịnh tiến, đối xứng, vị tự, nghịch đảo)",
+      "patterns": [
+        "phép quay",
+        "phép tịnh tiến",
+        "phép đối xứng",
+        "phép vị tự",
+        "phép nghịch đảo",
+        "phép biến hình"
+      ]
+    },
+    {
+      "id": "projective_advanced",
+      "name_vi": "Hình học xạ ảnh và định lí nâng cao (Brocard, Pascal, Desargues, cực – đối cực, tỉ số kép)",
+      "patterns": [
+        "Brocard",
+        "định l[íý] Pascal",
+        "đường thẳng Pascal",
+        "Desargues",
+        "Brianchon",
+        "cực đối cực",
+        "đối cực",
+        "tỉ số kép",
+        "hàng điểm điều hòa",
+        "chùm điều hòa",
+        "đường thẳng Simson",
+        "định l[íý] Simson",
+        "đường thẳng Euler",
+        "Euler line",
+        "Feuerbach"
+      ]
+    },
+    {
+      "id": "trig_advanced",
+      "name_vi": "Lượng giác ngoài góc nhọn (định lí sin/cos tổng quát, công thức cộng)",
+      "patterns": [
+        "định lí sin",
+        "định lý sin",
+        "định lí cos",
+        "định lý cos",
+        "\\\\sin\\s*\\(\\s*[a-z]\\s*\\+",
+        "công thức cộng lượng giác"
+      ]
+    }
+  ],
+  "style": [
+    {
+      "id": "self_talk",
+      "message_vi": "Lời giải có câu tự nói, tự sửa sai hoặc bỏ dở (\"Chờ đã\", \"Đó là sai lầm\", \"Hãy tính lại\", \"cách nhanh hơn là\"). Chỉ trình bày lập luận cuối cùng, đúng ngay từ đầu; bỏ các bước bị bỏ dở, bị tính lại hoặc bị sửa.",
+      "patterns": [
+        "chờ đã",
+        "\\bwait\\b",
+        "\\bhmm\\b",
+        "\\boops\\b",
+        "thử lại",
+        "\\bà không\\b",
+        "nhầm",
+        "sai lầm",
+        "(tính|làm|sửa|giải) lại",
+        "xin lỗi",
+        "suy luận nhanh",
+        "cách nhanh hơn",
+        "(bước|lập luận|phần|kết quả|cách) (ở )?trên (là )?(sai|chưa đúng)"
+      ]
+    },
+    {
+      "id": "english_text",
+      "message_vi": "Lời giải có câu tiếng Anh.",
+      "patterns": [
+        "\\b(therefore|thus|hence|we have|let us|so that|note that)\\b"
+      ]
+    },
+    {
+      "id": "set_intersection_geometry",
+      "topic": "geometry",
+      "message_vi": "Không dùng kí hiệu giao tập hợp; viết \"Gọi P là giao điểm của …\".",
+      "patterns": [
+        "\\\\cap"
+      ]
+    },
+    {
+      "id": "separate_recheck",
+      "message_vi": "Không cần bước \"kiểm tra lại\" riêng; trình bày lập luận đúng ngay từ đầu.",
+      "patterns": [
+        "kiểm tra lại"
+      ]
+    },
+    {
+      "id": "guessing",
+      "message_vi": "Không dùng \"thử các số nhỏ\" thay cho lập luận.",
+      "patterns": [
+        "thử các số nhỏ",
+        "thử vài giá trị",
+        "đoán nghiệm"
+      ]
+    },
+    {
+      "id": "gamma_circle",
+      "topic": "geometry",
+      "message_vi": "Gọi tên đường tròn theo tâm, ví dụ (O), không dùng Γ.",
+      "patterns": [
+        "\\\\Gamma",
+        "Γ"
+      ]
+    }
+  ]
+}

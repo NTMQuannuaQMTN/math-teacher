@@ -17,6 +17,9 @@ dependencies = [
   "pypdfium2>=4.30,<6",
   "boto3>=1.40,<2",
   "pyjwt[crypto]>=2.10,<3",
+  "sympy>=1.14",
+  "numpy>=2.2",
+  "scipy>=1.15",
 ]
 
 [dependency-groups]
@@ -61,6 +64,9 @@ ignore = ["S101", "RUF001", "RUF002", "RUF003"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S", "B"]
 "scripts/**" = ["S"]
+"app/solvers/prompts.py" = ["E501"]
+"app/tutoring/feedback.py" = ["E501"]
+"migrations/**" = ["E501", "I001"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -69,5 +75,5 @@ plugins = ["pydantic.mypy"]
 exclude = ["migrations/"]
 
 [[tool.mypy.overrides]]
-module = ["pypdfium2.*"]
+module = ["pypdfium2.*", "sympy.*", "scipy.*"]
 ignore_missing_imports = true

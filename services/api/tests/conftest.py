@@ -45,12 +45,25 @@ def make_catalog(price_in: str = "1.00", price_out: str = "4.00", currency: str 
             {"id": "vision-test", "vision": True, "structured_output": "json_schema", "max_output_tokens": 6000,
              "context_window": 32768, "pricing": pricing},
             {"id": "fast-test", "vision": False, "structured_output": "json_object", "max_output_tokens": 4000,
-             "context_window": 32768, "pricing": pricing},
-            {"id": "reason-test", "vision": False, "structured_output": "none", "max_output_tokens": 8000,
              "context_window": 65536, "pricing": pricing},
+            {"id": "reason-test", "vision": False, "structured_output": "none", "max_output_tokens": 8000,
+             "context_window": 65536, "pricing": pricing, "thinking_control": "chat_template_kwargs",
+             "thinking_max_output_tokens": 12000, "thinking_timeout_seconds": 300},
         ],
         "routing": {"ocr": "vision-test", "fast": "fast-test", "reasoning": "reason-test"},
     })
+
+
+HINTS_REPLY = json.dumps({"hints": [
+    {"level": "concept", "text_vi": "Em hãy nhớ lại cách phân tích tam thức bậc hai thành nhân tử."},
+    {"level": "observation", "text_vi": "Tìm hai số có tổng bằng $5$ và tích bằng $6$."},
+    {"level": "strategy", "text_vi": "Đưa phương trình về dạng tích $A \\cdot B = 0$ rồi xét từng nhân tử."},
+]}, ensure_ascii=False)
+
+
+def solve_requests(provider: ScriptedProvider) -> list[ChatRequest]:
+    """Model requests other than hint generation."""
+    return [r for r in provider.requests if r.schema_name != "hints"]
 
 
 class ScriptedProvider:
@@ -63,6 +76,8 @@ class ScriptedProvider:
         self.default: Callable[[ChatRequest], ChatResult] | None = None
         self.requests: list[ChatRequest] = []
         self.delay = 0.0
+        # Hint calls (schema "hints") get this reply without consuming the scripted queue; None = use the queue.
+        self.hints_reply: str | None = HINTS_REPLY
 
     def push(self, reply: Callable[[ChatRequest], ChatResult] | ProviderError | str) -> None:
         self.replies.append(reply)
@@ -71,6 +86,9 @@ class ScriptedProvider:
         self.requests.append(request)
         if self.delay:
             await asyncio.sleep(self.delay)
+        if request.schema_name == "hints" and self.hints_reply is not None:
+            return ChatResult(content=self.hints_reply, model=request.model,
+                              usage=Usage(prompt_tokens=300, completion_tokens=120), finish_reason="stop", latency_ms=5)
         reply = self.replies.pop(0) if self.replies else self.default
         if reply is None:
             raise ProviderError("server_error", "no scripted reply")

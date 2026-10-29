@@ -38,6 +38,10 @@ uv run uvicorn app.main:app_factory --factory --reload --port 8000
 cd apps/web && cp .env.example .env.local && npm install && npm run dev   # http://localhost:3000
 ```
 
+After the one-time setup above (env files, `models.json`, `npm install` in the root and in `apps/web`), one
+command runs everything from the repo root: `npm run dev`. It starts Docker services, runs `uv sync` and the
+migrations, then starts the API (:8000) and web (:3000) together with prefixed logs. Ctrl-C stops both.
+
 Without a SoCLaaS key and model catalogue, the app still runs, but OCR jobs fail with an explicit
 "not configured" error. `GET /ready` lists what is missing.
 
@@ -45,8 +49,9 @@ Without a SoCLaaS key and model catalogue, the app still runs, but OCR jobs fail
 
 SoCLaaS (NUS SoC, `https://soclaas-api.comp.nus.edu.sg/v1`) is OpenAI-compatible, and its model list depends on
 the key. Run `uv run python scripts/soclaas_probe.py` to list your models and test JSON and vision support.
-Then fill in `config/models.json`. **A model without a price cannot be called.** SoCLaaS publishes no price
-list, so set the real prices, or `0` if you have confirmed your key is free.
+Then fill in `config/models.json`. **A model without a price cannot be called.** `GET /v1/models` returns
+each model's price as `soclaas.input/output_microdollars_per_million_tokens` (USD); divide by 1e6 and set
+`FX_USD_TO_SGD`.
 
 ## Tests
 

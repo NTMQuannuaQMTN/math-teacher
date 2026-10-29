@@ -6,9 +6,10 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator
 
-PIPELINE_VERSION = "ocr-2026.10.1"
+PIPELINE_VERSION = "ocr-2026.10.3"
 
 ItemKind = Literal["question", "header", "instructions", "other"]
+Topic = Literal["algebra", "geometry", "number_theory", "combinatorics"]
 PageKind = Literal["printed", "handwritten", "mixed", "screenshot", "blank", "not_math"]
 
 
@@ -34,7 +35,14 @@ class OcrItem(BaseModel):
     has_figure: bool = False
     figure_bbox: list[int] | None = Field(default=None, description="[x0, y0, x1, y1] in 0..1000 coordinates.")
     uncertainties: list[OcrUncertainty] = Field(default_factory=list, max_length=30)
+    topics: list[Topic] = Field(default_factory=list,
+                                description="Main topic first; a second only if the problem genuinely needs both.")
     confidence: float = Field(ge=0, le=1)
+
+    @field_validator("topics")
+    @classmethod
+    def _topics(cls, value: list[Topic]) -> list[Topic]:
+        return list(dict.fromkeys(value))[:2]  # an over-eager list is trimmed, not a reason for a repair call
 
     @field_validator("bbox", "figure_bbox")
     @classmethod
@@ -80,3 +88,4 @@ class ExtractedQuestion(BaseModel):
     confidence: float
     flags: list[Flag]
     topics: list[str]
+    topic_source: Literal["ai", "heuristic"] = "heuristic"

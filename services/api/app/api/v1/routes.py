@@ -12,15 +12,18 @@ from sqlalchemy import func, select
 
 from ...billing.budget import BudgetStatus
 from ...documents import service
-from ...errors import ErrorResponse, NotFound, NotImplementedYet, PayloadTooLarge
-from ...models import Asset, DailyBudget, DocumentPage, Job, LlmCall, OcrCacheEntry, Question
+from ...errors import ErrorResponse, NotFound, PayloadTooLarge
+from ...geometry import service as geometry_service
+from ...models import Asset, DailyBudget, DocumentPage, GeometryFigure, Job, LlmCall, OcrCacheEntry, Question
 from ...ocr.latex import normalize_latex
 from ...security.tokens import create_guest, revoke_token
 from ...security.turnstile import verify_turnstile
+from ...solvers import service as solve_service
 from ...storage.store import StorageError
+from ...tutoring import service as tutoring_service
 from ..deps import AdminDep, ContainerDep, SessionDep, UserDep, bearer_token, client_ip
 from . import schemas as s
-from .serialize import document_out, document_summary, job_out, question_out
+from .serialize import document_out, document_summary, job_out, question_out, solution_view_out
 
 ERRORS: dict[int | str, dict[str, object]] = {
     code: {"model": ErrorResponse} for code in (400, 401, 402, 403, 404, 409, 413, 415, 422, 429, 503)
@@ -120,6 +123,14 @@ async def reprocess_document(document_id: uuid.UUID, body: s.ReprocessIn, user_i
     return job_out(job)
 
 
+@router.post("/documents/{document_id}/confirm", response_model=s.ConfirmAllOut, tags=["documents"])
+async def confirm_all_questions(document_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep
+                                ) -> s.ConfirmAllOut:
+    await c.rate_limiter.hit(f"edit:{user_id}", c.settings.rate_limit_question_edits_per_minute, 60)
+    result = await service.confirm_all_questions(session, user_id, document_id)
+    return s.ConfirmAllOut(confirmed=result.confirmed, blocked=result.blocked)
+
+
 @router.get("/documents/{document_id}/pages/{page_number}/image", tags=["documents"],
             response_class=Response, responses={200: {"content": {"image/png": {}, "image/jpeg": {}}}})
 async def page_image(document_id: uuid.UUID, page_number: int, user_id: UserDep, c: ContainerDep,
@@ -193,11 +204,152 @@ async def create_question(document_id: uuid.UUID, body: s.QuestionCreateIn, user
     return question_out(question, [])
 
 
-@router.post("/questions/{question_id}/solve", status_code=501, tags=["questions"],
-             responses={501: {"model": ErrorResponse}})
-async def solve_question(question_id: uuid.UUID, user_id: UserDep, session: SessionDep) -> Response:
-    await service.get_owned_question(session, user_id, question_id)
-    raise NotImplementedYet("Chức năng giải bài sẽ có trong Phase 3.")
+@router.post("/questions/{question_id}/solve", response_model=s.SolveRequestOut, status_code=202,
+             tags=["solutions"])
+async def solve_question(question_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep,
+                         response: Response, body: s.SolveIn | None = None) -> s.SolveRequestOut:
+    async def before_new_job() -> None:
+        await c.rate_limiter.hit(f"solve:{user_id}", c.settings.rate_limit_solves_per_hour, 3600,
+                                 "Bạn đã yêu cầu giải quá nhiều lần trong một giờ. Hãy thử lại sau.")
+
+    request = await solve_service.request_solve(c, session, user_id, question_id, force=bool(body and body.force),
+                                                before_new_job=before_new_job)
+    if request.job is None:
+        response.status_code = 200
+    view = await solve_service.solution_view(c, session, user_id, question_id)
+    return s.SolveRequestOut(solution=solution_view_out(view), job=job_out(request.job) if request.job else None,
+                             cached=request.cached)
+
+
+@router.get("/questions/{question_id}/solution", response_model=s.SolutionOut, tags=["solutions"])
+async def get_solution(question_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep,
+                       response: Response) -> s.SolutionOut:
+    response.headers.update(_NO_STORE)
+    return solution_view_out(await solve_service.solution_view(c, session, user_id, question_id))
+
+
+@router.post("/questions/{question_id}/hints/next", response_model=s.SolutionOut, tags=["solutions"])
+async def next_hint(question_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep
+                    ) -> s.SolutionOut:
+    """Open the next progressive hint (hints come before the full solution)."""
+    return solution_view_out(await solve_service.reveal_next_hint(c, session, user_id, question_id))
+
+
+@router.post("/questions/{question_id}/solution/reveal", response_model=s.SolutionOut, tags=["solutions"])
+async def reveal_solution(question_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep
+                          ) -> s.SolutionOut:
+    """Reveal the full solution, if the entitlement policy allows it (409 `solution_locked` otherwise)."""
+    return solution_view_out(await solve_service.reveal_solution(c, session, user_id, question_id))
+
+
+# --- Geometry figures ---------------------------------------------------------------------------
+
+async def _figure_out(session: SessionDep, figure: GeometryFigure, question_version: int | None = None
+                      ) -> s.FigureOut:
+    job = await session.get(Job, figure.job_id) if figure.job_id else None
+    if question_version is None:
+        question = await session.get(Question, figure.question_id)
+        question_version = question.version if question else figure.question_version
+    return s.FigureOut(id=figure.id, question_id=figure.question_id, status=figure.status,
+                       detail=figure.detail, spec=figure.spec, initial=figure.initial,
+                       stale=figure.question_version != question_version, job=job_out(job) if job else None,
+                       created_at=figure.created_at)
+
+
+@router.get("/geometry/{figure_id}", response_model=s.FigureOut, tags=["geometry"])
+async def get_figure(figure_id: uuid.UUID, user_id: UserDep, session: SessionDep, response: Response
+                     ) -> s.FigureOut:
+    response.headers.update(_NO_STORE)
+    return await _figure_out(session, await geometry_service.get_owned_figure(session, user_id, figure_id))
+
+
+@router.get("/questions/{question_id}/figure", response_model=s.FigureOut, tags=["geometry"])
+async def get_question_figure(question_id: uuid.UUID, user_id: UserDep, session: SessionDep, response: Response
+                              ) -> s.FigureOut:
+    response.headers.update(_NO_STORE)
+    question = await service.get_owned_question(session, user_id, question_id)
+    figure = await geometry_service.latest_figure(session, question.id)
+    if figure is None:
+        raise NotFound("Câu hỏi này chưa có hình vẽ.")
+    return await _figure_out(session, figure, question.version)
+
+
+@router.post("/questions/{question_id}/figure", response_model=s.FigureOut, status_code=202, tags=["geometry"])
+async def request_question_figure(question_id: uuid.UUID, user_id: UserDep, c: ContainerDep,
+                                  session: SessionDep, response: Response, body: s.FigureIn | None = None
+                                  ) -> s.FigureOut:
+    async def before_new_job() -> None:
+        await c.rate_limiter.hit(f"solve:{user_id}", c.settings.rate_limit_solves_per_hour, 3600,
+                                 "Bạn đã yêu cầu quá nhiều lần trong một giờ. Hãy thử lại sau.")
+
+    figure = await geometry_service.request_figure(session, user_id, question_id, before_new_job,
+                                                   force=bool(body and body.force))
+    if figure.status != "pending":
+        response.status_code = 200
+    return await _figure_out(session, figure)
+
+
+# --- Tutoring sessions ---------------------------------------------------------------------------
+
+def _session_out(view: tutoring_service.SessionView) -> s.TutoringSessionOut:
+    messages = []
+    for m in view.messages:
+        feedback = None
+        if m.role == "tutor" and m.feedback:
+            f = m.feedback
+            feedback = s.TutorFeedbackOut(
+                approach_vi=f["approach_vi"], first_error_index=f.get("first_error_index"),
+                steps=[s.StudentStepOut(text=st["text"], status=st["status"], note_vi=st.get("note_vi"))
+                       for st in f.get("steps", [])],
+                error_explanation_vi=f.get("error_explanation_vi"), next_hint_vi=f["next_hint_vi"],
+                student_reached_answer=f.get("student_reached_answer", False),
+                encouragement_vi=f.get("encouragement_vi", ""), tool_checked_steps=len(f.get("tool_checks", [])))
+        messages.append(s.SessionMessageOut(id=m.id, role=m.role, content=m.content,
+                                            feedback=feedback, created_at=m.created_at))
+    return s.TutoringSessionOut(id=view.session.id, question_id=view.session.question_id, messages=messages,
+                        solution=solution_view_out(view.solution))
+
+
+@router.post("/sessions", response_model=s.TutoringSessionOut, status_code=201, tags=["tutoring"])
+async def create_session(body: s.SessionCreateIn, user_id: UserDep, c: ContainerDep, session: SessionDep
+                         ) -> s.TutoringSessionOut:
+    return _session_out(await tutoring_service.start_session(c, session, user_id, body.question_id))
+
+
+@router.get("/sessions/{session_id}", response_model=s.TutoringSessionOut, tags=["tutoring"])
+async def get_session(session_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep,
+                      response: Response) -> s.TutoringSessionOut:
+    response.headers.update(_NO_STORE)
+    return _session_out(await tutoring_service.get_session_view(c, session, user_id, session_id))
+
+
+@router.post("/sessions/{session_id}/hint", response_model=s.TutoringSessionOut, tags=["tutoring"])
+async def session_hint(session_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep
+                       ) -> s.TutoringSessionOut:
+    return _session_out(await tutoring_service.session_hint(c, session, user_id, session_id))
+
+
+@router.post("/sessions/{session_id}/messages", response_model=s.TutoringSessionOut, tags=["tutoring"])
+async def session_message(session_id: uuid.UUID, body: s.SessionMessageIn, user_id: UserDep, c: ContainerDep,
+                          session: SessionDep) -> s.TutoringSessionOut:
+    """Submit work; the tutor checks each step, points to the first error and gives one targeted hint."""
+    await c.rate_limiter.hit(f"tutor:{user_id}", c.settings.rate_limit_tutoring_per_minute, 60,
+                             "Em gửi bài hơi nhanh. Hãy đợi một chút rồi gửi lại.")
+    return _session_out(await tutoring_service.submit_work(c, session, user_id, session_id, body.content))
+
+
+@router.post("/sessions/{session_id}/work-photo", response_model=s.WorkPhotoOut, tags=["tutoring"])
+async def session_work_photo(session_id: uuid.UUID, user_id: UserDep, c: ContainerDep, session: SessionDep,
+                             file: Annotated[UploadFile, File(description="Ảnh (JPG, PNG, WebP) hoặc PDF bài làm")]
+                             ) -> s.WorkPhotoOut:
+    """Read a photo or scan of the student's notebook into editable text. Nothing is sent to the tutor: the
+    student checks the text (unclear readings are marked and block sending), then submits it as a message."""
+    await c.rate_limiter.hit(f"workphoto:{user_id}", c.settings.rate_limit_work_photos_per_hour, 3600,
+                             "Em đã gửi nhiều ảnh trong một giờ. Hãy thử lại sau.")
+    data = await _read_limited(file, c.settings.max_upload_bytes)
+    reading = await tutoring_service.read_work_photo(c, session, user_id, session_id, data)
+    return s.WorkPhotoOut(text=reading.text, pages=reading.pages, unclear=reading.unclear,
+                          confidence=reading.confidence)
 
 
 @router.post("/latex/check", response_model=s.LatexCheckOut, tags=["questions"])

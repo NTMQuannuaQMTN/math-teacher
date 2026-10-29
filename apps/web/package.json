@@ -9,6 +9,7 @@
     "typecheck": "next typegen && tsc --noEmit",
     "gen:api": "openapi-typescript ../../services/api/openapi.json -o lib/api-types.ts",
     "test:e2e": "playwright test",
+    "test:unit": "node --test ./lib/geometry/engine.test.ts ./lib/math-insert.test.ts ./lib/math-symbols.test.ts",
     "check:bundle": "node scripts/check-bundle-secrets.mjs",
     "dev:vinext": "vite dev --port 3001",
     "build:vinext": "vite build",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "@vinext/cloudflare": "^1.1.1",
+    "jsxgraph": "1.14.2",
     "katex": "0.19.0",
     "next": "16.4.2",
     "react": "19.3.1",

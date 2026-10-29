@@ -1,0 +1,16 @@
+{
+ "hints": [
+  {
+   "level": "concept",
+   "text_vi": "Em hãy nhớ lại cách phân tích tam thức bậc hai thành nhân tử."
+  },
+  {
+   "level": "observation",
+   "text_vi": "Tách $-5x = -2x - 3x$ để nhóm các hạng tử."
+  },
+  {
+   "level": "strategy",
+   "text_vi": "Đưa về phương trình tích $A \\cdot B = 0$ rồi xét từng nhân tử bằng $0$."
+  }
+ ]
+}

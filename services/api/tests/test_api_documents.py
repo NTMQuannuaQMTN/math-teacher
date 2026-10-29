@@ -195,6 +195,36 @@ async def test_ocr_cache_shares_results_without_new_calls(client: httpx.AsyncCli
         assert await session.scalar(select(func.sum(OcrCacheEntry.hits))) == 2
 
 
+async def test_confirm_all_skips_questions_with_errors(client: httpx.AsyncClient, container: Container,
+                                                       provider: ScriptedProvider, auth: dict[str, str]) -> None:
+    doc = await processed_document(client, container, provider, auth)
+    ids = [q["id"] for q in doc["questions"]]  # type: ignore[union-attr, index]
+    response = await client.post(f"/api/v1/documents/{doc['id']}/confirm", headers=auth)
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["blocked"] == [ids[2]]  # Câu 3 still contains \unclear{...}
+    assert body["confirmed"] == [i for i in ids if i != ids[2]]
+    after = (await client.get(f"/api/v1/documents/{doc['id']}", headers=auth)).json()
+    assert [q["review_status"] for q in after["questions"]] == ["confirmed", "confirmed", "flagged", "confirmed",
+                                                                "confirmed"]
+    # Idempotent; and another user cannot confirm someone else's document.
+    again = await client.post(f"/api/v1/documents/{doc['id']}/confirm", headers=auth)
+    assert again.json() == {"confirmed": [], "blocked": [ids[2]]}
+    intruder = await new_user(client)
+    assert (await client.post(f"/api/v1/documents/{doc['id']}/confirm", headers=intruder)).status_code == 404
+
+
+async def test_empty_transcription_of_printed_page_is_not_cached(
+        client: httpx.AsyncClient, container: Container, provider: ScriptedProvider, auth: dict[str, str]) -> None:
+    provider.push(ocr_reply({"page_kind": "printed", "items": []}))
+    provider.push(ocr_reply({"page_kind": "printed", "items": []}))
+    response = await upload(client, auth)
+    assert response.status_code == 202
+    await drain(container)
+    async with container.db.sessionmaker() as session:
+        assert await session.scalar(select(func.count()).select_from(OcrCacheEntry)) == 0
+
+
 async def test_upload_validation(client: httpx.AsyncClient, container: Container, auth: dict[str, str]) -> None:
     unsupported = await client.post("/api/v1/documents", headers=auth,
                                     files={"file": ("x.png", b"GIF89a fake", "image/png")})
@@ -299,13 +329,6 @@ async def test_latex_check_endpoint(client: httpx.AsyncClient, auth: dict[str, s
     assert ok == {"normalized": "Cho $a \\le b$", "issues": [], "can_confirm": True}
     bad = (await client.post("/api/v1/latex/check", headers=auth, json={"latex": "$x = \\unclear{1}$"})).json()
     assert bad["can_confirm"] is False
-
-
-async def test_solve_is_explicitly_not_implemented(client: httpx.AsyncClient, container: Container,
-                                                   provider: ScriptedProvider, auth: dict[str, str]) -> None:
-    doc = await processed_document(client, container, provider, auth)
-    response = await client.post(f"/api/v1/questions/{doc['questions'][0]['id']}/solve", headers=auth)  # type: ignore[index]
-    assert response.status_code == 501 and response.json()["error"]["code"] == "not_implemented"
 
 
 @pytest.mark.parametrize("kind", ["image"])

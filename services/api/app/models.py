@@ -110,7 +110,7 @@ class Question(TimestampMixin, Base):
     # [{"page": 1, "bbox": [x0, y0, x1, y1]}] in 0..1 page coordinates
     regions: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
     topics: Mapped[list[str]] = mapped_column(JSONB, default=list)
-    topic_source: Mapped[str] = mapped_column(String(16), default="heuristic")  # heuristic | student
+    topic_source: Mapped[str] = mapped_column(String(16), default="heuristic")  # ai | heuristic | student
     # pending | flagged | confirmed
     review_status: Mapped[str] = mapped_column(String(16), default="pending")
     flags: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
@@ -212,3 +212,97 @@ class RateLimitBucket(Base):
     key: Mapped[str] = mapped_column(String(200), primary_key=True)
     window_start: Mapped[datetime] = mapped_column(DateTime(timezone=True), primary_key=True)
     count: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class Solution(TimestampMixin, Base):
+    """One solve request for a confirmed question, with both verdicts and the evidence behind them."""
+
+    __tablename__ = "solutions"
+    __table_args__ = (Index("ix_solutions_question_created", "question_id", "created_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id", ondelete="CASCADE"))
+    owner_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    question_version: Mapped[int] = mapped_column(Integer)
+    cache_key: Mapped[str] = mapped_column(String(64), index=True)
+    # queued | running | done | failed
+    status: Mapped[str] = mapped_column(String(16), default="queued")
+    # VERIFIED | PARTIALLY_VERIFIED | UNVERIFIED | INCORRECT | UNSOLVED (null until done)
+    verification_status: Mapped[str | None] = mapped_column(String(24))
+    # COMPLIANT | COMPLIANT_WITH_WARNINGS | NON_COMPLIANT | NOT_CHECKED
+    curriculum_status: Mapped[str | None] = mapped_column(String(32))
+    topics: Mapped[list[str]] = mapped_column(JSONB, default=list)
+    result: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    trace: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    cost_sgd: Mapped[Decimal] = mapped_column(MONEY, default=Decimal(0))
+    from_cache: Mapped[bool] = mapped_column(default=False)
+    pipeline_version: Mapped[str] = mapped_column(String(32))
+    policy_version: Mapped[str] = mapped_column(String(48))
+    error_code: Mapped[str | None] = mapped_column(String(64))
+    error_message: Mapped[str | None] = mapped_column(Text)
+    job_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+
+
+class SolutionAccess(TimestampMixin, Base):
+    """What a student has opened of a solution: hints one by one, then (optionally) the full solution.
+
+    The API sends steps and answers only after `solution_revealed_at` is set, so access can later be gated by an
+    entitlement (see app/billing/entitlements.py) without trusting the browser.
+    """
+
+    __tablename__ = "solution_access"
+    __table_args__ = (UniqueConstraint("user_id", "solution_id"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    solution_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("solutions.id", ondelete="CASCADE"), index=True)
+    hints_revealed: Mapped[int] = mapped_column(Integer, default=0)
+    solution_revealed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # How the reveal was granted (e.g. "free"); a paid plan would record its own reason here.
+    reveal_grant: Mapped[str | None] = mapped_column(String(32))
+
+
+class GeometryFigure(Base):
+    """A validated geometry construction for a question (drawn with JSXGraph, checked by the engine)."""
+
+    __tablename__ = "geometry_figures"
+    __table_args__ = (Index("ix_geometry_figures_question_created", "question_id", "created_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    owner_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id", ondelete="CASCADE"))
+    solution_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("solutions.id", ondelete="SET NULL"))
+    question_version: Mapped[int] = mapped_column(Integer)
+    # pending | ok | infeasible | invalid | unsupported | failed
+    status: Mapped[str] = mapped_column(String(16))
+    detail: Mapped[str | None] = mapped_column(Text)
+    spec: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    initial: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    job_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class TutoringSession(TimestampMixin, Base):
+    """A student working on one question with the tutor; reuses the question's solution as the plan."""
+
+    __tablename__ = "tutoring_sessions"
+    __table_args__ = (Index("ix_tutoring_sessions_user_question", "user_id", "question_id"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id", ondelete="CASCADE"))
+    solution_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("solutions.id", ondelete="CASCADE"))
+
+
+class TutoringMessage(Base):
+    __tablename__ = "tutoring_messages"
+    __table_args__ = (Index("ix_tutoring_messages_session_created", "session_id", "created_at"),)
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    session_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("tutoring_sessions.id", ondelete="CASCADE"))
+    role: Mapped[str] = mapped_column(String(16))  # student | tutor
+    content: Mapped[str] = mapped_column(Text)  # student work, or the tutor's hint text
+    feedback: Mapped[dict[str, Any] | None] = mapped_column(JSONB)  # tutor: steps, first error, tool checks
+    cost_sgd: Mapped[Decimal] = mapped_column(MONEY, default=Decimal(0))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

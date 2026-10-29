@@ -2,10 +2,17 @@
   "name": "ai-math-tutor",
   "private": true,
   "scripts": {
+    "dev": "npm run dev:prepare && concurrently -k -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:prepare": "docker compose up -d --wait && cd services/api && uv sync && uv run alembic upgrade head",
+    "dev:api": "cd services/api && uv run uvicorn app.main:app_factory --factory --reload --port 8000",
+    "dev:web": "npm --prefix apps/web run dev",
     "web:dev": "npm --prefix apps/web run dev",
     "web:build": "npm --prefix apps/web run build",
     "web:build:cf": "npm --prefix apps/web run build:vinext",
     "web:typecheck": "npm --prefix apps/web run typecheck",
     "web:e2e": "npm --prefix apps/web run test:e2e"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
   }
 }

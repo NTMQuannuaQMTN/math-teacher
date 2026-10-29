@@ -1,0 +1,1 @@
+Recorded model replies for LLM_PROVIDER=fixture (tests and Playwright only; refused in production). One file per schema name (`work_ocr.json` is a notebook photo read with one unclear mark); the content is synthetic and matches the synthetic OCR fixture's Câu 1.

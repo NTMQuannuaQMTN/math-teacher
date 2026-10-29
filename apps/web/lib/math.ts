@@ -21,6 +21,12 @@ export function splitSegments(text: string): Segment[] {
     buffer = "";
   };
   while (i < text.length) {
+    if (text[i] === "\\" && text[i + 1] === "\\") {
+      // A \\ line break is one unit (as in the API normaliser), so "\\(" never opens inline maths.
+      buffer += "\\\\";
+      i += 2;
+      continue;
+    }
     if (text[i] === "\\" && (text[i + 1] === "$" || text[i + 1] === "%")) {
       buffer += text[i + 1];
       i += 2;

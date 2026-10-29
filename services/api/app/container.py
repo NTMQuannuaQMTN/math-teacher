@@ -14,6 +14,7 @@ from .db import Database
 from .ocr.engine import CachedPageOcr, FixturePageOcr, LlmPageOcr, PageOcrEngine
 from .providers.base import ChatProvider
 from .providers.catalog import ModelCatalog
+from .providers.fixture import FixtureChatProvider
 from .providers.gateway import LLMGateway
 from .providers.soclaas import SoclaasProvider
 from .security.access import AccessVerifier
@@ -24,6 +25,7 @@ from .workers.queue import JobQueue
 logger = logging.getLogger(__name__)
 
 FIXTURE_DIR = Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "ocr" / "responses"
+LLM_FIXTURE_DIR = Path(__file__).resolve().parent.parent / "tests" / "fixtures" / "llm"
 
 
 @dataclass
@@ -63,7 +65,11 @@ def build_container(settings: Settings, *, provider: ChatProvider | None = None,
             problems.append(f"Model catalogue not found at {settings.model_catalog_path}")
         except ValueError as exc:
             problems.append(f"Invalid model catalogue: {exc}")
-    if provider is None and settings.soclaas_api_key is not None:
+    if provider is None and settings.llm_provider == "fixture":
+        # Settings validation refuses this in production.
+        logger.warning("llm_fixture_provider_enabled")
+        provider = FixtureChatProvider(LLM_FIXTURE_DIR)
+    elif provider is None and settings.soclaas_api_key is not None:
         provider = SoclaasProvider(settings.soclaas_base_url, settings.soclaas_api_key.get_secret_value(),
                                    settings.soclaas_timeout_seconds)
     elif provider is None:

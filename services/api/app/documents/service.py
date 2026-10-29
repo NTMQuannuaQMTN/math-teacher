@@ -242,6 +242,35 @@ async def update_question(session: AsyncSession, owner_id: uuid.UUID, question_i
     return question
 
 
+@dataclass(frozen=True)
+class ConfirmAllResult:
+    confirmed: list[uuid.UUID]
+    blocked: list[uuid.UUID]
+
+
+async def confirm_all_questions(session: AsyncSession, owner_id: uuid.UUID, document_id: uuid.UUID
+                                ) -> ConfirmAllResult:
+    """Confirm every unconfirmed question of a document; questions with blocking errors are skipped."""
+    document = await get_owned_document(session, owner_id, document_id)
+    if document.status == "processing":
+        raise Conflict("Tài liệu đang được xử lý.")
+    confirmed: list[uuid.UUID] = []
+    blocked: list[uuid.UUID] = []
+    # Plain values: a rollback after a blocked question expires every loaded ORM object.
+    pending = [(q.id, q.version) for q in await document_questions(session, document_id)
+               if q.review_status != "confirmed"]
+    for question_id, version in pending:
+        try:
+            # Same rules as confirming one question, so flags are recomputed identically.
+            await update_question(session, owner_id, question_id, QuestionChanges(
+                expected_version=version, review_status="confirmed"))
+            confirmed.append(question_id)
+        except ConfirmBlocked:
+            await session.rollback()
+            blocked.append(question_id)
+    return ConfirmAllResult(confirmed=confirmed, blocked=blocked)
+
+
 async def create_manual_question(session: AsyncSession, owner_id: uuid.UUID, document_id: uuid.UUID,
                                  latex: str, original_number: str | None,
                                  subquestions: list[dict[str, str]]) -> Question:

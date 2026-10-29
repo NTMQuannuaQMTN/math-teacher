@@ -12,6 +12,12 @@ export type AdminUsageOut = Schemas["AdminUsageOut"];
 export type FlagOut = Schemas["FlagOut"];
 export type LatexCheckOut = Schemas["LatexCheckOut"];
 export type UploadOut = Schemas["UploadOut"];
+export type ConfirmAllOut = Schemas["ConfirmAllOut"];
+export type SolutionOut = Schemas["SolutionOut"];
+export type SolveRequestOut = Schemas["SolveRequestOut"];
+export type FigureOut = Schemas["FigureOut"];
+export type VerificationStatus = NonNullable<SolutionOut["verification_status"]>;
+export type CurriculumStatus = NonNullable<SolutionOut["curriculum_status"]>;
 export type Topic = QuestionOut["topics"][number];
 
 export class ApiError extends Error {
@@ -118,3 +124,21 @@ export const DOCUMENT_STATUS_LABELS: Record<DocumentSummary["status"], string> =
 export function formatSgd(value: string | number): string {
   return `${Number(value).toFixed(4)} SGD`;
 }
+
+export const VERIFICATION_LABELS: Record<VerificationStatus, { label: string; help: string }> = {
+  VERIFIED: { label: "Đã kiểm chứng", help: "Đáp số đã được công cụ toán học kiểm tra chính xác." },
+  PARTIALLY_VERIFIED: {
+    label: "Kiểm chứng một phần",
+    help: "Đáp số hoặc mệnh đề đã được kiểm tra, nhưng chưa phải mọi bước lập luận.",
+  },
+  UNVERIFIED: { label: "Chưa kiểm chứng", help: "Chưa có công cụ nào xác nhận lời giải này. Hãy đọc kỹ từng bước." },
+  INCORRECT: { label: "Có thể sai", help: "Công cụ kiểm tra phát hiện đáp số không đúng." },
+  UNSOLVED: { label: "Chưa giải được", help: "Hệ thống chưa tìm được lời giải đáng tin cậy." },
+};
+
+export const CURRICULUM_LABELS: Record<CurriculumStatus, string> = {
+  COMPLIANT: "Đúng chương trình lớp 9",
+  COMPLIANT_WITH_WARNINGS: "Đúng chương trình, có lưu ý trình bày",
+  NON_COMPLIANT: "Dùng kiến thức ngoài chương trình",
+  NOT_CHECKED: "Chưa kiểm tra chương trình",
+};

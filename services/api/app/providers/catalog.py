@@ -41,6 +41,11 @@ class ModelSpec(BaseModel):
     # Upper-bound estimate of tokens per image pixel area (Qwen-VL style 28x28 patches by default).
     image_patch_px: int = Field(default=28, gt=0)
     pricing: Pricing | None = None
+    # How hidden reasoning is switched on/off for this model ("none" = not controllable).
+    thinking_control: Literal["none", "chat_template_kwargs"] = "none"
+    # Reasoning needs a larger output allowance and more time (≈80 tokens/s observed on SoCLaaS).
+    thinking_max_output_tokens: int | None = Field(default=None, gt=0)
+    thinking_timeout_seconds: float | None = Field(default=None, gt=0)
     notes: str | None = None
 
 

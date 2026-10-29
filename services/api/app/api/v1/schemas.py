@@ -5,7 +5,7 @@ from __future__ import annotations
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -77,7 +77,7 @@ class QuestionOut(BaseModel):
     source_pages: list[int]
     regions: list[RegionOut]
     topics: list[Topic]
-    topic_source: Literal["heuristic", "student"]
+    topic_source: Literal["ai", "heuristic", "student"]
     review_status: ReviewStatus
     flags: list[FlagOut]
     ocr_confidence: float | None
@@ -162,6 +162,11 @@ class LatexCheckIn(BaseModel):
     latex: str = Field(max_length=20000)
 
 
+class ConfirmAllOut(BaseModel):
+    confirmed: list[uuid.UUID]
+    blocked: list[uuid.UUID] = Field(description="Questions left unconfirmed because they still have errors.")
+
+
 class LatexCheckOut(BaseModel):
     normalized: str
     issues: list[FlagOut]
@@ -228,3 +233,153 @@ class AdminUsageOut(BaseModel):
     ocr_cache_hits: int
     open_reservations: int
     admin_email: str
+
+
+# --- Solutions (Phase 3) ------------------------------------------------------------------------
+
+VerificationStatusName = Literal["VERIFIED", "PARTIALLY_VERIFIED", "UNVERIFIED", "INCORRECT", "UNSOLVED"]
+CurriculumStatusName = Literal["COMPLIANT", "COMPLIANT_WITH_WARNINGS", "NON_COMPLIANT", "NOT_CHECKED"]
+
+
+class SolveIn(BaseModel):
+    force: bool = Field(default=False, description="Solve again even if a finished solution exists.")
+
+
+class FigureIn(BaseModel):
+    force: bool = Field(default=False, description="Draw again even if a figure exists for this question version.")
+
+
+class VerdictOut(BaseModel):
+    status: VerificationStatusName
+    reason_vi: str
+
+
+class SolutionPartOut(BaseModel):
+    label: str
+    answer_kind: str
+    final_answer_latex: str
+    steps: list[str]
+    verdict: VerdictOut | None
+
+
+class EvidenceItemOut(BaseModel):
+    part: str
+    kind: str
+    outcome: Literal["confirmed", "refuted", "inconclusive", "error"]
+    strength: Literal["exact", "exhaustive", "bounded", "sampled", "none"]
+    detail: str
+
+
+class CurriculumFindingItemOut(BaseModel):
+    rule_id: str
+    severity: Literal["prohibited", "discouraged", "style"]
+    message: str
+    excerpt: str | None = None
+
+
+class HintOut(BaseModel):
+    level: Literal["concept", "observation", "strategy", "key_step"]
+    text_vi: str
+
+
+class SolutionOut(BaseModel):
+    """Before the student reveals the solution, steps, answers, evidence and the main idea are withheld (empty)."""
+
+    id: uuid.UUID
+    question_id: uuid.UUID
+    status: Literal["queued", "running", "done", "failed"]
+    verification_status: VerificationStatusName | None
+    curriculum_status: CurriculumStatusName | None
+    topics: list[Topic]
+    solved: bool | None
+    unsolved_reason_vi: str | None
+    approach_vi: str | None
+    techniques: list[str]
+    parts: list[SolutionPartOut]
+    evidence: list[EvidenceItemOut]
+    curriculum_findings: list[CurriculumFindingItemOut]
+    attempts: int
+    cost_sgd: Decimal
+    from_cache: bool
+    stale: bool = Field(description="The question was edited after this solution was produced.")
+    figure_id: uuid.UUID | None = Field(default=None, description="Interactive figure for geometry questions.")
+    hints: list[HintOut] = Field(description="Hints opened so far, in order.")
+    hints_total: int
+    solution_revealed: bool
+    can_reveal_solution: bool
+    reveal_locked_reason: str | None
+    policy_version: str
+    pipeline_version: str
+    error_code: str | None
+    error_message: str | None
+    created_at: datetime
+    updated_at: datetime
+
+
+class FigureOut(BaseModel):
+    """A validated construction: `spec` (DSL), engine status, and an initial configuration for JSXGraph."""
+
+    id: uuid.UUID
+    question_id: uuid.UUID
+    status: Literal["pending", "ok", "infeasible", "invalid", "unsupported", "failed"]
+    detail: str | None
+    spec: dict[str, Any] | None
+    initial: dict[str, Any] | None
+    stale: bool
+    job: JobOut | None = None
+    created_at: datetime
+
+
+class SolveRequestOut(BaseModel):
+    solution: SolutionOut
+    job: JobOut | None
+    cached: bool
+
+
+# --- Tutoring sessions (Phase 5) -----------------------------------------------------------------
+
+class SessionCreateIn(BaseModel):
+    question_id: uuid.UUID
+
+
+class SessionMessageIn(BaseModel):
+    content: str = Field(min_length=1, max_length=4000, description="The student's work (text and LaTeX).")
+
+
+class WorkPhotoOut(BaseModel):
+    text: str = Field(description="Transcribed work for the student to check; illegible marks are \\unclear{...}.")
+    pages: int
+    unclear: int = Field(description="Number of \\unclear{...} marks the student must fix before sending.")
+    confidence: float
+
+
+class StudentStepOut(BaseModel):
+    text: str
+    status: Literal["correct", "incorrect", "unclear"]
+    note_vi: str | None
+
+
+class TutorFeedbackOut(BaseModel):
+    approach_vi: str
+    steps: list[StudentStepOut]
+    first_error_index: int | None
+    error_explanation_vi: str | None
+    next_hint_vi: str
+    student_reached_answer: bool
+    encouragement_vi: str
+    tool_checked_steps: int
+
+
+class SessionMessageOut(BaseModel):
+    id: uuid.UUID
+    role: Literal["student", "tutor"]
+    content: str
+    feedback: TutorFeedbackOut | None
+    created_at: datetime
+
+
+class TutoringSessionOut(BaseModel):
+    id: uuid.UUID
+    question_id: uuid.UUID
+    messages: list[SessionMessageOut]
+    solution: SolutionOut

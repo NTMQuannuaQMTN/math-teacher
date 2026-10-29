@@ -1,0 +1,19 @@
+{
+ "parts": [
+  {
+   "label": "",
+   "task": "solve",
+   "template": {
+    "kind": "solutions",
+    "variables": [
+     "x"
+    ],
+    "equations": [
+     "x^2 - 5*x + 6 = 0"
+    ],
+    "conditions": [],
+    "domain": "real"
+   }
+  }
+ ]
+}

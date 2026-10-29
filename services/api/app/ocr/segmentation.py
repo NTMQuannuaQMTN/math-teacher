@@ -22,6 +22,7 @@ class _Draft:
     confidences: list[float]
     uncertainties: list[str]
     page_kinds: set[str]
+    topics: list[str] = field(default_factory=list)
     extra_flags: list[Flag] = field(default_factory=list)
 
 
@@ -36,7 +37,8 @@ def _start(page_number: int, item: OcrItem, page_kind: str) -> _Draft:
     draft = _Draft(number=item.number, stem_parts=[item.stem], subquestions=[(s.label, s.content)
                                                                              for s in item.subquestions],
                    pages=[page_number], regions=[], figures=[], confidences=[item.confidence],
-                   uncertainties=[u.excerpt for u in item.uncertainties], page_kinds={page_kind})
+                   uncertainties=[u.excerpt for u in item.uncertainties], page_kinds={page_kind},
+                   topics=list(dict.fromkeys(item.topics)))
     _attach_regions(draft, page_number, item)
     return draft
 
@@ -78,6 +80,8 @@ def merge_pages(pages: list[tuple[int, OcrPage]]) -> list[_Draft]:
                 draft.confidences.append(item.confidence)
                 draft.uncertainties.extend(u.excerpt for u in item.uncertainties)
                 draft.page_kinds.add(page.page_kind)
+                if not draft.topics:
+                    draft.topics = list(dict.fromkeys(item.topics))
                 _attach_regions(draft, page_number, item)
                 draft.extra_flags.append(Flag(code="cross_page", severity="info",
                                               message="Câu hỏi được ghép từ nhiều trang; hãy kiểm tra chỗ nối."))
@@ -124,13 +128,17 @@ def build_questions(pages: list[tuple[int, OcrPage]]) -> list[ExtractedQuestion]
             flags.append(Flag(code="figure_present", severity="info",
                               message="Câu hỏi có hình vẽ kèm theo."))
         full_text = " ".join([stem.text, *(s.latex for s in subquestions)])
-        topics, _ = classify(full_text)
+        # The OCR model reads the whole problem; keyword matching is only the fallback.
+        topics = draft.topics
+        topic_source = "ai" if topics else "heuristic"
+        if not topics:
+            topics, _ = classify(full_text)
         if not topics:
             flags.append(Flag(code="topic_unknown", severity="info", message="Chưa xác định được chủ đề."))
         questions.append(ExtractedQuestion(
             original_number=draft.number, latex=stem.text, subquestions=subquestions, source_pages=draft.pages,
             regions=draft.regions, figure_regions=draft.figures, confidence=round(confidence, 3), flags=flags,
-            topics=topics,
+            topics=topics, topic_source=topic_source,
         ))
     return questions
 

@@ -15,6 +15,7 @@ from decimal import Decimal
 from enum import StrEnum
 from zoneinfo import ZoneInfo
 
+import httpx
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
@@ -95,6 +96,21 @@ _MARK_SETTLED = text(
 )
 
 
+async def notify_budget_state(settings: Settings, state: BudgetState, day: date) -> None:
+    """Best-effort alert to an operator webhook (never blocks or fails the request)."""
+    if settings.alert_webhook_url is None or state == BudgetState.NORMAL:
+        return
+    text = {BudgetState.WARNING: "⚠️ Ngân sách AI đã vượt mức cảnh báo",
+            BudgetState.RESTRICTED: "🟠 Ngân sách AI: chế độ tiết kiệm (chỉ mô hình nhanh)",
+            BudgetState.BLOCKED: "🔴 Ngân sách AI hôm nay đã hết: các yêu cầu AI bị chặn"}[state]
+    try:
+        async with httpx.AsyncClient(timeout=5) as client:
+            await client.post(settings.alert_webhook_url.get_secret_value(),
+                              json={"text": f"{text} ({day}, trần SGD {settings.daily_budget_sgd})."})
+    except httpx.HTTPError as exc:
+        logger.warning("alert_webhook_failed", extra={"error_type": type(exc).__name__})
+
+
 class BudgetService:
     def __init__(self, settings: Settings, sessionmaker: async_sessionmaker[AsyncSession]) -> None:
         self.settings = settings
@@ -172,6 +188,7 @@ class BudgetService:
         if reservation.state_after != state_before:
             logger.warning("budget_state_changed", extra={"state": reservation.state_after.value,
                                                           "day": str(day)})
+            await notify_budget_state(self.settings, reservation.state_after, day)
         return reservation
 
     async def settle(self, reservation: Reservation, *, actual_sgd: Decimal | None, prompt_tokens: int | None,

@@ -48,6 +48,12 @@ class Settings(BaseSettings):
     fx_usd_to_sgd: Decimal | None = None
     # Explicit, test-only OCR provider. Refused in production.
     ocr_provider: Literal["soclaas", "fixture"] = "soclaas"
+    # Explicit, test-only chat provider returning recorded replies per schema. Refused in production.
+    llm_provider: Literal["soclaas", "fixture"] = "soclaas"
+
+    # --- Alerts -------------------------------------------------------------------------------------
+    # Optional webhook (e.g. a Slack/Discord/Google Chat incoming webhook) told when the budget state changes.
+    alert_webhook_url: SecretStr | None = None
 
     # --- Budget ---------------------------------------------------------------------------------
     daily_budget_sgd: Decimal = Decimal("10.00")
@@ -62,6 +68,23 @@ class Settings(BaseSettings):
     rate_limit_requests_per_minute: int = 120
     rate_limit_guest_sessions_per_hour_per_ip: int = 10
     rate_limit_question_edits_per_minute: int = 60
+    rate_limit_solves_per_hour: int = 30
+
+    # --- Solving (Phase 3) ----------------------------------------------------------------------
+    question_budget_sgd: Decimal = Decimal("0.30")
+    solve_max_revisions: int = Field(default=2, ge=0, le=4)
+    # First attempt without hidden reasoning; escalate once to reasoning when the answer fails verification.
+    solve_escalate_thinking: bool = True
+    # Hints come first: the full solution can be revealed after this many hints (when hints exist).
+    hints_before_solution: bool = True
+    min_hints_before_solution: int = Field(default=1, ge=0, le=5)
+    # Tutoring (Phase 5): feedback turns per student per day (a plan limit can replace this) and per minute.
+    tutoring_turns_per_day: int = Field(default=40, ge=0)
+    rate_limit_tutoring_per_minute: int = 6
+    # Photos/scans of notebook work, read into the work box for the student to check before sending.
+    rate_limit_work_photos_per_hour: int = 20
+    work_photo_max_pages: int = Field(default=3, ge=1, le=10)
+    work_photo_max_chars: int = 4000
 
     # --- Uploads --------------------------------------------------------------------------------
     max_upload_bytes: int = 20 * 1024 * 1024
@@ -84,7 +107,7 @@ class Settings(BaseSettings):
     run_embedded_worker: bool = True
     worker_concurrency: int = Field(default=2, ge=1, le=16)
     worker_poll_seconds: float = 1.0
-    job_timeout_seconds: int = 600
+    job_timeout_seconds: int = 900  # a reasoning escalation alone can take ~5 minutes
     ocr_page_concurrency: int = Field(default=2, ge=1, le=8)
 
     @model_validator(mode="after")
@@ -101,10 +124,15 @@ class Settings(BaseSettings):
                 problems.append("ADMIN_DEV_TOKEN must not be set in production")
             if self.ocr_provider != "soclaas":
                 problems.append("OCR_PROVIDER=fixture is test-only and refused in production")
+            if self.llm_provider != "soclaas":
+                problems.append("LLM_PROVIDER=fixture is test-only and refused in production")
             if self.storage_backend != "s3":
                 problems.append("STORAGE_BACKEND=s3 (Cloudflare R2) is required in production")
             if not (self.cf_access_team_domain and self.cf_access_audience):
                 problems.append("CF_ACCESS_TEAM_DOMAIN and CF_ACCESS_AUDIENCE are required in production")
+            if "sslmode=" not in self.database_url and "ssl=" not in self.database_url and \
+                    "@127.0.0.1" not in self.database_url and "@localhost" not in self.database_url:
+                problems.append("DATABASE_URL must require TLS in production (add ?ssl=require)")
             if problems:
                 raise ValueError("; ".join(problems))
         return self

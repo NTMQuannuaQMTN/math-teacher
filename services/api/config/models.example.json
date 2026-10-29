@@ -1,25 +1,31 @@
 {
   "provider": "soclaas",
-  "_comment": "Copy to config/models.json. Model ids MUST be checked against GET /v1/models for your key (scripts/soclaas_probe.py). Prices are never assumed: a model with pricing=null cannot be called. SoCLaaS publishes no price list; if your key is free, set prices to 0 explicitly after confirming.",
+  "_comment": "Copy to config/models.json. Model ids MUST be checked against GET /v1/models for your key (scripts/soclaas_probe.py). Prices are never assumed: a model with pricing=null cannot be called. SoCLaaS publishes no price list; if your key is free, set prices to 0 explicitly after confirming. Use structured_output json_object, not json_schema: SoCLaaS's constrained json_schema decoding mangles LaTeX backslashes.",
   "models": [
     {
       "id": "qwen3.8:27b",
       "vision": true,
-      "structured_output": "json_schema",
+      "structured_output": "json_object",
       "max_output_tokens": 8192,
       "context_window": 32768,
       "image_patch_px": 28,
       "pricing": null,
-      "notes": "Vision model used in public SoCLaaS labs (lab 112). Unverified for this key."
+      "notes": "Vision model used in public SoCLaaS labs (lab 112). Unverified for this key.",
+      "thinking_control": "chat_template_kwargs",
+      "thinking_max_output_tokens": 24000,
+      "thinking_timeout_seconds": 480
     },
     {
       "id": "qwen3.6:35b",
       "vision": false,
-      "structured_output": "json_schema",
+      "structured_output": "json_object",
       "max_output_tokens": 8192,
       "context_window": 32768,
       "pricing": null,
-      "notes": "Seen in public projects using SoCLaaS. Unverified for this key."
+      "notes": "Seen in public projects using SoCLaaS. Unverified for this key.",
+      "thinking_control": "chat_template_kwargs",
+      "thinking_max_output_tokens": 24000,
+      "thinking_timeout_seconds": 480
     }
   ],
   "routing": {

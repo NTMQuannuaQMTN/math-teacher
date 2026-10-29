@@ -1,0 +1,33 @@
+{
+ "solved": true,
+ "unsolved_reason_vi": null,
+ "approach_vi": "Phân tích vế trái thành nhân tử để đưa về phương trình tích.",
+ "techniques": [
+  "linear_quadratic_equations",
+  "algebraic_identities"
+ ],
+ "parts": [
+  {
+   "label": "",
+   "answer_kind": "solution_set",
+   "final_answer_latex": "Vậy phương trình có hai nghiệm $x = 2$ và $x = 3$.",
+   "machine_answer": {
+    "solutions": [
+     {
+      "x": "2"
+     },
+     {
+      "x": "3"
+     }
+    ],
+    "value": null,
+    "point": null
+   },
+   "steps": [
+    "Ta có $x^2 - 5x + 6 = x^2 - 2x - 3x + 6 = x(x-2) - 3(x-2) = (x-2)(x-3)$.",
+    "Do đó phương trình tương đương với $(x-2)(x-3) = 0$, tức là $x - 2 = 0$ hoặc $x - 3 = 0$.",
+    "Suy ra $x = 2$ hoặc $x = 3$."
+   ]
+  }
+ ]
+}

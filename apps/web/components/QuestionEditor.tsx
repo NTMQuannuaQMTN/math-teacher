@@ -131,7 +131,7 @@ export function QuestionEditor({
           {question.origin === "manual" && <span className="text-xs text-muted">(thêm thủ công)</span>}
         </div>
         <div className="flex flex-wrap gap-1" role="group" aria-label="Chủ đề">
-          {TOPICS.map((topic) => {
+          {[...question.topics, ...TOPICS.filter((t) => !question.topics.includes(t))].map((topic) => {
             const active = question.topics.includes(topic);
             return (
               <button
@@ -153,7 +153,12 @@ export function QuestionEditor({
           })}
         </div>
       </header>
-      {question.topics.length > 1 && <p className="mt-1 text-xs text-muted">Bài kết hợp nhiều chủ đề.</p>}
+      {(question.topics.length > 1 || question.topic_source !== "student") && (
+        <p className="mt-1 text-right text-xs text-muted">
+          {question.topics.length > 1 && "Bài kết hợp nhiều chủ đề (chủ đề chính đứng đầu). "}
+          {question.topic_source !== "student" && "Chủ đề do AI gợi ý — bấm để sửa."}
+        </p>
+      )}
 
       {!editing ? (
         <div className="mt-3 space-y-2">

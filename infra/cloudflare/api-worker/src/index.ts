@@ -16,6 +16,9 @@ interface Env {
   S3_BUCKET: string;
   S3_ACCESS_KEY_ID: string;
   S3_SECRET_ACCESS_KEY: string;
+  FX_USD_TO_SGD: string;
+  ADMIN_EMAILS: string;
+  ALERT_WEBHOOK_URL: string;
 }
 
 const PORT = 8080;
@@ -45,6 +48,9 @@ export class ApiContainer extends DurableObject<Env> {
           S3_BUCKET: e.S3_BUCKET,
           S3_ACCESS_KEY_ID: e.S3_ACCESS_KEY_ID,
           S3_SECRET_ACCESS_KEY: e.S3_SECRET_ACCESS_KEY,
+          FX_USD_TO_SGD: e.FX_USD_TO_SGD,
+          ADMIN_EMAILS: e.ADMIN_EMAILS,
+          ...(e.ALERT_WEBHOOK_URL ? { ALERT_WEBHOOK_URL: e.ALERT_WEBHOOK_URL } : {}),
         },
       });
     }

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from decimal import Decimal
 from typing import Any, Literal, Protocol
 
 from pydantic import BaseModel, Field
@@ -39,6 +40,9 @@ class ChatRequest(BaseModel):
     response_schema: dict[str, Any] | None = None
     schema_name: str = "result"
     structured_mode: StructuredMode = "none"
+    # None = provider default. True/False toggles a model's hidden reasoning where the provider supports it.
+    thinking: bool | None = None
+    timeout_seconds: float | None = None
 
 
 class Usage(BaseModel):
@@ -66,6 +70,8 @@ class ProviderError(Exception):
         self.status = status
         # False only when we know the provider never received the request (no cost incurred).
         self.request_sent = request_sent
+        # Set by the gateway once the call is settled: what this failed call cost.
+        self.charged_sgd: Decimal = Decimal(0)
 
     @property
     def retryable(self) -> bool:

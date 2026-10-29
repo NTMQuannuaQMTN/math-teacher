@@ -126,6 +126,10 @@ class CachedPageOcr:
                     await session.commit()
                     return PageOcrOutcome(page=cached_page, model=model, cost_sgd=Decimal(0), cached=True)
         outcome = await self.inner.extract(page, ctx)
+        if not outcome.page.items and outcome.page.page_kind not in ("blank", "not_math"):
+            # An empty transcription of a non-blank page is almost certainly a model failure; caching it
+            # would make every reprocess return the same nothing.
+            return outcome
         async with self.sessionmaker() as session:
             await session.execute(insert(OcrCacheEntry).values(
                 cache_key=key, pipeline_version=PIPELINE_VERSION, model=outcome.model,

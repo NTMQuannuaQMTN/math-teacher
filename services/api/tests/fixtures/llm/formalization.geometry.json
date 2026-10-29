@@ -1,0 +1,107 @@
+{
+ "match": "tam giác ABC nội tiếp",
+ "reply": {
+  "parts": [
+   {
+    "label": "",
+    "task": "prove",
+    "template": {
+     "kind": "geometry",
+     "spec": {
+      "objects": [
+       {
+        "kind": "free_point",
+        "id": "A",
+        "x": -1.5,
+        "y": 2.6
+       },
+       {
+        "kind": "free_point",
+        "id": "B",
+        "x": -3,
+        "y": -1.5
+       },
+       {
+        "kind": "free_point",
+        "id": "C",
+        "x": 3.2,
+        "y": -1.5
+       },
+       {
+        "kind": "circumcircle",
+        "id": "O_c",
+        "points": [
+         "A",
+         "B",
+         "C"
+        ]
+       },
+       {
+        "kind": "circumcenter",
+        "id": "O",
+        "points": [
+         "A",
+         "B",
+         "C"
+        ]
+       },
+       {
+        "kind": "midpoint",
+        "id": "M",
+        "a": "B",
+        "b": "C"
+       },
+       {
+        "kind": "segment",
+        "id": "BC",
+        "through": [
+         "B",
+         "C"
+        ]
+       },
+       {
+        "kind": "segment",
+        "id": "AB",
+        "through": [
+         "A",
+         "B"
+        ]
+       },
+       {
+        "kind": "segment",
+        "id": "AC",
+        "through": [
+         "A",
+         "C"
+        ]
+       },
+       {
+        "kind": "segment",
+        "id": "OM",
+        "through": [
+         "O",
+         "M"
+        ]
+       }
+      ],
+      "goals": [
+       {
+        "kind": "perpendicular",
+        "lines": [
+         [
+          "O",
+          "M"
+         ],
+         [
+          "B",
+          "C"
+         ]
+        ]
+       }
+      ]
+     }
+    }
+   }
+  ]
+ }
+}
