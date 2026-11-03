@@ -16,8 +16,9 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-Id = Annotated[str, Field(pattern=r"^[A-Za-z][A-Za-z0-9_']{0,11}$",
-                          description="Name as in the problem, e.g. A, M, d1")]
+Id = Annotated[str, Field(pattern=r"^[A-Za-z][A-Za-z0-9_']{0,23}$",
+                          description="Name as in the problem (A, M, d1); a helper object gets a short name "
+                                      "such as cO or dBC. Letters, digits, _ and ' only; at most 24 characters.")]
 
 
 class _Obj(BaseModel):

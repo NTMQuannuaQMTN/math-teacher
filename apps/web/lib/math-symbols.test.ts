@@ -15,7 +15,7 @@ test("every symbol renders in KaTeX, alone and with its label", () => {
 
 test("only notation used in official answer keys (docs/NOTATION.md)", () => {
   // ∞ ≈ ∅ ⊂ ℚ ℝ never appear; a|b, ∠ and ∥ appear only in club solutions (official keys use ⋮, a hat, //).
-  const banned = ["\\infty", "\\approx", "\\varnothing", "\\emptyset", "\\subset", "\\mathbb{Q}", "\\mathbb{R}",
+  const banned = ["\\infty", "\\varnothing", "\\emptyset", "\\subset", "\\mathbb{Q}", "\\mathbb{R}",
     "\\mid", "\\nmid", "\\angle", "\\parallel", "\\div", "\\forall", "\\exists", "\\lor"];
   for (const s of symbols) {
     for (const command of banned) assert.ok(!`${s.before}${s.after ?? ""}`.includes(command), `${s.name} uses ${command}`);

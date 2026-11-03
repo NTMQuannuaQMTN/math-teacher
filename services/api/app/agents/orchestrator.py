@@ -25,12 +25,13 @@ from ..billing.budget import BudgetRestricted, UserBudgetExceeded
 from ..curriculum.policy import CurriculumReport, Policy, check_curriculum, load_policy
 from ..errors import BudgetExceeded
 from ..providers.base import ChatMessage
-from ..providers.catalog import ModelNotConfigured, cost_sgd
+from ..providers.catalog import ModelNotConfigured, Tier, cost_sgd
 from ..providers.gateway import CallContext, InvalidModelOutput, LLMGateway, ModelCallFailed
 from ..solvers import prompts
 from ..solvers.schemas import (
     EvidenceOut,
     Formalization,
+    FormalizationReply,
     Hint,
     ModelSolution,
     PartVerdict,
@@ -38,11 +39,18 @@ from ..solvers.schemas import (
 )
 from ..tools.sandbox import run_check
 from ..tutoring.hints import generate_hints
-from ..verification.verdict import CheckRunner, drop_invalid_templates, template_errors, verify_solution
+from ..verification.verdict import (
+    CheckRunner,
+    drop_invalid_templates,
+    inherit_geometry,
+    template_errors,
+    verify_solution,
+)
 
 logger = logging.getLogger(__name__)
 
 TOPICS = ("algebra", "geometry", "number_theory", "combinatorics")
+THINKING_CALL_SECONDS = 300  # typical duration of a reasoning escalation on SoCLaaS (measured 2026-10)
 _RANK: dict[VerificationStatus, int] = {"INCORRECT": 0, "UNSOLVED": 1, "UNVERIFIED": 2, "PARTIALLY_VERIFIED": 3,
                                         "VERIFIED": 4}
 
@@ -91,6 +99,8 @@ class SolveOutcome:
     state: SolveState
     topics: list[str]
     formalization: Formalization | None = None
+    # Every geometry part as written (before invalid templates are dropped), for the figure only.
+    drawing: Formalization | None = None
     best: Attempt | None = None
     attempts: int = 0
     cost_sgd: Decimal = Decimal(0)
@@ -99,6 +109,10 @@ class SolveOutcome:
     error_message: str | None = None
     policy_version: str = ""
     hints: list[Hint] = field(default_factory=list)
+
+
+def _templates(formalization: Formalization) -> int:
+    return sum(p.template is not None for p in formalization.parts)
 
 
 def solution_texts(solution: ModelSolution) -> list[str]:
@@ -132,8 +146,9 @@ def revision_feedback(attempt: Attempt) -> list[str]:
 class Orchestrator:
     def __init__(self, gateway: LLMGateway, *, policy: Policy | None = None, run: CheckRunner | None = None,
                  max_revisions: int = 2, question_budget_sgd: Decimal = Decimal("0.30"),
-                 solve_max_tokens: int = 8000, formalize_max_tokens: int = 4000,
-                 escalate_thinking: bool = True) -> None:
+                 solve_max_tokens: int = 8000, formalize_max_tokens: int = 6000,
+                 escalate_thinking: bool = True, time_budget_seconds: float = 480,
+                 geometry_thinking_first: bool = True) -> None:
         self.gateway = gateway
         self.policy = policy or load_policy()
         self.run = run or run_check
@@ -142,10 +157,13 @@ class Orchestrator:
         self.solve_max_tokens = solve_max_tokens
         self.formalize_max_tokens = formalize_max_tokens
         self.escalate_thinking = escalate_thinking
+        self.time_budget = time_budget_seconds
+        self.geometry_thinking_first = geometry_thinking_first
 
-    def _can_escalate(self, thinking_used: bool, calls: int, outcome: SolveOutcome) -> bool:
+    def _can_escalate(self, thinking_used: bool, calls: int, outcome: SolveOutcome, elapsed: float) -> bool:
         return (self.escalate_thinking and not thinking_used and calls <= self.max_revisions
-                and outcome.cost_sgd + self._next_cost(True, Decimal(0)) <= self.question_budget)
+                and outcome.cost_sgd + self._next_cost(True, Decimal(0)) <= self.question_budget
+                and elapsed + THINKING_CALL_SECONDS <= self.time_budget)
 
     def _next_cost(self, thinking: bool, last_cost: Decimal) -> Decimal:
         """Upper-bound estimate of the next solve call (a thinking call may use its whole output allowance)."""
@@ -161,42 +179,64 @@ class Orchestrator:
     def _log(self, outcome: SolveOutcome, state: SolveState, started: float, **detail: Any) -> None:
         outcome.trace.append({"state": state.value, "ms": int((time.monotonic() - started) * 1000), **detail})
 
-    async def formalize(self, data: SolveInput, outcome: SolveOutcome) -> None:
+    async def formalize(self, data: SolveInput, outcome: SolveOutcome, temperature: float = 0.0) -> None:
         """Independent formalization with one parser-guided repair; invalid parts are dropped, never guessed."""
         outcome.state = SolveState.FORMALIZE
         started = time.monotonic()
+        ctx = CallContext("formalize", data.user_id, data.job_id)
+        # Geometry figures need a careful construction: a stronger model than the fast tier (configurable).
+        tier: Tier = "geometry_formalize" if "geometry" in (outcome.topics or data.topics) else "fast"
+        messages = [ChatMessage(role="system", content=prompts.FORMALIZE_SYSTEM),
+                    ChatMessage(role="user", content=prompts.formalize_user(data.problem_text))]
         try:
-            formal = await self.gateway.structured(
-                tier="fast", ctx=CallContext("formalize", data.user_id, data.job_id), output=Formalization,
-                max_tokens=self.formalize_max_tokens, schema_name="formalization", messages=[
-                    ChatMessage(role="system", content=prompts.FORMALIZE_SYSTEM),
-                    ChatMessage(role="user", content=prompts.formalize_user(data.problem_text))])
-            outcome.cost_sgd += formal.cost_sgd
-            formalization = formal.value
-            problems = template_errors(formalization)
-            if problems:
-                # One repair round with the parser's errors; whatever still does not parse is dropped.
+            formal = await self.gateway.structured(tier=tier, ctx=ctx, output=FormalizationReply,
+                                                   max_tokens=self.formalize_max_tokens, temperature=temperature,
+                                                   thinking=False,
+                                                   schema_name="formalization", messages=messages)
+        except (InvalidModelOutput, ModelCallFailed) as exc:
+            outcome.cost_sgd += exc.cost_sgd
+            self._log(outcome, SolveState.FORMALIZE, started, error=exc.code)
+            return
+        outcome.cost_sgd += formal.cost_sgd
+        parsed, problems = formal.value.split()
+        if parsed is None:
+            self._log(outcome, SolveState.FORMALIZE, started, error="invalid_model_output")
+            return
+        first = inherit_geometry(parsed)
+        problems += template_errors(first)
+        formalization, drawing = drop_invalid_templates(first), first
+        repair_error = None
+        if problems:
+            # One repair round with the parser's errors; whatever still does not parse is dropped. A failed or worse
+            # repair keeps the valid parts of the first reply.
+            try:
                 repaired = await self.gateway.structured(
-                    tier="fast", ctx=CallContext("formalize", data.user_id, data.job_id), output=Formalization,
-                    max_tokens=self.formalize_max_tokens, schema_name="formalization", messages=[
-                        ChatMessage(role="system", content=prompts.FORMALIZE_SYSTEM),
-                        ChatMessage(role="user", content=prompts.formalize_user(data.problem_text)),
-                        ChatMessage(role="assistant", content=formalization.model_dump_json()),
+                    tier=tier, ctx=ctx, output=FormalizationReply, max_tokens=self.formalize_max_tokens,
+                    temperature=temperature, thinking=False,
+                    schema_name="formalization", messages=[
+                        *messages, ChatMessage(role="assistant", content=formal.value.model_dump_json()),
                         ChatMessage(role="user", content=prompts.formalize_repair(problems))])
                 outcome.cost_sgd += repaired.cost_sgd
-                formalization = repaired.value
-            outcome.formalization = drop_invalid_templates(formalization)
-            self._log(outcome, SolveState.FORMALIZE, started, parts=len(outcome.formalization.parts),
-                      repaired=bool(problems),
-                      templates=[p.template.kind if p.template else None for p in outcome.formalization.parts])
-        except (InvalidModelOutput, ModelCallFailed) as exc:
-            self._log(outcome, SolveState.FORMALIZE, started, error=exc.code)
+                again, _ = repaired.value.split()
+                if again is not None:
+                    again = inherit_geometry(again)
+                    candidate = drop_invalid_templates(again)
+                    if _templates(candidate) >= _templates(formalization):
+                        formalization, drawing = candidate, again
+            except (InvalidModelOutput, ModelCallFailed) as exc:
+                outcome.cost_sgd += exc.cost_sgd
+                repair_error = exc.code
+        outcome.formalization, outcome.drawing = formalization, drawing
+        self._log(outcome, SolveState.FORMALIZE, started, parts=len(formalization.parts), repaired=bool(problems),
+                  templates=[p.template.kind if p.template else None for p in formalization.parts],
+                  **({"repair_error": repair_error} if repair_error else {}))
 
-    async def figure_only(self, data: SolveInput) -> SolveOutcome:
-        """Formalize without solving (used to draw a geometry figure before any hint or solution)."""
+    async def figure_only(self, data: SolveInput, *, redraw: bool = False) -> SolveOutcome:
+        """Formalize without solving (used to draw a geometry figure before any hint or solution). A redraw samples
+        (temperature 0.4): at 0 the provider returns the same formalization, so "Vẽ lại hình" would change nothing."""
         outcome = SolveOutcome(state=SolveState.FORMALIZE, topics=list(data.topics),
                                policy_version=self.policy.version)
-        await self.formalize(data, outcome)
+        await self.formalize(data, outcome, temperature=0.4 if redraw else 0.0)
         outcome.state = SolveState.DONE
         return outcome
 
@@ -204,6 +244,7 @@ class Orchestrator:
         outcome = SolveOutcome(state=SolveState.CLASSIFY, topics=[t for t in data.topics if t in TOPICS],
                                policy_version=self.policy.version)
         ctx = CallContext(purpose="solve", user_id=data.user_id, job_id=data.job_id)
+        run_started = time.monotonic()
 
         # CLASSIFY: confirmed topics are reused; the fast model is only asked when none are set.
         started = time.monotonic()
@@ -228,29 +269,38 @@ class Orchestrator:
         system = prompts.solve_system(self.policy, outcome.topics, variables)
         messages = [ChatMessage(role="system", content=system),
                     ChatMessage(role="user", content=prompts.solve_user(data.problem_text))]
-        tier: Literal["reasoning", "fast"] = "reasoning"
+        geometry = "geometry" in outcome.topics
+        tier: Tier = "geometry_reasoning" if geometry else "reasoning"
 
         # Escalation: the first attempt runs without hidden reasoning (fast, cheap). One attempt may switch it on
-        # when the answer is wrong, missing, unsolved, or the reply was unusable.
+        # when the answer is wrong, missing, unsolved, or the reply was unusable. Geometry proofs start with it: the
+        # non-reasoning attempt rarely finds the auxiliary construction, and a failed reasoning call falls back to
+        # one plain attempt.
         thinking: bool | None = False if self.escalate_thinking else None
         thinking_used = False
+        if geometry and self.escalate_thinking and self.geometry_thinking_first:
+            thinking, thinking_used = True, True
         calls = 0
         while True:
             outcome.state = SolveState.SOLVE if calls == 0 else SolveState.REVISE
             calls += 1
             started = time.monotonic()
+            # A failed thinking call is not repeated (it can take minutes), nor is a revision: one solution exists.
+            retries = 0 if thinking or outcome.best is not None else None
             try:
                 try:
                     solved = await self.gateway.structured(tier=tier, ctx=ctx, output=ModelSolution,
                                                            max_tokens=self.solve_max_tokens, schema_name="solution",
-                                                           messages=messages, temperature=0.2, thinking=thinking)
+                                                           messages=messages, temperature=0.2, thinking=thinking,
+                                                           max_retries=retries)
                 except BudgetRestricted:
                     # Restricted budget mode refuses the reasoning tier: degrade to the fast model.
                     tier = "fast"
                     self._log(outcome, outcome.state, started, degraded="budget_restricted")
                     solved = await self.gateway.structured(tier=tier, ctx=ctx, output=ModelSolution,
                                                            max_tokens=self.solve_max_tokens, schema_name="solution",
-                                                           messages=messages, temperature=0.2, thinking=False)
+                                                           messages=messages, temperature=0.2, thinking=False,
+                                                           max_retries=retries)
             except (BudgetExceeded, UserBudgetExceeded):
                 if outcome.best is None:
                     raise
@@ -260,8 +310,11 @@ class Orchestrator:
                 outcome.cost_sgd += exc.cost_sgd
                 self._log(outcome, outcome.state, started, error=exc.code, thinking=thinking,
                           cost_sgd=str(exc.cost_sgd))
-                if self._can_escalate(thinking_used, calls, outcome):
+                if self._can_escalate(thinking_used, calls, outcome, time.monotonic() - run_started):
                     thinking, thinking_used = True, True
+                    continue
+                if thinking and outcome.best is None and calls == 1:
+                    thinking = False  # geometry started with reasoning and it failed (often a timeout): one plain try
                     continue
                 if outcome.best is None:
                     outcome.state = SolveState.FAILED
@@ -270,6 +323,7 @@ class Orchestrator:
                 break
             if thinking:
                 thinking_used = True
+            call_seconds = time.monotonic() - started
             outcome.attempts += 1
             outcome.cost_sgd += solved.cost_sgd
             self._log(outcome, outcome.state, started, model=solved.model, thinking=thinking,
@@ -294,13 +348,17 @@ class Orchestrator:
             feedback = revision_feedback(attempt)
             hard = status in ("INCORRECT", "UNSOLVED") or not solved.value.solved or any(
                 "chưa nêu" in v.reason_vi for v in verdicts)
-            escalate = hard and self._can_escalate(thinking_used, calls, outcome)
+            escalate = hard and self._can_escalate(thinking_used, calls, outcome, time.monotonic() - run_started)
             if not solved.value.solved and escalate:
                 feedback = ["Lời giải trước chưa giải được bài. Hãy suy nghĩ kỹ và giải lại từ đầu."]
             if not feedback or calls > self.max_revisions:
                 break
             if outcome.cost_sgd + self._next_cost(escalate, solved.cost_sgd) > self.question_budget:
                 self._log(outcome, SolveState.REVISE, time.monotonic(), skipped="question_budget")
+                break
+            # The student is waiting: a revision that would likely end past the time budget is not started.
+            if not escalate and time.monotonic() - run_started + call_seconds > self.time_budget:
+                self._log(outcome, SolveState.REVISE, time.monotonic(), skipped="time_budget")
                 break
             thinking = True if escalate else (False if self.escalate_thinking else None)
             messages = [messages[0], ChatMessage(role="user", content=prompts.revise_user(

@@ -16,8 +16,12 @@ from pydantic import BaseModel, Field, model_validator
 from ..errors import AppError
 from .base import StructuredMode
 
-Tier = Literal["ocr", "fast", "reasoning"]
+Tier = Literal["ocr", "fast", "reasoning", "geometry_formalize", "geometry_reasoning"]
 TIERS: tuple[Tier, ...] = ("ocr", "fast", "reasoning")
+# Optional tiers: geometry formalization (figures) and geometry solving can be routed to a stronger model; when not
+# routed they use the reasoning model.
+TIER_FALLBACK: dict[Tier, Tier] = {"geometry_formalize": "reasoning", "geometry_reasoning": "reasoning"}
+REASONING_TIERS: frozenset[Tier] = frozenset({"reasoning", "geometry_reasoning"})
 
 
 class ModelNotConfigured(AppError):
@@ -75,6 +79,8 @@ class ModelCatalog(BaseModel):
 
     def for_tier(self, tier: Tier) -> ModelSpec:
         model_id = self.routing.get(tier)
+        if model_id is None and tier in TIER_FALLBACK:
+            model_id = self.routing.get(TIER_FALLBACK[tier])
         if model_id is None:
             raise ModelNotConfigured(f"Chưa cấu hình mô hình cho tác vụ '{tier}'.")
         return self.spec(model_id)

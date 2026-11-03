@@ -728,6 +728,9 @@ def check_geometry(p: Payload) -> Evidence:
 REGISTRY["geometry"] = check_geometry
 
 
+FIGURE_GIVEN_TRIALS = 8  # each infeasible trial samples for up to ~1 s
+
+
 def build_figure(p: Payload) -> Evidence:
     """Initial configuration + parameter layout for the interactive figure (not a verification)."""
     from ..geometry.dsl import GeometrySpec
@@ -735,10 +738,21 @@ def build_figure(p: Payload) -> Evidence:
 
     spec = GeometrySpec.model_validate(p["spec"])
     result = check_spec(spec, samples=6)
+    if result["status"] == "infeasible" and 1 < len(spec.givens) <= FIGURE_GIVEN_TRIALS:
+        # One contradictory given (a formalizer slip such as "O lies on (O)") should not cost the whole drawing: draw
+        # without it, say so, and hand back the spec actually drawn (dragging re-solves its givens).
+        for index, skipped in enumerate(spec.givens):
+            trial = spec.model_copy(update={"givens": [g for i, g in enumerate(spec.givens) if i != index]})
+            attempt = check_spec(trial, samples=6)
+            if attempt["status"] == "ok":
+                spec, result = trial, {**attempt, "detail": "Hình vẽ bỏ qua một điều kiện không dựng được "
+                                                            f"({skipped.kind}); hãy đối chiếu với đề bài."}
+                break
     layout = [{"object": oid, "role": role} for oid, role in compile_spec(spec).params] \
         if result["status"] != "invalid" else []
     return {"outcome": "confirmed", "strength": "none", "detail": result.get("detail") or "", "data": {
-        "status": result["status"], "initial": result.get("initial"), "layout": layout}}
+        "status": result["status"], "initial": result.get("initial"), "layout": layout,
+        "spec": spec.model_dump(mode="json")}}
 
 
 REGISTRY["figure"] = build_figure

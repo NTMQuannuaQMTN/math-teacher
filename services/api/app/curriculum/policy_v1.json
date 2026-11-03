@@ -1,5 +1,5 @@
 {
-  "version": "curriculum-2026.10-v1.1",
+  "version": "curriculum-2026.11-v1.6",
   "description": "Methods allowed in student-facing solutions for Toán chuyên vào 10: Vietnamese Grade 9 and below, plus elementary Olympiad techniques. Prohibited items fail the solution; discouraged items are reported as warnings.",
   "allowed": [
     {
@@ -191,6 +191,11 @@
       "id": "ptolemy",
       "name_vi": "Định lí Ptô-lê-mê (Olympic sơ cấp)",
       "topic": "geometry"
+    },
+    {
+      "id": "proved_lemma",
+      "name_vi": "Bổ đề (kiến thức ngoài chương trình) được chứng minh bằng kiến thức lớp 9",
+      "topic": "general"
     }
   ],
   "discouraged": [
@@ -201,7 +206,7 @@
         "Fermat nhỏ",
         "Fermat's little"
       ],
-      "reason_vi": "Nên dùng xét số dư trực tiếp."
+      "reason_vi": "Nên dùng xét số dư trực tiếp. Nếu dùng thì phải chứng minh: hướng dẫn chấm trừ điểm khi dùng kiến thức ngoài chương trình mà không chứng minh."
     },
     {
       "id": "euler_theorem",
@@ -212,7 +217,7 @@
         "phi hàm Euler",
         "\\\\varphi\\(n\\)"
       ],
-      "reason_vi": "Vượt chương trình lớp 9."
+      "reason_vi": "Vượt chương trình lớp 9. Nếu dùng thì phải chứng minh: hướng dẫn chấm trừ điểm khi dùng kiến thức ngoài chương trình mà không chứng minh."
     },
     {
       "id": "chinese_remainder",
@@ -221,7 +226,7 @@
         "số dư Trung Hoa",
         "Chinese remainder"
       ],
-      "reason_vi": "Vượt chương trình lớp 9."
+      "reason_vi": "Vượt chương trình lớp 9. Nếu dùng thì phải chứng minh: hướng dẫn chấm trừ điểm khi dùng kiến thức ngoài chương trình mà không chứng minh."
     },
     {
       "id": "schur_jensen",
@@ -232,7 +237,7 @@
         "Karamata",
         "Muirhead"
       ],
-      "reason_vi": "Bất đẳng thức Olympic nâng cao; nên dùng Cô-si hoặc biến đổi tương đương."
+      "reason_vi": "Bất đẳng thức Olympic nâng cao; nên dùng Cô-si hoặc biến đổi tương đương. Nếu dùng thì phải chứng minh: hướng dẫn chấm trừ điểm khi dùng kiến thức ngoài chương trình mà không chứng minh."
     },
     {
       "id": "cyclic_shortcut",
@@ -241,6 +246,14 @@
         "hoán vị vòng quanh"
       ],
       "reason_vi": "Phải liệt kê đầy đủ các nghiệm."
+    },
+    {
+      "id": "rotation_tool",
+      "name_vi": "Dùng phép quay để chứng minh",
+      "patterns": [
+        "phép quay"
+      ],
+      "reason_vi": "Lớp 9 chỉ nhận biết phép quay giữ nguyên hình đa giác đều (Chương trình GDPT 2018); không dùng phép quay làm công cụ chứng minh."
     }
   ],
   "prohibited": [
@@ -319,9 +332,8 @@
     },
     {
       "id": "geometric_transformations",
-      "name_vi": "Phép biến hình (quay, tịnh tiến, đối xứng, vị tự, nghịch đảo)",
+      "name_vi": "Phép biến hình dùng để chứng minh (tịnh tiến, đối xứng, vị tự, nghịch đảo)",
       "patterns": [
-        "phép quay",
         "phép tịnh tiến",
         "phép đối xứng",
         "phép vị tự",
@@ -372,7 +384,7 @@
         "\\bwait\\b",
         "\\bhmm\\b",
         "\\boops\\b",
-        "thử lại",
+        "\\b(tôi|mình|hãy|để) thử lại\\b|\\bthử lại (cách|lần|từ đầu)",
         "\\bà không\\b",
         "nhầm",
         "sai lầm",
@@ -380,7 +392,10 @@
         "xin lỗi",
         "suy luận nhanh",
         "cách nhanh hơn",
-        "(bước|lập luận|phần|kết quả|cách) (ở )?trên (là )?(sai|chưa đúng)"
+        "(bước|lập luận|phần|kết quả|cách) (ở )?trên (là )?(sai|chưa đúng)",
+        "\\?\\s*(Không|Sai)\\b",
+        "không cần phức tạp",
+        "ta dùng (đánh giá|cách) (trực tiếp|khác)"
       ]
     },
     {

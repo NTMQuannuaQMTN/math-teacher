@@ -6,11 +6,11 @@
   "combinatorics": 50
  },
  "authentic": {
-  "other": 4,
-  "algebra": 21,
-  "number_theory": 16,
-  "geometry": 21,
-  "combinatorics": 10
+  "other": 10,
+  "algebra": 48,
+  "number_theory": 24,
+  "geometry": 22,
+  "combinatorics": 14
  },
  "synthetic": {},
  "note": "Authentic items come from published papers listed in authentic/sources.json. Items whose topic is not one of the four (statistics, probability, word problems) are kept as 'other' and excluded from the 200 target."

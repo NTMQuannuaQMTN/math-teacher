@@ -29,6 +29,7 @@ export const GROUPS: { name: string; symbols: MathSymbol[] }[] = [
     name: "So sánh, chia hết",
     symbols: [
       { label: "≠", name: "khác", before: "\\neq " },
+      { label: "≈", name: "xấp xỉ", before: "\\approx " },
       { label: "≤", name: "nhỏ hơn hoặc bằng", before: "\\le " },
       { label: "≥", name: "lớn hơn hoặc bằng", before: "\\ge " },
       { label: "⋮", name: "chia hết cho", before: "\\vdots " },

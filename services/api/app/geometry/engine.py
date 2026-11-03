@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import math
 import random
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -217,6 +218,126 @@ def compile_spec(spec: GeometrySpec) -> Compiled:
         elif isinstance(obj, PointOnCircle):
             compiled.params.append((obj.id, "angle"))
     return compiled
+
+
+_LINE_FIELDS = {"point_on_line": ("line",), "projection": ("line",), "parallel": ("to",), "perpendicular": ("to",),
+                "intersection": ("of",)}
+
+
+def normalize_spec(spec: GeometrySpec) -> GeometrySpec:
+    """Exact rewrites of common formalizer slips (nothing is guessed):
+    - "A on the circle through A, B, C" (or on the line through A) is circular and always true: A is a free point,
+      and such a given is dropped, as is "D on c" when D is constructed on c;
+    - a line referenced by the names of two of its points but never defined ("BC", "line_BC" where a line is
+      expected) is the line through them: that is what the name says."""
+    carriers = {o.id: set(o.points) if isinstance(o, Circumcircle) else set(o.through) if isinstance(o, Line)
+                else {o.through} if isinstance(o, Circle) and o.through else set() for o in spec.objects}
+
+    def on_own_carrier(point: str, carrier: str | None) -> bool:
+        return carrier is not None and point in carriers.get(carrier, set())
+
+    objects = [FreePoint(kind="free_point", id=o.id)
+               if (isinstance(o, PointOnCircle) and on_own_carrier(o.id, o.circle))
+               or (isinstance(o, PointOnLine) and on_own_carrier(o.id, o.line)) else o for o in spec.objects]
+    built_on = {o.id: o.circle if isinstance(o, PointOnCircle) else o.line for o in objects
+                if isinstance(o, PointOnCircle | PointOnLine)}
+
+    def redundant(g: Relation) -> bool:
+        if not isinstance(g, OnCircle | OnLine):
+            return False
+        carrier = g.circle if isinstance(g, OnCircle) else g.line
+        return on_own_carrier(g.point, carrier) or built_on.get(g.point) == carrier
+
+    givens = [g for g in spec.givens if not redundant(g)]
+    if objects != spec.objects or givens != spec.givens:
+        spec = spec.model_copy(update={"objects": objects, "givens": givens})
+    points = {o.id for o in spec.objects if o.kind in POINT_KINDS}
+    ids = {o.id for o in spec.objects}
+    wanted: list[str] = [rel.line for rel in [*spec.givens, *spec.goals]
+                         if isinstance(rel, OnLine)]
+    for obj in spec.objects:
+        for name in _LINE_FIELDS.get(obj.kind, ()):
+            value = getattr(obj, name)
+            wanted.extend(value if isinstance(value, list) else [value])
+    added: list[Line] = []
+    for ref in dict.fromkeys(wanted):
+        if ref in ids:
+            continue
+        name = ref.removeprefix("line_").removeprefix("line")
+        splits = [(name[:i], name[i:]) for i in range(1, len(name))
+                  if name[:i] in points and name[i:] in points and name[:i] != name[i:]]
+        if len(splits) == 1:  # an ambiguous name ("ABC" with points A, AB, BC, C) is left alone
+            added.append(Line(kind="line", id=ref, through=list(splits[0])))
+            ids.add(ref)
+    return spec.model_copy(update={"objects": [*spec.objects, *added]}) if added else spec
+
+
+POINT_NAME = re.compile(r"^[A-Z](?:'{1,2}|[0-9])?$")
+_SPARE_LETTERS = "MNPQKIEFHJLRSTUVXYZGDCBAOW"
+
+
+def name_points(spec: GeometrySpec) -> GeometrySpec:
+    """Points carry the names a student writes on a figure: a capital letter, optionally with ' or a digit (M, A',
+    A1). Any other point id (midAB, H_A, footD) is renamed consistently everywhere: the foot of the perpendicular
+    from A becomes A' (or A1, A2 …), any other point the next unused letter. Lines and circles keep their ids."""
+    used = {o.id for o in spec.objects}
+    names: dict[str, str] = {}
+    for obj in spec.objects:
+        if obj.kind not in POINT_KINDS or POINT_NAME.match(obj.id):
+            continue
+        base = getattr(obj, "point", None) if obj.kind == "projection" else None
+        options = [f"{base}'", *(f"{base}{i}" for i in range(1, 10))] if base and POINT_NAME.match(base) else []
+        options += [c for c in _SPARE_LETTERS] + [f"{c}{i}" for i in range(1, 10) for c in _SPARE_LETTERS]
+        name = next(n for n in options if n not in used)
+        names[obj.id] = name
+        used.add(name)
+    if not names:
+        return spec
+
+    def rename(node: Any, key: str = "") -> Any:
+        if isinstance(node, dict):
+            return {k: rename(v, k) for k, v in node.items()}
+        if isinstance(node, list):
+            return [rename(v, key) for v in node]
+        return names.get(node, node) if isinstance(node, str) and key != "kind" else node
+
+    return GeometrySpec.model_validate(rename(spec.model_dump(mode="json")))
+
+
+def drawable(spec: GeometrySpec) -> GeometrySpec | None:
+    """For drawing only (never for verification): the part of a spec that builds. Objects with unknown, mistyped or
+    circular references are left out with everything built on them, then each relation that no longer checks."""
+    objects = list(normalize_spec(spec).objects)
+    for _ in range(len(objects) + 1):
+        ids = {o.id for o in objects}
+        kept = [o for o in objects if all(ref in ids for ref in _refs(o))]
+        if len(kept) < len(objects):
+            objects = kept
+            continue
+        if not objects:
+            return None
+        try:
+            compile_spec(spec.model_copy(update={"objects": objects, "givens": [], "goals": [], "targets": []}))
+            break
+        except GeometryError as exc:
+            message = str(exc)
+            bad = set(message.removeprefix("circular construction: ").split(" → ")) \
+                if message.startswith("circular construction") else {part.split(":")[0] for part in message.split("; ")}
+            if not bad & ids:
+                return None
+            objects = [o for o in objects if o.id not in bad]
+    else:
+        return None
+    base = spec.model_copy(update={"objects": objects, "givens": [], "goals": [], "targets": []})
+    for field_name in ("givens", "goals", "targets"):
+        for item in getattr(spec, field_name):
+            candidate = base.model_copy(update={field_name: [*getattr(base, field_name), item]})
+            try:
+                compile_spec(candidate)
+            except GeometryError:
+                continue
+            base = candidate
+    return base
 
 
 # --- primitives -------------------------------------------------------------------------------------------------

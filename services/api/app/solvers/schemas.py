@@ -9,13 +9,13 @@ with a true but irrelevant claim.
 
 from __future__ import annotations
 
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, ValidationError, field_validator
 
 from ..geometry.dsl import GeometrySpec
 
-PIPELINE_VERSION = "solve-2026.10.1"
+PIPELINE_VERSION = "solve-2026.11.1"
 
 Domain = Literal["real", "rational", "integer", "positive_integer", "natural"]
 Expr = Annotated[str, Field(max_length=400, description="Plain ASCII maths, explicit *, ^ for powers, e.g. 2*x^2-3")]
@@ -115,6 +115,37 @@ class PartFormalization(BaseModel):
 
 class Formalization(BaseModel):
     parts: list[PartFormalization] = Field(min_length=1, max_length=12)
+
+
+class FormalizationReply(BaseModel):
+    """The formalizer's reply before each part is validated on its own, so a malformed template (an over-long id, a
+    relation listed as an object) costs that part's template only, not the whole formalization. The model is shown
+    the strict `Formalization` schema."""
+
+    parts: list[dict[str, Any]] = Field(min_length=1, max_length=12)
+
+    @classmethod
+    def model_json_schema(cls, *args: Any, **kwargs: Any) -> dict[str, Any]:
+        return Formalization.model_json_schema(*args, **kwargs)
+
+    def split(self) -> tuple[Formalization | None, list[str]]:
+        """The parts that validate (a part whose template does not keeps template=None) and the schema problems."""
+        parts: list[PartFormalization] = []
+        problems: list[str] = []
+        for raw in self.parts:
+            try:
+                parts.append(PartFormalization.model_validate(raw))
+                continue
+            except ValidationError as exc:
+                where = f"part '{raw.get('label')}'" if raw.get("label") else "the problem"
+                errors = [f"{'.'.join(str(x) for x in e['loc'])}: {e['msg']} (got {str(e.get('input'))[:60]!r})"
+                          for e in exc.errors(include_url=False)[:4]]
+                problems.append(f"{where}: does not match the schema: " + "; ".join(errors))
+            try:
+                parts.append(PartFormalization.model_validate({**raw, "template": None}))
+            except ValidationError:
+                pass  # not even a label and a task: the part is left out
+        return (Formalization(parts=parts) if parts else None), problems
 
 
 AnswerKind = Literal["solution_set", "value", "count", "extremum", "proof", "construction", "other"]

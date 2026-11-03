@@ -4,7 +4,7 @@
 
 | Path | What |
 | --- | --- |
-| `authentic/exams-2023-2026.jsonl` | 72 questions from published entrance papers: PTNK 2023–2026, Hà Nội 2025, HCM 2025, KHTN 2025 (vòng 2). One JSON object per question. |
+| `authentic/exams-2023-2026.jsonl` | 118 questions from published entrance papers: PTNK 2023–2026, Hà Nội 2025, Quảng Nam 2025, Hải Phòng 2025 and Phú Yên 2023 and 2024, An Giang 2023 and 2024, Hải Dương 2023, Đồng Nai 2024, Quảng Bình and Thái Nguyên 2022 (chuyên), HCM 2023 and 2024 (đại trà), Quảng Ninh and Thanh Hóa 2025 (đại trà), HCM 2025 (chuyên and đại trà), KHTN 2025 (vòng 2). One JSON object per question. |
 | `authentic/sources.json` | Source of each paper: official URL, access date, SHA-256 of the downloaded file. |
 | `manifest.json` | Target (50 per topic, 200 total) and current counts. |
 | `synthetic/verifier_cases.jsonl` | 39 labelled synthetic cases for the deterministic verifier (`tests/test_verifier_suite.py`). Never mixed into the authentic set or its scores. |
@@ -12,11 +12,13 @@
 
 Each authentic item records its provenance (`exam`, `school`, `year`, `source_url`, `page`), the reference answer
 and its status (`official` = from the published answer key, `teacher` = from a teacher's solution, `derived` = worked
-out during collection), and its transcription status. `expected` holds a machine-checkable answer for 16 items, used
+out during collection), and its transcription status. `expected` holds a machine-checkable answer for 62 items, used
 for automatic scoring. The remaining items (mostly proofs) are scored on verification and curriculum status only.
 
-Coverage against the 200-question target: algebra 21/50, geometry 21/50, number theory 16/50,
-combinatorics 10/50, plus 4 items outside the four topics. Phase 6 fills the rest from real papers.
+Coverage against the 200-question target: algebra 48/50, geometry 22/50, number theory 24/50,
+combinatorics 14/50, plus 10 items outside the four topics (statistics, probability, word problems). Items with
+`answer_status: official` added on 2026-11-03 come from the Sở/school marking guides listed in
+`docs/research/PAST_PAPER_FINDINGS.md`.
 
 ## Running
 

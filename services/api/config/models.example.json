@@ -1,6 +1,6 @@
 {
   "provider": "soclaas",
-  "_comment": "Copy to config/models.json. Model ids MUST be checked against GET /v1/models for your key (scripts/soclaas_probe.py). Prices are never assumed: a model with pricing=null cannot be called. SoCLaaS publishes no price list; if your key is free, set prices to 0 explicitly after confirming. Use structured_output json_object, not json_schema: SoCLaaS's constrained json_schema decoding mangles LaTeX backslashes.",
+  "_comment": "Copy to config/models.json. Model ids MUST be checked against GET /v1/models for your key (scripts/soclaas_probe.py). Prices are never assumed: a model with pricing=null cannot be called. SoCLaaS publishes no price list; if your key is free, set prices to 0 explicitly after confirming. Use structured_output json_object, not json_schema: SoCLaaS's constrained json_schema decoding mangles LaTeX backslashes. Optional routing keys geometry_formalize and geometry_reasoning send geometry figures/proofs to another model (they default to the reasoning model); a model needs its SoCLaaS portal price before it can be routed.",
   "models": [
     {
       "id": "qwen3.8:27b",

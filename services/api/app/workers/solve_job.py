@@ -24,7 +24,9 @@ def build_orchestrator(c: Container) -> Orchestrator:
     assert c.gateway is not None
     return Orchestrator(c.gateway, max_revisions=c.settings.solve_max_revisions,
                         question_budget_sgd=c.settings.question_budget_sgd,
-                        escalate_thinking=c.settings.solve_escalate_thinking)
+                        escalate_thinking=c.settings.solve_escalate_thinking,
+                        time_budget_seconds=c.settings.solve_time_budget_seconds,
+                        geometry_thinking_first=c.settings.solve_geometry_thinking_first)
 
 
 async def run_solve_job(c: Container, job: Job) -> dict[str, Any]:
@@ -83,8 +85,8 @@ async def run_solve_job(c: Container, job: Job) -> dict[str, Any]:
         question_row = await session.get(Question, row.question_id)
         if question_row is not None:
             session.expunge(question_row)
-    if question_row is not None and geometry_spec(outcome.formalization) is not None:
-        await build_figure(c, job.owner_id, question_row, outcome.formalization, solution_id=solution_id)
+    if question_row is not None and geometry_spec(outcome.drawing) is not None:
+        await build_figure(c, job.owner_id, question_row, outcome.drawing, solution_id=solution_id)
     return {"solution_id": str(solution_id), "verification_status": best.status,
             "curriculum_status": row.curriculum_status, "cost_sgd": str(outcome.cost_sgd)}
 

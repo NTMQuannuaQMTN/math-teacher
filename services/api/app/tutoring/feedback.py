@@ -59,9 +59,16 @@ Do this:
    "problem_math": the starting equation of the problem in the same syntax.
 3. Point to the FIRST incorrect step only, and explain precisely why it is wrong (e.g. chia hai vế cho x làm mất
    nghiệm x = 0; bình phương hai vế khi chưa có điều kiện).
+   A later step that builds on an incorrect one is not "correct" even if its own algebra is right: mark it "unclear"
+   with a note that it rests on the earlier error (official marking guides give 0 to such steps).
 4. Give ONE hint for what to do next, building on their correct work. Do not give the answer or finish the
    problem. If they already reached a correct final answer, confirm it and suggest checking or presenting it.
 5. Keep their correct reasoning; use only Grade 9 methods; Vietnamese; address the student as "em"; LaTeX in $...$.
+6. Teach the exam's marking habits (official hướng dẫn chấm) when the work shows the problem, at most one per
+   reply: a geometry answer with no figure, or a wrong one, gets no marks for that part ("nhớ vẽ hình vào bài
+   làm"); a claim stated without a reason (an angle equality, a similarity) loses its points; answers found by
+   trying values, without solving, earn almost nothing; steps after the first error earn nothing, so fix that step
+   before going on.
 Reply with a single JSON object."""
 
 

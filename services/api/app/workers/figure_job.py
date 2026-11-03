@@ -27,10 +27,11 @@ async def run_figure_job(c: Container, job: Job) -> dict[str, Any]:
         raise JobError("solver_not_configured", "Dịch vụ AI chưa được cấu hình.", retryable=False)
     try:
         outcome = await build_orchestrator(c).figure_only(
-            SolveInput(problem_text(question), list(question.topics), job.owner_id, job.id))
+            SolveInput(problem_text(question), list(question.topics), job.owner_id, job.id),
+            redraw=bool(job.payload.get("redraw")))
     except (BudgetExceeded, BudgetRestricted, UserBudgetExceeded) as exc:
         raise JobError(exc.code, exc.message, retryable=False) from exc
-    figure = await build_figure(c, job.owner_id, question, outcome.formalization, figure_id=figure_id)
+    figure = await build_figure(c, job.owner_id, question, outcome.drawing, figure_id=figure_id)
     return {"figure_id": str(figure_id), "status": figure.status if figure else "unsupported",
             "cost_sgd": str(outcome.cost_sgd)}
 

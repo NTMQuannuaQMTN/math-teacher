@@ -22,6 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from ..config import Settings
 from ..errors import AppError, BudgetExceeded
 from ..models import DailyBudget, LlmCall
+from ..providers.catalog import REASONING_TIERS
 
 logger = logging.getLogger(__name__)
 
@@ -170,7 +171,7 @@ class BudgetService:
             assert current is not None
             total_before = current.spent_sgd + current.reserved_sgd
             state_before = self.state_for(total_before)
-            if tier == "reasoning" and state_before in (BudgetState.RESTRICTED, BudgetState.BLOCKED):
+            if tier in REASONING_TIERS and state_before in (BudgetState.RESTRICTED, BudgetState.BLOCKED):
                 raise BudgetRestricted()
             if amount_sgd > 0:
                 row = (await session.execute(_RESERVE, {"amount": amount_sgd, "day": day})).first()

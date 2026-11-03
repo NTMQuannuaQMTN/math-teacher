@@ -67,6 +67,7 @@ export function GeometryPanel({ questionId, canRequest }: { questionId: string; 
           {figure.stale && (
             <p className="mb-2 text-sm text-amber-800">Đề bài đã sửa sau khi vẽ hình. Bấm “Vẽ lại hình” để vẽ theo đề mới.</p>
           )}
+          {figure.detail && <p className="mb-2 text-sm text-amber-800">{figure.detail}</p>}
           <GeometryBoard spec={figure.spec as unknown as GeometrySpec} initial={figure.initial ?? {}} />
         </div>
       )}

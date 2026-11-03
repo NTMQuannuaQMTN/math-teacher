@@ -284,6 +284,108 @@ async def test_figure_job_and_endpoints(client: httpx.AsyncClient, container: Co
     assert (await client.get(f"/api/v1/geometry/{figure['id']}", headers=intruder)).status_code == 404
 
 
+def test_later_parts_inherit_the_construction_and_the_figure_shows_every_goal() -> None:
+    from app.geometry.service import geometry_spec
+    from app.solvers.schemas import Formalization
+    from app.verification.verdict import inherit_geometry, template_errors
+
+    first = json.loads(FIGURE_FORMAL)["parts"][0]
+    later = {"label": "b)", "task": "prove", "template": {"kind": "geometry", "spec": {
+        "objects": [{"kind": "midpoint", "id": "N", "a": "A", "b": "C"}],
+        "goals": [{"kind": "perpendicular", "lines": [["O", "N"], ["A", "C"]]}]}}}
+    raw = Formalization.model_validate({"parts": [{**first, "label": "a)"}, later]})
+    assert template_errors(raw)  # part b alone uses A, C and O without defining them
+    formal = inherit_geometry(raw)
+    assert template_errors(formal) == []
+    figure = geometry_spec(formal)
+    assert figure is not None
+    assert [o["id"] for o in figure["objects"]] == ["A", "B", "C", "O", "M", "N"]
+    assert [g["lines"][0] for g in figure["goals"]] == [["O", "M"], ["O", "N"]]
+    # A part that repeats an object keeps its own definition.
+    redefined = {**later, "template": {"kind": "geometry", "spec": {
+        "objects": [{"kind": "midpoint", "id": "M", "a": "A", "b": "B"}], "goals": []}}}
+    part_b = inherit_geometry(Formalization.model_validate({"parts": [first, redefined]})).parts[1].template
+    assert part_b is not None and [o.model_dump()["b"] for o in part_b.spec.objects if o.id == "M"] == ["B"]
+
+
+def test_formalizer_slips_are_rewritten_exactly() -> None:
+    from app.geometry.engine import normalize_spec
+
+    s = spec([*TRIANGLE, {"kind": "circumcircle", "id": "w", "points": ["A", "B", "C"]},
+              {"kind": "point_on_circle", "id": "D", "circle": "w"},
+              {"kind": "projection", "id": "H", "point": "A", "line": "BC"}],  # "BC" is never defined
+             givens=[{"kind": "on_circle", "point": "A", "circle": "w"},
+                     {"kind": "on_circle", "point": "D", "circle": "w"}])
+    fixed = normalize_spec(s)
+    assert fixed.givens == []  # both always true
+    line = next(o for o in fixed.objects if o.id == "BC")
+    assert line.model_dump()["through"] == ["B", "C"]
+    compile_spec(fixed)
+    circular = spec([{**P, "id": "B"}, {**P, "id": "C"}, {"kind": "point_on_circle", "id": "A", "circle": "w"},
+                     {"kind": "circumcircle", "id": "w", "points": ["A", "B", "C"]}])
+    with pytest.raises(GeometryError, match="circular"):
+        compile_spec(circular)
+    assert next(o for o in normalize_spec(circular).objects if o.id == "A").kind == "free_point"
+
+
+def test_a_drawing_keeps_what_builds() -> None:
+    from app.geometry.engine import drawable
+
+    s = spec([*TRIANGLE, {"kind": "midpoint", "id": "M", "a": "B", "b": "C"},
+              {"kind": "intersection", "id": "X", "of": ["dAM", "wXYZ"]},
+              {"kind": "midpoint", "id": "N", "a": "X", "b": "A"}],
+             goals=[{"kind": "collinear", "points": ["A", "M", "N"]},
+                    {"kind": "on_circle", "point": "M", "circle": "nowhere"}])
+    drawn = drawable(s)
+    assert drawn is not None and [o.id for o in drawn.objects] == ["A", "B", "C", "M"]
+    assert drawn.goals == []  # both goals use objects that were left out
+    assert drawable(spec([{"kind": "midpoint", "id": "M", "a": "Q", "b": "R"}])) is None
+
+
+def test_figure_skips_one_contradictory_given_and_says_so() -> None:
+    circle = [{**P, "id": "O"}, {**P, "id": "A"}, {"kind": "circle", "id": "w", "center": "O", "through": "A"},
+              {"kind": "point_on_circle", "id": "B", "circle": "w"}]
+    good = {"kind": "angle_value", "angle": ["A", "O", "B"], "degrees": 90}
+    result = checks.build_figure({"spec": {"objects": circle, "givens": [
+        good, {"kind": "on_circle", "point": "O", "circle": "w"}]}})
+    data = result["data"]
+    assert data["status"] == "ok" and "on_circle" in result["detail"]
+    assert data["spec"]["givens"] == [GeometrySpec.model_validate({"objects": circle, "givens": [good]})
+                                      .model_dump(mode="json")["givens"][0]]
+
+
+async def test_a_redraw_samples_a_fresh_formalization(client: httpx.AsyncClient, container: Container,
+                                                      provider: ScriptedProvider, auth: dict[str, str]) -> None:
+    from tests.test_api_solve import confirmed_question, drain
+
+    q = await confirmed_question(client, container, provider, auth)
+    provider.push(FIGURE_FORMAL)
+    await client.post(f"/api/v1/questions/{q['id']}/figure", headers=auth)
+    await drain(container)
+    provider.push(FIGURE_FORMAL)
+    await client.post(f"/api/v1/questions/{q['id']}/figure", headers=auth, json={"force": True})
+    await drain(container)
+    assert [r.temperature for r in provider.requests if r.schema_name == "formalization"][-2:] == [0.0, 0.4]
+
+
+def test_figure_points_get_letter_names() -> None:
+    """User request: auxiliary points are shown as M, A', A1 — never midAB or H_A."""
+    from app.geometry.engine import name_points
+
+    s = spec([*TRIANGLE, {"kind": "line", "id": "BC", "through": ["B", "C"]},
+              {"kind": "midpoint", "id": "midBC", "a": "B", "b": "C"},
+              {"kind": "projection", "id": "H_A", "point": "A", "line": "BC"},
+              {"kind": "projection", "id": "footA", "point": "A", "line": "BC"},
+              {"kind": "midpoint", "id": "M", "a": "A", "b": "B"}],
+             goals=[{"kind": "collinear", "points": ["B", "midBC", "C"]}])
+    named = name_points(s)
+    ids = [o.id for o in named.objects]
+    assert ids == ["A", "B", "C", "BC", "N", "A'", "A1", "M"]  # M is taken, so the midpoint of BC becomes N
+    assert named.goals[0].model_dump()["points"] == ["B", "N", "C"]
+    assert named.objects[5].model_dump()["point"] == "A"  # references keep pointing at the right objects
+    compile_spec(named)
+
+
 async def test_unsupported_geometry_is_reported(client: httpx.AsyncClient, container: Container,
                                                 provider: ScriptedProvider, auth: dict[str, str]) -> None:
     from tests.test_api_solve import confirmed_question, drain

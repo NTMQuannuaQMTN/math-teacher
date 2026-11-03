@@ -242,6 +242,40 @@ def template_errors(formalization: Formalization) -> list[str]:
     return problems
 
 
+def inherit_geometry(formalization: Formalization) -> Formalization:
+    """Later geometry parts build on the earlier ones' figure: the objects and givens of earlier geometry parts that a
+    part does not define itself are added to it. The formalizer writes the shared construction once (a three-part
+    problem repeated in full overflows its output limit), and every part's spec still stands on its own."""
+    from pydantic import ValidationError
+
+    from ..geometry.dsl import GeometrySpec
+    from ..geometry.engine import normalize_spec
+
+    objects: dict[str, Any] = {}
+    givens: list[Any] = []
+    parts = []
+    for part in formalization.parts:
+        template = part.template
+        if not isinstance(template, GeometryTemplate):
+            parts.append(part)
+            continue
+        spec = template.spec
+        own = {o.id for o in spec.objects}
+        own_givens = [g.model_dump() for g in spec.givens]
+        try:
+            merged = GeometrySpec(
+                objects=[o for i, o in objects.items() if i not in own] + list(spec.objects),
+                givens=[g for g in givens if g.model_dump() not in own_givens] + list(spec.givens),
+                goals=spec.goals, targets=spec.targets)
+        except ValidationError:
+            merged = spec  # over the size limits: the part keeps only what it wrote
+        merged = normalize_spec(merged)
+        objects.update({o.id: o for o in merged.objects})
+        givens = list(merged.givens)
+        parts.append(part.model_copy(update={"template": template.model_copy(update={"spec": merged})}))
+    return Formalization(parts=parts)
+
+
 def drop_invalid_templates(formalization: Formalization) -> Formalization:
     """Keep the parts whose templates parse; the others become template=None (→ UNVERIFIED, never guessed)."""
     parts = []

@@ -31,18 +31,25 @@ For each part (subquestion a), b), … or the whole problem if it has no parts) 
 - prove an inequality → kind "inequality" (statement + conditions); an identity → "identity"; a divisibility
   for all integers → "divisibility" (expression, divisor, conditions).
 - prove that something exists / construct → kind "example": the conditions a witness must satisfy.
-- plane geometry (prove or compute) → kind "geometry" with a "spec" (see GEOMETRY below).
+- plane geometry (prove, compute, or find a maximum/minimum: the figure is still built) → kind "geometry" with a
+  "spec" (see GEOMETRY below).
 - anything else, including parameter (m) questions you cannot express → template null.
 
 GEOMETRY spec = {"objects": [...], "givens": [...], "goals": [...], "targets": [...]}.
-objects (ids = names from the problem; every object it uses must be defined; order does not matter):
+objects (ids = names from the problem. A POINT the problem does not name gets a point name as a student would write
+it: a capital letter not used yet, or a letter with ' or a digit (M, N, K, A', A1); never a description such as midAB,
+H_A or footD. A helper line or circle gets a SHORT id such as dBC, cO, wADE: letters, digits and _ only, at most 24
+characters. Every object it uses must be defined; order does not matter). Relations
+(on_circle, concyclic, perpendicular, …) are never objects: they go in givens or goals.
   free_point; point_on_line {line}; point_on_circle {circle}; midpoint {a,b}; intersection {of:[x,y], exclude?, near?}
   (for a circle, "exclude" = the OTHER intersection than that point); projection {point,line} (foot of perpendicular);
   reflection {point,center}; centroid/orthocenter/circumcenter/incenter {points:[A,B,C]};
   line/segment/ray {through:[P,Q]}; parallel {through, to}; perpendicular {through, to}; angle_bisector {vertex,a,b};
   tangent {circle, at}; circle {center, through} or {center, radius}; circumcircle {points}; circle_diameter {a,b}.
   Every circle the problem names or describes is an object, even if nothing is constructed on it, so it is drawn:
-  "(O)" → free_point O + circle {center:"O", through: a point on it}; "đường tròn ngoại tiếp tam giác ABC" → circumcircle;
+  "(O)" → free_point O + circle {center:"O", through: a point on it}; "tam giác ABC nội tiếp (O)" → free points A, B, C,
+  O = circumcenter {points:[A,B,C]}, circle {center:"O", through:"A"} (never a free O plus equal lengths);
+  "đường tròn ngoại tiếp tam giác ABC" → circumcircle;
   "đường tròn đường kính AB" → circle_diameter; "đường tròn nội tiếp tam giác ABC" → incenter I, projection D of I on
   BC, circle {center:"I", through:"D"}; "tứ giác ABCD nội tiếp" as a hypothesis → circumcircle {points:[A,B,C]} with D
   a point_on_circle. Only a circle the problem asks to PROVE exists ("chứng minh tứ giác … nội tiếp") stays a goal.
@@ -50,6 +57,8 @@ givens = conditions that are not constructions (triangle shape, given lengths/an
   angle_value {angle:[B,A,C], degrees}, length_value {segment:[B,C], value}, length_ratio, perpendicular {lines:[[A,B],[C,D]]},
   parallel, collinear {points}, concyclic {points}, on_circle {point,circle}, on_line {point,line}, tangent_line {line:[A,B],circle}.
   Prefer constructions over givens (e.g. "H là chân đường cao từ A" → projection, not a given).
+  Inequalities and shape words ("nhọn", "Â > B̂ > Ĉ", "CD > AB", "cung nhỏ") are not givens: leave them out (never
+  write "nhọn" as a 90° angle). Only an exact equality is a given.
 goals = what must be proven (same relation kinds). targets = what must be computed: {kind: length|angle|ratio|area, points}.
 Example: "Cho tam giác ABC vuông tại A, AB = 3, AC = 4, đường cao AH. Chứng minh AH.BC = AB.AC và tính AH." →
 {"objects":[{"kind":"free_point","id":"A"},{"kind":"free_point","id":"B"},{"kind":"free_point","id":"C"},
@@ -57,6 +66,10 @@ Example: "Cho tam giác ABC vuông tại A, AB = 3, AC = 4, đường cao AH. Ch
  "givens":[{"kind":"angle_value","angle":["B","A","C"],"degrees":90},{"kind":"length_value","segment":["A","B"],"value":3},
  {"kind":"length_value","segment":["A","C"],"value":4}],"goals":[],"targets":[{"kind":"length","points":["A","H"]}]}
 A product equality like AH.BC = AB.AC is not a relation kind: leave it out of goals rather than approximating it.
+Several parts on one figure: write the whole construction once, in the FIRST geometry part. A later geometry part
+lists ONLY the objects and givens it adds (it may use every id from earlier parts: they are included automatically)
+and its own goals/targets. Never repeat earlier objects. A point the problem defines from earlier objects (e.g. "(I)
+là đường tròn qua A, D, E" → circumcircle; I = circumcenter) is constructed, never a free_point.
 
 Expression syntax: plain ASCII, explicit multiplication (2*x, not 2x), ^ for powers, sqrt(), Abs(), gcd(),
 Mod(a, b) for remainders, comparisons ==, !=, <, <=, >, >=, "and" / "or". Variable names: letters, digits, _.
@@ -77,6 +90,12 @@ rigorous solution in Vietnamese, exactly as a strong Grade 9 student should pres
 Hard rules:
 1. Use ONLY methods taught in Vietnamese Grade 9 and below, or elementary Olympiad techniques from the allowed
    list. Never use: {prohibited}
+   A fact outside the Grade 9 programme (phương tích, Ptolemy, Menelaus, trục đẳng phương, tính chất tiếp tuyến
+   chung, …) is NEVER a reason to stop: state the specific fact you need as "Bổ đề: …", prove it with Grade 9 tools
+   (similar triangles, angle chasing, inscribed angles, cyclic quadrilaterals, Py-ta-go, Ta-lét), then use it and
+   add "proved_lemma" to "techniques". Official marking guides only deduct marks when such a fact is used without
+   proof. Do not name a theorem from the "Never use" list; prove the specific statement instead. The tools in that
+   list stay forbidden even with a proof. Never rely on an earlier part you have not proved.
 2. Every step must be correct, in order, and justified. No self-talk ("Chờ đã", "Wait", "Hmm"), no abandoned
    attempts, no guessing, no English, no separate "kiểm tra lại" step, no "thử các số nhỏ" in place of proof.
    Work everything out BEFORE writing "parts": the steps are the final clean copy a student hands in, not your
@@ -86,6 +105,10 @@ Hard rules:
 3. Use the shortest standard textbook method. Explain non-obvious steps briefly.
 4. Mathematics in LaTeX inside $...$ (inline) or $$...$$ (display). Vietnamese text outside the math.
 5. Each subquestion gets its own part, with its own final answer sentence.
+6. Notation of the official answer keys: angles \\widehat{{ABC}} (never \\angle), divisibility a \\vdots b (never
+   b | a), parallel AB // CD (never \\parallel), \\triangle ABC \\backsim \\triangle DEF, "." for a product of
+   lengths (AB.AC), a decimal comma written 3{{,}}14, points with a semicolon (1; -1). Use ≈ (\\approx) only for a measurement the question asks to
+   approximate.
 
 {guidance}
 Allowed techniques (put the ids you use in "techniques"):
@@ -98,8 +121,9 @@ Machine answers (used by automatic verification; must match your final answer ex
 - the point where an optimum is attained (or a construction's witness) → machine_answer.point.
 - proofs → all three null (unless an inequality's equality case: put it in point).
 
-If you cannot solve the problem with allowed methods, set "solved": false and explain why in
-"unsolved_reason_vi". Reply with a single JSON object only.
+Set "solved": false (with "unsolved_reason_vi") only if you cannot find ANY correct proof with Grade 9 tools,
+lemmas included — never just because a step needs knowledge beyond the programme. In a problem with several parts,
+solve every part you can. Reply with a single JSON object only.
 """
 
 
@@ -152,7 +176,8 @@ You are given a problem and its complete, checked solution. Write 3 to 5 hints, 
 4. "key_step" (optional, at most two): one key intermediate result the student can check against.
 Rules: never state the final answer or the final values; never write out the full solution; follow the same method
 as the given solution; only Grade 9 methods; LaTeX inside $...$; address the student as "em"; one or two sentences
-per hint. Reply with a single JSON object."""
+per hint. Use the notation of the official answer keys, as in the solution: \\widehat{ABC} for angles, a \\vdots b,
+AB // CD. Reply with a single JSON object."""
 
 
 def hints_user(problem: str, solution_json: str, leaked: list[str] | None = None) -> str:

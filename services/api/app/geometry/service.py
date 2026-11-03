@@ -16,18 +16,34 @@ from ..models import GeometryFigure, Question
 from ..solvers.schemas import Formalization, GeometryTemplate
 from ..tools.sandbox import run_check
 from ..workers.queue import enqueue
+from .engine import GeometryError, compile_spec, drawable, name_points
 
 FIGURE_JOB = "figure_question"
 
 
 def geometry_spec(formalization: Formalization | None) -> dict[str, Any] | None:
+    """One figure for the whole question: the last geometry part (it inherits the earlier parts' construction, so it
+    is the most complete) with the goals of every part that fit on it. Pass the formalization as written (the
+    outcome's `drawing`): a part with one bad reference still draws everything else."""
     if formalization is None:
         return None
-    for part in formalization.parts:
-        if isinstance(part.template, GeometryTemplate):
-            spec: dict[str, Any] = part.template.spec.model_dump(mode="json")
-            return spec
-    return None
+    specs = [s for p in formalization.parts if isinstance(p.template, GeometryTemplate)
+             if (s := drawable(p.template.spec)) is not None]
+    if not specs:
+        return None
+    spec = max(reversed(specs), key=lambda s: len(s.objects))  # the richest; a tie goes to the later part
+    for other in reversed(specs):
+        for goal in other.goals:
+            if goal in spec.goals or len(spec.goals) >= 10:
+                continue
+            candidate = spec.model_copy(update={"goals": [goal, *spec.goals]})
+            try:
+                compile_spec(candidate)
+            except GeometryError:
+                continue
+            spec = candidate
+    figure: dict[str, Any] = name_points(spec).model_dump(mode="json")
+    return figure
 
 
 async def build_figure(c: Container, owner_id: uuid.UUID, question: Question, formalization: Formalization | None,
@@ -41,10 +57,10 @@ async def build_figure(c: Container, owner_id: uuid.UUID, question: Question, fo
     detail: str | None = "Chưa chuyển được đề bài thành hình vẽ."
     initial: dict[str, Any] | None = None
     if spec is not None:
-        result = await run_check("figure", {"spec": spec}, limit_seconds=20)
+        result = await run_check("figure", {"spec": spec}, limit_seconds=30)
         if result.get("ok"):
             data = result["result"]["data"]
-            status = data["status"]
+            status, spec = data["status"], data.get("spec") or spec
             detail = result["result"]["detail"] or None
             initial = {"values": (data.get("initial") or {}).get("values"),
                        "params": (data.get("initial") or {}).get("params"), "layout": data.get("layout")}
@@ -96,7 +112,8 @@ async def request_figure(session: AsyncSession, owner_id: uuid.UUID, question_id
     session.add(figure)
     await session.flush()
     job = enqueue(session, kind=FIGURE_JOB, owner_id=owner_id,
-                  payload={"figure_id": str(figure.id), "question_id": str(question.id)}, max_attempts=1)
+                  payload={"figure_id": str(figure.id), "question_id": str(question.id), "redraw": force},
+                  max_attempts=1)
     await session.flush()
     figure.job_id = job.id
     await session.commit()

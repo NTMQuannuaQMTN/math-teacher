@@ -11,6 +11,7 @@ import pytest
 from app.agents.orchestrator import Orchestrator, SolveInput, SolveState
 from app.container import Container
 from app.curriculum.policy import check_curriculum, load_policy
+from app.providers.base import ChatResult, ProviderError, Usage
 from app.solvers.schemas import Formalization, ModelSolution
 from app.tools import checks
 from app.verification.verdict import verify_solution
@@ -25,7 +26,8 @@ from tests.conftest import ScriptedProvider, solve_requests
     ("Gọi $\\vec{u}$ là véc-tơ chỉ phương.", "vectors"),
     ("Đặt $z = a + bi$ là số phức.", "complex_numbers"),
     ("Tính định thức của ma trận.", "linear_algebra"),
-    ("Dùng phép quay tâm O góc 60°.", "geometric_transformations"),
+    ("Dùng phép tịnh tiến theo AB.", "geometric_transformations"),
+    ("Xét phép vị tự tâm A tỉ số 2.", "geometric_transformations"),
     ("Theo định lí Brocard ta có…", "projective_advanced"),
 ])
 def test_prohibited_methods_fail(text: str, rule: str) -> None:
@@ -45,6 +47,25 @@ def test_prohibited_methods_fail(text: str, rule: str) -> None:
 ])
 def test_allowed_methods_pass(text: str) -> None:
     assert check_curriculum([text], [], ["algebra", "combinatorics"]).compliant
+
+
+def test_rotation_is_grade9_recognition_only() -> None:
+    """GDPT 2018, lớp 9 "Đa giác đều": phép quay giữ nguyên đa giác đều is taught; as a proof tool it is a warning."""
+    report = check_curriculum(["Phép quay thuận chiều $72^{\\circ}$ tâm O biến ngũ giác đều thành chính nó."], [],
+                              ["geometry"])
+    assert report.compliant and report.status == "COMPLIANT_WITH_WARNINGS"
+    assert {f.rule_id for f in report.findings} == {"rotation_tool"}
+
+
+def test_a_proved_lemma_is_allowed_and_refusing_is_discouraged() -> None:
+    """User request: knowledge beyond Grade 9 is proved as a bổ đề with Grade 9 tools, never a reason to give up."""
+    from app.solvers import prompts
+    report = check_curriculum(["Bổ đề: Nếu MA.MB = MC.MD thì A, B, C, D cùng thuộc một đường tròn. Chứng minh: …"],
+                              ["proved_lemma", "similar_triangles"], ["geometry"])
+    assert report.status == "COMPLIANT"
+    system = prompts.solve_system(load_policy(), ["geometry"], [])
+    assert "NEVER a reason to stop" in system and "proved_lemma" in system
+    assert "never just because a step needs knowledge beyond the programme" in system
 
 
 def test_declared_prohibited_technique_fails_even_if_text_is_clean() -> None:
@@ -70,11 +91,17 @@ def test_self_correction_in_the_write_up_is_flagged() -> None:
     # From a reviewed solution: the model redid step 9 inside the student-facing steps.
     for text in ["Đó là sai lầm trong suy luận nhanh. Hãy tính lại: $n^2 + 2n + 8 \\pmod 3$.",
                  "Nhận xét: ta kiểm tra các trường hợp còn lại. Tuy nhiên, cách nhanh hơn là xét $v_3$.",
-                 "Lập luận trên là sai, ta làm lại."]:
+                 "Lập luận trên là sai, ta làm lại.",
+                 "Hmm, để thử lại với $n = 3$.",
+                 # Live output 2026-11-03 (Quảng Nam 2025 Câu 7): a question answered by a retraction.
+                 "Ta sử dụng $u^2v+v^2w+w^2u \\le u^2+v^2+w^2$? Không, ta dùng đánh giá trực tiếp.",
+                 "Ta có $u^2v \\le \\frac{2}{3}(u^2+v^2)$? Không cần phức tạp."]:
         assert "self_talk" in {f.rule_id for f in check_curriculum([text], [], ["number_theory"]).findings}, text
     clean = ["Xét $n^2 + 2n + 8 \\pmod 3$: nếu $n \\equiv 2$ thì $n^2 + 2n + 8 \\equiv 1 \\pmod 3$.",
              "Vậy $n^2 + 2n + 8$ không chia hết cho 3, nên $n + 2 \\vdots 9$.",
-             "Các nghiệm phân biệt và không có cặp nào trùng nhau."]  # "và không" is not "à không"
+             "Các nghiệm phân biệt và không có cặp nào trùng nhau.",  # "và không" is not "à không"
+             # Official HDC (Quảng Nam 2025, chuyên Tin): substituting candidate roots back is not self-talk.
+             "Thử lại vào phương trình (1), ta được $x = \\frac{25}{11}$ là nghiệm duy nhất."]
     assert check_curriculum(clean, [], ["number_theory"]).findings == []
 
 
@@ -312,6 +339,43 @@ async def test_wrong_answer_escalates_to_thinking_once(container: Container, pro
     assert outcome.best is not None and outcome.best.status == "VERIFIED"
 
 
+def test_geometry_tiers_fall_back_to_the_reasoning_model(container: Container) -> None:
+    from app.providers.catalog import ModelCatalog
+    assert container.gateway is not None
+    catalog = container.gateway.catalog
+    assert catalog.for_tier("geometry_formalize").id == catalog.for_tier("reasoning").id == "reason-test"
+    routed = ModelCatalog.model_validate({**catalog.model_dump(), "routing": {
+        **catalog.routing, "geometry_reasoning": "fast-test"}})
+    assert routed.for_tier("geometry_reasoning").id == "fast-test"  # a stronger model is one config line away
+
+
+GEO_PROOF = reply(solution(part(kind="proof", final="Vậy tứ giác $ABCD$ nội tiếp.", solutions=None),
+                           techniques=["cyclic_quadrilateral"]).model_dump())
+
+
+async def test_geometry_uses_the_reasoning_model_with_thinking_first(container: Container,
+                                                                    provider: ScriptedProvider) -> None:
+    """User request: harder models for geometry figures and proofs."""
+    provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
+    provider.push(GEO_PROOF)
+    await orchestrator(container).run_solve(SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
+    formalize, solve = [r for r in provider.requests if r.schema_name in ("formalization", "solution")][:2]
+    assert formalize.model == "reason-test" and solve.model == "reason-test"
+    assert solve.thinking is True
+
+
+async def test_a_failed_geometry_reasoning_call_falls_back_to_one_plain_attempt(container: Container,
+                                                                                provider: ScriptedProvider) -> None:
+    from app.providers.base import ProviderError
+    provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
+    provider.push(ProviderError("timeout", "slow"))
+    provider.push(GEO_PROOF)
+    outcome = await orchestrator(container).run_solve(
+        SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
+    assert [r.thinking for r in provider.requests if r.schema_name == "solution"] == [True, False]
+    assert outcome.best is not None and outcome.best.solution.solved
+
+
 async def test_style_only_feedback_does_not_escalate(container: Container, provider: ScriptedProvider) -> None:
     styled = reply({**solution(part(solutions=[{"x": "2"}, {"x": "3"}])).model_dump(),
                     "approach_vi": "Chờ đã, ta giải lại."})
@@ -377,6 +441,57 @@ async def test_unrepairable_formalization_part_is_dropped_not_guessed(container:
     assert outcome.formalization is not None and outcome.formalization.parts[0].template is None
     assert outcome.best is not None and outcome.best.status == "UNVERIFIED"
 
+
+
+async def test_failed_formalization_repair_keeps_the_valid_parts(container: Container,
+                                                                provider: ScriptedProvider) -> None:
+    """Live failure: the repair of a long reply hit the output limit, and the whole formalization was lost."""
+    broken = {"label": "b)", "task": "solve", "template": {**QUAD["template"], "conditions": ["x in integer"]}}
+    provider.push(reply({"parts": [{**QUAD, "label": "a)"}, broken]}))
+    provider.push(lambda r: ChatResult(content='{"parts": [', model=r.model, finish_reason="length", latency_ms=5,
+                                       usage=Usage(prompt_tokens=200, completion_tokens=6000)))
+    outcome = await orchestrator(container).figure_only(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    assert outcome.formalization is not None
+    assert [p.template is not None for p in outcome.formalization.parts] == [True, False]
+    assert outcome.trace[-1]["repair_error"] == "invalid_model_output" and outcome.cost_sgd > 0
+
+
+async def test_a_malformed_part_costs_only_its_own_template(container: Container, provider: ScriptedProvider) -> None:
+    """Live failure: one relation listed as an object (or an over-long id) failed the whole formalization."""
+    bad = {"label": "b)", "task": "prove", "template": {"kind": "geometry", "spec": {
+        "objects": [{"kind": "free_point", "id": "A"}, {"kind": "on_circle", "id": "F_on_w", "point": "A"}]}}}
+    provider.push(reply({"parts": [{**QUAD, "label": "a)"}, bad]}))
+    provider.push(reply({"parts": [{**QUAD, "label": "a)"}, bad]}))
+    outcome = await orchestrator(container).figure_only(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    assert outcome.formalization is not None
+    assert [(p.label, p.template is not None) for p in outcome.formalization.parts] == [("a)", True), ("b)", False)]
+    repair_prompt = provider.requests[1].messages[-1].content
+    assert isinstance(repair_prompt, str) and "part 'b)': does not match the schema" in repair_prompt
+    assert "on_circle" in repair_prompt
+    schema_prompt = str(provider.requests[0].messages)
+    assert "point_on_circle" in schema_prompt  # the model still sees the strict schema
+
+
+async def test_no_revision_is_started_past_the_time_budget(container: Container, provider: ScriptedProvider) -> None:
+    provider.push(FORMAL_REPLY)
+    provider.push(WRONG)
+    provider.delay = 0.05
+    outcome = await orchestrator(container, time_budget_seconds=0.01).run_solve(
+        SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    assert len([r for r in provider.requests if r.model == "reason-test"]) == 1
+    assert any(t.get("skipped") == "time_budget" for t in outcome.trace)
+
+
+async def test_thinking_needs_time_and_revisions_are_not_retried(container: Container,
+                                                                 provider: ScriptedProvider) -> None:
+    # Too little time left for a ~5 minute thinking call: a plain revision instead, and its timeout is final.
+    provider.push(FORMAL_REPLY)
+    provider.push(WRONG)
+    provider.push(ProviderError("timeout", "slow"))
+    outcome = await orchestrator(container, time_budget_seconds=200).run_solve(
+        SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    assert [r.thinking for r in provider.requests if r.model == "reason-test"] == [False, False]
+    assert outcome.best is not None and outcome.best.status == "INCORRECT"
 
 
 async def test_hints_that_leak_the_answer_are_regenerated_then_dropped(container: Container,

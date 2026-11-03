@@ -75,6 +75,11 @@ class Settings(BaseSettings):
     solve_max_revisions: int = Field(default=2, ge=0, le=4)
     # First attempt without hidden reasoning; escalate once to reasoning when the answer fails verification.
     solve_escalate_thinking: bool = True
+    # Wall-clock target for one solve: no revision is started that would likely end after it (the escalation needs
+    # ~5 minutes, so it only runs when the first answer came back within ~3).
+    solve_time_budget_seconds: float = Field(default=480, ge=60, le=850)
+    # Geometry proofs start with hidden reasoning on the "geometry_reasoning" tier (falls back to "reasoning").
+    solve_geometry_thinking_first: bool = True
     # Hints come first: the full solution can be revealed after this many hints (when hints exist).
     hints_before_solution: bool = True
     min_hints_before_solution: int = Field(default=1, ge=0, le=5)

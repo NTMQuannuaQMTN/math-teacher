@@ -33,13 +33,20 @@ PTNK 2025's answer key could not be downloaded (Google Drive refuses), so it is 
 | angle ABC with a hat (`\widehat{ABC}`) | PTNK 2023, 2024, HCM | PTNK 2026 | yes |
 | ∠ABC | never | Hà Nội, A1, KHTN | **no** (use the hat) |
 | // (song song) | PTNK 2024, HCM | — | yes |
-| ∥ | never | Hà Nội, KHTN | **no** (use //) |
+| ∥ | Hải Phòng 2025 HDC (once, "EF ∥ DP") | Hà Nội, KHTN | **no** (// in PTNK 2024, HCM 2023–2025, Phú Yên 2024) |
 | △ / Δ, ∽ or ∼ (đồng dạng), ⊥, ° (or ^0) | all | all | yes |
 | arc over BD (cung) | PTNK 2024 (question) | — | yes |
 | · and × (3 × 3, n × n) | HCM (·) | PTNK 2026, Hà Nội | yes |
 | ∀ | never | A1 (once) | no |
 | ∨ (hoặc) | HCM (once) | — | no ([ or "hoặc" is far more common) |
-| ∞, ≈, ∅, ⊂, ℚ, ℝ, ∤, ÷, overline segment | never | never | **no** |
+| ≈ (xấp xỉ) | Hà Nội 2025 Sở (π ≈ 3,14, S ≈ 47 100 cm²) | — | yes, for measurement / real-world values |
+| Ω, P(A) (xác suất) | Hà Nội 2025 Sở | — | typed as text (\Omega) |
+| ∞, ∅, ⊂, ℚ, ℝ, ∤, ÷, overline segment | never | never | **no** |
+
+Update 2026-11-02 (research loop, see `research/PAST_PAPER_FINDINGS.md`): the Hà Nội 2025 official marking scheme
+(đại trà) uses ≈ with π ≈ 3,14 and a decimal comma, and the GDPT 2018 programme asks for values "đúng hoặc gần đúng",
+so ≈ was added to the bar. The first survey only covered chuyên papers, which never need it. Vi-ét is spelled
+"Viète" in GDPT 2018 documents; both spellings are accepted.
 
 Kept although no paper here needed them, because they are Grade 9 content: √ with index 3 (căn bậc ba), π (độ
 dài đường tròn, diện tích hình tròn) and ± (công thức nghiệm).
