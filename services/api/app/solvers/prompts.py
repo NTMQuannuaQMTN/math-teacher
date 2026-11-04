@@ -141,7 +141,8 @@ def solve_user(problem: str) -> str:
 def revise_user(problem: str, previous_json: str, problems: list[str]) -> str:
     issues = "\n".join(f"- {p}" for p in problems)
     return (f"Đề bài:\n{problem}\n\nLời giải trước (JSON):\n{previous_json}\n\n"
-            f"Lời giải trên có các vấn đề sau, phát hiện bởi công cụ kiểm tra tự động:\n{issues}\n\n"
+            f"Lời giải trên có các vấn đề sau, phát hiện bởi công cụ kiểm tra tự động và giám khảo chấm độc lập:\n"
+            f"{issues}\n\n"
             "Hãy viết lại TOÀN BỘ lời giải, sửa đúng các vấn đề này, theo đúng định dạng JSON. "
             "Nếu đáp số bị bác bỏ, hãy giải lại cẩn thận từ đầu thay vì chỉ sửa đáp số.")
 

@@ -1,5 +1,5 @@
 {
-  "version": "curriculum-2026.11-v1.6",
+  "version": "curriculum-2026.11-v1.7",
   "description": "Methods allowed in student-facing solutions for Toán chuyên vào 10: Vietnamese Grade 9 and below, plus elementary Olympiad techniques. Prohibited items fail the solution; discouraged items are reported as warnings.",
   "allowed": [
     {
@@ -395,7 +395,12 @@
         "(bước|lập luận|phần|kết quả|cách) (ở )?trên (là )?(sai|chưa đúng)",
         "\\?\\s*(Không|Sai)\\b",
         "không cần phức tạp",
-        "ta dùng (đánh giá|cách) (trực tiếp|khác)"
+        "ta dùng (đánh giá|cách) (trực tiếp|khác)",
+        "điều này (không đúng|sai)\\b",
+        "(cần|phải) xem xét lại",
+        "\\bthực ra,",
+        "\\(sai\\b",
+        "không dẫn đến"
       ]
     },
     {

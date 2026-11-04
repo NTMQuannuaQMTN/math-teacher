@@ -737,7 +737,7 @@ def build_figure(p: Payload) -> Evidence:
     from ..geometry.engine import check_spec, compile_spec
 
     spec = GeometrySpec.model_validate(p["spec"])
-    result = check_spec(spec, samples=6)
+    result = check_spec(spec, samples=24)  # more candidates for a well spread-out first view
     if result["status"] == "infeasible" and 1 < len(spec.givens) <= FIGURE_GIVEN_TRIALS:
         # One contradictory given (a formalizer slip such as "O lies on (O)") should not cost the whole drawing: draw
         # without it, say so, and hand back the spec actually drawn (dragging re-solves its givens).

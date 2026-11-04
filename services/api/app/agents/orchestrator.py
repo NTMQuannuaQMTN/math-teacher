@@ -12,6 +12,7 @@ CLASSIFY → FORMALIZE → SOLVE → VERIFY → CURRICULUM → (REVISE → VERIF
 from __future__ import annotations
 
 import logging
+import re
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -46,6 +47,7 @@ from ..verification.verdict import (
     template_errors,
     verify_solution,
 )
+from .critic import Critique, critique_solution, issue_text
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +63,7 @@ class SolveState(StrEnum):
     SOLVE = "solve"
     VERIFY = "verify"
     CURRICULUM = "curriculum"
+    CRITIQUE = "critique"
     REVISE = "revise"
     HINTS = "hints"
     DONE = "done"
@@ -87,11 +90,19 @@ class Attempt:
     evidence: list[EvidenceOut]
     status: VerificationStatus
     curriculum: CurriculumReport | None
+    critique: Critique | None = None
+    # Deterministic defects found without any model (e.g. the same step written over and over).
+    defects: list[str] = field(default_factory=list)
 
-    def score(self) -> tuple[int, int, int]:
+    def score(self) -> tuple[int, int, int, int]:
+        # An attempt the examiner found wrong or incomplete ranks no higher than an honest "chưa giải được": a
+        # confident but flawed proof must not win.
+        flawed = bool(self.critique and self.critique.blocking) or bool(self.defects)
+        rank = min(_RANK[self.status], _RANK["UNSOLVED"]) if flawed else _RANK[self.status]
         compliant = 1 if self.curriculum is None or self.curriculum.compliant else 0
         warnings = -len(self.curriculum.findings) if self.curriculum else 0
-        return (_RANK[self.status], compliant, warnings)
+        issues = -len(self.critique.issues) if self.critique else 0
+        return (rank, compliant, issues, warnings)
 
 
 @dataclass
@@ -113,6 +124,23 @@ class SolveOutcome:
 
 def _templates(formalization: Formalization) -> int:
     return sum(p.template is not None for p in formalization.parts)
+
+
+def repeated_steps(solution: ModelSolution) -> list[str]:
+    """A solver stuck in a loop writes the same step again and again (seen live, 2026-11-03): report every repeat."""
+    found: list[str] = []
+    for part in solution.parts:
+        seen: set[str] = set()
+        for index, step in enumerate(part.steps, start=1):
+            key = re.sub(r"\s+", " ", step).strip().lower()
+            if len(key) > 30 and key in seen:
+                found.append(f"{f'ý {part.label} ' if part.label else ''}bước {index}")
+            seen.add(key)
+    if not found:
+        return []
+    return [f"Lời giải lặp lại nguyên văn các bước đã viết ({', '.join(found[:6])}"
+            f"{', …' if len(found) > 6 else ''}): đây là bế tắc. Hãy giải lại bằng một hướng khác, "
+            "không lặp lại bước nào."]
 
 
 def solution_texts(solution: ModelSolution) -> list[str]:
@@ -140,7 +168,30 @@ def revision_feedback(attempt: Attempt) -> list[str]:
         for finding in attempt.curriculum.findings:
             where = f" (đoạn: “{finding.excerpt}”)" if finding.excerpt else ""
             problems.append(f"{finding.message}{where}")
+    problems.extend(attempt.defects)
+    if attempt.critique:
+        problems.extend(f"Giám khảo: {issue_text(i)}" for i in attempt.critique.issues)
     return problems
+
+
+def mark_remaining_issues(attempt: Attempt) -> None:
+    """The examiner's unresolved errors and gaps stay visible to the student on the final attempt: added to the part's
+    verdict, and a VERIFIED part (answer checked, reasoning faulted) becomes PARTIALLY_VERIFIED."""
+    if attempt.defects and attempt.verdicts:
+        first = attempt.verdicts[0]
+        attempt.verdicts[0] = first.model_copy(update={"reason_vi": first.reason_vi + " " + attempt.defects[0]})
+    if not attempt.critique or not attempt.critique.blocking:
+        return
+    labels = {v.label for v in attempt.verdicts}
+    for i, verdict in enumerate(attempt.verdicts):
+        issues = [x for x in attempt.critique.blocking if x.part == verdict.label or x.part not in labels]
+        if not issues:
+            continue
+        status: VerificationStatus = "PARTIALLY_VERIFIED" if verdict.status == "VERIFIED" else verdict.status
+        note = " Kiểm tra chéo còn phát hiện: " + "; ".join(issue_text(x) for x in issues[:3])
+        attempt.verdicts[i] = verdict.model_copy(update={"status": status, "reason_vi": verdict.reason_vi + note})
+    if attempt.status == "VERIFIED":
+        attempt.status = "PARTIALLY_VERIFIED"
 
 
 class Orchestrator:
@@ -148,7 +199,7 @@ class Orchestrator:
                  max_revisions: int = 2, question_budget_sgd: Decimal = Decimal("0.30"),
                  solve_max_tokens: int = 8000, formalize_max_tokens: int = 6000,
                  escalate_thinking: bool = True, time_budget_seconds: float = 480,
-                 geometry_thinking_first: bool = True) -> None:
+                 geometry_thinking_first: bool = False, critic: bool = True) -> None:
         self.gateway = gateway
         self.policy = policy or load_policy()
         self.run = run or run_check
@@ -159,8 +210,13 @@ class Orchestrator:
         self.escalate_thinking = escalate_thinking
         self.time_budget = time_budget_seconds
         self.geometry_thinking_first = geometry_thinking_first
+        self.critic = critic
 
     def _can_escalate(self, thinking_used: bool, calls: int, outcome: SolveOutcome, elapsed: float) -> bool:
+        # Geometry proofs need long reasoning that SoCLaaS cuts off at ~300 s (4 of 4 live runs, 2026-11-03): their
+        # revisions stay plain, so the examiner loop gets several fast rounds instead of one lost 5-minute call.
+        if "geometry" in outcome.topics and not self.geometry_thinking_first:
+            return False
         return (self.escalate_thinking and not thinking_used and calls <= self.max_revisions
                 and outcome.cost_sgd + self._next_cost(True, Decimal(0)) <= self.question_budget
                 and elapsed + THINKING_CALL_SECONDS <= self.time_budget)
@@ -310,11 +366,20 @@ class Orchestrator:
                 outcome.cost_sgd += exc.cost_sgd
                 self._log(outcome, outcome.state, started, error=exc.code, thinking=thinking,
                           cost_sgd=str(exc.cost_sgd))
+                thinking_used = thinking_used or bool(thinking)  # a failed reasoning call is not tried again
                 if self._can_escalate(thinking_used, calls, outcome, time.monotonic() - run_started):
                     thinking, thinking_used = True, True
                     continue
                 if thinking and outcome.best is None and calls == 1:
                     thinking = False  # geometry started with reasoning and it failed (often a timeout): one plain try
+                    continue
+                if (outcome.best is None and calls <= self.max_revisions
+                        and time.monotonic() - run_started < 1.5 * self.time_budget):
+                    thinking = False  # nothing usable yet (e.g. malformed JSON): one more plain attempt
+                    continue
+                if (thinking and outcome.best is not None and calls <= self.max_revisions
+                        and time.monotonic() - run_started < self.time_budget):
+                    thinking = False  # the reasoning revision failed (often a timeout): same feedback, plain call
                     continue
                 if outcome.best is None:
                     outcome.state = SolveState.FAILED
@@ -341,13 +406,29 @@ class Orchestrator:
             self._log(outcome, SolveState.CURRICULUM, started,
                       status=curriculum.status if curriculum else "NOT_CHECKED")
 
-            attempt = Attempt(solved.value, verdicts, evidence, status, curriculum)
+            critique: Critique | None = None
+            if self.critic and solved.value.solved and status != "INCORRECT":
+                # A second agent checks every step like an examiner (a refuted answer needs no examiner).
+                started = time.monotonic()
+                checked = await critique_solution(self.gateway, CallContext("critique", data.user_id, data.job_id),
+                                                  data.problem_text, solved.value)
+                if checked is not None:
+                    critique = checked.critique
+                    outcome.cost_sgd += checked.cost_sgd
+                self._log(outcome, SolveState.CRITIQUE, started,
+                          verdict=critique.verdict if critique else "unavailable",
+                          errors=sum(i.severity == "error" for i in critique.issues) if critique else None,
+                          gaps=sum(i.severity == "gap" for i in critique.issues) if critique else None)
+
+            attempt = Attempt(solved.value, verdicts, evidence, status, curriculum, critique,
+                              repeated_steps(solved.value))
             if outcome.best is None or attempt.score() > outcome.best.score():
                 outcome.best = attempt
 
             feedback = revision_feedback(attempt)
             hard = status in ("INCORRECT", "UNSOLVED") or not solved.value.solved or any(
-                "chưa nêu" in v.reason_vi for v in verdicts)
+                "chưa nêu" in v.reason_vi for v in verdicts) or any(
+                i.severity == "error" for i in (critique.issues if critique else [])) or bool(attempt.defects)
             escalate = hard and self._can_escalate(thinking_used, calls, outcome, time.monotonic() - run_started)
             if not solved.value.solved and escalate:
                 feedback = ["Lời giải trước chưa giải được bài. Hãy suy nghĩ kỹ và giải lại từ đầu."]
@@ -363,6 +444,9 @@ class Orchestrator:
             thinking = True if escalate else (False if self.escalate_thinking else None)
             messages = [messages[0], ChatMessage(role="user", content=prompts.revise_user(
                 data.problem_text, solved.value.model_dump_json(), feedback))]
+
+        if outcome.best is not None:
+            mark_remaining_issues(outcome.best)
 
         # HINTS: derived once from the best solution, checked so they never reveal the answer.
         if outcome.best is not None and outcome.best.solution.solved and outcome.best.status != "INCORRECT":

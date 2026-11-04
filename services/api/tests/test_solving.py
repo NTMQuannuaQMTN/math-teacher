@@ -95,13 +95,18 @@ def test_self_correction_in_the_write_up_is_flagged() -> None:
                  "Hmm, để thử lại với $n = 3$.",
                  # Live output 2026-11-03 (Quảng Nam 2025 Câu 7): a question answered by a retraction.
                  "Ta sử dụng $u^2v+v^2w+w^2u \\le u^2+v^2+w^2$? Không, ta dùng đánh giá trực tiếp.",
-                 "Ta có $u^2v \\le \\frac{2}{3}(u^2+v^2)$? Không cần phức tạp."]:
+                 "Ta có $u^2v \\le \\frac{2}{3}(u^2+v^2)$? Không cần phức tạp.",
+                 # Live output 2026-11-03 (HCM 2023 Bài 8): the solver argued with itself.
+                 "Tổng bằng $180^\\circ + \\widehat{BAC}$. Điều này không đúng, ta cần xem xét lại.",
+                 "Thực ra, $\\widehat{ALH} = \\widehat{AFH}$ là không đúng.",
+                 "Mà $\\widehat{ACB} = 90^\\circ$ (sai, $\\widehat{ACB}$ không bằng $90^\\circ$)."]:
         assert "self_talk" in {f.rule_id for f in check_curriculum([text], [], ["number_theory"]).findings}, text
     clean = ["Xét $n^2 + 2n + 8 \\pmod 3$: nếu $n \\equiv 2$ thì $n^2 + 2n + 8 \\equiv 1 \\pmod 3$.",
              "Vậy $n^2 + 2n + 8$ không chia hết cho 3, nên $n + 2 \\vdots 9$.",
              "Các nghiệm phân biệt và không có cặp nào trùng nhau.",  # "và không" is not "à không"
              # Official HDC (Quảng Nam 2025, chuyên Tin): substituting candidate roots back is not self-talk.
-             "Thử lại vào phương trình (1), ta được $x = \\frac{25}{11}$ là nghiệm duy nhất."]
+             "Thử lại vào phương trình (1), ta được $x = \\frac{25}{11}$ là nghiệm duy nhất.",
+             "Vậy điều giả sử là sai, nên $a$ không là số chính phương."]  # official key wording (Thái Nguyên 2022)
     assert check_curriculum(clean, [], ["number_theory"]).findings == []
 
 
@@ -233,6 +238,11 @@ NON_COMPLIANT = reply({**solution(part(solutions=[{"x": "2"}, {"x": "3"}])).mode
                        "approach_vi": "Xét đạo hàm của hàm số."})
 
 
+def solver_calls(provider: ScriptedProvider) -> list[Any]:
+    """The solver's own requests (not formalization, hints or the examiner)."""
+    return [r for r in provider.requests if r.schema_name == "solution"]
+
+
 def orchestrator(c: Container, **kwargs: Any) -> Orchestrator:
     assert c.gateway is not None
     return Orchestrator(c.gateway, run=local_run, **kwargs)
@@ -245,7 +255,8 @@ async def test_orchestrator_happy_path(container: Container, provider: ScriptedP
     assert outcome.state == SolveState.DONE and outcome.attempts == 1
     assert outcome.best is not None and outcome.best.status == "VERIFIED"
     assert outcome.best.curriculum is not None and outcome.best.curriculum.status == "COMPLIANT"
-    assert [t["state"] for t in outcome.trace] == ["classify", "formalize", "solve", "verify", "curriculum", "hints"]
+    assert [t["state"] for t in outcome.trace] == ["classify", "formalize", "solve", "verify", "curriculum",
+                                                   "critique", "hints"]
     assert [r.model for r in solve_requests(provider)] == ["fast-test", "reason-test"]  # topics given: no classify
     assert len(outcome.hints) == 3 and outcome.hints[0].level == "concept"
     # The solver sees variable names, never the independent template.
@@ -261,7 +272,7 @@ async def test_orchestrator_revises_a_wrong_answer_with_tool_feedback(container:
     provider.push(GOOD)
     outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
     assert outcome.attempts == 2 and outcome.best is not None and outcome.best.status == "VERIFIED"
-    revision = provider.requests[2].messages[-1].content
+    revision = [r for r in provider.requests if r.schema_name == "solution"][1].messages[-1].content
     assert isinstance(revision, str) and "Thiếu nghiệm" in revision
 
 
@@ -272,7 +283,7 @@ async def test_orchestrator_revises_non_compliant_methods(container: Container, 
     outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
     assert outcome.best is not None and outcome.best.curriculum is not None
     assert outcome.best.curriculum.compliant and outcome.attempts == 2
-    revision = provider.requests[2].messages[-1].content
+    revision = [r for r in provider.requests if r.schema_name == "solution"][1].messages[-1].content
     assert isinstance(revision, str) and "ngoài chương trình" in revision
 
 
@@ -317,12 +328,13 @@ async def test_formalization_failure_still_returns_an_unverified_solution(contai
 
 async def test_solver_failure_escalates_then_is_reported(container: Container, provider: ScriptedProvider) -> None:
     provider.push(FORMAL_REPLY)
-    for _ in range(4):
+    for _ in range(8):
         provider.push("garbage")
     outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
     assert outcome.state == SolveState.FAILED and outcome.error_code == "invalid_model_output"
-    solve_requests = [r for r in provider.requests if r.model == "reason-test"]
-    assert [r.thinking for r in solve_requests] == [False, False, True, False]  # each try + its repair (no thinking)
+    solve_requests = solver_calls(provider)
+    # Each try + its JSON repair: plain, reasoning, then a plain retry while nothing usable exists (max_revisions=2).
+    assert [r.thinking for r in solve_requests] == [False, False, True, False, False, False]
     assert outcome.cost_sgd > 0  # failed calls are still counted
 
 
@@ -333,7 +345,7 @@ async def test_wrong_answer_escalates_to_thinking_once(container: Container, pro
     provider.push(GOOD)
     outcome = await orchestrator(container, max_revisions=2).run_solve(
         SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
-    solve_requests = [r for r in provider.requests if r.model == "reason-test"]
+    solve_requests = solver_calls(provider)
     assert [r.thinking for r in solve_requests] == [False, True, False]
     assert solve_requests[1].max_tokens == 12000 and solve_requests[1].timeout_seconds == 300
     assert outcome.best is not None and outcome.best.status == "VERIFIED"
@@ -358,7 +370,8 @@ async def test_geometry_uses_the_reasoning_model_with_thinking_first(container: 
     """User request: harder models for geometry figures and proofs."""
     provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
     provider.push(GEO_PROOF)
-    await orchestrator(container).run_solve(SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
+    await orchestrator(container, geometry_thinking_first=True).run_solve(
+        SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
     formalize, solve = [r for r in provider.requests if r.schema_name in ("formalization", "solution")][:2]
     assert formalize.model == "reason-test" and solve.model == "reason-test"
     assert solve.thinking is True
@@ -370,10 +383,109 @@ async def test_a_failed_geometry_reasoning_call_falls_back_to_one_plain_attempt(
     provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
     provider.push(ProviderError("timeout", "slow"))
     provider.push(GEO_PROOF)
-    outcome = await orchestrator(container).run_solve(
+    outcome = await orchestrator(container, geometry_thinking_first=True).run_solve(
         SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
     assert [r.thinking for r in provider.requests if r.schema_name == "solution"] == [True, False]
     assert outcome.best is not None and outcome.best.solution.solved
+
+
+def critique(*issues: tuple[str, int | None, str, str]) -> str:
+    return reply({"verdict": "has_issues" if issues else "correct", "confidence": 0.8, "issues": [
+        {"part": p, "step": st, "severity": sev, "explanation_vi": ex} for p, st, sev, ex in issues]})
+
+
+async def test_the_examiner_finds_a_mistake_and_the_solver_fixes_it(container: Container,
+                                                                   provider: ScriptedProvider) -> None:
+    """User request: one agent solves, another checks for mistakes, and the solution is fixed until it is clean."""
+    provider.critique_reply = None
+    provider.push(FORMAL_REPLY)
+    provider.push(GOOD)
+    provider.push(critique(("", 1, "gap", "Chưa giải thích vì sao phân tích được thành $(x-2)(x-3)$.")))
+    provider.push(GOOD)
+    provider.push(critique())
+    outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    solves = [r for r in provider.requests if r.schema_name == "solution"]
+    assert len(solves) == 2 and len([r for r in provider.requests if r.schema_name == "critique"]) == 2
+    revision = solves[1].messages[-1].content
+    assert isinstance(revision, str) and "Giám khảo: Thiếu lập luận (bước 1)" in revision
+    assert [t.get("verdict") for t in outcome.trace if t["state"] == "critique"] == ["has_issues", "correct"]
+    assert outcome.best is not None and outcome.best.status == "VERIFIED"
+    assert outcome.best.critique is not None and outcome.best.critique.verdict == "correct"
+
+
+async def test_a_flawed_proof_does_not_beat_an_honest_unsolved_attempt(container: Container,
+                                                                       provider: ScriptedProvider) -> None:
+    from app.agents.critic import Critique
+    from app.agents.orchestrator import Attempt
+    flawed = Attempt(solution(part(kind="proof", solutions=None)), [], [], "UNVERIFIED", None,
+                     Critique.model_validate({"verdict": "has_issues", "confidence": 0.9, "issues": [{
+                         "part": "", "step": 2, "severity": "error", "explanation_vi": "Kết luận không suy ra."}]}))
+    honest = Attempt(solution(solved=False), [], [], "UNSOLVED", None)
+    assert honest.score() > flawed.score()
+
+
+async def test_remaining_examiner_errors_are_shown_and_downgrade_verified(container: Container,
+                                                                          provider: ScriptedProvider) -> None:
+    provider.critique_reply = critique(("", 2, "error", "Bước 2 chia hai vế cho $x$ mà chưa xét $x = 0$."))
+    provider.push(FORMAL_REPLY)
+    for _ in range(4):
+        provider.push(GOOD)
+    outcome = await orchestrator(container, max_revisions=1).run_solve(
+        SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    best = outcome.best
+    assert best is not None and best.status == "PARTIALLY_VERIFIED"
+    assert "Kiểm tra chéo còn phát hiện: Sai (bước 2)" in best.verdicts[0].reason_vi
+
+
+async def test_a_solver_stuck_in_a_loop_is_caught_without_any_model(container: Container,
+                                                                    provider: ScriptedProvider) -> None:
+    from app.agents.orchestrator import repeated_steps
+    loop = "Ta có $\\widehat{ALH} = \\widehat{ACH}$ và $\\widehat{AFH} = 90^\\circ$, không bằng nhau."
+    looping = solution(part(kind="proof", solutions=None, final="Vậy tứ giác nội tiếp."))
+    stuck = looping.parts[0].model_copy(update={"steps": ["Bước đầu.", loop, loop, loop]})
+    looping = looping.model_copy(update={"parts": [stuck]})
+    assert repeated_steps(looping) and "bước 3, bước 4" in repeated_steps(looping)[0]
+    assert repeated_steps(solution(part())) == []
+    provider.push(FORMAL_REPLY)
+    provider.push(reply(looping.model_dump()))
+    provider.push(GOOD)
+    outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    revision = solver_calls(provider)[1].messages[-1].content
+    assert isinstance(revision, str) and "lặp lại nguyên văn" in revision
+    assert outcome.best is not None and outcome.best.status == "VERIFIED" and not outcome.best.defects
+
+
+async def test_geometry_revisions_stay_plain_and_fast(container: Container, provider: ScriptedProvider) -> None:
+    provider.critique_reply = None
+    provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
+    provider.push(GEO_PROOF)
+    provider.push(critique(("", 2, "error", "Hai góc này không bằng nhau.")))
+    provider.push(GEO_PROOF)
+    provider.push(critique())
+    await orchestrator(container).run_solve(SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
+    assert [r.thinking for r in solver_calls(provider)] == [False, False]
+
+
+async def test_a_failed_reasoning_revision_falls_back_to_a_plain_one(container: Container,
+                                                                     provider: ScriptedProvider) -> None:
+    from app.providers.base import ProviderError
+    provider.push(FORMAL_REPLY)
+    provider.push(WRONG)
+    provider.push(ProviderError("timeout", "slow"))
+    provider.push(GOOD)
+    outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    assert [r.thinking for r in solver_calls(provider)] == [False, True, False]
+    assert outcome.best is not None and outcome.best.status == "VERIFIED"
+
+
+async def test_an_unavailable_examiner_does_not_block_the_solve(container: Container,
+                                                                provider: ScriptedProvider) -> None:
+    provider.critique_reply = "not json"
+    provider.push(FORMAL_REPLY)
+    provider.push(GOOD)
+    outcome = await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
+    assert outcome.best is not None and outcome.best.status == "VERIFIED" and outcome.attempts == 1
+    assert [t.get("verdict") for t in outcome.trace if t["state"] == "critique"] == ["unavailable"]
 
 
 async def test_style_only_feedback_does_not_escalate(container: Container, provider: ScriptedProvider) -> None:
@@ -383,7 +495,7 @@ async def test_style_only_feedback_does_not_escalate(container: Container, provi
     provider.push(styled)
     provider.push(GOOD)
     await orchestrator(container).run_solve(SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
-    assert [r.thinking for r in provider.requests if r.model == "reason-test"] == [False, False]
+    assert [r.thinking for r in solver_calls(provider)] == [False, False]
 
 
 async def test_restricted_budget_degrades_to_fast_model(container: Container, provider: ScriptedProvider) -> None:
@@ -478,7 +590,7 @@ async def test_no_revision_is_started_past_the_time_budget(container: Container,
     provider.delay = 0.05
     outcome = await orchestrator(container, time_budget_seconds=0.01).run_solve(
         SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
-    assert len([r for r in provider.requests if r.model == "reason-test"]) == 1
+    assert len(solver_calls(provider)) == 1
     assert any(t.get("skipped") == "time_budget" for t in outcome.trace)
 
 
@@ -490,7 +602,7 @@ async def test_thinking_needs_time_and_revisions_are_not_retried(container: Cont
     provider.push(ProviderError("timeout", "slow"))
     outcome = await orchestrator(container, time_budget_seconds=200).run_solve(
         SolveInput("Giải $x^2-5x+6=0$.", ["algebra"], None))
-    assert [r.thinking for r in provider.requests if r.model == "reason-test"] == [False, False]
+    assert [r.thinking for r in solver_calls(provider)] == [False, False]
     assert outcome.best is not None and outcome.best.status == "INCORRECT"
 
 

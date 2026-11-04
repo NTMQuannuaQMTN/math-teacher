@@ -457,3 +457,40 @@ export function solveGivens(compiled: Compiled, start: number[], fixed: number[]
   }
   return Math.max(...res.map(Math.abs)) <= Math.max(tol, 1e-7) ? x : null;
 }
+
+/** Size of the figure: the larger side of the box around every point and circle. */
+export function figureSize(values: Values): number {
+  const xs: number[] = [], ys: number[] = [];
+  for (const v of Object.values(values)) {
+    if (v.t === "point") { xs.push(v.v[0]); ys.push(v.v[1]); }
+    if (v.t === "circle") { xs.push(v.c[0] - v.r, v.c[0] + v.r); ys.push(v.c[1] - v.r, v.c[1] + v.r); }
+  }
+  if (!xs.length) return 1;
+  return Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 1e-9);
+}
+
+/** The part of a line worth drawing: from the first to the last named point on it, so nothing sticks out past the
+ * figure. A segment keeps its ends, a ray starts at its origin; a line through a single point (a perpendicular, a
+ * tangent) gets a short stub around it. */
+export function lineExtent(line: LineValue, values: Values): [Vec, Vec] {
+  if (line.kind === "segment" && line.a && line.b) return [line.a, line.b];
+  const size = figureSize(values);
+  const norm = Math.hypot(line.d[0], line.d[1]) || 1;
+  const d: Vec = [line.d[0] / norm, line.d[1] / norm];
+  const tol = 1e-6 * Math.max(size, 1);
+  const ts: number[] = [];
+  for (const v of Object.values(values)) {
+    if (v.t !== "point") continue;
+    const rx = v.v[0] - line.p[0], ry = v.v[1] - line.p[1];
+    if (Math.abs(rx * d[1] - ry * d[0]) <= tol) ts.push(rx * d[0] + ry * d[1]);
+  }
+  const at = (t: number): Vec => [line.p[0] + t * d[0], line.p[1] + t * d[1]];
+  if (line.kind === "ray" && line.a) {
+    const t0 = (line.a[0] - line.p[0]) * d[0] + (line.a[1] - line.p[1]) * d[1];
+    const far = ts.length ? Math.max(...ts) : t0 + 0.3 * size;
+    return [at(t0), at(Math.max(far, t0 + 0.05 * size))];
+  }
+  if (ts.length >= 2) return [at(Math.min(...ts)), at(Math.max(...ts))];
+  const centre = ts.length === 1 ? ts[0]! : 0;
+  return [at(centre - 0.15 * size), at(centre + 0.15 * size)];
+}

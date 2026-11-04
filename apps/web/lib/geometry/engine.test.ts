@@ -6,7 +6,10 @@ import {
   compile,
   Degenerate,
   evaluate,
+  figureSize,
   type GeometrySpec,
+  lineExtent,
+  type LineValue,
   type PointValue,
   relationCircles,
   residuals,
@@ -98,4 +101,25 @@ test("circles stated only as concyclic are drawn, unless a declared circle alrea
 
   const withCircle: GeometrySpec = { ...spec, objects: [...spec.objects, { kind: "circle_diameter", id: "w", a: "B", b: "C" }] };
   assert.deepEqual(relationCircles(withCircle, evaluate(compile(withCircle), params)), []);
+});
+
+test("lines are drawn only between the outermost points on them", () => {
+  const values: Values = {
+    A: { t: "point", v: [0, 0] }, B: { t: "point", v: [4, 0] }, M: { t: "point", v: [2, 0] },
+    C: { t: "point", v: [1, 3] },
+    AB: { t: "line", p: [0, 0], d: [1, 0], kind: "line", a: [0, 0], b: [4, 0] },
+    // A perpendicular through C only: a short stub around C.
+    h: { t: "line", p: [1, 3], d: [0, 1], kind: "line" },
+    // A line through M and C, defined from M: drawn from M to C, not beyond.
+    MC: { t: "line", p: [2, 0], d: [-1 / Math.hypot(1, 3), 3 / Math.hypot(1, 3)], kind: "line" },
+  };
+  assert.deepEqual(lineExtent(values.AB as LineValue, values), [[0, 0], [4, 0]]);
+  const [s0, s1] = lineExtent(values.h as LineValue, values);
+  assert.ok(Math.abs(s0[0] - 1) < 1e-9 && Math.abs(s1[0] - 1) < 1e-9);
+  assert.ok(Math.abs((s1[1] - s0[1]) - 0.3 * figureSize(values)) < 1e-9);  // ±0.15 × size around C
+  const [m0, m1] = lineExtent(values.MC as LineValue, values);
+  const close = (p: number[], q: number[]) => Math.hypot(p[0]! - q[0]!, p[1]! - q[1]!) < 1e-9;
+  assert.ok((close(m0, [2, 0]) && close(m1, [1, 3])) || (close(m0, [1, 3]) && close(m1, [2, 0])));
+  assert.deepEqual(lineExtent({ t: "line", p: [0, 0], d: [1, 0], kind: "segment", a: [0, 0], b: [2, 0] }, values),
+    [[0, 0], [2, 0]]);
 });

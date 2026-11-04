@@ -754,6 +754,23 @@ def _serialize(values: dict[str, Value]) -> dict[str, Any]:
     return out
 
 
+def point_spread(values: dict[str, Value]) -> float:
+    """How readable a configuration is: the smallest distance between two points, relative to the figure's size
+    (points and circles). A figure whose points crowd together scores near 0."""
+    points = [v for v in values.values() if isinstance(v, np.ndarray)]
+    if len(points) < 2:
+        return 1.0
+    xs = [float(p[0]) for p in points]
+    ys = [float(p[1]) for p in points]
+    for v in values.values():
+        if isinstance(v, Cr):
+            xs += [float(v.c[0] - v.r), float(v.c[0] + v.r)]
+            ys += [float(v.c[1] - v.r), float(v.c[1] + v.r)]
+    size = max(max(xs) - min(xs), max(ys) - min(ys), EPS)
+    closest = min(float(np.hypot(*(p - q))) for i, p in enumerate(points) for q in points[i + 1:])
+    return closest / size
+
+
 def check_spec(spec: GeometrySpec, samples: int = 24) -> dict[str, Any]:
     """Feasibility, goals over many configurations, and constant targets. JSON-serialisable result."""
     try:
@@ -804,5 +821,7 @@ def check_spec(spec: GeometrySpec, samples: int = 24) -> dict[str, Any]:
         spread = max(abs(v - mean) for v in observed)
         targets.append({"index": index, "constant": spread < 1e-6 * max(1.0, abs(mean)), "value": mean,
                         "spread": spread})
+    # The figure first shows the configuration whose points are best spread out (no crowded labels).
+    shown = max(configs, key=lambda c: point_spread(c.values))
     return {"status": "ok", "valid_configs": len(configs), "goals": goals, "targets": targets,
-            "initial": {"params": [float(p) for p in configs[0].params], "values": _serialize(configs[0].values)}}
+            "initial": {"params": [float(p) for p in shown.params], "values": _serialize(shown.values)}}

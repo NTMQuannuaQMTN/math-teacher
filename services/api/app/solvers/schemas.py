@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field, ValidationError, field_validator
 
 from ..geometry.dsl import GeometrySpec
 
-PIPELINE_VERSION = "solve-2026.11.1"
+PIPELINE_VERSION = "solve-2026.11.2"
 
 Domain = Literal["real", "rational", "integer", "positive_integer", "natural"]
 Expr = Annotated[str, Field(max_length=400, description="Plain ASCII maths, explicit *, ^ for powers, e.g. 2*x^2-3")]

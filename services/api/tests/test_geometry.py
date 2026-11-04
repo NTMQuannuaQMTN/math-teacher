@@ -398,6 +398,19 @@ async def test_unsupported_geometry_is_reported(client: httpx.AsyncClient, conta
     assert figure["status"] == "unsupported" and "hình vẽ" in figure["detail"]
 
 
+def test_the_first_view_is_the_most_spread_out_configuration() -> None:
+    """User request: on first display every point is visible separately, not crowded together."""
+    from app.geometry.engine import point_spread
+    crowded = {"A": np.array([0.0, 0.0]), "B": np.array([4.0, 0.0]), "C": np.array([0.1, 0.05])}
+    open_ = {"A": np.array([0.0, 0.0]), "B": np.array([4.0, 0.0]), "C": np.array([2.0, 3.0])}
+    assert point_spread(open_) > 10 * point_spread(crowded)
+    figure = spec([*TRIANGLE, {"kind": "midpoint", "id": "M", "a": "B", "b": "C"}])
+    result = check_spec(figure, samples=12)
+    shown = {k: np.array([v["x"], v["y"]]) for k, v in result["initial"]["values"].items() if v["type"] == "point"}
+    configs, _ = sample_configs(compile_spec(figure), 12, hinted_first=True)
+    assert point_spread(shown) >= max(point_spread(c.values) for c in configs) - 1e-9
+
+
 def test_angles_are_unsigned_degrees() -> None:
     s = spec(TRIANGLE, targets=[{"kind": "angle", "points": ["B", "A", "C"]}])
     values = evaluate(compile_spec(s), np.array([0, 0, 1, 0, 0, 1], dtype=float))

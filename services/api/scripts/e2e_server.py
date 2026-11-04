@@ -43,6 +43,7 @@ def main() -> None:
         "STORAGE_LOCAL_DIR": str(storage), "WORKER_POLL_SECONDS": "0.2", "ADMIN_DEV_TOKEN": "e2e-admin",
         "GATEWAY_SECRET": "e2e-gateway-secret", "SOCLAAS_API_KEY": "", "LLM_PROVIDER": "fixture",
         "MODEL_CATALOG_JSON": '{"models":[{"id":"fixture-model","structured_output":"json_object","vision":true,'
+                              '"context_window":262144,'
                               '"pricing":{"currency":"SGD","input_per_mtok":"0","output_per_mtok":"0"}}],'
                               '"routing":{"fast":"fixture-model","reasoning":"fixture-model","ocr":"fixture-model"}}',
         "RATE_LIMIT_REQUESTS_PER_MINUTE": "5000",

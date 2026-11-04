@@ -12,6 +12,7 @@ import {
   type GeometrySpec,
   type LineValue,
   type PointValue,
+  lineExtent,
   relationCircles,
   type CircleValue,
   type Relation,
@@ -38,17 +39,19 @@ const RELATION_LABELS: Record<string, (r: Relation) => string> = {
   length_ratio: (r) => `${(r.segments as string[][]).map((s) => s.join("")).join(" : ")} = ${r.ratio as number}`,
 };
 
-function bounds(values: Values): [number, number, number, number] {
+/** View box fitting every point and circle, with room for labels, in the frame's width/height ratio. */
+function bounds(values: Values, ratio: number): [number, number, number, number] {
   const xs: number[] = [], ys: number[] = [];
   for (const v of Object.values(values)) {
     if (v.t === "point") { xs.push(v.v[0]); ys.push(v.v[1]); }
     if (v.t === "circle") { xs.push(v.c[0] - v.r, v.c[0] + v.r); ys.push(v.c[1] - v.r, v.c[1] + v.r); }
   }
   const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
-  const span = Math.max(x1 - x0, y1 - y0, 1);
-  const pad = span * 0.18;
-  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, half = span / 2 + pad;
-  return [cx - half, cy + half, cx + half, cy - half];
+  const pad = Math.max(x1 - x0, y1 - y0, 1) * 0.08;
+  let halfW = (x1 - x0) / 2 + pad, halfH = (y1 - y0) / 2 + pad;
+  if (halfW / halfH < ratio) halfW = halfH * ratio; else halfH = halfW / ratio;
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  return [cx - halfW, cy + halfH, cx + halfW, cy - halfH];
 }
 
 export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: Initial }) {
@@ -78,7 +81,8 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
       const JXG = (mod as unknown as { default: { JSXGraph: { initBoard: (id: string, o: object) => unknown; freeBoard: (b: unknown) => void } } }).default;
       const b = JXG.JSXGraph.initBoard(boardId, {
         // No coordinate infobox: the figure is about relations, not coordinates.
-        boundingbox: bounds(values), axis: false, showCopyright: false, showNavigation: false, showInfobox: false, keepAspectRatio: true,
+        boundingbox: bounds(values, container.current.clientWidth / Math.max(container.current.clientHeight, 1)),
+        axis: false, showCopyright: false, showNavigation: false, showInfobox: false, keepAspectRatio: true,
         pan: { enabled: false }, zoom: { enabled: false },
       }) as {
         create: (type: string, parents: unknown[], attrs?: object) => { X: () => number; Y: () => number; moveTo: (c: number[]) => void; on: (e: string, f: () => void) => void };
@@ -149,19 +153,13 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
         if (value.t === "point" && !freeJxg[o.id]) {
           jxgPoint[o.id] = b.create("point", [() => pt(o.id)[0], () => pt(o.id)[1]], { ...dependentStyle, name: o.id });
         } else if (value.t === "line") {
-          const ends = o.through as string[] | undefined;
-          if (ends && ends.length === 2 && jxgPoint[ends[0]!] && jxgPoint[ends[1]!]) {
-            const type = o.kind === "segment" ? "segment" : o.kind === "ray" ? "line" : "line";
-            b.create(type, [jxgPoint[ends[0]!], jxgPoint[ends[1]!]], {
-              strokeColor: "#475569", strokeWidth: 1.6, straightFirst: o.kind === "line", straightLast: o.kind !== "segment",
-            });
-          } else {
-            const p0 = () => (values[o.id] as LineValue).p;
-            const p1 = () => { const l = values[o.id] as LineValue; return [l.p[0] + l.d[0], l.p[1] + l.d[1]]; };
-            b.create("line", [[() => p0()[0], () => p0()[1]], [() => p1()[0], () => p1()[1]]], {
-              strokeColor: "#94a3b8", strokeWidth: 1.3, dash: 2,
-            });
-          }
+          // Only the part between the outermost points on the line is drawn, so nothing sticks out of the figure.
+          const ends = () => lineExtent(values[o.id] as LineValue, values);
+          const end = (i: 0 | 1, k: 0 | 1) => () => ends()[i][k];
+          const hidden = { visible: false, fixed: true, withLabel: false };
+          b.create("segment", [b.create("point", [end(0, 0), end(0, 1)], hidden), b.create("point", [end(1, 0), end(1, 1)], hidden)], {
+            strokeColor: "#475569", strokeWidth: 1.6, fixed: true, highlight: false,
+          });
         } else if (value.t === "circle") {
           b.create("circle", [[() => (values[o.id] as CircleValue).c[0], () => (values[o.id] as CircleValue).c[1]],
             () => (values[o.id] as CircleValue).r], { ...circleStyle });
@@ -192,7 +190,7 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
       {/* JSXGraph manages the inner div's own ARIA attributes; the accessible name lives on the figure. */}
       <figure aria-label="Hình vẽ tương tác" className="m-0">
         <div id={boardId} ref={container}
-          className="aspect-square w-full max-w-xl touch-none rounded-xl border border-line bg-white" />
+          className="aspect-[4/3] w-full touch-none rounded-xl border border-line bg-white" />
       </figure>
       <p className="mt-2 text-xs text-muted">Kéo các điểm màu xanh để thay đổi hình; các điểm khác tự cập nhật theo đề bài.</p>
       {warning && <p role="status" className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">{warning}</p>}

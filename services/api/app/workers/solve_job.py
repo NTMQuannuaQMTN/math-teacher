@@ -26,7 +26,8 @@ def build_orchestrator(c: Container) -> Orchestrator:
                         question_budget_sgd=c.settings.question_budget_sgd,
                         escalate_thinking=c.settings.solve_escalate_thinking,
                         time_budget_seconds=c.settings.solve_time_budget_seconds,
-                        geometry_thinking_first=c.settings.solve_geometry_thinking_first)
+                        geometry_thinking_first=c.settings.solve_geometry_thinking_first,
+                        critic=c.settings.solve_critic_enabled)
 
 
 async def run_solve_job(c: Container, job: Job) -> dict[str, Any]:

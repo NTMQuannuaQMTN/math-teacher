@@ -54,6 +54,7 @@ def make_catalog(price_in: str = "1.00", price_out: str = "4.00", currency: str 
     })
 
 
+CRITIQUE_OK = json.dumps({"verdict": "correct", "issues": [], "confidence": 0.9})
 HINTS_REPLY = json.dumps({"hints": [
     {"level": "concept", "text_vi": "Em hãy nhớ lại cách phân tích tam thức bậc hai thành nhân tử."},
     {"level": "observation", "text_vi": "Tìm hai số có tổng bằng $5$ và tích bằng $6$."},
@@ -62,8 +63,8 @@ HINTS_REPLY = json.dumps({"hints": [
 
 
 def solve_requests(provider: ScriptedProvider) -> list[ChatRequest]:
-    """Model requests other than hint generation."""
-    return [r for r in provider.requests if r.schema_name != "hints"]
+    """Model requests other than hint generation and the examiner's check."""
+    return [r for r in provider.requests if r.schema_name not in ("hints", "critique")]
 
 
 class ScriptedProvider:
@@ -78,6 +79,8 @@ class ScriptedProvider:
         self.delay = 0.0
         # Hint calls (schema "hints") get this reply without consuming the scripted queue; None = use the queue.
         self.hints_reply: str | None = HINTS_REPLY
+        # The examiner (schema "critique") passes every solution unless a test sets this to None and scripts it.
+        self.critique_reply: str | None = CRITIQUE_OK
 
     def push(self, reply: Callable[[ChatRequest], ChatResult] | ProviderError | str) -> None:
         self.replies.append(reply)
@@ -86,6 +89,9 @@ class ScriptedProvider:
         self.requests.append(request)
         if self.delay:
             await asyncio.sleep(self.delay)
+        if request.schema_name == "critique" and self.critique_reply is not None:
+            return ChatResult(content=self.critique_reply, model=request.model,
+                              usage=Usage(prompt_tokens=400, completion_tokens=60), finish_reason="stop", latency_ms=5)
         if request.schema_name == "hints" and self.hints_reply is not None:
             return ChatResult(content=self.hints_reply, model=request.model,
                               usage=Usage(prompt_tokens=300, completion_tokens=120), finish_reason="stop", latency_ms=5)
