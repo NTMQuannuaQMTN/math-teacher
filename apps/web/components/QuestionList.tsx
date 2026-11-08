@@ -3,12 +3,12 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { MathText } from "@/components/MathText";
-import { StatusBadge } from "@/components/ui";
+import { Button, FlagList, StatusBadge } from "@/components/ui";
 import { type QuestionOut, TOPIC_LABELS } from "@/lib/api";
 
-// Read-only, text-only view of a whole document for a final read-through. A confirmed question opens its
-// workspace when clicked; an unconfirmed one sends the student back to the side-by-side review to fix it.
-export function QuestionList({ questions, onFix }: { questions: QuestionOut[]; onFix: (id: string) => void }) {
+// Read-only, text-only view of a whole document (screen 2). A confirmed question opens its workspace when clicked;
+// "Sửa" (or clicking an unconfirmed question) opens that one question next to the page image to fix it.
+export function QuestionList({ questions, onEdit }: { questions: QuestionOut[]; onEdit: (id: string) => void }) {
   return (
     <ol className="space-y-3">
       {questions.map((q) => {
@@ -38,16 +38,23 @@ export function QuestionList({ questions, onFix }: { questions: QuestionOut[]; o
                 </div>
               ))}
             </div>
-            <p className={`mt-3 text-sm font-medium ${confirmed ? "text-brand" : "text-amber-700"}`}>
-              {confirmed ? "Mở câu hỏi →" : "Chưa xác nhận — bấm để sửa bên phần đối chiếu"}
-            </p>
           </>
         );
         return (
-          <li key={q.id}>
-            <ClickableCard href={confirmed ? `/questions/${q.id}` : undefined} onClick={confirmed ? undefined : () => onFix(q.id)}>
+          <li key={q.id} id={`item-${q.id}`}
+            className="rounded-2xl border border-line bg-paper shadow-sm transition hover:border-brand hover:shadow-md">
+            <ClickableArea href={confirmed ? `/questions/${q.id}` : undefined} onClick={confirmed ? undefined : () => onEdit(q.id)}>
               {body}
-            </ClickableCard>
+            </ClickableArea>
+            {!confirmed && q.flags.length > 0 && <div className="px-4 sm:px-5"><FlagList flags={q.flags} /></div>}
+            <div className="flex flex-wrap items-center justify-between gap-2 px-4 pb-4 sm:px-5 sm:pb-5">
+              {confirmed ? (
+                <Link href={`/questions/${q.id}`} className="text-sm font-medium text-brand hover:underline">Mở câu hỏi →</Link>
+              ) : (
+                <span className="text-sm font-medium text-amber-700">Chưa xác nhận — bấm “Sửa” để đối chiếu với ảnh</span>
+              )}
+              <Button variant="secondary" onClick={() => onEdit(q.id)} aria-label={`Sửa ${title}`}>Sửa</Button>
+            </div>
           </li>
         );
       })}
@@ -55,18 +62,17 @@ export function QuestionList({ questions, onFix }: { questions: QuestionOut[]; o
   );
 }
 
-function ClickableCard({ children, href, onClick }: {
+function ClickableArea({ children, href, onClick }: {
   children: ReactNode;
   href?: string;
   onClick?: () => void;
 }) {
   const className =
-    "block w-full rounded-2xl border border-line bg-paper p-4 text-left shadow-sm transition hover:border-brand " +
-    "hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 sm:p-5";
+    "block w-full rounded-2xl p-4 pb-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 sm:p-5 sm:pb-3";
   return href ? (
     <Link href={href} className={className}>{children}</Link>
   ) : (
-    // Not a <button>: the card contains headings and blocks, which buttons may not.
+    // Not a <button>: the area contains headings and blocks, which buttons may not.
     <div role="button" tabIndex={0} onClick={onClick} className={`${className} cursor-pointer`}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {

@@ -729,12 +729,13 @@ REGISTRY["geometry"] = check_geometry
 
 
 FIGURE_GIVEN_TRIALS = 8  # each infeasible trial samples for up to ~1 s
+FIGURE_PRUNE_STEPS = 3  # objects left out at most before giving up on a drawing
 
 
 def build_figure(p: Payload) -> Evidence:
     """Initial configuration + parameter layout for the interactive figure (not a verification)."""
     from ..geometry.dsl import GeometrySpec
-    from ..geometry.engine import check_spec, compile_spec
+    from ..geometry.engine import check_spec, compile_spec, culprit, without
 
     spec = GeometrySpec.model_validate(p["spec"])
     result = check_spec(spec, samples=24)  # more candidates for a well spread-out first view
@@ -748,11 +749,29 @@ def build_figure(p: Payload) -> Evidence:
                 spec, result = trial, {**attempt, "detail": "Hình vẽ bỏ qua một điều kiện không dựng được "
                                                             f"({skipped.kind}); hãy đối chiếu với đề bài."}
                 break
+    if result["status"] == "infeasible":
+        # An object that breaks every figure (two points that always coincide, so the line through them is undefined)
+        # is usually one misread phrase: leave it out with what is built on it, draw the rest, and say what is missing.
+        left_out: list[str] = []
+        trial_spec: GeometrySpec | None = spec
+        for _ in range(FIGURE_PRUNE_STEPS):
+            found = culprit(trial_spec) if trial_spec is not None else None
+            trial_spec = without(trial_spec, found[0]) if trial_spec is not None and found else None
+            if found is None or trial_spec is None:
+                break
+            left_out.append(f"{found[0]} ({found[1]})")
+            attempt = check_spec(trial_spec, samples=12)
+            if attempt["status"] == "ok":
+                spec, result = trial_spec, {**attempt, "detail": "Hình vẽ chưa dựng được " + ", ".join(left_out)
+                                                                + "; hãy đối chiếu với đề bài.", "left_out": left_out}
+                break
     layout = [{"object": oid, "role": role} for oid, role in compile_spec(spec).params] \
         if result["status"] != "invalid" else []
     return {"outcome": "confirmed", "strength": "none", "detail": result.get("detail") or "", "data": {
         "status": result["status"], "initial": result.get("initial"), "layout": layout,
-        "spec": spec.model_dump(mode="json")}}
+        "spec": spec.model_dump(mode="json"), "left_out": result.get("left_out", []),
+        # Whether each goal holds on the figure: a goal refuted in every sampled figure means a misread problem.
+        "goals": [{"index": g["index"], "kind": g["kind"], "outcome": g["outcome"]} for g in result.get("goals", [])]}}
 
 
 REGISTRY["figure"] = build_figure

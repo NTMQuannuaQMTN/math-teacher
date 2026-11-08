@@ -16,19 +16,22 @@ from ..models import GeometryFigure, Question
 from ..solvers.schemas import Formalization, GeometryTemplate
 from ..tools.sandbox import run_check
 from ..workers.queue import enqueue
-from .engine import GeometryError, compile_spec, drawable, name_points
+from .engine import GeometryError, compile_spec, drawable, name_points, with_named_segments
 
 FIGURE_JOB = "figure_question"
 
 
 def geometry_spec(formalization: Formalization | None) -> dict[str, Any] | None:
     """One figure for the whole question: the last geometry part (it inherits the earlier parts' construction, so it
-    is the most complete) with the goals of every part that fit on it. Pass the formalization as written (the
+    is the most complete) with the goals of every part that fit on it; without a geometry part, the formalization's
+    separate `figure`. Pass the formalization as written (the
     outcome's `drawing`): a part with one bad reference still draws everything else."""
     if formalization is None:
         return None
     specs = [s for p in formalization.parts if isinstance(p.template, GeometryTemplate)
              if (s := drawable(p.template.spec)) is not None]
+    if not specs and formalization.figure is not None and (s := drawable(formalization.figure)) is not None:
+        specs = [s]  # e.g. a maximum over a figure, formalized as an algebraic extremum
     if not specs:
         return None
     spec = max(reversed(specs), key=lambda s: len(s.objects))  # the richest; a tie goes to the later part
@@ -42,7 +45,7 @@ def geometry_spec(formalization: Formalization | None) -> dict[str, Any] | None:
             except GeometryError:
                 continue
             spec = candidate
-    figure: dict[str, Any] = name_points(spec).model_dump(mode="json")
+    figure: dict[str, Any] = name_points(with_named_segments(spec)).model_dump(mode="json")
     return figure
 
 

@@ -207,9 +207,18 @@ async def test_confirm_all_skips_questions_with_errors(client: httpx.AsyncClient
     after = (await client.get(f"/api/v1/documents/{doc['id']}", headers=auth)).json()
     assert [q["review_status"] for q in after["questions"]] == ["confirmed", "confirmed", "flagged", "confirmed",
                                                                 "confirmed"]
+    # The listing counts confirmed questions; the home page shows "Đã xác nhận" once all are confirmed.
+    listing = (await client.get("/api/v1/documents", headers=auth)).json()
+    assert (listing[0]["question_count"], listing[0]["confirmed_count"]) == (5, 4)
+    assert after["confirmed_count"] == 4
+    fixed = after["questions"][2]["latex"].replace("\\unclear{2}", "2")
+    await client.patch(f"/api/v1/questions/{ids[2]}", headers=auth,
+                       json={"expected_version": 1, "latex": fixed, "review_status": "confirmed"})
+    listing = (await client.get("/api/v1/documents", headers=auth)).json()
+    assert (listing[0]["question_count"], listing[0]["confirmed_count"]) == (5, 5)
     # Idempotent; and another user cannot confirm someone else's document.
     again = await client.post(f"/api/v1/documents/{doc['id']}/confirm", headers=auth)
-    assert again.json() == {"confirmed": [], "blocked": [ids[2]]}
+    assert again.json() == {"confirmed": [], "blocked": []}
     intruder = await new_user(client)
     assert (await client.post(f"/api/v1/documents/{doc['id']}/confirm", headers=intruder)).status_code == 404
 

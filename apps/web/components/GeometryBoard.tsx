@@ -10,6 +10,8 @@ import {
   evaluate,
   type GeoObject,
   type GeometrySpec,
+  givenMarks,
+  type Mark,
   type LineValue,
   type PointValue,
   lineExtent,
@@ -23,6 +25,19 @@ import {
 } from "@/lib/geometry/engine";
 
 type Initial = { params?: number[] | null; values?: Record<string, unknown> | null };
+type Box = [number, number, number, number];
+type ZoomableBoard = {
+  zoomIn: () => void;
+  zoomOut: () => void;
+  getBoundingBox: () => Box;
+  getUsrCoordsOfMouse: (evt: Event) => [number, number];
+  setBoundingBox: (box: Box, keepAspectRatio?: boolean) => void;
+};
+// Zoom speed. Buttons: ×1.15 per press. Ctrl + wheel / trackpad pinch: proportional to the scroll distance, so a
+// trackpad's many small events zoom smoothly instead of ×1.25 each (one mouse-wheel notch ≈ ×1.13).
+const BUTTON_ZOOM = 1.15;
+const WHEEL_ZOOM_PER_PIXEL = 0.0025;
+const ZOOM_RANGE: [number, number] = [0.3, 12]; // relative to the first view
 
 const RELATION_LABELS: Record<string, (r: Relation) => string> = {
   perpendicular: (r) => `${(r.lines as string[][]).map((l) => l.join("")).join(" ⊥ ")}`,
@@ -37,7 +52,13 @@ const RELATION_LABELS: Record<string, (r: Relation) => string> = {
   angle_value: (r) => `∠${(r.angle as string[]).join("")} = ${r.degrees as number}°`,
   length_value: (r) => `${(r.segment as string[]).join("")} = ${r.value as number}`,
   length_ratio: (r) => `${(r.segments as string[][]).map((s) => s.join("")).join(" : ")} = ${r.ratio as number}`,
+  convex: (r) => {
+    const pts = r.points as string[];
+    return `${pts.length === 4 ? "Tứ giác" : "Đa giác"} ${pts.join("")} lồi`;
+  },
 };
+const relationLabel = (r: Relation) => (RELATION_LABELS[r.kind] ?? (() => r.kind))(r);
+const MARK_COLOR = "#b45309";
 
 /** View box fitting every point and circle, with room for labels, in the frame's width/height ratio. */
 function bounds(values: Values, ratio: number): [number, number, number, number] {
@@ -60,6 +81,9 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
   const [warning, setWarning] = useState<string | null>(null);
   const [goalState, setGoalState] = useState<{ label: string; ok: boolean }[]>([]);
   const boardId = useMemo(() => `jxg-${Math.random().toString(36).slice(2)}`, []);
+  // The board and a "fit the whole figure" action, for the zoom buttons outside the effect.
+  const zoomable = useRef<ZoomableBoard | null>(null);
+  const fitView = useRef<() => void>(() => undefined);
 
   useEffect(() => {
     let disposed = false;
@@ -68,12 +92,20 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
     let params = [...(initial.params ?? [])];
     let values: Values = evaluate(compiled, params);
     let lastGood = { params: [...params], values };
+    let onWheel: ((evt: WheelEvent) => void) | null = null;
+    let wheelTarget: HTMLElement | null = null;
+    // Marks for the givens (lengths, right angles, equal ticks), recomputed with the figure.
+    let marks: Mark[] = [];
+    const refreshMarks = () => {
+      try { marks = givenMarks(spec, values); } catch { /* keep the previous marks */ }
+    };
+    refreshMarks();
 
     const goals = spec.goals ?? [];
     const refreshGoals = () => setGoalState(goals.map((g) => {
       let ok = false;
       try { ok = Math.max(...residuals(g, values).map(Math.abs)) < 1e-6; } catch { ok = false; }
-      return { label: (RELATION_LABELS[g.kind] ?? (() => g.kind))(g), ok };
+      return { label: relationLabel(g), ok };
     }));
 
     void import("jsxgraph").then((mod) => {
@@ -83,12 +115,38 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
         // No coordinate infobox: the figure is about relations, not coordinates.
         boundingbox: bounds(values, container.current.clientWidth / Math.max(container.current.clientHeight, 1)),
         axis: false, showCopyright: false, showNavigation: false, showInfobox: false, keepAspectRatio: true,
-        pan: { enabled: false }, zoom: { enabled: false },
+        // Zoom: the buttons, a two-finger pinch, or Ctrl + wheel / trackpad pinch (handled below, gently); a plain
+        // wheel still scrolls the page. Pan: drag the empty background with the mouse, or two fingers on a touch
+        // screen (one finger drags the points).
+        zoom: { enabled: true, wheel: false, pinch: true, min: ZOOM_RANGE[0], max: ZOOM_RANGE[1],
+          factorX: BUTTON_ZOOM, factorY: BUTTON_ZOOM },
+        pan: { enabled: true, needShift: false, needTwoFingers: true },
       }) as {
         create: (type: string, parents: unknown[], attrs?: object) => { X: () => number; Y: () => number; moveTo: (c: number[]) => void; on: (e: string, f: () => void) => void };
         update: () => void;
       };
       board = b;
+      const zb = b as unknown as ZoomableBoard;
+      zoomable.current = zb;
+      const firstWidth = zb.getBoundingBox()[2] - zb.getBoundingBox()[0];
+      onWheel = (evt: WheelEvent) => {
+        if (!evt.ctrlKey) return; // a plain wheel scrolls the page
+        evt.preventDefault();
+        const pixels = evt.deltaY * (evt.deltaMode === 1 ? 16 : evt.deltaMode === 2 ? 400 : 1);
+        const scale = Math.exp(Math.max(-60, Math.min(60, pixels)) * WHEEL_ZOOM_PER_PIXEL); // > 1 zooms out
+        const [x1, y1, x2, y2] = zb.getBoundingBox();
+        const level = firstWidth / ((x2 - x1) * scale);
+        if (level < ZOOM_RANGE[0] || level > ZOOM_RANGE[1]) return;
+        const [mx, my] = zb.getUsrCoordsOfMouse(evt); // zoom around the pointer
+        zb.setBoundingBox([mx + (x1 - mx) * scale, my + (y1 - my) * scale, mx + (x2 - mx) * scale, my + (y2 - my) * scale], true);
+      };
+      wheelTarget = container.current;
+      wheelTarget.addEventListener("wheel", onWheel, { passive: false });
+      fitView.current = () => {
+        const el = container.current;
+        if (!el) return;
+        zoomable.current?.setBoundingBox(bounds(values, el.clientWidth / Math.max(el.clientHeight, 1)), true);
+      };
       const pt = (id: string): Vec => (values[id] as PointValue).v;
       const paramIndex = (id: string) => compiled.params.map((p, i) => (p.object === id ? i : -1)).filter((i) => i >= 0);
       const dependentStyle = { size: 2.5, fixed: true, strokeColor: "#1f2937", fillColor: "#1f2937", label: { fontSize: 14 }, showInfobox: false };
@@ -133,6 +191,7 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
         // Every handle goes to its computed position: constrained points follow, glider points snap onto their
         // line/circle, and a refused move snaps back.
         for (const [fid, h] of Object.entries(freeJxg)) h.moveTo(pt(fid));
+        refreshMarks();
         refreshGoals();
         b.update();
       };
@@ -171,29 +230,73 @@ export function GeometryBoard({ spec, initial }: { spec: GeometrySpec; initial: 
           ...circleStyle, dash: c.goal ? 2 : 0, center: { visible: false },
         });
       }
+      marks.forEach((mark, i) => {
+        if (mark.kind === "label") {
+          const at = (k: 0 | 1) => () => { const m = marks[i]; return m?.kind === "label" ? m.at[k] : NaN; };
+          b.create("text", [at(0), at(1), mark.text], {
+            fontSize: 14, strokeColor: MARK_COLOR, anchorX: "middle", anchorY: "middle", fixed: true, highlight: false,
+          });
+        } else {
+          const curve = b.create("curve", [[0], [0]], { strokeColor: MARK_COLOR, strokeWidth: 1.5, fixed: true, highlight: false }) as unknown as
+            { updateDataArray: () => void; dataX: number[]; dataY: number[] };
+          curve.updateDataArray = function () {
+            const m = marks[i];
+            const pts = m?.kind === "path" ? m.points : [];
+            this.dataX = pts.map((p) => p[0]);
+            this.dataY = pts.map((p) => p[1]);
+          };
+        }
+      });
       refreshGoals();
       b.update();
     });
     return () => {
       disposed = true;
+      if (onWheel) wheelTarget?.removeEventListener("wheel", onWheel);
       if (board) {
         void import("jsxgraph").then((mod) => {
           (mod as unknown as { default: { JSXGraph: { freeBoard: (b: unknown) => void } } }).default.JSXGraph.freeBoard(board);
         });
       }
       freeJxg = {};
+      zoomable.current = null;
+      fitView.current = () => undefined;
     };
   }, [compiled, boardId]); // the board is rebuilt only when the figure changes
 
   return (
     <div>
       {/* JSXGraph manages the inner div's own ARIA attributes; the accessible name lives on the figure. */}
-      <figure aria-label="Hình vẽ tương tác" className="m-0">
+      <figure aria-label="Hình vẽ tương tác" className="relative m-0 w-full max-w-lg">
         <div id={boardId} ref={container}
           className="aspect-[4/3] w-full touch-none rounded-xl border border-line bg-white" />
+        <div className="absolute right-2 top-2 flex flex-col overflow-hidden rounded-lg border border-line bg-paper/90 shadow-sm"
+          role="group" aria-label="Phóng to, thu nhỏ hình">
+          {([
+            ["+", "Phóng to", () => zoomable.current?.zoomIn()],
+            ["−", "Thu nhỏ", () => zoomable.current?.zoomOut()],
+            ["⤢", "Vừa khung", () => fitView.current()],
+          ] as const).map(([icon, label, action]) => (
+            <button key={label} type="button" aria-label={label} title={label} onClick={action}
+              className="h-9 w-9 border-b border-line text-lg leading-none text-ink last:border-b-0 hover:bg-brand-soft">
+              {icon}
+            </button>
+          ))}
+        </div>
       </figure>
-      <p className="mt-2 text-xs text-muted">Kéo các điểm màu xanh để thay đổi hình; các điểm khác tự cập nhật theo đề bài.</p>
+      <p className="mt-2 text-xs text-muted">
+        Kéo các điểm màu xanh để thay đổi hình; các điểm khác tự cập nhật theo đề bài. Phóng to bằng nút +/−, chụm hai
+        ngón tay hoặc Ctrl + cuộn chuột; kéo nền hình (hoặc hai ngón tay) để di chuyển.
+      </p>
       {warning && <p role="status" className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">{warning}</p>}
+      {(spec.givens ?? []).length > 0 && (
+        <div className="mt-3 text-sm">
+          <p className="font-medium">Giả thiết</p>
+          <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1" aria-label="Giả thiết của hình">
+            {(spec.givens ?? []).map((g, i) => <li key={i} className="text-ink">{relationLabel(g)}</li>)}
+          </ul>
+        </div>
+      )}
       {goalState.length > 0 && (
         <ul className="mt-3 space-y-1 text-sm" aria-label="Điều cần chứng minh, kiểm tra trên hình">
           {goalState.map((g, i) => (

@@ -1,8 +1,11 @@
-"""Adaptive feedback on a student's own work, using the stored solution as the plan (no re-solving).
+"""Adaptive feedback on a student's own work, judged on its own merits (no re-solving).
 
-One model call identifies the approach, judges each step, finds the first error and writes one targeted hint.
-Deterministic checks then override the model where they can: consecutive algebra steps are checked in the sandbox
-(lost roots, wrong expansions), the hint is checked for answer leaks and prohibited methods.
+A problem has many valid solutions, so the work is never compared step by step with the stored solution: one model
+call checks whether each of the student's steps is true and follows, finds the first error, says what could be
+better (a missing reason, presentation, a shorter way) and, once the work is finished, whether the student's method
+is better than the reference. The stored solution only tells the model the correct final answer and what must not be
+revealed. Deterministic checks then override the model where they can: consecutive algebra steps are checked in the
+sandbox (lost roots, wrong expansions); the hint and suggestions are checked for answer leaks and prohibited methods.
 """
 
 from __future__ import annotations
@@ -24,7 +27,7 @@ from .hints import find_leaks
 
 logger = logging.getLogger(__name__)
 
-StepStatus = Literal["correct", "incorrect", "unclear"]
+StepStatus = Literal["correct", "gap", "incorrect", "unclear"]
 
 
 class StudentStep(BaseModel):
@@ -32,6 +35,13 @@ class StudentStep(BaseModel):
     math: str | None = Field(max_length=300, description="The step as plain ASCII maths (e.g. x^2-5*x+6=0), or null.")
     status: StepStatus
     note_vi: str | None = Field(max_length=400)
+
+
+class Improvement(BaseModel):
+    kind: Literal["rigor", "presentation", "method"] = Field(
+        description="rigor: a reason or condition a marker would require; presentation: how it is written; "
+                    "method: a shorter or cleaner way (only when the work is finished).")
+    text_vi: str = Field(min_length=1, max_length=400)
 
 
 class WorkFeedback(BaseModel):
@@ -45,15 +55,32 @@ class WorkFeedback(BaseModel):
     next_hint_vi: str = Field(max_length=600, description="One targeted hint for the next step. Never the answer.")
     student_reached_answer: bool
     encouragement_vi: str = Field(max_length=200)
+    improvements: list[Improvement] = Field(default_factory=list, max_length=4,
+                                            description="What could be better, most important first; [] if nothing.")
+    comparison: Literal["better", "as_good", "reference_better"] | None = Field(
+        default=None, description="Only when the work is finished and correct: the student's method against the "
+                                  "reference. null otherwise.")
+    comparison_vi: str | None = Field(default=None, max_length=500,
+                                      description="Why, in one or two sentences (what makes one method better).")
 
 
-TUTOR_SYSTEM = """You are a patient Vietnamese maths teacher (Toán chuyên vào 10).
-A student shows you their own work on a problem. You also see a complete, checked reference solution: it is for YOU only — never reveal it, its final
-answer, or later steps.
+TUTOR_SYSTEM = """You are a patient, rigorous Vietnamese maths teacher (Toán chuyên vào 10) checking a student's own
+work. A problem has many valid solutions: judge the work ON ITS OWN — is each step true, and does it follow from the
+problem and the earlier steps? Never mark a step wrong because it differs from the reference (another method, order,
+notation, or a routine computation a marker accepts without detail). You also see a checked reference solution: it is
+for YOU only — to know the correct final answer and what not to reveal. Never reveal it, its final answer, or later
+steps.
 
 Do this:
-1. Identify the student's approach (it may differ from the reference; judge it on its own merits).
-2. Split their work into steps; for each say "correct", "incorrect" or "unclear", with a short note when needed.
+1. Identify the student's approach, in one sentence.
+2. Split their work into steps; for each give a status, with a short note when needed:
+   "correct" = true and justified as a marker requires; "gap" = true, but a reason or condition the marker requires is
+   missing (an angle equality or a similarity stated without a reason, ĐKXĐ not stated, the equality case of an
+   inequality not checked) — the note says what is missing; "incorrect" = false or does not follow (wrong computation,
+   lost or extraneous root, invalid inference, circular reasoning, using what must be proved); "unclear" = unreadable,
+   or built on an earlier incorrect step.
+   Say "incorrect" only when you can say exactly what is false. If the student's final answer differs from the
+   reference, find the step in THEIR work that is wrong; do not call a step wrong just because the answer differs.
    For equations/expressions also give "math": the RESULT of that step as ONE equation or expression in plain
    ASCII (explicit *, ^), e.g. "x = 2" — never arrows, words or several equations; else null. Also give
    "problem_math": the starting equation of the problem in the same syntax.
@@ -61,10 +88,18 @@ Do this:
    nghiệm x = 0; bình phương hai vế khi chưa có điều kiện).
    A later step that builds on an incorrect one is not "correct" even if its own algebra is right: mark it "unclear"
    with a note that it rests on the earlier error (official marking guides give 0 to such steps).
-4. Give ONE hint for what to do next, building on their correct work. Do not give the answer or finish the
-   problem. If they already reached a correct final answer, confirm it and suggest checking or presenting it.
-5. Keep their correct reasoning; use only Grade 9 methods; Vietnamese; address the student as "em"; LaTeX in $...$.
-6. Teach the exam's marking habits (official hướng dẫn chấm) when the work shows the problem, at most one per
+4. Give ONE hint for what to do next, building on THEIR approach (if it works, do not steer them to the reference's
+   method). Do not give the answer or finish the problem. If they already reached a correct final answer, confirm it
+   and say what to check or how to present it.
+5. "improvements": up to 4 things that would make the work better, most important first — "rigor" (a missing reason
+   or condition: these cost marks), "presentation" (clearer writing, a conclusion sentence, notation the official keys
+   use), "method" (a shorter or cleaner way; ONLY when the work is finished). [] when there is nothing real to improve:
+   never invent criticism of good work.
+6. When the work is finished and correct, compare the student's method with the reference: "better" (shorter, more
+   elegant or more general — say so honestly: students sometimes find a better solution), "as_good", or
+   "reference_better"; explain why in "comparison_vi". Otherwise comparison = null.
+7. Keep their correct reasoning; use only Grade 9 methods; Vietnamese; address the student as "em"; LaTeX in $...$.
+8. Teach the exam's marking habits (official hướng dẫn chấm) when the work shows the problem, at most one per
    reply: a geometry answer with no figure, or a wrong one, gets no marks for that part ("nhớ vẽ hình vào bài
    làm"); a claim stated without a reason (an angle equality, a similarity) loses its points; answers found by
    trying values, without solving, earn almost nothing; steps after the first error earn nothing, so fix that step
@@ -132,7 +167,21 @@ async def analyze_work(gateway: LLMGateway, ctx: CallContext, policy: Policy, *,
                     feedback.first_error_index = next((k for k, s in enumerate(feedback.steps)
                                                        if s.status == "incorrect"), None)
 
-    # 2. The forward-looking hint must not give the answer away (unless the student found it / revealed it).
+    # 2. The comparison and "a shorter way" are about finished work only; before that they would show the reference's
+    #    method. Every suggestion is checked for leaks like the hint.
+    finished = feedback.student_reached_answer and feedback.first_error_index is None
+    if not finished:
+        feedback.comparison, feedback.comparison_vi = None, None
+    shielded = not solution_revealed and not feedback.student_reached_answer
+    feedback.improvements = [
+        i for i in feedback.improvements
+        if (finished or i.kind != "method") and not (shielded and find_leaks([Hint(level="strategy", text_vi=i.text_vi)],
+                                                                             solution))
+        and check_curriculum([i.text_vi], [], topics, policy).compliant]
+    if feedback.comparison == "better":
+        logger.info("student_better_method", extra={"comparison_vi": feedback.comparison_vi})
+
+    # 3. The forward-looking hint must not give the answer away (unless the student found it / revealed it).
     #    The error explanation may name what the student lost or broke (e.g. "bỏ sót nghiệm x = 0"): that is
     #    about their own work, and naming it is the point of the feedback.
     replaced = False
@@ -141,7 +190,7 @@ async def analyze_work(gateway: LLMGateway, ctx: CallContext, policy: Policy, *,
         replaced = True
         feedback.next_hint_vi = unseen_hints[0].text_vi if unseen_hints else \
             "Em hãy sửa bước vừa được đánh dấu, rồi làm tiếp từ đó."
-    # 3. Curriculum: the tutor must not suggest prohibited methods.
+    # 4. Curriculum: the tutor must not suggest prohibited methods.
     tutor_text = [feedback.next_hint_vi, feedback.error_explanation_vi or ""]
     if not check_curriculum(tutor_text, [], topics, policy).compliant:
         replaced = True

@@ -42,18 +42,20 @@ def question_out(question: Question, assets: list[Asset] | None = None) -> Quest
     })
 
 
-def document_summary(document: Document, question_count: int | None = None) -> DocumentSummaryOut:
+def document_summary(document: Document, question_count: int | None = None,
+                     confirmed_count: int | None = None) -> DocumentSummaryOut:
     return DocumentSummaryOut.model_validate({
         "id": document.id, "filename": document.filename, "content_type": document.content_type,
         "size_bytes": document.size_bytes, "status": document.status, "page_count": document.page_count,
         "error_code": document.error_code, "error_message": document.error_message,
-        "created_at": document.created_at, "question_count": question_count,
+        "created_at": document.created_at, "question_count": question_count, "confirmed_count": confirmed_count,
     })
 
 
 def document_out(document: Document, pages: list[DocumentPage], questions: list[Question],
                  assets: dict[Any, list[Asset]], job: Job | None) -> DocumentOut:
-    summary = document_summary(document, len(questions))
+    summary = document_summary(document, len(questions),
+                               sum(q.review_status == "confirmed" for q in questions))
     return DocumentOut(
         **summary.model_dump(),
         pages=[PageOut(page_number=p.page_number, width=p.width, height=p.height,

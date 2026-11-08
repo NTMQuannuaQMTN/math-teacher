@@ -184,9 +184,19 @@ export function evaluate(compiled: Compiled, params: number[], previous?: Values
       case "midpoint":
         values[id] = { t: "point", v: mul(add(pt(str(o, "a")), pt(str(o, "b"))), 0.5) };
         break;
-      case "reflection":
-        values[id] = { t: "point", v: sub(mul(pt(str(o, "center")), 2), pt(str(o, "point"))) };
+      case "reflection": {
+        const p = pt(str(o, "point"));
+        if (typeof o.line === "string") {
+          // Mirror image in a line: twice the foot of the perpendicular, minus the point.
+          const m = ln(o.line);
+          const d = unit(m.d, id, "đường thẳng không xác định");
+          const foot = add(m.p, mul(d, dot(sub(p, m.p), d)));
+          values[id] = { t: "point", v: sub(mul(foot, 2), p) };
+        } else {
+          values[id] = { t: "point", v: sub(mul(pt(str(o, "center")), 2), p) };
+        }
         break;
+      }
       case "centroid": {
         const [a, b, c] = list(o, "points").map(pt) as [Vec, Vec, Vec];
         values[id] = { t: "point", v: mul(add(add(a, b), c), 1 / 3) };
@@ -384,9 +394,29 @@ export function residuals(rel: Relation, values: Values): number[] {
       }
       return [(Math.abs(cross(d, sub(c.c, P(values, pair[0]!)))) - c.r) / c.r];
     }
+    case "convex":
+      return convexResiduals((r.points as string[]).map((n) => P(values, n)));
     default:
       throw new Error(`unsupported relation ${rel.kind}`);
   }
+}
+
+const CONVEX_MARGIN = 0.02;
+
+/** Same as the Python engine: a hinge per vertex (0 on every convex polygon) plus, from five vertices, one full turn. */
+export function convexResiduals(pts: Vec[]): number[] {
+  const n = pts.length;
+  const sides = pts.map((p, i) => sub(pts[(i + 1) % n]!, p));
+  const mean = sides.reduce((s, v) => s + norm(v), 0) / n;
+  const scale = Math.max(mean * mean, EPS);
+  const turns = sides.map((v, i) => cross(v, sides[(i + 1) % n]!));
+  const sign = turns.reduce((s, t) => s + t, 0) >= 0 ? 1 : -1;
+  const out = turns.map((t) => Math.min(0, (sign * t) / scale - CONVEX_MARGIN));
+  if (n >= 5) {
+    const total = sides.reduce((s, v, i) => s + Math.atan2(cross(v, sides[(i + 1) % n]!), dot(v, sides[(i + 1) % n]!)), 0);
+    out.push((Math.abs(total) - 2 * Math.PI) / (2 * Math.PI));
+  }
+  return out;
 }
 
 // --- givens solver (Levenberg–Marquardt, numeric Jacobian) ----------------------------------------------------------
@@ -493,4 +523,93 @@ export function lineExtent(line: LineValue, values: Values): [Vec, Vec] {
   if (ts.length >= 2) return [at(Math.min(...ts)), at(Math.max(...ts))];
   const centre = ts.length === 1 ? ts[0]! : 0;
   return [at(centre - 0.15 * size), at(centre + 0.15 * size)];
+}
+
+// --- marks for the givens ------------------------------------------------------------------------------------------
+
+/** What a student marks on a figure for the givens: a length next to its segment (BC = 7 → "7"), a right-angle square
+ * (AC ⊥ BD, ∠BAC = 90°), ticks on equal segments, an angle's value. Same number of marks for every position of the
+ * figure (the board keeps one drawing per mark); a path with no points is not drawn this time (e.g. two
+ * perpendicular segments that do not meet). */
+export type Mark = { kind: "label"; at: Vec; text: string } | { kind: "path"; points: Vec[] };
+
+const fmt = (x: number) => String(Math.round(x * 1000) / 1000);
+
+export function givenMarks(spec: GeometrySpec, values: Values): Mark[] {
+  const size = figureSize(values);
+  const points = Object.values(values).filter((v): v is PointValue => v.t === "point").map((v) => v.v);
+  const centre: Vec = points.length
+    ? [points.reduce((s, p) => s + p[0], 0) / points.length, points.reduce((s, p) => s + p[1], 0) / points.length]
+    : [0, 0];
+  const pt = (n: string): Vec | null => (values[n]?.t === "point" ? (values[n] as PointValue).v : null);
+  const marks: Mark[] = [];
+
+  const square = (x: Vec, u: Vec, v: Vec, room: number): Vec[] => {
+    const s = Math.min(0.035 * size, 0.4 * room);
+    return [add(x, mul(u, s)), add(add(x, mul(u, s)), mul(v, s)), add(x, mul(v, s))];
+  };
+  // Direction from x towards the farther end of a segment (the mark sits inside the figure), and that distance.
+  const towards = (x: Vec, a: Vec, b: Vec): [Vec, number] | null => {
+    const far = norm(sub(a, x)) >= norm(sub(b, x)) ? a : b;
+    const d = norm(sub(far, x));
+    return d < EPS ? null : [mul(sub(far, x), 1 / d), d];
+  };
+
+  let equalGroup = 0;
+  for (const g of spec.givens ?? []) {
+    const r = g as Record<string, unknown>;
+    if (g.kind === "length_value") {
+      const [a, b] = (r.segment as string[]).map(pt);
+      if (!a || !b) continue;
+      const mid = mul(add(a, b), 0.5);
+      let n: Vec = [-(b[1] - a[1]), b[0] - a[0]];
+      const l = norm(n) || 1;
+      n = mul(n, 1 / l);
+      if (dot(n, sub(mid, centre)) < 0) n = mul(n, -1); // outside the figure
+      marks.push({ kind: "label", at: add(mid, mul(n, 0.045 * size)), text: fmt(r.value as number) });
+    } else if (g.kind === "perpendicular") {
+      const [l1, l2] = r.lines as string[][];
+      const [a, b, c, d] = [...l1!, ...l2!].map(pt);
+      let path: Vec[] = [];
+      if (a && b && c && d) {
+        const d1 = sub(b, a), d2 = sub(d, c);
+        const den = cross(d1, d2);
+        if (Math.abs(den) > EPS * norm(d1) * norm(d2)) {
+          const t = cross(sub(c, a), d2) / den, s = cross(sub(c, a), d1) / den;
+          // Only where the two segments actually meet (an extension's right angle is left to the list below).
+          if (t >= -0.02 && t <= 1.02 && s >= -0.02 && s <= 1.02) {
+            const x = add(a, mul(d1, t));
+            const u = towards(x, a, b), v = towards(x, c, d);
+            if (u && v) path = square(x, u[0], v[0], Math.min(u[1], v[1]));
+          }
+        }
+      }
+      marks.push({ kind: "path", points: path });
+    } else if (g.kind === "angle_value") {
+      const [a, o, b] = (r.angle as string[]).map(pt);
+      if (!a || !o || !b) continue;
+      const u = towards(o, o, a), v = towards(o, o, b);
+      if ((r.degrees as number) === 90) {
+        marks.push({ kind: "path", points: u && v ? square(o, u[0], v[0], Math.min(u[1], v[1])) : [] });
+      } else {
+        const bis: Vec = u && v ? add(u[0], v[0]) : [0, 1];
+        const bl = norm(bis) || 1;
+        marks.push({ kind: "label", at: add(o, mul(bis, (0.08 * size) / bl)), text: `${fmt(r.degrees as number)}°` });
+      }
+    } else if (g.kind === "equal_length") {
+      equalGroup += 1;
+      for (const seg of r.segments as string[][]) {
+        const [a, b] = seg.map(pt);
+        if (!a || !b) continue;
+        const along = norm(sub(b, a)) < EPS ? ([1, 0] as Vec) : mul(sub(b, a), 1 / norm(sub(b, a)));
+        const across: Vec = [-along[1], along[0]];
+        const mid = mul(add(a, b), 0.5);
+        for (let k = 0; k < equalGroup; k++) {
+          const c = add(mid, mul(along, (k - (equalGroup - 1) / 2) * 0.014 * size));
+          marks.push({ kind: "path", points: [add(c, mul(across, 0.018 * size)), add(c, mul(across, -0.018 * size))] });
+        }
+      }
+    }
+  }
+  return marks;
 }

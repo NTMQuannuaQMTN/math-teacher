@@ -55,6 +55,22 @@ SPECS = [
                 {"kind": "angle_value", "angle": ["B", "A", "C"], "degrees": 40},
                 {"kind": "length_ratio", "segments": [["A", "B"], ["A", "B"]], "ratio": 1}],
      "goals": [{"kind": "equal_angle", "angles": [["A", "B", "C"], ["A", "C", "B"]]}]},
+    {"objects": [*TRI, {"kind": "line", "id": "BC", "through": ["B", "C"]},
+                 {"kind": "reflection", "id": "S", "point": "A", "line": "BC"},
+                 {"kind": "reflection", "id": "R", "point": "A", "center": "B"},
+                 {"kind": "parallel", "id": "pA", "through": "A", "to": "BC"},
+                 {"kind": "reflection", "id": "U", "point": "C", "line": "pA"}],
+     "goals": [{"kind": "perpendicular", "lines": [["A", "S"], ["B", "C"]]},
+               {"kind": "equal_length", "segments": [["B", "A"], ["B", "S"]]},
+               {"kind": "equal_length", "segments": [["C", "U"], ["C", "S"]]}]},
+    {"objects": [*TRI, {**P, "id": "D"}, {**P, "id": "E"}],
+     "givens": [{"kind": "length_value", "segment": ["B", "C"], "value": 7},
+                {"kind": "length_value", "segment": ["D", "A"], "value": 1},
+                {"kind": "perpendicular", "lines": [["A", "C"], ["B", "D"]]},
+                {"kind": "convex", "points": ["A", "B", "C", "D"]}],
+     "goals": [{"kind": "convex", "points": ["A", "C", "B", "D"]},
+               {"kind": "convex", "points": ["A", "B", "C", "D", "E"]},
+               {"kind": "convex", "points": ["A", "C", "E", "B", "D"]}]},
 ]
 
 

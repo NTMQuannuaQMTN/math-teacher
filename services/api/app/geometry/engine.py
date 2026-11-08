@@ -33,6 +33,7 @@ from .dsl import (
     Circumcircle,
     Collinear,
     Concyclic,
+    Convex,
     EqualAngle,
     EqualLength,
     FreePoint,
@@ -122,6 +123,7 @@ _EXPECTED: dict[str, dict[str, str]] = {
                                                                                               "point": "point"},
     "parallel": {"through": "point", "to": "line"}, "perpendicular": {"through": "point", "to": "line"},
     "tangent": {"circle": "circle", "at": "point"}, "circle": {"center": "point", "through": "point"},
+    "reflection": {"point": "point", "center": "point", "line": "line"},
 }
 
 
@@ -131,6 +133,8 @@ class Compiled:
     order: list[Any]
     kinds: dict[str, str]  # id → point | line | circle
     params: list[tuple[str, str]] = field(default_factory=list)  # (object id, "x"|"y"|"t"|"angle")
+    # The objects the givens depend on: solving the givens evaluates only these (often a fraction of the figure).
+    given_objects: frozenset[str] = frozenset()
 
     def param_index(self, object_id: str) -> list[int]:
         return [i for i, (oid, _) in enumerate(self.params) if oid == object_id]
@@ -152,7 +156,7 @@ def compile_spec(spec: GeometrySpec) -> Compiled:
             for ref in obj.of:
                 if ref in kinds and kinds[ref] == "point":
                     errors.append(f"{obj.id}: cannot intersect a point '{ref}'")
-        if obj.kind in ("midpoint", "reflection", "centroid", "orthocenter", "circumcenter", "incenter",
+        if obj.kind in ("midpoint", "centroid", "orthocenter", "circumcenter", "incenter",
                         "line", "segment", "ray", "angle_bisector", "circumcircle", "circle_diameter"):
             for ref in _refs(obj):
                 if ref in kinds and kinds[ref] != "point":
@@ -217,11 +221,37 @@ def compile_spec(spec: GeometrySpec) -> Compiled:
             compiled.params.append((obj.id, "t"))
         elif isinstance(obj, PointOnCircle):
             compiled.params.append((obj.id, "angle"))
+    by_id = {o.id: o for o in spec.objects}
+    needed: set[str] = set()
+    stack = [name for rel in spec.givens for name in _relation_names(rel) if name in by_id]
+    while stack:
+        name = stack.pop()
+        if name not in needed:
+            needed.add(name)
+            stack.extend(ref for ref in _refs(by_id[name]) if ref in by_id)
+    compiled.given_objects = frozenset(needed)
     return compiled
 
 
+def _relation_names(rel: Relation) -> list[str]:
+    """Every object id a relation mentions (points, and the line or circle of on_line / on_circle / tangency)."""
+    names: list[str] = []
+    for attr in ("points", "angle", "segment"):
+        names.extend(getattr(rel, attr, None) or [])
+    for attr in ("lines", "segments", "angles"):
+        for group in getattr(rel, attr, None) or []:
+            names.extend(group)
+    for attr in ("point", "circle"):
+        value = getattr(rel, attr, None)
+        if isinstance(value, str):
+            names.append(value)
+    line = getattr(rel, "line", None)
+    names.extend(line if isinstance(line, list) else [line] if isinstance(line, str) else [])
+    return names
+
+
 _LINE_FIELDS = {"point_on_line": ("line",), "projection": ("line",), "parallel": ("to",), "perpendicular": ("to",),
-                "intersection": ("of",)}
+                "intersection": ("of",), "reflection": ("line",)}
 
 
 def normalize_spec(spec: GeometrySpec) -> GeometrySpec:
@@ -258,7 +288,7 @@ def normalize_spec(spec: GeometrySpec) -> GeometrySpec:
     for obj in spec.objects:
         for name in _LINE_FIELDS.get(obj.kind, ()):
             value = getattr(obj, name)
-            wanted.extend(value if isinstance(value, list) else [value])
+            wanted.extend(value if isinstance(value, list) else [value] if value is not None else [])
     added: list[Line] = []
     for ref in dict.fromkeys(wanted):
         if ref in ids:
@@ -338,6 +368,62 @@ def drawable(spec: GeometrySpec) -> GeometrySpec | None:
                 continue
             base = candidate
     return base
+
+
+def _segment_pairs(spec: GeometrySpec) -> list[tuple[str, str]]:
+    """Segments the problem talks about: in a given or goal (AC ⊥ BD, BC = 7), a length target, a convex
+    polygon's sides."""
+    pairs: list[list[str]] = []
+    for rel in [*spec.givens, *spec.goals]:
+        if isinstance(rel, Perpendicular | Parallel):
+            pairs.extend(rel.lines)
+        elif isinstance(rel, EqualLength | LengthRatio):
+            pairs.extend(rel.segments)
+        elif isinstance(rel, LengthValue):
+            pairs.append(rel.segment)
+        elif isinstance(rel, Tangency):
+            pairs.append(rel.line)
+        elif isinstance(rel, Convex):
+            pairs.extend([rel.points[i], rel.points[(i + 1) % len(rel.points)]] for i in range(len(rel.points)))
+    pairs.extend(t.points[:2] for t in spec.targets if t.kind == "length")
+    out: dict[frozenset[str], tuple[str, str]] = {}
+    for a, b in pairs:
+        if a != b:
+            out.setdefault(frozenset((a, b)), (a, b))
+    return list(out.values())
+
+
+def with_named_segments(spec: GeometrySpec) -> GeometrySpec:
+    """For drawing only: a segment the problem talks about (AC ⊥ BD, BC = 7) is drawn even when the formalizer did
+    not declare it, unless a declared line already passes through both points."""
+    kinds = {o.id: _kind_of(o) for o in spec.objects}
+    on_line: dict[str, set[str]] = {o.id: set() for o in spec.objects if kinds[o.id] == "line"}
+    for obj in spec.objects:
+        if isinstance(obj, Line):
+            on_line[obj.id].update(obj.through)
+        elif isinstance(obj, ParallelLine | PerpendicularLine):
+            on_line[obj.id].add(obj.through)
+        elif isinstance(obj, Tangent):
+            on_line[obj.id].add(obj.at)
+        elif isinstance(obj, AngleBisector):
+            on_line[obj.id].add(obj.vertex)
+        elif isinstance(obj, PointOnLine | Projection) and obj.line in on_line:
+            on_line[obj.line].add(obj.id)
+        elif isinstance(obj, Intersection):
+            for ref in obj.of:
+                if ref in on_line:
+                    on_line[ref].add(obj.id)
+    ids = set(kinds)
+    added: list[Line] = []
+    for a, b in _segment_pairs(spec):
+        if kinds.get(a) != "point" or kinds.get(b) != "point" or any({a, b} <= pts for pts in on_line.values()):
+            continue
+        name = next(n for n in (f"{a}{b}", *(f"s{a}{b}{'' if i == 0 else i}" for i in range(20))) if n not in ids)
+        if len(added) + len(spec.objects) >= 60 or len(name) > 24:
+            break
+        ids.add(name)
+        added.append(Line(kind="segment", id=name, through=[a, b]))
+    return spec.model_copy(update={"objects": [*spec.objects, *added]}) if added else spec
 
 
 # --- primitives -------------------------------------------------------------------------------------------------
@@ -427,7 +513,8 @@ def _choose(points: list[np.ndarray], obj: Intersection, values: dict[str, Value
     return points[0]
 
 
-def evaluate(compiled: Compiled, params: np.ndarray) -> dict[str, Value]:
+def evaluate(compiled: Compiled, params: np.ndarray, only: frozenset[str] | None = None) -> dict[str, Value]:
+    """Every object's value; with `only`, just those objects (the others still consume their parameters)."""
     values: dict[str, Value] = {}
     index = 0
 
@@ -448,6 +535,9 @@ def evaluate(compiled: Compiled, params: np.ndarray) -> dict[str, Value]:
 
     for obj in compiled.order:
         oid = obj.id
+        if only is not None and oid not in only:
+            index += 2 if isinstance(obj, FreePoint) else 1 if isinstance(obj, PointOnLine | PointOnCircle) else 0
+            continue
         if isinstance(obj, FreePoint):
             values[oid] = np.array([params[index], params[index + 1]], dtype=float)
             index += 2
@@ -465,7 +555,11 @@ def evaluate(compiled: Compiled, params: np.ndarray) -> dict[str, Value]:
         elif isinstance(obj, Midpoint):
             values[oid] = (pt(obj.a) + pt(obj.b)) / 2
         elif isinstance(obj, Reflection):
-            values[oid] = 2 * pt(obj.center) - pt(obj.point)
+            if obj.center is not None:
+                values[oid] = 2 * pt(obj.center) - pt(obj.point)
+            else:  # mirror image in a line: twice the foot of the perpendicular, minus the point
+                mirror, p = ln(obj.line or ""), pt(obj.point)
+                values[oid] = 2 * (mirror.p + float(np.dot(p - mirror.p, mirror.d)) * mirror.d) - p
         elif isinstance(obj, Centroid):
             values[oid] = sum((pt(p) for p in obj.points), np.zeros(2)) / 3
         elif isinstance(obj, Circumcenter):
@@ -615,7 +709,29 @@ def residuals(rel: Relation, values: dict[str, Value]) -> list[float]:
             if abs(float(np.hypot(*(touch - circle.c))) - circle.r) < 1e-6 * circle.r:
                 return [float(np.dot(_unit(touch - circle.c, rel.circle, "bán kính bằng 0"), d))]
         return [(abs(_cross(d, circle.c - a)) - circle.r) / circle.r]
+    if isinstance(rel, Convex):
+        return convex_residuals([_as_point(values[n]) for n in rel.points])
     raise GeometryError(f"unsupported relation {rel.kind}")
+
+
+CONVEX_MARGIN = 0.02  # each turn must exceed ~1° (relative to the mean side), so a convex figure is visibly convex
+
+
+def convex_residuals(pts: list[np.ndarray]) -> list[float]:
+    """Zero when the polygon (vertices in order) is convex: every turn has the same sign, at least a small margin,
+    and the turns add up to one full turn (a star pentagon also turns one way). A hinge per vertex, so it is
+    exactly 0 on every convex figure and pushes a dented one outwards."""
+    n = len(pts)
+    sides = [pts[(i + 1) % n] - pts[i] for i in range(n)]
+    scale = max(float(np.mean([np.hypot(*s) for s in sides])) ** 2, EPS)
+    turns = [_cross(sides[i], sides[(i + 1) % n]) for i in range(n)]
+    sign = 1.0 if sum(turns) >= 0 else -1.0
+    out = [min(0.0, sign * t / scale - CONVEX_MARGIN) for t in turns]
+    if n >= 5:
+        total = sum(math.atan2(_cross(sides[i], sides[(i + 1) % n]), float(np.dot(sides[i], sides[(i + 1) % n])))
+                    for i in range(n))
+        out.append((abs(total) - 2 * math.pi) / (2 * math.pi))
+    return out
 
 
 def target_value(target: Target, values: dict[str, Value]) -> float:
@@ -659,7 +775,7 @@ def _point_ids(compiled: Compiled) -> list[str]:
     return [oid for oid, kind in compiled.kinds.items() if kind == "point"]
 
 
-def _collapsed(compiled: Compiled, values: dict[str, Value]) -> str | None:
+def _collapsed_pair(compiled: Compiled, values: dict[str, Value]) -> tuple[str, str] | None:
     """Two differently-named points at the same place (unless the spec says they coincide)."""
     pts = [(oid, _as_point(values[oid])) for oid in _point_ids(compiled)]
     coords = np.array([p for _, p in pts])
@@ -667,13 +783,56 @@ def _collapsed(compiled: Compiled, values: dict[str, Value]) -> str | None:
     for i in range(len(pts)):
         for j in range(i + 1, len(pts)):
             if float(np.hypot(*(pts[i][1] - pts[j][1]))) < 1e-4 * scale:
-                return f"{pts[i][0]} trùng {pts[j][0]}"
+                return pts[i][0], pts[j][0]
     return None
+
+
+def _collapsed(compiled: Compiled, values: dict[str, Value]) -> str | None:
+    pair = _collapsed_pair(compiled, values)
+    return f"{pair[0]} trùng {pair[1]}" if pair else None
+
+
+def culprit(spec: GeometrySpec, tries: int = 12, seed: int = 7) -> tuple[str, str] | None:
+    """The object that breaks every figure, and why: the one a construction cannot be built at (a line through two
+    points that always coincide), or the later-built of two points that always coincide (e.g. "G = the other
+    intersection of DJ with (S)" when J is that intersection). Givens are ignored here: they have their own fallback.
+    None when random figures build."""
+    compiled = compile_spec(spec)
+    position = {o.id: i for i, o in enumerate(compiled.order)}
+    free = {o.id for o in spec.objects if isinstance(o, FreePoint)}
+    rng = random.Random(seed)  # noqa: S311 - reproducible sampling, not security
+    found: list[tuple[str, str]] = []
+    for _ in range(tries):
+        try:
+            values = evaluate(compiled, _random_params(compiled, rng, hinted=False))
+        except Degenerate as exc:
+            found.append((exc.object_id, exc.reason))
+            continue
+        pair = _collapsed_pair(compiled, values)
+        if pair is None:
+            return None  # this one builds
+        later = max((p for p in pair if p not in free), key=lambda p: position.get(p, -1), default=None)
+        if later is not None:
+            found.append((later, f"{pair[0]} trùng {pair[1]}"))
+    if not found:
+        return None
+    ids = [f[0] for f in found]
+    best = max(set(ids), key=ids.count)
+    return best, next(reason for oid, reason in found if oid == best)
+
+
+def without(spec: GeometrySpec, object_id: str) -> GeometrySpec | None:
+    """The drawable rest of the spec once an object (and everything built on it, and every relation using it) is
+    left out."""
+    objects = [o for o in spec.objects if o.id != object_id]
+    if len(objects) == len(spec.objects) or not objects:
+        return None
+    return drawable(spec.model_copy(update={"objects": objects}))
 
 
 def _given_residuals(compiled: Compiled, params: np.ndarray) -> np.ndarray:
     try:
-        values = evaluate(compiled, params)
+        values = evaluate(compiled, params, only=compiled.given_objects)
         res = [r for rel in compiled.spec.givens for r in residuals(rel, values)]
     except Degenerate:
         res = [10.0] * max(1, sum(len(getattr(g, "points", [None, None, None])) for g in compiled.spec.givens))
@@ -696,8 +855,10 @@ def solve_givens(compiled: Compiled, start: np.ndarray, fixed: list[int] | None 
     count = len(fun(start[free_idx]))
     method = "lm" if count >= len(free_idx) else "trf"
     try:
+        # Solvable starts converge within ~75 evaluations (measured on 16 benchmark figures, 2026-11-08); a start that
+        # needs more almost never converges, and 4000 evaluations made one figure check take ~50 s.
         result = least_squares(fun, start[free_idx], method=method, xtol=1e-14, ftol=1e-14, gtol=1e-14,
-                               max_nfev=4000)
+                               max_nfev=400)
     except ValueError:
         return None
     full = start.copy()

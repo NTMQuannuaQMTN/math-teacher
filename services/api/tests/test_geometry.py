@@ -154,6 +154,8 @@ def test_drag_invariant_midpoint_and_projection(coords: list[float]) -> None:
         values = evaluate(compiled, np.array(coords))
     except Degenerate:
         return  # B = C: correctly refused rather than drawn
+    if np.hypot(*(values["B"] - values["C"])) < 1e-6:  # type: ignore[operator]
+        return  # B ≈ C (1e-9 apart): built, but BC and BM have no measurable direction
     rels = [GeometrySpec.model_validate({"objects": s.model_dump()["objects"], "goals": [g]}).goals[0] for g in (
         {"kind": "equal_length", "segments": [["B", "M"], ["M", "C"]]},
         {"kind": "collinear", "points": ["B", "M", "C"]},
@@ -299,7 +301,8 @@ def test_later_parts_inherit_the_construction_and_the_figure_shows_every_goal() 
     assert template_errors(formal) == []
     figure = geometry_spec(formal)
     assert figure is not None
-    assert [o["id"] for o in figure["objects"]] == ["A", "B", "C", "O", "M", "N"]
+    # The segments of every part's goal are drawn too (OM ⊥ BC, ON ⊥ AC).
+    assert [o["id"] for o in figure["objects"]] == ["A", "B", "C", "O", "M", "N", "OM", "BC", "ON", "AC"]
     assert [g["lines"][0] for g in figure["goals"]] == [["O", "M"], ["O", "N"]]
     # A part that repeats an object keeps its own definition.
     redefined = {**later, "template": {"kind": "geometry", "spec": {
@@ -434,3 +437,154 @@ def test_tangency_given_is_well_conditioned() -> None:
     result = check_spec(s)
     assert [g["outcome"] for g in result["goals"]] == ["holds", "holds"]
     assert max(g["max_residual"] for g in result["goals"]) < 1e-9
+
+
+QUAD = [*TRIANGLE, {**P, "id": "D"}]
+
+
+def test_convex_quadrilateral_given_is_solved_and_checked() -> None:
+    s = spec(QUAD, givens=[{"kind": "length_value", "segment": ["B", "C"], "value": 7},
+                           {"kind": "length_value", "segment": ["D", "A"], "value": 1},
+                           {"kind": "perpendicular", "lines": [["A", "C"], ["B", "D"]]},
+                           {"kind": "convex", "points": ["A", "B", "C", "D"]}])
+    compiled = compile_spec(s)
+    configs, _ = sample_configs(compiled, 6, seed=3)
+    assert configs
+    for config in configs:
+        values = evaluate(compiled, config.params)
+        assert all(abs(r) < 1e-8 for g in s.givens for r in residuals(g, values))
+        a, b, c, d = (values[n] for n in "ABCD")
+        # Convex ⇔ the diagonals cross: A and C on opposite sides of BD, and B and D on opposite sides of AC.
+        side = lambda p, q, x: (q[0] - p[0]) * (x[1] - p[1]) - (q[1] - p[1]) * (x[0] - p[0])  # noqa: E731
+        assert side(b, d, a) * side(b, d, c) < 0 and side(a, c, b) * side(a, c, d) < 0
+    from app.geometry.dsl import Convex
+    square = {"A": np.array([0.0, 0]), "B": np.array([1.0, 0]), "C": np.array([1.0, 1]), "D": np.array([0.0, 1])}
+    assert residuals(Convex(kind="convex", points=["A", "B", "C", "D"]), square) == [0.0] * 4
+    assert min(residuals(Convex(kind="convex", points=["A", "C", "B", "D"]), square)) < -0.1  # crossed order
+    dented = {**square, "C": np.array([0.4, 0.4])}
+    assert min(residuals(Convex(kind="convex", points=["A", "B", "C", "D"]), dented)) < 0
+
+
+def test_the_drawing_shows_the_segments_the_givens_name() -> None:
+    from app.geometry.engine import drawable, with_named_segments
+
+    s = spec([*QUAD, {"kind": "segment", "id": "AB", "through": ["A", "B"]},
+              {"kind": "line", "id": "dBC", "through": ["C", "B"]}],
+             givens=[{"kind": "length_value", "segment": ["B", "C"], "value": 7},
+                     {"kind": "perpendicular", "lines": [["A", "C"], ["B", "D"]]},
+                     {"kind": "convex", "points": ["A", "B", "C", "D"]}])
+    built = drawable(s)
+    assert built is not None
+    drawn = with_named_segments(built)
+    added = {o.id: o.model_dump()["through"] for o in drawn.objects if o.id not in {"A", "B", "C", "D", "AB", "dBC"}}
+    # BC is already on dBC and AB is declared; the diagonals and the other sides are added as segments.
+    assert added == {"AC": ["A", "C"], "BD": ["B", "D"], "CD": ["C", "D"], "DA": ["D", "A"]}
+    assert all(o.kind == "segment" for o in drawn.objects if o.id in added)
+
+
+def test_a_geometry_extremum_still_gets_a_figure() -> None:
+    from app.geometry.service import geometry_spec
+    from app.solvers.schemas import FormalizationReply
+    from app.verification.verdict import drop_invalid_templates, inherit_geometry
+
+    reply = FormalizationReply.model_validate({
+        "parts": [{"label": "", "task": "extremum", "template": {
+            "kind": "extremum", "variables": ["AB", "CD"], "objective": "AB + CD + 8", "sense": "max",
+            "conditions": ["AB^2 + CD^2 == 50"], "positive": True}}],
+        "figure": {"objects": [{**P, "id": n} for n in "ABCD"],
+                   "givens": [{"kind": "length_value", "segment": ["B", "C"], "value": 7},
+                              {"kind": "perpendicular", "lines": [["A", "C"], ["B", "D"]]},
+                              {"kind": "convex", "points": ["A", "B", "C", "D"]}]}})
+    formal, problems = reply.split()
+    assert problems == [] and formal is not None and formal.figure is not None
+    kept = drop_invalid_templates(inherit_geometry(formal))
+    assert kept.figure is not None and kept.parts[0].template is not None
+    figure = geometry_spec(kept)
+    assert figure is not None
+    assert [g["kind"] for g in figure["givens"]] == ["length_value", "perpendicular", "convex"]
+    assert {"AC", "BD"} <= {o["id"] for o in figure["objects"]}
+    assert checks.build_figure({"spec": figure})["data"]["status"] == "ok"
+
+    broken, problems = FormalizationReply.model_validate({
+        "parts": reply.parts, "figure": {"objects": [{"kind": "triangle", "id": "T"}]}}).split()
+    assert broken is not None and broken.figure is None and problems[0].startswith("figure:")
+
+
+# "L và G lần lượt là các giao điểm khác D của DJ và (S) với (I)" misread as G on DJ: G is always J.
+MISREAD = {"objects": [*TRIANGLE, {"kind": "midpoint", "id": "J", "a": "B", "b": "C"},
+                       {"kind": "line", "id": "BC", "through": ["B", "C"]},
+                       {"kind": "circumcircle", "id": "cS", "points": ["A", "B", "J"]},
+                       {"kind": "intersection", "id": "G", "of": ["BC", "cS"], "exclude": "B"},
+                       {"kind": "line", "id": "GJ", "through": ["G", "J"]},
+                       {"kind": "midpoint", "id": "N", "a": "A", "b": "C"}],
+           "goals": [{"kind": "collinear", "points": ["A", "G", "N"]},
+                     {"kind": "parallel", "lines": [["J", "N"], ["A", "B"]]}]}
+
+
+def test_an_object_that_breaks_every_figure_is_left_out_and_named() -> None:
+    result = checks.build_figure({"spec": MISREAD})
+    data = result["data"]
+    assert data["status"] == "ok"
+    assert [item.split(" ")[0] for item in data["left_out"]] == ["GJ", "G"]
+    assert "chưa dựng được" in result["detail"]
+    drawn = GeometrySpec.model_validate(data["spec"])
+    assert {o.id for o in drawn.objects} >= {"A", "B", "C", "J", "N", "cS"} and "G" not in {o.id for o in drawn.objects}
+    assert [g.kind for g in drawn.goals] == ["parallel"]  # the goal about G is left out with it
+
+
+async def test_a_misread_construction_gets_one_repair_round_with_the_engine_finding(
+        container: Container, provider: ScriptedProvider) -> None:
+    from app.agents.orchestrator import SolveInput
+    from tests.test_solving import orchestrator
+
+    def formal(spec: dict[str, Any]) -> str:
+        return json.dumps({"parts": [{"label": "", "task": "prove", "template": {"kind": "geometry", "spec": spec}}]})
+
+    fixed = {**MISREAD, "objects": [*MISREAD["objects"][:6],
+                                    {"kind": "projection", "id": "G", "point": "A", "line": "BC"},
+                                    *MISREAD["objects"][7:]]}
+    provider.push(formal(MISREAD))
+    provider.push(formal(fixed))
+    outcome = await orchestrator(container).figure_only(SolveInput("Hình học.", ["geometry"], None))
+    requests = [r for r in provider.requests if r.schema_name == "formalization"]
+    assert len(requests) == 2
+    repair = requests[1].messages[-1].content
+    assert isinstance(repair, str) and "GJ" in repair and "lần lượt" in repair
+    assert outcome.drawing is not None
+    spec = outcome.drawing.parts[0].template.spec  # type: ignore[union-attr]
+    assert next(o for o in spec.objects if o.id == "G").kind == "projection"
+    assert outcome.trace[-1]["figure_repaired"] is True
+
+
+def test_reflection_in_a_line_and_through_a_point() -> None:
+    s = spec([*TRIANGLE, {"kind": "line", "id": "BC", "through": ["B", "C"]},
+              {"kind": "reflection", "id": "S", "point": "A", "line": "BC"},
+              {"kind": "reflection", "id": "R", "point": "A", "center": "B"}],
+             goals=[{"kind": "perpendicular", "lines": [["A", "S"], ["B", "C"]]},
+                    {"kind": "equal_length", "segments": [["C", "A"], ["C", "S"]]},
+                    {"kind": "collinear", "points": ["A", "B", "R"]}])
+    assert all(g["outcome"] == "holds" for g in check_spec(s)["goals"])
+    with pytest.raises(ValidationError, match="exactly one"):
+        spec([*TRIANGLE, {"kind": "reflection", "id": "S", "point": "A"}])
+
+
+async def test_a_statement_false_on_the_figure_triggers_the_repair_round(
+        container: Container, provider: ScriptedProvider) -> None:
+    from app.agents.orchestrator import SolveInput
+    from tests.test_solving import orchestrator
+
+    def formal(spec_: dict[str, Any]) -> str:
+        return json.dumps({"parts": [{"label": "", "task": "prove", "template": {"kind": "geometry", "spec": spec_}}]})
+
+    # "S đối xứng với A qua BC" misread as a reflection through B: "AS ⊥ BC" is then false on every figure.
+    goal = {"kind": "perpendicular", "lines": [["A", "S"], ["B", "C"]]}
+    misread = {"objects": [*TRIANGLE, {"kind": "line", "id": "BC", "through": ["B", "C"]},
+                           {"kind": "reflection", "id": "S", "point": "A", "center": "B"}], "goals": [goal]}
+    fixed = {**misread, "objects": [*misread["objects"][:4],
+                                    {"kind": "reflection", "id": "S", "point": "A", "line": "BC"}]}
+    provider.push(formal(misread))
+    provider.push(formal(fixed))
+    outcome = await orchestrator(container).figure_only(SolveInput("Hình học.", ["geometry"], None))
+    repair = [r for r in provider.requests if r.schema_name == "formalization"][1].messages[-1].content
+    assert isinstance(repair, str) and "FALSE on the figure" in repair and '"perpendicular"' in repair
+    assert outcome.trace[-1]["figure_repaired"] is True

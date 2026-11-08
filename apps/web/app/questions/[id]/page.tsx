@@ -140,11 +140,12 @@ export default function QuestionWorkspacePage() {
       {working && (
         <Card>
           <p className="font-medium" aria-live="polite">
-            Đang giải{elapsed !== null ? `… ${elapsed} giây` : "…"}
+            Đang giải{elapsed !== null ? `… ${elapsed < 120 ? `${elapsed} giây` : `${Math.floor(elapsed / 60)} phút ${elapsed % 60} giây`}` : "…"}
           </p>
           <p className="mt-1 text-sm text-muted">
-            Hệ thống giải, rồi kiểm tra đáp số bằng công cụ toán học và kiểm tra phương pháp theo chương trình lớp 9.
-            Bài khó có thể mất vài phút.
+            Hệ thống ưu tiên lời giải chính xác: giải, kiểm tra đáp số bằng công cụ toán học, cho một “giám khảo” chấm
+            từng bước rồi sửa lại nếu có lỗi. Bài khó (nhất là hình học) có thể mất 10–30 phút; em có thể rời trang và
+            quay lại sau, kết quả vẫn được lưu.
           </p>
         </Card>
       )}

@@ -15,6 +15,33 @@ import {
   type QuestionOut,
 } from "@/lib/api";
 
+// Screen 1 ("compare"): every question next to the page image, the first stop after upload. Submitting it confirms
+// the questions and moves to screen 2 ("list"), which is home from then on. "Sửa" on a question in the list opens
+// screen 1 again for that question only ("edit"); saving or cancelling returns to the list.
+type View = { screen: "compare" } | { screen: "list" } | { screen: "edit"; questionId: string };
+
+// Whether screen 1 was submitted, so a reload lands on the list. Per browser only; an all-confirmed document
+// always opens on the list.
+const submittedKey = (id: string) => `document-submitted:${id}`;
+function readSubmitted(id: string): boolean {
+  try {
+    return window.localStorage.getItem(submittedKey(id)) === "1";
+  } catch {
+    return false;
+  }
+}
+function writeSubmitted(id: string, submitted: boolean) {
+  try {
+    if (submitted) window.localStorage.setItem(submittedKey(id), "1");
+    else window.localStorage.removeItem(submittedKey(id));
+  } catch {
+    // Storage unavailable (private window): the screen just isn't remembered across reloads.
+  }
+}
+
+const questionTitle = (q: QuestionOut) => q.original_number || `Câu ${q.order_index}`;
+const firstPageOf = (q: QuestionOut) => q.regions[0]?.page ?? q.source_pages[0];
+
 export default function DocumentReviewPage() {
   const { id } = useParams<{ id: string }>();
   const [doc, setDoc] = useState<DocumentOut | null>(null);
@@ -23,9 +50,8 @@ export default function DocumentReviewPage() {
   const [page, setPage] = useState(1);
   const [adding, setAdding] = useState(false);
   const [confirming, setConfirming] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
-  // "review": questions next to the page image. "check": questions only, for a final read-through.
-  const [view, setView] = useState<"review" | "check" | null>(null);
+  const [notice, setNotice] = useState<{ text: string; ok: boolean } | null>(null);
+  const [view, setView] = useState<View | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -43,18 +69,8 @@ export default function DocumentReviewPage() {
   useEffect(() => {
     if (view !== null || !doc || doc.status === "processing") return;
     const allConfirmed = doc.questions.length > 0 && doc.questions.every((q) => q.review_status === "confirmed");
-    setView(allConfirmed ? "check" : "review");
-  }, [doc, view]);
-
-  function fixInReview(questionId: string) {
-    setView("review");
-    setSelected(questionId);
-    const q = doc?.questions.find((x) => x.id === questionId);
-    const firstPage = q?.regions[0]?.page ?? q?.source_pages[0];
-    if (firstPage) setPage(firstPage);
-    // Wait for the review layout to render before scrolling to the card.
-    setTimeout(() => document.getElementById(`q-${questionId}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
-  }
+    setView({ screen: allConfirmed || (doc.questions.length > 0 && readSubmitted(id)) ? "list" : "compare" });
+  }, [doc, view, id]);
 
   const processing = doc?.status === "processing";
   useEffect(() => {
@@ -63,8 +79,32 @@ export default function DocumentReviewPage() {
     return () => clearInterval(timer);
   }, [processing, load]);
 
+  function openEditor(question: QuestionOut) {
+    setNotice(null);
+    setSelected(question.id);
+    const firstPage = firstPageOf(question);
+    if (firstPage) setPage(firstPage);
+    setView({ screen: "edit", questionId: question.id });
+    window.scrollTo({ top: 0 });
+  }
+
+  function backToList(questionId?: string) {
+    setView({ screen: "list" });
+    // Wait for the list to render before scrolling back to the question just edited.
+    setTimeout(() => {
+      const card = questionId && document.getElementById(`item-${questionId}`);
+      if (card) card.scrollIntoView({ block: "center" });
+      else window.scrollTo({ top: 0 });
+    }, 50);
+  }
+
   function replaceQuestion(updated: QuestionOut) {
     setDoc((d) => d && { ...d, questions: d.questions.map((q) => (q.id === updated.id ? updated : q)) });
+  }
+
+  function removeQuestion(questionId: string) {
+    setDoc((d) => d && { ...d, questions: d.questions.filter((x) => x.id !== questionId) });
+    if (view?.screen === "edit") backToList();
   }
 
   async function reprocess() {
@@ -72,28 +112,34 @@ export default function DocumentReviewPage() {
     if (edited && !window.confirm("Nhận dạng lại sẽ xoá các chỉnh sửa của bạn. Tiếp tục?")) return;
     try {
       await api(`/documents/${id}/reprocess`, jsonBody("POST", { discard_edits: Boolean(edited) }));
+      // New questions are compared with the image again: back to screen 1 once recognition finishes.
+      writeSubmitted(id, false);
+      setNotice(null);
+      setView(null);
       await load();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Không thể nhận dạng lại.");
     }
   }
 
-  async function confirmAll() {
+  // Submits screen 1: confirms every question without errors and moves to the list.
+  async function submit() {
     setConfirming(true);
     setNotice(null);
     try {
       const result = await api<ConfirmAllOut>(`/documents/${id}/confirm`, { method: "POST" });
       await load();
-      if (result.blocked.length === 0) setView("check");
+      writeSubmitted(id, true);
       if (result.blocked.length > 0) {
-        const names = doc?.questions
-          .filter((q) => result.blocked.includes(q.id))
-          .map((q) => q.original_number || `Câu ${q.order_index}`)
-          .join(", ");
-        setNotice(`Đã xác nhận ${result.confirmed.length} câu. Còn ${result.blocked.length} câu có lỗi cần sửa trước: ${names}.`);
-        const first = result.blocked[0];
-        if (first) fixInReview(first);
+        const names = doc?.questions.filter((q) => result.blocked.includes(q.id)).map(questionTitle).join(", ");
+        setNotice({
+          ok: false,
+          text: `Đã xác nhận ${result.confirmed.length} câu. Còn ${result.blocked.length} câu có lỗi cần sửa: ${names}. Bấm “Sửa” ở câu đó để đối chiếu lại với ảnh.`,
+        });
+      } else if (result.confirmed.length > 0) {
+        setNotice({ ok: true, text: `Đã xác nhận ${result.confirmed.length} câu.` });
       }
+      backToList();
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Không xác nhận được.");
     } finally {
@@ -106,7 +152,12 @@ export default function DocumentReviewPage() {
     try {
       const created = await api<QuestionOut>(`/documents/${id}/questions`, jsonBody("POST", { latex: "Nhập đề bài…" }));
       setDoc((d) => d && { ...d, questions: [...d.questions, created] });
-      setSelected(created.id);
+      if (view?.screen === "list") {
+        openEditor(created);
+      } else {
+        setSelected(created.id);
+        setTimeout(() => document.getElementById(`q-${created.id}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 50);
+      }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Không thêm được câu hỏi.");
     } finally {
@@ -118,15 +169,18 @@ export default function DocumentReviewPage() {
     return error ? <ErrorNote message={error} /> : <p className="text-muted">Đang tải…</p>;
   }
 
-  const currentPage = doc.pages.find((p) => p.page_number === page) ?? doc.pages[0];
   const failedPages = doc.page_results.filter((r) => r.status === "failed");
   const confirmed = doc.questions.filter((q) => q.review_status === "confirmed").length;
-  const selectedQuestion = doc.questions.find((q) => q.id === selected);
   const unconfirmed = doc.questions.length - confirmed;
-  const currentView = view ?? "review";
-  const confirmAllButton = unconfirmed > 0 && !processing && (
-    <Button onClick={() => void confirmAll()} disabled={confirming}>
-      {confirming ? "Đang xác nhận…" : `Xác nhận tất cả (${unconfirmed})`}
+  const editing = view?.screen === "edit" ? doc.questions.find((q) => q.id === view.questionId) : undefined;
+  const screen = view?.screen === "edit" && !editing ? "list" : (view?.screen ?? "compare");
+  const imageQuestions = editing ? [editing] : doc.questions;
+  const selectedQuestion = editing ?? doc.questions.find((q) => q.id === selected);
+  const currentPage = doc.pages.find((p) => p.page_number === page) ?? doc.pages[0];
+
+  const submitButton = (
+    <Button onClick={() => void (unconfirmed > 0 ? submit() : (writeSubmitted(id, true), backToList()))} disabled={confirming}>
+      {confirming ? "Đang xác nhận…" : unconfirmed > 0 ? `Xác nhận tất cả (${unconfirmed}) và tiếp tục →` : "Tiếp tục →"}
     </Button>
   );
 
@@ -136,13 +190,15 @@ export default function DocumentReviewPage() {
         <div className="min-w-0">
           <h1 className="truncate text-2xl font-bold">{doc.filename}</h1>
           <p className="text-sm text-muted">
-            {DOCUMENT_STATUS_LABELS[doc.status]} · {doc.page_count ?? "?"} trang · {doc.questions.length} câu · đã xác nhận{" "}
+            {doc.status === "needs_review" && doc.questions.length > 0 && unconfirmed === 0
+              ? "Đã xác nhận"
+              : DOCUMENT_STATUS_LABELS[doc.status]} · {doc.page_count ?? "?"} trang · {doc.questions.length} câu · đã xác nhận{" "}
             {confirmed}/{doc.questions.length}
           </p>
         </div>
-        {!processing && (
+        {!processing && screen !== "edit" && (
           <div className="flex flex-wrap gap-2">
-            {currentView === "review" && confirmAllButton}
+            {screen === "compare" && doc.questions.length > 0 && submitButton}
             <Button variant="secondary" onClick={() => void addQuestion()} disabled={adding}>+ Thêm câu bị thiếu</Button>
             <Button variant="secondary" onClick={() => void reprocess()}>Nhận dạng lại</Button>
           </div>
@@ -150,31 +206,10 @@ export default function DocumentReviewPage() {
       </div>
 
       <ErrorNote message={error} />
-      {notice && <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900" role="status">{notice}</p>}
-
-      {doc.questions.length > 0 && !processing && (
-        <div className="flex gap-1 rounded-xl border border-line bg-paper p-1" role="tablist" aria-label="Bước">
-          {([["review", "1. Đối chiếu với ảnh"], ["check", "2. Kiểm tra & xác nhận"]] as const).map(([key, label]) => (
-            <button key={key} type="button" role="tab" aria-selected={currentView === key} onClick={() => setView(key)}
-              className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium ${currentView === key ? "bg-brand text-white" : "text-muted hover:bg-brand-soft"}`}>
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {currentView === "check" && (
-        <section className="space-y-3" aria-label="Kiểm tra và xác nhận">
-          <Card className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm">
-              {unconfirmed > 0
-                ? "Đọc lại toàn bộ đề. Nếu tất cả các câu đều đúng, hãy xác nhận."
-                : "Tất cả các câu đã được xác nhận. Bấm vào một câu để mở."}
-            </p>
-            {confirmAllButton}
-          </Card>
-          <QuestionList questions={doc.questions} onFix={fixInReview} />
-        </section>
+      {notice && screen === "list" && (
+        <p role="status" className={`rounded-xl px-4 py-3 text-sm ${notice.ok ? "bg-emerald-50 text-emerald-900" : "bg-amber-50 text-amber-900"}`}>
+          {notice.text}
+        </p>
       )}
 
       {processing && (
@@ -193,17 +228,39 @@ export default function DocumentReviewPage() {
         </Card>
       )}
 
-      {failedPages.length > 0 && doc.status !== "failed" && (
+      {failedPages.length > 0 && doc.status !== "failed" && screen !== "edit" && (
         <ErrorNote message={`Không nhận dạng được trang ${failedPages.map((p) => p.page).join(", ")}: ${failedPages[0]?.error_message ?? ""} Bạn có thể bấm “Nhận dạng lại” hoặc thêm câu thủ công.`} />
       )}
 
-      {currentView === "review" && doc.questions.length > 0 && (
-        <p className="rounded-xl bg-brand-soft px-4 py-3 text-sm">
-          Hãy so sánh từng câu với ảnh gốc. Chỗ tô vàng là ký hiệu AI chưa đọc rõ. Câu hỏi chỉ được giải sau khi bạn xác nhận.
-        </p>
+      {screen === "list" && (
+        <section className="space-y-3" aria-label="Kiểm tra và xác nhận">
+          <Card className="flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm">
+              {unconfirmed > 0
+                ? `Còn ${unconfirmed} câu chưa xác nhận. Bấm “Sửa” ở câu đó để đối chiếu lại với ảnh.`
+                : "Tất cả các câu đã được xác nhận. Bấm vào một câu để mở, hoặc “Sửa” để đối chiếu lại với ảnh."}
+            </p>
+          </Card>
+          <QuestionList questions={doc.questions} onEdit={(qid) => {
+            const q = doc.questions.find((x) => x.id === qid);
+            if (q) openEditor(q);
+          }} />
+        </section>
       )}
 
-      {currentView === "review" && (
+      {screen === "compare" && doc.questions.length > 0 && (
+        <p className="rounded-xl bg-brand-soft px-4 py-3 text-sm">
+          Hãy so sánh từng câu với ảnh gốc. Chỗ tô vàng là ký hiệu AI chưa đọc rõ. Khi tất cả đã đúng, bấm “Xác nhận tất
+          cả và tiếp tục”. Câu hỏi chỉ được giải sau khi bạn xác nhận.
+        </p>
+      )}
+      {screen === "edit" && editing && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-brand-soft px-4 py-3 text-sm">
+          <p>Đối chiếu <strong>{questionTitle(editing)}</strong> với ảnh gốc rồi lưu. Lưu hoặc huỷ sẽ quay về danh sách.</p>
+        </div>
+      )}
+
+      {(screen === "compare" || screen === "edit") && (
         <div className="grid gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
           {currentPage && (
             <div className="lg:sticky lg:top-4 lg:self-start">
@@ -223,12 +280,12 @@ export default function DocumentReviewPage() {
                   {/* eslint-disable-next-line @next/next/no-img-element -- authenticated image through the gateway */}
                   <img src={currentPage.image_url} alt={`Ảnh gốc trang ${currentPage.page_number}`}
                     width={currentPage.width} height={currentPage.height} className="h-auto w-full rounded-lg border border-line" />
-                  {doc.questions.flatMap((q) =>
+                  {imageQuestions.flatMap((q) =>
                     q.regions
                       .filter((r) => r.page === currentPage.page_number)
                       .map((r, index) => {
                         const [x0, y0, x1, y1] = r.bbox;
-                        const active = q.id === selected;
+                        const active = q.id === selectedQuestion?.id;
                         return (
                           <button key={`${q.id}-${index}`} type="button"
                             aria-label={`Chọn ${q.original_number ?? `câu ${q.order_index}`}`}
@@ -244,33 +301,40 @@ export default function DocumentReviewPage() {
                   )}
                 </div>
                 {selectedQuestion && selectedQuestion.regions.length === 0 && (
-                  <p className="mt-2 text-xs text-muted">Câu đang chọn chưa có vị trí trên ảnh.</p>
+                  <p className="mt-2 text-xs text-muted">
+                    {editing ? "Câu này" : "Câu đang chọn"} chưa có vị trí trên ảnh.
+                  </p>
                 )}
               </Card>
             </div>
           )}
 
           <div className="space-y-3">
-            {doc.questions.map((q) => (
-              <QuestionEditor key={q.id} question={q} selected={q.id === selected}
-                onSelect={() => {
-                  setSelected(q.id);
-                  const firstPage = q.regions[0]?.page ?? q.source_pages[0];
-                  if (firstPage) setPage(firstPage);
-                }}
+            {editing ? (
+              <QuestionEditor key={`edit-${editing.id}`} question={editing} selected startEditing
+                onSelect={() => undefined}
                 onChange={replaceQuestion}
-                onDelete={(qid) => setDoc((d) => d && { ...d, questions: d.questions.filter((x) => x.id !== qid) })}
+                onDone={() => backToList(editing.id)}
+                onDelete={removeQuestion}
               />
-            ))}
+            ) : (
+              doc.questions.map((q) => (
+                <QuestionEditor key={q.id} question={q} selected={q.id === selected}
+                  onSelect={() => {
+                    setSelected(q.id);
+                    const firstPage = firstPageOf(q);
+                    if (firstPage) setPage(firstPage);
+                  }}
+                  onChange={replaceQuestion}
+                  onDelete={removeQuestion}
+                />
+              ))
+            )}
             {!processing && doc.questions.length === 0 && doc.status !== "failed" && (
               <Card><p className="text-sm text-muted">Không tìm thấy câu hỏi nào. Bạn có thể thêm câu thủ công.</p></Card>
             )}
-            {doc.questions.length > 0 && !processing && (
-              <div className="flex justify-end">
-                <Button variant="secondary" onClick={() => { setView("check"); window.scrollTo({ top: 0 }); }}>
-                  Tiếp: kiểm tra toàn bộ →
-                </Button>
-              </div>
+            {screen === "compare" && doc.questions.length > 0 && !processing && (
+              <div className="flex justify-end">{submitButton}</div>
             )}
           </div>
         </div>

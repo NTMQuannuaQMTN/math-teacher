@@ -61,7 +61,8 @@ class Settings(BaseSettings):
     warning_budget_sgd: Decimal = Decimal("7.00")
     per_user_daily_budget_sgd: Decimal = Decimal("1.50")
     budget_timezone: str = "Asia/Singapore"
-    reservation_ttl_seconds: int = Field(default=900, ge=60)
+    # Longer than the longest model call (840 s streamed solve + retry overhead): a live call is never expired.
+    reservation_ttl_seconds: int = Field(default=1200, ge=60)
 
     # --- Rate limits (per user unless stated) ---------------------------------------------------
     rate_limit_uploads_per_hour: int = 20
@@ -72,17 +73,20 @@ class Settings(BaseSettings):
 
     # --- Solving (Phase 3) ----------------------------------------------------------------------
     question_budget_sgd: Decimal = Decimal("0.30")
-    solve_max_revisions: int = Field(default=3, ge=0, le=5)
+    solve_max_revisions: int = Field(default=4, ge=0, le=6)
     # An independent examiner agent checks every solution step by step; its findings drive the revision rounds.
     solve_critic_enabled: bool = True
     # First attempt without hidden reasoning; escalate once to reasoning when the answer fails verification.
     solve_escalate_thinking: bool = True
-    # Wall-clock target for one solve: no revision is started that would likely end after it (the escalation needs
-    # ~5 minutes, so it only runs when the first answer came back within ~3).
-    solve_time_budget_seconds: float = Field(default=480, ge=60, le=850)
-    # Use hidden reasoning for geometry proofs (first attempt and escalations). Off: on SoCLaaS such calls were cut
-    # off at ~300 s in 4 of 4 live runs (2026-11-03); geometry instead gets fast plain rounds with the examiner.
-    solve_geometry_thinking_first: bool = False
+    # Accuracy first, speed later: a solve may take up to this long. No revision is started that would likely end
+    # after it. At SoCLaaS's measured ~13 output tokens/s (2026-11-07) a full plain solution alone takes ~10 minutes.
+    solve_time_budget_seconds: float = Field(default=2400, ge=60, le=3600)
+    # Deadline of one plain solve / revision / examiner call. Replies are streamed, so the old ~300 s cut no longer
+    # applies; SoCLaaS still ends any stream at ~900 s.
+    solve_call_timeout_seconds: float = Field(default=840, ge=60, le=880)
+    # Geometry proofs start with hidden reasoning (now possible with streaming, up to the ~900 s stream limit); a
+    # failed reasoning call falls back to plain rounds with the examiner.
+    solve_geometry_thinking_first: bool = True
     # Hints come first: the full solution can be revealed after this many hints (when hints exist).
     hints_before_solution: bool = True
     min_hints_before_solution: int = Field(default=1, ge=0, le=5)
@@ -115,7 +119,7 @@ class Settings(BaseSettings):
     run_embedded_worker: bool = True
     worker_concurrency: int = Field(default=2, ge=1, le=16)
     worker_poll_seconds: float = 1.0
-    job_timeout_seconds: int = 900  # a reasoning escalation alone can take ~5 minutes
+    job_timeout_seconds: int = 3000  # longer than the solve's time budget (accuracy first)
     ocr_page_concurrency: int = Field(default=2, ge=1, le=8)
 
     @model_validator(mode="after")

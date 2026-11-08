@@ -8,6 +8,7 @@ import {
   evaluate,
   figureSize,
   type GeometrySpec,
+  givenMarks,
   lineExtent,
   type LineValue,
   type PointValue,
@@ -122,4 +123,39 @@ test("lines are drawn only between the outermost points on them", () => {
   assert.ok((close(m0, [2, 0]) && close(m1, [1, 3])) || (close(m0, [1, 3]) && close(m1, [2, 0])));
   assert.deepEqual(lineExtent({ t: "line", p: [0, 0], d: [1, 0], kind: "segment", a: [0, 0], b: [2, 0] }, values),
     [[0, 0], [2, 0]]);
+});
+
+test("givens are marked on the figure: lengths, right angles where the segments meet, equal ticks", () => {
+  const spec: GeometrySpec = {
+    objects: ["A", "B", "C", "D"].map((id) => ({ kind: "free_point", id })),
+    givens: [
+      { kind: "length_value", segment: ["B", "C"], value: 7 },
+      { kind: "perpendicular", lines: [["A", "C"], ["B", "D"]] },
+      { kind: "perpendicular", lines: [["A", "B"], ["A", "D"]] },
+      { kind: "equal_length", segments: [["A", "B"], ["C", "D"]] },
+    ],
+  };
+  // A kite-like ABCD whose diagonals meet at the origin at a right angle.
+  const values: Values = {
+    A: { t: "point", v: [-1, 0] }, B: { t: "point", v: [0, -3] }, C: { t: "point", v: [6, 0] }, D: { t: "point", v: [0, 1] },
+  };
+  const marks = givenMarks(spec, values);
+  assert.equal(marks.length, 1 + 1 + 1 + 2);
+  const label = marks[0]!;
+  assert.ok(label.kind === "label" && label.text === "7");
+  // The label sits outside the figure, beyond BC's midpoint (3, -1.5) away from the centre.
+  assert.ok(label.kind === "label" && label.at[0] > 3 && label.at[1] < -1.5);
+  const square = marks[1]!;
+  assert.ok(square.kind === "path" && square.points.length === 3);
+  // The square's corner lies on neither diagonal, next to their crossing (0, 0).
+  assert.ok(square.kind === "path" && Math.abs(square.points[1]![0]) > 0 && Math.hypot(...square.points[1]!) < 1);
+  // AB and AD: here they are not perpendicular, but the mark only depends on where they meet (at A).
+  assert.equal(marks[2]!.kind, "path");
+  assert.ok(marks.slice(3).every((m) => m.kind === "path" && m.points.length === 2));
+
+  // Segments that do not meet get no square (but the mark keeps its slot).
+  const apart: Values = { ...values, C: { t: "point", v: [-0.5, 0] } };
+  const moved = givenMarks(spec, apart);
+  assert.equal(moved.length, marks.length);
+  assert.ok(moved[1]!.kind === "path" && moved[1]!.points.length === 0);
 });

@@ -13,7 +13,7 @@
       "notes": "Vision model used in public SoCLaaS labs (lab 112). Unverified for this key.",
       "thinking_control": "chat_template_kwargs",
       "thinking_max_output_tokens": 24000,
-      "thinking_timeout_seconds": 480
+      "thinking_timeout_seconds": 840
     },
     {
       "id": "qwen3.6:35b",
@@ -25,7 +25,7 @@
       "notes": "Seen in public projects using SoCLaaS. Unverified for this key.",
       "thinking_control": "chat_template_kwargs",
       "thinking_max_output_tokens": 24000,
-      "thinking_timeout_seconds": 480
+      "thinking_timeout_seconds": 840
     }
   ],
   "routing": {

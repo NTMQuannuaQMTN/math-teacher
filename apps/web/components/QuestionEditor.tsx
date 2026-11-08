@@ -24,17 +24,24 @@ export function QuestionEditor({
   onSelect,
   onChange,
   onDelete,
+  startEditing = false,
+  onDone,
 }: {
   question: QuestionOut;
   selected: boolean;
   onSelect: () => void;
   onChange: (q: QuestionOut) => void;
   onDelete: (id: string) => void;
+  /** Opens straight in edit mode (single-question review from the list). */
+  startEditing?: boolean;
+  /** Called after the edit is saved or cancelled. */
+  onDone?: () => void;
 }) {
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(startEditing);
   const [latex, setLatex] = useState(question.latex);
   const [subs, setSubs] = useState<Sub[]>(question.subquestions);
   const [number, setNumber] = useState(question.original_number ?? "");
+  const [topics, setTopics] = useState<Topic[]>(question.topics);
   const [renderErrors, setRenderErrors] = useState<Record<string, string[]>>({});
   const [check, setCheck] = useState<LatexCheckOut | null>(null);
   const [busy, setBusy] = useState(false);
@@ -45,6 +52,7 @@ export function QuestionEditor({
       setLatex(question.latex);
       setSubs(question.subquestions);
       setNumber(question.original_number ?? "");
+      setTopics(question.topics);
     }
   }, [question, editing]);
 
@@ -64,7 +72,8 @@ export function QuestionEditor({
   const dirty =
     latex !== question.latex ||
     JSON.stringify(subs) !== JSON.stringify(question.subquestions) ||
-    number !== (question.original_number ?? "");
+    number !== (question.original_number ?? "") ||
+    JSON.stringify(topics) !== JSON.stringify(question.topics);
   const hasBlockingFlags = question.flags.some((f) => f.severity === "error");
 
   async function save(patch: Omit<QuestionPatch, "expected_version">): Promise<boolean> {
@@ -90,16 +99,18 @@ export function QuestionEditor({
       latex,
       subquestions: subs,
       original_number: number || null,
+      ...(JSON.stringify(topics) !== JSON.stringify(question.topics) ? { topics } : {}),
       ...(confirm ? { review_status: "confirmed" as const } : {}),
     });
-    if (ok) setEditing(false);
+    if (ok) {
+      setEditing(false);
+      onDone?.();
+    }
   }
 
-  async function toggleTopic(topic: Topic) {
-    const topics = question.topics.includes(topic)
-      ? question.topics.filter((t) => t !== topic)
-      : [...question.topics, topic];
-    await save({ topics });
+  // Topics are only changed in edit mode, and saved together with the rest of the edit.
+  function toggleTopic(topic: Topic) {
+    setTopics((current) => (current.includes(topic) ? current.filter((t) => t !== topic) : [...current, topic]));
   }
 
   async function remove() {
@@ -130,33 +141,44 @@ export function QuestionEditor({
           <StatusBadge status={question.review_status} />
           {question.origin === "manual" && <span className="text-xs text-muted">(thêm thủ công)</span>}
         </div>
-        <div className="flex flex-wrap gap-1" role="group" aria-label="Chủ đề">
-          {[...question.topics, ...TOPICS.filter((t) => !question.topics.includes(t))].map((topic) => {
-            const active = question.topics.includes(topic);
-            return (
-              <button
-                key={topic}
-                type="button"
-                aria-pressed={active}
-                disabled={busy}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  void toggleTopic(topic);
-                }}
-                className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${
-                  active ? "border-brand bg-brand text-white" : "border-line text-muted hover:border-brand"
-                }`}
-              >
+        {editing ? (
+          <div className="flex flex-wrap gap-1" role="group" aria-label="Chủ đề">
+            {[...topics, ...TOPICS.filter((t) => !topics.includes(t))].map((topic) => {
+              const active = topics.includes(topic);
+              return (
+                <button
+                  key={topic}
+                  type="button"
+                  aria-pressed={active}
+                  disabled={busy}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleTopic(topic);
+                  }}
+                  className={`rounded-full border px-2.5 py-0.5 text-xs font-medium ${
+                    active ? "border-brand bg-brand text-white" : "border-line text-muted hover:border-brand"
+                  }`}
+                >
+                  {TOPIC_LABELS[topic]}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <ul className="flex flex-wrap gap-1" aria-label="Chủ đề">
+            {question.topics.length === 0 && <li className="text-xs text-muted">Chưa chọn chủ đề</li>}
+            {question.topics.map((topic) => (
+              <li key={topic} className="rounded-full border border-line bg-wash px-2.5 py-0.5 text-xs font-medium text-ink">
                 {TOPIC_LABELS[topic]}
-              </button>
-            );
-          })}
-        </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </header>
-      {(question.topics.length > 1 || question.topic_source !== "student") && (
+      {((editing ? topics : question.topics).length > 1 || question.topic_source !== "student") && (
         <p className="mt-1 text-right text-xs text-muted">
-          {question.topics.length > 1 && "Bài kết hợp nhiều chủ đề (chủ đề chính đứng đầu). "}
-          {question.topic_source !== "student" && "Chủ đề do AI gợi ý — bấm để sửa."}
+          {(editing ? topics : question.topics).length > 1 && "Bài kết hợp nhiều chủ đề (chủ đề chính đứng đầu). "}
+          {question.topic_source !== "student" && (editing ? "Chủ đề do AI gợi ý — bấm để chọn lại." : "Chủ đề do AI gợi ý — bấm “Sửa” để thay đổi.")}
         </p>
       )}
 
@@ -223,7 +245,8 @@ export function QuestionEditor({
           <>
             <Button onClick={() => void saveEdits(true)} disabled={!canConfirm}>Lưu và xác nhận</Button>
             <Button variant="secondary" onClick={() => void saveEdits(false)} disabled={busy || !dirty}>Chỉ lưu</Button>
-            <Button variant="ghost" onClick={() => { setEditing(false); setError(null); }} disabled={busy}>Huỷ</Button>
+            <Button variant="ghost" onClick={() => { setEditing(false); setError(null); onDone?.(); }} disabled={busy}>Huỷ</Button>
+            <Button variant="danger" onClick={() => void remove()} className="ml-auto" disabled={busy}>Xoá câu</Button>
           </>
         ) : (
           <>
@@ -238,7 +261,6 @@ export function QuestionEditor({
                 Mở câu hỏi
               </Link>
             )}
-            <Button variant="danger" onClick={() => void remove()} className="ml-auto">Xoá</Button>
           </>
         )}
       </footer>

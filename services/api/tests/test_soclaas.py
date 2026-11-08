@@ -82,3 +82,51 @@ async def test_malformed_body() -> None:
     with pytest.raises(ProviderError) as excinfo:
         await p.chat(REQ)
     assert excinfo.value.kind == "bad_response"
+
+
+def sse(*chunks: object) -> httpx.Response:
+    body = "".join(f"data: {json.dumps(c)}\n\n" for c in chunks) + "data: [DONE]\n\n"
+    return httpx.Response(200, headers={"content-type": "text/event-stream"}, content=body.encode())
+
+
+async def test_streamed_reply_is_assembled_without_the_hidden_reasoning() -> None:
+    seen: dict[str, object] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen["body"] = json.loads(request.content)
+        return sse({"model": "qwen3.8:27b", "choices": [{"delta": {"reasoning_content": "nghĩ…"}}]},
+                   {"choices": [{"delta": {"content": '{"a": '}}]},
+                   {"choices": [{"delta": {"content": "1}"}, "finish_reason": "stop"}]},
+                   {"choices": [], "usage": {"prompt_tokens": 20, "completion_tokens": 7}})
+
+    p = provider(handler)
+    result = await p.chat(REQ)
+    body = seen["body"]
+    assert isinstance(body, dict) and body["stream"] is True and body["stream_options"] == {"include_usage": True}
+    assert result.content == '{"a": 1}' and result.finish_reason == "stop" and result.model == "qwen3.8:27b"
+    assert result.usage is not None and result.usage.completion_tokens == 7
+
+
+async def test_stream_error_and_empty_stream_are_reported() -> None:
+    with pytest.raises(ProviderError) as excinfo:
+        await provider(lambda r: sse({"error": {"message": "overloaded"}})).chat(REQ)
+    assert excinfo.value.kind == "server_error"
+    with pytest.raises(ProviderError) as excinfo:
+        await provider(lambda r: httpx.Response(200, headers={"content-type": "text/event-stream"},
+                                                content=b"data: [DONE]\n\n")).chat(REQ)
+    assert excinfo.value.kind == "bad_response"
+
+
+async def test_the_timeout_is_a_total_deadline_for_a_stream() -> None:
+    import asyncio
+
+    class Slow(httpx.AsyncByteStream):
+        async def __aiter__(self):  # type: ignore[no-untyped-def]
+            for _ in range(100):  # a chunk every 50 ms: never idle, but endless
+                await asyncio.sleep(0.05)
+                yield b'data: {"choices": [{"delta": {"content": "x"}}]}\n\n'
+
+    p = provider(lambda r: httpx.Response(200, headers={"content-type": "text/event-stream"}, stream=Slow()))
+    with pytest.raises(ProviderError) as excinfo:
+        await p.chat(REQ.model_copy(update={"timeout_seconds": 0.3}))
+    assert excinfo.value.kind == "timeout"

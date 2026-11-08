@@ -12,6 +12,15 @@ const DOC_STATUS_STYLES: Record<DocumentSummary["status"], string> = {
   failed: "bg-red-100 text-red-800",
 };
 
+/** A recognised document whose questions are all confirmed is ready to study, not waiting for review. */
+function docBadge(doc: DocumentSummary): { label: string; style: string } {
+  const total = doc.question_count ?? 0;
+  if (doc.status === "needs_review" && total > 0 && (doc.confirmed_count ?? 0) >= total) {
+    return { label: "Đã xác nhận", style: "bg-emerald-100 text-emerald-800" };
+  }
+  return { label: DOCUMENT_STATUS_LABELS[doc.status], style: DOC_STATUS_STYLES[doc.status] };
+}
+
 export default function DashboardPage() {
   const [documents, setDocuments] = useState<DocumentSummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -60,8 +69,8 @@ export default function DashboardPage() {
                       {doc.question_count ?? 0} câu
                     </span>
                   </span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${DOC_STATUS_STYLES[doc.status]}`}>
-                    {DOCUMENT_STATUS_LABELS[doc.status]}
+                  <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${docBadge(doc).style}`}>
+                    {docBadge(doc).label}
                   </span>
                 </Link>
               </li>

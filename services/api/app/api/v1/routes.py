@@ -87,11 +87,13 @@ async def upload_document(user_id: UserDep, c: ContainerDep, session: SessionDep
 async def list_documents(user_id: UserDep, session: SessionDep, response: Response) -> list[s.DocumentSummaryOut]:
     response.headers.update(_NO_STORE)
     documents = await service.list_documents(session, user_id)
-    counts = dict((await session.execute(
-        select(Question.document_id, func.count()).where(
+    rows = (await session.execute(
+        select(Question.document_id, func.count(),
+               func.count().filter(Question.review_status == "confirmed")).where(
             Question.document_id.in_([d.id for d in documents])).group_by(Question.document_id)
-    )).tuples().all()) if documents else {}
-    return [document_summary(d, counts.get(d.id, 0)) for d in documents]
+    )).tuples().all() if documents else []
+    counts = {doc_id: (total, confirmed) for doc_id, total, confirmed in rows}
+    return [document_summary(d, *counts.get(d.id, (0, 0))) for d in documents]
 
 
 @router.get("/documents/{document_id}", response_model=s.DocumentOut, tags=["documents"])
@@ -303,7 +305,10 @@ def _session_out(view: tutoring_service.SessionView) -> s.TutoringSessionOut:
                        for st in f.get("steps", [])],
                 error_explanation_vi=f.get("error_explanation_vi"), next_hint_vi=f["next_hint_vi"],
                 student_reached_answer=f.get("student_reached_answer", False),
-                encouragement_vi=f.get("encouragement_vi", ""), tool_checked_steps=len(f.get("tool_checks", [])))
+                encouragement_vi=f.get("encouragement_vi", ""), tool_checked_steps=len(f.get("tool_checks", [])),
+                improvements=[s.ImprovementOut(kind=i["kind"], text_vi=i["text_vi"])
+                              for i in f.get("improvements", [])],
+                comparison=f.get("comparison"), comparison_vi=f.get("comparison_vi"))
         messages.append(s.SessionMessageOut(id=m.id, role=m.role, content=m.content,
                                             feedback=feedback, created_at=m.created_at))
     return s.TutoringSessionOut(id=view.session.id, question_id=view.session.question_id, messages=messages,

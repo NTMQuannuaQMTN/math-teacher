@@ -369,10 +369,12 @@ async def test_geometry_uses_the_reasoning_model_with_thinking_first(container: 
                                                                     provider: ScriptedProvider) -> None:
     """User request: harder models for geometry figures and proofs."""
     provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
+    provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))  # the figure repair round
     provider.push(GEO_PROOF)
     await orchestrator(container, geometry_thinking_first=True).run_solve(
         SolveInput("Chứng minh tứ giác ABCD nội tiếp.", ["geometry"], None))
-    formalize, solve = [r for r in provider.requests if r.schema_name in ("formalization", "solution")][:2]
+    formalize = next(r for r in provider.requests if r.schema_name == "formalization")
+    solve = next(r for r in provider.requests if r.schema_name == "solution")
     assert formalize.model == "reason-test" and solve.model == "reason-test"
     assert solve.thinking is True
 
@@ -381,6 +383,7 @@ async def test_a_failed_geometry_reasoning_call_falls_back_to_one_plain_attempt(
                                                                                 provider: ScriptedProvider) -> None:
     from app.providers.base import ProviderError
     provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))
+    provider.push(reply({"parts": [{"label": "", "task": "prove", "template": None}]}))  # the figure repair round
     provider.push(ProviderError("timeout", "slow"))
     provider.push(GEO_PROOF)
     outcome = await orchestrator(container, geometry_thinking_first=True).run_solve(

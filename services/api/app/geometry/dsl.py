@@ -67,7 +67,14 @@ class Projection(_Obj):
 class Reflection(_Obj):
     kind: Literal["reflection"]
     point: Id
-    center: Id = Field(description="Point reflection through `center` (đối xứng tâm).")
+    center: Id | None = Field(default=None, description="Point reflection through `center` (đối xứng qua điểm).")
+    line: Id | None = Field(default=None, description="Mirror image in `line` (đối xứng qua đường thẳng).")
+
+    @model_validator(mode="after")
+    def _one(self) -> Reflection:
+        if (self.center is None) == (self.line is None):
+            raise ValueError("reflection needs exactly one of 'center' (through a point) or 'line' (in a line)")
+        return self
 
 
 class Centroid(_Obj):
@@ -226,6 +233,12 @@ class LengthValue(BaseModel):
     value: float = Field(gt=0, description="Given length, e.g. AB = 6.")
 
 
+class Convex(BaseModel):
+    kind: Literal["convex"]
+    points: list[Id] = Field(min_length=4, max_length=6,
+                             description="Vertices in order: the polygon is convex (tứ giác lồi ABCD → [A,B,C,D]).")
+
+
 class Tangency(BaseModel):
     kind: Literal["tangent_line"]
     line: Pair
@@ -234,7 +247,7 @@ class Tangency(BaseModel):
 
 Relation = Annotated[
     Collinear | Concyclic | Perpendicular | Parallel | EqualLength | EqualAngle | OnCircle | OnLine | AngleValue
-    | LengthRatio | LengthValue | Tangency,
+    | LengthRatio | LengthValue | Tangency | Convex,
     Field(discriminator="kind"),
 ]
 

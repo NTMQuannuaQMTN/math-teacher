@@ -229,3 +229,46 @@ async def test_work_photo_rejections(client: httpx.AsyncClient, container: Conta
     intruder = await new_user(client)
     other = await client.post(url, headers=intruder, files={"file": ("vo.png", notebook_png(), "image/png")})
     assert other.status_code == 404
+
+
+def test_the_work_is_judged_on_its_own_not_against_the_reference() -> None:
+    from app.tutoring.feedback import TUTOR_SYSTEM
+
+    assert "many valid solutions" in TUTOR_SYSTEM
+    assert "Never mark a step wrong because it differs from the reference" in TUTOR_SYSTEM
+    assert '"better"' in TUTOR_SYSTEM  # the student's method may beat the reference
+
+
+async def test_finished_work_gets_improvements_and_an_honest_comparison(
+        client: httpx.AsyncClient, container: Container, provider: ScriptedProvider, auth: dict[str, str]) -> None:
+    _, session = await solved_session(client, container, provider, auth)
+    provider.push(feedback(
+        approach_vi="Em dùng định lý Vi-ét đảo.",
+        steps=[{"text": "$2 + 3 = 5$, $2 \\cdot 3 = 6$ nên $x = 2$, $x = 3$", "math": None, "status": "gap",
+                "note_vi": "Cần nói rõ: theo Vi-ét đảo, $2$ và $3$ là hai nghiệm."}],
+        student_reached_answer=True, next_hint_vi="Em đã tìm đúng nghiệm, hãy viết kết luận.",
+        improvements=[{"kind": "rigor", "text_vi": "Nêu định lý Vi-ét đảo trước khi kết luận."},
+                      {"kind": "method", "text_vi": "Nhẩm nghiệm theo Vi-ét nhanh hơn phân tích nhân tử."}],
+        comparison="better", comparison_vi="Cách nhẩm nghiệm của em ngắn hơn lời giải mẫu."))
+    body = (await client.post(f"/api/v1/sessions/{session['id']}/messages", headers=auth,
+                              json={"content": "$2+3=5$, $2.3=6$ nên $x=2$, $x=3$."})).json()
+    fb = body["messages"][-1]["feedback"]
+    assert fb["steps"][0]["status"] == "gap"
+    assert [i["kind"] for i in fb["improvements"]] == ["rigor", "method"]
+    assert fb["comparison"] == "better" and "ngắn hơn" in fb["comparison_vi"]
+
+
+async def test_unfinished_work_gets_no_comparison_and_no_leaking_suggestion(
+        client: httpx.AsyncClient, container: Container, provider: ScriptedProvider, auth: dict[str, str]) -> None:
+    _, session = await solved_session(client, container, provider, auth)
+    provider.push(feedback(
+        improvements=[{"kind": "presentation", "text_vi": "Viết rõ mỗi bước biến đổi tương đương."},
+                      {"kind": "method", "text_vi": "Dùng công thức nghiệm sẽ nhanh hơn."},
+                      {"kind": "rigor", "text_vi": "Kết luận: phương trình có nghiệm $x = 2$ hoặc $x = 3$."}],
+        comparison="reference_better", comparison_vi="Lời giải mẫu phân tích nhân tử."))
+    body = (await client.post(f"/api/v1/sessions/{session['id']}/messages", headers=auth,
+                              json={"content": "$x^2-5x+6=0 \\Leftrightarrow (x-2)(x-3)=0$"})).json()
+    fb = body["messages"][-1]["feedback"]
+    # "A shorter way" and the comparison would show the reference's method; the third one gives the answer away.
+    assert [i["kind"] for i in fb["improvements"]] == ["presentation"]
+    assert fb["comparison"] is None and fb["comparison_vi"] is None

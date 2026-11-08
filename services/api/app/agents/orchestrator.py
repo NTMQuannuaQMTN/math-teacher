@@ -11,6 +11,7 @@ CLASSIFY → FORMALIZE → SOLVE → VERIFY → CURRICULUM → (REVISE → VERIF
 
 from __future__ import annotations
 
+import json
 import logging
 import re
 import time
@@ -40,6 +41,7 @@ from ..solvers.schemas import (
 )
 from ..tools.sandbox import run_check
 from ..tutoring.hints import generate_hints
+from ..verification.tables import case_list_notes, table_defects
 from ..verification.verdict import (
     CheckRunner,
     drop_invalid_templates,
@@ -51,8 +53,36 @@ from .critic import Critique, critique_solution, issue_text
 
 logger = logging.getLogger(__name__)
 
+
+async def _figure_check(name: str, payload: dict[str, Any]) -> dict[str, Any]:
+    return await run_check(name, payload, limit_seconds=30)  # pruning a broken figure takes a few seconds
+
+
+async def _figure_problems(drawing: Formalization | None, run: CheckRunner = _figure_check) -> list[str]:
+    """Why the figure of a formalization cannot be drawn (empty when it can): no geometry at all, an invalid or
+    infeasible spec, or objects the engine had to leave out."""
+    from ..geometry.service import geometry_spec  # the figure service imports the solver stack
+
+    spec = geometry_spec(drawing)
+    if spec is None:
+        return ["no drawable geometry: give a geometry template, or the top-level \"figure\" when no part has one"]
+    result = await run("figure", {"spec": spec})
+    if not result.get("ok"):
+        return []  # the check itself timed out: nothing precise to tell the formalizer
+    data = result["result"]["data"]
+    if data["status"] != "ok":
+        return [result["result"]["detail"] or data["status"]]
+    problems = [f"{item} could not be built" for item in data.get("left_out") or []]
+    goals = data["spec"].get("goals") or []
+    for checked in data.get("goals") or []:
+        if checked["outcome"] == "refuted" and checked["index"] < len(goals):
+            goal = json.dumps(goals[checked["index"]], ensure_ascii=False)
+            problems.append(f"the statement to prove {goal} is FALSE on the figure: the problem's statements are true, "
+                            "so the construction (or this goal) misreads the problem")
+    return problems
+
 TOPICS = ("algebra", "geometry", "number_theory", "combinatorics")
-THINKING_CALL_SECONDS = 300  # typical duration of a reasoning escalation on SoCLaaS (measured 2026-10)
+THINKING_CALL_SECONDS = 600  # a reasoning call on SoCLaaS: ~300 s when idle (2026-10), up to the ~900 s stream limit
 _RANK: dict[VerificationStatus, int] = {"INCORRECT": 0, "UNSOLVED": 1, "UNVERIFIED": 2, "PARTIALLY_VERIFIED": 3,
                                         "VERIFIED": 4}
 
@@ -169,6 +199,7 @@ def revision_feedback(attempt: Attempt) -> list[str]:
             where = f" (đoạn: “{finding.excerpt}”)" if finding.excerpt else ""
             problems.append(f"{finding.message}{where}")
     problems.extend(attempt.defects)
+    problems.extend(case_list_notes(attempt.solution))
     if attempt.critique:
         problems.extend(f"Giám khảo: {issue_text(i)}" for i in attempt.critique.issues)
     return problems
@@ -198,8 +229,13 @@ class Orchestrator:
     def __init__(self, gateway: LLMGateway, *, policy: Policy | None = None, run: CheckRunner | None = None,
                  max_revisions: int = 2, question_budget_sgd: Decimal = Decimal("0.30"),
                  solve_max_tokens: int = 8000, formalize_max_tokens: int = 6000,
-                 escalate_thinking: bool = True, time_budget_seconds: float = 480,
-                 geometry_thinking_first: bool = False, critic: bool = True) -> None:
+                 escalate_thinking: bool = True, time_budget_seconds: float = 2400,
+                 geometry_thinking_first: bool = False, critic: bool = True,
+                 call_timeout_seconds: float | None = None) -> None:
+        self.call_timeout = call_timeout_seconds
+        # A formalization is ~600 output tokens: ~65 s at SoCLaaS's speed on 2026-11-08, so the default 120 s
+        # provider deadline timed out 3 of 36 calls. Streamed, a longer deadline is safe.
+        self._formalize_timeout = min(call_timeout_seconds or 300, 300)
         self.gateway = gateway
         self.policy = policy or load_policy()
         self.run = run or run_check
@@ -246,7 +282,8 @@ class Orchestrator:
                     ChatMessage(role="user", content=prompts.formalize_user(data.problem_text))]
         try:
             formal = await self.gateway.structured(tier=tier, ctx=ctx, output=FormalizationReply,
-                                                   max_tokens=self.formalize_max_tokens, temperature=temperature,
+                                                   max_tokens=self.formalize_max_tokens,
+                                                   timeout_seconds=self._formalize_timeout, temperature=temperature,
                                                    thinking=False,
                                                    schema_name="formalization", messages=messages)
         except (InvalidModelOutput, ModelCallFailed) as exc:
@@ -259,6 +296,7 @@ class Orchestrator:
             self._log(outcome, SolveState.FORMALIZE, started, error="invalid_model_output")
             return
         first = inherit_geometry(parsed)
+        last_reply = formal.value.model_dump_json()
         problems += template_errors(first)
         formalization, drawing = drop_invalid_templates(first), first
         repair_error = None
@@ -268,6 +306,7 @@ class Orchestrator:
             try:
                 repaired = await self.gateway.structured(
                     tier=tier, ctx=ctx, output=FormalizationReply, max_tokens=self.formalize_max_tokens,
+                    timeout_seconds=self._formalize_timeout,
                     temperature=temperature, thinking=False,
                     schema_name="formalization", messages=[
                         *messages, ChatMessage(role="assistant", content=formal.value.model_dump_json()),
@@ -279,11 +318,39 @@ class Orchestrator:
                     candidate = drop_invalid_templates(again)
                     if _templates(candidate) >= _templates(formalization):
                         formalization, drawing = candidate, again
+                        last_reply = repaired.value.model_dump_json()
             except (InvalidModelOutput, ModelCallFailed) as exc:
                 outcome.cost_sgd += exc.cost_sgd
                 repair_error = exc.code
+        # A figure the engine cannot build in any position is a misread construction (e.g. "G, L lần lượt là …"
+        # taken the wrong way round): one more round with the engine's exact finding. Kept only if it draws better.
+        figure_repaired = False
+        figure_trace: dict[str, Any] = {}
+        if "geometry" in (outcome.topics or data.topics):
+            run = _figure_check if self.run is run_check else self.run
+            figure_problems = await _figure_problems(drawing, run)
+            figure_trace["figure_problems"] = len(figure_problems)
+            if figure_problems:
+                try:
+                    fixed = await self.gateway.structured(
+                        tier=tier, ctx=ctx, output=FormalizationReply, max_tokens=self.formalize_max_tokens,
+                        timeout_seconds=self._formalize_timeout,
+                        temperature=temperature, thinking=False, schema_name="formalization", messages=[
+                            *messages, ChatMessage(role="assistant", content=last_reply),
+                            ChatMessage(role="user", content=prompts.formalize_figure_repair(figure_problems))])
+                    outcome.cost_sgd += fixed.cost_sgd
+                    again, _ = fixed.value.split()
+                    if again is not None:
+                        again = inherit_geometry(again)
+                        remaining = await _figure_problems(again, run)
+                        figure_trace["figure_problems_after_repair"] = len(remaining)
+                        if len(remaining) < len(figure_problems):
+                            formalization, drawing, figure_repaired = drop_invalid_templates(again), again, True
+                except (InvalidModelOutput, ModelCallFailed) as exc:
+                    outcome.cost_sgd += exc.cost_sgd
         outcome.formalization, outcome.drawing = formalization, drawing
         self._log(outcome, SolveState.FORMALIZE, started, parts=len(formalization.parts), repaired=bool(problems),
+                  figure_repaired=figure_repaired, **figure_trace,
                   templates=[p.template.kind if p.template else None for p in formalization.parts],
                   **({"repair_error": repair_error} if repair_error else {}))
 
@@ -348,7 +415,7 @@ class Orchestrator:
                     solved = await self.gateway.structured(tier=tier, ctx=ctx, output=ModelSolution,
                                                            max_tokens=self.solve_max_tokens, schema_name="solution",
                                                            messages=messages, temperature=0.2, thinking=thinking,
-                                                           max_retries=retries)
+                                                           max_retries=retries, timeout_seconds=self.call_timeout)
                 except BudgetRestricted:
                     # Restricted budget mode refuses the reasoning tier: degrade to the fast model.
                     tier = "fast"
@@ -356,7 +423,7 @@ class Orchestrator:
                     solved = await self.gateway.structured(tier=tier, ctx=ctx, output=ModelSolution,
                                                            max_tokens=self.solve_max_tokens, schema_name="solution",
                                                            messages=messages, temperature=0.2, thinking=False,
-                                                           max_retries=retries)
+                                                           max_retries=retries, timeout_seconds=self.call_timeout)
             except (BudgetExceeded, UserBudgetExceeded):
                 if outcome.best is None:
                     raise
@@ -411,7 +478,8 @@ class Orchestrator:
                 # A second agent checks every step like an examiner (a refuted answer needs no examiner).
                 started = time.monotonic()
                 checked = await critique_solution(self.gateway, CallContext("critique", data.user_id, data.job_id),
-                                                  data.problem_text, solved.value)
+                                                  data.problem_text, solved.value,
+                                                  timeout_seconds=self.call_timeout or 150)
                 if checked is not None:
                     critique = checked.critique
                     outcome.cost_sgd += checked.cost_sgd
@@ -421,7 +489,7 @@ class Orchestrator:
                           gaps=sum(i.severity == "gap" for i in critique.issues) if critique else None)
 
             attempt = Attempt(solved.value, verdicts, evidence, status, curriculum, critique,
-                              repeated_steps(solved.value))
+                              repeated_steps(solved.value) + table_defects(solved.value))
             if outcome.best is None or attempt.score() > outcome.best.score():
                 outcome.best = attempt
 

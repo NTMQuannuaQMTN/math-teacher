@@ -278,6 +278,17 @@
       },
       "DocumentOut": {
         "properties": {
+          "confirmed_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed Count"
+          },
           "content_type": {
             "title": "Content Type",
             "type": "string"
@@ -406,6 +417,17 @@
       },
       "DocumentSummaryOut": {
         "properties": {
+          "confirmed_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed Count"
+          },
           "content_type": {
             "title": "Content Type",
             "type": "string"
@@ -784,6 +806,29 @@
           "text_vi"
         ],
         "title": "HintOut",
+        "type": "object"
+      },
+      "ImprovementOut": {
+        "properties": {
+          "kind": {
+            "enum": [
+              "rigor",
+              "presentation",
+              "method"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "text_vi": {
+            "title": "Text Vi",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "text_vi"
+        ],
+        "title": "ImprovementOut",
         "type": "object"
       },
       "JobOut": {
@@ -1944,6 +1989,7 @@
           "status": {
             "enum": [
               "correct",
+              "gap",
               "incorrect",
               "unclear"
             ],
@@ -1989,6 +2035,33 @@
             "title": "Approach Vi",
             "type": "string"
           },
+          "comparison": {
+            "anyOf": [
+              {
+                "enum": [
+                  "better",
+                  "as_good",
+                  "reference_better"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison"
+          },
+          "comparison_vi": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison Vi"
+          },
           "encouragement_vi": {
             "title": "Encouragement Vi",
             "type": "string"
@@ -2014,6 +2087,13 @@
               }
             ],
             "title": "First Error Index"
+          },
+          "improvements": {
+            "items": {
+              "$ref": "#/components/schemas/ImprovementOut"
+            },
+            "title": "Improvements",
+            "type": "array"
           },
           "next_hint_vi": {
             "title": "Next Hint Vi",

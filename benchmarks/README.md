@@ -8,7 +8,8 @@
 | `authentic/sources.json` | Source of each paper: official URL, access date, SHA-256 of the downloaded file. |
 | `manifest.json` | Target (50 per topic, 200 total) and current counts. |
 | `synthetic/verifier_cases.jsonl` | 39 labelled synthetic cases for the deterministic verifier (`tests/test_verifier_suite.py`). Never mixed into the authentic set or its scores. |
-| `results/` | Raw output of `services/api/scripts/run_benchmark.py`, one file per run. |
+| `figures/extra.jsonl` | Extra geometry problems for the figure benchmark (problems users reported, with their source). |
+| `results/` | Raw output of `services/api/scripts/run_benchmark.py` and `figure_benchmark.py` (`figures-*.jsonl`), one file per run. |
 
 Each authentic item records its provenance (`exam`, `school`, `year`, `source_url`, `page`), the reference answer
 and its status (`official` = from the published answer key, `teacher` = from a teacher's solution, `derived` = worked
@@ -29,6 +30,23 @@ uv run python scripts/run_benchmark.py --topic number_theory
 ```
 
 Calls the real SoCLaaS API; every call is reserved and charged in the budget ledger like the app.
+
+### Figure benchmark
+
+```bash
+uv run python scripts/figure_benchmark.py --concurrency 3           # one figure per subquestion item
+uv run python scripts/figure_benchmark.py --whole --concurrency 3   # one figure per whole question (as uploaded)
+```
+
+`--whole` rebuilds each question as its stem plus every part: a later part may use names defined in an earlier one
+(a single subquestion item would then mention an undefined point).
+
+Draws every geometry item (authentic + `figures/extra.jsonl`) exactly as the app does and grades each figure without
+trusting the formalizer: `correct` = the engine builds it, nothing had to be left out, and every statement the
+problem asks to prove holds on it; `wrong_figure` = a goal is refuted on the figure (the construction is misread);
+`partial` = drawn without some objects; `infeasible`/`no_figure` = not drawn. SoCLaaS offers no fine-tuning, so this
+is how figure drawing is trained: failures become formalizer rules, construction recipes or engine fixes, and the
+benchmark is run again.
 
 ## Results so far (16 machine-checkable items)
 

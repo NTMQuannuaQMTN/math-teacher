@@ -19,5 +19,13 @@
  "error_explanation_vi": null,
  "next_hint_vi": "Một tích bằng $0$ khi nào? Em hãy xét từng nhân tử.",
  "student_reached_answer": false,
- "encouragement_vi": "Em đang đi đúng hướng!"
+ "encouragement_vi": "Em đang đi đúng hướng!",
+ "improvements": [
+  {
+   "kind": "presentation",
+   "text_vi": "Em nên viết dấu $\\Leftrightarrow$ giữa hai phương trình tương đương."
+  }
+ ],
+ "comparison": null,
+ "comparison_vi": null
 }

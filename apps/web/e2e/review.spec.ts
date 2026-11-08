@@ -44,9 +44,14 @@ test("upload → review → fix unclear notation → confirm → workspace", asy
   await expect(q3.getByText("Đã xác nhận")).toBeVisible();
   await expect(q3.locator(".katex").first()).toBeVisible();
 
-  // Topic chips are editable (mixed topics allowed).
+  // Outside edit mode the question is read-only: topics are labels, not buttons.
+  await expect(q3.getByRole("button", { name: "Đại số" })).toHaveCount(0);
+  // Topics are changed in edit mode (mixed topics allowed) and saved with the edit.
+  await q3.getByRole("button", { name: "Sửa" }).click();
   await q3.getByRole("button", { name: "Đại số" }).click();
   await expect(q3.getByRole("button", { name: "Đại số" })).toHaveAttribute("aria-pressed", "true");
+  await q3.getByRole("button", { name: "Lưu và xác nhận" }).click();
+  await expect(q3.getByRole("list", { name: "Chủ đề" }).getByText("Đại số")).toBeVisible();
   await expect(q3.getByText(/Bài kết hợp nhiều chủ đề/)).toBeVisible();
 
   await q3.getByRole("link", { name: "Mở câu hỏi" }).click();
@@ -54,29 +59,51 @@ test("upload → review → fix unclear notation → confirm → workspace", asy
   await expect(page.getByRole("button", { name: "Giải bài" })).toBeEnabled();
 });
 
-test("confirm all confirms clean questions and points at the ones with errors", async ({ page }) => {
+test("screen 1 → submit → screen 2; Sửa reopens one question next to the image", async ({ page }) => {
   await page.goto("/upload");
   await page.setInputFiles("input[type=file]", path.join(FIXTURES, "synthetic_page1.png"));
   await page.getByRole("button", { name: "Nhận dạng đề" }).click();
   await page.waitForURL(/\/documents\//);
   await expect(page.locator("article")).toHaveCount(4, { timeout: 20_000 });
 
-  await page.getByRole("button", { name: "Xác nhận tất cả (4)" }).first().click();
+  // Screen 1: every question next to the page image; there are no tabs to switch screens.
+  await expect(page.getByRole("tab", { name: "2. Kiểm tra & xác nhận" })).toHaveCount(0);
+  await expect(page.getByAltText("Ảnh gốc trang 1")).toBeVisible();
+
+  // Submitting confirms the clean questions and moves to screen 2, which names the one with errors.
+  await page.getByRole("button", { name: "Xác nhận tất cả (4) và tiếp tục →" }).first().click();
   await expect(page.getByRole("status")).toContainText("Đã xác nhận 3 câu");
   await expect(page.getByRole("status")).toContainText("Câu 3");
   await expect(page.getByText("đã xác nhận 3/4")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Xác nhận tất cả (1)" }).first()).toBeVisible();
-
-  // Step 2 shows only the questions (no page image); clicking an unconfirmed one goes back to fix it.
-  await page.getByRole("tab", { name: "2. Kiểm tra & xác nhận" }).click();
   await expect(page.getByAltText("Ảnh gốc trang 1")).toHaveCount(0);
+  await expect(page.locator("article")).toHaveCount(0);
+
+  // A reload stays on screen 2.
+  await page.reload();
   const checkList = page.getByRole("region", { name: "Kiểm tra và xác nhận" });
-  await checkList.getByRole("button").filter({ hasText: "Câu 3" }).click();
-  await expect(page.getByRole("tab", { name: "1. Đối chiếu với ảnh" })).toHaveAttribute("aria-selected", "true");
+  await expect(checkList).toBeVisible({ timeout: 20_000 });
+
+  // "Sửa" opens screen 1 for that question only, already in edit mode, with its region on the image.
+  await checkList.getByRole("button", { name: "Sửa Câu 3" }).click();
   await expect(page.getByAltText("Ảnh gốc trang 1")).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Chọn / })).toHaveCount(1);
+  await expect(page.locator("article")).toHaveCount(1);
+  const q3 = page.locator("article").filter({ has: page.getByRole("heading", { name: "Câu 3" }) });
+  const textarea = q3.getByLabel("Đề bài (LaTeX)");
+  await textarea.fill((await textarea.inputValue()).replace("\\unclear{2}", "2"));
+  await q3.getByRole("button", { name: "Lưu và xác nhận" }).click();
+
+  // Saving returns to screen 2.
+  await expect(checkList).toBeVisible();
+  await expect(page.getByAltText("Ảnh gốc trang 1")).toHaveCount(0);
+  await expect(page.getByText("đã xác nhận 4/4")).toBeVisible();
+
+  // Cancelling an edit also returns to screen 2 without changes.
+  await checkList.getByRole("button", { name: "Sửa Câu 2" }).click();
+  await page.locator("article").getByRole("button", { name: "Huỷ" }).click();
+  await expect(checkList).toBeVisible();
 
   // A confirmed question opens its workspace by clicking the question itself.
-  await page.getByRole("tab", { name: "2. Kiểm tra & xác nhận" }).click();
   await checkList.getByRole("link").filter({ hasText: "Câu 1" }).click();
   await page.waitForURL(/\/questions\//);
   await expect(page.getByRole("heading", { name: "Câu 1" })).toBeVisible();
@@ -186,6 +213,9 @@ test("confirmed question → solve → hints first → full verified solution", 
   await expect(page.getByText("Gợi ý cho bước tiếp theo")).toBeVisible();
   await expect(page.getByText(/bước biến đổi đã được kiểm tra bằng công cụ/)).toBeVisible();
   await expect(page.getByLabel("correct")).toHaveCount(2);
+  // Feedback judges the work itself and says what could be better (here: presentation), not "differs from ours".
+  await expect(tutor.getByText("Có thể làm tốt hơn")).toBeVisible();
+  await expect(tutor.getByText("Trình bày:")).toBeVisible();
 
   page.once("dialog", (dialog) => void dialog.accept());
   await page.getByRole("button", { name: "Xem lời giải đầy đủ" }).click();
@@ -233,10 +263,11 @@ test("geometry question → interactive figure that keeps its constraints while 
   await manual.getByRole("button", { name: "Sửa" }).click();
   await manual.getByLabel("Đề bài (LaTeX)").fill(
     "Cho tam giác ABC nội tiếp đường tròn $(O)$, $M$ là trung điểm của $BC$. Chứng minh $OM \\perp BC$.");
-  await manual.getByRole("button", { name: "Lưu và xác nhận" }).click();
-  await expect(manual.getByText("Đã xác nhận")).toBeVisible();
   await manual.getByRole("button", { name: "Hình học" }).click();
   await expect(manual.getByRole("button", { name: "Hình học" })).toHaveAttribute("aria-pressed", "true");
+  await manual.getByRole("button", { name: "Lưu và xác nhận" }).click();
+  await expect(manual.getByText("Đã xác nhận")).toBeVisible();
+  await expect(manual.getByRole("list", { name: "Chủ đề" }).getByText("Hình học")).toBeVisible();
   await manual.getByRole("link", { name: "Mở câu hỏi" }).click();
 
   await expect(page.getByRole("heading", { name: "Hình vẽ" })).toBeVisible();
@@ -266,4 +297,59 @@ test("geometry question → interactive figure that keeps its constraints while 
   await page.getByRole("button", { name: "Vẽ lại hình" }).click();
   await expect(board.locator("ellipse").first()).toBeVisible({ timeout: 20_000 });
   await expect(page.getByText("✓ OM ⊥ BC")).toBeVisible();
+});
+
+test("a geometry maximum still gets a figure with its lengths, right angle and convexity", async ({ page }) => {
+  await page.goto("/upload");
+  await page.setInputFiles("input[type=file]", path.join(FIXTURES, "synthetic_page1.png"));
+  await page.getByRole("button", { name: "Nhận dạng đề" }).click();
+  await page.waitForURL(/\/documents\//);
+  await expect(page.locator("article").first()).toBeVisible({ timeout: 20_000 });
+
+  await page.getByRole("button", { name: "+ Thêm câu bị thiếu" }).click();
+  const manual = page.locator("article").filter({ hasText: "thêm thủ công" });
+  await manual.getByRole("button", { name: "Sửa" }).click();
+  await manual.getByLabel("Đề bài (LaTeX)").fill(
+    "Cho tứ giác lồi $ABCD$ có $BC = 7$, $DA = 1$ và $AC \\perp BD$. Tìm giá trị lớn nhất của chu vi tứ giác $ABCD$.");
+  await manual.getByRole("button", { name: "Hình học" }).click();
+  await manual.getByRole("button", { name: "Lưu và xác nhận" }).click();
+  await manual.getByRole("link", { name: "Mở câu hỏi" }).click();
+
+  await page.getByRole("button", { name: "Vẽ hình" }).click();
+  const board = page.getByRole("figure", { name: "Hình vẽ tương tác" });
+  await expect(board.locator("ellipse").first()).toBeVisible({ timeout: 20_000 });
+  const givens = page.getByRole("list", { name: "Giả thiết của hình" });
+  await expect(givens.getByText("BC = 7")).toBeVisible();
+  await expect(givens.getByText("DA = 1")).toBeVisible();
+  await expect(givens.getByText("AC ⊥ BD")).toBeVisible();
+  await expect(givens.getByText("Tứ giác ABCD lồi")).toBeVisible();
+  // The lengths are written next to their segments on the figure itself.
+  await expect(board.getByText("7", { exact: true })).toBeVisible();
+  await expect(board.getByText("1", { exact: true })).toBeVisible();
+  if (process.env.FIGURE_SHOT) await board.screenshot({ path: process.env.FIGURE_SHOT });
+
+  // Zoom with the buttons: the points spread apart; "Vừa khung" brings the whole figure back.
+  const spread = async () => {
+    const boxes = await board.locator("ellipse").evaluateAll((els) =>
+      els.filter((e) => Number(e.getAttribute("rx")) < 15).map((e) => e.getBoundingClientRect()).filter((r) => r.width > 0));
+    const xs = boxes.map((r) => r.x), ys = boxes.map((r) => r.y);
+    return Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+  };
+  const before = await spread();
+  for (let i = 0; i < 3; i++) await page.getByRole("button", { name: "Phóng to" }).click();
+  await expect.poll(spread).toBeGreaterThan(before * 1.3); // 1.15³ ≈ 1.52: gentle steps
+  await page.getByRole("button", { name: "Thu nhỏ" }).click();
+  await page.getByRole("button", { name: "Vừa khung" }).click();
+  await expect.poll(async () => Math.abs((await spread()) - before)).toBeLessThan(2);
+
+  // Ctrl + wheel (a trackpad pinch) zooms in proportion to the scroll, one notch ≈ ×1.16; a plain wheel does not zoom.
+  const frame = (await board.boundingBox())!;
+  await page.mouse.move(frame.x + frame.width / 2, frame.y + frame.height / 2);
+  await page.mouse.wheel(0, -100);
+  await expect.poll(async () => Math.abs((await spread()) - before)).toBeLessThan(2);
+  await page.keyboard.down("Control");
+  await page.mouse.wheel(0, -100);
+  await page.keyboard.up("Control");
+  await expect.poll(async () => (await spread()) / before).toBeGreaterThan(1.1);
+  expect((await spread()) / before).toBeLessThan(1.25);
 });

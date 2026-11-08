@@ -615,6 +615,8 @@ export interface components {
         };
         /** DocumentOut */
         DocumentOut: {
+            /** Confirmed Count */
+            confirmed_count?: number | null;
             /** Content Type */
             content_type: string;
             /**
@@ -654,6 +656,8 @@ export interface components {
         };
         /** DocumentSummaryOut */
         DocumentSummaryOut: {
+            /** Confirmed Count */
+            confirmed_count?: number | null;
             /** Content Type */
             content_type: string;
             /**
@@ -802,6 +806,16 @@ export interface components {
              * @enum {string}
              */
             level: "concept" | "observation" | "strategy" | "key_step";
+            /** Text Vi */
+            text_vi: string;
+        };
+        /** ImprovementOut */
+        ImprovementOut: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "rigor" | "presentation" | "method";
             /** Text Vi */
             text_vi: string;
         };
@@ -1218,7 +1232,7 @@ export interface components {
              * Status
              * @enum {string}
              */
-            status: "correct" | "incorrect" | "unclear";
+            status: "correct" | "gap" | "incorrect" | "unclear";
             /** Text */
             text: string;
         };
@@ -1233,12 +1247,18 @@ export interface components {
         TutorFeedbackOut: {
             /** Approach Vi */
             approach_vi: string;
+            /** Comparison */
+            comparison?: ("better" | "as_good" | "reference_better") | null;
+            /** Comparison Vi */
+            comparison_vi?: string | null;
             /** Encouragement Vi */
             encouragement_vi: string;
             /** Error Explanation Vi */
             error_explanation_vi: string | null;
             /** First Error Index */
             first_error_index: number | null;
+            /** Improvements */
+            improvements?: components["schemas"]["ImprovementOut"][];
             /** Next Hint Vi */
             next_hint_vi: string;
             /** Steps */

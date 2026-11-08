@@ -76,6 +76,8 @@ def _evaluate(spec: GeometrySpec) -> dict[str, Any] | None:
             a, b = values[obj.a], values[obj.b]
             values[oid] = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
         elif isinstance(obj, Reflection):
+            if obj.center is None:
+                return None  # a mirror in a line is not handled symbolically: the numeric check decides
             p, c = values[obj.point], values[obj.center]
             values[oid] = (2 * c[0] - p[0], 2 * c[1] - p[1])
         elif isinstance(obj, Centroid):

@@ -43,7 +43,8 @@ characters. Every object it uses must be defined; order does not matter). Relati
 (on_circle, concyclic, perpendicular, …) are never objects: they go in givens or goals.
   free_point; point_on_line {line}; point_on_circle {circle}; midpoint {a,b}; intersection {of:[x,y], exclude?, near?}
   (for a circle, "exclude" = the OTHER intersection than that point); projection {point,line} (foot of perpendicular);
-  reflection {point,center}; centroid/orthocenter/circumcenter/incenter {points:[A,B,C]};
+  reflection {point,center} ("đối xứng qua điểm O") or {point,line} ("đối xứng qua BC", "qua đường thẳng d");
+  centroid/orthocenter/circumcenter/incenter {points:[A,B,C]};
   line/segment/ray {through:[P,Q]}; parallel {through, to}; perpendicular {through, to}; angle_bisector {vertex,a,b};
   tangent {circle, at}; circle {center, through} or {center, radius}; circumcircle {points}; circle_diameter {a,b}.
   Every circle the problem names or describes is an object, even if nothing is constructed on it, so it is drawn:
@@ -55,10 +56,13 @@ characters. Every object it uses must be defined; order does not matter). Relati
   a point_on_circle. Only a circle the problem asks to PROVE exists ("chứng minh tứ giác … nội tiếp") stays a goal.
 givens = conditions that are not constructions (triangle shape, given lengths/angles): equal_length {segments:[[A,B],[A,C]]},
   angle_value {angle:[B,A,C], degrees}, length_value {segment:[B,C], value}, length_ratio, perpendicular {lines:[[A,B],[C,D]]},
-  parallel, collinear {points}, concyclic {points}, on_circle {point,circle}, on_line {point,line}, tangent_line {line:[A,B],circle}.
+  parallel, collinear {points}, concyclic {points}, on_circle {point,circle}, on_line {point,line}, tangent_line {line:[A,B],circle},
+  convex {points:[A,B,C,D]} ("tứ giác lồi ABCD", vertices in order).
   Prefer constructions over givens (e.g. "H là chân đường cao từ A" → projection, not a given).
-  Inequalities and shape words ("nhọn", "Â > B̂ > Ĉ", "CD > AB", "cung nhỏ") are not givens: leave them out (never
-  write "nhọn" as a 90° angle). Only an exact equality is a given.
+  Inequalities and other shape words ("nhọn", "Â > B̂ > Ĉ", "CD > AB", "cung nhỏ") are not givens: leave them out
+  (never write "nhọn" as a 90° angle). Only an exact equality (or "lồi" → convex) is a given.
+  Every polygon of the problem (tam giác ABC, tứ giác ABCD) has its sides as segment objects, and every segment the
+  problem mentions (đường chéo AC, BD; đoạn MN) is a segment object, so the figure shows them.
 goals = what must be proven (same relation kinds). targets = what must be computed: {kind: length|angle|ratio|area, points}.
 Example: "Cho tam giác ABC vuông tại A, AB = 3, AC = 4, đường cao AH. Chứng minh AH.BC = AB.AC và tính AH." →
 {"objects":[{"kind":"free_point","id":"A"},{"kind":"free_point","id":"B"},{"kind":"free_point","id":"C"},
@@ -70,6 +74,27 @@ Several parts on one figure: write the whole construction once, in the FIRST geo
 lists ONLY the objects and givens it adds (it may use every id from earlier parts: they are included automatically)
 and its own goals/targets. Never repeat earlier objects. A point the problem defines from earlier objects (e.g. "(I)
 là đường tròn qua A, D, E" → circumcircle; I = circumcenter) is constructed, never a free_point.
+Recipes: "tia MH cắt (O) tại T" → ray {through: [M, H]} (origin first) and T = intersection {of: [that ray, the
+circle]} with no exclude/near: the engine keeps the point ON the ray (a line would give the wrong one);
+"phân giác ngoài của góc A" → perpendicular {through: A, to: the internal bisector at A} (never the internal
+bisector itself); "tiếp tuyến LH của (I) kẻ từ L, H ≠ D" (L outside the circle) → H = intersection {of: [circle_diameter
+{L, I}, the circle], exclude: D}; "OHGK là hình bình hành" (G unknown) → a point X = midpoint {H, K}, G = reflection
+{point: O, center: X}; "lấy E trên cạnh CA" → point_on_line on the segment CA (never a free_point with an on_line
+given); "E, F trên CA, AB sao cho EF tiếp xúc (O)" → E on CA, F on AB, and the given tangent_line [E, F].
+Use only names the text defines. A name that is used but never defined in the text you are given (e.g. "AN" when N
+comes from an earlier part that is not shown) is NEVER given a guessed definition: leave out the objects and goals
+that need it.
+Read every definition word by word. "L và G lần lượt là các giao điểm khác D của DJ và (S) với (I)" = respectively:
+L = the other intersection of DJ with (I), G = the other intersection of (S) with (I) — never G on DJ. A point named
+in a goal that is not defined ("AL và GJ cắt nhau trên (I)") is constructed: X = intersection {of:[AL, GJ]} and the
+goal on_circle {point: X, circle: cI}. Two different names are never the same point in every figure: if your
+construction makes them coincide, you misread the problem.
+FIGURE: if the problem is about a plane figure but NO part has kind "geometry" (e.g. the maximum of a perimeter written
+as an algebraic "extremum"), ALSO give a top-level "figure": a geometry spec of the configuration (objects and every
+given: lengths, right angles, "lồi"; goals and targets may be empty), so the figure can be drawn. Otherwise
+"figure": null. Example: "Cho tứ giác lồi ABCD có BC = 7, DA = 1, AC ⊥ BD. Tìm giá trị lớn nhất của chu vi ABCD." →
+parts [extremum template] and "figure": {"objects": [free points A, B, C, D; segments AB, BC, CD, DA, AC, BD],
+"givens": [length_value BC 7, length_value DA 1, perpendicular [[A,C],[B,D]], convex [A,B,C,D]]}.
 
 Expression syntax: plain ASCII, explicit multiplication (2*x, not 2x), ^ for powers, sqrt(), Abs(), gcd(),
 Mod(a, b) for remainders, comparisons ==, !=, <, <=, >, >=, "and" / "or". Variable names: letters, digits, _.
@@ -109,6 +134,12 @@ Hard rules:
    b | a), parallel AB // CD (never \\parallel), \\triangle ABC \\backsim \\triangle DEF, "." for a product of
    lengths (AB.AC), a decimal comma written 3{{,}}14, points with a semicolon (1; -1). Use ≈ (\\approx) only for a measurement the question asks to
    approximate.
+7. Checking a finite list of cases with the same computation (remainders of n modulo m, the last digit, small values
+   of a parameter) is ONE step with a table, never one line per case: a sentence saying what is checked, then
+   $$\\begin{{array}}{{|c|c|c|c|c|}}\\hline n \\pmod 9 & 0 & 1 & \\cdots & 8 \\\\ \\hline f(n) \\pmod 9 & 4 & 0 & \\cdots & 8
+   \\\\ \\hline\\end{{array}}$$ with every case as its own column (no \\cdots in the real table), the rows the
+   intermediate values a marker needs (e.g. n^4 mod 9 before f(n) mod 9), reduced before powering; then the conclusion
+   in the next step ("Từ bảng trên, …").
 
 {guidance}
 Allowed techniques (put the ids you use in "techniques"):
@@ -167,6 +198,15 @@ def formalize_repair(problems: list[str]) -> str:
     issues = "\n".join(f"- {p}" for p in problems[:12])
     return ("Some expressions in your formalization cannot be parsed:\n" + issues +
             "\nReturn the corrected formalization JSON. Use template null for any part you cannot express exactly.")
+
+
+def formalize_figure_repair(problems: list[str]) -> str:
+    issues = "\n".join(f"- {p}" for p in problems[:8])
+    return ("The figure built from your geometry spec fails in EVERY position of the free points:\n" + issues +
+            "\nThe construction must contain a misreading. Re-read, word by word, the sentence of the problem that "
+            "defines each object named above and everything it is built from (\"lần lượt\" = respectively: the k-th "
+            "object goes with the k-th; \"giao điểm khác D\" = the OTHER intersection; check which line or circle "
+            "each point is on). Return the corrected full formalization JSON (all parts and the figure).")
 
 
 HINTS_SYSTEM = """You write progressive hints in Vietnamese for a Grade 9 student preparing for Toán chuyên vào 10.

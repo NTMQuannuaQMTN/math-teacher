@@ -110,3 +110,14 @@ def test_line_break_before_a_parenthesis_is_not_inline_maths(raw: str) -> None:
     once = normalize_latex(raw)
     assert normalize_latex(once.text).text == once.text
     assert not normalize_latex(once.text).has_errors
+
+
+@pytest.mark.parametrize(("raw", "errors"), [
+    ("\\(\\\\)", True),        # found by hypothesis: "\\)" here is a line break then ")", not the closing "\)"
+    ("$a\\\\$ b", False),     # a formula ending in a line break closes at its "$"
+    ("$x\\$y$", False),       # an escaped dollar inside a formula
+])
+def test_a_line_break_inside_maths_is_one_unit(raw: str, errors: bool) -> None:
+    once = normalize_latex(raw)
+    assert once.has_errors is errors
+    assert normalize_latex(once.text).text == once.text

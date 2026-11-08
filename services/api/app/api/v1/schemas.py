@@ -139,6 +139,8 @@ class DocumentSummaryOut(BaseModel):
     error_message: str | None
     created_at: datetime
     question_count: int | None = None
+    # Questions the student has confirmed; when it equals question_count the document is ready to study.
+    confirmed_count: int | None = None
 
 
 class DocumentOut(DocumentSummaryOut):
@@ -355,8 +357,13 @@ class WorkPhotoOut(BaseModel):
 
 class StudentStepOut(BaseModel):
     text: str
-    status: Literal["correct", "incorrect", "unclear"]
+    status: Literal["correct", "gap", "incorrect", "unclear"]
     note_vi: str | None
+
+
+class ImprovementOut(BaseModel):
+    kind: Literal["rigor", "presentation", "method"]
+    text_vi: str
 
 
 class TutorFeedbackOut(BaseModel):
@@ -368,6 +375,9 @@ class TutorFeedbackOut(BaseModel):
     student_reached_answer: bool
     encouragement_vi: str
     tool_checked_steps: int
+    improvements: list[ImprovementOut] = Field(default_factory=list)
+    comparison: Literal["better", "as_good", "reference_better"] | None = None
+    comparison_vi: str | None = None
 
 
 class SessionMessageOut(BaseModel):

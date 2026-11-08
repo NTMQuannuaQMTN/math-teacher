@@ -1,0 +1,119 @@
+{
+ "match": "tứ giác lồi",
+ "reply": {
+  "parts": [
+   {
+    "label": "",
+    "task": "extremum",
+    "template": {
+     "kind": "extremum",
+     "variables": [
+      "AB",
+      "CD"
+     ],
+     "objective": "AB + CD + 8",
+     "sense": "max",
+     "conditions": [
+      "AB^2 + CD^2 == 50"
+     ],
+     "positive": true,
+     "domain": "real"
+    }
+   }
+  ],
+  "figure": {
+   "objects": [
+    {
+     "kind": "free_point",
+     "id": "A"
+    },
+    {
+     "kind": "free_point",
+     "id": "B"
+    },
+    {
+     "kind": "free_point",
+     "id": "C"
+    },
+    {
+     "kind": "free_point",
+     "id": "D"
+    },
+    {
+     "kind": "segment",
+     "id": "AB",
+     "through": [
+      "A",
+      "B"
+     ]
+    },
+    {
+     "kind": "segment",
+     "id": "BC",
+     "through": [
+      "B",
+      "C"
+     ]
+    },
+    {
+     "kind": "segment",
+     "id": "CD",
+     "through": [
+      "C",
+      "D"
+     ]
+    },
+    {
+     "kind": "segment",
+     "id": "DA",
+     "through": [
+      "D",
+      "A"
+     ]
+    }
+   ],
+   "givens": [
+    {
+     "kind": "length_value",
+     "segment": [
+      "B",
+      "C"
+     ],
+     "value": 7
+    },
+    {
+     "kind": "length_value",
+     "segment": [
+      "D",
+      "A"
+     ],
+     "value": 1
+    },
+    {
+     "kind": "perpendicular",
+     "lines": [
+      [
+       "A",
+       "C"
+      ],
+      [
+       "B",
+       "D"
+      ]
+     ]
+    },
+    {
+     "kind": "convex",
+     "points": [
+      "A",
+      "B",
+      "C",
+      "D"
+     ]
+    }
+   ],
+   "goals": [],
+   "targets": []
+  }
+ }
+}

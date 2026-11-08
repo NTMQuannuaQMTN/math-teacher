@@ -29,7 +29,9 @@ Report as "gap": a claim stated without a reason that a marker would not accept 
 cyclic quadrilateral, an inequality step, a fact outside the Grade 9 programme used without proof), a missing
 condition (ĐKXĐ, Δ ≥ 0, the equality case of an inequality), a part of the question not answered.
 Report as "presentation": self-talk or corrections left in the text ("Chờ đã", "? Không, …", "Tuy nhiên, cách …"),
-notation the official keys do not use, steps out of order.
+notation the official keys do not use, steps out of order, a finite case check (remainders, last digits) written
+one line per case instead of one table. A table of cases is the required layout, never an issue in itself: check
+every entry of it.
 
 Rules: judge only what is written; do not solve the problem again in your reply; do not report a step as wrong
 unless you can say exactly why; a correct step written differently from your own method is correct. Point to the
@@ -69,8 +71,8 @@ def critic_user(problem: str, solution: ModelSolution) -> str:
             "Chấm lời giải này theo các quy tắc. Return JSON only.")
 
 
-async def critique_solution(gateway: LLMGateway, ctx: CallContext, problem: str, solution: ModelSolution
-                            ) -> CritiqueResult | None:
+async def critique_solution(gateway: LLMGateway, ctx: CallContext, problem: str, solution: ModelSolution,
+                            timeout_seconds: float = 150) -> CritiqueResult | None:
     """One examiner pass (a second try if the first reply is unusable); None when the critic could not answer, and
     the solve then continues on the tool checks alone."""
     cost = Decimal(0)
@@ -78,7 +80,7 @@ async def critique_solution(gateway: LLMGateway, ctx: CallContext, problem: str,
         try:
             result = await gateway.structured(
                 tier="reasoning", ctx=ctx, output=Critique, max_tokens=4000, schema_name="critique", temperature=0.0,
-                thinking=False, timeout_seconds=150, max_retries=0, messages=[
+                thinking=False, timeout_seconds=timeout_seconds, max_retries=0, messages=[
                     ChatMessage(role="system", content=CRITIC_SYSTEM),
                     ChatMessage(role="user", content=critic_user(problem, solution))])
         except (InvalidModelOutput, ModelCallFailed) as exc:

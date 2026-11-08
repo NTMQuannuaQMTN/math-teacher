@@ -228,7 +228,9 @@ def split_segments(text: str) -> tuple[list[Segment], list[LatexIssue]]:
         j = i + len(start)
         close = -1
         while j < n:
-            if text[j] == "\\" and j + 1 < n and text[j + 1] == "$":
+            # Inside maths too, a backslash pair (a line break) and an escaped dollar are single units, so a formula
+            # ending in a line break closes at the real closing delimiter.
+            if text[j] == "\\" and j + 1 < n and text[j + 1] in "$\\":
                 j += 2
                 continue
             if text.startswith(end, j):

@@ -239,6 +239,13 @@ def template_errors(formalization: Formalization) -> list[str]:
             except ExpressionError as exc:
                 problems.append(f"{label}: '{text}' is not valid ({exc}). Use only the variables {sorted(names)}, "
                                 "explicit operators, and no sets, words or 'in'.")
+    if formalization.figure is not None:
+        from ..geometry.engine import GeometryError, compile_spec
+
+        try:
+            compile_spec(formalization.figure)
+        except GeometryError as exc:
+            problems.append(f"figure: geometry spec is invalid ({exc}).")
     return problems
 
 
@@ -273,7 +280,8 @@ def inherit_geometry(formalization: Formalization) -> Formalization:
         objects.update({o.id: o for o in merged.objects})
         givens = list(merged.givens)
         parts.append(part.model_copy(update={"template": template.model_copy(update={"spec": merged})}))
-    return Formalization(parts=parts)
+    figure = normalize_spec(formalization.figure) if formalization.figure is not None else None
+    return Formalization(parts=parts, figure=figure)
 
 
 def drop_invalid_templates(formalization: Formalization) -> Formalization:
@@ -282,4 +290,4 @@ def drop_invalid_templates(formalization: Formalization) -> Formalization:
     for part in formalization.parts:
         single = Formalization(parts=[part])
         parts.append(part if not template_errors(single) else part.model_copy(update={"template": None}))
-    return Formalization(parts=parts)
+    return Formalization(parts=parts, figure=formalization.figure)  # the figure is for drawing, never verification

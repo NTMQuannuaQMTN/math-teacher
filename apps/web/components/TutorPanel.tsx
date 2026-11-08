@@ -11,11 +11,20 @@ type Session = Schemas["TutoringSessionOut"];
 type Feedback = NonNullable<Session["messages"][number]["feedback"]>;
 type WorkPhoto = Schemas["WorkPhotoOut"];
 
-const STEP_ICON = { correct: "✓", incorrect: "✗", unclear: "?" } as const;
+const STEP_ICON = { correct: "✓", gap: "!", incorrect: "✗", unclear: "?" } as const;
 const STEP_STYLE = {
   correct: "border-emerald-200 bg-emerald-50",
+  gap: "border-amber-200 bg-amber-50",
   incorrect: "border-red-200 bg-red-50",
   unclear: "border-slate-200 bg-slate-50",
+} as const;
+// Spoken names for the icons (screen readers, tests): "gap" is a true step missing its reason.
+const STEP_LABEL = { correct: "correct", gap: "thiếu lý do", incorrect: "incorrect", unclear: "unclear" } as const;
+const IMPROVEMENT_LABEL = { rigor: "Lập luận", presentation: "Trình bày", method: "Cách làm" } as const;
+const COMPARISON = {
+  better: { title: "Cách làm của em hay hơn lời giải mẫu", style: "border-emerald-300 bg-emerald-50 text-emerald-900" },
+  as_good: { title: "Cách làm của em khác lời giải mẫu nhưng cũng đúng và chặt chẽ", style: "border-emerald-200 bg-white text-ink" },
+  reference_better: { title: "Có cách làm gọn hơn", style: "border-line bg-white text-ink" },
 } as const;
 
 function FeedbackCard({ feedback }: { feedback: Feedback }) {
@@ -26,7 +35,7 @@ function FeedbackCard({ feedback }: { feedback: Feedback }) {
         {feedback.steps.map((step, i) => (
           <li key={i} className={`rounded-lg border px-3 py-2 ${STEP_STYLE[step.status]}`}>
             <div className="flex gap-2">
-              <span aria-label={step.status} className="font-semibold">{STEP_ICON[step.status]}</span>
+              <span aria-label={STEP_LABEL[step.status]} className="font-semibold">{STEP_ICON[step.status]}</span>
               <MathText text={step.text} className="min-w-0 flex-1" />
             </div>
             {step.note_vi && <MathText text={step.note_vi} className="mt-1 text-sm text-muted" />}
@@ -39,6 +48,25 @@ function FeedbackCard({ feedback }: { feedback: Feedback }) {
             Lỗi đầu tiên{feedback.first_error_index !== null ? ` (bước ${feedback.first_error_index + 1})` : ""}
           </p>
           <MathText text={feedback.error_explanation_vi} className="mt-1" />
+        </div>
+      )}
+      {feedback.comparison && (
+        <div className={`rounded-lg border px-3 py-2 ${COMPARISON[feedback.comparison].style}`}>
+          <p className="text-sm font-semibold">{COMPARISON[feedback.comparison].title}</p>
+          {feedback.comparison_vi && <MathText text={feedback.comparison_vi} className="mt-1 text-sm" />}
+        </div>
+      )}
+      {(feedback.improvements ?? []).length > 0 && (
+        <div className="rounded-lg border border-amber-200 bg-white px-3 py-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-amber-800">Có thể làm tốt hơn</p>
+          <ul className="mt-1 space-y-1 text-sm">
+            {(feedback.improvements ?? []).map((item, i) => (
+              <li key={i} className="flex gap-2">
+                <span className="shrink-0 font-medium text-amber-800">{IMPROVEMENT_LABEL[item.kind]}:</span>
+                <MathText text={item.text_vi} className="min-w-0 flex-1" />
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       <div className="rounded-lg bg-brand-soft px-3 py-2">

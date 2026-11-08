@@ -115,6 +115,10 @@ class PartFormalization(BaseModel):
 
 class Formalization(BaseModel):
     parts: list[PartFormalization] = Field(min_length=1, max_length=12)
+    figure: GeometrySpec | None = Field(
+        default=None, description="Geometry problem whose parts use no 'geometry' template (e.g. a maximum written "
+                                  "as an algebraic extremum): the figure's objects and givens, so it can be drawn. "
+                                  "null otherwise.")
 
 
 class FormalizationReply(BaseModel):
@@ -123,6 +127,7 @@ class FormalizationReply(BaseModel):
     the strict `Formalization` schema."""
 
     parts: list[dict[str, Any]] = Field(min_length=1, max_length=12)
+    figure: dict[str, Any] | None = None
 
     @classmethod
     def model_json_schema(cls, *args: Any, **kwargs: Any) -> dict[str, Any]:
@@ -145,7 +150,15 @@ class FormalizationReply(BaseModel):
                 parts.append(PartFormalization.model_validate({**raw, "template": None}))
             except ValidationError:
                 pass  # not even a label and a task: the part is left out
-        return (Formalization(parts=parts) if parts else None), problems
+        figure = None
+        if self.figure:
+            try:
+                figure = GeometrySpec.model_validate(self.figure)
+            except ValidationError as exc:
+                errors = [f"{'.'.join(str(x) for x in e['loc'])}: {e['msg']}"
+                          for e in exc.errors(include_url=False)[:4]]
+                problems.append("figure: does not match the schema: " + "; ".join(errors))
+        return (Formalization(parts=parts, figure=figure) if parts else None), problems
 
 
 AnswerKind = Literal["solution_set", "value", "count", "extremum", "proof", "construction", "other"]
