@@ -28,6 +28,7 @@ from app.agents.orchestrator import Orchestrator, SolveInput, SolveOutcome
 from app.config import get_settings
 from app.container import build_container
 from app.geometry.service import geometry_spec
+from app.solvers.schemas import ModelSolution
 from app.tools.expr import ExpressionError, parse
 from app.tools.sandbox import run_check
 
@@ -45,9 +46,15 @@ def _equal(a: str, b: str) -> bool:
 
 def score(expected: dict[str, Any] | None, outcome: SolveOutcome) -> bool | None:
     """True/False when the reference answer is machine-checkable, else None."""
-    if not expected or outcome.best is None or not outcome.best.solution.solved:
+    return answer_matches(expected, outcome.best.solution if outcome.best is not None else None)
+
+
+def answer_matches(expected: dict[str, Any] | None, solution: ModelSolution | None) -> bool | None:
+    """Whether one solution's machine answer equals the reference (None when there is no machine-checkable
+    reference). Used for the single solver and for each multi-path candidate."""
+    if not expected or solution is None or not solution.solved:
         return None if not expected else False
-    answers = [p.machine_answer for p in outcome.best.solution.parts]
+    answers = [p.machine_answer for p in solution.parts]
     if "value" in expected:
         return any(a.value is not None and _equal(a.value, expected["value"]) for a in answers)
     names: list[str] = expected["variables"]

@@ -61,6 +61,9 @@ class StructuredResult[T: BaseModel]:
     model: str
     cost_sgd: Decimal
     calls: int
+    # Tokens of the successful reply plus any JSON-repair rounds (0 when the provider reports no usage).
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
 
 
 _THINK = re.compile(r"<think>.*?</think>", re.S)
@@ -225,6 +228,7 @@ class LLMGateway:
         conversation = list(messages)
         total_cost = Decimal(0)
         calls = 0
+        prompt_tokens = completion_tokens = 0
         last_error = ""
         for repair in range(self.max_repair_attempts + 1):
             # A JSON repair needs no reasoning: it runs with thinking off, the normal budget and timeout.
@@ -243,9 +247,13 @@ class LLMGateway:
                 raise
             total_cost += cost
             calls += attempts
+            if result.usage is not None:
+                prompt_tokens += result.usage.prompt_tokens
+                completion_tokens += result.usage.completion_tokens
             try:
                 value = output.model_validate(extract_json(result.content))
-                return StructuredResult(value=value, model=spec.id, cost_sgd=total_cost, calls=calls)
+                return StructuredResult(value=value, model=spec.id, cost_sgd=total_cost, calls=calls,
+                                        prompt_tokens=prompt_tokens, completion_tokens=completion_tokens)
             except (json.JSONDecodeError, ValidationError) as exc:
                 last_error = str(exc)[:1500]
                 truncated = result.finish_reason == "length"

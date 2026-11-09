@@ -98,6 +98,16 @@ class Settings(BaseSettings):
     work_photo_max_pages: int = Field(default=3, ge=1, le=10)
     work_photo_max_chars: int = 4000
 
+    # --- Experimental: multi-path reasoning (docs/experiments/multipath-phase1.md) -------------------------------
+    # "single" is the production solver. "multi_path_verified" generates several independent candidates and, once
+    # Phase 2 lands, verifies them and selects one. Phase 1 has generation only, so the mode is refused here: without
+    # verification there is nothing safe to show a student. Experiments run through scripts/multipath_experiment.py.
+    reasoning_mode: Literal["single", "multi_path_verified"] = "single"
+    multipath_candidate_count: int = Field(default=3, ge=1, le=8)
+    multipath_max_candidate_count: int = Field(default=5, ge=1, le=8)
+    multipath_concurrency: int = Field(default=2, ge=1, le=5)
+    multipath_max_cost_sgd: Decimal = Field(default=Decimal("0.30"), gt=0)
+
     # --- Uploads --------------------------------------------------------------------------------
     max_upload_bytes: int = 20 * 1024 * 1024
     max_pdf_pages: int = 20
@@ -126,6 +136,10 @@ class Settings(BaseSettings):
     def _check(self) -> Settings:
         if not (self.warning_budget_sgd < self.restricted_budget_sgd < self.daily_budget_sgd):
             raise ValueError("Budget thresholds must satisfy warning < restricted < daily ceiling")
+        if self.reasoning_mode != "single":
+            raise ValueError("REASONING_MODE=multi_path_verified is not available yet: candidate verification and "
+                             "selection (Phase 2) are not implemented, so it cannot answer students. Run "
+                             "scripts/multipath_experiment.py for experiments.")
         if self.environment == "production":
             problems: list[str] = []
             if self.gateway_secret is None:

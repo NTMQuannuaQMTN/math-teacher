@@ -50,6 +50,7 @@ from ..verification.verdict import (
     verify_solution,
 )
 from .critic import Critique, critique_solution, issue_text
+from .multipath import CandidateBatch, MultiPathConfig, generate_candidates
 
 logger = logging.getLogger(__name__)
 
@@ -96,6 +97,7 @@ class SolveState(StrEnum):
     CRITIQUE = "critique"
     REVISE = "revise"
     HINTS = "hints"
+    CANDIDATES = "candidates"  # experimental multi-path generation (app/agents/multipath.py)
     DONE = "done"
     FAILED = "failed"
 
@@ -363,13 +365,8 @@ class Orchestrator:
         outcome.state = SolveState.DONE
         return outcome
 
-    async def run_solve(self, data: SolveInput) -> SolveOutcome:
-        outcome = SolveOutcome(state=SolveState.CLASSIFY, topics=[t for t in data.topics if t in TOPICS],
-                               policy_version=self.policy.version)
-        ctx = CallContext(purpose="solve", user_id=data.user_id, job_id=data.job_id)
-        run_started = time.monotonic()
-
-        # CLASSIFY: confirmed topics are reused; the fast model is only asked when none are set.
+    async def classify(self, data: SolveInput, outcome: SolveOutcome) -> None:
+        """CLASSIFY: confirmed topics are reused; the fast model is only asked when none are set."""
         started = time.monotonic()
         if not outcome.topics:
             try:
@@ -384,6 +381,37 @@ class Orchestrator:
             except (InvalidModelOutput, ModelCallFailed):
                 outcome.topics = []
         self._log(outcome, SolveState.CLASSIFY, started, topics=outcome.topics)
+
+    async def generate_candidates(self, data: SolveInput, config: MultiPathConfig
+                                  ) -> tuple[SolveOutcome, CandidateBatch]:
+        """Experimental multi-path mode, Phase 1: the same classification, formalization and solver prompt as
+        `run_solve`, then several independent candidates (app/agents/multipath.py). Nothing is selected or verified
+        here yet, so this is not used to answer students (see Settings.reasoning_mode)."""
+        outcome = SolveOutcome(state=SolveState.CLASSIFY, topics=[t for t in data.topics if t in TOPICS],
+                               policy_version=self.policy.version)
+        await self.classify(data, outcome)
+        await self.formalize(data, outcome)
+        system = prompts.solve_system(self.policy, outcome.topics, prompts.variable_names(outcome.formalization))
+        tier: Tier = "geometry_reasoning" if "geometry" in outcome.topics else "reasoning"
+        outcome.state = SolveState.CANDIDATES
+        started = time.monotonic()
+        batch = await generate_candidates(
+            self.gateway, CallContext(purpose="solve", user_id=data.user_id, job_id=data.job_id),
+            problem=data.problem_text, system=system, topics=outcome.topics, tier=tier, config=config,
+            timeout_seconds=config.timeout_seconds or self.call_timeout)
+        outcome.cost_sgd += batch.cost_sgd
+        outcome.attempts = sum(c.calls for c in batch.candidates)
+        self._log(outcome, SolveState.CANDIDATES, started, **batch.diagnostics())
+        outcome.state = SolveState.DONE
+        return outcome, batch
+
+    async def run_solve(self, data: SolveInput) -> SolveOutcome:
+        outcome = SolveOutcome(state=SolveState.CLASSIFY, topics=[t for t in data.topics if t in TOPICS],
+                               policy_version=self.policy.version)
+        ctx = CallContext(purpose="solve", user_id=data.user_id, job_id=data.job_id)
+        run_started = time.monotonic()
+
+        await self.classify(data, outcome)
 
         # FORMALIZE (independent of the solver). A failure only means less verification.
         await self.formalize(data, outcome)
