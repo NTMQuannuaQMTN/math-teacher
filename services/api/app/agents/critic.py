@@ -30,8 +30,12 @@ cyclic quadrilateral, an inequality step, a fact outside the Grade 9 programme u
 condition (ĐKXĐ, Δ ≥ 0, the equality case of an inequality), a part of the question not answered.
 Report as "presentation": self-talk or corrections left in the text ("Chờ đã", "? Không, …", "Tuy nhiên, cách …"),
 notation the official keys do not use, steps out of order, a finite case check (remainders, last digits) written
-one line per case instead of one table. A table of cases is the required layout, never an issue in itself: check
-every entry of it.
+one line per case instead of one table, an inequality or extremum proved by expanding into a polynomial of degree 4
+or more when Cô-si, Bunhiacopxki or $a^2 + b^2 \\ge \\frac{(a+b)^2}{2}$ would lower the degree to 2 or 3 first,
+angles named by a letter (α, β, γ, φ, x: "Gọi $\\widehat{BAC} = \\alpha$") instead of written with their points
+and related directly ("$\\widehat{ADC} = 180^\\circ - \\widehat{ABC}$"), a set of unknowns equated with a set of
+values ("$\\{x, y, z\\} = \\{1, 2, 3\\}$") instead of words or membership ($x \\in \\{1; 2\\}$).
+A table of cases is the required layout, never an issue in itself: check every entry of it.
 
 Rules: judge only what is written; do not solve the problem again in your reply; do not report a step as wrong
 unless you can say exactly why; a correct step written differently from your own method is correct. Point to the

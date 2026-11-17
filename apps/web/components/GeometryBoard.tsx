@@ -52,6 +52,13 @@ const RELATION_LABELS: Record<string, (r: Relation) => string> = {
   angle_value: (r) => `∠${(r.angle as string[]).join("")} = ${r.degrees as number}°`,
   length_value: (r) => `${(r.segment as string[]).join("")} = ${r.value as number}`,
   length_ratio: (r) => `${(r.segments as string[][]).map((s) => s.join("")).join(" : ")} = ${r.ratio as number}`,
+  acute: (r) => `Tam giác ${(r.points as string[]).join("")} nhọn`,
+  angle_less: (r) => `${(r.angles as string[][]).map((a) => `∠${a.join("")}`).join(" < ")}`,
+  angle_greater: (r) => `${(r.angles as string[][]).map((a) => `∠${a.join("")}`).join(" > ")}`,
+  length_less: (r) => `${(r.segments as string[][]).map((s) => s.join("")).join(" < ")}`,
+  length_greater: (r) => `${(r.segments as string[][]).map((s) => s.join("")).join(" > ")}`,
+  same_side: (r) => `${(r.points as string[]).join(", ")} cùng phía đối với ${(r.line as string[]).join("")}`,
+  opposite_sides: (r) => `${(r.points as string[]).join(", ")} khác phía đối với ${(r.line as string[]).join("")}`,
   convex: (r) => {
     const pts = r.points as string[];
     return `${pts.length === 4 ? "Tứ giác" : "Đa giác"} ${pts.join("")} lồi`;

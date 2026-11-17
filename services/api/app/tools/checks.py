@@ -747,7 +747,8 @@ def build_figure(p: Payload) -> Evidence:
             attempt = check_spec(trial, samples=6)
             if attempt["status"] == "ok":
                 spec, result = trial, {**attempt, "detail": "Hình vẽ bỏ qua một điều kiện không dựng được "
-                                                            f"({skipped.kind}); hãy đối chiếu với đề bài."}
+                                                            f"({skipped.kind}); hãy đối chiếu với đề bài.",
+                                       "skipped_given": skipped.model_dump(mode="json")}
                 break
     if result["status"] == "infeasible":
         # An object that breaks every figure (two points that always coincide, so the line through them is undefined)
@@ -770,6 +771,7 @@ def build_figure(p: Payload) -> Evidence:
     return {"outcome": "confirmed", "strength": "none", "detail": result.get("detail") or "", "data": {
         "status": result["status"], "initial": result.get("initial"), "layout": layout,
         "spec": spec.model_dump(mode="json"), "left_out": result.get("left_out", []),
+        "skipped_given": result.get("skipped_given"),
         # Whether each goal holds on the figure: a goal refuted in every sampled figure means a misread problem.
         "goals": [{"index": g["index"], "kind": g["kind"], "outcome": g["outcome"]} for g in result.get("goals", [])]}}
 

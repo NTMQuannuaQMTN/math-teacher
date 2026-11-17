@@ -239,6 +239,31 @@ class Convex(BaseModel):
                              description="Vertices in order: the polygon is convex (tứ giác lồi ABCD → [A,B,C,D]).")
 
 
+class Acute(BaseModel):
+    kind: Literal["acute"]
+    points: Triple = Field(description="'tam giác ABC nhọn': every angle of triangle [A,B,C] is < 90°.")
+
+
+class AngleLess(BaseModel):
+    kind: Literal["angle_less", "angle_greater"]
+    angles: list[Triple] = Field(min_length=2, max_length=2,
+                                 description="angle_less: first < second; angle_greater: first > second. Written in "
+                                             "the problem's order: 'Â > B̂' → angle_greater [[B,A,C],[A,B,C]].")
+
+
+class LengthLess(BaseModel):
+    kind: Literal["length_less", "length_greater"]
+    segments: list[Pair] = Field(min_length=2, max_length=2,
+                                 description="length_less: |first| < |second|; length_greater: |first| > |second|. "
+                                             "'CD > AB' → length_greater [[C,D],[A,B]].")
+
+
+class SideOfLine(BaseModel):
+    kind: Literal["same_side", "opposite_sides"]
+    points: Pair = Field(description="The two points compared, e.g. [D, B].")
+    line: Pair = Field(description="The line through two points, e.g. [A, C].")
+
+
 class Tangency(BaseModel):
     kind: Literal["tangent_line"]
     line: Pair
@@ -247,7 +272,7 @@ class Tangency(BaseModel):
 
 Relation = Annotated[
     Collinear | Concyclic | Perpendicular | Parallel | EqualLength | EqualAngle | OnCircle | OnLine | AngleValue
-    | LengthRatio | LengthValue | Tangency | Convex,
+    | LengthRatio | LengthValue | Tangency | Convex | Acute | AngleLess | LengthLess | SideOfLine,
     Field(discriminator="kind"),
 ]
 

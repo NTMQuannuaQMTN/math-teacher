@@ -58,9 +58,15 @@ givens = conditions that are not constructions (triangle shape, given lengths/an
   angle_value {angle:[B,A,C], degrees}, length_value {segment:[B,C], value}, length_ratio, perpendicular {lines:[[A,B],[C,D]]},
   parallel, collinear {points}, concyclic {points}, on_circle {point,circle}, on_line {point,line}, tangent_line {line:[A,B],circle},
   convex {points:[A,B,C,D]} ("tứ giác lồi ABCD", vertices in order).
+  Shape conditions of the hypothesis ARE givens (the figure and the checks must respect them, or a true statement
+  looks false on a wrong figure): acute {points:[A,B,C]} ("tam giác ABC nhọn"; never a 90° angle);
+  angle_greater / angle_less {angles:[first, second]} in the problem's own order, the vertex in the MIDDLE of each
+  triple: "Â > B̂ > Ĉ" → angle_greater [[B,A,C],[A,B,C]] and angle_greater [[A,B,C],[A,C,B]];
+  length_greater / length_less {segments:[first, second]}: "CD > AB" → length_greater [[C,D],[A,B]];
+  opposite_sides / same_side
+  {points:[D,B], line:[A,C]} ("D trên cung nhỏ AC" of triangle ABC → D on the circle and opposite_sides [D,B] of
+  [A,C]; "cung lớn" → same_side). A non-strict "≥" or a word you cannot express this way is left out.
   Prefer constructions over givens (e.g. "H là chân đường cao từ A" → projection, not a given).
-  Inequalities and other shape words ("nhọn", "Â > B̂ > Ĉ", "CD > AB", "cung nhỏ") are not givens: leave them out
-  (never write "nhọn" as a 90° angle). Only an exact equality (or "lồi" → convex) is a given.
   Every polygon of the problem (tam giác ABC, tứ giác ABCD) has its sides as segment objects, and every segment the
   problem mentions (đường chéo AC, BD; đoạn MN) is a segment object, so the figure shows them.
 goals = what must be proven (same relation kinds). targets = what must be computed: {kind: length|angle|ratio|area, points}.
@@ -133,13 +139,19 @@ Hard rules:
 6. Notation of the official answer keys: angles \\widehat{{ABC}} (never \\angle), divisibility a \\vdots b (never
    b | a), parallel AB // CD (never \\parallel), \\triangle ABC \\backsim \\triangle DEF, "." for a product of
    lengths (AB.AC), a decimal comma written 3{{,}}14, points with a semicolon (1; -1). Use ≈ (\\approx) only for a measurement the question asks to
-   approximate.
+   approximate. Set notation only says that ONE element belongs to a set ($x \\in \\{{1; 2; 3\\}}$, elements separated
+   by semicolons) or lists a solution set ("Vậy tập nghiệm $S = \\{{1; 2\\}}$"); never equate a set of unknowns with a
+   set of values ($\\{{x, y, z\\}} = \\{{1, 2, 3\\}}$): say it in words ("ba số $x, y, z$ là $1, 2, 3$ theo một thứ tự
+   nào đó", "$x$ và $z$ nhận hai giá trị $1$ và $2$").
 7. Checking a finite list of cases with the same computation (remainders of n modulo m, the last digit, small values
    of a parameter) is ONE step with a table, never one line per case: a sentence saying what is checked, then
    $$\\begin{{array}}{{|c|c|c|c|c|}}\\hline n \\pmod 9 & 0 & 1 & \\cdots & 8 \\\\ \\hline f(n) \\pmod 9 & 4 & 0 & \\cdots & 8
    \\\\ \\hline\\end{{array}}$$ with every case as its own column (no \\cdots in the real table), the rows the
    intermediate values a marker needs (e.g. n^4 mod 9 before f(n) mod 9), reduced before powering; then the conclusion
    in the next step ("Từ bảng trên, …").
+8. Inequalities and extrema: never expand into a polynomial of degree 4 or more (in a parameter such as m, or a
+   variable). Lower the degree FIRST with a standard inequality ($a^2 + b^2 \\ge \\frac{{(a+b)^2}}{{2}}$, Cô-si,
+   Bunhiacopxki) or Vi-ét, to an expression of degree 2 (at most 3), then complete the square.
 
 {guidance}
 Allowed techniques (put the ids you use in "techniques"):

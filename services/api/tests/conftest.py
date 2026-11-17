@@ -63,8 +63,18 @@ HINTS_REPLY = json.dumps({"hints": [
 
 
 def solve_requests(provider: ScriptedProvider) -> list[ChatRequest]:
-    """Model requests other than hint generation and the examiner's check."""
-    return [r for r in provider.requests if r.schema_name not in ("hints", "critique")]
+    """Model requests other than hint generation, the examiner's check and the copy edit."""
+    return [r for r in provider.requests if r.schema_name not in ("hints", "critique", "edited_solution")]
+
+
+def echo_edit(request: ChatRequest) -> ChatResult:
+    """The copy editor's reply that changes nothing: no step deleted or trimmed."""
+    content = str(request.messages[-1].content)
+    start = content.index("{", content.index("(các bước được đánh số):"))
+    payload = json.JSONDecoder().raw_decode(content[start:])[0]
+    reply = {"approach_remove": [], "parts": [{"label": p["label"], "decisions": []} for p in payload["parts"]]}
+    return ChatResult(content=json.dumps(reply, ensure_ascii=False), model=request.model,
+                      usage=Usage(prompt_tokens=500, completion_tokens=40), finish_reason="stop", latency_ms=5)
 
 
 class ScriptedProvider:
@@ -81,6 +91,8 @@ class ScriptedProvider:
         self.hints_reply: str | None = HINTS_REPLY
         # The examiner (schema "critique") passes every solution unless a test sets this to None and scripts it.
         self.critique_reply: str | None = CRITIQUE_OK
+        # The copy editor (schema "edited_solution") returns the solution unchanged unless a test scripts it.
+        self.edit_reply: Callable[[ChatRequest], ChatResult] | None = echo_edit
 
     def push(self, reply: Callable[[ChatRequest], ChatResult] | ProviderError | str) -> None:
         self.replies.append(reply)
@@ -92,6 +104,8 @@ class ScriptedProvider:
         if request.schema_name == "critique" and self.critique_reply is not None:
             return ChatResult(content=self.critique_reply, model=request.model,
                               usage=Usage(prompt_tokens=400, completion_tokens=60), finish_reason="stop", latency_ms=5)
+        if request.schema_name == "edited_solution" and self.edit_reply is not None:
+            return self.edit_reply(request)
         if request.schema_name == "hints" and self.hints_reply is not None:
             return ChatResult(content=self.hints_reply, model=request.model,
                               usage=Usage(prompt_tokens=300, completion_tokens=120), finish_reason="stop", latency_ms=5)
@@ -200,3 +214,11 @@ def fixture_bytes(name: str) -> bytes:
 
 def random_id() -> str:
     return str(uuid.uuid4())
+
+
+@pytest.fixture(autouse=True)
+def _no_quick_retry_pause(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The gateway's one quick retry after an instant 5xx waits 3 s in production; tests need not wait."""
+    from app.providers import gateway
+
+    monkeypatch.setattr(gateway, "QUICK_RETRY_PAUSE_SECONDS", 0.0)

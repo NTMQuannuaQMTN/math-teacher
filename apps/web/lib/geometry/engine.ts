@@ -396,12 +396,41 @@ export function residuals(rel: Relation, values: Values): number[] {
     }
     case "convex":
       return convexResiduals((r.points as string[]).map((n) => P(values, n)));
+    case "acute": {
+      const [a, b, c] = r.points as string[];
+      return [[b!, a!, c!], [a!, b!, c!], [a!, c!, b!]].map((angle) =>
+        Math.min(0, (Math.PI / 2 - angleAt(values, angle)) / Math.PI - SHAPE_MARGIN));
+    }
+    case "angle_less":
+    case "angle_greater": {
+      const pair = r.angles as string[][];
+      const [a1, a2] = rel.kind === "angle_less" ? pair : [pair[1], pair[0]];
+      return [Math.min(0, (angleAt(values, a2!) - angleAt(values, a1!)) / Math.PI - SHAPE_MARGIN)];
+    }
+    case "length_less":
+    case "length_greater": {
+      const pair = r.segments as string[][];
+      const [s1, s2] = rel.kind === "length_less" ? pair : [pair[1], pair[0]];
+      const l1 = len(values, s1!), l2 = len(values, s2!);
+      return [Math.min(0, (l2 - l1) / Math.max((l1 + l2) / 2, EPS) - SHAPE_MARGIN)];
+    }
+    case "same_side":
+    case "opposite_sides": {
+      const [la, lb] = (r.line as string[]).map((n) => P(values, n)) as [Vec, Vec];
+      const [p, q] = (r.points as string[]).map((n) => P(values, n)) as [Vec, Vec];
+      const d = unit(sub(lb, la), (r.line as string[])[0]!, "hai điểm trùng nhau");
+      const scale = Math.max(norm(sub(p, la)), norm(sub(q, la)), norm(sub(lb, la)), EPS);
+      const product = (cross(d, sub(p, la)) * cross(d, sub(q, la))) / (scale * scale);
+      return [Math.min(0, (rel.kind === "same_side" ? 1 : -1) * product - SHAPE_MARGIN * SHAPE_MARGIN)];
+    }
     default:
       throw new Error(`unsupported relation ${rel.kind}`);
   }
 }
 
 const CONVEX_MARGIN = 0.02;
+// Strict shape conditions hold with a visible margin, as in the Python engine (~3.6° for angles, 3% for lengths).
+const SHAPE_MARGIN = 0.02;
 
 /** Same as the Python engine: a hinge per vertex (0 on every convex polygon) plus, from five vertices, one full turn. */
 export function convexResiduals(pts: Vec[]): number[] {

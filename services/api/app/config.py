@@ -76,6 +76,8 @@ class Settings(BaseSettings):
     solve_max_revisions: int = Field(default=4, ge=0, le=6)
     # An independent examiner agent checks every solution step by step; its findings drive the revision rounds.
     solve_critic_enabled: bool = True
+    # A copy editor cleans the final solution text (no change to mathematics; see app/agents/editor.py).
+    solve_editor_enabled: bool = True
     # First attempt without hidden reasoning; escalate once to reasoning when the answer fails verification.
     solve_escalate_thinking: bool = True
     # Accuracy first, speed later: a solve may take up to this long. No revision is started that would likely end

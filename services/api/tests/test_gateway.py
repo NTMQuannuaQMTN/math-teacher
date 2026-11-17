@@ -256,3 +256,54 @@ def test_thinking_payload_shape() -> None:
     assert payload["chat_template_kwargs"] == {"enable_thinking": False}
     assert "chat_template_kwargs" not in SoclaasProvider.build_payload(ChatRequest(model="m", messages=MSG,
                                                                                    max_tokens=5))
+
+
+@pytest.mark.parametrize(("raw", "expected"), [
+    # seen live: "\frac" read by JSON as form feed + "rac"
+    (r'{"a": "$\frac{\Delta}{4} = m^2 + 1 > 0$"}', r"$\frac{\Delta}{4} = m^2 + 1 > 0$"),
+    (r'{"a": "$2 \times 3$, $\beta$, $\theta$, $\right)$, $a \neq b$, $a \ne b$"}',
+     r"$2 \times 3$, $\beta$, $\theta$, $\right)$, $a \neq b$, $a \ne b$"),
+    (r'{"a": "$\sqrt{2}$ và \{ \}"}', r"$\sqrt{2}$ và \{ \}"),  # escapes JSON does not allow at all
+    (r'{"a": "đúng: $\\frac{1}{2}$, \\\\"}', r"đúng: $\frac{1}{2}$, \\"),  # already escaped: unchanged
+])
+def test_single_backslash_latex_in_json_is_repaired(raw: str, expected: str) -> None:
+    from app.providers.gateway import extract_json
+
+    assert extract_json(raw)["a"] == expected
+
+
+def test_real_line_breaks_and_unicode_escapes_are_kept() -> None:
+    from app.providers.gateway import extract_json
+
+    assert extract_json(r'{"a": "Dòng 1\nDòng 2\nnên x = 1\nà"}')["a"] == "Dòng 1\nDòng 2\nnên x = 1\nà"
+
+
+async def test_an_instant_server_error_gets_one_retry_even_with_retries_off(
+        container: Container, provider: ScriptedProvider, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Seen live: revisions (run with max_retries=0 so a long timeout is never repeated) lost to instant 5xx."""
+    from pydantic import BaseModel
+
+    from app.providers import gateway as gw
+    from app.providers.base import ChatMessage, ProviderError
+    from app.providers.gateway import CallContext, ModelCallFailed
+
+    class Out(BaseModel):
+        ok: bool
+
+    monkeypatch.setattr(gw, "QUICK_RETRY_PAUSE_SECONDS", 0.0)
+    assert container.gateway is not None
+    call = {"tier": "reasoning", "ctx": CallContext("solve", None, None), "output": Out, "max_tokens": 50,
+            "schema_name": "out", "max_retries": 0, "messages": [ChatMessage(role="user", content="x")]}
+    provider.push(ProviderError("server_error", "503"))
+    provider.push('{"ok": true}')
+    result = await container.gateway.structured(**call)
+    assert result.value.ok and result.calls == 2
+    provider.push(ProviderError("server_error", "503"))
+    provider.push(ProviderError("server_error", "503"))
+    with pytest.raises(ModelCallFailed):  # only one quick retry
+        await container.gateway.structured(**call)
+    provider.push(ProviderError("timeout", "slow"))
+    provider.push('{"ok": true}')
+    with pytest.raises(ModelCallFailed):  # a timeout is never retried when retries are off
+        await container.gateway.structured(**call)
+    provider.replies.clear()

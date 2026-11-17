@@ -10,6 +10,7 @@ import asyncio
 import json
 import logging
 import re
+import time
 import uuid
 from dataclasses import dataclass
 from decimal import Decimal
@@ -108,12 +109,33 @@ def with_schema_instruction(messages: list[ChatMessage], schema: dict[str, Any])
     return [ChatMessage(role="system", content=instruction), *messages]
 
 
+# A backslash that is the last of an odd run (the earlier ones escape each other in pairs).
+_ODD = r"(?<!\\)((?:\\\\)*)\\"
+# LaTeX commands a model writes with ONE backslash inside a JSON string, which JSON then reads as a control character:
+# "\frac" → form feed + "rac", "\times" → tab + "imes", "\beta" → backspace + "eta" (seen live: "rac{\Delta}{4}").
+# Form feed, backspace, tab and carriage return followed by letters are never meant in our replies. "\n" is a real
+# line break far too often, so only the commands below count.
+_CONTROL_LATEX = re.compile(_ODD + r"([bfrt])(?=[A-Za-z])")
+_NEWLINE_LATEX = re.compile(_ODD + r"(n)(?=(?:eq|e|abla|ot|otin|u|ewline|leq|geq|mid|parallel|subseteq|exists)"
+                                   r"(?![A-Za-z]))")
+# Escapes JSON does not allow at all ("\Delta", "\sqrt", "\{"): the reply would not parse.
+_INVALID_ESCAPE = re.compile(_ODD + r"""([^"\\/bfnrtu]|u(?![0-9A-Fa-f]{4}))""")
+
+
+def repair_latex_escapes(text: str) -> str:
+    """Double the backslash of LaTeX commands that a model left single inside JSON strings."""
+    for pattern in (_CONTROL_LATEX, _NEWLINE_LATEX, _INVALID_ESCAPE):
+        text = pattern.sub(lambda m: m.group(1) + "\\\\" + m.group(2), text)
+    return text
+
+
 def extract_json(content: str) -> Any:
-    """Parse JSON from a model reply, tolerating reasoning blocks and code fences."""
+    """Parse JSON from a model reply, tolerating reasoning blocks, code fences and single-backslash LaTeX."""
     cleaned = _THINK.sub("", content).strip()
     fence = _FENCE.match(cleaned)
     if fence:
         cleaned = fence.group(1)
+    cleaned = repair_latex_escapes(cleaned)
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
@@ -121,6 +143,11 @@ def extract_json(content: str) -> Any:
         if start != -1 and end > start:
             return json.loads(cleaned[start:end + 1])
         raise
+
+
+QUICK_RETRY_KINDS = ("server_error", "rate_limited", "connection")
+QUICK_FAILURE_SECONDS = 30.0
+QUICK_RETRY_PAUSE_SECONDS = 3.0
 
 
 class LLMGateway:
@@ -185,9 +212,11 @@ class LLMGateway:
                                  max_retries: int | None = None) -> tuple[ChatResult, Decimal, int]:
         retries = self.settings.soclaas_max_retries if max_retries is None else max_retries
         attempts = 0
+        quick_retry_used = False
         total = Decimal(0)
         while True:
             attempts += 1
+            started = time.monotonic()
             try:
                 result, charged = await self._metered_call(spec, tier, request, ctx)
                 return result, total + charged, attempts
@@ -195,7 +224,16 @@ class LLMGateway:
                 total += exc.charged_sgd
                 logger.warning("model_call_error", extra={"kind": exc.kind, "status": exc.status,
                                                           "model": spec.id, "attempt": attempts})
-                if not exc.retryable or attempts > retries:
+                # Callers turn retries off for calls that can run for minutes (a revision, a reasoning call), so a
+                # timeout is never repeated. A failure that comes back within seconds (SoCLaaS 5xx under load, a rate
+                # limit, a dropped connection) cost no time: it still gets one retry. Seen live 2026-11-13: three
+                # revisions in a row lost to instant 5xx, so the flagged first attempt was kept.
+                quick = exc.kind in QUICK_RETRY_KINDS and time.monotonic() - started < QUICK_FAILURE_SECONDS
+                if exc.retryable and attempts > retries and quick and not quick_retry_used:
+                    quick_retry_used = True
+                    await asyncio.sleep(QUICK_RETRY_PAUSE_SECONDS)
+                    continue
+                if not exc.retryable or attempts > retries + int(quick_retry_used):
                     raise ModelCallFailed(retryable=exc.retryable, kind=exc.kind, cost_sgd=total) from exc
                 await asyncio.sleep(min(2.0 * attempts, 8.0))
 

@@ -74,10 +74,21 @@ function escapeHtml(value: string): string {
   return value.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
+/** Undo a model's single-backslash LaTeX that JSON read as control characters ("\frac" → form feed + "rac",
+ * "\times" → tab + "imes", "\beta" → backspace + "eta"). The API repairs new replies; this keeps solutions stored
+ * before that fix readable. Form feed and backspace never belong in our text; tab and carriage return only count
+ * when followed by letters. */
+export function restoreLatexEscapes(text: string): string {
+  return text
+    .replace(/\f/g, "\\f")
+    .replace(/\x08/g, "\\b")
+    .replace(/[\t\r](?=[A-Za-z])/g, (c) => (c === "\t" ? "\\t" : "\\r"));
+}
+
 /** Render to sanitized HTML. KaTeX output is trusted (trust: false, no \href/\url); text is escaped. */
 export function renderMathText(text: string): Rendered {
   const errors: string[] = [];
-  const html = splitSegments(text)
+  const html = splitSegments(restoreLatexEscapes(text))
     .map((segment) => {
       if (segment.kind === "raw") {
         errors.push("Thiếu ký hiệu đóng công thức $.");

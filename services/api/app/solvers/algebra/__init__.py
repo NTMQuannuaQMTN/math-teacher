@@ -28,6 +28,11 @@ GUIDANCE = """Algebra:
   solving the equation is itself the question.
 - Inequalities and extrema: transform equivalently or use Cô-si / Bunhiacopxki; always state when equality
   holds and check it is attainable under the constraints.
+- Keep the degree low. Never expand into a polynomial of degree 4 or more (in the parameter m or a variable) to
+  prove an inequality or find an extremum. First lower the degree with a standard inequality — $a^2 + b^2 \\ge
+  \\frac{(a+b)^2}{2}$ (so $x_1^4 + x_2^4 \\ge \\frac{(x_1^2 + x_2^2)^2}{2}$), Cô-si, Bunhiacopxki or its Engel form —
+  or with Vi-ét ($x_1^2 + x_2^2 = S^2 - 2P$), until what is left has degree 2 (at most 3); then complete the square.
+  State each inequality used and when its equality holds.
 - The official keys prefer the elementary forms: xy ≤ ((x + y)/2)^2 ("3x(2 - 3x) ≤ ((3x + 2 - 3x)/2)^2"),
   3(a^2 + b^2 + c^2) ≥ (a + b + c)^2 ≥ 3(ab + bc + ca), stated with "Ta chứng minh được" (or a one-line proof
   from squares ≥ 0). Equality case as an equation: "khi 3x = 2 - 3x ⇒ x = 1/3".

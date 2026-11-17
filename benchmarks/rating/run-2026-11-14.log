@@ -1,0 +1,220 @@
+0 already done, 41 to solve
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2526/I.1           50s SGD 0.113450  VERIFIED COMPLIANT examiner=correct
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2526/1.1          77s SGD 0.316360  INCORRECT COMPLIANT_WITH_WARNINGS examiner=None
+reservation_already_settled
+reservation_already_settled
+model_call_error
+model_call_error
+khtn-2026-v2/I.1         213s SGD 0.156455  INCORRECT COMPLIANT_WITH_WARNINGS examiner=None
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2425/1.1         211s SGD 0.176033  UNVERIFIED COMPLIANT examiner=correct
+model_call_error
+model_call_error
+hsg-hn-2425/I.1          418s SGD 0.185786  VERIFIED COMPLIANT examiner=correct
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2526/1.2          34s SGD 0.383181  UNVERIFIED COMPLIANT examiner=has_issues
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+khtn-2026-v2/I.2          70s SGD 0.250173  INCORRECT NON_COMPLIANT examiner=None
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2425/I.2           29s SGD 0.061098  PARTIALLY_VERIFIED COMPLIANT examiner=correct
+model_call_error
+hsg-hn-2526/I.2          301s SGD 0.100693  UNVERIFIED COMPLIANT examiner=correct
+hsg-hcm-2425/1.2         236s SGD 0.055295  VERIFIED COMPLIANT examiner=correct
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2526/II.1         124s SGD 0.078437  UNVERIFIED COMPLIANT examiner=correct
+hsg-hcm-2526/2.1          54s SGD 0.021630  VERIFIED COMPLIANT examiner=correct
+hsg-hn-2425/II.1         161s SGD 0.050088  PARTIALLY_VERIFIED COMPLIANT examiner=correct
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2425/2.1         247s SGD 0.161598  VERIFIED COMPLIANT examiner=correct
+invalid_structured_output
+hsg-hn-2526/II.2          92s SGD 0.027717  PARTIALLY_VERIFIED COMPLIANT examiner=correct
+khtn-2026-v2/II          710s SGD 0.167881  UNVERIFIED COMPLIANT examiner=has_issues
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+hsg-hcm-2526/2.2         757s SGD 0.166387  INCORRECT COMPLIANT_WITH_WARNINGS examiner=None
+model_call_error
+invalid_structured_output
+model_call_error
+model_call_error
+khtn-2026-v2/III         672s SGD 0.196891  INCORRECT NON_COMPLIANT examiner=None
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2425/2.2         162s SGD 0.161242  INCORRECT COMPLIANT examiner=None
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2425/II.2         338s SGD 0.169428  PARTIALLY_VERIFIED COMPLIANT examiner=correct
+model_call_error
+model_call_error
+invalid_structured_output
+model_call_error
+invalid_structured_output
+model_call_error
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+hsg-hcm-2526/3.1         410s SGD 0.314002  UNSOLVED NON_COMPLIANT examiner=has_issues
+model_call_error
+hsg-hn-2526/III          495s SGD 0.207786  UNSOLVED None examiner=None
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2425/III          123s SGD 0.291630  UNVERIFIED NON_COMPLIANT examiner=has_issues
+model_call_error
+model_call_error
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+hsg-hcm-2425/2.3         413s SGD 0.080407  UNVERIFIED COMPLIANT examiner=None
+model_call_error
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+model_call_error
+hsg-hn-2526/IV           483s SGD 0.173097  UNSOLVED None examiner=None
+khtn-2026-v2/IV         1184s SGD 0.237370  UNVERIFIED COMPLIANT_WITH_WARNINGS examiner=has_issues
+invalid_structured_output
+invalid_structured_output
+model_call_error
+invalid_structured_output
+invalid_structured_output
+model_call_error
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+khtn-2026-v2/V           654s SGD 0.127783  UNVERIFIED COMPLIANT examiner=None
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+invalid_structured_output
+hsg-hcm-2526/3.2         939s SGD 0.213682  PARTIALLY_VERIFIED COMPLIANT examiner=has_issues
+model_call_error
+model_call_error
+invalid_structured_output
+model_call_error
+invalid_structured_output
+budget_state_changed
+model_call_error
+invalid_structured_output
+invalid_structured_output
+hsg-hn-2425/IV           575s SGD 0.421874  None None examiner=None
+invalid_structured_output
+invalid_structured_output
+model_call_error
+model_call_error
+model_call_error
+invalid_structured_output
+hsg-hn-2526/V.1          355s SGD 0.079163  UNVERIFIED COMPLIANT examiner=correct
+model_call_error
+hsg-hcm-2425/3.1         797s SGD 0.337940  UNVERIFIED NON_COMPLIANT examiner=has_issues
+invalid_structured_output
+model_call_error
+hsg-hn-2425/V.1          516s SGD 0.103735  UNVERIFIED COMPLIANT examiner=correct
+invalid_structured_output
+invalid_structured_output
+model_call_error
+hsg-hcm-2526/4           964s SGD 0.322515  UNSOLVED None examiner=None
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+model_call_error
+invalid_structured_output
+invalid_structured_output
+invalid_structured_output
+hsg-hcm-2425/3.2        1074s SGD 0.227690  UNSOLVED COMPLIANT_WITH_WARNINGS examiner=has_issues
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2526/V.2          872s SGD 0.239642  UNVERIFIED COMPLIANT_WITH_WARNINGS examiner=has_issues
+model_call_error
+invalid_structured_output
+invalid_structured_output
+model_call_error
+model_call_error
+model_call_error
+invalid_structured_output
+model_call_error
+hsg-hcm-2526/5.1         647s SGD 0.287396  UNVERIFIED COMPLIANT examiner=has_issues
+budget guard: SGD 8.714721 today, stopping
+invalid_structured_output
+model_call_error
+model_call_error
+model_call_error
+hsg-hn-2425/V.2          495s SGD 0.311251  UNVERIFIED COMPLIANT_WITH_WARNINGS examiner=has_issues
+37 already done, 4 to solve
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2425/4.1          77s SGD 0.330503  UNVERIFIED COMPLIANT examiner=has_issues
+invalid_structured_output
+model_call_error
+invalid_structured_output
+hsg-hcm-2526/5.2         266s SGD 0.140723  UNVERIFIED COMPLIANT examiner=correct
+invalid_structured_output
+invalid_structured_output
+hsg-hcm-2425/4.2         785s SGD 0.154787  UNVERIFIED COMPLIANT examiner=correct
+invalid_structured_output
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+model_call_error
+hsg-hcm-2425/5           749s SGD 0.195099  UNVERIFIED COMPLIANT_WITH_WARNINGS examiner=None

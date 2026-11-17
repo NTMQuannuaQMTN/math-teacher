@@ -215,6 +215,8 @@ async def generate_candidates(gateway: LLMGateway, ctx: CallContext, *, problem:
                         ChatMessage(role="user", content=prompts.solve_user(problem)
                                     + directive(directions.get(candidate.approach)))]
             try:
+                # No gateway retries (a timed-out call is not repeated); an instant 5xx still gets the gateway's one
+                # quick retry.
                 result = await gateway.structured(
                     tier=tier, ctx=ctx, output=ModelSolution, max_tokens=config.max_tokens, schema_name="solution",
                     messages=messages, temperature=candidate.temperature, thinking=config.thinking,
@@ -225,12 +227,14 @@ async def generate_candidates(gateway: LLMGateway, ctx: CallContext, *, problem:
             except InvalidModelOutput as exc:
                 candidate.status, candidate.error_code, candidate.cost_sgd = "invalid_output", exc.code, exc.cost_sgd
             except ModelCallFailed as exc:
-                candidate.status, candidate.error_code, candidate.cost_sgd = "failed", exc.code, exc.cost_sgd
+                candidate.status, candidate.error_code = "failed", f"{exc.code}:{exc.kind}"
+                candidate.cost_sgd += exc.cost_sgd
             except Exception as exc:  # one broken candidate must not abort the batch and orphan the others
                 logger.exception("multipath_candidate_error", extra={"candidate": candidate.id})
                 candidate.status, candidate.error_code = "failed", type(exc).__name__
             else:
-                candidate.solution, candidate.cost_sgd, candidate.calls = result.value, result.cost_sgd, result.calls
+                candidate.solution, candidate.calls = result.value, candidate.calls + result.calls
+                candidate.cost_sgd += result.cost_sgd
                 candidate.prompt_tokens, candidate.completion_tokens = result.prompt_tokens, result.completion_tokens
                 candidate.status = "ok" if result.value.solved else "unsolved"
             finally:

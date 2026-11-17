@@ -28,7 +28,8 @@ def build_orchestrator(c: Container) -> Orchestrator:
                         time_budget_seconds=c.settings.solve_time_budget_seconds,
                         geometry_thinking_first=c.settings.solve_geometry_thinking_first,
                         critic=c.settings.solve_critic_enabled,
-                        call_timeout_seconds=c.settings.solve_call_timeout_seconds)
+                        call_timeout_seconds=c.settings.solve_call_timeout_seconds,
+                        editor=c.settings.solve_editor_enabled)
 
 
 async def run_solve_job(c: Container, job: Job) -> dict[str, Any]:

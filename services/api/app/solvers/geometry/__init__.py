@@ -22,6 +22,9 @@ GUIDANCE = """Geometry:
   của $A$ trên $BC$", $A_1$, $K$ …; never descriptive names such as midAB or H_A.
 - Name intersections in words: "Gọi P là giao điểm của AL và GJ" — never set notation such as AL ∩ GJ.
 - Name circles by their centre, e.g. (O); never Γ.
+- Angles are always written with their points ($\\widehat{ADC}$), never given a letter such as α, β, γ, φ or x.
+  Relate angles directly, with the reason: "$\\widehat{ADC} = 180^\\circ - \\widehat{ABC}$ (tứ giác $ABCD$ nội
+  tiếp)", "$\\widehat{ADB} = \\widehat{ACB}$ (cùng chắn cung $AB$)".
 - Collinearity as in the official keys: two adjacent angles at the middle point sum to 180° ("$\\widehat{MLE} +
   \\widehat{ALE} = 180^\\circ$. Vậy $A, L, M$ thẳng hàng").
 - Prove only what is asked (vuông góc, thẳng hàng, nội tiếp, bằng nhau …). Do not prove configuration facts

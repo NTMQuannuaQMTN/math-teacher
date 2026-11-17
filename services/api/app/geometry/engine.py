@@ -24,7 +24,9 @@ from scipy.optimize import least_squares
 from .dsl import (
     LINE_KINDS,
     POINT_KINDS,
+    Acute,
     AngleBisector,
+    AngleLess,
     AngleValue,
     Centroid,
     Circle,
@@ -40,6 +42,7 @@ from .dsl import (
     GeometrySpec,
     Incenter,
     Intersection,
+    LengthLess,
     LengthRatio,
     LengthValue,
     Line,
@@ -56,6 +59,7 @@ from .dsl import (
     Projection,
     Reflection,
     Relation,
+    SideOfLine,
     Tangency,
     Tangent,
     Target,
@@ -175,6 +179,8 @@ def compile_spec(spec: GeometrySpec) -> Compiled:
             names.append(rel.point)
         if isinstance(rel, LengthValue):
             names.extend(rel.segment)
+        if isinstance(rel, SideOfLine):
+            names.extend(rel.line)
         for name in names:
             if name not in kinds:
                 errors.append(f"{where}: unknown point '{name}'")
@@ -377,7 +383,7 @@ def _segment_pairs(spec: GeometrySpec) -> list[tuple[str, str]]:
     for rel in [*spec.givens, *spec.goals]:
         if isinstance(rel, Perpendicular | Parallel):
             pairs.extend(rel.lines)
-        elif isinstance(rel, EqualLength | LengthRatio):
+        elif isinstance(rel, EqualLength | LengthRatio | LengthLess):
             pairs.extend(rel.segments)
         elif isinstance(rel, LengthValue):
             pairs.append(rel.segment)
@@ -386,6 +392,20 @@ def _segment_pairs(spec: GeometrySpec) -> list[tuple[str, str]]:
         elif isinstance(rel, Convex):
             pairs.extend([rel.points[i], rel.points[(i + 1) % len(rel.points)]] for i in range(len(rel.points)))
     pairs.extend(t.points[:2] for t in spec.targets if t.kind == "length")
+    # Every angle the problem mentions is drawn with both its sides (∠ABC → BA and BC).
+    angles: list[list[str]] = [t.points[:3] for t in spec.targets if t.kind == "angle"]
+    for rel in [*spec.givens, *spec.goals]:
+        if isinstance(rel, EqualAngle | AngleLess):
+            angles.extend(rel.angles)
+        elif isinstance(rel, AngleValue):
+            angles.append(rel.angle)
+        elif isinstance(rel, Acute):
+            a, b, c = rel.points
+            angles.extend([[b, a, c], [a, b, c]])
+        elif isinstance(rel, SideOfLine):
+            pairs.append(rel.line)
+    for a, b, c in angles:
+        pairs.extend([[b, a], [b, c]])
     out: dict[frozenset[str], tuple[str, str]] = {}
     for a, b in pairs:
         if a != b:
@@ -711,10 +731,32 @@ def residuals(rel: Relation, values: dict[str, Value]) -> list[float]:
         return [(abs(_cross(d, circle.c - a)) - circle.r) / circle.r]
     if isinstance(rel, Convex):
         return convex_residuals([_as_point(values[n]) for n in rel.points])
+    if isinstance(rel, Acute):
+        na, nb, nc = rel.points
+        return [min(0.0, (math.pi / 2 - _angle(values, angle)) / math.pi - SHAPE_MARGIN)
+                for angle in ([nb, na, nc], [na, nb, nc], [na, nc, nb])]
+    if isinstance(rel, AngleLess):
+        small, big = rel.angles if rel.kind == "angle_less" else rel.angles[::-1]
+        return [min(0.0, (_angle(values, big) - _angle(values, small)) / math.pi - SHAPE_MARGIN)]
+    if isinstance(rel, LengthLess):
+        short, long_ = rel.segments if rel.kind == "length_less" else rel.segments[::-1]
+        l1, l2 = _length(values, short), _length(values, long_)
+        return [min(0.0, (l2 - l1) / max((l1 + l2) / 2, EPS) - SHAPE_MARGIN)]
+    if isinstance(rel, SideOfLine):
+        la, lb = (_as_point(values[n]) for n in rel.line)
+        p, q = (_as_point(values[n]) for n in rel.points)
+        d = _unit(lb - la, rel.line[0], f"{rel.line[0]} trùng {rel.line[1]}")
+        scale = max(float(np.hypot(*(p - la))), float(np.hypot(*(q - la))), float(np.hypot(*(lb - la))), EPS)
+        product = _cross(d, p - la) * _cross(d, q - la) / scale ** 2
+        sign = 1.0 if rel.kind == "same_side" else -1.0
+        return [min(0.0, sign * product - SHAPE_MARGIN ** 2)]
     raise GeometryError(f"unsupported relation {rel.kind}")
 
 
-CONVEX_MARGIN = 0.02  # each turn must exceed ~1° (relative to the mean side), so a convex figure is visibly convex
+CONVEX_MARGIN = 0.02
+# Strict shape conditions ("tam giác nhọn", "Ĉ < B̂", "CD > AB", "D trên cung nhỏ AC") hold with a visible margin:
+# ~3.6° for angles, 3% for lengths. A hinge: exactly 0 whenever the condition holds with that margin.
+SHAPE_MARGIN = 0.02  # each turn must exceed ~1° (relative to the mean side), so a convex figure is visibly convex
 
 
 def convex_residuals(pts: list[np.ndarray]) -> list[float]:

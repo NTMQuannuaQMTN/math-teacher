@@ -76,7 +76,7 @@ async def test_an_unusable_or_failed_candidate_does_not_stop_the_others(
         SolveInput(PROBLEM, ["algebra"], None), MultiPathConfig(concurrency=1))
     assert [c.status for c in batch.candidates] == ["ok", "invalid_output", "failed"]
     assert batch.candidates[1].cost_sgd > 0  # an unusable reply is still paid for and counted
-    assert [c.error_code for c in batch.candidates][1:] == ["invalid_model_output", "model_call_failed"]
+    assert [c.error_code for c in batch.candidates][1:] == ["invalid_model_output", "model_call_failed:timeout"]
     assert len(batch.usable) == 1
 
 
@@ -171,3 +171,23 @@ async def test_an_unexpected_error_fails_only_that_candidate(container: Containe
                                       config=MultiPathConfig(concurrency=1))
     assert [c.status for c in batch.candidates] == ["ok", "failed", "ok"]
     assert batch.candidates[1].error_code == "RuntimeError"
+
+
+async def test_an_instant_server_error_is_retried_once_but_a_timeout_is_not(
+        container: Container, provider: ScriptedProvider, monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.providers import gateway
+
+    monkeypatch.setattr(gateway, "QUICK_RETRY_PAUSE_SECONDS", 0.0)
+    provider.push(FORMAL_REPLY)
+    provider.push(ProviderError("server_error", "503"))  # seen live under concurrent load
+    provider.push(GOOD)
+    provider.push(ProviderError("server_error", "503"))
+    provider.push(ProviderError("server_error", "503"))  # a second instant failure is final
+    provider.push(ProviderError("timeout", "slow"))  # never retried: it may have taken minutes
+    _, batch = await orchestrator(container).generate_candidates(
+        SolveInput(PROBLEM, ["algebra"], None), MultiPathConfig(concurrency=1))
+    assert [c.status for c in batch.candidates] == ["ok", "failed", "failed"]
+    assert batch.candidates[0].calls == 2  # the instant 5xx and its retry
+    assert [c.error_code for c in batch.candidates][1:] == ["model_call_failed:server_error",
+                                                            "model_call_failed:timeout"]
+    assert len(solver_calls(provider)) == 5

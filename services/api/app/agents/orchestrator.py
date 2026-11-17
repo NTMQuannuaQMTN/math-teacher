@@ -16,7 +16,7 @@ import logging
 import re
 import time
 import uuid
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from decimal import Decimal
 from enum import StrEnum
 from typing import Any, Literal
@@ -41,6 +41,7 @@ from ..solvers.schemas import (
 )
 from ..tools.sandbox import run_check
 from ..tutoring.hints import generate_hints
+from ..verification.style import angle_letter_notes, degree_notes, set_equation_notes
 from ..verification.tables import case_list_notes, table_defects
 from ..verification.verdict import (
     CheckRunner,
@@ -50,6 +51,7 @@ from ..verification.verdict import (
     verify_solution,
 )
 from .critic import Critique, critique_solution, issue_text
+from .editor import edit_solution, remap_critique
 from .multipath import CandidateBatch, MultiPathConfig, generate_candidates
 
 logger = logging.getLogger(__name__)
@@ -74,6 +76,10 @@ async def _figure_problems(drawing: Formalization | None, run: CheckRunner = _fi
     if data["status"] != "ok":
         return [result["result"]["detail"] or data["status"]]
     problems = [f"{item} could not be built" for item in data.get("left_out") or []]
+    if data.get("skipped_given"):
+        given = json.dumps(data["skipped_given"], ensure_ascii=False)
+        problems.append(f"the given {given} cannot hold together with the other givens in any figure: one of them "
+                        "misreads the problem (check the direction of every inequality and which angle is which)")
     goals = data["spec"].get("goals") or []
     for checked in data.get("goals") or []:
         if checked["outcome"] == "refuted" and checked["index"] < len(goals):
@@ -98,6 +104,7 @@ class SolveState(StrEnum):
     REVISE = "revise"
     HINTS = "hints"
     CANDIDATES = "candidates"  # experimental multi-path generation (app/agents/multipath.py)
+    EDIT = "edit"  # final copy edit of the solution text (app/agents/editor.py)
     DONE = "done"
     FAILED = "failed"
 
@@ -202,6 +209,9 @@ def revision_feedback(attempt: Attempt) -> list[str]:
             problems.append(f"{finding.message}{where}")
     problems.extend(attempt.defects)
     problems.extend(case_list_notes(attempt.solution))
+    problems.extend(degree_notes(attempt.solution))
+    problems.extend(angle_letter_notes(attempt.solution))
+    problems.extend(set_equation_notes(attempt.solution))
     if attempt.critique:
         problems.extend(f"Giám khảo: {issue_text(i)}" for i in attempt.critique.issues)
     return problems
@@ -233,7 +243,8 @@ class Orchestrator:
                  solve_max_tokens: int = 8000, formalize_max_tokens: int = 6000,
                  escalate_thinking: bool = True, time_budget_seconds: float = 2400,
                  geometry_thinking_first: bool = False, critic: bool = True,
-                 call_timeout_seconds: float | None = None) -> None:
+                 call_timeout_seconds: float | None = None, editor: bool = True) -> None:
+        self.editor = editor
         self.call_timeout = call_timeout_seconds
         # A formalization is ~600 output tokens: ~65 s at SoCLaaS's speed on 2026-11-08, so the default 120 s
         # provider deadline timed out 3 of 36 calls. Streamed, a longer deadline is safe.
@@ -540,6 +551,24 @@ class Orchestrator:
             thinking = True if escalate else (False if self.escalate_thinking else None)
             messages = [messages[0], ChatMessage(role="user", content=prompts.revise_user(
                 data.problem_text, solved.value.model_dump_json(), feedback))]
+
+        # EDIT: a copy editor removes leftovers of scratch work (thinking aloud, abandoned attempts, broken fragments)
+        # from the final text; it cannot change mathematics (enforced in app/agents/editor.py).
+        if self.editor and outcome.best is not None and outcome.best.solution.solved:
+            started = time.monotonic()
+            edited, cost = await edit_solution(self.gateway, CallContext("edit", data.user_id, data.job_id),
+                                               data.problem_text, outcome.best.solution,
+                                               timeout_seconds=self.call_timeout)
+            outcome.cost_sgd += cost
+            if edited is not None and edited.parts_edited:
+                best = outcome.best
+                outcome.best = replace(
+                    best, solution=edited.solution, critique=remap_critique(best.critique, edited.step_map),
+                    curriculum=check_curriculum(solution_texts(edited.solution), edited.solution.techniques,
+                                                outcome.topics, self.policy))
+            self._log(outcome, SolveState.EDIT, started, edited=edited is not None,
+                      parts_edited=edited.parts_edited if edited else 0,
+                      steps_removed=edited.steps_removed if edited else 0)
 
         if outcome.best is not None:
             mark_remaining_issues(outcome.best)

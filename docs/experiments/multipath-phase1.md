@@ -78,7 +78,7 @@ Changed or added in Phase 1:
 | `services/api/app/config.py` | `reasoning_mode` (`single` \| `multi_path_verified`) and `multipath_*` limits. `multi_path_verified` is **refused** until Phase 2. |
 | `services/api/scripts/multipath_experiment.py` | **New.** Runs generation on benchmark items. Stratified, question-level dev/held-out split; held-out runs are refused during development. Records per-candidate answers, usage and latency. |
 | `services/api/scripts/run_benchmark.py` | Scoring split into `answer_matches(expected, solution)` so each candidate can be scored the same way. |
-| `services/api/tests/test_multipath.py` | **New.** 9 tests (§9). |
+| `services/api/tests/test_multipath.py` | **New.** 10 tests (§9). |
 
 Expected in later phases: `verification/answers.py` (normalization), `agents/multipath.py` (verification, selection
 and early stop), `workers/solve_job.py` and `solvers/service.py` (mode in the cache key and the job path),
@@ -185,7 +185,7 @@ failures are computational.
 - The model's hidden reasoning is never kept (the gateway strips it).
 - **No candidate is selected or shown.** `REASONING_MODE=multi_path_verified` is refused at startup until Phase 2.
 
-**Tests** (`tests/test_multipath.py`, 9 tests, all passing):
+**Tests** (`tests/test_multipath.py`, 10 tests, all passing):
 - Candidates differ in method and temperature, and share the solver's system prompt.
 - Candidate 1 equals the single solver's call.
 - Usage is recorded, and the trace entry is present.
@@ -197,8 +197,9 @@ failures are computational.
 - A daily budget refusal stops the batch.
 - The mode can't be enabled.
 - Diagnostics hold answers and usage, not steps.
+- An instant server error is retried once; a second one, or a timeout, is final.
 
-**Full suite.** 400 backend tests pass, plus ruff and mypy. The S3 test needs `docker compose up -d s3`.
+**Full suite.** 411 backend tests pass, plus ruff and mypy. The S3 test needs `docker compose up -d s3`.
 
 **Review findings, fixed before this report.**
 1. An unexpected exception in one candidate would have aborted `asyncio.gather` and left the other calls running
@@ -206,8 +207,35 @@ failures are computational.
 2. `MultiPathConfig.from_settings` broke when an override repeated a settings field. Fixed.
 3. The first dev/held-out split was unbalanced (2 geometry and 2 number-theory items held out). It is now stratified
    by topic.
+4. Found by the smoke run: instant 5xx failures were final because candidates run without gateway retries. The
+   same hit the single solver: on 2026-11-13 three revisions in a row and one examiner pass were lost to instant 5xx.
+   The fix is in the gateway, for every caller (`providers/gateway.py`): a call with retries off still gets **one**
+   retry when its failure (5xx, rate limit, connection) came back within 30 s. A timeout is still never repeated.
 
-SMOKE_RESULTS
+**Live smoke run.** 2026-11-13, `benchmarks/results/multipath-phase1-20261113T082221Z.jsonl`. Three dev items with
+reference answers, one per topic, 3 candidates each, candidate concurrency 3. This is a check that the generator
+works end to end, not a benchmark: three items say nothing about accuracy.
+
+| Item | Reference | c1 (standard) | c2 | c3 |
+| --- | --- | --- | --- | --- |
+| ptnk-2023-chuyen/3a (combinatorics) | 2 | 2 ✓ | cases: failed (instant 5xx) | complement: 2 ✓ |
+| dongnai-2024-chuyen/2.1 (number theory) | (x; y) = (−2; −1) | (−2; −1) ✓ | residues: "no solution" ✗ | factorisation: three wrong pairs ✗ |
+| quangbinh-2022-chuyen/2b (algebra) | x = 3 | failed (instant 5xx) | substitution: x = 2 ✗ | identities: x = 11/4 ✗ |
+
+- 7 of 9 candidates were usable. Cost was SGD 0.131 (mean 0.044 per item), mean 60 s per item, p95 108 s,
+  11.5k output tokens.
+- Calls ran in parallel without slowing each other much: the slowest candidate took 106 s, the others 16–42 s.
+- **Two candidates were lost to instant SoCLaaS 5xx errors** under concurrent load (also 7 server errors on other
+  solve calls in the same 40 minutes). Fixed in the gateway (review finding 4): a failure that returns within 30 s
+  (5xx, rate limit, connection) is retried once after 3 s. A slow failure (timeout) is still not retried. The error
+  kind is now recorded (`model_call_failed:server_error`).
+- **Steered candidates were less accurate than the standard one** here: 1 of 5 correct vs 2 of 2. On the
+  number-theory item, two steered candidates gave two different wrong answers while c1 was right. Majority voting
+  would not have picked a wrong answer here, because the wrong answers disagreed, but it could not have picked the
+  right one with confidence either. This supports the Phase 2 rule that only verified candidates can be selected. It
+  also suggests one change to measure in Phase 2: a direction can be a poor fit (e.g. "residues" on a system of
+  equations), so the next variant should fall back to temperature-only diversity when the formalization shows a
+  plain equation or system.
 
 **Manual testing.**
 

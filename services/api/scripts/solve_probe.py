@@ -9,9 +9,10 @@ import argparse
 import asyncio
 import json
 
-from app.agents.orchestrator import Orchestrator, SolveInput
+from app.agents.orchestrator import SolveInput
 from app.config import get_settings
 from app.container import build_container
+from app.workers.solve_job import build_orchestrator
 
 
 async def main() -> None:
@@ -22,7 +23,7 @@ async def main() -> None:
     args = parser.parse_args()
     c = build_container(get_settings())
     assert c.gateway is not None, c.config_problems
-    orchestrator = Orchestrator(c.gateway)
+    orchestrator = build_orchestrator(c)  # the app's settings: timeouts, revisions, examiner
     try:
         for problem in args.problems:
             outcome = await orchestrator.run_solve(SolveInput(problem, [t for t in args.topics.split(",") if t], None))

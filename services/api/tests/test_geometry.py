@@ -588,3 +588,67 @@ async def test_a_statement_false_on_the_figure_triggers_the_repair_round(
     repair = [r for r in provider.requests if r.schema_name == "formalization"][1].messages[-1].content
     assert isinstance(repair, str) and "FALSE on the figure" in repair and '"perpendicular"' in repair
     assert outcome.trace[-1]["figure_repaired"] is True
+
+
+# The user's problem (2026-11-14): an obtuse triangle was drawn although the problem says "nhọn", "Â > B̂ > Ĉ",
+# "D trên cung nhỏ AC" and "CD > AB".
+SHAPE = {"objects": [*TRIANGLE, {"kind": "circumcenter", "id": "O", "points": ["A", "B", "C"]},
+                     {"kind": "circle", "id": "cO", "center": "O", "through": "A"},
+                     {"kind": "point_on_circle", "id": "D", "circle": "cO"}],
+         "givens": [{"kind": "acute", "points": ["A", "B", "C"]},
+                    {"kind": "angle_less", "angles": [["A", "C", "B"], ["A", "B", "C"]]},
+                    {"kind": "angle_less", "angles": [["A", "B", "C"], ["B", "A", "C"]]},
+                    {"kind": "opposite_sides", "points": ["D", "B"], "line": ["A", "C"]},
+                    {"kind": "length_less", "segments": [["A", "B"], ["C", "D"]]}]}
+
+
+def test_shape_conditions_hold_on_every_drawn_figure() -> None:
+    from app.geometry.engine import _angle, _length
+
+    compiled = compile_spec(GeometrySpec.model_validate(SHAPE))
+    configs, _ = sample_configs(compiled, 12, seed=4)
+    assert len(configs) == 12
+    for config in configs:
+        v = config.values
+        a, b, c = (math.degrees(_angle(v, t)) for t in (["B", "A", "C"], ["A", "B", "C"], ["A", "C", "B"]))
+        assert max(a, b, c) < 90 and a > b > c and _length(v, ["C", "D"]) > _length(v, ["A", "B"])
+        side = [((v["C"] - v["A"])[0] * (v[p] - v["A"])[1] - (v["C"] - v["A"])[1] * (v[p] - v["A"])[0]) for p in "DB"]
+        assert side[0] * side[1] < 0  # D and B on opposite sides of AC: D is on the minor arc AC
+
+
+def test_shape_conditions_as_goals_are_checked_both_ways() -> None:
+    goals = [{"kind": "acute", "points": ["A", "B", "C"]},
+             {"kind": "angle_less", "angles": [["A", "B", "C"], ["A", "C", "B"]]},  # B̂ < Ĉ: false here
+             {"kind": "same_side", "points": ["D", "B"], "line": ["A", "C"]}]  # false: opposite sides
+    result = check_spec(GeometrySpec.model_validate({**SHAPE, "goals": goals}), samples=9)
+    assert [g["outcome"] for g in result["goals"]] == ["holds", "refuted", "refuted"]
+
+
+def test_every_angle_mentioned_is_drawn_with_both_sides() -> None:
+    from app.geometry.engine import with_named_segments
+
+    s = spec([*TRIANGLE, {**P, "id": "D"}],
+             givens=[{"kind": "angle_value", "angle": ["B", "A", "C"], "degrees": 60}],
+             goals=[{"kind": "equal_angle", "angles": [["A", "D", "B"], ["A", "C", "B"]]}],
+             targets=[{"kind": "angle", "points": ["D", "B", "C"]}])
+    drawn = {frozenset(o.model_dump()["through"]) for o in with_named_segments(s).objects if o.kind == "segment"}
+    expected = [("A", "B"), ("A", "C"), ("D", "A"), ("D", "B"), ("C", "A"), ("C", "B"), ("B", "D")]
+    assert {frozenset(p) for p in expected} <= drawn
+
+
+def test_a_reversed_inequality_is_reported_for_the_repair_round() -> None:
+    """Seen live: "Â > B̂ > Ĉ" written as Â < B̂ < Ĉ. With "D trên cung nhỏ AC" and "CD > AB" one condition could
+    not hold, the engine dropped it silently and drew a wrong triangle."""
+    reversed_ = {**SHAPE, "givens": [*SHAPE["givens"][:1],
+                                     {"kind": "angle_less", "angles": [["B", "A", "C"], ["A", "B", "C"]]},
+                                     {"kind": "angle_greater", "angles": [["B", "A", "C"], ["A", "B", "C"]]},
+                                     *SHAPE["givens"][3:]]}
+    data = checks.build_figure({"spec": reversed_})["data"]
+    assert data["status"] == "ok" and data["skipped_given"]["kind"] in ("angle_less", "angle_greater")
+    good = {**SHAPE, "givens": [*SHAPE["givens"][:1],
+                                {"kind": "angle_greater", "angles": [["B", "A", "C"], ["A", "B", "C"]]},
+                                {"kind": "angle_greater", "angles": [["A", "B", "C"], ["A", "C", "B"]]},
+                                {"kind": "length_greater", "segments": [["C", "D"], ["A", "B"]]},
+                                SHAPE["givens"][3]]}
+    data = checks.build_figure({"spec": good})["data"]
+    assert data["status"] == "ok" and data["skipped_given"] is None

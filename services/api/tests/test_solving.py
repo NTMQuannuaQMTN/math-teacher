@@ -256,7 +256,7 @@ async def test_orchestrator_happy_path(container: Container, provider: ScriptedP
     assert outcome.best is not None and outcome.best.status == "VERIFIED"
     assert outcome.best.curriculum is not None and outcome.best.curriculum.status == "COMPLIANT"
     assert [t["state"] for t in outcome.trace] == ["classify", "formalize", "solve", "verify", "curriculum",
-                                                   "critique", "hints"]
+                                                   "critique", "edit", "hints"]
     assert [r.model for r in solve_requests(provider)] == ["fast-test", "reason-test"]  # topics given: no classify
     assert len(outcome.hints) == 3 and outcome.hints[0].level == "concept"
     # The solver sees variable names, never the independent template.
